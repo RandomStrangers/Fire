@@ -1,0 +1,745 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{12597DB0-7C34-4DE1-88EA-9250FF3372EB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Flames</RootNamespace>
+    <AssemblyName>Flames_</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <NoWin32Manifest>False</NoWin32Manifest>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+    <NoStdLib>False</NoStdLib>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <IntermediateOutputPath>..\obj\$(Configuration)\</IntermediateOutputPath>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;TEN_BIT_BLOCKS</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <DebugType>PdbOnly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DebugSymbols>True</DebugSymbols>
+    <BaseAddress>4194304</BaseAddress>
+    <RegisterForComInterop>False</RegisterForComInterop>
+    <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <CheckForOverflowUnderflow>False</CheckForOverflowUnderflow>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <StartAction>Project</StartAction>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Blocks\Behaviour\BlockBehaviour.cs" />
+    <Compile Include="Blocks\Behaviour\DeleteBehaviour.cs" />
+    <Compile Include="Blocks\Behaviour\PlaceBehaviour.cs" />
+    <Compile Include="Blocks\Behaviour\WalkthroughBehaviour.cs" />
+    <Compile Include="Blocks\Block.Convert.cs" />
+    <Compile Include="Blocks\Block.CoreProps.cs" />
+    <Compile Include="Blocks\Block.cs" />
+    <Compile Include="Blocks\Block.ID.cs" />
+    <Compile Include="Blocks\BlockDefinitions.cs" />
+    <Compile Include="Blocks\BlockOptions.cs" />
+    <Compile Include="Blocks\BlockProperties.cs" />
+    <Compile Include="Blocks\DefaultSet.cs" />
+    <Compile Include="Blocks\Extended\MessageBlock.cs" />
+    <Compile Include="Blocks\Extended\Portal.cs" />
+    <Compile Include="Bots\BotsFile.cs" />
+    <Compile Include="Bots\BotsScheduler.cs" />
+    <Compile Include="Bots\Instructions\FunInstructions.cs" />
+    <Compile Include="Bots\Instructions\MoveInstructions.cs" />
+    <Compile Include="Bots\Instructions\OtherInstructions.cs" />
+    <Compile Include="Bots\Instructions\HunterInstructions.cs" />
+    <Compile Include="Bots\Instructions\Instruction.cs" />
+    <Compile Include="Bots\PlayerBot.cs" />
+    <Compile Include="Bots\ScriptFile.cs" />
+    <Compile Include="Chat\Chat.cs" />
+    <Compile Include="Chat\ChatModes.cs" />
+    <Compile Include="Chat\Colors.cs" />
+    <Compile Include="Chat\EmotesHandler.cs" />
+    <Compile Include="Chat\ChatTokens.cs" />
+    <Compile Include="Chat\LineWrapper.cs" />
+    <Compile Include="Chat\ProfanityFilter.cs" />
+    <Compile Include="Commands\Added\CmdBotNick.cs" />
+    <Compile Include="Commands\Added\CmdBye.cs" />
+    <Compile Include="Commands\Added\CmdCCBeat.cs" />
+    <Compile Include="Commands\Added\CmdDisconnect.cs" />
+    <Compile Include="Commands\Added\CmdDiscordSay.cs" />
+    <Compile Include="Commands\Added\CmdQuack.cs" />
+    <Compile Include="Commands\Added\CmdShutdownTrue.cs" />
+    <Compile Include="Commands\Alias.cs" />
+    <Compile Include="Commands\Bots\CmdBot.cs" />
+    <Compile Include="Commands\Bots\CmdBotAI.cs" />
+    <Compile Include="Commands\Bots\CmdBots.cs" />
+    <Compile Include="Commands\Bots\CmdBotSet.cs" />
+    <Compile Include="Commands\Bots\CmdBotSummon.cs" />
+    <Compile Include="Commands\building\CmdAbort.cs" />
+    <Compile Include="Commands\building\CmdBezier.cs" />
+    <Compile Include="Commands\building\CmdBind.cs" />
+    <Compile Include="Commands\building\CmdBrush.cs" />
+    <Compile Include="Commands\building\CmdCalculate.cs" />
+    <Compile Include="Commands\building\CmdCenter.cs" />
+    <Compile Include="Commands\building\CmdCopySlot.cs" />
+    <Compile Include="Commands\building\CmdDoNotMark.cs" />
+    <Compile Include="Commands\building\CmdMark.cs" />
+    <Compile Include="Commands\building\CmdCmdBind.cs" />
+    <Compile Include="Commands\building\CmdCopy.cs" />
+    <Compile Include="Commands\building\CmdCuboid.cs" />
+    <Compile Include="Commands\building\CmdDelete.cs" />
+    <Compile Include="Commands\building\CmdDraw.cs" />
+    <Compile Include="Commands\building\CmdDrill.cs" />
+    <Compile Include="Commands\building\CmdFill.cs" />
+    <Compile Include="Commands\building\CmdHollow.cs" />
+    <Compile Include="Commands\building\CmdImageprint.cs" />
+    <Compile Include="Commands\building\CmdLine.cs" />
+    <Compile Include="Commands\building\CmdMaze.cs" />
+    <Compile Include="Commands\building\CmdMeasure.cs" />
+    <Compile Include="Commands\building\CmdMessageBlock.cs" />
+    <Compile Include="Commands\building\CmdMirror.cs" />
+    <Compile Include="Commands\building\CmdMode.cs" />
+    <Compile Include="Commands\building\CmdOutline.cs" />
+    <Compile Include="Commands\building\CmdPaint.cs" />
+    <Compile Include="Commands\building\CmdPalette.cs" />
+    <Compile Include="Commands\building\CmdPaste.cs" />
+    <Compile Include="Commands\building\CmdPlace.cs" />
+    <Compile Include="Commands\building\CmdPortal.cs" />
+    <Compile Include="Commands\building\CmdPyramid.cs" />
+    <Compile Include="Commands\building\CmdRainbow.cs" />
+    <Compile Include="Commands\building\CmdRedo.cs" />
+    <Compile Include="Commands\building\CmdReplaceAll.cs" />
+    <Compile Include="Commands\building\CmdReplaceBrush.cs" />
+    <Compile Include="Commands\building\CmdSphere.cs" />
+    <Compile Include="Commands\building\CmdTransform.cs" />
+    <Compile Include="Commands\building\CmdTriangle.cs" />
+    <Compile Include="Commands\building\ReplaceCmds.cs" />
+    <Compile Include="Commands\building\CmdRestartPhysics.cs" />
+    <Compile Include="Commands\building\CmdSpheroid.cs" />
+    <Compile Include="Commands\building\CmdSpin.cs" />
+    <Compile Include="Commands\building\CmdSPlace.cs" />
+    <Compile Include="Commands\building\CmdStatic.cs" />
+    <Compile Include="Commands\building\CmdTorus.cs" />
+    <Compile Include="Commands\building\CmdTree.cs" />
+    <Compile Include="Commands\building\CmdUndo.cs" />
+    <Compile Include="Commands\building\CmdWrite.cs" />
+    <Compile Include="Commands\building\DrawCmd.cs" />
+    <Compile Include="Commands\Chat\Cmd8Ball.cs" />
+    <Compile Include="Commands\Chat\CmdAdminChat.cs" />
+    <Compile Include="Commands\Chat\CmdAfk.cs" />
+    <Compile Include="Commands\Chat\CmdColor.cs" />
+    <Compile Include="Commands\Chat\CmdEat.cs" />
+    <Compile Include="Commands\Chat\CmdEmote.cs" />
+    <Compile Include="Commands\Chat\CmdHug.cs" />
+    <Compile Include="Commands\Chat\CmdIgnore.cs" />
+    <Compile Include="Commands\Chat\CmdInbox.cs" />
+    <Compile Include="Commands\Chat\CmdLoginMessage.cs" />
+    <Compile Include="Commands\Chat\CmdLogoutMessage.cs" />
+    <Compile Include="Commands\Chat\CmdMe.cs" />
+    <Compile Include="Commands\Chat\CmdNick.cs" />
+    <Compile Include="Commands\Chat\CmdOpChat.cs" />
+    <Compile Include="Commands\Chat\CmdClear.cs" />
+    <Compile Include="Commands\Chat\CmdRankMsg.cs" />
+    <Compile Include="Commands\Chat\CmdRoll.cs" />
+    <Compile Include="Commands\Chat\CmdSay.cs" />
+    <Compile Include="Commands\Chat\CmdSend.cs" />
+    <Compile Include="Commands\Chat\CmdTColor.cs" />
+    <Compile Include="Commands\Chat\CmdTitle.cs" />
+    <Compile Include="Commands\Chat\CmdVote.cs" />
+    <Compile Include="Commands\Chat\CmdWhisper.cs" />
+    <Compile Include="Commands\Chat\MessageCmd.cs" />
+    <Compile Include="Commands\Command.cs" />
+    <Compile Include="Commands\Command.Helpers.cs" />
+    <Compile Include="Commands\CommandParser.cs" />
+    <Compile Include="Commands\CPE\CmdCustomColors.cs" />
+    <Compile Include="Commands\CPE\CmdEntityRot.cs" />
+    <Compile Include="Commands\CPE\CmdEnvironment.cs" />
+    <Compile Include="Commands\CPE\CmdHold.cs" />
+    <Compile Include="Commands\CPE\CmdModel.cs" />
+    <Compile Include="Commands\CPE\CmdModelScale.cs" />
+    <Compile Include="Commands\CPE\CmdPing.cs" />
+    <Compile Include="Commands\CPE\CmdReachDistance.cs" />
+    <Compile Include="Commands\CPE\CmdSkin.cs" />
+    <Compile Include="Commands\CPE\CmdTexture.cs" />
+    <Compile Include="Commands\CPE\CustomBlockCommand.cs" />
+    <Compile Include="Commands\Economy\CmdBuy.cs" />
+    <Compile Include="Commands\Economy\CmdEconomy.cs" />
+    <Compile Include="Commands\Economy\CmdGive.cs" />
+    <Compile Include="Commands\Economy\CmdBalance.cs" />
+    <Compile Include="Commands\Economy\CmdPay.cs" />
+    <Compile Include="Commands\Economy\CmdStore.cs" />
+    <Compile Include="Commands\Economy\CmdTake.cs" />
+    <Compile Include="Commands\Economy\MoneyCmd.cs" />
+    <Compile Include="Commands\EntityPropertyCmd.cs" />
+    <Compile Include="Commands\Fun\CmdExplode.cs" />
+    <Compile Include="Commands\Fun\CmdFliphead.cs" />
+    <Compile Include="Commands\Fun\CmdFlipHeads.cs" />
+    <Compile Include="Commands\Fun\CmdGun.cs" />
+    <Compile Include="Commands\Fun\CmdMissile.cs" />
+    <Compile Include="Commands\Fun\CmdReferee.cs" />
+    <Compile Include="Commands\Fun\CmdSlap.cs" />
+    <Compile Include="Commands\Fun\CmdTeam.cs" />
+    <Compile Include="Commands\Fun\CmdZombieSpawn.cs" />
+    <Compile Include="Commands\Fun\RateMapCmds.cs" />
+    <Compile Include="Commands\Fun\RoundsGameCmd.cs" />
+    <Compile Include="Commands\Information\CmdAbout.cs" />
+    <Compile Include="Commands\Information\CmdBanInfo.cs" />
+    <Compile Include="Commands\Information\CmdBlocks.cs" />
+    <Compile Include="Commands\Information\CmdClones.cs" />
+    <Compile Include="Commands\Information\CmdCommands.cs" />
+    <Compile Include="Commands\Information\CmdFaq.cs" />
+    <Compile Include="Commands\Information\CmdHasirc.cs" />
+    <Compile Include="Commands\Information\CmdHelp.cs" />
+    <Compile Include="Commands\Information\CmdRankInfo.cs" />
+    <Compile Include="Commands\Information\CmdServerInfo.cs" />
+    <Compile Include="Commands\Information\CmdLastCmd.cs" />
+    <Compile Include="Commands\Information\CmdLoaded.cs" />
+    <Compile Include="Commands\Information\CmdMapInfo.cs" />
+    <Compile Include="Commands\Information\CmdNews.cs" />
+    <Compile Include="Commands\Information\CmdOpRules.cs" />
+    <Compile Include="Commands\Information\CmdOpStats.cs" />
+    <Compile Include="Commands\Information\CmdPClients.cs" />
+    <Compile Include="Commands\Information\CmdPlayers.cs" />
+    <Compile Include="Commands\Information\CmdRules.cs" />
+    <Compile Include="Commands\Information\CmdSearch.cs" />
+    <Compile Include="Commands\Information\CmdSeen.cs" />
+    <Compile Include="Commands\Information\CmdTime.cs" />
+    <Compile Include="Commands\Information\CmdTop.cs" />
+    <Compile Include="Commands\Information\CmdLevels.cs" />
+    <Compile Include="Commands\Information\CmdView.cs" />
+    <Compile Include="Commands\Information\CmdViewRanks.cs" />
+    <Compile Include="Commands\Information\CmdWhere.cs" />
+    <Compile Include="Commands\Information\CmdWhois.cs" />
+    <Compile Include="Commands\Information\CmdWhoNick.cs" />
+    <Compile Include="Commands\Maintenance\CmdBlockDB.cs" />
+    <Compile Include="Commands\Maintenance\CmdBlockSpeed.cs" />
+    <Compile Include="Commands\Maintenance\CmdInfoSwap.cs" />
+    <Compile Include="Commands\Maintenance\CmdLimit.cs" />
+    <Compile Include="Commands\Maintenance\CmdLowlag.cs" />
+    <Compile Include="Commands\Maintenance\CmdPlayerEdit.cs" />
+    <Compile Include="Commands\Maintenance\CmdRestart.cs" />
+    <Compile Include="Commands\Maintenance\CmdServer.cs" />
+    <Compile Include="Commands\Maintenance\CmdShutdown.cs" />
+    <Compile Include="Commands\Maintenance\CmdUpdate.cs" />
+    <Compile Include="Commands\Moderation\CmdBan.cs" />
+    <Compile Include="Commands\Moderation\CmdBanEdit.cs" />
+    <Compile Include="Commands\Moderation\CmdBanip.cs" />
+    <Compile Include="Commands\Moderation\CmdBlockSet.cs" />
+    <Compile Include="Commands\Moderation\CmdCmdSet.cs" />
+    <Compile Include="Commands\Moderation\CmdFollow.cs" />
+    <Compile Include="Commands\Moderation\CmdFreeze.cs" />
+    <Compile Include="Commands\Moderation\CmdHide.cs" />
+    <Compile Include="Commands\Moderation\CmdHighlight.cs" />
+    <Compile Include="Commands\Moderation\CmdJoker.cs" />
+    <Compile Include="Commands\Moderation\CmdKick.cs" />
+    <Compile Include="Commands\Moderation\CmdLocation.cs" />
+    <Compile Include="Commands\Moderation\CmdModerate.cs" />
+    <Compile Include="Commands\Moderation\CmdMoveAll.cs" />
+    <Compile Include="Commands\Moderation\CmdMute.cs" />
+    <Compile Include="Commands\Moderation\CmdOhide.cs" />
+    <Compile Include="Commands\Moderation\CmdP2P.cs" />
+    <Compile Include="Commands\Moderation\CmdPass.cs" />
+    <Compile Include="Commands\Moderation\CmdPatrol.cs" />
+    <Compile Include="Commands\Moderation\CmdPossess.cs" />
+    <Compile Include="Commands\Moderation\CmdReport.cs" />
+    <Compile Include="Commands\Moderation\CmdRestoreSelection.cs" />
+    <Compile Include="Commands\Moderation\CmdReview.cs" />
+    <Compile Include="Commands\Moderation\CmdSetRank.cs" />
+    <Compile Include="Commands\Moderation\CmdTempBan.cs" />
+    <Compile Include="Commands\Moderation\CmdTempRank.cs" />
+    <Compile Include="Commands\Moderation\CmdTrust.cs" />
+    <Compile Include="Commands\Moderation\CmdUnban.cs" />
+    <Compile Include="Commands\Moderation\CmdUnbanip.cs" />
+    <Compile Include="Commands\Moderation\CmdUndoPlayer.cs" />
+    <Compile Include="Commands\Moderation\CmdVIP.cs" />
+    <Compile Include="Commands\Moderation\CmdVoice.cs" />
+    <Compile Include="Commands\Moderation\CmdWarn.cs" />
+    <Compile Include="Commands\Moderation\CmdWhitelist.cs" />
+    <Compile Include="Commands\Moderation\CmdXban.cs" />
+    <Compile Include="Commands\Moderation\ItemPermsCmd.cs" />
+    <Compile Include="Commands\Moderation\ZoneCmds.cs" />
+    <Compile Include="Commands\Moderation\ModActionCmd.cs" />
+    <Compile Include="Commands\other\CmdAscend.cs" />
+    <Compile Include="Commands\other\CmdBack.cs" />
+    <Compile Include="Commands\other\cmdCTFADSFD.cs" />
+    <Compile Include="Commands\other\CmdDelay.cs" />
+    <Compile Include="Commands\other\CmdDescend.cs" />
+    <Compile Include="Commands\other\CmdFakerank.cs" />
+    <Compile Include="Commands\other\CmdFly.cs" />
+    <Compile Include="Commands\other\CmdHackRank.cs" />
+    <Compile Include="Commands\other\CmdInvincible.cs" />
+    <Compile Include="Commands\other\CmdKill.cs" />
+    <Compile Include="Commands\other\CmdRide.cs" />
+    <Compile Include="Commands\other\CmdSendCmd.cs" />
+    <Compile Include="Commands\other\CmdSummon.cs" />
+    <Compile Include="Commands\other\CmdTimer.cs" />
+    <Compile Include="Commands\other\CmdTp.cs" />
+    <Compile Include="Commands\other\CmdTpA.cs" />
+    <Compile Include="Commands\other\QuitCmds.cs" />
+    <Compile Include="Commands\Overseer.cs" />
+    <Compile Include="Commands\Scripting\CmdCmdLoad.cs" />
+    <Compile Include="Commands\Scripting\CmdCmdUnload.cs" />
+    <Compile Include="Commands\Scripting\CmdPlugin.cs" />
+    <Compile Include="Commands\SubCommand.cs" />
+    <Compile Include="Commands\World\CmdBlockProperties.cs" />
+    <Compile Include="Commands\World\CmdCopyLVL.cs" />
+    <Compile Include="Commands\World\CmdDeleteLvl.cs" />
+    <Compile Include="Commands\World\CmdFixGrass.cs" />
+    <Compile Include="Commands\World\CmdGoto.cs" />
+    <Compile Include="Commands\World\CmdImport.cs" />
+    <Compile Include="Commands\World\CmdLoad.cs" />
+    <Compile Include="Commands\World\CmdLockdown.cs" />
+    <Compile Include="Commands\World\CmdMain.cs" />
+    <Compile Include="Commands\World\CmdMap.cs" />
+    <Compile Include="Commands\World\CmdMuseum.cs" />
+    <Compile Include="Commands\World\CmdNewLvl.cs" />
+    <Compile Include="Commands\World\CmdOverseer.cs" />
+    <Compile Include="Commands\World\CmdPause.cs" />
+    <Compile Include="Commands\World\CmdWarp.cs" />
+    <Compile Include="Commands\World\CmdWaypoint.cs" />
+    <Compile Include="Commands\World\CmdPhysics.cs" />
+    <Compile Include="Commands\World\CmdRenameLvl.cs" />
+    <Compile Include="Commands\World\CmdResizeLvl.cs" />
+    <Compile Include="Commands\World\CmdRestore.cs" />
+    <Compile Include="Commands\World\CmdReload.cs" />
+    <Compile Include="Commands\World\CmdSave.cs" />
+    <Compile Include="Commands\World\CmdSetspawn.cs" />
+    <Compile Include="Commands\World\CmdSpawn.cs" />
+    <Compile Include="Commands\World\CmdUnflood.cs" />
+    <Compile Include="Commands\World\CmdUnload.cs" />
+    <Compile Include="Commands\World\PermissionCmds.cs" />
+    <Compile Include="Config\ConfigAttribute.cs" />
+    <Compile Include="Config\JSON.cs" />
+    <Compile Include="Config\NumberAttributes.cs" />
+    <Compile Include="Config\OtherAttributes.cs" />
+    <Compile Include="Config\ConfigElement.cs" />
+    <Compile Include="Config\Permissions\BlockPerms.cs" />
+    <Compile Include="Config\Permissions\CommandExtraPerms.cs" />
+    <Compile Include="Config\Permissions\CommandPerms.cs" />
+    <Compile Include="Config\Permissions\ItemPerms.cs" />
+    <Compile Include="Config\PropertiesFile.cs" />
+    <Compile Include="Config\StringAttributes.cs" />
+    <Compile Include="CorePlugin\ChatHandler.cs" />
+    <Compile Include="CorePlugin\ConnectingHandler.cs" />
+    <Compile Include="CorePlugin\CorePlugin.cs" />
+    <Compile Include="CorePlugin\ConnectHandler.cs" />
+    <Compile Include="CorePlugin\EcoHandlers.cs" />
+    <Compile Include="CorePlugin\MiscHandlers.cs" />
+    <Compile Include="CorePlugin\ModActionHandler.cs" />
+    <Compile Include="Database\Backends\Interfaces.cs" />
+    <Compile Include="Database\Backends\SQLite.cs" />
+    <Compile Include="Database\Backends\SQLiteBackend.cs" />
+    <Compile Include="Database\BlockDB\BlockDB.cs" />
+    <Compile Include="Database\BlockDB\BlockDBCache.cs" />
+    <Compile Include="Database\BlockDB\BlockDBFile.cs" />
+    <Compile Include="Database\BlockDB\BlockDBEntry.cs" />
+    <Compile Include="Database\BlockDB\BlockDBChange.cs" />
+    <Compile Include="Database\BlockDB\BlockDBFile.V1.cs" />
+    <Compile Include="Database\BlockDB\BlockDBFile.V2.cs" />
+    <Compile Include="Database\BlockDB\DBUpgrader.cs" />
+    <Compile Include="Database\BlockDB\BlockDBTableDumper.cs" />
+    <Compile Include="Database\BlockDB\NameConverter.cs" />
+    <Compile Include="Database\ColumnDesc.cs" />
+    <Compile Include="Database\IDatabaseBackend.cs" />
+    <Compile Include="Database\Backends\MySQL.cs" />
+    <Compile Include="Database\PlayerData.cs" />
+    <Compile Include="Database\Stats\OfflineStat.cs" />
+    <Compile Include="Database\Stats\OnlineStat.cs" />
+    <Compile Include="Database\Stats\TopStat.cs" />
+    <Compile Include="Database\TableDumper.cs" />
+    <Compile Include="Drawing\Brushes\Brush.cs" />
+    <Compile Include="Drawing\Brushes\CloudyBrush.cs" />
+    <Compile Include="Drawing\Brushes\GradientBrush.cs" />
+    <Compile Include="Drawing\Brushes\GridBrush.cs" />
+    <Compile Include="Drawing\Brushes\PasteBrush.cs" />
+    <Compile Include="Drawing\Brushes\RainbowBrush.cs" />
+    <Compile Include="Drawing\Brushes\RandomBrush.cs" />
+    <Compile Include="Drawing\Brushes\ReplaceBrushBrushes.cs" />
+    <Compile Include="Drawing\Brushes\ReplaceBrushes.cs" />
+    <Compile Include="Drawing\Brushes\SimpleBrushes.cs" />
+    <Compile Include="Drawing\BrushFactories\BrushFactory.cs" />
+    <Compile Include="Drawing\BrushFactories\CloudyBrush.cs" />
+    <Compile Include="Drawing\BrushFactories\FrequencyBrushes.cs" />
+    <Compile Include="Drawing\BrushFactories\ReplaceBrushBrushes.cs" />
+    <Compile Include="Drawing\BrushFactories\ReplaceBrushes.cs" />
+    <Compile Include="Drawing\BrushFactories\SimpleBrushes.cs" />
+    <Compile Include="Drawing\CopyState.cs" />
+    <Compile Include="Drawing\DrawOps\AdvConeDrawOps.cs" />
+    <Compile Include="Drawing\DrawOps\AdvDrawOps.cs" />
+    <Compile Include="Drawing\DrawOps\AdvPyramidDrawOps.cs" />
+    <Compile Include="Drawing\DrawOps\BezierDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\CuboidDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\CuboidDrawOps.cs" />
+    <Compile Include="Drawing\DrawOps\DrawOpPerformer.cs" />
+    <Compile Include="Drawing\DrawOps\DrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\FillDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\FixGrassDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\HighlightDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\LineDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\MazeDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\PasteDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\RedoDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\RestoreSelectionDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\SpheroidDrawOps.cs" />
+    <Compile Include="Drawing\DrawOps\PyramidDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\SPlaceDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\TorusDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\TreeDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\TriangleDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\UndoDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\UndoPhysicsDrawOp.cs" />
+    <Compile Include="Drawing\DrawOps\WriteDrawOp.cs" />
+    <Compile Include="Drawing\Flip.cs" />
+    <Compile Include="Drawing\Image\ImagePalette.cs" />
+    <Compile Include="Drawing\Image\ImagePrintDrawOp.cs" />
+    <Compile Include="Drawing\Image\IPaletteMatcher.cs" />
+    <Compile Include="Drawing\TransformFactories\RotateTransform.cs" />
+    <Compile Include="Drawing\TransformFactories\SimpleTransforms.cs" />
+    <Compile Include="Drawing\TransformFactories\TransformFactory.cs" />
+    <Compile Include="Drawing\Transform\RotateTransform.cs" />
+    <Compile Include="Drawing\Transform\SimpleTransforms.cs" />
+    <Compile Include="Drawing\Transform\Transform.cs" />
+    <Compile Include="Economy\Economy.DB.cs" />
+    <Compile Include="Economy\OtherItems.cs" />
+    <Compile Include="Economy\Economy.cs" />
+    <Compile Include="Economy\Item.cs" />
+    <Compile Include="Economy\LevelItem.cs" />
+    <Compile Include="Economy\MessageItems.cs" />
+    <Compile Include="Economy\NameItems.cs" />
+    <Compile Include="Economy\RankItem.cs" />
+    <Compile Include="Entity\CustomModel.cs" />
+    <Compile Include="Entity\Entities.cs" />
+    <Compile Include="Entity\Entity.cs" />
+    <Compile Include="Entity\ModelInfo.cs" />
+    <Compile Include="Entity\Structs.cs" />
+    <Compile Include="Entity\TabList.cs" />
+    <Compile Include="Events\PlayerDBEvents.cs" />
+    <Compile Include="Events\EconomyEvents.cs" />
+    <Compile Include="Events\EntityEvents.cs" />
+    <Compile Include="Events\GameEvents.cs" />
+    <Compile Include="Events\GroupEvents.cs" />
+    <Compile Include="Events\IPluginEvent.cs" />
+    <Compile Include="Events\LevelEvents.cs" />
+    <Compile Include="Events\ModActionEvent.cs" />
+    <Compile Include="Events\PlayerEvents.cs" />
+    <Compile Include="Events\ServerEvents.cs" />
+    <Compile Include="Games\GameProps.cs" />
+    <Compile Include="Games\IGame.cs" />
+    <Compile Include="Games\HacksDetection.cs" />
+    <Compile Include="Games\RoundsGame\LevelPicker.cs" />
+    <Compile Include="Games\RoundsGame\RoundsGame.cs" />
+    <Compile Include="Games\RoundsGame\RoundsGameConfig.cs" />
+    <Compile Include="Games\RoundsGame\RoundsGame.Plugin.cs" />
+    <Compile Include="Games\Team.cs" />
+    <Compile Include="Games\Weapons\Missile.cs" />
+    <Compile Include="Games\Weapons\Weapon.cs" />
+    <Compile Include="Games\Weapons\Guns.cs" />
+    <Compile Include="Generator\Classic\ClassicGenerator.cs" />
+    <Compile Include="Generator\Classic\ClassicGenerator.Utils.cs" />
+    <Compile Include="Generator\Classic\Noise.cs" />
+    <Compile Include="Generator\fCraft\fCraftMapGen.cs" />
+    <Compile Include="Generator\fCraft\fCraftMapGenArgs.cs" />
+    <Compile Include="Generator\fCraft\Noise.cs" />
+    <Compile Include="Generator\Foliage\AshTree.cs" />
+    <Compile Include="Generator\Foliage\ClassicTree.cs" />
+    <Compile Include="Generator\Foliage\fCraftTree.cs" />
+    <Compile Include="Generator\Foliage\OakTree.cs" />
+    <Compile Include="Generator\Foliage\ForesterTrees.cs" />
+    <Compile Include="Generator\Foliage\StandardTrees.cs" />
+    <Compile Include="Generator\Foliage\Tree.cs" />
+    <Compile Include="Generator\HeightmapGen.cs" />
+    <Compile Include="Generator\ImprovedNoise.cs" />
+    <Compile Include="Generator\LibNoise\AdvNoiseGen.cs" />
+    <Compile Include="Generator\LibNoise\Billow.cs" />
+    <Compile Include="Generator\LibNoise\GradientNoise.cs" />
+    <Compile Include="Generator\LibNoise\IModule.cs" />
+    <Compile Include="Generator\LibNoise\Perlin.cs" />
+    <Compile Include="Generator\LibNoise\RidgedMultifractal.cs" />
+    <Compile Include="Generator\LibNoise\Voronoi.cs" />
+    <Compile Include="Generator\MapGen.cs" />
+    <Compile Include="Generator\MapGenBiome.cs" />
+    <Compile Include="Generator\Realistic\RealisticMapGenArgs.cs" />
+    <Compile Include="Generator\Realistic\Noise.cs" />
+    <Compile Include="Generator\Realistic\RealisticMapGen.cs" />
+    <Compile Include="Generator\SimpleGen.cs" />
+    <Compile Include="Levels\EnvPreset.cs" />
+    <Compile Include="Levels\Hacks.cs" />
+    <Compile Include="Levels\IO\Exporters\LvlExporter.cs" />
+    <Compile Include="Levels\IO\fNbt.cs" />
+    <Compile Include="Levels\IO\Importers\CwImporter.cs" />
+    <Compile Include="Levels\IO\Importers\DatImporter.cs" />
+    <Compile Include="Levels\IO\Importers\FcmImporter.cs" />
+    <Compile Include="Levels\IO\Importers\LvlImporter.cs" />
+    <Compile Include="Levels\IO\Importers\McfImporter.cs" />
+    <Compile Include="Levels\IO\Importers\McLevelImporter.cs" />
+    <Compile Include="Levels\IO\MapFormats.cs" />
+    <Compile Include="Levels\Level.Blocks.cs" />
+    <Compile Include="Levels\Level.Fields.cs" />
+    <Compile Include="Levels\AccessController.cs" />
+    <Compile Include="Levels\LevelConfig.cs" />
+    <Compile Include="Levels\LevelDB.cs" />
+    <Compile Include="Levels\Level.Physics.cs" />
+    <Compile Include="Levels\LevelActions.cs" />
+    <Compile Include="Levels\LevelEnv.cs" />
+    <Compile Include="Levels\LevelInfo.cs" />
+    <Compile Include="Levels\LevelOperations.cs" />
+    <Compile Include="Levels\LevelOptions.cs" />
+    <Compile Include="Blocks\Physics\ActivateablePhysics.cs" />
+    <Compile Include="Blocks\Physics\AirPhysics.cs" />
+    <Compile Include="Blocks\Physics\BirdPhysics.cs" />
+    <Compile Include="Blocks\Physics\C4Physics.cs" />
+    <Compile Include="Blocks\Physics\DoorPhysics.cs" />
+    <Compile Include="Blocks\Physics\ExtLiquidPhysics.cs" />
+    <Compile Include="Blocks\Physics\ExtraInfoPhysics.cs" />
+    <Compile Include="Blocks\Physics\FinitePhysics.cs" />
+    <Compile Include="Blocks\Physics\FirePhysics.cs" />
+    <Compile Include="Blocks\Physics\FireworkPhysics.cs" />
+    <Compile Include="Blocks\Physics\HunterPhysics.cs" />
+    <Compile Include="Blocks\Physics\LeafPhysics.cs" />
+    <Compile Include="Blocks\Physics\LiquidPhysics.cs" />
+    <Compile Include="Blocks\Physics\PhysicsArgs.cs" />
+    <Compile Include="Blocks\Physics\SimpleLiquidPhysics.cs" />
+    <Compile Include="Blocks\Physics\RocketPhysics.cs" />
+    <Compile Include="Blocks\Physics\OtherPhysics.cs" />
+    <Compile Include="Blocks\Physics\SnakePhysics.cs" />
+    <Compile Include="Blocks\Physics\TrainPhysics.cs" />
+    <Compile Include="Blocks\Physics\TntPhysics.cs" />
+    <Compile Include="Blocks\Physics\ZombiePhysics.cs" />
+    <Compile Include="Levels\Zone.cs" />
+    <Compile Include="Modules\Awards\PlayerAwards.cs" />
+    <Compile Include="Modules\Awards\CmdAward.cs" />
+    <Compile Include="Modules\Awards\CmdAwardMod.cs" />
+    <Compile Include="Modules\Awards\CmdAwards.cs" />
+    <Compile Include="Modules\Awards\AwardsList.cs" />
+    <Compile Include="Modules\Compiling\CompilerFrontends.cs" />
+    <Compile Include="Modules\Compiling\CmdCmdCreate.cs" />
+    <Compile Include="Modules\Compiling\CmdCompile.cs" />
+    <Compile Include="Modules\Compiling\CmdCompload.cs" />
+    <Compile Include="Modules\Compiling\Compiler.cs" />
+    <Compile Include="Modules\Compiling\CompilerOperations.cs" />
+    <Compile Include="Modules\Compiling\CompilerBackends.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownConfig.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownPlugin.cs" />
+    <Compile Include="Modules\Games\Countdown\CmdCountdown.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownGame.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownGame.Plugin.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownGame.Round.cs" />
+    <Compile Include="Modules\Games\Countdown\CountdownMap.cs" />
+    <Compile Include="Modules\Games\CTF\CmdCtf.cs" />
+    <Compile Include="Modules\Games\CTF\CtfConfig.cs" />
+    <Compile Include="Modules\Games\CTF\CtfGame.cs" />
+    <Compile Include="Modules\Games\CTF\CtfGame.DB.cs" />
+    <Compile Include="Modules\Games\CTF\CtfGame.Plugin.cs" />
+    <Compile Include="Modules\Games\CTF\CtfGame.Round.cs" />
+    <Compile Include="Modules\Games\CTF\CtfPlugin.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\CmdLavaSurvival.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\Commands\CmdLives.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSConfig.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSGame.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSGame.DB.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSGame.Physics.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSGame.Plugin.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSGame.Round.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSItems.cs" />
+    <Compile Include="Modules\Games\LavaSurvival\LSPlugin.cs" />
+    <Compile Include="Modules\Games\TNTWars\CmdTntWars.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWConfig.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWGame.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWGame.Physics.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWGame.Plugin.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWGame.Round.cs" />
+    <Compile Include="Modules\Games\TNTWars\TWPlugin.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\CmdZombieSurvival.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdAka.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdAlive.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdBounties.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdBounty.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdDisinfect.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdHuman.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdInfect.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdInfected.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdLastLevels.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdQueue.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\Commands\CmdShowQueue.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSItems.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSConfig.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSGame.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSGame.DB.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSGame.Plugin.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSGame.Round.cs" />
+    <Compile Include="Modules\Games\ZombieSurvival\ZSPlugin.cs" />
+    <Compile Include="Modules\Moderation\Notes\CmdNotes.cs" />
+    <Compile Include="Modules\Moderation\Notes\NotesPlugin.cs" />
+    <Compile Include="Modules\Relay\BotControllersCmd.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordApiClient.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordBot.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordPlugin.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordWebsocket.cs" />
+    <Compile Include="Modules\Relay\IRC\IRCNickList.cs" />
+    <Compile Include="Modules\Relay\IRC\IRCPlugin.cs" />
+    <Compile Include="Modules\Relay\RelayBot.cs" />
+    <Compile Include="Modules\Relay\RelayBotCmd.cs" />
+    <Compile Include="Modules\Security\IPThrottler.cs" />
+    <Compile Include="Network\BaseWebSocket.cs" />
+    <Compile Include="Network\ClassicProtocol.cs" />
+    <Compile Include="Network\CPESupport.cs" />
+    <Compile Include="Network\Heartbeat\ClassiCube.cs" />
+    <Compile Include="Network\Heartbeat\Heartbeat.cs" />
+    <Compile Include="Modules\Relay\IRC\IRCBot.cs" />
+    <Compile Include="Network\IGameSession.cs" />
+    <Compile Include="Network\Listeners.cs" />
+    <Compile Include="Network\Packets\Opcode.cs" />
+    <Compile Include="Network\Packets\Packet.cs" />
+    <Compile Include="Network\Sockets.cs" />
+    <Compile Include="Network\Utils\BufferedBlockSender.cs" />
+    <Compile Include="Network\Utils\HttpUtil.cs" />
+    <Compile Include="Network\Utils\Utils.cs" />
+    <Compile Include="Network\Utils\LevelChunkStream.cs" />
+    <Compile Include="Network\Utils\NetUtils.cs" />
+    <Compile Include="Network\Utils\PingList.cs" />
+    <Compile Include="Player\Group.cs" />
+    <Compile Include="Player\List\PlayerExtList.cs" />
+    <Compile Include="Player\List\PlayerList.cs" />
+    <Compile Include="Player\List\PlayerMetaList.cs" />
+    <Compile Include="Player\Player.Fields.cs" />
+    <Compile Include="Player\Player.Handlers.cs" />
+    <Compile Include="Player\Player.Login.cs" />
+    <Compile Include="Player\PlayerActions.cs" />
+    <Compile Include="Player\PlayerIgnores.cs" />
+    <Compile Include="Player\PlayerInfo.cs" />
+    <Compile Include="Player\PlayerOperations.cs" />
+    <Compile Include="Player\PlayerPhysics.cs" />
+    <Compile Include="Player\SpamChecker.cs" />
+    <Compile Include="Player\Warp.cs" />
+    <Compile Include="Database\Undo\UndoFormat.cs" />
+    <Compile Include="Network\Player.Networking.cs" />
+    <Compile Include="Scripting\Plugin.cs" />
+    <Compile Include="Scripting\Scripting.cs" />
+    <Compile Include="Player\Ban.cs" />
+    <Compile Include="Database\SqlTransaction.cs" />
+    <Compile Include="Database\Database.cs" />
+    <Compile Include="Levels\BlockQueue.cs" />
+    <Compile Include="Levels\Level.cs" />
+    <Compile Include="Scripting\ScriptingOperations.cs" />
+    <Compile Include="Server\Authentication\LoginAuthenticator.cs" />
+    <Compile Include="Server\Authentication\AuthService.cs" />
+    <Compile Include="Server\Authentication\PassAuthenticator.cs" />
+    <Compile Include="Server\FileLogger.cs" />
+    <Compile Include="Server\Logger.cs" />
+    <Compile Include="Player\Player.cs" />
+    <Compile Include="Server\Maintenance\Backup.cs" />
+    <Compile Include="Server\Maintenance\Updater.cs" />
+    <Compile Include="Server\Maintenance\ZipReader.cs" />
+    <Compile Include="Server\Maintenance\ZipWriter.cs" />
+    <Compile Include="util\Formatting\Wildcard.cs" />
+    <Compile Include="util\ImageUtils.cs" />
+    <Compile Include="util\OperatingSystem.cs" />
+    <Compile Include="Server\Server.cs" />
+    <Compile Include="Server\Server.DB.cs" />
+    <Compile Include="Server\Server.Fields.cs" />
+    <Compile Include="Server\Server.Init.cs" />
+    <Compile Include="Server\ServerConfig.cs" />
+    <Compile Include="Server\ServerProperties.cs" />
+    <Compile Include="Server\Tasks\ModerationTasks.cs" />
+    <Compile Include="Server\Tasks\ServerTasks.cs" />
+    <Compile Include="Server\Tasks\UpgradeTasks.cs" />
+    <Compile Include="util\Extensions\DateExts.cs" />
+    <Compile Include="util\Extensions\Extensions.cs" />
+    <Compile Include="util\Extensions\StringExts.cs" />
+    <Compile Include="util\Extensions\TimeExts.cs" />
+    <Compile Include="util\FastList.cs" />
+    <Compile Include="util\Formatting\Formatter.cs" />
+    <Compile Include="util\Formatting\Matcher.cs" />
+    <Compile Include="util\Formatting\Paginator.cs" />
+    <Compile Include="util\IO\FileIO.cs" />
+    <Compile Include="Server\Paths.cs" />
+    <Compile Include="util\IO\TextFile.cs" />
+    <Compile Include="util\Math\AABB.cs" />
+    <Compile Include="util\Math\DirUtils.cs" />
+    <Compile Include="util\Math\Vectors.cs" />
+    <Compile Include="util\NET_20.cs" />
+    <Compile Include="util\SparseBitSet.cs" />
+    <Compile Include="util\Threading\IReaderWriterLock.cs" />
+    <Compile Include="util\Threading\AsyncWorker.cs" />
+    <Compile Include="util\Threading\Scheduler.cs" />
+    <Compile Include="util\Threading\ThreadSafeCache.cs" />
+    <Compile Include="util\Threading\VolatileArray.cs" />
+    <Compile Include="util\UIHelpers.cs" />
+    <Compile Include="util\Utils.cs" />
+    <Compile Include="sharkbite.thresher\Connection.cs" />
+    <Compile Include="sharkbite.thresher\Utils.cs" />
+    <Compile Include="util\ExtrasCollection.cs" />
+    <Compile Include="properties\AssemblyInfo.cs" />
+    <Compile Include="Database\PlayerDB.cs" />
+    <Compile Include="1.9.3.9\Scripting\MultiPageOutput.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Backends_Simple.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Plugin_Simple.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\SamplePlugin_Simple.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\ScriptingOperations_Simple.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting\CmdCompload.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting\CmdSimplePlugin.cs" />
+    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting_Simple.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\LICENSE.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\sqlite3_x32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\sqlite3_x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <TextStylePolicy inheritsSet="VisualStudio" inheritsScope="text/plain" scope="text/x-csharp" />
+          <CSharpFormattingPolicy IndentSwitchBody="True" AnonymousMethodBraceStyle="NextLine" PropertyBraceStyle="NextLine" PropertyGetBraceStyle="NextLine" PropertySetBraceStyle="NextLine" EventBraceStyle="NextLine" EventAddBraceStyle="NextLine" EventRemoveBraceStyle="NextLine" StatementBraceStyle="NextLine" ArrayInitializerBraceStyle="NextLine" BeforeMethodDeclarationParentheses="False" BeforeMethodCallParentheses="False" BeforeConstructorDeclarationParentheses="False" BeforeDelegateDeclarationParentheses="False" NewParentheses="False" inheritsSet="Mono" inheritsScope="text/x-csharp" scope="text/x-csharp" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+</Project>
