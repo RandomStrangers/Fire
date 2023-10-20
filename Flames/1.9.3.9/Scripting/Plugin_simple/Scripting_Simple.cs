@@ -31,6 +31,7 @@ namespace Flames.Scripting
     {
 
         /// <summary> Returns the default .dll path for the plugin with the given name </summary>
+
         public static string SimplePluginPath(string name) { return "" + name + ".dll"; }
 
         /// <summary> Constructs instances of all types which derive from T in the given assembly. </summary>
@@ -92,7 +93,10 @@ namespace Flames.Scripting
 
         public static void AutoloadSimplePlugins()
         {
-            string[] files = AtomicIO.TryGetFiles("", "*.dll");
+            string simplepluginpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+
+            string[] files = AtomicIO.TryGetFiles(simplepluginpath, "*.dll"); 
+            //TODO: Ignore system files
 
             if (files != null)
             {

@@ -33,12 +33,7 @@ namespace Flames
         public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
         public const string SQLiteURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/sqlite3.dll";
         public static string WikiURL = "https://github.com/UnknownShadow200/MCGalaxy";
-
-
-        const string CurrentVersionURL =
-        "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/current.txt";
-        const string OldVersionURL = 
-        "https://github.com/RandomStrangers/Fire/blob/Flame/Uploads/current_version.txt";
+        const string CurrentVersionURL = UpdatesURL + "current.txt";
         const string dllURL = UpdatesURL + "Flames_.dll";
         const string guiURL = UpdatesURL + "Flames.exe";
         const string cliURL = UpdatesURL + "FlamesCLI.exe";

@@ -144,7 +144,6 @@ namespace Flames
             LoadCorePlugin(new LSPlugin());
             LoadCorePlugin(new TWPlugin());
             LoadCorePlugin(new ZSPlugin());
-            
             IScripting.AutoloadPlugins();
         }
         

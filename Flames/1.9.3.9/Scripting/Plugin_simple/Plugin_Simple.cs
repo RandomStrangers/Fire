@@ -46,7 +46,7 @@ namespace Flames
         /// <summary> The creator/author of this plugin. (Your name) </summary>
         public virtual string Creator { get { return ""; } }
         /// <summary> Whether or not to auto load this plugin on server startup. </summary>
-        public virtual bool LoadAtStartup { get { return false; } }
+        public virtual bool LoadAtStartup { get { return true; } }
 
 
         public static List<Plugin_Simple> core = new List<Plugin_Simple>();
@@ -71,7 +71,7 @@ namespace Flames
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /pload", p.Name);
+                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /psload", p.Name);
                 }
 
                 return true;
