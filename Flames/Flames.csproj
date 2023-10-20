@@ -64,6 +64,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="1.9.3.9\MultiPageOutput.cs" />
     <Compile Include="Blocks\Behaviour\BlockBehaviour.cs" />
     <Compile Include="Blocks\Behaviour\DeleteBehaviour.cs" />
     <Compile Include="Blocks\Behaviour\PlaceBehaviour.cs" />
@@ -703,7 +704,6 @@
     <Compile Include="util\ExtrasCollection.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="Database\PlayerDB.cs" />
-    <Compile Include="1.9.3.9\Scripting\MultiPageOutput.cs" />
     <Compile Include="1.9.3.9\Scripting\Plugin_simple\Backends_Simple.cs" />
     <Compile Include="1.9.3.9\Scripting\Plugin_simple\Plugin_Simple.cs" />
     <Compile Include="1.9.3.9\Scripting\Plugin_simple\SamplePlugin_Simple.cs" />

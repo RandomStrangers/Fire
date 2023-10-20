@@ -35,8 +35,8 @@ namespace Flames
         public static string WikiURL = "https://github.com/UnknownShadow200/MCGalaxy";
 
 
-        const string CurrentVersionURL = 
-        "https://github.com/RandomStrangers/Fire/blob/Flame/Uploads/current.txt";
+        const string CurrentVersionURL =
+        "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/current.txt";
         const string OldVersionURL = 
         "https://github.com/RandomStrangers/Fire/blob/Flame/Uploads/current_version.txt";
         const string dllURL = UpdatesURL + "Flames_.dll";
