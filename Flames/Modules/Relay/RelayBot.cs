@@ -377,7 +377,9 @@ namespace Flames.Modules.Relay
             
             if (HandleListPlayers(user, channel, cmdName, false)) return;
             Command.Search(ref cmdName, ref cmdArgs);
-            
+            if (HandleLogo(user, channel, cmdName)) return;
+            Command.Search(ref cmdName, ref cmdArgs);
+
             string error;
             if (!CanUseCommand(user, cmdName, out error)) {
                 if (error != null) SendMessage(channel, error);
@@ -404,7 +406,9 @@ namespace Flames.Modules.Relay
             
             // Only reply to .who on channels configured to listen on
             if ((chat || opchat) && HandleListPlayers(user, channel, rawCmd, opchat)) return;
-            
+            if ((chat || opchat) && HandleLogo(user, channel, rawCmd)) return;
+
+
             if (rawCmd.CaselessEq(Server.Config.IRCCommandPrefix)) {
                 if (!HandleCommand(user, channel, message, parts)) return;
             }
@@ -438,13 +442,33 @@ namespace Flames.Modules.Relay
             else lastWho = DateTime.UtcNow;
             return true;
         }
-        
+        bool HandleLogo(RelayUser user, string channel, string cmd)
+        {
+            bool isLogo = cmd == ".harmony" || cmd == ".serverlogo" || cmd == ".logo";
+            if (!isLogo) return false;
+
+            try
+            {
+                RelayPlayer p = new RelayPlayer(channel, user, this);
+                p.group = Group.DefaultRank;
+                MessageLogo(p);
+            }
+            catch (Exception e)
+            {
+                Logger.LogError(e);
+            }
+            return true;
+        }
+
         /// <summary> Outputs the list of online players to the given user </summary>
         protected virtual void MessagePlayers(RelayPlayer p) {
             Command.Find("Players").Use(p, "", p.DefaultCmdData);
         }
-        
-                
+        protected virtual void MessageLogo(RelayPlayer p)
+        {
+            Command.Find("Harmony").Use(p, "", p.DefaultCmdData);
+        }
+
         bool HandleCommand(RelayUser user, string channel, string message, string[] parts) {
             string cmdName = parts.Length > 1 ? parts[1].ToLower() : "";
             string cmdArgs = parts.Length > 2 ? parts[2].Trim()    : "";
