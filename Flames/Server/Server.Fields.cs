@@ -42,7 +42,6 @@ namespace Flames
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = "9.0.2.3";
         public static string Version { get { return InternalVersion; } }
-        
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
         static string fullName;
         public static string SoftwareNameVersioned {

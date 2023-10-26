@@ -25,8 +25,10 @@ namespace Flames
 {
     public sealed class ServerConfig : EnvConfig 
     {
-        [ConfigString("server-name", "Server", "[Flames] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
-        public string Name = "[Flames] Default";
+        public const string Software = "&4F&cl&4a&cm&4e&cs";
+
+        [ConfigString("server-name", "Server", "[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
+        public string Name = "[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
         public string MOTD = "Welcome!";
         [ConfigInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
