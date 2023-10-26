@@ -100,6 +100,7 @@
     <Compile Include="Commands\Added\CmdCCBeat.cs" />
     <Compile Include="Commands\Added\CmdDisconnect.cs" />
     <Compile Include="Commands\Added\CmdDiscordSay.cs" />
+    <Compile Include="Commands\Added\CmdOldHarmony.cs" />
     <Compile Include="Commands\Added\CmdHarmony.cs" />
     <Compile Include="Commands\Added\CmdQuack.cs" />
     <Compile Include="Commands\Added\CmdShutdownTrue.cs" />

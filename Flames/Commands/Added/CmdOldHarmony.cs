@@ -1,4 +1,4 @@
-﻿using Flames.Modules.Relay.Discord;
+﻿/*using Flames.Modules.Relay.Discord;
 namespace Flames.Commands.Chatting
 {
     public sealed class CmdHarmony : Command2
@@ -12,12 +12,12 @@ namespace Flames.Commands.Chatting
         {
             //string imgorigin = "http://r.weavesilk.com/?v=4&id=bwf42w5obku";
             string img = "https://files.catbox.moe/6uiix1.png";
-            p.Message(img);
+            DiscordPlugin.Bot.SendPublicMessage(img);
         }
 
         public override void Help(Player p)
         {
-            p.Message("&T/Harmony &H- Displays the server logo.");
+            p.Message("&T/Harmony &H- Sends the server logo to the Discord server");
         }
     }
-}
+}*/

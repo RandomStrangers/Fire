@@ -444,13 +444,15 @@ namespace Flames.Modules.Relay
         }
         bool HandleLogo(RelayUser user, string channel, string cmd)
         {
-            bool isLogo = cmd == ".harmony" || cmd == ".serverlogo" || cmd == ".logo";
+            bool isLogo = cmd == ".harmony" || cmd == ".serverlogo" || cmd == ".logo" 
+             || cmd == ".harmonyserverlogo" || cmd == ".harmonylogo";
             if (!isLogo) return false;
-
             try
             {
-                RelayPlayer p = new RelayPlayer(channel, user, this);
-                p.group = Group.DefaultRank;
+                RelayPlayer p = new RelayPlayer(channel, user, this)
+                {
+                    group = Group.DefaultRank
+                };
                 MessageLogo(p);
             }
             catch (Exception e)
