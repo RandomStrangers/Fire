@@ -40,11 +40,26 @@ namespace Flames
         }
 
         /// <summary> Name of the plugin. </summary>
-        public abstract string Name { get; }
+        public virtual string name { get { return ""; } }
+        public virtual string Name { get { return ""; } }
+
         /// <summary> Oldest version of Flames this plugin is compatible with. </summary>
-        public abstract string Flames_Version { get; }
+        public virtual string Flames_Version { get { return null; } }
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string SuperNova_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string DeadNova_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string GoldenSparks_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string RandomStrangers_Version { get { return null; } }
+#endif
+
         /// <summary> The creator/author of this plugin. (Your name) </summary>
         public virtual string Creator { get { return ""; } }
+        public virtual string creator { get { return ""; } }
+
         /// <summary> Whether or not to auto load this plugin on server startup. </summary>
         public virtual bool LoadAtStartup { get { return true; } }
 
@@ -56,29 +71,22 @@ namespace Flames
         {
             try
             {
-                string ver = p.Flames_Version;
-                if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(Server.Version))
-                {
-                    Logger.Log(LogType.Warning, "Simple plugin ({0}) requires a more recent version of {1}!", p.Name, Server.SoftwareName);
-                    return false;
-                }
                 all.Add(p);
 
                 if (p.LoadAtStartup || !auto)
                 {
                     p.Load(auto);
-                    //Logger.Log(LogType.SystemActivity, "Simple plugin {0} loaded...build: 1", p.name);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /psload", p.Name);
+                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /psload", p.name);
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error loading simple plugin " + p.Name, ex);
+                Logger.LogError("Error loading simple plugin " + p.name, ex);
                 if (!string.IsNullOrEmpty(p.Creator)) Logger.Log(LogType.Warning, "You can go bug {0} about it.", p.Creator);
                 return false;
             }
@@ -90,11 +98,11 @@ namespace Flames
             try
             {
                 p.Unload(auto);
-                Logger.Log(LogType.SystemActivity, "Simple plugin {0} was unloaded.", p.Name);
+                Logger.Log(LogType.SystemActivity, "Simple plugin {0} was unloaded.", p.name);
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading simple plugin " + p.Name, ex);
+                Logger.LogError("Error unloading simple plugin " + p.name, ex);
                 success = false;
             }
 
@@ -111,7 +119,6 @@ namespace Flames
         }
         public static void LoadAll()
         {
-           // LoadCorePlugin(new CorePlugin());
             IScripting_Simple.AutoloadSimplePlugins();
         }
     }

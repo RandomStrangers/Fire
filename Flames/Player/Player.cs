@@ -50,7 +50,16 @@ namespace Flames {
 
         static int sessionCounter;
         public static Player Flame = new FlamePlayer();
-
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public static Player Sparks = new FlamePlayer();
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public static Player Random = new FlamePlayer();
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public static Player Nova = new FlamePlayer();
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public static Player Console = new FlamePlayer();
+#endif
         //This is so that plugin devs can declare a player without needing a socket..
         //They would still have to do p.Dispose()..
         public Player(string playername) { 

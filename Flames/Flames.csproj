@@ -25,7 +25,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>False</Optimize>
     <OutputPath>..\bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;TEN_BIT_BLOCKS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEN_BIT_BLOCKS,</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <BaseAddress>4194304</BaseAddress>
@@ -362,7 +362,7 @@
     <Compile Include="CorePlugin\EcoHandlers.cs" />
     <Compile Include="CorePlugin\MiscHandlers.cs" />
     <Compile Include="CorePlugin\ModActionHandler.cs" />
-    <Compile Include="CorePlugin\SimplePluginLoader.cs" />
+    <Compile Include="CorePlugin\ServerURLSender.cs" />
     <Compile Include="Database\Backends\Interfaces.cs" />
     <Compile Include="Database\Backends\SQLite.cs" />
     <Compile Include="Database\Backends\SQLiteBackend.cs" />

@@ -52,6 +52,16 @@ namespace Flames
         public abstract string name { get; }
         /// <summary> The oldest version of Flames this plugin is compatible with. </summary>
         public virtual string Flames_Version { get { return null; } }
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string SuperNova_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string DeadNova_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string GoldenSparks_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string RandomStrangers_Version { get { return null; } }
+#endif
         /// <summary> Version of this plugin. </summary>
         public virtual int build { get { return 0; } }
         /// <summary> Message to display once this plugin is loaded. </summary>
@@ -138,7 +148,7 @@ namespace Flames
             LoadCorePlugin(new DiscordPlugin());
             LoadCorePlugin(new IRCPlugin());
             LoadCorePlugin(new IPThrottler());
-            
+            LoadCorePlugin(new ServerURLSender());
             LoadCorePlugin(new CountdownPlugin());
             LoadCorePlugin(new CTFPlugin());
             LoadCorePlugin(new LSPlugin());

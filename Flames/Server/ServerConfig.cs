@@ -20,13 +20,12 @@ using System.Collections.Generic;
 using Flames.Config;
 using Flames.Generator;
 using Flames.Modules.Relay.IRC;
-
 namespace Flames 
 {
+
     public sealed class ServerConfig : EnvConfig 
     {
         public const string Software = "&4F&cl&4a&cm&4e&cs";
-
         [ConfigString("server-name", "Server", "[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
         public string Name = "[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
@@ -233,7 +232,8 @@ namespace Flames
         public string ProfanityReplacement = "*";
         [ConfigString("flame-state", "Chat", "Burning")]
         public string FlameState = "Burning";
-        
+
+
         [ConfigColor("defaultColor", "Colors", "&e")]
         public string DefaultColor = "&e";
         [ConfigColor("irc-color", "Colors", "&5")]
@@ -280,7 +280,8 @@ namespace Flames
         public bool[] FileLogging = defLogLevels;
         [ConfigBoolArray("flame-logging", "Logging", true, 17)]
         public bool[] FlameLogging = defLogLevels;
-        
+
+
         [ConfigBool("mute-on-spam", "Spam control", false)]
         public bool ChatSpamCheck = false;
         [ConfigInt("spam-messages", "Spam control", 8, 0, 10000)]
@@ -314,5 +315,14 @@ namespace Flames
         public TimeSpan IPSpamBlockTime = TimeSpan.FromSeconds(180);
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
+#if CORE
+        [ConfigString("Core-State", "Chat", "Burning")]
+        public string CoreState = "Burning";
+        [ConfigString("host-state", "Chat", "Burning")]
+        public string ConsoleName = "Burning";
+        public bool[] GoldenSparksLogging = defLogLevels;
+        public bool[] RandomLogging = defLogLevels;
+        public bool[] ConsoleLogging = defLogLevels;
+#endif
     }
 }

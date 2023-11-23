@@ -50,9 +50,8 @@ namespace Flames
 {{
 \tpublic class {0} : Plugin_Simple
 \t{{
-\t\tpublic override string Name {{ get {{ return ""{0}""; }} }}
-\t\tpublic override string Flames_Version {{ get {{ return ""{2}""; }} }}
-\t\tpublic override string Creator {{ get {{ return ""{1}""; }} }}
+\t\tpublic override string name {{ get {{ return ""{0}""; }} }}
+\t\tpublic override string creator {{ get {{ return ""{1}""; }} }}
 
 \t\tpublic override void Load(bool startup)
 \t\t{{
@@ -102,17 +101,12 @@ Namespace Flames
 \tPublic Class {0}
 \t\tInherits Plugin_Simple
 
-\t\tPublic Overrides ReadOnly Property Name() As String
+\t\tPublic Overrides ReadOnly Property name() As String
 \t\t\tGet
 \t\t\t\tReturn ""{0}""
 \t\t\tEnd Get
 \t\t End Property
-\t\tPublic Overrides ReadOnly Property Flames_Version() As String
-\t\t\tGet
-\t\t\t\tReturn ""{2}""
-\t\t\tEnd Get
-\t\t End Property
-\t\tPublic Overrides ReadOnly Property Creator() As String
+\t\tPublic Overrides ReadOnly Property creator() As String
 \t\t\tGet
 \t\t\t\tReturn ""{1}""
 \t\t\tEnd Get
