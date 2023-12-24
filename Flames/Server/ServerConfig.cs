@@ -316,13 +316,20 @@ namespace Flames
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
 #if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
         [ConfigString("Core-State", "Chat", "Burning")]
         public string CoreState = "Burning";
+        /// <summary> Work on backwards compatibility with other cores </summary>
         [ConfigString("host-state", "Chat", "Burning")]
         public string ConsoleName = "Burning";
+        /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] GoldenSparksLogging = defLogLevels;
+        /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] RandomLogging = defLogLevels;
+        /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] ConsoleLogging = defLogLevels;
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public bool[] NovaLogging = defLogLevels;
 #endif
     }
 }

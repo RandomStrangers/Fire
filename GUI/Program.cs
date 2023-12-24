@@ -33,7 +33,7 @@ namespace Flames.Gui
             try {
                 StartGUI();
             } catch (FileNotFoundException) {
-                // If MCGalaxy_.dll is missing, a FileNotFoundException will get thrown for Flames dll
+                // If Flames_.dll is missing, a FileNotFoundException will get thrown for Flames dll
                 Popup.Error("Cannot start server as Flames_.dll is missing from " + Environment.CurrentDirectory
                             + "\n\nDownload it from " + Updater.UploadsURL);
                 return;

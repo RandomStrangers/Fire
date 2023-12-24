@@ -31,34 +31,96 @@ using BlockID = System.UInt16;
 
 namespace Flames {
     sealed class FlamePlayer : Player {
-        public FlamePlayer() : base("(&4F&cl&4a&cm&4e)") {
+        public FlamePlayer() : base("&S(&4F&cl&4a&cm&4e&S)") {
             group = Group.FireRank;
             color = "&S";
-            SuperName = "&4F&cl&4a&cm&4e";
+            SuperName = "&S&4F&cl&4a&cm&4e&S";
         }
         
         public override string FullName {
-            get { return "&4F&cl&4a&cm&4e [&a" + Server.Config.FlameState + "&S]"; }
+            get { return "&S&4F&cl&4a&cm&4e&S [&a" + Server.Config.FlameState + "&S]"; }
         }
         
         public override void Message(string message) {
             Logger.Log(LogType.FlameMessage, message);
         }
     }
-    
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+    sealed class GoldenPlayer : Player {
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public GoldenPlayer() : base("&e(&6S&ep&6a&er&6k&ei&6e&e)") {
+            group = Group.GoldenRank;
+            color = "&S";
+            SuperName = "&6S&ep&6a&er&6k&ei&6e";
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override string FullName
+        {
+            get { return "&6S&ep&6a&er&6k&ei&6e [&6" + Server.Config.CoreState + "&S]"; }
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override void Message(string message) {
+            Logger.Log(LogType.GoldenSparksMessage, message);
+        }
+    }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        sealed class NovaPlayer : Player {
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public NovaPlayer() : base("&7(&5N&do&5v&da&7)")
+        {
+            group = Group.NovaRank;
+            color = "&S";
+            SuperName = "&7&5N&do&5v&da&7";
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override string FullName
+        {
+            get { return "Nova [&a" + Server.Config.CoreState + "&S]"; }
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override void Message(string message)
+        {
+            Logger.Log(LogType.NovaMessage, message);
+        }
+    }
+    /// <summary> Work on backwards compatibility with other cores </summary>
+    sealed class RandomPlayer : Player
+    {
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public RandomPlayer() : base("&7(&4Ran&5dom &6Str&0ang&8ers&7)")
+        {
+            group = Group.RandomRank;
+            color = "&S";
+            SuperName = "&7&4Ran&5dom &6Str&0ang&8ers&7";
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override string FullName
+        {
+            get { return "&4Ran&5dom &6Str&0ang&8ers [&a" + Server.Config.CoreState + "&S]"; }
+        }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public override void Message(string message)
+        {
+            Logger.Log(LogType.RandomMessage, message);
+        }
+    }
+#endif
     public partial class Player : Entity, IDisposable {
 
         static int sessionCounter;
         public static Player Flame = new FlamePlayer();
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        public static Player Console = new FlamePlayer();
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public static Player Sparks = new FlamePlayer();
+        public static Player Sparks = new GoldenPlayer();
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public static Player Random = new FlamePlayer();
+        public static Player Sparkie = new GoldenPlayer();
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public static Player Nova = new FlamePlayer();
+        public static Player Random = new RandomPlayer();
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public static Player Console = new FlamePlayer();
+        public static Player Nova = new NovaPlayer();
 #endif
         //This is so that plugin devs can declare a player without needing a socket..
         //They would still have to do p.Dispose()..

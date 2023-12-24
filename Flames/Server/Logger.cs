@@ -77,6 +77,14 @@ namespace Flames
         
         /// <summary> Message shown to the Flames. </summary>
         FlameMessage,
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        RandomMessage,
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        NovaMessage,
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        GoldenSparksMessage,
+#endif
     }
     
     public delegate void LogHandler(LogType type, string message);

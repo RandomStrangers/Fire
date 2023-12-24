@@ -87,7 +87,17 @@ namespace Flames {
         public bool IsSuper;
         /// <summary> Whether this player is the console player instance. </summary>
         public bool IsFire { get { return this == Player.Flame; } }
-        
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        public bool IsConsole { get { return this == Player.Console; } }
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public bool IsSparkie { get { return this == Player.Sparks; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public bool IsNova { get { return this == Player.Nova; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public bool IsRandom { get { return this == Player.Random; } }
+#endif
+
         public virtual string FullName { get { return color + prefix + DisplayName; } }  
         public string ColoredName { get { return color + DisplayName; } }
         public string GroupPrefix { get { return group.Prefix.Length == 0 ? "" : "&f" + group.Prefix; } }

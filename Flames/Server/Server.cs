@@ -198,7 +198,7 @@ namespace Flames
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
-            Command.Find("say").Use(Player.Flame, SoftwareNameVersioned + " &Sshutting down!");
+            Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
             Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
             lock (stopLock) {

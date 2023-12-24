@@ -37,9 +37,13 @@ namespace Flames
         Operator = 80, Admin = 100, Owner  = 120, Flames    = 127,
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        Nova = 150, Console = 150, Random = 150, Sparkie = 150,
+        Nova = 127,
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        Random = 127,
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        Sparkie = 127,
 #endif
-        Null = 150, Nobody = 120 // backwards compatibility
+        Null = 150, Nobody = 120, Console = 127// backwards compatibility
     }
     
     public enum BuildType { Normal, ModifyOnly, NoModify };
