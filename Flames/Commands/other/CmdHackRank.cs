@@ -4,7 +4,7 @@
     Made originally by 501st_commander, in something called SharpDevelop.
     Made into a safe and reasonabal command by EricKilla, in Visual Studio 2010.
     
-    Dual-licensed under the    Educational Community License, Version 2.0 and
+    Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
     not use this file except in compliance with the Licenses. You may
     obtain a copy of the Licenses at

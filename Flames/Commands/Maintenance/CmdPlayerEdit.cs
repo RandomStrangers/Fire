@@ -63,9 +63,9 @@ namespace Flames.Commands.Maintenance {
                            v => who.money = v, type_norm);
             } else if (opt == "title") {
                 if (args.Length < 3) {
-                    p.Message("Title can be up to 20 characters. Use \"null\" to remove the title"); return;
+                    p.Message("Title can be up to 64 characters. Use \"null\" to remove the title"); return;
                 }
-                if (args[2].Length >= 20) { p.Message("Title must be under 20 characters"); return; }
+                if (args[2].Length >= 64) { p.Message("Title must be under 64 characters"); return; }
                 if (args[2] == "null") args[2] = "";
                 
                 if (who != null) {

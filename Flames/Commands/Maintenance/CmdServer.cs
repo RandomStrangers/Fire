@@ -1,7 +1,7 @@
 /*
     Copyright 2011 MCForge
         
-    Dual-licensed under the    Educational Community License, Version 2.0 and
+    Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
     not use this file except in compliance with the Licenses. You may
     obtain a copy of the Licenses at
@@ -35,7 +35,7 @@ namespace Flames.Commands.Maintenance {
                     case "backup": DoBackup(p, args); break;
                     case "restore": DoRestore(p); break;
                     case "import": DoImport(p, args); break;
-                    case "update" : p.Message("Use &T/Update &Sto update the server"); break;
+                    case "update" : Find("Updater").Use(p, message); break;
                     case "upgradeblockdb": DoBlockDBUpgrade(p, args); break;
                     default: Help(p); break;
             }

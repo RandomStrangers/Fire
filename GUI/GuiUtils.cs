@@ -104,4 +104,3 @@ namespace Flames.Gui
         }
     }
 }
-

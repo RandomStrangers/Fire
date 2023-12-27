@@ -28,7 +28,7 @@ namespace Flames.Modules.Games.LS
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdLS);
             
-            LSGame.Instance.Config.Path = "properties/lavasurvival.properties";
+            LSGame.Instance.Config.Path = "properties/games/lavasurvival.properties";
             OnConfigUpdated();
             LSGame.Instance.AutoStart();
         }

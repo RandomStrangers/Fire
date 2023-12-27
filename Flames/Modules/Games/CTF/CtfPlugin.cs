@@ -28,7 +28,7 @@ namespace Flames.Modules.Games.CTF
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdCTF);
             
-            CTFGame.Instance.Config.Path = "properties/ctf.properties";
+            CTFGame.Instance.Config.Path = "properties/games/ctf.properties";
             OnConfigUpdated();
             CTFGame.Instance.AutoStart();
         }

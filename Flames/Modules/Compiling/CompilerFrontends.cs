@@ -51,7 +51,7 @@ namespace Flames.Modules.Compiling
                 return @"//\tAuto-generated command skeleton class
 //\tUse this as a basis for custom Flames commands
 //\tNaming should be kept consistent (e.g. /update command should have a class name of 'CmdUpdate' and a filename of 'CmdUpdate.cs')
-// As a note, Flames is designed for .NET 4.0
+// As a note, Flames is designed for .NET 4.8
 
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
 //   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""

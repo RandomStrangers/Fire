@@ -1,5 +1,4 @@
-﻿using Flames.Modules.Relay.Discord;
-namespace Flames.Commands.Chatting
+﻿namespace Flames.Commands.Chatting
 {
     public sealed class CmdHarmony : Command2
     {

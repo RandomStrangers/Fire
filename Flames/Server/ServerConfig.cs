@@ -1,7 +1,7 @@
 ﻿/*
     Copyright 2010 MCSharp team (Modified for use with MCZall/MCLawl/MCForge)
     
-    Dual-licensed under the    Educational Community License, Version 2.0 and
+    Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
     not use this file except in compliance with the Licenses. You may
     obtain a copy of the Licenses at
@@ -25,7 +25,11 @@ namespace Flames
 
     public sealed class ServerConfig : EnvConfig 
     {
+#if CORE
+        public const string Software = "&dH&1a&er&cm&6o&6n&0y";
+#else
         public const string Software = "&4F&cl&4a&cm&4e&cs";
+#endif
         [ConfigString("server-name", "Server", "[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
         public string Name = "[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]

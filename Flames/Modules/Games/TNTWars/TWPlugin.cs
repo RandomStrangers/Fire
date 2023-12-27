@@ -28,7 +28,7 @@ namespace Flames.Modules.Games.TW
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdTW);
             
-            TWGame.Instance.Config.Path = "properties/tntwars.properties";
+            TWGame.Instance.Config.Path = "properties/games/tntwars.properties";
             OnConfigUpdated();
             TWGame.Instance.AutoStart();
         }

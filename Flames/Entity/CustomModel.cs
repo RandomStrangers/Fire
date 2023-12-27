@@ -1,4 +1,3 @@
-using System;
 using Flames.Maths;
 
 namespace Flames {

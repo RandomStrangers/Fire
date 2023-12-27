@@ -107,7 +107,7 @@ namespace Flames.Core
 
                 if (used < 2)
                 {
-                    p.Message("Seth's bot army just simultaneously facepalm'd at your use of this command.");
+                    p.Message("Random Strangers' bot army just simultaneously facepalm'd at your use of this command.");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 }
                 else

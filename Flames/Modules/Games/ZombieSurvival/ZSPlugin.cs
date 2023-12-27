@@ -28,7 +28,7 @@ namespace Flames.Modules.Games.ZS
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdZS);
             
-            ZSGame.Instance.Config.Path = "properties/zombiesurvival.properties";
+            ZSGame.Instance.Config.Path = "properties/games/zombiesurvival.properties";
             OnConfigUpdated();
             ZSGame.Instance.AutoStart();
         }

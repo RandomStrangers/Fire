@@ -105,7 +105,7 @@ namespace Flames.Commands.Moderation {
         public override void Help(Player p) {
             p.Message("&T/Pass reset [player] &H- Resets the password for that player");
             p.Message("&T/Pass set [password] &H- Sets your password to [password]");
-            p.Message("&H Note: &WDo NOT set this as your Minecraft password!");
+            p.Message("&H Note: &WDo NOT set this as your account password!");
             p.Message("&T/Pass [password]");
             p.Message("&HIf you are an admin, use this command to verify your login.");
             p.Message("&H You must be verified to use commands, modify blocks, and chat");

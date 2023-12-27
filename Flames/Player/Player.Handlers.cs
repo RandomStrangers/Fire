@@ -647,7 +647,7 @@ namespace Flames
             }
             if (command.LogUsage) Logger.Log(LogType.CommandUsage, "{0} used /{1} {2}", name, cmd, args);
             
-            try { //opstats patch (since 5.5.11)
+            try { //opstats patch (since MCForge 5.5.11)
                 if (Server.Opstats.CaselessContains(cmd) || (cmd.CaselessEq("review") && args.CaselessEq("next") && Server.reviewlist.Count > 0)) {
                     Database.AddRow("Opstats", "Time, Name, Cmd, Cmdmsg",
                                     DateTime.Now.ToString(Database.DateFormat), name, cmd, args);

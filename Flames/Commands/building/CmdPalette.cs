@@ -163,4 +163,3 @@ namespace Flames.Commands.Building {
         }
     }
 }
-

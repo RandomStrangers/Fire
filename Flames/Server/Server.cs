@@ -1,7 +1,7 @@
 /*
     Copyright 2010 MCSharp team (Modified for use with MCZall/MCLawl/MCForge)
     
-    Dual-licensed under the    Educational Community License, Version 2.0 and
+    Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
     not use this file except in compliance with the Licenses. You may
     obtain a copy of the Licenses at
@@ -137,6 +137,7 @@ namespace Flames
         }
         static void EnsureFilesExist() {
             EnsureDirectoryExists("properties");
+            EnsureDirectoryExists("properties/games");
             EnsureDirectoryExists("levels");
             EnsureDirectoryExists("bots");
             EnsureDirectoryExists("text");

@@ -40,7 +40,7 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.0.1";
+        public const string InternalVersion = "1.0.0.2";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
         static string fullName;
@@ -51,7 +51,7 @@ namespace Flames
         }
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.0.2.5";
+        public const string InternalVersion = "9.0.2.6";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
         static string fullName;
@@ -72,10 +72,11 @@ namespace Flames
         public static PlayerExtList models, skins, reach, rotations, modelScales;
         public static PlayerExtList bannedIP, frozen, muted, tempBans, tempRanks;
         
-        public static readonly List<string> Devs = new List<string>() { "DarkBurningFlame",
-            "BurningFlame", "SuperNova", "DeadNova", "HyperNova",
-            "RandomStranger05", "GoldenSparks", "AurumStellae", "sethbatman05",
-            "sethbatman2005", "jackstage1", "Pattykaki45", "jaketheidiot"};
+        public static readonly List<string> Devs = new List<string>() { 
+            "DarkBurningFlame", "BurningFlame", "SuperNova", "DeadNova", 
+            "HyperNova", "RandomStranger05", "GoldenSparks", "AurumStellae", 
+            "sethbatman05", "sethbatman2005", "jackstage1", "Pattykaki45", 
+            "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae"};
         public static readonly List<string> Opstats = new List<string>() { "ban", "tempban", "xban", "banip", "kick", "warn", "mute", "freeze", "setrank" };
 
         public static Level mainLevel;
