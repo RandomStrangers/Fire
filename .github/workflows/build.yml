@@ -62,41 +62,37 @@ jobs:
       - uses: ./.github/actions/notify_failure
         if: ${{ always() && steps.compile_net.outcome == 'failure' }}
         with:
-          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet build'
+          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet build! <@999409543001931788>'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
-      - uses: ./.github/actions/upload_build
+      - uses: ./.github/actions/notify_success
         if: ${{ always() && steps.compile_net.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0'
           DEST_NAME: 'Flames-dotnet6.0'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
       # publish standalone windows binaries
       - name: Publish-win64
         run: dotnet publish CLI/FlamesCLI_dotnet.csproj -r win-x64 --self-contained
           
-      - uses: ./.github/actions/upload_build
+      - uses: ./.github/actions/notify_success
         if: ${{ always() && steps.compile_net.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0/win-x64/publish'
           DEST_NAME: 'Flames-win64-standalone'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
       # publish standalone linux binaries
       - name: Publish-linux64
         run: dotnet publish CLI/FlamesCLI_dotnet.csproj -r linux-x64 --self-contained
           
-      - uses: ./.github/actions/upload_build
+      - uses: ./.github/actions/notify_success
         if: ${{ always() && steps.compile_net.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0/linux-x64/publish'
           DEST_NAME: 'Flames-linux64-standalone'
-          
-      # publish standalone macOS binaries
-      - name: Publish-mac64
-        run: dotnet publish CLI/FlamesCLI_dotnet.csproj -r osx-x64 --self-contained
-          
-      - uses: ./.github/actions/upload_build
-        if: ${{ always() && steps.compile_net.outcome == 'success' }}
-        with:
-          SOURCE_FILE: 'CLI/bin/Debug/net6.0/osx-x64/publish'
-          DEST_NAME: 'Flames-mac64-standalone'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames Linux standalone build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
