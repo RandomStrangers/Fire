@@ -18,7 +18,7 @@ jobs:
           msbuild Flames.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_normal
           rm bin/Release/Flames_.dll bin/Release/Flames_.pdb
-          msbuild Flames/Flames_.csproj /p:Configuration=Release /t:Rebuild /p:DefineConstants="CORE"
+          msbuild Flames/Flames.csproj /p:Configuration=Release /t:Rebuild /p:DefineConstants="CORE"
 
       - uses: ./.github/actions/notify_failure
         if: ${{ always() && steps.compile.outcome == 'failure' }}
