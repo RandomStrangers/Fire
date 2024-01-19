@@ -40,7 +40,7 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.0.3";
+        public const string InternalVersion = "1.0.0.4";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
         static string fullName;
@@ -51,7 +51,7 @@ namespace Flames
         }
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.0.2.7";
+        public const string InternalVersion = "9.0.2.8";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
         static string fullName;
@@ -90,7 +90,7 @@ namespace Flames
         
         public static int YesVotes, NoVotes;
         public static bool voting;
-        public const int MAX_PLAYERS = int.MaxValue;
+        public const uint MAX_PLAYERS = uint.MaxValue;
         
         public static Scheduler MainScheduler = new Scheduler("F_MainScheduler");
         public static Scheduler Background = new Scheduler("F_BackgroundScheduler");

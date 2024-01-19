@@ -59,7 +59,50 @@ namespace Flames.Config
             return ParseInteger(value, defValue, minValue, maxValue);
         }
     }
-    
+    public abstract class ConfigUnsignedIntegerAttribute : ConfigAttribute
+    {
+        public ConfigUnsignedIntegerAttribute(string name, string section)
+            : base(name, section) { }
+
+        // separate function to avoid boxing in derived classes
+        protected uint ParseUnsignedInteger(string raw, uint def, uint min, uint max)
+        {
+            uint value;
+            if (!uint.TryParse(raw, out value))
+            {
+                Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid unsigned integer '{2}', using default of {1}", Name, def, raw);
+                value = def;
+            }
+
+            if (value < min)
+            {
+                Logger.Log(LogType.Warning, "Config key \"{0}\" is too small an unsigned integer, using {1}", Name, min);
+                value = min;
+            }
+            if (value > max)
+            {
+                Logger.Log(LogType.Warning, "Config key \"{0}\" is too big an unsigned integer, using {1}", Name, max);
+                value = max;
+            }
+            return value;
+        }
+    }
+
+    public sealed class ConfigUIntAttribute : ConfigUnsignedIntegerAttribute
+    {
+        uint defValue, minValue, maxValue;
+
+        public ConfigUIntAttribute()
+            : this(null, null, 0, uint.MinValue, uint.MaxValue) { }
+        public ConfigUIntAttribute(string name, string section, uint def,
+                                  uint min = uint.MinValue, uint max = uint.MaxValue)
+            : base(name, section) { defValue = def; minValue = min; maxValue = max; }
+
+        public override object Parse(string value)
+        {
+            return ParseUnsignedInteger(value, defValue, minValue, maxValue);
+        }
+    }
     public sealed class ConfigBlockAttribute : ConfigIntegerAttribute 
     {
         BlockID defBlock;

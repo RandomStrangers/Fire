@@ -34,10 +34,10 @@ namespace Flames
         public string Name = "[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
         public string MOTD = "Welcome!";
-        [ConfigInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
-        public int MaxPlayers = 16;
-        [ConfigInt("max-guests", "Server", 14, 1, Server.MAX_PLAYERS)]
-        public int MaxGuests = 14;
+        [ConfigUInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
+        public uint MaxPlayers = 16;
+        [ConfigUInt("max-guests", "Server", 14, 1, Server.MAX_PLAYERS)]
+        public uint MaxGuests = 14;
         [ConfigInt("port", "Server", 25565, 0, 65535)]
         public int Port = 25565;
         [ConfigBool("public", "Server", false)]

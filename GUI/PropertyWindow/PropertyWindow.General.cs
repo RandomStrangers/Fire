@@ -53,8 +53,8 @@ namespace Flames.Gui {
             Server.Config.OwnerName = srv_txtOwner.Text;
             Server.Config.Public = srv_chkPublic.Checked;
             
-            Server.Config.MaxPlayers = (int)srv_numPlayers.Value;
-            Server.Config.MaxGuests = (int)srv_numGuests.Value;
+            Server.Config.MaxPlayers = (uint)srv_numPlayers.Value;
+            Server.Config.MaxGuests = (uint)srv_numGuests.Value;
             Server.Config.AgreeToRulesOnEntry = srv_cbMustAgree.Checked;  
             
             Server.Config.MainLevel = lvl_txtMain.Text;
