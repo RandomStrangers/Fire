@@ -1,0 +1,41 @@
+name: Notify success Harmony
+description: Uploads a compiled binary
+inputs:
+  BOT_USERNAME:
+    description: 'Username to use for the discord bot message'
+    default: 'Harmony BuildBot'
+    required: false
+    type: string
+  BOT_AVATAR:
+    description: 'URL to use for the avatar of the discord bot message'
+    default: 'https://files.catbox.moe/6uiix1.png'
+    required: false
+    type: string
+  NOTIFY_MESSAGE:
+    description: 'Notification message to send'
+    required: true
+    type: string
+  WEBHOOK_URL:
+    description: 'Discord webhook URL'
+    required: true
+    type: string
+  SOURCE_FILE:
+    description: 'Path to file to upload'
+    required: true
+    type: string
+  DEST_NAME:
+    description: 'Name to use for the uploaded artifact'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ${{ inputs.DEST_NAME }}
+        path: ${{ inputs.SOURCE_FILE }}
+    - name: Notify Success
+      shell: sh
+      run: |
+        curl ${{ inputs.WEBHOOK_URL }} -H "Accept: application/json" -H "Content-Type:application/json" -X POST --data "{\"username\": \"${{ inputs.BOT_USERNAME }}\", \"avatar_url\": \"${{ inputs.BOT_AVATAR }}\", \"content\": \"${{ inputs.NOTIFY_MESSAGE }}\" }"

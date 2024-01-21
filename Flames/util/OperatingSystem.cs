@@ -203,7 +203,7 @@ namespace Flames.Platform
 
         public override void Init() {
             base.Init();
-#if MCG_STANDALONE
+#if F_STANDALONE
             if (!Directory.Exists("certs")) return;
 
             // by default mono looks in these directories for SSL/TLS certificates:

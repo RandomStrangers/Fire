@@ -78,7 +78,6 @@ namespace Flames {
             new ChatToken("$loaded", "Number of loaded levels", TokenLoaded),
             new ChatToken("$worlds", "Number of worlds", TokenWorlds),
             new ChatToken("$online", "Number of players online", TokenOnline),
-            
             new ChatToken("$name", "Nickname of the player", TokenName),
             new ChatToken("$truename", "Account name of the player", TokenTrueName),
             new ChatToken("$color", "Color code of the player's nick", TokenColor),
@@ -98,10 +97,20 @@ namespace Flames {
             new ChatToken("$level", "Name of level/map player is on", TokenLevel),
             new ChatToken("$currency", "Name of server currency", TokenCurrency),
             new ChatToken("$client", "Client of the player", TokenClient),
-            new ChatToken("$status", "Status of the Flame", TokenHost),
-            new ChatToken("$host", "Status of the Flame", TokenHost),
+            new ChatToken("$status", "Status of the Flames", TokenHost),
+            new ChatToken("$host", "Status of the Flames", TokenHost),
+            new ChatToken("$software", "Software name", TokenSoftware),
+            new ChatToken("$softwarename", "Software name", TokenSoftware),
+            new ChatToken("$version", "Software version", TokenVersion),
+            new ChatToken("$softwareversion", "Software version", TokenVersion),
+            new ChatToken("$softwarenameversioned", "Software name and its version", TokenSoftwareNameVersioned),
+            new ChatToken("$softwarenameversion", "Software name and its version", TokenSoftwareNameVersioned),
         };
         static string TokenHost(Player p) { return Server.Config.FlameState; }
+        static string TokenSoftware (Player p) { return Server.Config.SoftwareName; }
+        static string TokenVersion(Player p) { return Server.Config.Version; }
+        static string TokenSoftwareNameVersioned(Player p) { return Server.Config.SoftwareName +
+                " " + Server.Config.Version; }
         static string TokenClient(Player p) { return p.Session.ClientName(); }
         static string TokenDate(Player p) { return DateTime.Now.ToString("yyyy-MM-dd"); }
         static string TokenTime(Player p) { return DateTime.Now.ToString("hh:mm tt"); }

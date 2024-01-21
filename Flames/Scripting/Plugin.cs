@@ -88,7 +88,7 @@ namespace Flames
         public static void Load(Plugin pl, bool auto) {
             string ver = pl.Flames_Version;
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(Server.Version)) {
-                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.Config.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             
@@ -102,9 +102,9 @@ namespace Flames
                     Logger.Log(LogType.SystemActivity, "Plugin {0} was not loaded, you can load it with /pload", pl.name);
                 }
                 
-                if (!String.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
+                if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
             } catch {           
-                if (!String.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
+                if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
                 throw;
             }
         }

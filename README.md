@@ -2,7 +2,7 @@ Flames is a fully featured and customizable **ClassiCube Server Software** based
 
 **Setup**
 -----------------
-Download the latest Flames release [from here](https://github.com/DarkBurningFlame/Fire/tree/Flame/Uploads)
+Download the latest Flames release [from here](https://github.com/RandomStrangers/Fire/tree/Flame/Uploads)
 * Windows: You will need to install Net Framework 4.8 (Most already have this built-in)
 * Linux/macOS: You need to install the [Mono framework](https://www.mono-project.com).
 

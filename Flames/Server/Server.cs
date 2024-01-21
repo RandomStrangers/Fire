@@ -46,7 +46,7 @@ namespace Flames
         public Server() { s = this; }
         
         //True = cancel event
-        //Fale = dont cacnel event
+        //Fale = don't cancel event
         public static bool Check(string cmd, string message) {
             if (FlameCommand != null) FlameCommand(cmd, message);
             return cancelcommand;
@@ -91,7 +91,7 @@ namespace Flames
             ForceEnableTLS();
 
             SQLiteBackend.Instance.LoadDependencies();
-#if !MCG_STANDALONE
+#if !F_STANDALONE
             MySQLBackend.Instance.LoadDependencies();
 #endif
 
@@ -123,7 +123,7 @@ namespace Flames
         
     static void SayHello(SchedulerTask task)
     {
-        Command.Find("say").Use(Player.Flame, SoftwareNameVersioned + " &Sonline!" );
+        Command.Find("say").Use(Player.Flame, ConfigSoftwareNameVersioned + " &Sonline!" );
         Logger.Log(LogType.SystemActivity, "Hello World!");
     }
     static void ForceEnableTLS() {
@@ -151,7 +151,7 @@ namespace Flames
             EnsureDirectoryExists("extra/bots");
             EnsureDirectoryExists(Paths.ImportsDir);
             EnsureDirectoryExists("blockdefs");
-#if !MCG_STANDALONE
+#if !F_STANDALONE
             EnsureDirectoryExists(Modules.Compiling.ICompiler.COMMANDS_SOURCE_DIR); // TODO move to compiling module
 #endif
             EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
@@ -199,7 +199,7 @@ namespace Flames
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
-            Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
+            Command.Find("say").Use(Player.Flame, Colors.Strip(ConfigSoftwareNameVersioned) + " &Sshutting down!");
             Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
             lock (stopLock) {

@@ -3045,16 +3045,13 @@ namespace Flames.Gui
             // 
             // srv_numPlayers
             // 
-            unchecked
-            {
                 this.srv_numPlayers.BackColor = System.Drawing.SystemColors.Window;
                 this.srv_numPlayers.Location = new System.Drawing.Point(83, 20);
                 this.srv_numPlayers.Maximum = new decimal(new int[] {
-                                    (int)Flames.Server.MAX_PLAYERS,
+                                    Flames.Server.MAX_PLAYERS,
                                     0,
                                     0,
                                     0});
-            }
             this.srv_numPlayers.Name = "srv_numPlayers";
             this.srv_numPlayers.Size = new System.Drawing.Size(60, 21);
             this.srv_numPlayers.TabIndex = 29;
@@ -3089,15 +3086,11 @@ namespace Flames.Gui
             // 
             this.srv_numGuests.BackColor = System.Drawing.SystemColors.Window;
             this.srv_numGuests.Location = new System.Drawing.Point(83, 47);
-
-            unchecked
-            {
                 this.srv_numGuests.Maximum = new decimal(new int[] {
-                                    (int)Flames.Server.MAX_PLAYERS,
+                                    Flames.Server.MAX_PLAYERS,
                                     0,
                                     0,
                                     0});
-            }
             this.srv_numGuests.Name = "srv_numGuests";
             this.srv_numGuests.Size = new System.Drawing.Size(60, 21);
             this.srv_numGuests.TabIndex = 28;

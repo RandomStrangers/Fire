@@ -34,65 +34,10 @@ jobs:
           NOTIFY_MESSAGE: 'Successfully compiled Flames .NET build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
-      - uses: ./.github/actions/notify_success
+      - uses: ./.github/actions/notify_success_harmony
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
           SOURCE_FILE: 'bin/Release'
           DEST_NAME: 'Harmony'
           NOTIFY_MESSAGE: 'Successfully compiled Flames .NET Dev build.'
-          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
-
-  build-dotnet:
-    if: github.ref_name == github.event.repository.default_branch
-    runs-on: ubuntu-latest
-    
-    steps:
-      - uses: actions/checkout@v3
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: 6.0.x
-      - name: Restore dependencies
-        run: dotnet restore CLI/FlamesCLI_dotnet.csproj
-      - name: Build
-        id: compile_net
-        run: |
-          dotnet build CLI/FlamesCLI_dotnet.csproj --no-restore
-        
-      - uses: ./.github/actions/notify_failure
-        if: ${{ always() && steps.compile_net.outcome == 'failure' }}
-        with:
-          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet build! <@999409543001931788>'
-          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
-          
-      - uses: ./.github/actions/notify_success
-        if: ${{ always() && steps.compile_net.outcome == 'success' }}
-        with:
-          SOURCE_FILE: 'CLI/bin/Debug/net6.0'
-          DEST_NAME: 'Flames-dotnet6.0'
-          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet build.'
-          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
-          
-      # publish standalone windows binaries
-      - name: Publish-win64
-        run: dotnet publish CLI/FlamesCLI_dotnet.csproj -r win-x64 --self-contained
-          
-      - uses: ./.github/actions/notify_success
-        if: ${{ always() && steps.compile_net.outcome == 'success' }}
-        with:
-          SOURCE_FILE: 'CLI/bin/Debug/net6.0/win-x64/publish'
-          DEST_NAME: 'Flames-win64-standalone'
-          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone build.'
-          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
-          
-      # publish standalone linux binaries
-      - name: Publish-linux64
-        run: dotnet publish CLI/FlamesCLI_dotnet.csproj -r linux-x64 --self-contained
-          
-      - uses: ./.github/actions/notify_success
-        if: ${{ always() && steps.compile_net.outcome == 'success' }}
-        with:
-          SOURCE_FILE: 'CLI/bin/Debug/net6.0/linux-x64/publish'
-          DEST_NAME: 'Flames-linux64-standalone'
-          NOTIFY_MESSAGE: 'Successfully compiled Flames Linux standalone build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'

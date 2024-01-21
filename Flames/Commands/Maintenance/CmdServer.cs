@@ -101,7 +101,7 @@ namespace Flames.Commands.Maintenance {
         
         static void DoRestore(Player p) {
             if (!CheckPerms(p)) {
-                p.Message("Only Flame or the Server Owner can restore the server."); return;
+                p.Message("Only the Flames or the Server Owner can restore the server."); return;
             }
             Backup.Extract(p);
         }

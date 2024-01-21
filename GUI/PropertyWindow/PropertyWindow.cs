@@ -126,7 +126,7 @@ namespace Flames.Gui
             
         public ConsoleHelpPlayer() : base("(Flames)") {
             group = Group.FireRank;
-            SuperName = "Flame";
+            SuperName = "&S&4F&cl&4a&cm&4e&cs&S";
         }
             
         public override void Message(string message) {

@@ -78,7 +78,7 @@ namespace Flames.Cli {
                 
                 EnableCLIMode();
                 Server.Start();
-                Console.Title = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
+                Console.Title = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.ConfigSoftwareNameVersioned);
                 Console.CancelKeyPress += OnCancelKeyPress;
 
                 CheckNameVerification();

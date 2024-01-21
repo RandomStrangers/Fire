@@ -28,7 +28,7 @@ namespace Flames.Gui.Popups
         public UpdateAvailable() {
             Active = true;
             InitializeComponent();
-            Text   = "Update " + Server.SoftwareName + "?";
+            Text   = "Update " + Colors.Strip(Server.SoftwareName) + "?";
         }
         
         protected override void OnPaint(PaintEventArgs e) {

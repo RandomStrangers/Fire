@@ -153,6 +153,7 @@ namespace Flames
             w.WriteLine("#   max-guests                    = The maximum number of guests allowed");
             w.WriteLine("#   verify-names                  = Verify the validity of names");
             w.WriteLine("#   server-owner                  = The username of the owner of the server");
+            w.WriteLine("#   send-url                      = Send the server URL to chat");
             w.WriteLine("# Explanation of Level settings:");
             w.WriteLine("#   world-chat                    = Set to true to enable world chat");
             w.WriteLine("# Explanation of IRC settings:");

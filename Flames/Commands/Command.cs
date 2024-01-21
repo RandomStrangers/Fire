@@ -46,7 +46,7 @@ namespace Flames
         public virtual CommandPerm[] ExtraPerms { get { return null; } }
         public virtual CommandAlias[] Aliases { get { return null; } }
         
-        /// <summary> Whether this command is usable by 'super' players (Flame, IRC, etc) </summary>
+        /// <summary> Whether this command is usable by 'super' players (Flames, IRC, etc) </summary>
         public virtual bool SuperUseable { get { return true; } }
         public virtual bool MessageBlockRestricted { get { return type.CaselessContains("mod"); } }
         /// <summary> Whether this command can be used when a player is frozen </summary>

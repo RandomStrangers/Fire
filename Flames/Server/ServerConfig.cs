@@ -34,10 +34,10 @@ namespace Flames
         public string Name = "[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
         public string MOTD = "Welcome!";
-        [ConfigUInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
-        public uint MaxPlayers = 16;
-        [ConfigUInt("max-guests", "Server", 14, 1, Server.MAX_PLAYERS)]
-        public uint MaxGuests = 14;
+        [ConfigInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
+        public int MaxPlayers = 16;
+        [ConfigInt("max-guests", "Server", 14, 1, Server.MAX_PLAYERS)]
+        public int MaxGuests = 14;
         [ConfigInt("port", "Server", 25565, 0, 65535)]
         public int Port = 25565;
         [ConfigBool("public", "Server", false)]
@@ -48,7 +48,23 @@ namespace Flames
         public string DefaultRankName = "guest";
         [ConfigString("server-owner", "Server", "the owner")]
         public string OwnerName = "the owner";
-
+        [ConfigBool("send-url", "Server", true)]
+        public bool SendURL = true;
+#if CORE
+        [ConfigString("softwarename", "Server", "&dH&1a&er&cm&6o&6n&0y", false)]
+        public string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
+        [ConfigString("softwareversion", "Server", "1.0.0.5", false)]
+        public string Version = "1.0.0.5";
+        [ConfigString("server-logo", "Server", "https://files.catbox.moe/6uiix1.png")]
+        public string ServerLogo = "https://files.catbox.moe/6uiix1.png";
+#else
+        [ConfigString("softwarename", "Server", "&4F&cl&4a&cm&4e&cs", false)]
+        public string SoftwareName = "&4F&cl&4a&cm&4e&cs";
+        [ConfigString("softwareversion", "Server", "9.0.2.9", false)]
+        public string Version = "9.0.2.9";
+        [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png")]
+        public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
+#endif
         [ConfigBool("autoload", "Level", true)]
         public bool AutoLoadMaps = true;        
         /// <summary> true if maps sees server-wide chat, false if maps have level-only/isolated chat </summary>
@@ -163,6 +179,7 @@ namespace Flames
         public List<string> DisabledCommands = new List<string>();
         [ConfigStringList("disabled-modules", "Other")]
         public List<string> DisabledModules = new List<string>();
+
         [ConfigTimespan("death-invulnerability-cooldown", "Other", 2, false)]
         public TimeSpan DeathCooldown = TimeSpan.FromSeconds(2);
 

@@ -80,7 +80,7 @@ Trying to mix two versions is unsupported - you may experience issues";
             if (loaded) return;
             loaded = true;
             
-            Text = "Starting " + Colors.Strip(Server.SoftwareNameVersioned) + "...";
+            Text = "Starting " + Colors.Strip(Server.ConfigSoftwareNameVersioned) + "...";
             Show();
             BringToFront();
             WindowState = FormWindowState.Normal;
@@ -92,7 +92,7 @@ Trying to mix two versions is unsupported - you may experience issues";
                 map_cmbType.Items.Add(gen.Theme);
             }
             
-            Text = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
+            Text = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.ConfigSoftwareNameVersioned);
             MakeNotifyIcon();
             
             main_Players.Font = new Font("Calibri", 8.25f);
@@ -299,7 +299,7 @@ Trying to mix two versions is unsupported - you may experience issues";
         void SettingsUpdate() {
             RunOnUI_Async(() => {
                 if (Server.shuttingDown) return;
-                Text = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
+                Text = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.ConfigSoftwareNameVersioned);
                 UpdateNotifyIconText();
             });
         }

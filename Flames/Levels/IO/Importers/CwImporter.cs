@@ -55,17 +55,14 @@ namespace Flames.Levels.IO {
             lvl = new Level(name, width, height, length, blocks);
             
             ReadSpawn(root, lvl);           
-            #if TEN_BIT_BLOCKS
             // Can't use ConvertCustom, as that changes lvl.blocks
             // (aka the array containing the lower 8 bits of block ids)
             if (root.Contains("BlockArray2")) {
                 ReadExtBlocks(root, lvl); return;
             }
-            #endif
             ConvertCustom(lvl);
         }
         
-        #if TEN_BIT_BLOCKS
         static void ReadExtBlocks(NbtCompound root, Level lvl) {
             byte[] lo = root["BlockArray"].ByteArrayValue;
             byte[] hi = root["BlockArray2"].ByteArrayValue;
@@ -79,7 +76,6 @@ namespace Flames.Levels.IO {
                 lvl.SetBlock(x, y, z, (BlockID)b);
             }
         }
-        #endif
         
         static void ReadSpawn(NbtCompound root, Level lvl) {
             if (!root.Contains("Spawn")) return;

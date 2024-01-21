@@ -93,7 +93,7 @@ namespace Flames.Gui.Popups
                 if (!upnp.Discover()) {
                     e.Result = 0;
                 } else if (forwarding) {
-                    upnp.ForwardPort(port, UPnP.TCP_PROTOCOL, Server.SoftwareName + "Server");
+                    upnp.ForwardPort(port, UPnP.TCP_PROTOCOL, Server.Config.SoftwareName + "Server");
                     e.Result = 1;
                 } else {
                     upnp.DeleteForwardingRule(port, UPnP.TCP_PROTOCOL);

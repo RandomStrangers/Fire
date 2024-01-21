@@ -83,19 +83,19 @@ namespace Flames {
         public bool hackrank;
               
         public string SuperName;
-        /// <summary> Whether this player is a 'Super' player (Flame, IRC, etc) </summary>
+        /// <summary> Whether this player is a 'Super' player (Flames, IRC, etc) </summary>
         public bool IsSuper;
-        /// <summary> Whether this player is the console player instance. </summary>
-        public bool IsFire { get { return this == Player.Flame; } }
+        /// <summary> Whether this player is the Flames player instance. </summary>
+        public bool IsFire { get { return this == Flame; } }
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public bool IsConsole { get { return this == Player.Console; } }
+        public bool IsConsole { get { return this == Console; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public bool IsSparkie { get { return this == Player.Sparks; } }
+        public bool IsSparkie { get { return this == Sparks; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public bool IsNova { get { return this == Player.Nova; } }
+        public bool IsNova { get { return this == Nova; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public bool IsRandom { get { return this == Player.Random; } }
+        public bool IsRandom { get { return this == Random; } }
 #endif
 
         public virtual string FullName { get { return color + prefix + DisplayName; } }  

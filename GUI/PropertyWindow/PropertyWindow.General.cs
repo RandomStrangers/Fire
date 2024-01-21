@@ -53,8 +53,8 @@ namespace Flames.Gui {
             Server.Config.OwnerName = srv_txtOwner.Text;
             Server.Config.Public = srv_chkPublic.Checked;
             
-            Server.Config.MaxPlayers = (uint)srv_numPlayers.Value;
-            Server.Config.MaxGuests = (uint)srv_numGuests.Value;
+            Server.Config.MaxPlayers = (int)srv_numPlayers.Value;
+            Server.Config.MaxGuests = (int)srv_numGuests.Value;
             Server.Config.AgreeToRulesOnEntry = srv_cbMustAgree.Checked;  
             
             Server.Config.MainLevel = lvl_txtMain.Text;
@@ -93,7 +93,7 @@ namespace Flames.Gui {
 
         void forceUpdateBtn_Click(object sender, EventArgs e) {
             srv_btnForceUpdate.Enabled = false;
-            string msg = "Would you like to force update " + Server.SoftwareName + " now?";
+            string msg = "Would you like to force update " + Colors.Strip(Server.Config.SoftwareName) + " now?";
             
             if (Popup.YesNo(msg, "Force update")) {
                 SaveChanges();

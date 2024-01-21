@@ -60,7 +60,7 @@ namespace Flames.Util
         public static Dictionary<string, TextFile> Files = new Dictionary<string, TextFile>() {
             { "News", new TextFile(Paths.NewsFile, "News have not been created. Put News in '" + Paths.NewsFile + "'.") },
             { "FAQ", new TextFile(Paths.FaqFile, 
-                                  "Example: What does this server run on? This server runs on &b" + Server.SoftwareName) },
+                                  "Example: What does this server run on? This server runs on &b" + Server.Config.SoftwareName) },
             { "Rules", new TextFile(Paths.RulesFile, "No rules entered yet!") },
             { "OpRules", new TextFile(Paths.OprulesFile, "No oprules entered yet!") },
             { "Custom $s", new TextFile(Paths.CustomTokensFile,

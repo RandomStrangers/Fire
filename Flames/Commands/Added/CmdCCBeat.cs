@@ -42,16 +42,27 @@ namespace Flames.Commands
 
         public override void Use(Player p, string message, CommandData data)
         {
-            if (p.IsFire)
+            bool IsPublic = Server.Config.Public;
+            if (IsPublic)
             {
-                p.Message("Seriously? Just go look at it!");
-                p.cancelcommand = true;
+                if (p.IsFire)
+                {
+                    p.Message("Seriously? Just go look at it!");
+                    p.cancelcommand = true;
+                    return;
+                }
+                else
+                {
+                    string file = "./text/externalurl.txt";
+                    string contents = File.ReadAllText(file);
+                    p.Message("Server URL: " + contents);
+                    return;
+                }
             }
             else
             {
-                string file = "./text/externalurl.txt";
-                string contents = File.ReadAllText(file);
-                p.Message("Server URL: " + contents);
+                p.Message("Server is not public! Cannot send URL to chat!");
+                p.cancelcommand= true;
                 return;
             }
         }

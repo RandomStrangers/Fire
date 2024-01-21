@@ -95,12 +95,18 @@ namespace Flames.Scripting
         {
             string simplepluginpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            string[] files = AtomicIO.TryGetFiles(simplepluginpath, "*.dll"); 
-            //TODO: Ignore system files
-
+            string[] files = AtomicIO.TryGetFiles(simplepluginpath, "*.dll");
             if (files != null)
             {
-                foreach (string path in files) { LoadSimplePlugin(path, true); }
+                foreach (string file in files)
+                {
+                    //TODO: Some system files might not contain these
+                    if (!file.CaselessContains("SQL") || file.CaselessContains("Newtonsoft")
+                        || file.CaselessContains("System"))
+                    {
+                        LoadSimplePlugin(file, true);
+                    }
+                }
             }
             else
             {

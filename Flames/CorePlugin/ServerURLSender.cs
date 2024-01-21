@@ -10,16 +10,28 @@ namespace Flames.Core
         public override string creator { get { return Server.SoftwareName + " team"; } }
         public override void Load(bool startup)
         {
+            bool CanSend = Server.Config.SendURL;
             bool IsPublic = Server.Config.Public;
             if (IsPublic)
             {
+
+                if (CanSend)
                 {
-                    Server.MainScheduler.QueueOnce(SayURL, null, TimeSpan.FromSeconds(12));
+                    {
+                        Server.MainScheduler.QueueOnce(SayURL, null, TimeSpan.FromSeconds(12));
+                    }
+                }
+                else
+                {
+                    Logger.Log(LogType.SystemActivity, "Server setting \"send-url\" is false!");
+                    Logger.Log(LogType.SystemActivity, "Cannot send URL to chat!");
+                    return;
                 }
             }
             else
             {
-                Logger.Log(LogType.SystemActivity, "Server is not public! Cannot send URL to chat!");
+                Logger.Log(LogType.SystemActivity, "Server setting \"public\" is false!");
+                Logger.Log(LogType.SystemActivity, "Cannot send URL to chat!");
                 return;
             }
         }

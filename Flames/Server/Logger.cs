@@ -77,6 +77,8 @@ namespace Flames
         
         /// <summary> Message shown to the Flames. </summary>
         FlameMessage,
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        ConsoleMessage,
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         RandomMessage,

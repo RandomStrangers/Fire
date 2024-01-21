@@ -31,14 +31,14 @@ using BlockID = System.UInt16;
 
 namespace Flames {
     sealed class FlamePlayer : Player {
-        public FlamePlayer() : base("&S(&4F&cl&4a&cm&4e&S)") {
+        public FlamePlayer() : base("&S(&4F&cl&4a&cm&4e&cs&S)") {
             group = Group.FireRank;
             color = "&S";
-            SuperName = "&S&4F&cl&4a&cm&4e&S";
+            SuperName = "&S&4F&cl&4a&cm&4e&cs&S";
         }
         
         public override string FullName {
-            get { return "&S&4F&cl&4a&cm&4e&S [&a" + Server.Config.FlameState + "&S]"; }
+            get { return "&S&4F&cl&4a&cm&4e&cs&S [&a" + Server.Config.FlameState + "&S]"; }
         }
         
         public override void Message(string message) {
