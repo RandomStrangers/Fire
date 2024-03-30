@@ -53,15 +53,15 @@ namespace Flames
 #if CORE
         [ConfigString("softwarename", "Server", "&dH&1a&er&cm&6o&6n&0y", false)]
         public string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
-        [ConfigString("softwareversion", "Server", "1.0.0.5", false)]
-        public string Version = "1.0.0.5";
+        [ConfigString("softwareversion", "Server", "1.0.0.6", false)]
+        public string Version = "1.0.0.6";
         [ConfigString("server-logo", "Server", "https://files.catbox.moe/6uiix1.png")]
         public string ServerLogo = "https://files.catbox.moe/6uiix1.png";
 #else
         [ConfigString("softwarename", "Server", "&4F&cl&4a&cm&4e&cs", false)]
         public string SoftwareName = "&4F&cl&4a&cm&4e&cs";
-        [ConfigString("softwareversion", "Server", "9.0.2.9", false)]
-        public string Version = "9.0.2.9";
+        [ConfigString("softwareversion", "Server", "9.0.3.0", false)]
+        public string Version = "9.0.3.0";
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
 #endif
@@ -189,8 +189,13 @@ namespace Flames
         public int IRCPort = 6697;
         [ConfigString("irc-server", "IRC bot", "irc.esper.net")]
         public string IRCServer = "irc.esper.net";
-        [ConfigString("irc-nick", "IRC bot", "ForgeBot")]
-        public string IRCNick = "ForgeBot";
+#if CORE
+        [ConfigString("irc-nick", "IRC bot", "HarmonyBot")]
+        public string IRCNick = "HarmonyBot";
+#else
+        [ConfigString("irc-nick", "IRC bot", "FlamesBot")]
+        public string IRCNick = "FlamesBot";
+#endif
         [ConfigString("irc-channel", "IRC bot", "#changethis", true)]
         public string IRCChannels = "#changethis";
         [ConfigString("irc-opchannel", "IRC bot", "#changethistoo", true)]

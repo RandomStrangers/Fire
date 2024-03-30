@@ -83,7 +83,7 @@ namespace Flames
             {
                 try
                 {
-                    DeleteFiles("Changelog.txt", "Flames_.update", "Flames.update", "FlamesCLI.update",
+                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
                     "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe");
                 }
                 catch
