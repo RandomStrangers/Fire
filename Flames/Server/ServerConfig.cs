@@ -53,15 +53,15 @@ namespace Flames
 #if CORE
         [ConfigString("softwarename", "Server", "&dH&1a&er&cm&6o&6n&0y", false)]
         public string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
-        [ConfigString("softwareversion", "Server", "1.0.0.6", false)]
-        public string Version = "1.0.0.6";
+        [ConfigString("softwareversion", "Server", "1.0.0.7", false)]
+        public string Version = "1.0.0.7";
         [ConfigString("server-logo", "Server", "https://files.catbox.moe/6uiix1.png")]
         public string ServerLogo = "https://files.catbox.moe/6uiix1.png";
 #else
         [ConfigString("softwarename", "Server", "&4F&cl&4a&cm&4e&cs", false)]
         public string SoftwareName = "&4F&cl&4a&cm&4e&cs";
-        [ConfigString("softwareversion", "Server", "9.0.3.0", false)]
-        public string Version = "9.0.3.0";
+        [ConfigString("softwareversion", "Server", "9.0.3.1", false)]
+        public string Version = "9.0.3.1";
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
 #endif
