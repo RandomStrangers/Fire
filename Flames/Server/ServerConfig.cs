@@ -26,12 +26,12 @@ namespace Flames
     public sealed class ServerConfig : EnvConfig 
     {
 #if CORE
-        public const string Software = "&dH&1a&er&cm&6o&6n&0y";
+        public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
-        public const string Software = "&4F&cl&4a&cm&4e&cs";
+        public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
 #endif
-        [ConfigString("server-name", "Server", "[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
-        public string Name = "[" + Software + "] Default";
+        [ConfigString("server-name", "Server", "&a[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
+        public string Name = "&a[" + Software + "] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
         public string MOTD = "Welcome!";
         [ConfigInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]
@@ -51,17 +51,17 @@ namespace Flames
         [ConfigBool("send-url", "Server", true)]
         public bool SendURL = true;
 #if CORE
-        [ConfigString("softwarename", "Server", "&dH&1a&er&cm&6o&6n&0y", false)]
-        public string SoftwareName = "&dH&1a&er&cm&6o&6n&0y";
-        [ConfigString("softwareversion", "Server", "1.0.0.7", false)]
-        public string Version = "1.0.0.7";
+        [ConfigString("softwarename", "Server", "&4H&6a&5r&0m&7o&2n&dy&a", false)]
+        public string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
+        [ConfigString("softwareversion", "Server", "1.0.0.8", false)]
+        public string Version = "1.0.0.8";
         [ConfigString("server-logo", "Server", "https://files.catbox.moe/6uiix1.png")]
         public string ServerLogo = "https://files.catbox.moe/6uiix1.png";
 #else
         [ConfigString("softwarename", "Server", "&4F&cl&4a&cm&4e&cs", false)]
         public string SoftwareName = "&4F&cl&4a&cm&4e&cs";
-        [ConfigString("softwareversion", "Server", "9.0.3.1", false)]
-        public string Version = "9.0.3.1";
+        [ConfigString("softwareversion", "Server", "9.0.3.2", false)]
+        public string Version = "9.0.3.2";
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
 #endif
