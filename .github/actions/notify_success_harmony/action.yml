@@ -8,7 +8,7 @@ inputs:
     type: string
   BOT_AVATAR:
     description: 'URL to use for the avatar of the discord bot message'
-    default: 'https://files.catbox.moe/6uiix1.png'
+    default: 'https://raw.githubusercontent.com/RandomStrangers/Fire/Flame/GUI/Harmony_full.png'
     required: false
     type: string
   NOTIFY_MESSAGE:
