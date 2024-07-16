@@ -89,8 +89,8 @@ namespace Flames.Core
 
                 if (used < 2)
                 {
-                    Chat.MessageFrom(p, "λNICK is now loved by Sparkie with all her heart. ^w^");
-                    p.Message("Sparkie now loves you with all her heart. ^w^");
+                    Chat.MessageFrom(p, "λNICK is now loved by Harmony with all her heart.");
+                    p.Message("Harmony now loves you with all her heart. ");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 }
                 else
@@ -107,7 +107,7 @@ namespace Flames.Core
 
                 if (used < 2)
                 {
-                    p.Message("Random Strangers' bot army just simultaneously facepalm'd at your use of this command.");
+                    p.Message("Harmony's bot army just simultaneously facepalm'd at your use of this command.");
                     Logger.Log(LogType.CommandUsage, "{0} used /{1}", p.name, cmd);
                 }
                 else

@@ -93,7 +93,7 @@ namespace Flames.Gui {
 
         void forceUpdateBtn_Click(object sender, EventArgs e) {
             srv_btnForceUpdate.Enabled = false;
-            string msg = "Would you like to force update " + Colors.Strip(Server.Config.SoftwareName) + " now?";
+            string msg = "Would you like to force update " + Colors.Strip(Server.SoftwareName) + " now?";
             
             if (Popup.YesNo(msg, "Force update")) {
                 SaveChanges();

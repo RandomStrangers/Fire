@@ -123,7 +123,7 @@ namespace Flames
         
     static void SayHello(SchedulerTask task)
     {
-        Command.Find("say").Use(Player.Flame, ConfigSoftwareNameVersioned + " &Sonline!" );
+        Command.Find("say").Use(Player.Flame, SoftwareNameVersioned + " &Sonline!" );
         Logger.Log(LogType.SystemActivity, "Hello World!");
     }
     static void ForceEnableTLS() {
@@ -199,7 +199,7 @@ namespace Flames
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
-            Command.Find("say").Use(Player.Flame, Colors.Strip(ConfigSoftwareNameVersioned) + " &Sshutting down!");
+            Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
             Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
             lock (stopLock) {

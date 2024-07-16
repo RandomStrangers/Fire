@@ -29,6 +29,8 @@ namespace Flames.Modules.Compiling
         }
         
         protected override void CompileCommand(Player p, string[] paths, ICompiler compiler) {
+            if (compiler == null) { compiler = new CSCompiler(); }
+
             foreach (string cmd in paths)
             {
                 CompilerOperations.CreateCommand(p, cmd, compiler);
@@ -48,6 +50,11 @@ namespace Flames.Modules.Compiling
             p.Message("&H  This can be used as the basis for creating a new command");
             p.Message("&T/CmdCreate plugin [name]");
             p.Message("&HCreate a example C# plugin named [name]");
+            p.Message("&T/CmdCreate [name] vb");
+            p.Message("&HCreates an example Visual Basic command named Cmd[name]");
+            p.Message("&H  This can be used as the basis for creating a new command");
+            p.Message("&T/CmdCreate plugin [name] vb");
+            p.Message("&HCreate a example Visual Basic plugin named [name]");
         }
     }
 }

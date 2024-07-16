@@ -141,7 +141,7 @@ namespace Flames.Network
         {
             byte[] buffer = new byte[67];
             buffer[0] = Opcode.CpeExtInfo;
-            NetUtils.Write(Server.ConfigSoftwareNameVersioned, buffer, 1, false);
+            NetUtils.Write(Server.SoftwareNameVersioned, buffer, 1, false);
             NetUtils.WriteI16((short)extsCount, buffer, 65);
             return buffer;
         }

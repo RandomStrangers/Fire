@@ -28,7 +28,7 @@ namespace Flames
 #if CORE
         public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
-        public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
+        public const string Software = "&4F&cl&4a&cm&4e&cs";
 #endif
         [ConfigString("server-name", "Server", "&a[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
         public string Name = "&a[" + Software + "] Default";
@@ -51,17 +51,9 @@ namespace Flames
         [ConfigBool("send-url", "Server", true)]
         public bool SendURL = true;
 #if CORE
-        [ConfigString("softwarename", "Server", "&4H&6a&5r&0m&7o&2n&dy&a", false)]
-        public string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
-        [ConfigString("softwareversion", "Server", "1.0.0.8", false)]
-        public string Version = "1.0.0.8";
-        [ConfigString("server-logo", "Server", "https://files.catbox.moe/6uiix1.png")]
-        public string ServerLogo = "https://files.catbox.moe/6uiix1.png";
+        [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png")]
+        public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png";
 #else
-        [ConfigString("softwarename", "Server", "&4F&cl&4a&cm&4e&cs", false)]
-        public string SoftwareName = "&4F&cl&4a&cm&4e&cs";
-        [ConfigString("softwareversion", "Server", "9.0.3.2", false)]
-        public string Version = "9.0.3.2";
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
 #endif

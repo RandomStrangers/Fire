@@ -145,5 +145,135 @@ namespace Flames
             }
         }
     }
+    public sealed class VBCompiler : ICompiler
+    {
+        public override string FileExtension { get { return ".vb"; } }
+        public override string ShortName { get { return "VB"; } }
+        public override string FullName { get { return "Visual Basic"; } }
+
+#if !NETSTANDARD
+        CodeDomProvider compiler;
+
+        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath)
+        {
+            CompilerParameters args = ICodeDomCompiler.PrepareInput(srcPaths, dstPath, "//");
+            args.CompilerOptions += " ";
+
+            ICodeDomCompiler.InitCompiler(this, "VisualBasic", ref compiler);
+            return ICodeDomCompiler.Compile(args, srcPaths, compiler);
+        }
+#else
+        //Name unknown for Roslyn VB compiler, assuming VisualBasic
+        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
+            List<string> referenced = ProcessInput(srcPaths, "//");
+            return RoslynVisualBasicCompiler.Compile(srcPaths, dstPath, referenced);
+        }
+#endif
+        public override string CommandSkeleton
+        {
+            get
+            {
+                return @"
+Imports System
+Imports Flames
+
+Public Class Cmd{0}
+    Inherits Command
+
+    ' The command's name (what you put after a slash to use this command)
+    Public Overrides ReadOnly Property name As String
+        Get
+            Return ""{0}""
+        End Get
+    End Property
+
+    ' Command's shortcut, can be left blank (e.g. ""/Copy"" has a shortcut of ""c"")
+    Public Overrides ReadOnly Property shortcut As String
+        Get
+            Return """"
+        End Get
+    End Property
+
+    ' Which submenu this command displays in under /Help
+    Public Overrides ReadOnly Property type As String
+        Get
+            Return ""other""
+        End Get
+    End Property
+
+    ' Whether or not this command can be used in a museum. Block/map altering commands should return false to avoid errors.
+    Public Overrides ReadOnly Property museumUsable As Boolean
+        Get
+            Return True
+        End Get
+    End Property
+
+    ' The default rank required to use this command. Valid values are:
+    '   LevelPermission.Guest, LevelPermission.Builder, LevelPermission.AdvBuilder,
+    '   LevelPermission.Operator, LevelPermission.Admin, LevelPermission.Owner
+    Public Overrides ReadOnly Property defaultRank As LevelPermission
+        Get
+            Return LevelPermission.Guest
+        End Get
+    End Property
+
+    ' This is for when a player executes this command by doing /{0}
+    '   p is the player object for the player executing the command. 
+    '   message is the arguments given to the command. (e.g. for '/{0} this', message is ""this"")
+    Public Overrides Sub Use(p As Player, message As String)
+        p.Message(""Hello World!"")
+    End Sub
+
+    ' This is for when a player does /Help {0}
+    Public Overrides Sub Help(p As Player)
+        p.Message(""/{0} - Does stuff. Example command."")
+    End Sub
+End Class
+
+
+";
+
+            }
+        }
+
+        public override string PluginSkeleton
+        {
+            get
+            {
+                return @"' This is an example simple plugin source!
+Imports System
+
+Namespace Flames
+\tPublic Class {0}
+\t\tInherits Plugin
+
+\t\tPublic Overrides ReadOnly Property name() As String
+\t\t\tGet
+\t\t\t\tReturn ""{0}""
+\t\t\tEnd Get
+\t\t End Property
+\t\tPublic Overrides ReadOnly Property creator() As String
+\t\t\tGet
+\t\t\t\tReturn ""{1}""
+\t\t\tEnd Get
+\t\t End Property
+
+\t\tPublic Overrides Sub Load(startup As Boolean)
+\t\t\t' LOAD YOUR SIMPLE PLUGIN WITH EVENTS OR OTHER THINGS!
+\t\tEnd Sub
+                        
+\t\tPublic Overrides Sub Unload(shutdown As Boolean)
+\t\t\t' UNLOAD YOUR SIMPLE PLUGIN BY SAVING FILES OR DISPOSING OBJECTS!
+\t\tEnd Sub
+                        
+\t\tPublic Overrides Sub Help(p As Player)
+\t\t\t' HELP INFO!
+\t\tEnd Sub
+\tEnd Class
+End Namespace";
+            }
+        }
+    }
+
 }
 #endif

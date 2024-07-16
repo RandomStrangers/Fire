@@ -88,7 +88,7 @@ namespace Flames
         public static void Load(Plugin pl, bool auto) {
             string ver = pl.Flames_Version;
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(Server.Version)) {
-                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.Config.SoftwareName);
+                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             

@@ -107,10 +107,10 @@ namespace Flames {
             new ChatToken("$softwarenameversion", "Software name and its version", TokenSoftwareNameVersioned),
         };
         static string TokenHost(Player p) { return Server.Config.FlameState; }
-        static string TokenSoftware (Player p) { return Server.Config.SoftwareName; }
-        static string TokenVersion(Player p) { return Server.Config.Version; }
-        static string TokenSoftwareNameVersioned(Player p) { return Server.Config.SoftwareName +
-                " " + Server.Config.Version; }
+        static string TokenSoftware (Player p) { return Server.SoftwareName; }
+        static string TokenVersion(Player p) { return Server.Version; }
+        static string TokenSoftwareNameVersioned(Player p) { return Server.SoftwareName +
+                " " + Server.Version; }
         static string TokenClient(Player p) { return p.Session.ClientName(); }
         static string TokenDate(Player p) { return DateTime.Now.ToString("yyyy-MM-dd"); }
         static string TokenTime(Player p) { return DateTime.Now.ToString("hh:mm tt"); }

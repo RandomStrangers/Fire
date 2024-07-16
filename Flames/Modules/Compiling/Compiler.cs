@@ -48,9 +48,9 @@ namespace Flames.Modules.Compiling
         
         public string CommandPath(string name) { return COMMANDS_SOURCE_DIR + "Cmd" + name + FileExtension; }
         public string PluginPath(string name)  { return PLUGINS_SOURCE_DIR  + name + FileExtension; }
-        
-        public static List<ICompiler> Compilers = new List<ICompiler>() { 
-            new CSCompiler()
+
+        public static List<ICompiler> Compilers = new List<ICompiler>() {
+            new CSCompiler(), new VBCompiler()
         };
 
 

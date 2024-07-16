@@ -399,7 +399,7 @@ namespace Flames {
         #endregion
         #region == OTHER ==
 
-        public const string USERNAME_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._";
+        public const string USERNAME_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._?";
         
         internal byte UserType() { return group.Blocks[Block.Bedrock] ? (byte)100 : (byte)0; }
 

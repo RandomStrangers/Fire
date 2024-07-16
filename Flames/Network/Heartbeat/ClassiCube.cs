@@ -83,7 +83,7 @@ namespace Flames.Network
                 "&version=7" +
                 "&salt="     + Salt +
                 "&users="    + PlayerInfo.NonHiddenUniqueIPCount() +
-                "&software=" + Uri.EscapeDataString(Server.ConfigSoftwareNameVersioned) +
+                "&software=" + Uri.EscapeDataString(Server.SoftwareNameVersioned) +
                 "&web="      + Server.Config.WebClient;
         }
         

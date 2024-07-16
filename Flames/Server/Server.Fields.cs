@@ -40,7 +40,7 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.0.8";
+        public const string InternalVersion = "1.0.0.9";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
         static string fullName;
@@ -51,7 +51,7 @@ namespace Flames
         }
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.0.3.2";
+        public const string InternalVersion = "9.0.3.3";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 
@@ -62,12 +62,6 @@ namespace Flames
             set { fullName = value; }
         }
 #endif
-        static string ConfigFullName;
-        public static string ConfigSoftwareNameVersioned
-        {
-            get { return ConfigFullName ?? Config.SoftwareName + " " + Config.Version; }
-            set { ConfigFullName = value; }
-        }
         public static INetListen Listener = new TcpListen();
 
         //Other
@@ -83,7 +77,8 @@ namespace Flames
             "HyperNova", "RandomStranger05", "GoldenSparks", "AurumStellae", 
             "sethbatman05", "sethbatman2005", "jackstage1", "Pattykaki45", 
             "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae", 
-            "HarmonyNetwork" , "krowteNynomraH", "UserTaken123", "UserNotFree"
+            "HarmonyNetwork" , "krowteNynomraH", "UserTaken123", "UserNotFree",
+            "onedez"
         };
         public static readonly List<string> Opstats = new List<string>() { "ban", "tempban", "xban", "banip", "kick", "warn", "mute", "freeze", "setrank" };
 
