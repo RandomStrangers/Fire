@@ -5,7 +5,7 @@ namespace Botnick
     {
         public override string name { get { return "Botnick"; } }
         public override string shortcut { get { return "Botname"; } }
-        public override string type { get { return "Building"; } }
+        public override string type { get { return CommandTypes.Added; } }
 
         public override void Use(Player p, string message, CommandData data)
         {

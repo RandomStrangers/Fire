@@ -25,7 +25,7 @@ namespace Flames.Commands.Maintenance
     public sealed class CmdShutdownTrue : Command2
     {
         public override string name { get { return "ShutdownTrue"; } }
-        public override string type { get { return CommandTypes.Moderation; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
 
         static SchedulerTask shutdownTask;

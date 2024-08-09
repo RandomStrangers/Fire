@@ -157,6 +157,7 @@ namespace Flames.Commands.Info
         
         static string MapCategory(string type) {
             // convert old category/type names
+            if (type == "add") return CommandTypes.Added;
             if (type == "build")   return CommandTypes.Building;
             if (type == "chat")    return CommandTypes.Chat;
             if (type == "economy") return CommandTypes.Economy;
@@ -164,7 +165,6 @@ namespace Flames.Commands.Info
             if (type == "mod")     return CommandTypes.Moderation;
             if (type == "other")   return CommandTypes.Other;
             if (type == "world")   return CommandTypes.World;
-
             if (type == "information") return CommandTypes.Information;
             return type;
         }

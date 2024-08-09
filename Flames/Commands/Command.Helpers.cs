@@ -106,6 +106,7 @@ namespace Flames
     
     public sealed class CommandTypes 
     {
+        public const string Added = "Added";
         public const string Building = "Building";
         public const string Chat = "Chat";
         public const string Economy = "Economy";
@@ -114,5 +115,6 @@ namespace Flames
         public const string Moderation = "Moderation";
         public const string Other = "Other";
         public const string World = "World";
+
     }
 }

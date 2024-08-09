@@ -17,19 +17,28 @@
  */
 using Flames.Network;
 
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public sealed class CmdPing : Command2 
+    public sealed class CmdPing : Command2
     {
         public override string name { get { return "Ping"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can see ping of other players") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (!message.CaselessEq("all")) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (p.IsSuper && string.IsNullOrEmpty(message))
+            {
+                p.Message("&T/Ping [player] &H- Outputs ping details for a player.");
+                p.Message("&T/Ping all &H- Outputs ping details for all players.");
+                p.Message("&cNOTE: &HNot all clients support measuring ping.");
+            }
+            if (!message.CaselessEq("all"))
+            {
                 if (message.Length == 0) message = p.name;
 
                 Player who = PlayerInfo.FindMatches(p, message);
@@ -38,20 +47,27 @@ namespace Flames.Commands.Chatting
                 if (p != who && !CheckExtraPerm(p, data, 1)) return;
                 PingList ping = who.Session.Ping;
 
-                if (!who.Supports(CpeExt.TwoWayPing)) {
-                    p.Message("{0} client does not support measuring ping", 
+                if (!who.Supports(CpeExt.TwoWayPing))
+                {
+                    p.Message("{0} client does not support measuring ping",
                               p == who ? "Your" : p.FormatNick(who) + "&S's");
-                } else if (ping.Measures() == 0) {
+                }
+                else if (ping.Measures() == 0)
+                {
                     p.Message("No ping measurements yet. Try again in a bit.");
-                } else {
+                }
+                else
+                {
                     p.Message(p.FormatNick(who) + " &S- " + ping.Format());
                 }
-            } else {
+            }
+            else
+            {
                 if (!CheckExtraPerm(p, data, 1)) return;
                 Player[] players = PlayerInfo.Online.Items;
                 p.Message("Ping/latency list of online players: (&aLo&S:&7Avg&S:&cHi&S)ms");
 
-                foreach (Player target in players) 
+                foreach (Player target in players)
                 {
                     if (!p.CanSee(target, data.Rank)) continue;
                     PingList ping = target.Session.Ping;
@@ -62,7 +78,8 @@ namespace Flames.Commands.Chatting
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Ping &H- Outputs details about your ping to the server.");
             p.Message("&T/Ping [player] &H- Outputs ping details for a player.");
             p.Message("&T/Ping all &H- Outputs ping details for all players.");

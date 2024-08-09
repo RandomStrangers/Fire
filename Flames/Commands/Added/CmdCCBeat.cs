@@ -7,7 +7,7 @@ namespace Flames.Commands
     {
         public override string name { get { return "ccheartbeat"; } }
         public override string shortcut { get { return "ccbeat"; } }
-        public override string type { get { return "moderation"; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override bool museumUsable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
 

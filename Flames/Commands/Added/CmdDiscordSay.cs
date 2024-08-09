@@ -5,7 +5,7 @@ namespace Flames.Commands.Chatting
     {
         public override string name { get { return "SayDiscord"; } }
         public override string shortcut { get { return "DiscordBroadcast"; } }
-        public override string type { get { return CommandTypes.Chat; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override CommandAlias[] Aliases { get { return new[] { new CommandAlias("sayd"), 
             new CommandAlias("dsay"), new CommandAlias("discordann") }; } }

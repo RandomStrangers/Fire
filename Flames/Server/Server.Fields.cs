@@ -73,8 +73,8 @@ namespace Flames
         public static PlayerExtList bannedIP, frozen, muted, tempBans, tempRanks;
         
         public static readonly List<string> Devs = new List<string>() { 
-            "DarkBurningFlame", "BurningFlame", "SuperNova", "DeadNova", 
-            "HyperNova", "RandomStranger05", "GoldenSparks", "AurumStellae", 
+            "DarkBurningFlame", "BurningFlame", "Flames", "Flames", 
+            "HyperNova", "RandomStranger05", "Flames", "AurumStellae", 
             "sethbatman05", "sethbatman2005", "jackstage1", "Pattykaki45", 
             "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae", 
             "HarmonyNetwork" , "krowteNynomraH", "UserTaken123", "UserNotFree",
