@@ -361,5 +361,6 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/Flames/Server/Maintenance/UpdatePlugin.cs
-/Flames/Commands/Added/Test.cs
+/Flames/Testing/
+/Flames/1/
+/IRC.cs
