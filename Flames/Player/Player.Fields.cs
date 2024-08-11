@@ -83,7 +83,7 @@ namespace Flames {
         public bool hackrank;
         public bool IsDev(Player p) 
         {
-            if (Server.Devs.CaselessContains(p.name)) return true;
+            if (Server.Devs.CaselessContains(p.truename)) return true;
             else 
             {
                 return false;
