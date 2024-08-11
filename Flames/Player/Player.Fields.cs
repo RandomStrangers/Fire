@@ -82,6 +82,7 @@ namespace Flames {
         public float ReachDistance = 5;
         public bool hackrank;
         public bool IsDev = false;
+        isDev = Server.Devs.Contains(name.ToLower());
         public string SuperName;
         /// <summary> Whether this player is a 'Super' player (Flames, IRC, etc) </summary>
         public bool IsSuper;
