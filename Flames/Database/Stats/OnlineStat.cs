@@ -107,9 +107,8 @@ namespace Flames.DB
             name  = Server.ToRawUsername(name);
             owner = Server.ToRawUsername(Server.Config.OwnerName);
         	
-            if (Server.Devs.CaselessContains(name)){
+            if (Server.Devs.CaselessContains(name))
                 p.Message("  Player is a developer of {0}", Server.SoftwareName);
-                p.IsDev = true;}
             if (owner.CaselessEq(name))
                 p.Message("  Player is the &cServer owner");
         }
