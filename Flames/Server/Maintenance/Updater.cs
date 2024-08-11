@@ -85,8 +85,9 @@ namespace Flames
                     DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
                     "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe");
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.LogError("Error deleting files", ex);
                 }
 
                 WebClient client = HttpUtil.CreateWebClient();

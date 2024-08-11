@@ -17,6 +17,7 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Net;
 using Flames.Core;
 using Flames.Modules.Games.Countdown;
 using Flames.Modules.Games.CTF;
@@ -27,7 +28,9 @@ using Flames.Modules.Moderation.Notes;
 using Flames.Modules.Relay.Discord;
 using Flames.Modules.Relay.IRC;
 using Flames.Modules.Security;
+using Flames.Network;
 using Flames.Scripting;
+using static System.Net.WebRequestMethods;
 
 namespace Flames 
 {
@@ -62,6 +65,8 @@ namespace Flames
         /// <summary> Work on backwards compatibility with other cores </summary>
         public virtual string RandomStrangers_Version { get { return null; } }
 #endif
+        /// <summary> Work on backwards compatibility with MCGalaxy </summary>
+        public virtual string MCGalaxy_Version { get { return null; } }
         /// <summary> Version of this plugin. </summary>
         public virtual int build { get { return 0; } }
         /// <summary> Message to display once this plugin is loaded. </summary>
@@ -87,7 +92,17 @@ namespace Flames
         
         public static void Load(Plugin pl, bool auto) {
             string ver = pl.Flames_Version;
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(Server.Version)) {
+            string MCGalaxy_Ver = "1.9.4.9";
+            // Version different in Dev build, use normal for plugins
+            WebClient client = HttpUtil.CreateWebClient();
+            string CurrentVersion = client.DownloadString("https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/current.txt");
+
+            if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            {
+                    string msg = string.Format("Plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                    throw new InvalidOperationException(msg);
+            }
+            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version)) {
                 string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }

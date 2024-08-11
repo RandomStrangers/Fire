@@ -97,7 +97,7 @@ namespace Flames
         }
         public static bool IsDev(Player p) 
         {
-            if (Server.Devs.CaselessContains(p.truename)) return true;
+            if (Server.Devs.Contains(p.truename)) return true;
             else 
             {
                 return false;
