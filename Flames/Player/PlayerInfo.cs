@@ -95,7 +95,14 @@ namespace Flames
             }
             return null;
         }
-
+        public static bool IsDev(Player p) 
+        {
+            if (Server.Devs.CaselessContains(p.truename)) return true;
+            else 
+            {
+                return false;
+            }
+        }
         
         static void ReadAccounts(ISqlRecord record, List<string> names) {
             string name = record.GetText(0);         
