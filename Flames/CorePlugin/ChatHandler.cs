@@ -43,6 +43,14 @@ namespace Flames.Core
 
         public static void HandleCommand(Player p, string cmd, string args, CommandData data)
         {
+            // Really clunky design, but it works
+            Level lvl = new Level();
+            Command command = Command.Find(cmd);
+            if (lvl.Config.Drawing && command.IsDrawingCmd)
+            {
+                p.Message("Drawing commands are turned off on this map.");
+                p.cancelcommand = true;
+            }
             if (!Server.Config.CoreSecretCommands) return;
             // DO NOT REMOVE THE TWO COMMANDS BELOW, /PONY AND /RAINBOWDASHLIKESCOOLTHINGS. -EricKilla
             if (cmd.ToLower() == "pony")

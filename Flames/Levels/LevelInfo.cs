@@ -47,13 +47,13 @@ namespace Flames {
             Loaded.Remove(lvl);
             OnLevelRemovedEvent.Call(lvl);
         }
-        
-        
+
+
         // TODO: support loading other map files eventually
         public static string[] AllMapFiles() {
-            return Directory.GetFiles("levels", "*.lvl");
+            return Directory.GetFiles("levels" , "*.lvl");
         }
-        
+
         public static string[] AllMapNames() {
             string[] files = AllMapFiles();
             for (int i = 0; i < files.Length; i++) 
@@ -62,11 +62,11 @@ namespace Flames {
             }
             return files;
         }
-        
+
         public static bool MapExists(string name) {
             return File.Exists(MapPath(name));
         }
-                
+
         /// <summary> Relative path of a level's map file </summary>
         public static string MapPath(string name) {
             return "levels/" + name.ToLower() + ".lvl";

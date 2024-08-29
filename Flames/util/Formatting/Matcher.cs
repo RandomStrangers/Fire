@@ -63,7 +63,7 @@ namespace Flames
             return Find(pl, name, out matches, LevelInfo.AllMapNames(),
                         null, l => l, "levels", 10);
         }
-        
+
         /// <summary> Find partial matches of 'name' against the list of ranks. </summary>
         public static Group FindRanks(Player p, string name) {
             Group.MapName(ref name);

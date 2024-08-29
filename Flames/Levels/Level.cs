@@ -288,7 +288,7 @@ namespace Flames
                 Logger.Log(LogType.Warning, "Attempted to load level {0}, but {1} does not exist.", name, path);
                 return null;
             }
-            
+
             try {
                 Level lvl = IMapImporter.Decode(path, name, true);
                 LoadMetadata(lvl);

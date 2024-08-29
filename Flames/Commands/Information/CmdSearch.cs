@@ -32,7 +32,7 @@ namespace Flames.Commands.Info
             string list     = args[0].ToLower();
             string keyword  = args[1];
             string modifier = args.Length > 2 ? args[2] : "";
-            
+
             if (list == "block" || list == "blocks") {
                 SearchBlocks(p, keyword, modifier);
             } else if (list == "rank" || list == "ranks") {
@@ -108,7 +108,7 @@ namespace Flames.Commands.Info
             List<string> maps = Wildcard.Filter(allMaps, keyword, map => map);
             OutputList(p, keyword, "search levels", "maps", modifier, maps);
         }
-        
+
         static void OutputList(Player p, string keyword, string cmd, string type, string modifier, List<string> items) {
             if (items.Count == 0) {
                 p.Message("No {0} found containing \"{1}\"", type, keyword);

@@ -187,14 +187,14 @@ namespace Flames
             ChatTokens.LoadCustom();
             SrvProperties.FixupOldPerms();
             CpeExtension.LoadDisabledList();
-            
+
             TextFile announcementsFile = TextFile.Files["Announcements"];
             announcementsFile.EnsureExists();
             announcements = announcementsFile.GetText();
             
             OnConfigUpdatedEvent.Call();
         }
-        
+
 
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
