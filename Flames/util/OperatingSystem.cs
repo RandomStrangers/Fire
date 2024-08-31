@@ -154,7 +154,7 @@ namespace Flames.Platform
             //     at System.TermInfoDriver.ReadUntilConditionInternal (System.Boolean haltOnNewLine) [0x0000e]
             //     at System.TermInfoDriver.ReadLine () [0x00000]
             //     at System.ConsoleDriver.ReadLine () [0x00000]
-            //     at System.Flame.ReadLine () [0x00013]
+            //     at System.Console.ReadLine () [0x00013]
             //     at Flames.Cli.CLI.ConsoleLoop () [0x00002]
             // (this errors multiple times a second and can quickly fill up tons of disk space)
             // And also causes console to be spammed with '1R3;1R3;1R3;' or '363;1R;363;1R;'

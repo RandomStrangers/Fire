@@ -270,7 +270,7 @@ namespace Flames.Config {
         void WriteConfigValue(ConfigAttribute a, string value) {
             if (string.IsNullOrEmpty(value)) {
                 WriteNull();
-            } else if (a is ConfigBoolAttribute || a is ConfigIntegerAttribute || a is ConfigRealAttribute) {
+            } else if (a is ConfigBoolAttribute || a is ConfigSignedIntegerAttribute || a is ConfigRealAttribute) {
                 Write(value);
             } else {
                 WriteString(value);

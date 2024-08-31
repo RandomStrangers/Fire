@@ -45,6 +45,9 @@ namespace Flames
 
         /// <summary> Oldest version of Flames this plugin is compatible with. </summary>
         public virtual string Flames_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with MCGalaxy </summary>
+        public virtual string MCGalaxy_Version { get { return null; } }
+
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public virtual string SuperNova_Version { get { return null; } }

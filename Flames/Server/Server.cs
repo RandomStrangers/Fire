@@ -114,18 +114,11 @@ namespace Flames
             Background.QueueOnce(InitTimers);
             Background.QueueOnce(InitRest);
             Background.QueueOnce(InitHeartbeat);
-            Background.QueueOnce(SayHello, null, TimeSpan.FromSeconds(10));
             ServerTasks.QueueTasks();
             Background.QueueRepeat(ThreadSafeCache.DBCache.CleanupTask,
                                    null, TimeSpan.FromMinutes(5));
 
         }
-        
-    static void SayHello(SchedulerTask task)
-    {
-        Command.Find("say").Use(Player.Flame, SoftwareNameVersioned + " &Sonline!" );
-        Logger.Log(LogType.SystemActivity, "Hello World!");
-    }
     static void ForceEnableTLS() {
             // Force enable TLS 1.1/1.2, otherwise checking for updates on Github doesn't work
             try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0x300; } catch { }
@@ -154,10 +147,9 @@ namespace Flames
 #if !F_STANDALONE
             EnsureDirectoryExists(Modules.Compiling.ICompiler.COMMANDS_SOURCE_DIR); // TODO move to compiling module
 #endif
-            EnsureDirectoryExists("text/discord"); // TODO move to discord plugin
         }
         
-        static void EnsureDirectoryExists(string dir) {
+       public static void EnsureDirectoryExists(string dir) {
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
         }
  
@@ -199,8 +191,11 @@ namespace Flames
         static readonly object stopLock = new object();
         static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
-            Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
-            Logger.Log(LogType.Warning, "&fServer is shutting down!");
+            if (Server.Config.SayBye)
+            {
+                Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
+            }
+                Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
             lock (stopLock) {
                 if (stopThread != null) return stopThread;

@@ -50,6 +50,10 @@ namespace Flames
         public string OwnerName = "the owner";
         [ConfigBool("send-url", "Server", true)]
         public bool SendURL = true;
+        [ConfigBool("say-hello", "Server", true)]
+        public bool SayHello = true;
+        [ConfigBool("say-bye", "Server", true)]
+        public bool SayBye = true;
 #if CORE
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png";

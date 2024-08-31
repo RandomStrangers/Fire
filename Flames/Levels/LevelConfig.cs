@@ -24,7 +24,7 @@ using BlockID = System.UInt16;
 
 namespace Flames 
 {
-    class ConfigEnvIntAttribute : ConfigIntegerAttribute 
+    class ConfigEnvIntAttribute : ConfigSignedIntegerAttribute 
     {
         int minValue, maxValue;
         

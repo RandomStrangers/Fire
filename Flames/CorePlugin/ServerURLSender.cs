@@ -12,6 +12,8 @@ namespace Flames.Core
         {
             bool CanSend = Server.Config.SendURL;
             bool IsPublic = Server.Config.Public;
+            bool SayHi = Server.Config.SayHello;
+
             if (IsPublic)
             {
 
@@ -34,9 +36,17 @@ namespace Flames.Core
                 Logger.Log(LogType.SystemActivity, "Cannot send URL to chat!");
                 return;
             }
+            if (SayHi)
+            {
+                Server.Background.QueueOnce(SayHello, null, TimeSpan.FromSeconds(10));
+            }
         }
-
-        void SayURL(SchedulerTask task)
+       public static void SayHello(SchedulerTask task)
+        {
+            Command.Find("say").Use(Player.Flame, Server.SoftwareNameVersioned + " &Sonline!");
+            Logger.Log(LogType.SystemActivity, "Hello World!");
+        }
+        public static void SayURL(SchedulerTask task)
         {
             string file = "./text/externalurl.txt";
             string contents = File.ReadAllText(file);
