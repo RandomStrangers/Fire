@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Commands.Chatting;
+using Flames.Maths;
 
 namespace Flames.Core
 {
@@ -40,16 +41,20 @@ namespace Flames.Core
 
             if (scope != ChatScope.PM) Logger.Log(logType, msg);
         }
-
+        // Need to find a better way to do this
         public static void HandleCommand(Player p, string cmd, string args, CommandData data)
         {
             // Really clunky design, but it works
-            Level lvl = new Level();
+            Level lvl = p.level;
             Command command = Command.Find(cmd);
-            if (lvl.Config.Drawing && command.IsDrawingCmd)
+            bool IsDrawingCmd = command.type.CaselessEq(CommandTypes.Building);
+
+            if (IsDrawingCmd && !lvl.Config.Drawing)
             {
                 p.Message("Drawing commands are turned off on this map.");
                 p.cancelcommand = true;
+                Vec3S32 pos = p.Pos.BlockCoords;
+                p.RevertBlock((ushort)pos.X, (ushort)pos.Y, (ushort)pos.Z);
             }
             if (!Server.Config.CoreSecretCommands) return;
             // DO NOT REMOVE THE TWO COMMANDS BELOW, /PONY AND /RAINBOWDASHLIKESCOOLTHINGS. -EricKilla

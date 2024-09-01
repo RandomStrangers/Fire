@@ -49,8 +49,7 @@ namespace Flames
         /// <summary> Whether this command is usable by 'super' players (Flames, IRC, etc) </summary>
         public virtual bool SuperUseable { get { return true; } }
         public virtual bool MessageBlockRestricted { get { return type.CaselessContains("mod"); } }
-        // Need to find a better way to do this
-        public virtual bool IsDrawingCmd { get { return type.CaselessContains("building"); } }
+
 
         /// <summary> Whether this command can be used when a player is frozen </summary>
         /// <remarks> Only informational commands should override this to return true </remarks>
