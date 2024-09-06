@@ -381,22 +381,36 @@ namespace Flames.Modules.Relay.Discord
             }
 
             DiscordWebsocket s = socket;
+            // Constantly do this to avoid bot status not updating
+            socket.GetStatus = GetStatusMessage;
             // websocket gets disconnected with code 4003 if tries to send data before identifying
             //  https://discord.com/developers/docs/topics/opcodes-and-status-codes
             if (s == null || !s.SentIdentify) return;
-
+             
             try { s.UpdateStatus(); } catch { }
         }
 
-        string GetStatusMessage() {
-            fakeGuest.group     = Group.DefaultRank;
-            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank); 
-
-            string numOnline = online.Count.ToString();
-            return Config.StatusMessage.Replace("{PLAYERS}", numOnline);
+        public string GetStatusMessage()
+        {
+            fakeGuest.group = Group.DefaultRank;
+            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank);
+            string numOnline = PlayerInfo.NonHiddenUniqueIPCount().ToString();
+            if (Config.StatusMessage.Contains("{PLAYERS}"))
+            {
+                return Config.StatusMessage.Replace("{PLAYERS}", numOnline);
+            }
+            if (Config.StatusMessage.Contains("{SERVER}"))
+            {
+                return Config.StatusMessage.Replace("{SERVER}", Colors.Strip(Server.Config.Name));
+            }
+            if (Config.StatusMessage.CaselessContains("players") && numOnline == "1")
+            {
+                return Config.StatusMessage.Replace("players", "player");
+            }
+            return Config.StatusMessage;
         }
-        
-        
+
+
         protected override void OnStart() {
             session = new DiscordSession();
             base.OnStart();

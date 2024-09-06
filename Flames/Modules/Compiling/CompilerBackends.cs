@@ -59,13 +59,12 @@ namespace Flames.Modules.Compiling
             if (compiler != null) return;
             compiler = CodeDomProvider.CreateProvider(language);
             if (compiler != null) return;
-                
             Logger.Log(LogType.Warning,
                        "WARNING: {0} compiler is missing, you will be unable to compile {1} files.",
                        c.FullName, c.FileExtension);
                 // TODO: Should we log "You must have .net developer tools. (You need a visual studio)" ?
                 //Should only log this for Visual Basic.
-                if (c.FileExtension == "vb" && Server.RunningOnMono())
+                if (c.FileExtension == "vb" && Server.runningOnMono == true)
                 {
                     Logger.Log(LogType.Warning,
                        "WARNING: Visual Basic compiler is missing, you will be unable to compile .vb files.");

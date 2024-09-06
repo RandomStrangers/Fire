@@ -284,7 +284,7 @@ namespace Flames
 #endif
         }
 
-        static bool checkedOnMono, runningOnMono;
+        public static bool checkedOnMono, runningOnMono;
         public static bool RunningOnMono() {
             if (!checkedOnMono) {
                 runningOnMono = Type.GetType("Mono.Runtime") != null;
