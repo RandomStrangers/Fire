@@ -303,7 +303,7 @@ namespace Flames.Modules.Relay.Discord
             };
             return new JsonObject()
             {
-                { "since",      null },
+                { "since",      Server.StartTime },
                 { "activities", new JsonArray() { activity } },
                 { "status",     Status.ToString() },
                 { "afk",        false }

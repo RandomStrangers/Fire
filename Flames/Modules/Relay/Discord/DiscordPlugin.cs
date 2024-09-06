@@ -82,7 +82,7 @@ namespace Flames.Modules.Relay.Discord
     }
     
     public enum PresenceStatus { online, dnd, idle, invisible }
-    public enum PresenceActivity { Playing = 0, Listening = 2, Watching = 3, Competing = 5 }
+    public enum PresenceActivity { Playing = 0, Listening = 2, Watching = 3, Competing = 5, None = 6 }
     
     public sealed class DiscordPlugin : Plugin 
     {
