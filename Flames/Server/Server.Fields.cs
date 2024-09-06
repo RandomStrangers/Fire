@@ -40,7 +40,7 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.1.6";
+        public const string InternalVersion = "1.0.1.7";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
         static string fullName;
@@ -51,7 +51,7 @@ namespace Flames
         }
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.0.4.0";
+        public const string InternalVersion = "9.0.4.1";
         public static string Version { get { return InternalVersion; } }
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 
