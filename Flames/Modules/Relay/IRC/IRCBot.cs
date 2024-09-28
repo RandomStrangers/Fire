@@ -1,7 +1,7 @@
 ﻿/*
     Copyright 2011 MCForge
         
-    Dual-licensed under the Educational Community License, Version 2.0 and
+    Dual-licensed under the    Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
     not use this file except in compliance with the Licenses. You may
     obtain a copy of the Licenses at
@@ -25,7 +25,7 @@ namespace Flames.Modules.Relay.IRC
     public enum IRCControllerVerify { None, HalfOp, OpChannel };
     
     /// <summary> Manages a connection to an IRC server, and handles associated events. </summary>
-    public sealed class IRCBot : RelayBot 
+    public class IRCBot : RelayBot 
     {
         internal Connection conn;
         string botNick;
@@ -47,7 +47,7 @@ namespace Flames.Modules.Relay.IRC
         
         
         static char[] newline = { '\n' };
-        protected override void DoSendMessage(string channel, string message) {
+        public override void DoSendMessage(string channel, string message) {
             if (!ready) return;
             message = ConvertMessage(message);
             
@@ -74,11 +74,11 @@ namespace Flames.Modules.Relay.IRC
             if (string.IsNullOrEmpty(channel)) return;
             conn.SendJoin(channel);
         }
-        
-        
-        protected override bool CanReconnect { get { return canReconnect; } }
-        
-        protected override void DoConnect() {
+
+
+        public override bool CanReconnect { get { return canReconnect; } }
+
+        public override void DoConnect() {
             ready   = false;
             botNick = Server.Config.IRCNick.Replace(" ", "");
             
@@ -99,12 +99,12 @@ namespace Flames.Modules.Relay.IRC
             conn.ServerPassword = usePass ? Server.Config.IRCPassword : "*";
             conn.Connect();
         }
-        
-        protected override void DoReadLoop() {
+
+        public override void DoReadLoop() {
             conn.ReceiveIRCMessages();
         }
-        
-        protected override void DoDisconnect(string reason) {
+
+        public override void DoDisconnect(string reason) {
             nicks.Clear();
             try {
                 conn.Disconnect(reason);
@@ -112,9 +112,9 @@ namespace Flames.Modules.Relay.IRC
                 // no point logging disconnect failures
             }
             UnhookIRCEvents();
-        }       
-        
-        protected override void UpdateConfig() {
+        }
+
+        public override void UpdateConfig() {
             Channels     = Server.Config.IRCChannels.SplitComma();
             OpChannels   = Server.Config.IRCOpChannels.SplitComma();
             IgnoredUsers = Server.Config.IRCIgnored.SplitComma();
@@ -136,8 +136,8 @@ namespace Flames.Modules.Relay.IRC
             "&e", "&a", "&3", "&b", "&9", "&d", "&8", "&7",
         };
         static readonly Regex ircTwoColorCode = new Regex("(\x03\\d{1,2}),\\d{1,2}");
-        
-        protected override string ParseMessage(string input) {
+
+        public override string ParseMessage(string input) {
             // get rid of background color component of some IRC color codes.
             input = ircTwoColorCode.Replace(input, "$1");
             StringBuilder sb = new StringBuilder(input);
@@ -184,9 +184,9 @@ namespace Flames.Modules.Relay.IRC
             }
             return sb.ToString();
         }
-        
-      
-        protected override bool CheckController(string userID, ref string error) {
+
+
+        public override bool CheckController(string userID, ref string error) {
             bool foundAtAll = false;
             foreach (string chan in Channels) {
                 if (nicks.VerifyNick(chan, userID, ref error, ref foundAtAll)) return true;
@@ -371,3 +371,4 @@ namespace Flames.Modules.Relay.IRC
         public const string UNDERLINE = "\x1F";
     }
 }
+

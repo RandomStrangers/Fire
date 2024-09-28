@@ -63,7 +63,12 @@ namespace Flames.Events
             IEvent<IMethod> handler = Find(method);
             handlers.Remove(handler);
         }
-        
+        public static void Unregister(IMethod method, Priority priority)
+        {
+            IEvent<IMethod> handler = Find(method);
+            handlers.Remove(handler);
+        }
+
         public static IEvent<IMethod> Find(IMethod method) {
             Delegate methodDel = (Delegate)((object)method);
             IEvent<IMethod>[] items = handlers.Items;

@@ -34,34 +34,26 @@ namespace Flames
         public static event VoidHandler OnSettingsUpdate;
         public static ServerConfig Config = new ServerConfig();
         public static DateTime StartTime;
-        
+        public static TimeSpan UpTime = DateTime.UtcNow - StartTime;
         public static PlayerExtList AutoloadMaps;
         public static PlayerMetaList RankInfo = new PlayerMetaList("text/rankinfo.txt");
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.1.7";
-        public static string Version { get { return InternalVersion; } }
+        public const string InternalVersion = "1.0.1.8";
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
-        static string fullName;
-        public static string SoftwareNameVersioned {
-            // By default, if SoftwareName gets externally changed, that is reflected in SoftwareNameVersioned too
-            get { return fullName ?? SoftwareName + " " + Version; }
-            set { fullName = value; }
-        }
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "9.0.4.1";
-        public static string Version { get { return InternalVersion; } }
+        public const string InternalVersion = "9.0.4.2";
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
-
+#endif
+        public static string Version { get { return InternalVersion; } }
         static string fullName;
         public static string SoftwareNameVersioned
         {
             get { return fullName ?? SoftwareName + " " + Version; }
             set { fullName = value; }
         }
-#endif
         public static INetListen Listener = new TcpListen();
 
         //Other

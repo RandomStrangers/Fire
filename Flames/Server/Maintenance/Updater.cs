@@ -31,7 +31,7 @@ namespace Flames
         public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/Flame/";
         public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/Flame/Uploads";
         public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
-        public static string WikiURL = "https://github.com/UnknownShadow200/MCGalaxy/wiki/";
+        public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
         const string CurrentVersionURL = UpdatesURL + "dev.txt";
         const string dllURL = UpdatesURL + "Flames_dev.dll";

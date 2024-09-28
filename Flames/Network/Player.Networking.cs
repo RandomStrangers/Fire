@@ -30,7 +30,7 @@ namespace Flames
         public void MessageLines(IEnumerable<string> lines) {
             foreach (string line in lines) { Message(line); }
         }
-        
+
         public void Message(string message, object a0) { Message(string.Format(message, a0)); }  
         public void Message(string message, object a0, object a1) { Message(string.Format(message, a0, a1)); }       
         public void Message(string message, object a0, object a1, object a2) { Message(string.Format(message, a0, a1, a2)); }       

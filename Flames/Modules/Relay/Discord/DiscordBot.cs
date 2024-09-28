@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -34,16 +34,17 @@ namespace Flames.Modules.Relay.Discord
         public override string GetMessagePrefix() {
             if (string.IsNullOrEmpty(ReferencedUser))
                 return "";
+            
             return "@" + ReferencedUser + " ";
         }
     }
     
-    public sealed class DiscordBot : RelayBot 
+    public class DiscordBot : RelayBot
     {
-        DiscordApiClient api;
-        DiscordWebsocket socket;
-        DiscordSession session;
-        string botUserID;
+        protected DiscordApiClient api;
+        protected DiscordWebsocket socket;
+        protected DiscordSession session;
+        protected string botUserID;
         
         Dictionary<string, byte> channelTypes = new Dictionary<string, byte>();
         const byte CHANNEL_DIRECT = 0;
@@ -68,13 +69,13 @@ namespace Flames.Modules.Relay.Discord
         public string APIHost = "https://discord.com/api/v10";
         public string WSHost  = "gateway.discord.gg";
         public string WSPath  = "/?v=10&encoding=json";
-        
-        
-        protected override bool CanReconnect {
+
+
+        public override bool CanReconnect {
             get { return canReconnect && (socket == null || socket.CanReconnect); }
         }
-        
-        protected override void DoConnect() {
+
+        public override void DoConnect() {
             socket = new DiscordWebsocket(WSPath);
             socket.Session   = session;
             socket.Token     = Config.BotToken;
@@ -88,6 +89,7 @@ namespace Flames.Modules.Relay.Discord
             socket.OnResumed       = HandleResumedEvent;
             socket.OnMessageCreate = HandleMessageEvent;
             socket.OnChannelCreate = HandleChannelEvent;
+            socket.OnGatewayEvent  = HandleGatewayEvent;
             socket.Connect();
         }
                 
@@ -106,8 +108,8 @@ namespace Flames.Modules.Relay.Discord
             // TODO can we ever get an IOException wrapping an IOException?
             return null;
         }
-        
-        protected override void DoReadLoop() {
+
+        public override void DoReadLoop() {
             try {
                 socket.ReadLoop();
             } catch (Exception ex) {
@@ -119,8 +121,8 @@ namespace Flames.Modules.Relay.Discord
                 throw;
             }
         }
-        
-        protected override void DoDisconnect(string reason) {
+
+        public override void DoDisconnect(string reason) {
             try {
                 socket.Disconnect();
             } catch {
@@ -139,8 +141,8 @@ namespace Flames.Modules.Relay.Discord
                        "which allows pinging all users on Discord from in-game. " +
                        "It is recommended that this option be disabled.", DiscordConfig.PROPS_PATH);
         }
-        
-        protected override void UpdateConfig() {
+
+        public override void UpdateConfig() {
             Channels     = Config.Channels.SplitComma();
             OpChannels   = Config.OpChannels.SplitComma();
             IgnoredUsers = Config.IgnoredUsers.SplitComma();
@@ -167,7 +169,7 @@ namespace Flames.Modules.Relay.Discord
             ChatTokens.LoadTokens(lines, (phrase, replacement) => 
                                   {
                                       filter_triggers.Add(phrase);
-                                      filter_replacements.Add(MarkdownToSpecial(replacement));
+                                      filter_replacements.Add(DiscordUtils.MarkdownToSpecial(replacement));
                                   });
         }
         
@@ -315,14 +317,18 @@ namespace Flames.Modules.Relay.Discord
             }
             OnReady();
         }
+        
+        void HandleGatewayEvent(string eventName, JsonObject data) {
+            OnGatewayEventReceivedEvent.Call(this, eventName, data);
+        }
 
 
         static bool IsEscaped(char c) {
             // To match Discord: \a --> \a, \* --> *
             return (c >  ' ' && c <= '/') || (c >= ':' && c <= '@') 
                 || (c >= '[' && c <= '`') || (c >= '{' && c <= '~');
-        }        
-        protected override string ParseMessage(string input) {
+        }
+        public override string ParseMessage(string input) {
             StringBuilder sb = new StringBuilder(input);
             SimplifyCharacters(sb);
             
@@ -355,7 +361,7 @@ namespace Flames.Modules.Relay.Discord
         DateTime nextUpdate;
 
         public void UpdateDiscordStatus() {
-            TimeSpan delay = default;
+            TimeSpan delay = default(TimeSpan);
             DateTime now   = DateTime.UtcNow;
 
             // websocket gets disconnected with code 4008 if try to send too many updates too quickly
@@ -381,46 +387,34 @@ namespace Flames.Modules.Relay.Discord
             }
 
             DiscordWebsocket s = socket;
-            // Constantly do this to avoid bot status not updating
-            socket.GetStatus = GetStatusMessage;
             // websocket gets disconnected with code 4003 if tries to send data before identifying
             //  https://discord.com/developers/docs/topics/opcodes-and-status-codes
             if (s == null || !s.SentIdentify) return;
-             
+
             try { s.UpdateStatus(); } catch { }
         }
 
-        public string GetStatusMessage()
-        {
-            fakeGuest.group = Group.DefaultRank;
-            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank);
-            string numOnline = PlayerInfo.NonHiddenUniqueIPCount().ToString();
-            if (Config.StatusMessage.Contains("{PLAYERS}"))
-            {
-                return Config.StatusMessage.Replace("{PLAYERS}", numOnline);
-            }
-            if (Config.StatusMessage.Contains("{SERVER}"))
-            {
-                return Config.StatusMessage.Replace("{SERVER}", Colors.Strip(Server.Config.Name));
-            }
-            if (Config.StatusMessage.CaselessContains("players") && numOnline == "1")
-            {
-                return Config.StatusMessage.Replace("players", "player");
-            }
-            return Config.StatusMessage;
+        string GetStatusMessage() {
+            fakeGuest.group     = Group.DefaultRank;
+            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank); 
+
+            string numOnline = NumberUtils.StringifyInt(online.Count);
+            return Config.StatusMessage.Replace("{PLAYERS}", numOnline);
         }
 
 
-        protected override void OnStart() {
-            session = new DiscordSession();
-            base.OnStart();
+        public override void OnStart() {
+            DiscordSession s = new DiscordSession();
+            s.Intents = DiscordWebsocket.DEFAULT_INTENTS | Config.ExtraIntents;
+            session   = s;
             
+            base.OnStart();            
             OnPlayerConnectEvent.Register(HandlePlayerConnect, Priority.Low);
             OnPlayerDisconnectEvent.Register(HandlePlayerDisconnect, Priority.Low);
             OnPlayerActionEvent.Register(HandlePlayerAction, Priority.Low);
         }
-        
-        protected override void OnStop() {
+
+        public override void OnStop() {
             socket = null;
             if (api != null) {
                 api.StopAsync();
@@ -447,8 +441,8 @@ namespace Flames.Modules.Relay.Discord
             // can be null in gap between initial connection and ready event received
             if (api != null) api.QueueAsync(msg);
         }
-        
-        protected override void DoSendMessage(string channel, string message) {
+
+        public override void DoSendMessage(string channel, string message) {
             message = ConvertMessage(message);
             const int MAX_MSG_LEN = 2000;
             
@@ -465,29 +459,18 @@ namespace Flames.Modules.Relay.Discord
                 Send(msg);
             }
         }
-        
+
         /// <summary> Formats a message for displaying on Discord </summary>
         /// <example> Escapes markdown characters such as _ and * </example>
-        string ConvertMessage(string message) {
+        public string ConvertMessage(string message) {
             message = ConvertMessageCommon(message);
             message = Colors.StripUsed(message);
-            message = EscapeMarkdown(message);
-            message = SpecialToMarkdown(message);
+            message = DiscordUtils.EscapeMarkdown(message);
+            message = DiscordUtils.SpecialToMarkdown(message);
             return message;
         }
-        
-        static readonly string[] markdown_special = {  @"\",  @"*",  @"_",  @"~",  @"`",  @"|",  @"-",  @"#" };
-        static readonly string[] markdown_escaped = { @"\\", @"\*", @"\_", @"\~", @"\`", @"\|", @"\-", @"\#" };
-        static string EscapeMarkdown(string message) {
-            // don't let user use bold/italic etc markdown
-            for (int i = 0; i < markdown_special.Length; i++) 
-            {
-                message = message.Replace(markdown_special[i], markdown_escaped[i]);
-            }
-            return message;
-        }
-        
-        protected override string PrepareMessage(string message) {
+
+        public override string PrepareMessage(string message) {
             // allow uses to do things like replacing '+' with ':green_square:'
             for (int i = 0; i < filter_triggers.Count; i++) 
             {
@@ -495,19 +478,19 @@ namespace Flames.Modules.Relay.Discord
             }
             return message;
         }
-        
-        
+
+
         // all users are already verified by Discord
-        protected override bool CheckController(string userID, ref string error) { return true; }
-        
-        protected override string UnescapeFull(Player p) {
+        public override bool CheckController(string userID, ref string error) { return true; }
+
+        public override string UnescapeFull(Player p) {
             return BOLD + base.UnescapeFull(p) + BOLD;
-        }        
-        protected override string UnescapeNick(Player p) {
+        }
+        public override string UnescapeNick(Player p) {
             return BOLD + base.UnescapeNick(p) + BOLD;
         }
-        
-        protected override void MessagePlayers(RelayPlayer p) {
+
+        public override void MessagePlayers(RelayPlayer p) {
             ChannelSendEmbed embed = new ChannelSendEmbed(p.ChannelID);
             int total;
             List<OnlineListEntry> entries = PlayerInfo.GetOnlineList(p, p.Rank, out total);
@@ -525,7 +508,9 @@ namespace Flames.Modules.Relay.Discord
                     ConvertMessage(FormatPlayers(p, e))
                 );
             }
+            
             AddGameStatus(embed);
+            OnSendingWhoEmbedEvent.Call(this, p.User, ref embed);
             Send(embed);
         }
         
@@ -550,7 +535,7 @@ namespace Flames.Modules.Relay.Discord
             return string.Format(format, p.FormatNick(pl), 
                                  // level name must not have _ escaped as the level name is in a code block -
                                  //  otherwise the escaped "\_" actually shows as "\_" instead of "_" 
-                                 pl.level.name.Replace('_', UNDERSCORE),
+                                 pl.level.name.Replace('_', DiscordUtils.UNDERSCORE),
                                  flags);
         }
         
@@ -572,38 +557,11 @@ namespace Flames.Modules.Relay.Discord
         }
         
         
-        // these characters are chosen specifically to lie within the unspecified unicode range,
-        //  as those characters are "application defined" (EDCX = Escaped Discord Character #X)
-        //  https://en.wikipedia.org/wiki/Private_Use_Areas
-        const char UNDERSCORE = '\uEDC1'; // _
-        const char TILDE      = '\uEDC2'; // ~
-        const char STAR       = '\uEDC3'; // *
-        const char GRAVE      = '\uEDC4'; // `
-        const char BAR        = '\uEDC5'; // |
-        
-        public const string UNDERLINE     = "\uEDC1\uEDC1"; // __
-        public const string BOLD          = "\uEDC3\uEDC3"; // **
-        public const string ITALIC        = "\uEDC1"; // _
-        public const string CODE          = "\uEDC4"; // `
-        public const string SPOILER       = "\uEDC5\uEDC5"; // ||
-        public const string STRIKETHROUGH = "\uEDC2\uEDC2"; // ~~
-        
-        static string MarkdownToSpecial(string input) {
-            return input
-                .Replace('_', UNDERSCORE)
-                .Replace('~', TILDE)
-                .Replace('*', STAR)
-                .Replace('`', GRAVE)
-                .Replace('|', BAR);
-        }
-        
-        static string SpecialToMarkdown(string input) {
-            return input
-                .Replace(UNDERSCORE, '_')
-                .Replace(TILDE,      '~')
-                .Replace(STAR,       '*')
-                .Replace(GRAVE,      '`')
-                .Replace(BAR,        '|');
-        }
+        public const string UNDERLINE     = DiscordUtils.UNDERLINE;
+        public const string BOLD          = DiscordUtils.BOLD;
+        public const string ITALIC        = DiscordUtils.ITALIC;
+        public const string CODE          = DiscordUtils.CODE;
+        public const string SPOILER       = DiscordUtils.SPOILER;
+        public const string STRIKETHROUGH = DiscordUtils.STRIKETHROUGH;
     }
 }

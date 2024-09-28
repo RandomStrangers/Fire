@@ -289,18 +289,18 @@ namespace Flames.Network
         public override IPAddress IP { get { return clientIP ?? s.IP; } }
         public override bool LowLatency { set { s.LowLatency = value; } }
 
-        protected override void SendRaw(byte[] data, SendFlags flags) {
+        public override void SendRaw(byte[] data, SendFlags flags) {
             s.Send(data, flags);
         } 
         public override void Send(byte[] buffer, SendFlags flags) {
             s.Send(WrapData(buffer), flags);
         }
-        
-        protected override void HandleData(byte[] data, int len) {
+
+        public override void HandleData(byte[] data, int len) {
             HandleReceived(data, len);
         }
-        
-        protected override void OnDisconnected(int reason) {
+
+        public override void OnDisconnected(int reason) {
             if (protocol != null) protocol.Disconnect();
             s.Close();
         }
@@ -309,7 +309,7 @@ namespace Flames.Network
 
 
         // Websocket proxying support
-        protected override void OnGotHeader(string name, string value) {
+        public override void OnGotHeader(string name, string value) {
             base.OnGotHeader(name, value);
 
             if (name == "X-Real-IP" && Server.Config.AllowIPForwarding && IsTrustedForwarderIP()) {

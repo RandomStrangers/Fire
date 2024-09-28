@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -58,6 +58,9 @@ namespace Flames.Modules.Relay.Discord
         [ConfigBool("embed-show-game-statuses", "Embeds", true)]
         public bool EmbedGameStatuses = true;
         
+        [ConfigInt("extra-intents", "Intents", 0)]
+        public int ExtraIntents;
+        
         public const string PROPS_PATH = "properties/discordbot.properties";
         static ConfigElement[] cfg;
         
@@ -82,7 +85,7 @@ namespace Flames.Modules.Relay.Discord
     }
     
     public enum PresenceStatus { online, dnd, idle, invisible }
-    public enum PresenceActivity { Playing = 0, Listening = 2, Watching = 3, Competing = 5, None = 6 }
+    public enum PresenceActivity { Playing = 0, Listening = 2, Watching = 3, Competing = 5 }
     
     public sealed class DiscordPlugin : Plugin 
     {
@@ -91,8 +94,14 @@ namespace Flames.Modules.Relay.Discord
         public static DiscordConfig Config = new DiscordConfig();
         public static DiscordBot Bot = new DiscordBot();
         
+        static Command cmdDiscordBot   = new CmdDiscordBot();
+        static Command cmdDiscordCtrls = new CmdDiscordControllers();
+        
         public override void Load(bool startup) {
             Server.EnsureDirectoryExists("text/discord");
+            Command.Register(cmdDiscordBot);
+            Command.Register(cmdDiscordCtrls);
+
             Bot.Config = Config;
             Bot.ReloadConfig();
             Bot.Connect();
@@ -100,6 +109,8 @@ namespace Flames.Modules.Relay.Discord
         }
         
         public override void Unload(bool shutdown) {
+            Command.Unregister(cmdDiscordBot, cmdDiscordCtrls);
+            
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Bot.Disconnect("Disconnecting Discord bot");
         }
@@ -107,15 +118,15 @@ namespace Flames.Modules.Relay.Discord
         void OnConfigUpdated() { Bot.ReloadConfig(); }
     }
     
-    public sealed class CmdDiscordBot : RelayBotCmd 
+    sealed class CmdDiscordBot : RelayBotCmd 
     {
         public override string name { get { return "DiscordBot"; } }
-        protected override RelayBot Bot { get { return DiscordPlugin.Bot; } }
+        public override RelayBot Bot { get { return DiscordPlugin.Bot; } }
     }
     
-    public sealed class CmdDiscordControllers : BotControllersCmd 
+    sealed class CmdDiscordControllers : BotControllersCmd 
     {
         public override string name { get { return "DiscordControllers"; } }
-        protected override RelayBot Bot { get { return DiscordPlugin.Bot; } }
+        public override RelayBot Bot { get { return DiscordPlugin.Bot; } }
     }
 }

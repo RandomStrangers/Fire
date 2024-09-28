@@ -616,12 +616,16 @@
     <Compile Include="Modules\Relay\BotControllersCmd.cs" />
     <Compile Include="Modules\Relay\Discord\DiscordApiClient.cs" />
     <Compile Include="Modules\Relay\Discord\DiscordBot.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordBotEvents.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordMessages.cs" />
     <Compile Include="Modules\Relay\Discord\DiscordPlugin.cs" />
+    <Compile Include="Modules\Relay\Discord\DiscordUtils.cs" />
     <Compile Include="Modules\Relay\Discord\DiscordWebsocket.cs" />
     <Compile Include="Modules\Relay\IRC\IRCNickList.cs" />
     <Compile Include="Modules\Relay\IRC\IRCPlugin.cs" />
     <Compile Include="Modules\Relay\RelayBot.cs" />
     <Compile Include="Modules\Relay\RelayBotCmd.cs" />
+    <Compile Include="Modules\Relay\RelayBotEvents.cs" />
     <Compile Include="Modules\Security\IPThrottler.cs" />
     <Compile Include="Network\BaseWebSocket.cs" />
     <Compile Include="Network\ClassicProtocol.cs" />
@@ -676,6 +680,7 @@
     <Compile Include="Server\Maintenance\ZipWriter.cs" />
     <Compile Include="util\Formatting\Wildcard.cs" />
     <Compile Include="util\ImageUtils.cs" />
+    <Compile Include="util\NumberUtils.cs" />
     <Compile Include="util\OperatingSystem.cs" />
     <Compile Include="Server\Server.cs" />
     <Compile Include="Server\Server.DB.cs" />

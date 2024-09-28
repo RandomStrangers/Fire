@@ -47,14 +47,17 @@ namespace Flames.Core
             // Really clunky design, but it works
             Level lvl = p.level;
             Command command = Command.Find(cmd);
-            bool IsDrawingCmd = command.type.CaselessEq(CommandTypes.Building);
-
-            if (IsDrawingCmd && !lvl.Config.Drawing)
+            if (command != null)
             {
-                p.Message("Drawing commands are turned off on this map.");
-                p.cancelcommand = true;
-                Vec3S32 pos = p.Pos.BlockCoords;
-                p.RevertBlock((ushort)pos.X, (ushort)pos.Y, (ushort)pos.Z);
+                bool IsDrawingCmd = command.type.CaselessEq(CommandTypes.Building);
+
+                if (IsDrawingCmd && !lvl.Config.Drawing)
+                {
+                    p.Message("Drawing commands are turned off on this map.");
+                    p.cancelcommand = true;
+                    Vec3S32 pos = p.Pos.BlockCoords;
+                    p.RevertBlock((ushort)pos.X, (ushort)pos.Y, (ushort)pos.Z);
+                }
             }
             if (!Server.Config.CoreSecretCommands) return;
             // DO NOT REMOVE THE TWO COMMANDS BELOW, /PONY AND /RAINBOWDASHLIKESCOOLTHINGS. -EricKilla

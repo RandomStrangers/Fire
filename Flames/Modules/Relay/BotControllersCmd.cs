@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -15,14 +15,14 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
- 
+
 namespace Flames.Modules.Relay 
 {
     public abstract class BotControllersCmd : Command2 
     {
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
-        protected abstract RelayBot Bot { get; }
+        public abstract RelayBot Bot { get; }
 
         public override void Use(Player p, string message, CommandData data) {
             if (message.Length == 0) { Help(p); return; }

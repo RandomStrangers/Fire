@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -26,13 +26,21 @@ namespace Flames.Modules.Relay.IRC
 
         public static IRCBot Bot = new IRCBot();
         
+        static Command cmdIrcBot   = new CmdIRCBot();
+        static Command cmdIrcCtrls = new CmdIrcControllers();
+        
         public override void Load(bool startup) {
+            Command.Register(cmdIrcBot);
+            Command.Register(cmdIrcCtrls);
+
             Bot.ReloadConfig();
             Bot.Connect();
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
         }
         
         public override void Unload(bool shutdown) {
+            Command.Unregister(cmdIrcBot, cmdIrcCtrls);
+            
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Bot.Disconnect("Disconnecting IRC bot");
         }
@@ -40,19 +48,19 @@ namespace Flames.Modules.Relay.IRC
         void OnConfigUpdated() { Bot.ReloadConfig(); }
     }
     
-    public sealed class CmdIRCBot : RelayBotCmd 
+    sealed class CmdIRCBot : RelayBotCmd 
     {
         public override string name { get { return "IRCBot"; } }
         public override CommandAlias[] Aliases {
             get { return new[] { new CommandAlias("ResetBot", "reset"), new CommandAlias("ResetIRC", "reset") }; }
         }
-        protected override RelayBot Bot { get { return IRCPlugin.Bot; } }
+        public override RelayBot Bot { get { return IRCPlugin.Bot; } }
     }
     
-    public sealed class CmdIrcControllers : BotControllersCmd 
+    sealed class CmdIrcControllers : BotControllersCmd 
     {
         public override string name { get { return "IRCControllers"; } }
         public override string shortcut { get { return "IRCCtrl"; } }
-        protected override RelayBot Bot { get { return IRCPlugin.Bot; } }
+        public override RelayBot Bot { get { return IRCPlugin.Bot; } }
     }
 }

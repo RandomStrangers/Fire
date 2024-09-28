@@ -25,11 +25,11 @@ namespace Flames.Network
     /// <remarks> See RFC 6455 for websocket specification </remarks>
     public abstract class BaseWebSocket : INetSocket, INetProtocol 
     {
-        protected bool conn, upgrade;
-        protected bool readingHeaders = true;
-        
+        public bool conn, upgrade;
+        public bool readingHeaders = true;
+
         /// <summary> Computes a base64-encoded handshake verification key </summary>
-        protected static string ComputeKey(string rawKey) {
+        public static string ComputeKey(string rawKey) {
             // RFC 6455, section 1.3 - Opening Handshake
             //   For this header field, the server has to take the value (as present
             //    in the header field... and concatenate this with the GUID
@@ -41,9 +41,9 @@ namespace Flames.Network
             byte[] raw = sha.ComputeHash(Encoding.ASCII.GetBytes(key));
             return Convert.ToBase64String(raw);
         }
-        
-        protected abstract void OnGotAllHeaders();
-        protected abstract void OnGotHeader(string name, string value);
+
+        public abstract void OnGotAllHeaders();
+        public abstract void OnGotHeader(string name, string value);
 
         void ProcessHeader(string raw) {
             // end of all headers
@@ -95,16 +95,16 @@ namespace Flames.Network
         const int state_extLen2 = 3;
         const int state_mask    = 4;
         const int state_data    = 5;
-        
-        protected const int OPCODE_CONTINUED  = 0;
-        protected const int OPCODE_TEXT       = 1;
-        protected const int OPCODE_BINARY     = 2;
-        protected const int OPCODE_DISCONNECT = 8;        
-        protected const int FIN = 0x80;
-        
-        protected const int REASON_NORMAL         = 1000;
-        protected const int REASON_INVALID_DATA   = 1003;
-        protected const int REASON_EXCESSIVE_SIZE = 1009;
+
+        public const int OPCODE_CONTINUED  = 0;
+        public const int OPCODE_TEXT       = 1;
+        public const int OPCODE_BINARY     = 2;
+        public const int OPCODE_DISCONNECT = 8;
+        public const int FIN = 0x80;
+
+        public const int REASON_NORMAL         = 1000;
+        public const int REASON_INVALID_DATA   = 1003;
+        public const int REASON_EXCESSIVE_SIZE = 1009;
         
         int GetDisconnectReason() {
             if (frameLen < 2) return REASON_NORMAL;
@@ -218,8 +218,8 @@ namespace Flames.Network
             }
             return offset;
         }
-        
-        protected static byte[] WrapDisconnect(int reason) {
+
+        public static byte[] WrapDisconnect(int reason) {
             byte[] packet = new byte[4];
             packet[0] = OPCODE_DISCONNECT | FIN;
             packet[1] = 2;
@@ -229,7 +229,7 @@ namespace Flames.Network
         }
         
         public void Disconnect() { Disconnect(REASON_NORMAL); }
-        protected void Disconnect(int reason) {
+        public void Disconnect(int reason) {
             try {
                 SendRaw(WrapDisconnect(reason), SendFlags.Synchronous);
             } catch {
@@ -237,14 +237,14 @@ namespace Flames.Network
             }
             OnDisconnected(reason);
         }
-        
+
         /// <summary> Called when either side ends the connection for the given reason </summary>
-        protected abstract void OnDisconnected(int reason);
-        
-        protected abstract void HandleData(byte[] data, int len);
-        
+        public abstract void OnDisconnected(int reason);
+
+        public abstract void HandleData(byte[] data, int len);
+
         /// <summary> Sends data to the underlying socket without wrapping the data in a websocket frame </summary>
-        protected abstract void SendRaw(byte[] data, SendFlags flags);
+        public abstract void SendRaw(byte[] data, SendFlags flags);
     }
     
     /// <summary> Abstracts a server side WebSocket </summary>
@@ -267,8 +267,8 @@ namespace Flames.Network
             SendRaw(Encoding.ASCII.GetBytes(headers), SendFlags.None);
             readingHeaders = false;
         }
-        
-        protected override void OnGotAllHeaders() {
+
+        public override void OnGotAllHeaders() {
             if (conn && upgrade && version && verKey != null) {
                 AcceptConnection();
             } else {
@@ -276,17 +276,17 @@ namespace Flames.Network
                 Close();
             }
         }
-        
-        protected override void OnGotHeader(string name, string value) {
+
+        public override void OnGotHeader(string name, string value) {
             if (name.CaselessEq("Sec-WebSocket-Version")) {
                 version = value.CaselessEq("13");
             } else if (name.CaselessEq("Sec-WebSocket-Key")) {
                 verKey  = value;
             }
         }
-        
+
         /// <summary> Wraps the given data in a websocket frame </summary>
-        protected static byte[] WrapData(byte[] data) {
+        public static byte[] WrapData(byte[] data) {
             int headerLen = data.Length >= 126 ? 4 : 2;
             byte[] packet = new byte[headerLen + data.Length];
             packet[0] = OPCODE_BINARY | FIN;
@@ -306,7 +306,7 @@ namespace Flames.Network
     /// <summary> Abstracts a client side WebSocket </summary>
     public abstract class ClientWebSocket : BaseWebSocket 
     {
-        protected string path = "/";
+        public string path = "/";
         string verKey;
         // TODO: use a random securely generated key
         const string key = "xTNDiuZRoMKtxrnJDWyLmA==";
@@ -314,8 +314,8 @@ namespace Flames.Network
         void AcceptConnection() {
             readingHeaders = false;
         }
-        
-        protected override void OnGotAllHeaders() {
+
+        public override void OnGotAllHeaders() {
             if (conn && upgrade && verKey == ComputeKey(key)) {
                 AcceptConnection();
             } else {
@@ -323,15 +323,15 @@ namespace Flames.Network
                 Close();
             }
         }
-        
-        protected override void OnGotHeader(string name, string value) {
+
+        public override void OnGotHeader(string name, string value) {
             if (name.CaselessEq("Sec-WebSocket-Accept")) {
                 verKey = value;
             }
         }
-        
+
         /// <summary> Wraps the given data in a websocket frame </summary>
-        protected static byte[] WrapData(byte[] data) {
+        public static byte[] WrapData(byte[] data) {
             int headerLen = data.Length >= 126 ? 4 : 2;
             byte[] packet = new byte[headerLen + 4 + data.Length];
             packet[0] = OPCODE_TEXT | FIN;
@@ -351,13 +351,13 @@ namespace Flames.Network
         public override void Send(byte[] buffer, SendFlags flags) {
             SendRaw(WrapData(buffer), flags);
         }
-        
-        
-        protected void WriteHeader(string header) {
+
+
+        public void WriteHeader(string header) {
             SendRaw(Encoding.ASCII.GetBytes(header + "\r\n"), SendFlags.None);
         }
-        
-        protected virtual void WriteCustomHeaders() { }
+
+        public virtual void WriteCustomHeaders() { }
         
         public override void Init() {
             WriteHeader("GET " + path + " HTTP/1.1");

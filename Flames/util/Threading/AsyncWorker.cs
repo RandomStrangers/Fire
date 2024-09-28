@@ -26,13 +26,13 @@ namespace Flames
     {
         AutoResetEvent handle = new AutoResetEvent(false);
         volatile bool terminating;
-        
-        protected Queue<T> queue = new Queue<T>();
-        protected readonly object queueLock = new object();
-        
-        protected abstract void HandleNext();
+
+        public Queue<T> queue = new Queue<T>();
+        public readonly object queueLock = new object();
+
+        public abstract void HandleNext();
         /// <summary> Name to assign the worker thread </summary>
-        protected abstract string ThreadName { get; }
+        public abstract string ThreadName { get; }
         
         void SendLoop() {
             for (;;) {
@@ -60,8 +60,8 @@ namespace Flames
                 // for very rare case where handle's already been destroyed
             }
         }
-        
-        protected void WaitForWork() { handle.WaitOne(); }
+
+        public void WaitForWork() { handle.WaitOne(); }
         
         
         /// <summary> Starts the background worker thread </summary>
