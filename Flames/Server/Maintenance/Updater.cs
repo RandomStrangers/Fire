@@ -85,7 +85,6 @@ namespace Flames
             {
                 try
                 {
-                    Directory.Delete("New", true);
                     DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
                     "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", 
                     "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll", "sqlite3_x64.dll", "sqlite3_x32.dll");
@@ -119,10 +118,12 @@ namespace Flames
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
                 ZipFile.ExtractToDirectory("NewFlames.zip", "New");
+                string Dir = Directory.GetCurrentDirectory() + "/";
                 foreach (string file in Directory.GetFiles("New"))
                 {
-                    File.Move(file, "../" + file);
+                    File.Move(file, Dir + file);
                 }
+                Directory.Delete("New", true);
                 //File.Move("Flames_.update", "Flames_.dll");
                 //File.Move("Flames.update", "Flames.exe");
                 //File.Move("FlamesCLI.update", "FlamesCLI.exe");
