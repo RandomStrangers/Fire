@@ -119,7 +119,7 @@ namespace Flames
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
                 ZipFile.ExtractToDirectory("NewFlames.zip", "New");
-                foreach (string files in Directory.GetFiles("New"))
+                foreach (string file in Directory.GetFiles("New"))
                 {
                     File.Move(file, "../" + file);
                 }
