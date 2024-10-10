@@ -95,9 +95,9 @@ namespace Flames
                 }
 
                 WebClient client = HttpUtil.CreateWebClient();
-                client.DownloadFile(dllURL, "Flames_.update");
-                client.DownloadFile(guiURL, "Flames.update");
-                client.DownloadFile(cliURL, "FlamesCLI.update");
+                //client.DownloadFile(dllURL, "Flames_.update");
+                //client.DownloadFile(guiURL, "Flames.update");
+                //client.DownloadFile(cliURL, "FlamesCLI.update");
                 client.DownloadFile(ZipURL, "NewFlames.zip");
 
                 Level[] levels = LevelInfo.Loaded.Items;
@@ -118,7 +118,7 @@ namespace Flames
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                ZipFile.ExtractToDirectory("NewFlames.zip", CurrentDir);
+                ZipFile.ExtractToDirectory("NewFlames.zip", CurrentDir + "\\");
 
 
                 //File.Move("Flames_.update", "Flames_.dll");
