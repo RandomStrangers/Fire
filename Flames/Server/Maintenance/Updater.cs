@@ -84,8 +84,8 @@ namespace Flames
             {
                 try
                 {
-                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
-                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe");
+                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update", "NewFlames.update",
+                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", "NewFlames.zip");
                 }
                 catch (Exception ex)
                 {
@@ -96,6 +96,7 @@ namespace Flames
                 client.DownloadFile(dllURL, "Flames_.update");
                 client.DownloadFile(guiURL, "Flames.update");
                 client.DownloadFile(cliURL, "FlamesCLI.update");
+                client.DownloadFile(ZipURL, "NewFlames.zip");
 
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
