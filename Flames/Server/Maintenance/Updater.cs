@@ -85,8 +85,9 @@ namespace Flames
             {
                 try
                 {
-                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update", "MySql.Data.dll",
-                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", "NewFlames.zip");
+                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
+                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", 
+                    "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll", "sqlite3_x64.dll", "sqlite3_x32.dll");
                 }
                 catch (Exception ex)
                 {
