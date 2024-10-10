@@ -85,6 +85,7 @@ namespace Flames
             {
                 try
                 {
+                    Directory.Delete("New", true);
                     DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
                     "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", 
                     "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll", "sqlite3_x64.dll", "sqlite3_x32.dll");
@@ -114,13 +115,14 @@ namespace Flames
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
 
-                string CurrentDir = Directory.GetCurrentDirectory();
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                ZipFile.ExtractToDirectory("NewFlames.zip", CurrentDir + "\\");
-
-
+                ZipFile.ExtractToDirectory("NewFlames.zip", "New");
+                foreach (string files in Directory.GetFiles("New"))
+                {
+                    File.Move(file, "../" + file);
+                }
                 //File.Move("Flames_.update", "Flames_.dll");
                 //File.Move("Flames.update", "Flames.exe");
                 //File.Move("FlamesCLI.update", "FlamesCLI.exe");
