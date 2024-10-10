@@ -17,6 +17,7 @@
  */
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Net;
 using Flames.Network;
 using Flames.Tasks;
@@ -112,9 +113,11 @@ namespace Flames
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
 
+                string CurrentDir = Directory.GetCurrentDirectory();
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
+                ZipFile.ExtractToDirectory("NewFlames.zip", CurrentDir);
 
 
                 File.Move("Flames_.update", "Flames_.dll");
