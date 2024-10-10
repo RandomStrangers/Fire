@@ -35,9 +35,11 @@ namespace Flames
 #if CORE
         const string CurrentVersionURL = UpdatesURL + "dev.txt";
         const string dllURL = UpdatesURL + "Flames_dev.dll";
+        public static string ZipURL = "https://nightly.link/RandomStrangers/Fire/workflows/build/Flame/Harmony.zip";
 #else
         const string CurrentVersionURL = UpdatesURL + "current.txt";
         const string dllURL = UpdatesURL + "Flames_.dll";
+        public static string ZipURL = "https://nightly.link/RandomStrangers/Fire/workflows/build/Flame/Flames.zip";
 #endif
         const string guiURL = UpdatesURL + "Flames.exe";
         const string cliURL = UpdatesURL + "FlamesCLI.exe";
