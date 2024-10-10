@@ -85,7 +85,7 @@ namespace Flames
             {
                 try
                 {
-                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update", "NewFlames.update",
+                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update", "MySql.Data.dll",
                     "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", "NewFlames.zip");
                 }
                 catch (Exception ex)
@@ -120,9 +120,9 @@ namespace Flames
                 ZipFile.ExtractToDirectory("NewFlames.zip", CurrentDir);
 
 
-                File.Move("Flames_.update", "Flames_.dll");
-                File.Move("Flames.update", "Flames.exe");
-                File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                //File.Move("Flames_.update", "Flames_.dll");
+                //File.Move("Flames.update", "Flames.exe");
+                //File.Move("FlamesCLI.update", "FlamesCLI.exe");
                 Server.Stop(true, "Updating server.");
             }
             catch (Exception ex)
