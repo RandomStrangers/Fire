@@ -100,6 +100,10 @@ namespace Flames
                 //client.DownloadFile(dllURL, "Flames_.update");
                 //client.DownloadFile(guiURL, "Flames.update");
                 //client.DownloadFile(cliURL, "FlamesCLI.update");
+                if (Directory.Exists("New") 
+                {
+                   Directory.Delete("New", true);
+                }
                 client.DownloadFile(ZipURL, "NewFlames.zip");
 
                 Level[] levels = LevelInfo.Loaded.Items;
@@ -121,11 +125,12 @@ namespace Flames
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
                 ZipFile.ExtractToDirectory("NewFlames.zip", "New");
                 string Dir = Directory.GetCurrentDirectory() + "/";
-                foreach (string file in Directory.GetFiles("New"))
+                string[] Files = Directory.GetFiles("New");
+                foreach (string file in Files)
                 {
                     File.Move(file, Dir + file);
                 }
-                Directory.Delete("New", true);
+                
                 //File.Move("Flames_.update", "Flames_.dll");
                 //File.Move("Flames.update", "Flames.exe");
                 //File.Move("FlamesCLI.update", "FlamesCLI.exe");
