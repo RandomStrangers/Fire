@@ -100,7 +100,7 @@ namespace Flames
                 //client.DownloadFile(dllURL, "Flames_.update");
                 //client.DownloadFile(guiURL, "Flames.update");
                 //client.DownloadFile(cliURL, "FlamesCLI.update");
-                if (Directory.Exists("New") 
+                if (Directory.Exists("New")) 
                 {
                    Directory.Delete("New", true);
                 }
