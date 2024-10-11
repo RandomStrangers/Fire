@@ -125,22 +125,37 @@ namespace Flames
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
                 
-                string Dir = Server.GetServerDLLPath();
+                string Dir = Server.GetServerDLLPath() + "/";
                 string[] Files = Directory.GetFiles("New");
-                try
+                string FileName = "";
+                foreach (string file in Files)
                 {
-                    foreach (string file in Files)
+                    FileName = file;
+                    try 
                     {
                         File.Move(file, Dir + file);
                     }
+                    catch(Exception ex)
+                    {
+                        Logger.Log(LogType.Warning, "Error moving file " + FileName + ": " + ex);
+                        if (FileName.CaselessEq("FlamesCLI.exe"))
+                        {
+                            File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                        }
+                        else if (FileName.CaselessEq("FlamesCLI.exe"))
+                        {
+                            File.Move("Flames_.update", "Flames_.dll");
+                        }
+                        else if (FileName.CaselessEq("Flames.exe"))
+                        {
+                            File.Move("Flames.update", "Flames.exe");
+                        }
+                        else 
+                        {
+                        }
+                    }
                 }
-                catch(Exception ex) 
-                {
-                    Logger.Log(LogType.Warning, "Error moving files: " + ex);
-                    File.Move("Flames_.update", "Flames_.dll");
-                    File.Move("Flames.update", "Flames.exe");
-                    File.Move("FlamesCLI.update", "FlamesCLI.exe");
-                }
+                    
                 Thread.Sleep(5000);
                 Server.Stop(true, "Updating server.");
             }
