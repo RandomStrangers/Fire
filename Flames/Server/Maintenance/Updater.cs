@@ -124,20 +124,20 @@ namespace Flames
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                
-                string Dir = Server.GetServerDLLPath() + "/";
                 string[] Files = Directory.GetFiles("New");
                 string FileName = "";
+                string NewFile = "";
                 foreach (string file in Files)
                 {
                     FileName = file;
                     try 
                     {
-                        File.Move(file, Dir + file);
+                        NewFile = FileName.Replace("New/", "");
+                        File.Move(FileName, NewFile);
                     }
                     catch(Exception ex)
                     {
-                        Logger.Log(LogType.Warning, "Error moving file " + FileName + ": " + ex);
+                        Logger.Log(LogType.Warning, "Error moving file " + FileName + " to " + NewFile + ":" + ex);
                         if (FileName.CaselessEq("FlamesCLI.exe"))
                         {
                             File.Move("FlamesCLI.update", "FlamesCLI.exe");
