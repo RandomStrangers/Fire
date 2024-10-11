@@ -137,24 +137,26 @@ namespace Flames
                     }
                     catch(Exception ex)
                     {
-                        Logger.Log(LogType.Warning, "Error moving file " + FileName + " to " + NewFile + ":" + ex);
+                        Logger.Log(LogType.Warning, "Error moving file " + FileName);
+                        Logger.Log(LogType.Warning, " to " + NewFile + ":" + ex);
                         if (FileName.CaselessEq("FlamesCLI.exe"))
                         {
-                            File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                            AtomicIO.TryMove("FlamesCLI.update", "FlamesCLI.exe");
                         }
-                        if (FileName.CaselessEq("FlamesCLI.exe"))
+                        else if (FileName.CaselessEq("Flames_.dll"))
                         {
-                            File.Move("Flames_.update", "Flames_.dll");
+                            AtomicIO.TryMove("Flames_.update", "Flames_.dll");
                         }
-                        if (FileName.CaselessEq("Flames.exe"))
+                        else if (FileName.CaselessEq("Flames.exe"))
                         {
-                            File.Move("Flames.update", "Flames.exe");
+                            AtomicIO.TryMove("Flames.update", "Flames.exe");
                         }
                         else 
                         {
-                            File.Move("Flames.update", "Flames.exe");
-                            File.Move("FlamesCLI.update", "FlamesCLI.exe");
-                            File.Move("Flames_.update", "Flames_.exe");
+                            AtomicIO.TryMove("FlamesCLI.update", "FlamesCLI.exe");
+                            AtomicIO.TryMove("Flames_.update", "Flames_.dll");
+                            AtomicIO.TryMove("Flames.update", "Flames.exe");
+     
                         }
                     }
                 }
