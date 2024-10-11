@@ -142,16 +142,19 @@ namespace Flames
                         {
                             File.Move("FlamesCLI.update", "FlamesCLI.exe");
                         }
-                        else if (FileName.CaselessEq("FlamesCLI.exe"))
+                        if (FileName.CaselessEq("FlamesCLI.exe"))
                         {
                             File.Move("Flames_.update", "Flames_.dll");
                         }
-                        else if (FileName.CaselessEq("Flames.exe"))
+                        if (FileName.CaselessEq("Flames.exe"))
                         {
                             File.Move("Flames.update", "Flames.exe");
                         }
                         else 
                         {
+                            File.Move("Flames.update", "Flames.exe");
+                            File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                            File.Move("Flames_.update", "Flames_.exe");
                         }
                     }
                 }
