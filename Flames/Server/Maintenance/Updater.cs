@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using System;
+using System.Threading;
 using System.IO;
 using System.IO.Compression;
 using System.Net;
@@ -52,7 +53,6 @@ namespace Flames
             UpdateCheck();
             task.Delay = TimeSpan.FromHours(2);
         }
-
         static void UpdateCheck()
         {
             if (!Server.Config.CheckForUpdates) return;
@@ -97,15 +97,17 @@ namespace Flames
                 }
 
                 WebClient client = HttpUtil.CreateWebClient();
-                //client.DownloadFile(dllURL, "Flames_.update");
-                //client.DownloadFile(guiURL, "Flames.update");
-                //client.DownloadFile(cliURL, "FlamesCLI.update");
                 if (Directory.Exists("New")) 
                 {
                    Directory.Delete("New", true);
                 }
-                client.DownloadFile(ZipURL, "NewFlames.zip");
-
+                client.DownloadFile(ZipURL, "New.zip");
+                ZipFile.ExtractToDirectory("New.zip", "New");
+                client.DownloadFile(dllURL, "Flames_.update");
+                client.DownloadFile(guiURL, "Flames.update");
+                client.DownloadFile(cliURL, "FlamesCLI.update");
+                
+                
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
                 {
@@ -119,21 +121,27 @@ namespace Flames
 
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
-
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                ZipFile.ExtractToDirectory("NewFlames.zip", "New");
-                string Dir = Directory.GetCurrentDirectory() + "/";
-                string[] Files = Directory.GetFiles("New");
-                foreach (string file in Files)
-                {
-                    File.Move(file, Dir + file);
-                }
                 
-                //File.Move("Flames_.update", "Flames_.dll");
-                //File.Move("Flames.update", "Flames.exe");
-                //File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                string Dir = Server.GetServerDLLPath();
+                string[] Files = Directory.GetFiles("New");
+                try
+                {
+                    foreach (string file in Files)
+                    {
+                        File.Move(file, Dir + file);
+                    }
+                }
+                catch(Exception ex) 
+                {
+                    Logger.Log(LogType.Warning, "Error moving files: " + ex);
+                    File.Move("Flames_.update", "Flames_.dll");
+                    File.Move("Flames.update", "Flames.exe");
+                    File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                }
+                Thread.Sleep(5000);
                 Server.Stop(true, "Updating server.");
             }
             catch (Exception ex)
