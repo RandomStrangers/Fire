@@ -45,7 +45,7 @@ namespace Flames.SQL
         /// <summary> Creates the schema for this database (if required). </summary>
         public abstract void CreateDatabase();
         
-        public virtual void ParseCreate(ref string cmd) { }
+        protected internal virtual void ParseCreate(ref string cmd) { }
         
         protected static List<string> GetStrings(string sql, params object[] args) {
             List<string> values = new List<string>();
