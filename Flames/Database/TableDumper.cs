@@ -23,7 +23,7 @@ namespace Flames.SQL
     {
         bool gottenRows;
         string table, insertCols;
-        public StreamWriter sql;
+        internal StreamWriter sql;
         int numColumns;
         
         public void DumpTable(StreamWriter sql, string table) {
