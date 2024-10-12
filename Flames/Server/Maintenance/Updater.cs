@@ -84,8 +84,8 @@ namespace Flames
                 try
                 {
                     DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
-                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe", 
-                    "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll", 
+                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe",
+                    "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll",
                     "sqlite3_x64.dll", "sqlite3_x32.dll", "Flames.exe.config",
                     "Flames.pdb", "Flames_.pdb", "FlamesCLI.pdb", "FlamesCLI.exe.config");
                 }
@@ -95,17 +95,14 @@ namespace Flames
                 }
 
                 WebClient client = HttpUtil.CreateWebClient();
-                if (Directory.Exists("New")) 
+                if (Directory.Exists("New"))
                 {
-                   Directory.Delete("New", true);
+                    Directory.Delete("New", true);
                 }
-                client.DownloadFile(ZipURL, "New.zip");
-                ZipFile.ExtractToDirectory("New.zip", "New");
                 client.DownloadFile(dllURL, "Flames_.update");
                 client.DownloadFile(guiURL, "Flames.update");
                 client.DownloadFile(cliURL, "FlamesCLI.update");
-                
-                
+
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
                 {
@@ -122,44 +119,9 @@ namespace Flames
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
                 AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
                 AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                string[] Files = Directory.GetFiles("New");
-                string FileName = "";
-                string NewFile = "";
-                foreach (string file in Files)
-                {
-                    FileName = file;
-                    try 
-                    {
-                        NewFile = FileName.Replace("New/", "");
-                        File.Move(FileName, NewFile);
-                    }
-                    catch(Exception ex)
-                    {
-                        Logger.Log(LogType.Warning, "Error moving file " + FileName);
-                        Logger.Log(LogType.Warning, " to " + NewFile + ":" + ex);
-                        if (FileName.CaselessEq("FlamesCLI.exe"))
-                        {
-                            AtomicIO.TryMove("FlamesCLI.update", "FlamesCLI.exe");
-                        }
-                        else if (FileName.CaselessEq("Flames_.dll"))
-                        {
-                            AtomicIO.TryMove("Flames_.update", "Flames_.dll");
-                        }
-                        else if (FileName.CaselessEq("Flames.exe"))
-                        {
-                            AtomicIO.TryMove("Flames.update", "Flames.exe");
-                        }
-                        else 
-                        {
-                            AtomicIO.TryMove("FlamesCLI.update", "FlamesCLI.exe");
-                            AtomicIO.TryMove("Flames_.update", "Flames_.dll");
-                            AtomicIO.TryMove("Flames.update", "Flames.exe");
-     
-                        }
-                    }
-                }
-                    
-                Thread.Sleep(5000);
+                File.Move("FlamesCLI.update", "FlamesCLI.exe");
+                File.Move("Flames_.update", "Flames_.dll");
+                File.Move("Flames.update", "Flames.exe");
                 Server.Stop(true, "Updating server.");
             }
             catch (Exception ex)
