@@ -15,7 +15,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-#if !F_STANDALONE
+#if !MCG_STANDALONE
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,7 +57,7 @@ namespace Flames.SQL
             Database.Do(sql, true, null, null);
         }
         
-        public override void ParseCreate(ref string cmd) {
+        protected internal override void ParseCreate(ref string cmd) {
             // MySQL does not support the format used by the SQLite backend for the primary key
             const string priKey = " PRIMARY KEY AUTOINCREMENT";
             int priIndex = cmd.ToUpper().IndexOf(priKey);
