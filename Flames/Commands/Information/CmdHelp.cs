@@ -114,16 +114,15 @@ namespace Flames.Commands.Info
             
             Command cmd = Find(cmdName);
             if (cmd == null) return false;
-
-            if (args.Length == 1)
+            if (args.Length == 1 && !ShowCommandInfo)
+            {
+                cmd.Help(p);
+            }
+            else if(args.Length == 1)
             {
                 cmd.Help(p);
                 Formatter.PrintCommandInfo(p, cmd);
             }
-            else if (args.Length == 1 && !ShowCommandInfo)
-            {
-                cmd.Help(p);
-            } 
             else 
             {
                 cmd.Help(p, args[1]);
