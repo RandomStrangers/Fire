@@ -41,7 +41,7 @@ namespace Flames.Commands.Building {
             p.MakeSelection(1, "Selecting location for &SPaste", args, DoPaste);
         }
 
-        bool DoPaste(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool DoPaste(Player p, Vec3S32[] m, object state, BlockID block) {
             BrushArgs args = (BrushArgs)state;
             Brush brush = BrushFactory.Find("Paste").Construct(args);
             if (brush == null) return false;

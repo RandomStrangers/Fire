@@ -36,8 +36,8 @@ namespace Flames.Bots
             if (overlapsPlayer) { bot.NextInstruction(); return false; }
             return true;
         }
-        
-        internal static Player ClosestPlayer(PlayerBot bot, int search) {
+
+        public static Player ClosestPlayer(PlayerBot bot, int search) {
             int maxDist = search * 32;
             Player[] players = PlayerInfo.Online.Items;
             Player closest = null;
@@ -54,8 +54,8 @@ namespace Flames.Bots
             }
             return closest;
         }
-        
-        static bool MoveTowards(PlayerBot bot, Player p) {
+
+        public static bool MoveTowards(PlayerBot bot, Player p) {
             int dx = p.Pos.X - bot.Pos.X, dy = p.Pos.Y - bot.Pos.Y, dz = p.Pos.Z - bot.Pos.Z;
             bot.TargetPos = p.Pos;
             bot.movement = true;
@@ -93,7 +93,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] { 
+        public static string[] help = new string[] { 
             "&T/BotAI add [name] hunt <radius>",
             "&HCauses the bot to move towards the closest player in the search radius.",
             "&H  <radius> defaults to 75 blocks.",
@@ -123,7 +123,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] {
+        public static string[] help = new string[] {
             "&T/BotAI add [name] kill",
             "&HCauses the bot to kill any players it is touching.",
         };
@@ -156,8 +156,8 @@ namespace Flames.Bots
                 w.WriteLine(Name);
             }
         }
-        
-        static void FaceTowards(PlayerBot bot, Player p) {
+
+        public static void FaceTowards(PlayerBot bot, Player p) {
             Position srcPos = bot.Pos;
             srcPos.Y += ModelInfo.CalcEyeHeight(p);            
             Position dstPos = p.Pos;
@@ -167,7 +167,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] { 
+        public static string[] help = new string[] { 
             "&T/BotAI add [name] stare <radius>",
             "&HCauses the bot to stare at the closest player in the search radius.",
             "&H  <radius> defaults to 20000 blocks.",

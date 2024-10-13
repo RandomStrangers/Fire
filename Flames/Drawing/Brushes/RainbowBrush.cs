@@ -25,8 +25,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Rainbow"; } }
         public RainbowBrush() : base(blocks) {}
-        
-        internal static BlockID[] blocks = new BlockID[] { 
+
+        public static BlockID[] blocks = new BlockID[] { 
             Block.Red,   Block.Orange,  Block.Yellow,
             Block.Lime,  Block.Green,   Block.Teal,
             Block.Aqua,  Block.Cyan,    Block.Blue,
@@ -38,8 +38,8 @@ namespace Flames.Drawing.Brushes
     {        
         public override string Name { get { return "BWRainbow"; } }
         public BWRainbowBrush() : base(blocks) {}
-        
-        internal static BlockID[] blocks = new BlockID[] { 
+
+        public static BlockID[] blocks = new BlockID[] { 
             Block.Iron,  Block.White,    Block.Gray,
             Block.Black, Block.Obsidian, Block.Black, 
             Block.Gray,  Block.White };
@@ -47,8 +47,8 @@ namespace Flames.Drawing.Brushes
     
     public sealed class RandomRainbowBrush : Brush 
     {
-        readonly Random rnd = new Random();
-        readonly BlockID[] blocks;
+        public readonly Random rnd = new Random();
+        public readonly BlockID[] blocks;
 
         public override string Name { get { return "RandomRainbow"; } }
         

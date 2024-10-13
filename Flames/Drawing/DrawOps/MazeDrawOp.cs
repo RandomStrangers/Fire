@@ -27,8 +27,8 @@ namespace Flames.Drawing.Ops
         public override string Name { get { return "Maze"; } }
         
         public Random rng;
-        bool[,] wall;
-        int width, length;
+        public bool[,] wall;
+        public int width, length;
         
         public override long BlocksAffected(Level lvl, Vec3S32[] marks) {
             int lenX = (Math.Abs(Max.X - Min.X) + 1) / 2;
@@ -77,8 +77,8 @@ namespace Flames.Drawing.Ops
             
             Player.Message("Maze painted. Build the entrance and exit yourself");
         }
-        
-        void GenerateMaze() {
+
+        public void GenerateMaze() {
             //subtract 2 cause we will just make the inner. the outer wall is made seperately
             wall = new bool[width + 1, length + 1]; // +1 cause we begin at 0 so we need one object more
             for (int w = 0; w <= width; w++)
@@ -108,8 +108,8 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        void MoveRandomDir(GridNode P, out GridNode P1, out GridNode P2) {        
+
+        public void MoveRandomDir(GridNode P, out GridNode P1, out GridNode P2) {        
             while (true) {
                 int dir = rng.Next(4);
         		
@@ -141,18 +141,18 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        bool TurnsPossible(GridNode P) {
+
+        public bool TurnsPossible(GridNode P) {
             return IsWall(P.X, P.Y + 2) || IsWall(P.X, P.Y - 2)
                 || IsWall(P.X + 2, P.Y) || IsWall(P.X - 2, P.Y);
         }
 
-        bool IsWall(int x, int y) {
+        public bool IsWall(int x, int y) {
             if (x < 0 || y < 0 || x > width || y > length) return false;
             return wall[x, y];
         }
-        
-        struct GridNode {
+
+        public struct GridNode {
             public ushort X, Y;         
             public GridNode(ushort x, ushort y) { X = x; Y = y; }
         }

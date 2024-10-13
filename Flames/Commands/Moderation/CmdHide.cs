@@ -30,8 +30,8 @@ namespace Flames.Commands.Moderation {
         public override CommandAlias[] Aliases {
             get { return new CommandAlias[] { new CommandAlias("XHide", "silent") }; }
         }
-        
-        static void AnnounceOps(Player p, string msg) {
+
+        public static void AnnounceOps(Player p, string msg) {
             ItemPerms perms = new ItemPerms(p.hideRank);
             Chat.MessageFrom(ChatScope.Perms, p, msg, perms, null, true);
         }

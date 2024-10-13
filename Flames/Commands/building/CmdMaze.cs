@@ -24,13 +24,13 @@ namespace Flames.Commands.Building
     {
         public override string name { get { return "Maze"; } }
 
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             MazeDrawOp op = new MazeDrawOp();
             op.rng        = MapGen.MakeRng(dArgs.Message);
             return op;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
+
+        public override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
         
         public override void Help(Player p) {
             p.Message("&T/Maze");

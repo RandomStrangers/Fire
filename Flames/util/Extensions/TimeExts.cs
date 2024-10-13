@@ -37,8 +37,8 @@ namespace Flames
             if (time.Length == 0) time = seconds ? "0s" : "0m";
             return negate ? "-" + time : time;
         }
-        
-        static void Add(ref string time, int amount, char suffix, bool spaces) {
+
+        public static void Add(ref string time, int amount, char suffix, bool spaces) {
             if (amount == 0) return;
             
             if (time.Length == 0) 
@@ -70,8 +70,8 @@ namespace Flames
             total  = checked(total + amount);
             return TimeSpan.FromTicks(total);
         }
-        
-        static long GetTicks(int num, string unit) {
+
+        public static long GetTicks(int num, string unit) {
             if (unit.CaselessEq("s")) return num * TimeSpan.TicksPerSecond;
             if (unit.CaselessEq("m")) return num * TimeSpan.TicksPerMinute;
             if (unit.CaselessEq("h")) return num * TimeSpan.TicksPerHour;
@@ -81,8 +81,8 @@ namespace Flames
             if (unit.CaselessEq("ms")) return num * TimeSpan.TicksPerMillisecond;
             throw new FormatException(unit);
         }
-        
-        static string GetUnit(string value, int i) {
+
+        public static string GetUnit(string value, int i) {
             string unit = "";
             // Find all alphabetical chars
             for (; i < value.Length; i++) {

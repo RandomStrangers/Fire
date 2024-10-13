@@ -25,8 +25,8 @@ namespace Flames
     {        
         public static BlockProps[] Props = new BlockProps[SUPPORTED_COUNT];
         public static Dictionary<string, byte> Aliases = new Dictionary<string, byte>();
-        
-        internal static BlockProps MakeDefaultProps(BlockID b) {
+
+        public static BlockProps MakeDefaultProps(BlockID b) {
             BlockProps props = BlockProps.MakeEmpty();
             if ((b >= Op_Glass && b <= Op_Lava) || b == Invalid || b == RocketStart || b == Bedrock) {
                 props.OPBlock = true;
@@ -90,16 +90,16 @@ namespace Flames
             if (b == Grass)           props.DirtBlock  = Dirt;
             return props;
         }
-        
-        static bool IsDoor(BlockID b) {
+
+        public static bool IsDoor(BlockID b) {
             if (b >= Door_Obsidian && b <= Door_Slab)  return true;
             if (b >= Door_Iron && b <= Door_Bookshelf) return true;
             if (b >= Door_Orange && b <= Door_White)   return true;
             if (b >= Door_Air && b <= Door_Lava)       return true;
             return b == Door_Cobblestone || b == Door_Red || b == Door_Log || b == Door_Gold;
         }
-        
-        static AnimalAI GetAI(BlockID b) {
+
+        public static AnimalAI GetAI(BlockID b) {
             if (b == Bird_Black || b == Bird_White || b == Bird_Lava || b == Bird_Water) return AnimalAI.Fly;
             if (b == Bird_Red   || b == Bird_Blue  || b == Bird_Killer) return AnimalAI.KillerAir;
 
@@ -109,8 +109,8 @@ namespace Flames
             
             return AnimalAI.None;
         }
-        
-        static string GetDeathMessage(BlockID b) {
+
+        public static string GetDeathMessage(BlockID b) {
             if (b == TNT_Explosion) return "@p &S&cblew into pieces.";
             if (b == Deadly_Air) return "@p &Swalked into &cnerve gas and suffocated.";
             
@@ -134,7 +134,7 @@ namespace Flames
             return null;
         }
 
-        internal static void SetDefaultNames() {
+        public static void SetDefaultNames() {
             Aliases.Clear();
             SetDefaultAliases();
             int start = 0;
@@ -192,8 +192,8 @@ const string default_names =
                     Aliases[name.Replace("_", "")] = (byte)b;
             }
         }
-        
-        static void SetDefaultAliases() {
+
+        public static void SetDefaultAliases() {
             Dictionary<string, byte> aliases = Aliases;
             // Add old Flames names
             aliases["purple"] = Indigo; aliases["blueviolet"] = Blue;

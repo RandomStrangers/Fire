@@ -97,14 +97,17 @@ namespace Flames
         }
         public static bool IsDev(Player p) 
         {
-            if (Server.Devs.Contains(p.truename)) return true;
-            else 
+            if (Server.Devs.Contains(p.truename))
+            {
+                return true;
+            }
+            else
             {
                 return false;
             }
         }
-        
-        static void ReadAccounts(ISqlRecord record, List<string> names) {
+
+        public static void ReadAccounts(ISqlRecord record, List<string> names) {
             string name = record.GetText(0);         
             if (!names.CaselessContains(name)) names.Add(name);
         }
@@ -158,8 +161,8 @@ namespace Flames
             all.Reverse();
             return all;
         }
-           
-        static OnlineListEntry OnlineOfRank(Player p, LevelPermission plRank, Group group) {
+
+        public static OnlineListEntry OnlineOfRank(Player p, LevelPermission plRank, Group group) {
             OnlineListEntry entry = new OnlineListEntry();
             entry.group   = group;
             entry.players = new List<Player>();

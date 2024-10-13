@@ -38,8 +38,8 @@ namespace Flames
                 p.Message("{0}) {1} {2}", extra.Num, extra.Describe(), extra.Desc);
             }
         }
-        
-        static void PrintAliases(Player p, Command cmd) {
+
+        public static void PrintAliases(Player p, Command cmd) {
             StringBuilder dst = new StringBuilder("Shortcuts: &T");
             if (!string.IsNullOrEmpty(cmd.shortcut)) {
                 dst.Append('/').Append(cmd.shortcut).Append(", ");
@@ -50,8 +50,8 @@ namespace Flames
             if (dst.Length == "Shortcuts: &T".Length) return;
             p.Message(dst.ToString(0, dst.Length - 2));
         }
-        
-        static void FindAliases(List<Alias> aliases, Command cmd, StringBuilder dst) {
+
+        public static void FindAliases(List<Alias> aliases, Command cmd, StringBuilder dst) {
             foreach (Alias a in aliases) 
             {
                 if (!a.Target.CaselessEq(cmd.name)) continue;
@@ -87,8 +87,8 @@ namespace Flames
             }
             return IsValidName(p, name, "player", alphabet);
         }
-    	
-    	static bool IsValidName(Player p, string name, string type, string alphabet) {
+
+        public static bool IsValidName(Player p, string name, string type, string alphabet) {
             if (name.Length > 0 && name.ContainsAllIn(alphabet)) return true;
             p.Message("\"{0}\" is not a valid {1} name.", name, type);
             return false;
@@ -99,9 +99,9 @@ namespace Flames
             p.Message("\"{0}\" is not a valid level name.", name);
             return false;
         }
-        
-        static char[] separators = { '/', '\\', ':' };
-        static char[] invalid    = { '<', '>', '|', '"', '*', '?' };
+
+        public static char[] separators = { '/', '\\', ':' };
+        public static char[] invalid    = { '<', '>', '|', '"', '*', '?' };
         /// <summary> Checks that the input is a valid filename (non-empty and no directory separator) </summary>
         /// <remarks> If the input is invalid, messages the player the reason why </remarks>
         public static bool ValidFilename(Player p, string name) {

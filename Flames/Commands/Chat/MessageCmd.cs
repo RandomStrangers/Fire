@@ -21,8 +21,8 @@ namespace Flames.Commands.Chatting
     {
         public override string type { get { return CommandTypes.Chat; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        protected bool TryMessageAction(Player p, string name, string msg, bool messageWho) {
+
+        public bool TryMessageAction(Player p, string name, string msg, bool messageWho) {
             if (name.Length == 0) { Help(p); return false; }
             Player target = PlayerInfo.FindMatches(p, name);
             if (target == null) return false;
@@ -36,10 +36,10 @@ namespace Flames.Commands.Chatting
             }
             return true;
         }
-        
-        protected bool TryMessage(Player p, string msg) { return TryMessage(p, msg, false); }
-        
-        protected bool TryMessage(Player p, string msg, bool relay) {
+
+        public bool TryMessage(Player p, string msg) { return TryMessage(p, msg, false); }
+
+        public bool TryMessage(Player p, string msg, bool relay) {
             if (!CanSpeak(p, name)) return false;
             Chat.MessageFrom(p, msg, null, relay);
             

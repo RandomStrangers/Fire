@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using System.Xml;
 using Flames.Network;
 //This upnp class comes from http://www.codeproject.com/Articles/27992/NAT-Traversal-with-UPnP-in-C, Modified for use with MCForge
@@ -33,8 +32,8 @@ namespace Flames
         public const string TCP_PROTOCOL = "TCP";
         
         public Action<string> Log;
-        
-        const string SEARCH_REQUEST = 
+
+        public const string SEARCH_REQUEST = 
             "M-SEARCH * HTTP/1.1\r\n" +
             "HOST: 239.255.255.250:1900\r\n" +
             "ST:upnp:rootdevice\r\n" +
@@ -42,8 +41,8 @@ namespace Flames
             "MX:3\r\n" +
             "\r\n";
 
-        string _serviceUrl;
-        List<string> visitedLocations = new List<string>();
+        public string _serviceUrl;
+        public List<string> visitedLocations = new List<string>();
         
         
         public bool Discover() {
@@ -127,9 +126,9 @@ namespace Flames
                 "</u:DeletePortMapping>");
             Log("Un-forwarded port " + port);
         }
-        
 
-        static string GetServiceUrl(string location) {
+
+        public static string GetServiceUrl(string location) {
             try {
                 XmlDocument doc = new XmlDocument();
                 WebRequest request = WebRequest.Create(location);
@@ -157,13 +156,13 @@ namespace Flames
             return null;
         }
 
-        static string CombineUrls(string location, string p) {
+        public static string CombineUrls(string location, string p) {
             int n = location.IndexOf("://");
             n = location.IndexOf('/', n + 3);
             return location.Substring(0, n) + p;
         }
-        
-        static string GetLocalIP() {
+
+        public static string GetLocalIP() {
             IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());        
             foreach (IPAddress ip in host.AddressList) 
             {
@@ -172,11 +171,11 @@ namespace Flames
                 }
             }
             return "?";
-        }        
+        }
 
         /// <summary> Performs a XML SOAP request </summary>
         /// <returns> XML response from the service </returns>
-        static string SOAPRequest(string url, string function, string soap) {
+        public static string SOAPRequest(string url, string function, string soap) {
             string req = 
                 "<?xml version=\"1.0\"?>" +
                 "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">" +

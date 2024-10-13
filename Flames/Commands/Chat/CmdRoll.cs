@@ -22,8 +22,8 @@ namespace Flames.Commands.Chatting
     public sealed class CmdRoll : MessageCmd 
     {
         public override string name { get { return "Roll"; } }
-        static volatile Random rng;
-        static readonly object rngLock = new object();
+        public static volatile Random rng;
+        public static readonly object rngLock = new object();
 
         public override void Use(Player p, string message, CommandData data) {
             string[] args = message.SplitSpaces();

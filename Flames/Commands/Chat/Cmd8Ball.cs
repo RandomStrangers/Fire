@@ -30,8 +30,8 @@ namespace Flames.Commands.Chatting
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
 
-        static DateTime nextUse;
-        static TimeSpan delay = TimeSpan.FromSeconds(2);
+        public static DateTime nextUse;
+        public static TimeSpan delay = TimeSpan.FromSeconds(2);
         
         public override void Use(Player p, string question, CommandData data) {
             if (!MessageCmd.CanSpeak(p, name)) return;
@@ -56,8 +56,8 @@ namespace Flames.Commands.Chatting
             string final = builder.ToString();
             Server.MainScheduler.QueueOnce(EightBallCallback, final, delay);
         }
-        
-        static void EightBallCallback(SchedulerTask task) {
+
+        public static void EightBallCallback(SchedulerTask task) {
             string final = (string)task.State;
             Random random = new Random(final.ToLower().GetHashCode());
             
@@ -68,8 +68,8 @@ namespace Flames.Commands.Chatting
             string msg = "The &b8-Ball &Ssays: &f" + messages[random.Next(messages.Length)];
             Chat.Message(ChatScope.Global, msg, null, Filter8Ball);
         }
-        
-        static bool Filter8Ball(Player p, object arg) { return !p.Ignores.EightBall; }
+
+        public static bool Filter8Ball(Player p, object arg) { return !p.Ignores.EightBall; }
         public override void Help(Player p) {
             p.Message("&T/8ball [yes or no question]");
             p.Message("&HGet an answer from the all-knowing 8-Ball!");

@@ -24,9 +24,9 @@ using BlockID = System.UInt16;
 
 namespace Flames 
 {
-    class ConfigEnvIntAttribute : ConfigSignedIntegerAttribute 
+    public class ConfigEnvIntAttribute : ConfigSignedIntegerAttribute 
     {
-        int minValue, maxValue;
+        public int minValue, maxValue;
         
         public ConfigEnvIntAttribute(string name, int min, int max)
             : base(name, "Env") { minValue = min; maxValue = max; }
@@ -51,9 +51,9 @@ namespace Flames
             return num.ToString();
         }
     }
-    
+
     // Hacky workaround for old ExponentialFog attribute which was a bool
-    class ConfigExpFogAttribute : ConfigEnvIntAttribute 
+    public class ConfigExpFogAttribute : ConfigEnvIntAttribute 
     {
         public ConfigExpFogAttribute(string name) : base(name, -1, 1) { }
         
@@ -67,7 +67,7 @@ namespace Flames
     public abstract class EnvConfig 
     {
         public const int ENV_USE_DEFAULT = int.MaxValue;
-        const int envRange = 0xFFFFFF;
+        public const int envRange = 0xFFFFFF;
         
         // Environment settings
         [ConfigEnvInt("Weather", -1, 2)]
@@ -319,8 +319,8 @@ namespace Flames
         public int RoundsPlayed = 0;
         [ConfigInt("RoundsHumanWon", "Game", 0)]
         public int RoundsHumanWon = 0;
-        
-        readonly object saveLock = new object();
+
+        public readonly object saveLock = new object();
         public string Color {
             get {
                 LevelPermission maxPerm = VisitMin;

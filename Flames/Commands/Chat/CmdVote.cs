@@ -39,8 +39,8 @@ namespace Flames.Commands.Chatting
             Chat.MessageGlobal("&2 VOTE: &S{0} &S(type &2Yes &Sor &cNo &Sin chat)", message);
             Server.MainScheduler.QueueOnce(VoteCallback, null, TimeSpan.FromSeconds(15));
         }
-        
-        void VoteCallback(SchedulerTask task) {
+
+        public void VoteCallback(SchedulerTask task) {
             Server.voting = false;
             Chat.MessageGlobal("The votes are in! &2Y: {0} &cN: {1}", Server.YesVotes, Server.NoVotes);
             Player[] players = PlayerInfo.Online.Items;

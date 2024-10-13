@@ -67,9 +67,9 @@ namespace Flames.DB
         public static void Unregister(TopStat stat) {
             stats.Remove(stat);
         }
-        
-        
-        static List<TopStat> stats = new List<TopStat>() {
+
+
+        public static List<TopStat> stats = new List<TopStat>() {
             new DBTopStat("Logins", "Most logins", "Players",
                         PlayerData.ColumnLogins, FormatInteger),
             new DBTopStat("Deaths", "Most deaths", "Players",
@@ -148,8 +148,8 @@ namespace Flames.DB
                               "ORDER BY" + OrderBy + limit);
             return stats;
         }
-        
-        static TopResult ParseRow(ISqlRecord record) {
+
+        public static TopResult ParseRow(ISqlRecord record) {
             TopResult result;
             result.Name  = record.GetStringValue(0);
             result.Value = record.GetStringValue(1);

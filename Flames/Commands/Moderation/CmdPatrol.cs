@@ -44,8 +44,8 @@ namespace Flames.Commands.Moderation {
                 p.Message("Now visiting {0}&S.", p.FormatNick(target));
             }
         }
-        
-        List<Player> GetPatrolCandidates(Player p, CommandData data) {
+
+        public List<Player> GetPatrolCandidates(Player p, CommandData data) {
             List<Player> candidates = new List<Player>();
             ItemPerms except = CommandExtraPerms.Find(name, 1);
             Player[] players = PlayerInfo.Online.Items;

@@ -20,7 +20,7 @@ using Flames.Eco;
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdHuman : Command2 
+    public sealed class CmdHuman : Command2 
     {
         public override string name { get { return "Human"; } }
         public override string type { get { return CommandTypes.Moderation; } }

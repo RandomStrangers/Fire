@@ -49,8 +49,8 @@ namespace Flames.DB
         public int DatabaseID, Money, Deaths, Logins, Kicks, Messages;
         public long TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
         public TimeSpan TotalTime;
-        
-        internal static void Create(Player p) {
+
+        public static void Create(Player p) {
             p.prefix = "";
             p.SetColor(p.group.Color);
             p.FirstLogin = DateTime.Now;
@@ -97,8 +97,8 @@ namespace Flames.DB
             p.money = Money;
             p.TimesBeenKicked = Kicks;
         }
-        
-        internal static PlayerData Parse(ISqlRecord record) {
+
+        public static PlayerData Parse(ISqlRecord record) {
             PlayerData data = new PlayerData();
             data.Name = record.GetText(ColumnName);
             data.IP   = record.GetText(ColumnIP);
@@ -135,16 +135,16 @@ namespace Flames.DB
             data.TotalDeleted  = UnpackHi(drawn);
             return data;
         }
-        
-        internal static long ParseLong(string value) {
+
+        public static long ParseLong(string value) {
             return (value.Length == 0 || value.CaselessEq("null")) ? 0 : long.Parse(value);
         }
-        
-        internal static int ParseInt(string value) {
+
+        public static int ParseInt(string value) {
             return (value.Length == 0 || value.CaselessEq("null")) ? 0 : int.Parse(value);
         }
-        
-        internal static string ParseColor(string raw) {
+
+        public static string ParseColor(string raw) {
             if (raw.Length == 0) return raw;
             
             // Try parse color name, then color code
@@ -152,8 +152,8 @@ namespace Flames.DB
             if (col.Length > 0) return col;
             return Colors.Name(raw).Length == 0 ? "" : raw;
         }
-        
-        static DateTime ParseDateTime(ISqlRecord record, string name) {
+
+        public static DateTime ParseDateTime(ISqlRecord record, string name) {
             int i = record.GetOrdinal(name);
             // dates are a major pain
             try {
@@ -168,15 +168,15 @@ namespace Flames.DB
                 }
             }
         }
-        
-        
-        internal static long UnpackHi(long value) {
+
+
+        public static long UnpackHi(long value) {
             return (value >> HiBitsShift) & HiBitsMask;
         }
-        internal static long UnpackLo(long value) {
+        public static long UnpackLo(long value) {
             return value & LoBitsMask;
         }
-        internal static long Pack(long hi, long lo) {
+        public static long Pack(long hi, long lo) {
             return hi << HiBitsShift | lo; 
         }
 

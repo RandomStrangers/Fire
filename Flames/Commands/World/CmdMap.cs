@@ -73,8 +73,8 @@ namespace Flames.Commands.World {
                 lvl.SaveSettings();
             }
         }
-        
-        static bool IsMapOption(string[] args) {
+
+        public static bool IsMapOption(string[] args) {
             LevelOption opt = LevelOptions.Find(args[0]);
             if (opt == null) return false;
             // In rare case someone uses /map motd motd My MOTD
@@ -83,14 +83,14 @@ namespace Flames.Commands.World {
             int argsCount = HasArgument(opt.Name) ? 2 : 1;
             return args.Length == argsCount;
         }
-        
-        static bool HasArgument(string opt) {
+
+        public static bool HasArgument(string opt) {
             return
                 opt == LevelOptions.Speed || opt == LevelOptions.Overload || opt == LevelOptions.TreeType ||
                 opt == LevelOptions.Fall || opt == LevelOptions.Drown || opt == LevelOptions.RealmOwner || opt == LevelOptions.LoadDelay;
         }
-        
-        static void PrintMapInfo(Player p, LevelConfig cfg) {
+
+        public static void PrintMapInfo(Player p, LevelConfig cfg) {
             p.Message("&TPhysics settings:");
             p.Message("  Finite mode: {0}&S, Random flow: {1}",
                            GetBool(cfg.FiniteLiquids), GetBool(cfg.RandomFlow));
@@ -117,8 +117,8 @@ namespace Flames.Commands.World {
             p.Message("  Buildable: {0}&S, Deletable: {1}&S, Drawing: {2}",
                            GetBool(cfg.Buildable), GetBool(cfg.Deletable), GetBool(cfg.Drawing));
         }
-        
-        static string GetBool(bool value) { return value ? "&aON" : "&cOFF"; }
+
+        public static string GetBool(bool value) { return value ? "&aON" : "&cOFF"; }
 
         public override void Help(Player p) {
             p.Message("&T/Map [level] [option] <value> &H- Sets [option] on that level");
@@ -145,8 +145,8 @@ namespace Flames.Commands.World {
             p.Message("&H" + opt.Help);
             if (isMotd) ShowMotdRules(p);
         }
-        
-        static void ShowMotdRules(Player p) {
+
+        public static void ShowMotdRules(Player p) {
             p.Message("&HSpecial rules that can be put in a motd:");
             p.Message("&T-/+hax &H- disallows/allows all hacks");
             p.Message("&T-/+fly &H- disallows/allows flying");

@@ -88,8 +88,8 @@ namespace Flames.DB
                 Head = null; Tail = null;
             }
         }
-        
-        void AddNextNode() {
+
+        public void AddNextNode() {
             BlockDBCacheNode newHead = new BlockDBCacheNode(nextSize);
             newHead.Prev = Head;
             if (Head != null) Head.Next = newHead;

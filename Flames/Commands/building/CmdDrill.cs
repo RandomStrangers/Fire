@@ -36,8 +36,8 @@ namespace Flames.Commands.Building
             p.Message("Destroy the block you wish to drill.");
             p.MakeSelection(1, "Selecting location for &SDrill", dist, DoDrill);
         }
-        
-        bool DoDrill(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool DoDrill(Player p, Vec3S32[] marks, object state, BlockID block) {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             block = p.level.GetBlock(x, y, z);
             int dist = (ushort)state, numBlocks = (3 * 3) * dist;
@@ -77,8 +77,8 @@ namespace Flames.Commands.Building
             p.Message("Drilled " + numBlocks + " blocks.");
             return true;
         }
-        
-        void DoBlock(Player p, Level lvl, BlockID block, ushort x, ushort y, ushort z) {
+
+        public void DoBlock(Player p, Level lvl, BlockID block, ushort x, ushort y, ushort z) {
             BlockID cur = lvl.GetBlock(x, y, z);
             if (cur == block) {
                 p.level.UpdateBlock(p, x, y, z, Block.Air, BlockDBFlags.Drawn, true);

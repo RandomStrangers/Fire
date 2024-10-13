@@ -55,9 +55,9 @@ namespace Flames.Modules.Awards
             }
             return null;
         }
-        
-        
-        static readonly object saveLock = new object();
+
+
+        public static readonly object saveLock = new object();
         public static void Save() {
             lock (saveLock)
                 using (StreamWriter w = new StreamWriter("text/awardsList.txt"))
@@ -82,13 +82,13 @@ namespace Flames.Modules.Awards
             Awards = new List<Award>();
             PropertiesFile.Read("text/awardsList.txt", ProcessLine, ':');
         }
-        
-        static void ProcessLine(string award, string desc) {
+
+        public static void ProcessLine(string award, string desc) {
             if (desc.Length == 0) return;
             Add(award, desc);
         }
-        
-        static void WriteHeader(StreamWriter w) {
+
+        public static void WriteHeader(StreamWriter w) {
             w.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
             w.WriteLine("#Format is:");
             w.WriteLine("# AwardName : Description of award goes after the colon");

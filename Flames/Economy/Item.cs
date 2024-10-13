@@ -68,12 +68,12 @@ namespace Flames.Eco
         /// <summary> Called when a player is attempting to purchase this item </summary>
         /// <remarks> Usually called when a player does /buy [item name] &lt;args&gt; </remarks>
         public abstract void OnPurchase(Player p, string args);
-        
+
         /// <summary> Called when the player does /eco [item name] [option] &lt;value&gt; </summary>
-        protected internal abstract void OnSetup(Player p, string[] args);
-        
+        public abstract void OnSetup(Player p, string[] args);
+
         /// <summary> Called when the player does /eco help [item name] </summary>
-        protected internal virtual void OnSetupHelp(Player p) {
+        public virtual void OnSetupHelp(Player p) {
             p.Message("&T/Eco {0} enable/disable", Name.ToLower());
             p.Message("&HEnables/disables purchasing this item.");
             p.Message("&T/Eco {0} purchaserank [rank]", Name.ToLower());
@@ -81,14 +81,14 @@ namespace Flames.Eco
         }
 
         /// <summary> Called when the player does /store </summary>
-        protected internal abstract void OnStoreOverview(Player p);
-        
+        public abstract void OnStoreOverview(Player p);
+
         /// <summary> Outputs detailed information about how to purchase this item to the given player </summary>
         /// <remarks> Usually called when the player does /store [item name] </remarks>
-        protected internal abstract void OnStoreCommand(Player p);
-        
+        public abstract void OnStoreCommand(Player p);
 
-        internal void Setup(Player p, string[] args) {
+
+        public void Setup(Player p, string[] args) {
             string cmd = args[1];
             if (cmd.CaselessEq("enable")) {
                 p.Message("&aThe {0} item is now enabled.", Name);
@@ -107,8 +107,8 @@ namespace Flames.Eco
                 OnSetup(p, args);
             }
         }
-        
-        protected static bool CheckPrice(Player p, int price, string item) {
+
+        public static bool CheckPrice(Player p, int price, string item) {
             if (p.money < price) {
                 p.Message("&WYou don't have enough &3{1} &Wto buy {0}.", item, Server.Config.Currency); 
                 return false;
@@ -131,10 +131,10 @@ namespace Flames.Eco
         public override void Serialise(List<string> cfg) {
             cfg.Add("price:" + Price);
         }
-        
-        protected bool CheckPrice(Player p) { return CheckPrice(p, Price, "a " + Name); }
-        
-        protected internal override void OnSetup(Player p, string[] args) {
+
+        public bool CheckPrice(Player p) { return CheckPrice(p, Price, "a " + Name); }
+
+        public override void OnSetup(Player p, string[] args) {
             if (args[1].CaselessEq("price")) {
                 int cost = 0;
                 if (!CommandParser.GetInt(p, args[2], "Price", ref cost)) return;
@@ -145,14 +145,14 @@ namespace Flames.Eco
                 p.Message("Supported actions: enable, disable, price [cost]");
             }
         }
-        
-        protected internal override void OnSetupHelp(Player p) {
+
+        public override void OnSetupHelp(Player p) {
             base.OnSetupHelp(p);
             p.Message("&T/Eco {0} price [amount]", Name.ToLower());
             p.Message("&HSets how many &3{0} &Hthis item costs.", Server.Config.Currency);
         }
-        
-        protected internal override void OnStoreOverview(Player p) {
+
+        public override void OnStoreOverview(Player p) {
             if (p.Rank >= PurchaseRank) {
                 p.Message("&6{0} &S- &a{1} &S{2}", Name, Price, Server.Config.Currency);
             } else {
@@ -160,13 +160,13 @@ namespace Flames.Eco
                 p.Message("&6{0} &S({3}&S+) - &a{1} &S{2}", Name, Price, Server.Config.Currency, grpName);
             }
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             p.Message("&T/Buy {0} [value]", Name);
             OutputItemInfo(p);
         }
-        
-        protected void OutputItemInfo(Player p) {
+
+        public void OutputItemInfo(Player p) {
             p.Message("&HCosts &a{0} {1} &Heach time the item is bought.", Price, Server.Config.Currency);
             List<string> shortcuts = new List<string>();
             foreach (Alias a in Alias.aliases) 

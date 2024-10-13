@@ -42,8 +42,8 @@ namespace Flames.Commands.Moderation {
                 DoFreeze(p, target, message.SplitSpaces(3));
             }
         }
-        
-        void DoFreeze(Player p, string target, string[] args) {
+
+        public void DoFreeze(Player p, string target, string[] args) {
             if (args.Length < 2) { Help(p); return; }
             TimeSpan duration = TimeSpan.Zero;
             if (!CommandParser.GetTimespan(p, args[1], ref duration, "freeze for", "m")) return;
@@ -55,8 +55,8 @@ namespace Flames.Commands.Moderation {
             ModAction action = new ModAction(target, p, ModActionType.Frozen, reason, duration);
             OnModActionEvent.Call(action);
         }
-        
-        void DoUnfreeze(Player p, string target, string[] args) {
+
+        public void DoUnfreeze(Player p, string target, string[] args) {
             string reason = args.Length > 1 ? args[1] : "";
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;

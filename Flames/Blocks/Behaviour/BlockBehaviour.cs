@@ -38,7 +38,7 @@ namespace Flames.Blocks {
     public static class BlockBehaviour {
 
         /// <summary> Retrieves the default place block handler for the given block. </summary>
-        internal static HandlePlace GetPlaceHandler(BlockID block, BlockProps[] props) {
+        public static HandlePlace GetPlaceHandler(BlockID block, BlockProps[] props) {
             switch (block) {
                 case Block.C4:          return PlaceBehaviour.C4;
                 case Block.C4Detonator: return PlaceBehaviour.C4Det;
@@ -49,9 +49,9 @@ namespace Flames.Blocks {
             if (props[block].StackBlock != Block.Air)     return PlaceBehaviour.Stack;
             return null;
         }
-        
+
         /// <summary> Retrieves the default delete block handler for the given block. </summary>
-        internal static HandleDelete GetDeleteHandler(BlockID block, BlockProps[] props) {
+        public static HandleDelete GetDeleteHandler(BlockID block, BlockProps[] props) {
             switch (block) {
                 case Block.RocketStart:    return DeleteBehaviour.RocketStart;
                 case Block.Fireworks:      return DeleteBehaviour.Firework;
@@ -71,7 +71,7 @@ namespace Flames.Blocks {
         }
 
         /// <summary> Retrieves the default walkthrough block handler for the given block. </summary>
-        internal static HandleWalkthrough GetWalkthroughHandler(BlockID block, BlockProps[] props, bool nonSolid) {
+        public static HandleWalkthrough GetWalkthroughHandler(BlockID block, BlockProps[] props, bool nonSolid) {
             switch (block) {
                 case Block.Checkpoint:          return WalkthroughBehaviour.Checkpoint;
                 case Block.Door_AirActivatable: return WalkthroughBehaviour.Door;
@@ -85,9 +85,9 @@ namespace Flames.Blocks {
             return null;
         }
 
-        
+
         /// <summary> Retrieves the default physics block handler for the given block. </summary>
-        internal static HandlePhysics GetPhysicsHandler(BlockID block, BlockProps[] props) {
+        public static HandlePhysics GetPhysicsHandler(BlockID block, BlockProps[] props) {
             switch (block) {
                 case Block.Door_Log_air:   return DoorPhysics.Do;
                 case Block.Door_TNT_air:   return DoorPhysics.Do;
@@ -166,9 +166,9 @@ namespace Flames.Blocks {
             }
             return null;
         }
-        
+
         /// <summary> Retrieves the default physics block handler for the given block. </summary>
-        internal static HandlePhysics GetPhysicsDoorsHandler(BlockID block, BlockProps[] props) {
+        public static HandlePhysics GetPhysicsDoorsHandler(BlockID block, BlockProps[] props) {
             if (block == Block.Air)            return DoorPhysics.Do;
             if (block == Block.Door_Log_air)   return DoorPhysics.Do;
             if (block == Block.Door_TNT_air)   return DoorPhysics.Do;
@@ -176,8 +176,8 @@ namespace Flames.Blocks {
             if (props[block].oDoorBlock != Block.Invalid) return DoorPhysics.oDoor;
             return null;
         }
-        
-        static HandlePhysics AnimalAIHandler(AnimalAI ai) {
+
+        public static HandlePhysics AnimalAIHandler(AnimalAI ai) {
             if (ai == AnimalAI.Fly) return BirdPhysics.Do;
 
             if (ai == AnimalAI.FleeAir) {

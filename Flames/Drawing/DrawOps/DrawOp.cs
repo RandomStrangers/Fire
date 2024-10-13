@@ -114,22 +114,22 @@ namespace Flames.Drawing.Ops
                 Max = Vec3S32.Max(Max, marks[i]);
             }
         }
-        
-        
-        protected DrawOpBlock Place(ushort x, ushort y, ushort z, Brush brush) {
+
+
+        public DrawOpBlock Place(ushort x, ushort y, ushort z, Brush brush) {
             Coords.X = x; Coords.Y = y; Coords.Z = z;
             Coords.Block = brush.NextBlock(this);
             return Coords;
         }
-        
-        protected DrawOpBlock Place(ushort x, ushort y, ushort z, BlockID block) {
+
+        public DrawOpBlock Place(ushort x, ushort y, ushort z, BlockID block) {
             Coords.X = x; Coords.Y = y; Coords.Z = z;
             Coords.Block = block;
             return Coords;
         }
-        
-        Vec3S32 clip = new Vec3S32(ushort.MaxValue);
-        protected Vec3U16 Clamp(Vec3S32 pos) {
+
+        public Vec3S32 clip = new Vec3S32(ushort.MaxValue);
+        public Vec3U16 Clamp(Vec3S32 pos) {
             pos.X = Math.Max(0, Math.Min(pos.X, clip.X));
             pos.Y = Math.Max(0, Math.Min(pos.Y, clip.Y));
             pos.Z = Math.Max(0, Math.Min(pos.Z, clip.Z));

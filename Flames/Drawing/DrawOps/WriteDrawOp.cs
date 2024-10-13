@@ -47,8 +47,8 @@ namespace Flames.Drawing.Ops
             }
             return blocks;
         }
-        
-        Vec3S32 dir, pos;
+
+        public Vec3S32 dir, pos;
         public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
             Vec3S32 p1 = marks[0], p2 = marks[1];
             if (Math.Abs(p2.X - p1.X) > Math.Abs(p2.Z - p1.Z)) {
@@ -60,8 +60,8 @@ namespace Flames.Drawing.Ops
             pos = p1;            
             foreach (char c in Text) { DrawLetter(Player, c, brush, output); }
         }
-        
-        void DrawLetter(Player p, char c, Brush brush, DrawOpOutput output) {
+
+        public void DrawLetter(Player p, char c, Brush brush, DrawOpOutput output) {
             if (c >= 256 || letters[c] == 0) {
                 if (c != ' ') p.Message("\"{0}\" is not currently supported, replacing with space.", c);
                 pos += dir * (4 * Scale);
@@ -86,16 +86,16 @@ namespace Flames.Drawing.Ops
             }
             pos += dir * Spacing;
         }
-        
-        static int CountBits(int value) {
+
+        public static int CountBits(int value) {
             int bits = 0;
             while (value > 0) {
                 value >>= 1; bits++;
             }
             return bits;
         }
-        
-        static ulong[] letters;
+
+        public static ulong[] letters;
         static WriteDrawOp() {
             letters = new ulong[256];
             // Each letter is represented as 8 bytes

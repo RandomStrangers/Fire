@@ -24,8 +24,8 @@ using Flames.Network;
 namespace Flames.Games {
 
     public abstract partial class RoundsGame : IGame {
-        
-        protected virtual void HookEventHandlers() {
+
+        public virtual void HookEventHandlers() {
             OnLevelUnloadEvent.Register(HandleLevelUnload, Priority.High);
             OnMainLevelChangingEvent.Register(HandleMainChanged, Priority.High);
             
@@ -36,8 +36,8 @@ namespace Flames.Games {
             OnPlayerConnectEvent.Register(HandlePlayerConnect, Priority.High);
             OnPlayerDisconnectEvent.Register(HandlePlayerDisconnect, Priority.High);
         }
-        
-        protected virtual void UnhookEventHandlers() {
+
+        public virtual void UnhookEventHandlers() {
             OnLevelUnloadEvent.Unregister(HandleLevelUnload);
             OnMainLevelChangingEvent.Unregister(HandleMainChanged);
             
@@ -48,25 +48,25 @@ namespace Flames.Games {
             OnPlayerConnectEvent.Unregister(HandlePlayerConnect);
             OnPlayerDisconnectEvent.Unregister(HandlePlayerDisconnect);
         }
-        
-        void HandleSaveStats(Player p, ref bool cancel) { SaveStats(p); }
-        
-        protected virtual void HandleSendingHeartbeat(Heartbeat service, ref string name) {
+
+        public void HandleSaveStats(Player p, ref bool cancel) { SaveStats(p); }
+
+        public virtual void HandleSendingHeartbeat(Heartbeat service, ref string name) {
             if (Map == null || !GetConfig().MapInHeartbeat) return;
             name += " (map: " + Map.MapName + ")";
         }
 
-        protected virtual void HandlePlayerConnect(Player p) {
+        public virtual void HandlePlayerConnect(Player p) {
             if (GetConfig().SetMainLevel) return;
             p.Message(WelcomeMessage);
         }
-        
-        protected virtual void HandlePlayerDisconnect(Player p, string reason) {
+
+        public virtual void HandlePlayerDisconnect(Player p, string reason) {
             if (p.level != Map) return;
             PlayerLeftGame(p);
         }
-        
-        protected void HandleJoinedCommon(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleJoinedCommon(Player p, Level prevLevel, Level level, ref bool announce) {
             if (prevLevel == Map && level != Map) {
                 if (Picker.Voting) Picker.ResetVoteMessage(p);
                 ResetStatus(p);
@@ -85,8 +85,8 @@ namespace Flames.Games {
                 announce = false;
             }
         }
-        
-        protected void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth) {
+
+        public void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth) {
             if (!(action == PlayerAction.Referee || action == PlayerAction.UnReferee)) return;
             if (p.level != Map) return;
             
@@ -103,15 +103,15 @@ namespace Flames.Games {
             Entities.GlobalSpawn(p, false, "");
             TabList.Update(p, true);
         }
-        
-        
-        void HandleLevelUnload(Level lvl, ref bool cancel) {
+
+
+        public void HandleLevelUnload(Level lvl, ref bool cancel) {
             if (lvl != Map) return;
             Logger.Log(LogType.GameActivity, "Unload cancelled! A {0} game is currently going on!", GameName);
             cancel = true;
         }
-        
-        void HandleMainChanged(ref string map) {
+
+        public void HandleMainChanged(ref string map) {
             Level cur = Map; // in case Map is changed by another thread
             if (!GetConfig().SetMainLevel || cur == null) return;
             map = cur.name;

@@ -28,8 +28,8 @@ namespace Flames.Commands
         public string CmdName, Desc = "";
         public int Num;
         public override string ItemName { get { return CmdName + ":" + Num; } }
-        
-        static List<CommandExtraPerms> list = new List<CommandExtraPerms>();
+
+        public static List<CommandExtraPerms> list = new List<CommandExtraPerms>();
         
         
         public CommandExtraPerms(string cmd, int num, string desc, LevelPermission min) : base(min) {
@@ -73,9 +73,9 @@ namespace Flames.Commands
         public void MessageCannotUse(Player p) {
             p.Message("Only {0} {1}", Describe(), Desc);
         }
-        
 
-        static readonly object ioLock = new object();      
+
+        public static readonly object ioLock = new object();      
         /// <summary> Saves list of extra permissions to disc. </summary>
         public static void Save() {
             try {
@@ -83,9 +83,9 @@ namespace Flames.Commands
             } catch (Exception ex) {
                 Logger.LogError("Error saving " + Paths.CmdExtraPermsFile, ex);
             }
-        }        
-        
-        static void SaveCore() {
+        }
+
+        public static void SaveCore() {
             using (StreamWriter w = new StreamWriter(Paths.CmdExtraPermsFile)) {
                 WriteHeader(w, "extra command permissions", "extra permissions in some commands",
                             "CommandName:ExtraPermissionNumber", "countdown:1");
@@ -107,8 +107,8 @@ namespace Flames.Commands
                 }
             }
         }
-        
-        static void ProcessLines(StreamReader r) {
+
+        public static void ProcessLines(StreamReader r) {
             string[] args = new string[5];
             CommandExtraPerms perms;
             string line;
@@ -138,8 +138,8 @@ namespace Flames.Commands
                 }
             }
         }
-        
-        static bool IsDescription(string arg) {
+
+        public static bool IsDescription(string arg) {
             foreach (char c in arg) 
             {
                 if (c >= 'a' && c <= 'z') return true;

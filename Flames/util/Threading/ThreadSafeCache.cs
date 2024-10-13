@@ -24,10 +24,10 @@ namespace Flames.Util
     public sealed class ThreadSafeCache 
     {
         public static ThreadSafeCache DBCache = new ThreadSafeCache();
-            
-        readonly object locker = new object();
-        readonly Dictionary<string, object> items    = new Dictionary<string, object>();
-        readonly Dictionary<string, DateTime> access = new Dictionary<string, DateTime>();
+
+        public readonly object locker = new object();
+        public readonly Dictionary<string, object> items    = new Dictionary<string, object>();
+        public readonly Dictionary<string, DateTime> access = new Dictionary<string, DateTime>();
         
         public object GetLocker(string key) {
             lock (locker) {

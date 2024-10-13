@@ -51,8 +51,8 @@ namespace Flames.Blocks.Physics {
             }
             Firework(ref C, 4, lvl, rand);
         }
-        
-        static void Firework(ref PhysInfo C, int size, Level lvl, Random rand) {
+
+        public static void Firework(ref PhysInfo C, int size, Level lvl, Random rand) {
             int rand1 = rand.Next(Block.Red, Block.White);
             int rand2 = rand.Next(Block.Red, Block.White);
             int min = Math.Min(rand1, rand2), max = Math.Max(rand1, rand2);

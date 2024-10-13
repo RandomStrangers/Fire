@@ -24,7 +24,7 @@ namespace Flames.Commands.Eco
     {
         public override string type { get { return CommandTypes.Economy; } }
 
-        protected bool ParseArgs(Player p, string message, ref bool all, 
+        public bool ParseArgs(Player p, string message, ref bool all, 
                                  string action, out EcoTransaction data) {
             data = new EcoTransaction();
             string[] args = message.SplitSpaces(3);

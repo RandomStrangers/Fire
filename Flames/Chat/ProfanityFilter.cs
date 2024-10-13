@@ -22,9 +22,9 @@ using Flames.Util;
 
 namespace Flames {
     public static class ProfanityFilter {
-        static string[] reduceKeys, reduceValues;
-        static List<string> filters;
-        static bool hookedFilter;
+        public static string[] reduceKeys, reduceValues;
+        public static List<string> filters;
+        public static bool hookedFilter;
         
         public static void Init() {
             InitReduceTable();
@@ -51,22 +51,22 @@ namespace Flames {
             }            
             return string.Join(" ", words);
         }
-        
-        static string Replace(string word) {
+
+        public static string Replace(string word) {
             string replacement = Server.Config.ProfanityReplacement;
             // for * repeat to ****
             return replacement.Length == 1 ? new string(replacement[0], word.Length) : replacement;
         }
-        
-        static void InitReduceTable() {
+
+        public static void InitReduceTable() {
             if (reduceKeys != null) return;
             // Because some letters are similar (Like i and l), they are reduced to the same form.
             // For example, the word "@t3$5t ll" is reduced to "atesst ii";
             reduceKeys = "@|i3|l3|(|3|ph|6|#|l|!|1|0|9|$|5|vv|2".Split('|');
             reduceValues= "a|b|b|c|e|f|g|h|i|i|i|o|q|s|s|w|z".Split('|');
         }
-        
-        static void LoadBadWords() {
+
+        public static void LoadBadWords() {
             TextFile filterFile = TextFile.Files["Profanity filter"];
             filterFile.EnsureExists();
             
@@ -86,7 +86,7 @@ namespace Flames {
             }
         }
 
-        static string Reduce(string text) {
+        public static string Reduce(string text) {
             text = text.ToLower();
             text = Colors.Strip(text);
             

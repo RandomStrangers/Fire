@@ -35,14 +35,14 @@ namespace Flames
         public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
-        const string CurrentVersionURL = UpdatesURL + "dev.txt";
-        const string dllURL = UpdatesURL + "Flames_dev.dll";
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
+        public const string dllURL = UpdatesURL + "Flames_dev.dll";
 #else
-        const string CurrentVersionURL = UpdatesURL + "current.txt";
-        const string dllURL = UpdatesURL + "Flames_.dll";
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
+        public const string dllURL = UpdatesURL + "Flames_.dll";
 #endif
-        const string guiURL = UpdatesURL + "Flames.exe";
-        const string cliURL = UpdatesURL + "FlamesCLI.exe";
+        public const string guiURL = UpdatesURL + "Flames.exe";
+        public const string cliURL = UpdatesURL + "FlamesCLI.exe";
 
         public static event EventHandler NewerVersionDetected;
 
@@ -51,7 +51,7 @@ namespace Flames
             UpdateCheck();
             task.Delay = TimeSpan.FromHours(2);
         }
-        static void UpdateCheck()
+        public static void UpdateCheck()
         {
             if (!Server.Config.CheckForUpdates) return;
             WebClient client = HttpUtil.CreateWebClient();
@@ -84,10 +84,7 @@ namespace Flames
                 try
                 {
                     DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
-                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe",
-                    "NewFlames.zip", "MySql.Data.dll", "Newtonsoft.Json.dll",
-                    "sqlite3_x64.dll", "sqlite3_x32.dll", "Flames.exe.config",
-                    "Flames.pdb", "Flames_.pdb", "FlamesCLI.pdb", "FlamesCLI.exe.config");
+                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe");
                 }
                 catch (Exception ex)
                 {
@@ -95,10 +92,6 @@ namespace Flames
                 }
 
                 WebClient client = HttpUtil.CreateWebClient();
-                if (Directory.Exists("New"))
-                {
-                    Directory.Delete("New", true);
-                }
                 client.DownloadFile(dllURL, "Flames_.update");
                 client.DownloadFile(guiURL, "Flames.update");
                 client.DownloadFile(cliURL, "FlamesCLI.update");
@@ -130,7 +123,7 @@ namespace Flames
             }
         }
 
-        static void DeleteFiles(params string[] paths)
+        public static void DeleteFiles(params string[] paths)
         {
             foreach (string path in paths) { AtomicIO.TryDelete(path); }
         }

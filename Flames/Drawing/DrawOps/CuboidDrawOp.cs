@@ -69,8 +69,8 @@ namespace Flames.Drawing.Ops
                       (ushort)(p2.Y - 1), (ushort)(p2.X - 1), brush, output);
             }
         }
-        
-        protected void QuadX(ushort x, ushort y1, ushort z1, ushort y2, ushort z2, 
+
+        public void QuadX(ushort x, ushort y1, ushort z1, ushort y2, ushort z2, 
                              Brush brush, DrawOpOutput output) {
             for (ushort y = y1; y <= y2; y++)
                 for (ushort z = z1; z <= z2; z++)
@@ -78,8 +78,8 @@ namespace Flames.Drawing.Ops
                 output(Place(x, y, z, brush));
             }
         }
-        
-        protected void QuadY(ushort y, ushort x1, ushort z1, ushort x2, ushort z2, 
+
+        public void QuadY(ushort y, ushort x1, ushort z1, ushort x2, ushort z2, 
                              Brush brush, DrawOpOutput output) {
             for (ushort z = z1; z <= z2; z++)
                 for (ushort x = x1; x <= x2; x++)
@@ -87,8 +87,8 @@ namespace Flames.Drawing.Ops
                 output(Place(x, y, z, brush));
             }
         }
-        
-        protected void QuadZ(ushort z, ushort y1, ushort x1, ushort y2, ushort x2,
+
+        public void QuadZ(ushort z, ushort y1, ushort x1, ushort y2, ushort x2,
                              Brush brush, DrawOpOutput output) {
             for (ushort y = y1; y <= y2; y++)
                 for (ushort x = x1; x <= x2; x++)

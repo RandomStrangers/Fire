@@ -22,14 +22,14 @@ using Flames.Tasks;
 
 namespace Flames.Commands.Maintenance
 {
-    public sealed class CmdShutdownTrue : Command2
+    public sealed class CmdShutdownTrue : Command
     {
         public override string name { get { return "ShutdownTrue"; } }
         public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
 
-        static SchedulerTask shutdownTask;
-        public override void Use(Player p, string message, CommandData data)
+        public static SchedulerTask shutdownTask;
+        public override void Use(Player p, string message)
         {
             if (message.CaselessEq("abort") || message.CaselessEq("cancel"))
             {
@@ -72,7 +72,7 @@ namespace Flames.Commands.Maintenance
             }
         }
 
-        static void DoShutdown(int delay, string reason)
+        public static void DoShutdown(int delay, string reason)
         {
             ShutdownArgs args = new ShutdownArgs
             {
@@ -89,13 +89,13 @@ namespace Flames.Commands.Maintenance
         }
 
 
-        static void Log(string message)
+        public static void Log(string message)
         {
             Chat.MessageAll("&4" + message);
             Logger.Log(LogType.SystemActivity, message);
         }
 
-        static void ShutdownCallback(SchedulerTask task)
+        public static void ShutdownCallback(SchedulerTask task)
         {
             ShutdownArgs args = (ShutdownArgs)task.State;
             if (args.Delay == 0)
@@ -111,7 +111,7 @@ namespace Flames.Commands.Maintenance
             }
         }
 
-        class ShutdownArgs
+        public class ShutdownArgs
         {
             public int Delay;
             public string Reason;

@@ -22,7 +22,7 @@ namespace Flames.Drawing.Brushes
 {
     public sealed class SolidBrush : Brush 
     {
-        readonly BlockID block;
+        public readonly BlockID block;
         
         public SolidBrush(BlockID block) {
             this.block = block;
@@ -36,7 +36,7 @@ namespace Flames.Drawing.Brushes
     // CheckeredPaletteBrush of { b1, b1, b2, b2 }
     public sealed class StripedBrush : Brush 
     {
-        readonly BlockID b1, b2;
+        public readonly BlockID b1, b2;
         
         public StripedBrush(BlockID block1, BlockID block2) {
            b1 = block1; b2 = block2;
@@ -52,7 +52,7 @@ namespace Flames.Drawing.Brushes
     // CheckeredPaletteBrush of { b1, b2 }
     public sealed class CheckeredBrush : Brush 
     {
-        readonly BlockID b1, b2;
+        public readonly BlockID b1, b2;
         
         public CheckeredBrush(BlockID block1, BlockID block2) {
             b1 = block1; b2 = block2;
@@ -67,7 +67,7 @@ namespace Flames.Drawing.Brushes
     
     public class CheckeredPaletteBrush : Brush 
     {
-        readonly BlockID[] blocks;
+        public readonly BlockID[] blocks;
         
         public CheckeredPaletteBrush(BlockID[] blocks) { this.blocks = blocks; }
         

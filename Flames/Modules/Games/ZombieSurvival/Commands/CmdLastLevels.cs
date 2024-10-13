@@ -19,7 +19,7 @@ using System.Collections.Generic;
 
 namespace Flames.Modules.Games.ZS 
 {
-    sealed class CmdLastLevels : Command2 
+    public sealed class CmdLastLevels : Command2 
     {
         public override string name { get { return "LastLevels"; } }
         public override string shortcut { get { return "ll"; } }

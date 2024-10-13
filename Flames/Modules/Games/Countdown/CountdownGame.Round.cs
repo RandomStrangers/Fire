@@ -25,17 +25,17 @@ using BlockID = System.UInt16;
 namespace Flames.Modules.Games.Countdown
 {
     public partial class CountdownGame : RoundsGame 
-    {          
-        struct SquarePos 
+    {
+        public struct SquarePos 
         {
             public ushort X, Z;
             public SquarePos(int x, int z) { X = (ushort)x; Z = (ushort)z; }
         }
-        
-        List<SquarePos> squaresLeft = new List<SquarePos>();
-        BufferedBlockSender bulk = new BufferedBlockSender();
-        
-        protected override void DoRound() {
+
+        public List<SquarePos> squaresLeft = new List<SquarePos>();
+        public BufferedBlockSender bulk = new BufferedBlockSender();
+
+        public override void DoRound() {
             bulk.level = Map;
             SetBoardOpening(Block.Glass);
             ResetBoard();
@@ -60,13 +60,13 @@ namespace Flames.Modules.Games.Countdown
             UpdateAllStatus();
             RemoveSquares();
         }
-        
-        protected override void ContinueOnSameMap() {
+
+        public override void ContinueOnSameMap() {
             // countdown only modifies board in the map, so it's fine to continue on the same map
             // without needing to reload the entire map
         }
-        
-        void BeginRound() {
+
+        public void BeginRound() {
             if (Interval == 0) SetSpeed(Config.DefaultSpeed);
             string modeSuffix = FreezeMode ? " in freeze mode" : "";
             Map.Message("Starting " + SpeedType + " speed Countdown" + modeSuffix);
@@ -96,9 +96,9 @@ namespace Flames.Modules.Games.Countdown
                 pl.Extras["F_CD_Z"] = pos.Z;
             }
             RemoveAllSquareBorders();
-        } 
-                
-        void ResetBoard() {
+        }
+
+        public void ResetBoard() {
             SetBoardOpening(Block.Glass);
             int maxX = Map.Width - 1, maxZ = Map.Length - 1;
             Cuboid(4, 4, 4, maxX - 4, 4, maxZ - 4, Block.Glass);          
@@ -116,15 +116,15 @@ namespace Flames.Modules.Games.Countdown
             }
             
             bulk.Flush();
-        }        
-        
-        void SetBoardOpening(BlockID block) {
+        }
+
+        public void SetBoardOpening(BlockID block) {
             int midX = Map.Width / 2, midY = Map.Height / 2, midZ = Map.Length / 2;
             Cuboid(midX - 1, midY, midZ - 1, midX, midY, midZ, block);
             bulk.Flush();
         }
-        
-        void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, BlockID block) {
+
+        public void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, BlockID block) {
         	if (!Running) return;
         	
             for (int y = y1; y <= y2; y++)
@@ -134,15 +134,15 @@ namespace Flames.Modules.Games.Countdown
                 TryChangeBlock(x, y, z, block);
             }
         }
-        
-        void TryChangeBlock(int x, int y, int z, BlockID block) {
+
+        public void TryChangeBlock(int x, int y, int z, BlockID block) {
             int index = Map.PosToInt((ushort)x, (ushort)y, (ushort)z);
             if (!Map.DoPhysicsBlockchange(index, block)) return;
             
             bulk.Add(index, block);
         }
-        
-        void SpawnPlayers() {
+
+        public void SpawnPlayers() {
             Player[] players = Players.Items;
             int midX = Map.Width / 2, midY = Map.Height / 2, midZ = Map.Length / 2;
             Position pos = Position.FromFeetBlockCoords(midX, midY, midZ);
@@ -159,7 +159,7 @@ namespace Flames.Modules.Games.Countdown
             }
         }
 
-        void RemoveBoardBorders() {
+        public void RemoveBoardBorders() {
             int minX1 = 4, maxX2 = (Map.Width  - 1) - 4;
             int minZ1 = 4, maxZ2 = (Map.Length - 1) - 4;
             
@@ -176,8 +176,8 @@ namespace Flames.Modules.Games.Countdown
             Cuboid(minX2, 4, minZ1, maxX2, 4, maxZ2, Block.Air);
             bulk.Flush();
         }
-        
-        void RemoveAllSquareBorders() {
+
+        public void RemoveAllSquareBorders() {
             int maxX = Map.Width - 1, maxZ = Map.Length - 1;
             for (int xx = 6 - 1; xx <= Map.Width - 6; xx += 3) {
                 Cuboid(xx, 4, 4, xx, 4, maxZ - 4, Block.Air);
@@ -187,8 +187,8 @@ namespace Flames.Modules.Games.Countdown
             }
             bulk.Flush();
         }
-        
-        void RemoveSquares() {
+
+        public void RemoveSquares() {
             Random rng = new Random();
             while (RoundInProgress && Running && squaresLeft.Count > 0 && Remaining.Count > 0) {
                 int i = rng.Next(squaresLeft.Count);
@@ -200,8 +200,8 @@ namespace Flames.Modules.Games.Countdown
                 UpdateAllStatus1();
             }
         }
-        
-        void RemoveSquare(SquarePos pos) {
+
+        public void RemoveSquare(SquarePos pos) {
             ushort x1 = pos.X, x2 = (ushort)(pos.X + 1), z1 = pos.Z, z2 = (ushort)(pos.Z + 1);
             Cuboid(x1, 4, z1, x2, 4, z2, Block.Yellow);
             bulk.Flush();
@@ -259,7 +259,7 @@ namespace Flames.Modules.Games.Countdown
             bulk.Flush();
         }
 
-        void OnPlayerDied(Player p) {
+        public void OnPlayerDied(Player p) {
             if (!Remaining.Remove(p) || !RoundInProgress) return;
             Player[] players = Remaining.Items;
             

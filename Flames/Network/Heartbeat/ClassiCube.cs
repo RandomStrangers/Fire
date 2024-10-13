@@ -27,11 +27,11 @@ namespace Flames.Network
     /// <summary> Heartbeat to ClassiCube.net's web server. </summary>
     public sealed class ClassiCubeBeat : Heartbeat
     {
-        string proxyUrl;
+        public string proxyUrl;
         public string LastResponse;
-        bool checkedAddr;
-        
-        void CheckAddress() {
+        public bool checkedAddr;
+
+        public void CheckAddress() {
             string hostUrl = "";
             checkedAddr    = true;
             
@@ -48,10 +48,10 @@ namespace Flames.Network
             hostUrl = hostUrl.Replace("www.", "");
             Logger.Log(LogType.SystemActivity, "Finding " + hostUrl + " url..");
         }
-        
+
         // classicube.net only supports ipv4 servers, so we need to make
         // sure we are using its ipv4 address when POSTing heartbeats
-        void EnsureIPv4Url(IPAddress[] addresses) {
+        public void EnsureIPv4Url(IPAddress[] addresses) {
             bool hasIPv6 = false;
             IPAddress firstIPv4 = null;
             
@@ -70,7 +70,7 @@ namespace Flames.Network
             proxyUrl = "http://"  + firstIPv4 + ":80";
         }
 
-        protected override string GetHeartbeatData()  {
+        public override string GetHeartbeatData()  {
             string name = Server.Config.Name;
             OnSendingHeartbeatEvent.Call(this, ref name);
             name = Colors.StripUsed(name);
@@ -86,15 +86,15 @@ namespace Flames.Network
                 "&software=" + Uri.EscapeDataString(Server.SoftwareNameVersioned) +
                 "&web="      + Server.Config.WebClient;
         }
-        
-        protected override void OnRequest(HttpWebRequest request) {
+
+        public override void OnRequest(HttpWebRequest request) {
             if (!checkedAddr) CheckAddress();
             
             if (proxyUrl == null) return;
             request.Proxy = new WebProxy(proxyUrl);
         }
-        
-        protected override void OnResponse(WebResponse response) {
+
+        public override void OnResponse(WebResponse response) {
             string text = HttpUtil.GetResponseText(response);
             if (!NeedsProcessing(text)) return;
             
@@ -106,13 +106,13 @@ namespace Flames.Network
                 OnError(error);
             }
         }
-        
-        protected override void OnFailure(string response) {
+
+        public override void OnFailure(string response) {
             if (NeedsProcessing(response)) OnError(response);
         }
-        
-        
-        bool NeedsProcessing(string text) {
+
+
+        public bool NeedsProcessing(string text) {
             if (string.IsNullOrEmpty(text)) return false;
             if (text == LastResponse)       return false;
             
@@ -120,22 +120,22 @@ namespace Flames.Network
             LastResponse = text;
             return true;
         }
-        
-        static void OnSuccess(string text) {
+
+        public static void OnSuccess(string text) {
             text = Truncate(text);
             Server.UpdateUrl(text);
             File.WriteAllText("text/externalurl.txt", text);
             Logger.Log(LogType.SystemActivity, "Server URL found: " + text);
         }
-        
-        static void OnError(string error) {
+
+        public static void OnError(string error) {
             error = Truncate(error);
             Server.UpdateUrl(error);
             Logger.Log(LogType.Warning, error);
         }
-        
-        
-        static string GetError(string json) {
+
+
+        public static string GetError(string json) {
             JsonReader reader = new JsonReader(json);
             // silly design, but form of json is:
             // {
@@ -155,8 +155,8 @@ namespace Flames.Network
             }
             return null;
         }
-        
-        static string Truncate(string text) {
+
+        public static string Truncate(string text) {
             if (text.Length < 256) return text;
             
             return text.Substring(0, 256) + "..";

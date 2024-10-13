@@ -39,7 +39,7 @@ namespace Flames.Commands.World {
         }
         
         public override void Help(Player p) {
-            p.Message("&T/os [command] [args]");
+            p.Message("&T/Overseer [command] [args]");
             p.Message("&HAllows you to modify and manage your personal realms.");
             Overseer.subCommandGroup.DisplayAvailable(p);
         }

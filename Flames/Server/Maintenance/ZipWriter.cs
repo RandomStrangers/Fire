@@ -22,8 +22,8 @@ using System.IO.Compression;
 using System.Text;
 
 namespace Flames 
-{    
-    struct ZipEntry 
+{
+    public struct ZipEntry 
     {
         public byte[] Filename;
         public long CompressedSize, UncompressedSize, LocalHeaderOffset;
@@ -44,8 +44,8 @@ namespace Flames
         public const uint SIG_ZIP64_END = 0x06064b50;
         public const uint SIG_ZIP64_LOC = 0x07064b50;
     }
-    
-    sealed class ZipWriterStream : Stream 
+
+    public sealed class ZipWriterStream : Stream 
     {
         public uint Crc32 = uint.MaxValue;
         public long CompressedLen;
@@ -55,8 +55,8 @@ namespace Flames
         public override bool CanRead  { get { return false; } }
         public override bool CanSeek  { get { return false; } }
         public override bool CanWrite { get { return true;  } }
-        
-        static Exception ex = new NotSupportedException();
+
+        public static Exception ex = new NotSupportedException();
         public override void Flush() { stream.Flush(); }
         public override long Length { get { throw ex; } }
         public override long Position { get { throw ex; } set { throw ex; } }
@@ -82,8 +82,8 @@ namespace Flames
             }
             return WriteData(this, src, buffer);
         }
-        
-        long WriteData(Stream dst, Stream src, byte[] buffer) {
+
+        public long WriteData(Stream dst, Stream src, byte[] buffer) {
             int count = 0;
             long totalLen = 0;
             
@@ -98,8 +98,8 @@ namespace Flames
             }
             return totalLen;
         }
-        
-        static uint[] crc32Table;
+
+        public static uint[] crc32Table;
         static ZipWriterStream() {
             crc32Table = new uint[256];
             for (int i = 0; i < crc32Table.Length; i++) 
@@ -119,20 +119,20 @@ namespace Flames
     /// <summary> Writes entries into a ZIP archive. </summary>
     public sealed class ZipWriter 
     {
-        BinaryWriter writer;
-        Stream stream;
-        byte[] buffer = new byte[81920];
+        public BinaryWriter writer;
+        public Stream stream;
+        public byte[] buffer = new byte[81920];
 
-        bool zip64;
-        List<ZipEntry> entries = new List<ZipEntry>();      
-        int numEntries;
-        long centralDirOffset, centralDirSize, zip64EndOffset;    
-        const ushort ver_norm = 20, ver_zip64 = 45;   
+        public bool zip64;
+        public List<ZipEntry> entries = new List<ZipEntry>();
+        public int numEntries;
+        public long centralDirOffset, centralDirSize, zip64EndOffset;
+        public const ushort ver_norm = 20, ver_zip64 = 45;
 
-        const ushort EXTRA_TAG_ZIP64 = 0x0001;
-        const ushort ZIP64_CENTRAL_EXTRA_SIZE = 28;
-        const ushort ZIP64_LOCAL_EXTRA_SIZE   = 20;
-        static byte[] emptyZip64Local = new byte[ZIP64_LOCAL_EXTRA_SIZE];
+        public const ushort EXTRA_TAG_ZIP64 = 0x0001;
+        public const ushort ZIP64_CENTRAL_EXTRA_SIZE = 28;
+        public const ushort ZIP64_LOCAL_EXTRA_SIZE   = 20;
+        public static byte[] emptyZip64Local = new byte[ZIP64_LOCAL_EXTRA_SIZE];
         
         public ZipWriter(Stream stream) {
             this.stream = stream;
@@ -201,8 +201,8 @@ namespace Flames
             if (zip64) WriteZip64EndOfCentralDirectory();
             WriteEndOfCentralDirectoryRecord();
         }
-        
-        void WriteZip64EndOfCentralDirectory() {
+
+        public void WriteZip64EndOfCentralDirectory() {
             zip64EndOffset = stream.Position;
             WriteZip64EndOfCentralDirectoryRecord();
             WriteZip64EndOfCentralDirectoryLocator();
@@ -212,9 +212,9 @@ namespace Flames
             centralDirOffset = uint.MaxValue;
             centralDirSize   = uint.MaxValue;
         }
-        
-        
-        void WriteLocalFileRecord(ZipEntry entry) {
+
+
+        public void WriteLocalFileRecord(ZipEntry entry) {
             ushort version = zip64 ? ver_zip64 : ver_norm;
             BinaryWriter w = writer;
             ZipEntry copy  = entry;
@@ -241,8 +241,8 @@ namespace Flames
             w.Write(copy.UncompressedSize);
             w.Write(copy.CompressedSize);
         }
-        
-        void WriteCentralDirectoryRecord(ZipEntry entry) {
+
+        public void WriteCentralDirectoryRecord(ZipEntry entry) {
             ushort extraLen = (ushort)(zip64 ? ZIP64_CENTRAL_EXTRA_SIZE : 0);
             ushort version = zip64 ? ver_zip64 : ver_norm;
             BinaryWriter w = writer;
@@ -275,15 +275,15 @@ namespace Flames
             w.Write(copy.CompressedSize);
             w.Write(copy.LocalHeaderOffset);
         }
-        
-        void WriteLastModified(DateTime date) {
+
+        public void WriteLastModified(DateTime date) {
             int modTime = (date.Second / 2) | (date.Minute << 5) | (date.Hour << 11);
             int modDate = (date.Day) | (date.Month << 5) | ((date.Year - 1980) << 9);
             writer.Write((ushort)modTime);
             writer.Write((ushort)modDate);
         }
-        
-        void WriteZip64EndOfCentralDirectoryRecord() {
+
+        public void WriteZip64EndOfCentralDirectoryRecord() {
             BinaryWriter w = writer;
             const long zip64EndDataSize = (2 * 2) + (2 * 4) + (4 * 8);
             
@@ -298,16 +298,16 @@ namespace Flames
             w.Write(centralDirSize);
             w.Write(centralDirOffset);
         }
-        
-        void WriteZip64EndOfCentralDirectoryLocator() {
+
+        public void WriteZip64EndOfCentralDirectoryLocator() {
             BinaryWriter w = writer;
             w.Write(ZipEntry.SIG_ZIP64_LOC);
             w.Write(0); // disc number of zip64 end of central directory
             w.Write(zip64EndOffset);
             w.Write(1); // total number of discs
         }
-        
-        void WriteEndOfCentralDirectoryRecord() {
+
+        public void WriteEndOfCentralDirectoryRecord() {
             BinaryWriter w = writer;
             w.Write(ZipEntry.SIG_END);
             w.Write((ushort)0); // disc number

@@ -24,8 +24,8 @@ namespace Flames.Drawing.Transforms
     {
         public override string Name { get { return "None"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: none",
             "&HDoes not affect the output of draw operations.",
         };
@@ -39,8 +39,8 @@ namespace Flames.Drawing.Transforms
     {
         public override string Name { get { return "Scale"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [scaleX] [scaleY] [scaleZ] <centre>",
             "&TAlternatively: [scale] <centre>",
             "&H[scale] values can be an integer or a fraction (e.g. 2 or 1/2).",
@@ -77,8 +77,8 @@ namespace Flames.Drawing.Transforms
             scaler.CentreOrigin = true;
             return scaler;
         }
-        
-        static bool ParseFraction(Player p, string input, string argName, out int mul, out int div) {
+
+        public static bool ParseFraction(Player p, string input, string argName, out int mul, out int div) {
             int sep = input.IndexOf('/');
             div = 1; mul = 1;
             

@@ -63,9 +63,9 @@ namespace Flames.Network {
                 if (webEx != null && webEx.Response != null) webEx.Response.Close();
             } catch { }
         }
-        
 
-        class CustomWebClient : WebClient {
+
+        public class CustomWebClient : WebClient {
             protected override WebRequest GetWebRequest(Uri address) {
                 HttpWebRequest req = (HttpWebRequest)base.GetWebRequest(address);
                 req.ServicePoint.BindIPEndPointDelegate = BindIPEndPointCallback;
@@ -73,8 +73,8 @@ namespace Flames.Network {
                 return req;
             }
         }
-        
-        static IPEndPoint BindIPEndPointCallback(ServicePoint servicePoint, IPEndPoint remoteEP, int retryCount) {
+
+        public static IPEndPoint BindIPEndPointCallback(ServicePoint servicePoint, IPEndPoint remoteEP, int retryCount) {
             IPAddress localIP = null;
             if (Server.Listener.IP != null) {
                 localIP = Server.Listener.IP;
@@ -98,10 +98,10 @@ namespace Flames.Network {
             wrapped.AuthenticateAsClient(host, null, TLS_ALL, false);
             return wrapped;
         }
-        
-        
-        const string DROPBOX_HTTP_PREFIX  = "http://www.dropbox";
-        const string DROPBOX_HTTPS_PREFIX = "https://www.dropbox";
+
+
+        public const string DROPBOX_HTTP_PREFIX  = "http://www.dropbox";
+        public const string DROPBOX_HTTPS_PREFIX = "https://www.dropbox";
         
         /// <summary> Prefixes a URL by http:// if needed, and converts dropbox webpages to direct links. </summary>
         public static void FilterURL(ref string url) {
@@ -117,8 +117,8 @@ namespace Flames.Network {
             
             url = url.Replace("dl.dropboxusercontent.com", "dl.dropbox.com");
         }
-        
-        static string AdjustDropbox(string url, int prefixLen) {
+
+        public static string AdjustDropbox(string url, int prefixLen) {
             url = "https://dl.dropbox" + url.Substring(prefixLen);
 
             return url
@@ -141,8 +141,8 @@ namespace Flames.Network {
             }
             return uri;
         }
-        
-        static bool CheckHttpOrHttps(Player p, string url) {
+
+        public static bool CheckHttpOrHttps(Player p, string url) {
             Uri uri;
             // only check valid URLs here
             if (!url.Contains("://")) return true;
@@ -162,8 +162,8 @@ namespace Flames.Network {
             if (uri == null) return null;
             return DownloadData(p, url, uri);
         }
-        
-        static byte[] DownloadData(Player p, string url, Uri uri) {
+
+        public static byte[] DownloadData(Player p, string url, Uri uri) {
             byte[] data = null;
             try {
                 using (WebClient client = CreateWebClient()) {
@@ -198,8 +198,8 @@ namespace Flames.Network {
             if (data == null) p.Message("&WThe url may need to contain its extension (such as .jpg).");
             return data;
         }
-        
-        static string DescribeError(Exception ex) {
+
+        public static string DescribeError(Exception ex) {
             try {
                 WebException webEx = (WebException)ex;
                 // prefer explicit http status error codes if possible

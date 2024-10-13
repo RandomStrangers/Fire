@@ -49,9 +49,9 @@ namespace Flames.Authentication
             p.truename    += cfg.NameSuffix;
             p.DisplayName += cfg.NameSuffix;
         }
-        
-        
-        static string lastUrls;
+
+
+        public static string lastUrls;
         /// <summary> Reloads list of authentication services from server config </summary>
         public static void ReloadDefault() {
             string urls = Server.Config.HeartbeatURL;
@@ -68,8 +68,8 @@ namespace Flames.Authentication
                 service.Config = GetOrCreateConfig(service.Beat.URL);
             }
         }
-        
-        static void ReloadServices() {
+
+        public static void ReloadServices() {
             // TODO only reload default auth services, don't clear all
             foreach (AuthService service in Services) 
             {
@@ -86,10 +86,10 @@ namespace Flames.Authentication
                 Heartbeat.Register(beat);
             }
         }
-        
-        
-        static List<AuthServiceConfig> configs = new List<AuthServiceConfig>();
-        static AuthServiceConfig GetOrCreateConfig(string url)
+
+
+        public static List<AuthServiceConfig> configs = new List<AuthServiceConfig>();
+        public static AuthServiceConfig GetOrCreateConfig(string url)
         {
             foreach (AuthServiceConfig c in configs)
             {
@@ -106,16 +106,16 @@ namespace Flames.Authentication
             }
             return cfg;
         }
-        
-        static void LoadConfig() {
+
+        public static void LoadConfig() {
             configs.Clear();
             
             AuthServiceConfig cur = null;
             PropertiesFile.Read(Paths.AuthServicesFile, ref cur, ParseProperty, '=', true);
             if (cur != null) configs.Add(cur);
         }
-        
-        static void ParseProperty(string key, string value, ref AuthServiceConfig cur) {
+
+        public static void ParseProperty(string key, string value, ref AuthServiceConfig cur) {
             if (key.CaselessEq("URL")) {
                 if (cur != null) configs.Add(cur);
 
@@ -131,8 +131,8 @@ namespace Flames.Authentication
                 bool.TryParse(value, out cur.MojangAuth);
             }
         }
-        
-        static void SaveConfig() {
+
+        public static void SaveConfig() {
             using (StreamWriter w = new StreamWriter(Paths.AuthServicesFile)) {
                 w.WriteLine("# Authentication services configuration");
                 w.WriteLine("#   There is no reason to modify these configuration settings, unless the server has been configured");

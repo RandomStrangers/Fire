@@ -24,8 +24,8 @@ namespace Flames
     /// <example> Storing a "lives" value for a player. </example>
     public sealed class ExtrasCollection 
     {
-        readonly Dictionary<string, object> dict = new Dictionary<string, object>();
-        readonly object locker = new object();
+        public readonly Dictionary<string, object> dict = new Dictionary<string, object>();
+        public readonly object locker = new object();
         
         public int Count { get { lock (locker) { return dict.Count; } } }
         public object this[string key] {

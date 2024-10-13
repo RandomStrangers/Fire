@@ -74,8 +74,8 @@ namespace Flames.Maths
             else if (pitch >= (64 - quadrant) && pitch <= 64)
                 dirY = -1;
         }
-        
-        static Vec3F32 GetDirVector(double yaw, double pitch) {
+
+        public static Vec3F32 GetDirVector(double yaw, double pitch) {
             double x =  Math.Sin(yaw) * Math.Cos(pitch);
             double y = -Math.Sin(pitch);
             double z = -Math.Cos(yaw) * Math.Cos(pitch);

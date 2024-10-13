@@ -30,14 +30,14 @@ namespace Flames.Commands.World {
         public override void Use(Player p, string message, CommandData data) {
             UseCore(p, message, data, WarpList.Global, "Warp");
         }
-        
-        static void PrintWarp(Player p, Warp warp) {
+
+        public static void PrintWarp(Player p, Warp warp) {
             Vec3S32 pos = warp.Pos.BlockCoords;
             p.Message("{0} - ({1}, {2}, {3}) on {4}",
                       warp.Name, pos.X, pos.Y, pos.Z, warp.Level);
         }
-        
-        protected void UseCore(Player p, string message, CommandData data,
+
+        public void UseCore(Player p, string message, CommandData data,
                                WarpList warps, string group) {
             string[] args = message.SplitSpaces();
             string cmd = args[0];

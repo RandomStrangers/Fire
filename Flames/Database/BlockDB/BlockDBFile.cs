@@ -183,18 +183,18 @@ namespace Flames.DB
             }
             return false;
         }
-        
-        
-        static ushort ReadU16(byte[] array, int offset) {
+
+
+        public static ushort ReadU16(byte[] array, int offset) {
             return (ushort)(array[offset] | array[offset + 1] << 8);
         }
-        
-        static void WriteU16(ushort value, byte[] array, int index) {
+
+        public static void WriteU16(ushort value, byte[] array, int index) {
             array[index++] = (byte)(value);
             array[index++] = (byte)(value >> 8);
         }
-        
-        internal static void ReadFully(Stream stream, byte[] dst, int offset, int count) {
+
+        public static void ReadFully(Stream stream, byte[] dst, int offset, int count) {
             int total = 0;
             do {
                 int read = stream.Read(dst, offset + total, count - total);

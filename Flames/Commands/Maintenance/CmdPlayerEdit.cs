@@ -30,8 +30,8 @@ namespace Flames.Commands.Maintenance {
             get { return new [] { new CommandAlias("SetInfo") }; }
         }
 
-        delegate void DBSetter(string name, string column, string data);
-        const int type_norm = 0, type_lo = 1, type_hi = 2;
+        public delegate void DBSetter(string name, string column, string data);
+        public const int type_norm = 0, type_lo = 1, type_hi = 2;
 
         public override void Use(Player p, string message, CommandData data) {
             if (message.Length == 0) { Help(p); return; }
@@ -120,9 +120,9 @@ namespace Flames.Commands.Maintenance {
                 MessageValidTypes(p);
             }
         }
-        
-        
-        static void SetColor(Player p, string[] args, string column, Player who, Action<string> setter) {
+
+
+        public static void SetColor(Player p, string[] args, string column, Player who, Action<string> setter) {
             if (args.Length < 3) {
                 p.Message("Color format: color name, or \"null\" to reset to default color."); return;
             }
@@ -139,8 +139,8 @@ namespace Flames.Commands.Maintenance {
             PlayerDB.Update(args[0], column, col);
             MessageDataChanged(p, args[0], args[1], args[2]);
         }
-        
-        static void SetDate(Player p, string[] args, string column, Player who, Action<DateTime> setter) {
+
+        public static void SetDate(Player p, string[] args, string column, Player who, Action<DateTime> setter) {
             if (args.Length < 3) {
                 p.Message("Dates must be in the format: " + Database.DateFormat);
                 return;
@@ -156,8 +156,8 @@ namespace Flames.Commands.Maintenance {
             PlayerDB.Update(args[0], column, args[2]);
             MessageDataChanged(p, args[0], args[1], args[2]);
         }
-        
-        static void SetTimespan(Player p, string[] args, string column, Player who, Action<TimeSpan> setter) {
+
+        public static void SetTimespan(Player p, string[] args, string column, Player who, Action<TimeSpan> setter) {
             if (args.Length < 3) {
                 p.Message("Timespan must be in the format: <number><quantifier>..");
                 p.Message(CommandParser.TimespanHelp, "set time spent to");
@@ -175,16 +175,16 @@ namespace Flames.Commands.Maintenance {
             }
             MessageDataChanged(p, args[0], args[1], span.Shorten(true));
         }
-        
-        static long GetLong(string name, string column) {
+
+        public static long GetLong(string name, string column) {
             long value = 0;
             Database.ReadRows("Players", column, 
                                 record => value = record.GetInt64(0), 
                                 "WHERE Name=@0", name);
             return value;
         }
-        
-        static void SetInteger(Player p, string[] args, string column, int max, Player who,
+
+        public static void SetInteger(Player p, string[] args, string column, int max, Player who,
                                Action<int> setter, int type) {
             if (args.Length < 3) {
                 p.Message("You must specify a positive integer, which can be {0} at most.", max); return;
@@ -212,8 +212,8 @@ namespace Flames.Commands.Maintenance {
             MessageDataChanged(p, args[0], args[1], args[2]);
         }
 
-        
-        static void MessageDataChanged(Player p, string name, string type, string value) {
+
+        public static void MessageDataChanged(Player p, string name, string type, string value) {
             name = p.FormatNick(name);
             if (value.Length == 0) {
                 p.Message("The {1} data for &b{0} &Shas been reset.", name, type);
@@ -222,7 +222,7 @@ namespace Flames.Commands.Maintenance {
             }
         }
 
-        static void MessageValidTypes(Player p) {
+        public static void MessageValidTypes(Player p) {
             p.Message("&HValid types: &SFirstLogin, LastLogin, Logins, Title, IP, Deaths, Money, " +
                       "Modified, Drawn, Placed, Deleted, TotalKicked, TimeSpent, Color, TitleColor, Messages ");
         }

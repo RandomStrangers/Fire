@@ -35,8 +35,8 @@ namespace Flames.Commands.Info
             }
             ForPlayer(p, message);
         }
-        
-        static void ForPlayer(Player p, string nick) {
+
+        public static void ForPlayer(Player p, string nick) {
             nick = Colors.Strip(nick);
             Player[] players = PlayerInfo.Online.Items;
 
@@ -47,8 +47,8 @@ namespace Flames.Commands.Info
             if (match == null) return;
             p.Message("The player nicknamed {0} &Sis named {1}", match.DisplayName, match.name);
         }
-        
-        static void ForBot(Player p, string nick) {
+
+        public static void ForBot(Player p, string nick) {
             nick = Colors.Strip(nick);
             PlayerBot[] bots = p.level.Bots.Items;
 

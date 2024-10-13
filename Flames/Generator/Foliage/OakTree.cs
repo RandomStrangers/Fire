@@ -22,9 +22,9 @@ using Flames.Maths;
 
 namespace Flames.Generator.Foliage {
     public sealed class OakTree : Tree {
-        
-        int numBranches, maxExtent, maxBranchHeight, trunkHeight;
-        List<Vec3S32> branch = new List<Vec3S32>();
+
+        public int numBranches, maxExtent, maxBranchHeight, trunkHeight;
+        public List<Vec3S32> branch = new List<Vec3S32>();
         
         public override int MinSize { get { return 0; } }
                 
@@ -58,8 +58,8 @@ namespace Flames.Generator.Foliage {
             }
         }
 
-        
-        void MakeBranch(int x, int y, int z, TreeOutput output) {
+
+        public void MakeBranch(int x, int y, int z, TreeOutput output) {
             int branchX = rnd.Next(-maxExtent, maxExtent);
             int branchZ = rnd.Next(-maxExtent, maxExtent);
             int branchStartY = rnd.Next((trunkHeight / 4) + 1, trunkHeight + (trunkHeight / 4));
@@ -71,8 +71,8 @@ namespace Flames.Generator.Foliage {
             
             GenCluster(x + branchX, y + branchEndY, z + branchZ, output);
         }
-        
-        void GenCluster(int x, int y, int z, TreeOutput output) {
+
+        public void GenCluster(int x, int y, int z, TreeOutput output) {
             Vec3S32 p1, p2;
             //cross X
             p1 = new Vec3S32(x - 1, y - 1, z);
@@ -94,9 +94,9 @@ namespace Flames.Generator.Foliage {
             p2 = new Vec3S32(x + 1, y + 2, z + 2);
             Cuboid(p1, p2, output);
         }
-        
-        
-        void Cuboid(Vec3S32 p1, Vec3S32 p2, TreeOutput output) {
+
+
+        public void Cuboid(Vec3S32 p1, Vec3S32 p2, TreeOutput output) {
             for (int y = p1.Y; y <= p2.Y; y++)
                 for (int z = p1.Z; z <= p2.Z; z++)
                     for (int x = p1.X; x <= p2.X; x++)
@@ -104,8 +104,8 @@ namespace Flames.Generator.Foliage {
                 output((ushort)x, (ushort)y, (ushort)z, Block.Leaves);
             }
         }
-        
-        void Line(Vec3S32 p1, Vec3S32 p2, TreeOutput output) {
+
+        public void Line(Vec3S32 p1, Vec3S32 p2, TreeOutput output) {
             LineDrawOp.DrawLine(p1.X, p1.Y, p1.Z, 10000, p2.X, p2.Y, p2.Z, branch);
             
             foreach (Vec3S32 P in branch) {

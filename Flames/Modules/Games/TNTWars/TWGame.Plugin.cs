@@ -30,8 +30,8 @@ using Flames.Maths;
 namespace Flames.Modules.Games.TW
 {    
     public partial class TWGame : RoundsGame 
-    {    
-        protected override void HookEventHandlers() {
+    {
+        public override void HookEventHandlers() {
             OnPlayerChatEvent.Register(HandlePlayerChat, Priority.High);
             OnPlayerSpawningEvent.Register(HandlePlayerSpawning, Priority.High);
             OnSentMapEvent.Register(HandleSentMap, Priority.High);
@@ -42,8 +42,8 @@ namespace Flames.Modules.Games.TW
             
             base.HookEventHandlers();
         }
-        
-        protected override void UnhookEventHandlers() {
+
+        public override void UnhookEventHandlers() {
             OnPlayerChatEvent.Unregister(HandlePlayerChat);
             OnPlayerSpawningEvent.Unregister(HandlePlayerSpawning);
             OnSentMapEvent.Unregister(HandleSentMap);
@@ -54,8 +54,8 @@ namespace Flames.Modules.Games.TW
             
             base.UnhookEventHandlers();
         }
-        
-        void HandlePlayerChat(Player p, string message) {
+
+        public void HandlePlayerChat(Player p, string message) {
             if (p.level != Map || message.Length == 0 || message[0] != ':') return;
             
             TWTeam team = TeamOf(p);
@@ -68,8 +68,8 @@ namespace Flames.Modules.Games.TW
                              Map, (pl, arg) => pl.Game.Referee || TeamOf(pl) == team);
             p.cancelchat = true;
         }
-        
-        void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
+
+        public void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
             if (p.level != Map) return;
             
             TWData data = Get(p);
@@ -86,8 +86,8 @@ namespace Flames.Modules.Games.TW
             Vec3U16 coords = team.SpawnPos;
             pos = Position.FromFeetBlockCoords(coords.X, coords.Y, coords.Z);
         }
-        
-        void HandleTabListEntryAdded(Entity entity, ref string tabName, ref string tabGroup, Player dst) {
+
+        public void HandleTabListEntryAdded(Entity entity, ref string tabName, ref string tabGroup, Player dst) {
             Player p = entity as Player;
             if (p == null || p.level != Map) return;
             TWTeam team = TeamOf(p);
@@ -100,20 +100,20 @@ namespace Flames.Modules.Games.TW
                 tabGroup = "&7Spectators";
             }
         }
-        
-        void HandleSettingColor(Player p, ref string color) {
+
+        public void HandleSettingColor(Player p, ref string color) {
             if (p.level != Map) return;
             TWTeam team = TeamOf(p);
             if (team != null) color = team.Color;
         }
-        
-        void HandleSentMap(Player p, Level prevLevel, Level level) {
+
+        public void HandleSentMap(Player p, Level prevLevel, Level level) {
             if (level != Map) return;
             OutputMapSummary(p, Map.Config);
             if (TeamOf(p) == null) AutoAssignTeam(p);
         }
-        
-        void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
             if (level == Map) allPlayers.Add(p);
         }

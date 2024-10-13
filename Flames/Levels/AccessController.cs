@@ -30,12 +30,12 @@ namespace Flames {
         public abstract List<string> Whitelisted { get; }
         /// <summary> List of players who are never allowd to access. </summary>
         public abstract List<string> Blacklisted { get; }
-        
-        protected abstract string ColoredName { get; }
-        protected abstract string Action { get; }
-        protected abstract string ActionIng { get; }
-        protected abstract string Type { get; }
-        protected abstract string MaxCmd { get; }
+
+        public abstract string ColoredName { get; }
+        public abstract string Action { get; }
+        public abstract string ActionIng { get; }
+        public abstract string Type { get; }
+        public abstract string MaxCmd { get; }
         
         
         /// <summary> Replaces this instance's access permissions 
@@ -176,10 +176,10 @@ namespace Flames {
             }
             ApplyChanges(p, lvl, msg);
         }
-        
-        protected abstract void ApplyChanges(Player p, Level lvl, string msg);
-        
-        bool CheckRank(Player p, LevelPermission plRank, LevelPermission perm, bool max) {
+
+        public abstract void ApplyChanges(Player p, Level lvl, string msg);
+
+        public bool CheckRank(Player p, LevelPermission plRank, LevelPermission perm, bool max) {
             string mode = max ? "max" : "min";
             if (!CheckDetailed(p, plRank)) {                
                 p.Message("&WHence you cannot change the {1} {0} rank.", Type, mode); return false;
@@ -190,8 +190,8 @@ namespace Flames {
                       Type, mode, ColoredName);
             return false;
         }
-        
-        bool CheckList(Player p, LevelPermission plRank, string name, bool whitelist) {
+
+        public bool CheckList(Player p, LevelPermission plRank, string name, bool whitelist) {
             if (!CheckDetailed(p, plRank)) {
                 string mode = whitelist ? "whitelist" : "blacklist";
                 p.Message("&WHence you cannot modify the {0} {1}.", Type, mode); return false;
@@ -213,10 +213,10 @@ namespace Flames {
     }
     
     /// <summary> Encapuslates access permissions (visit or build) for a level. </summary>
-    public sealed class LevelAccessController : AccessController {        
-        readonly bool isVisit;
-        readonly LevelConfig cfg;
-        readonly string lvlName;
+    public sealed class LevelAccessController : AccessController {
+        public readonly bool isVisit;
+        public readonly LevelConfig cfg;
+        public readonly string lvlName;
         
         public LevelAccessController(LevelConfig cfg, string levelName, bool isVisit) {
             this.cfg = cfg;
@@ -247,15 +247,15 @@ namespace Flames {
         public override List<string> Blacklisted {
             get { return isVisit ? cfg.VisitBlacklist : cfg.BuildBlacklist; }
         }
-        
-        protected override string ColoredName { get { return cfg.Color + lvlName; } }
-        protected override string Action { get { return isVisit ? "go to" : "build in"; } }
-        protected override string ActionIng { get { return isVisit ? "going to" : "building in"; } }
-        protected override string Type { get { return isVisit ? "visit" : "build"; } }
-        protected override string MaxCmd { get { return isVisit ? "PerVisit" : "PerBuild"; } }
 
-        
-        protected override void ApplyChanges(Player p, Level lvl, string msg) {
+        public override string ColoredName { get { return cfg.Color + lvlName; } }
+        public override string Action { get { return isVisit ? "go to" : "build in"; } }
+        public override string ActionIng { get { return isVisit ? "going to" : "building in"; } }
+        public override string Type { get { return isVisit ? "visit" : "build"; } }
+        public override string MaxCmd { get { return isVisit ? "PerVisit" : "PerBuild"; } }
+
+
+        public override void ApplyChanges(Player p, Level lvl, string msg) {
             Update(lvl);
             Logger.Log(LogType.UserActivity, "{0} &Son {1}", msg, lvlName);            
             if (lvl != null) lvl.Message(msg);
@@ -264,8 +264,8 @@ namespace Flames {
                 p.Message("{0} &Son {1}", msg, ColoredName);
             }
         }
-        
-        void Update(Level lvl) {
+
+        public void Update(Level lvl) {
             cfg.SaveFor(lvlName);
             if (lvl == null) return;
             if (isVisit && lvl == Server.mainLevel) return;

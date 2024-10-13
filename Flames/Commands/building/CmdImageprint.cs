@@ -84,7 +84,7 @@ namespace Flames.Commands.Building {
             p.MakeSelection(2, "Selecting direction for &SImagePrint", dArgs, DoImage);
         }
 
-        bool ParseMode(string mode, DrawArgs args) {
+        public bool ParseMode(string mode, DrawArgs args) {
             // Dithered and 2 layer mode are mutually exclusive because dithering is not visually effective when the (dark) sides of blocks are visible all over the image.
             if (mode.CaselessEq("wall")) {
                 // default arguments are fine
@@ -100,8 +100,8 @@ namespace Flames.Commands.Building {
 
             return true;
         }
-        
-        bool DoImage(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool DoImage(Player p, Vec3S32[] m, object state, BlockID block) {
             if (m[0].X == m[1].X && m[0].Z == m[1].Z) { p.Message("No direction was selected"); return false; }
 
             Thread thread = new Thread(() => DoDrawImage(p, m, (DrawArgs)state));
@@ -109,8 +109,8 @@ namespace Flames.Commands.Building {
             thread.Start();
             return false;
         }
-        
-        void DoDrawImage(Player p, Vec3S32[] m, DrawArgs dArgs) {
+
+        public void DoDrawImage(Player p, Vec3S32[] m, DrawArgs dArgs) {
             try {
                 DoDrawImageCore(p, m, dArgs);
             } catch (Exception ex) {
@@ -118,8 +118,8 @@ namespace Flames.Commands.Building {
                 // Do not want it taking down the whole server if error occurs
             }
         }
-        
-        void DoDrawImageCore(Player p, Vec3S32[] marks, DrawArgs dArgs) {
+
+        public void DoDrawImageCore(Player p, Vec3S32[] marks, DrawArgs dArgs) {
             IBitmap2D bmp = ImageUtils.DecodeImage(dArgs.Data, p);
             if (bmp == null) return;
 
@@ -138,8 +138,8 @@ namespace Flames.Commands.Building {
             op.Source = bmp; op.Palette = dArgs.Pal;
             DrawOpPerformer.Do(op, null, p, marks, false);
         }
-        
-        void Clamp(Player p, Vec3S32[] m, ImagePrintDrawOp op, ref int width, ref int height) {
+
+        public void Clamp(Player p, Vec3S32[] m, ImagePrintDrawOp op, ref int width, ref int height) {
             Level lvl = p.level;
             Vec3S32 xEnd = m[0] + op.dx * (width  - 1);
             Vec3S32 yEnd = m[0] + op.dy * (height - 1);
@@ -157,8 +157,8 @@ namespace Flames.Commands.Building {
                       width, height, resizedWidth, resizedHeight);
             width = resizedWidth; height = resizedHeight;
         }
-        
-        static int LargestDelta(Level lvl, Vec3S32 point) {
+
+        public static int LargestDelta(Level lvl, Vec3S32 point) {
             Vec3S32 clamped = lvl.ClampPos(point);
             int dx = Math.Abs(point.X - clamped.X);
             int dy = Math.Abs(point.Y - clamped.Y);
@@ -174,7 +174,7 @@ namespace Flames.Commands.Building {
             p.Message("&H  <width height> optionally resize the printed image");
         }
 
-        class DrawArgs {
+        public class DrawArgs {
             public bool Floor, TwoLayer, Dithered;
             public ImagePalette Pal;
             public byte[] Data;

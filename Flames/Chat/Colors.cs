@@ -164,8 +164,8 @@ namespace Flames {
             }
             return new string(chars);
         }
-        
-        static bool IsUrlAt(char[] chars, int i, int len) {
+
+        public static bool IsUrlAt(char[] chars, int i, int len) {
             const int prefixLen = 7; // "http://".Length
             if (len < prefixLen) return false;
             
@@ -181,8 +181,8 @@ namespace Flames {
             if (chars[i] == 's') { len--; i++; }
             return len >= 3 && chars[i] == ':' && chars[i + 1] == '/' && chars[i + 2] == '/';
         }
-        
-        static void Escape(char[] chars, int start, int end) {
+
+        public static void Escape(char[] chars, int start, int end) {
             for (int i = start; i < end; i++ ) {
                 char c = chars[i];
                 bool validCode = c == '%' && i < chars.Length - 1;
@@ -214,8 +214,8 @@ namespace Flames {
             }
             return new string(output, 0, usedChars);
         }
-        
-        static bool UsedColor(string message, int i) {
+
+        public static bool UsedColor(string message, int i) {
             // handle & being last character in string
             if (i >= message.Length - 1) return false;
             return Lookup(message[i + 1]) != '\0';
@@ -238,8 +238,8 @@ namespace Flames {
             return new string(output, 0, usedChars);
         }
 
-        
-        static readonly object ioLock = new object();
+
+        public static readonly object ioLock = new object();
         /// <summary> Saves list of changed colors to disc. </summary>
         public static void Save() {
             try {
@@ -248,8 +248,8 @@ namespace Flames {
                 Logger.LogError("Error saving " + Paths.CustomColorsFile, ex);
             }
         }
-        
-        static void SaveCore() {
+
+        public static void SaveCore() {
             using (StreamWriter w = new StreamWriter(Paths.CustomColorsFile)) {
                 foreach (ColorDesc col in List) {
                     if (!col.IsModified()) continue;
@@ -264,8 +264,8 @@ namespace Flames {
         public static void Load() {
             lock (ioLock) LoadCore();
         }
-        
-        static void LoadCore() {
+
+        public static void LoadCore() {
             if (!File.Exists(Paths.CustomColorsFile)) return;
             string[] lines = File.ReadAllLines(Paths.CustomColorsFile);
             ColorDesc col = default;
@@ -337,8 +337,8 @@ namespace Flames {
             Code = '\0'; Fallback = '\0'; Name = null;
             R = r; G = g; B = b; A = 255;
         }
-        
-        internal ColorDesc(char code, string name) {
+
+        public ColorDesc(char code, string name) {
             Code = code; Fallback = code; Name = name; A = 255;
             
             if (code >= '0' && code <= '9') {
@@ -347,8 +347,8 @@ namespace Flames {
                 HexDecode(code - 'a' + 10, out R, out G, out B);
             }
         }
-        
-        static void HexDecode(int hex, out byte r, out byte g, out byte b) {
+
+        public static void HexDecode(int hex, out byte r, out byte g, out byte b) {
             r = (byte)(191 * ((hex >> 2) & 1) + 64 * (hex >> 3));
             g = (byte)(191 * ((hex >> 1) & 1) + 64 * (hex >> 3));
             b = (byte)(191 * ((hex >> 0) & 1) + 64 * (hex >> 3));

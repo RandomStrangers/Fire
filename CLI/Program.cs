@@ -43,8 +43,8 @@ namespace Flames.Cli {
             // separate method, in case Flames_.dll is missing
             StartCLI();
         }
-        
-        static void SetCurrentDirectory() {
+
+        public static void SetCurrentDirectory() {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try {
                 Environment.CurrentDirectory = path;
@@ -57,8 +57,8 @@ namespace Flames.Cli {
                 Console.WriteLine("Failed to set working directory to '{0}', running in current directory..", path);
             }
         }
-        
-        static void EnableCLIMode() {
+
+        public static void EnableCLIMode() {
             try {
                 Server.CLIMode = true;
             } catch {
@@ -66,9 +66,9 @@ namespace Flames.Cli {
             }
             Server.RestartPath = Assembly.GetEntryAssembly().Location;
         }
-        
-        
-        static void StartCLI() {
+
+
+        public static void StartCLI() {
             FileLogger.Init();
             AppDomain.CurrentDomain.UnhandledException += GlobalExHandler;
             
@@ -88,8 +88,8 @@ namespace Flames.Cli {
                 FileLogger.Flush(null);
             }
         }
-        
-        static void OnCancelKeyPress(object sender, ConsoleCancelEventArgs e) {
+
+        public static void OnCancelKeyPress(object sender, ConsoleCancelEventArgs e) {
             switch (e.SpecialKey) {
                 case ConsoleSpecialKey.ControlBreak:
                     // Cannot set e.Cancel for this one
@@ -105,8 +105,8 @@ namespace Flames.Cli {
                     break;
             }
         }
-        
-        static void LogAndRestart(Exception ex) {
+
+        public static void LogAndRestart(Exception ex) {
             Logger.LogError(ex);
             FileLogger.Flush(null);
             
@@ -116,15 +116,15 @@ namespace Flames.Cli {
                 stopThread.Join();
             }
         }
-        
-        static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e) {
+
+        public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e) {
             LogAndRestart((Exception)e.ExceptionObject);
         }
-        
-        
-        static string CurrentDate() { return DateTime.Now.ToString("(HH:mm:ss) "); }
 
-        static void LogMessage(LogType type, string message) {
+
+        public static string CurrentDate() { return DateTime.Now.ToString("(HH:mm:ss) "); }
+
+        public static void LogMessage(LogType type, string message) {
             if (!Server.Config.FlameLogging[(int)type]) return;
             
             switch (type) {
@@ -143,9 +143,9 @@ namespace Flames.Cli {
                     break;
             }
         }
-        
-        static string msgPrefix = Environment.NewLine + "Message: ";
-        static string ExtractErrorMessage(string raw) {
+
+        public static string msgPrefix = Environment.NewLine + "Message: ";
+        public static string ExtractErrorMessage(string raw) {
             // Error messages are usually structured like so:
             //   Type: whatever
             //   Message: whatever
@@ -160,18 +160,18 @@ namespace Flames.Cli {
             
             return " (" + raw.Substring(beg, end - beg) + ")";
         }
-        
 
-        static void CheckNameVerification() {
+
+        public static void CheckNameVerification() {
             if (Server.Config.VerifyNames) return;
             Write("&eWARNING: Name verification is disabled! This means players can login as anyone, including YOU");
         }
 
-        static void LogNewerVersionDetected(object sender, EventArgs e) {
+        public static void LogNewerVersionDetected(object sender, EventArgs e) {
             Write(Colors.Strip(Server.SoftwareName) + " &cupdate available! Update by replacing with the files from " + Updater.UploadsURL);
         }
-        
-        static void ConsoleLoop() {
+
+        public static void ConsoleLoop() {
             int eofs = 0;
             while (true) {
                 try {
@@ -204,8 +204,8 @@ namespace Flames.Cli {
                 }
             }
         }
-        
-        static void Write(string message) {
+
+        public static void Write(string message) {
             int index = 0;
             char col = 'S';
             message = UIHelpers.Format(message);
@@ -231,7 +231,7 @@ namespace Flames.Cli {
             Console.WriteLine();
         }
 
-        static ConsoleColor GetConsoleColor(char c) {
+        public static ConsoleColor GetConsoleColor(char c) {
             if (c == 'S') return ConsoleColor.White;
             Colors.Map(ref c);
             

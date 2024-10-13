@@ -29,7 +29,7 @@ namespace Flames.Commands.Chatting
         public override bool UseableWhenFrozen { get { return true; } }
 
         public override void Use(Player p, string message, CommandData data) { ToggleAfk(p, message); }
-        internal static void ToggleAfk(Player p, string message) {
+        public static void ToggleAfk(Player p, string message) {
             if (p.joker) message = "";
             p.AutoAfk = false;
             p.IsAfk   = !p.IsAfk;
@@ -57,8 +57,8 @@ namespace Flames.Commands.Chatting
                 OnPlayerActionEvent.Call(p, PlayerAction.UnAFK, null, cantSend);
             }
         }
-        
-        static void ShowMessage(Player p, string message) {
+
+        public static void ShowMessage(Player p, string message) {
             bool announce = !p.hidden && Server.Config.IRCShowAFK;
             Chat.MessageFrom(p, message, Chat.FilterVisible(p), announce);
         }

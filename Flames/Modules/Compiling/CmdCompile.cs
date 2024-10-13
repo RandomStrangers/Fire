@@ -61,8 +61,8 @@ namespace Flames.Modules.Compiling
                 CompileCommand(p, paths, compiler);
             }
         }
-        
-        protected virtual void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
+
+        public virtual void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
             string dstPath = IScripting.PluginPath(paths[0]);
             
             for (int i = 0; i < paths.Length; i++) 
@@ -71,8 +71,8 @@ namespace Flames.Modules.Compiling
             }
             CompilerOperations.Compile(p, compiler, "Plugin", paths, dstPath);
         }
-        
-        protected virtual void CompileCommand(Player p, string[] paths, ICompiler compiler) {
+
+        public virtual void CompileCommand(Player p, string[] paths, ICompiler compiler) {
             string dstPath = IScripting.CommandPath(paths[0]);
             
             for (int i = 0; i < paths.Length; i++) 

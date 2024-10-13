@@ -24,7 +24,7 @@ namespace Flames.Gui.Popups
 {
     public partial class EditText : Form 
     {
-        TextFile curFile;
+        public TextFile curFile;
         
         public EditText() {
             InitializeComponent();
@@ -33,12 +33,12 @@ namespace Flames.Gui.Popups
             }
             cmbList.Text = "Select file..";
         }
-        
-        void EditText_Load(object sender, EventArgs e) {
+
+        public void EditText_Load(object sender, EventArgs e) {
             GuiUtils.SetIcon(this);
         }
-        
-        void cmbList_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void cmbList_SelectedIndexChanged(object sender, EventArgs e) {
             if (cmbList.SelectedIndex == -1) return;
             TrySaveChanges();
             
@@ -58,13 +58,13 @@ namespace Flames.Gui.Popups
                 Text = "Editing (none)";
             }
         }
-        
-        void SaveChanges(string[] lines) {
+
+        public void SaveChanges(string[] lines) {
             curFile.SetText(lines);
             Popup.Message("Saved " + curFile.Filename);
         }
-        
-        void TrySaveChanges() {
+
+        public void TrySaveChanges() {
             if (curFile == null) return;
             string[] lines = txtEdit.Lines;
             if (!HasChanged(lines)) return;
@@ -73,8 +73,8 @@ namespace Flames.Gui.Popups
                 SaveChanges(lines);
             }
         }
-        
-        bool HasChanged(string[] lines) {
+
+        public bool HasChanged(string[] lines) {
             string[] curLines = curFile.GetText();
             if (lines.Length != curLines.Length) return true;
             
@@ -83,37 +83,37 @@ namespace Flames.Gui.Popups
             }
             return false;
         }
-        
 
-        void btnColor_Click(object sender, EventArgs e) {
+
+        public void btnColor_Click(object sender, EventArgs e) {
             using (ColorSelector sel = new ColorSelector("Insert color", '\0')) {
                 DialogResult result = sel.ShowDialog();
                 if (result == DialogResult.Cancel) return;
                 InsertText("&" + sel.ColorCode);
             }
         }
-        
-        void btnToken_Click(object sender, EventArgs e) {
+
+        public void btnToken_Click(object sender, EventArgs e) {
             using (TokenSelector sel = new TokenSelector("Insert token")) {
                 DialogResult result = sel.ShowDialog();
                 if (result == DialogResult.Cancel || sel.Token == null) return;
                 InsertText(sel.Token);
             }
         }
-        
-        void InsertText(string text) {
+
+        public void InsertText(string text) {
             int selStart = txtEdit.SelectionStart, selLength = txtEdit.SelectionLength;            
             txtEdit.Paste(text);
             // re highlight now replaced text
             if (selLength > 0) txtEdit.Select(selStart, text.Length);
             txtEdit.Focus();
         }
-        
-        void EditTxt_Unload(object sender, EventArgs e) {
+
+        public void EditTxt_Unload(object sender, EventArgs e) {
             TrySaveChanges();
         }
-        
-        void btnSave_Click(object sender, EventArgs e) {
+
+        public void btnSave_Click(object sender, EventArgs e) {
             if (curFile == null) return;
             SaveChanges(txtEdit.Lines);
         }

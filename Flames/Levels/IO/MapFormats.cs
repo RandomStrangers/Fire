@@ -40,9 +40,9 @@ namespace Flames.Levels.IO
         }
 
         public abstract Vec3U16 ReadDimensions(Stream src);
-        
-        
-        protected static void ConvertCustom(Level lvl) {
+
+
+        public static void ConvertCustom(Level lvl) {
             ushort x, y, z;
             byte[] blocks = lvl.blocks; // local var to avoid JIT bounds check
             for (int i = 0; i < blocks.Length; i++) {
@@ -54,10 +54,10 @@ namespace Flames.Levels.IO
                 lvl.FastSetExtTile(x, y, z, raw);
             }
         }
-        
+
         /// <summary> Reads the given number of bytes from the given stream </summary>
         /// <remarks> Throws EndOfStreamException if unable to read sufficient bytes </remarks>
-        protected static void ReadFully(Stream s, byte[] data, int count) {
+        public static void ReadFully(Stream s, byte[] data, int count) {
             int offset = 0;
             while (count > 0) {
                 int read = s.Read(data, offset, count);

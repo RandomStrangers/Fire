@@ -45,8 +45,8 @@ namespace Flames.Commands.Building
             p.Message("Place or break two blocks to determine the edges.");
             p.MakeSelection(2, "Selecting region for &SMeasure", toCount, DoMeasure);
         }
-        
-        bool DoMeasure(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool DoMeasure(Player p, Vec3S32[] m, object state, BlockID block) {
             List<BlockID> toCount = (List<BlockID>)state;
             Vec3S32 min  = Vec3S32.Min(m[0], m[1]);
             Vec3S32 max  = Vec3S32.Max(m[0], m[1]);
@@ -75,8 +75,8 @@ namespace Flames.Commands.Building
             p.Message(title + blocks);
             return true;
         }
-        
-        static List<BlockID> MostFrequentBlocks(int[] countsRaw) {
+
+        public static List<BlockID> MostFrequentBlocks(int[] countsRaw) {
             BlockID[] blocks = new BlockID[Block.SUPPORTED_COUNT];
             int[] counts = new int[Block.SUPPORTED_COUNT]; // copy array as Sort works in place
             int total = 0;
@@ -97,8 +97,8 @@ namespace Flames.Commands.Building
             }
             return mostFrequent;
         }
-        
-        static string FormatCount(int count, int volume) {
+
+        public static string FormatCount(int count, int volume) {
             return ": " + count + " (" + (int)(count * 100.0 / volume) + "%)";
         }
         

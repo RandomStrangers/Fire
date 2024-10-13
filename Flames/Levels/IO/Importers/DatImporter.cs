@@ -25,7 +25,7 @@ using Flames.Maths;
 
 namespace Flames.Levels.IO 
 {
-    sealed class DatReader 
+    public sealed class DatReader 
     {
         public BinaryReader src;
         public List<object> handles = new List<object>();
@@ -75,11 +75,11 @@ namespace Flames.Levels.IO
                 throw new InvalidDataException("Invalid .dat map version");
             }
         }
-        
-        
+
+
         // Map 'format' is just the 256x64x256 blocks of the level
-        const int PC_WIDTH = 256, PC_HEIGHT = 64, PC_LENGTH = 256;
-        static Level ReadFormat0(Level lvl, Stream s) {
+        public const int PC_WIDTH = 256, PC_HEIGHT = 64, PC_LENGTH = 256;
+        public static Level ReadFormat0(Level lvl, Stream s) {
             lvl.Width  = PC_WIDTH;
             lvl.Height = PC_HEIGHT;
             lvl.Length = PC_LENGTH;
@@ -96,9 +96,9 @@ namespace Flames.Levels.IO
             lvl.Config.HorizonBlock = Block.Air;
             return lvl;
         }
-        
-        
-        static Level ReadFormat1(Level lvl, DatReader r) {
+
+
+        public static Level ReadFormat1(Level lvl, DatReader r) {
             r.ReadUtf8();  // level name
             r.ReadUtf8();  // level author
             r.ReadInt64(); // created timestamp (currentTimeMillis)
@@ -110,8 +110,8 @@ namespace Flames.Levels.IO
             SetupClassic013(lvl);
             return lvl;
         }
-        
-        static void SetupClassic013(Level lvl) {
+
+        public static void SetupClassic013(Level lvl) {
             // You always spawn in a random place in 0.13,
             //  so just use middle of map for spawn instead
             lvl.spawnx = (ushort)(lvl.Width  / 2);
@@ -124,13 +124,13 @@ namespace Flames.Levels.IO
             lvl.Config.FogColor     = "#7FCCFF";
         }
 
-        
+
         // Really annoying map format to parse, because it's just a Java serialised object
         //  http://www.javaworld.com/article/2072752/the-java-serialization-algorithm-revealed.html
         //  https://docs.oracle.com/javase/7/docs/platform/serialization/spec/protocol.html
         // Good reference tool for comparison
         //  https://github.com/NickstaDB/SerializationDumper
-        static Level ReadFormat2(Level lvl, DatReader r) {
+        public static Level ReadFormat2(Level lvl, DatReader r) {
             if (r.ReadUInt16() != 0xACED) throw new InvalidDataException("Invalid stream magic");
             if (r.ReadUInt16() != 0x0005) throw new InvalidDataException("Invalid stream version");
             
@@ -138,46 +138,46 @@ namespace Flames.Levels.IO
             ParseRootObject(lvl, obj);
             return lvl;
         }
-        
-        const byte TC_NULL = 0x70;
-        const byte TC_REFERENCE = 0x71;
-        const byte TC_CLASSDESC = 0x72;
-        const byte TC_OBJECT = 0x73;
-        const byte TC_STRING = 0x74;
-        const byte TC_ARRAY = 0x75;
-        const byte TC_CLASS = 0x76;
-        const byte TC_BLOCKDATA = 0x77;
-        const byte TC_ENDBLOCKDATA = 0x78;
-        const byte TC_RESET = 0x79;
-        const byte TC_BLOCKDATALONG = 0x7A;
-        
-        const int baseWireHandle = 0x7E0000;
-        const byte SC_WRITE_METHOD = 0x01, SC_SERIALIZABLE = 0x02;
 
-        class JClassDesc {
+        public const byte TC_NULL = 0x70;
+        public const byte TC_REFERENCE = 0x71;
+        public const byte TC_CLASSDESC = 0x72;
+        public const byte TC_OBJECT = 0x73;
+        public const byte TC_STRING = 0x74;
+        public const byte TC_ARRAY = 0x75;
+        public const byte TC_CLASS = 0x76;
+        public const byte TC_BLOCKDATA = 0x77;
+        public const byte TC_ENDBLOCKDATA = 0x78;
+        public const byte TC_RESET = 0x79;
+        public const byte TC_BLOCKDATALONG = 0x7A;
+
+        public const int baseWireHandle = 0x7E0000;
+        public const byte SC_WRITE_METHOD = 0x01, SC_SERIALIZABLE = 0x02;
+
+        public class JClassDesc {
             public string Name;
             public byte Flags;
             public JFieldDesc[] Fields;
             public JClassDesc SuperClass;
         }
-        
-        class JClassData {
+
+        public class JClassData {
             public object[] Values;
         }
-        
-        class JObject {
+
+        public class JObject {
             public JClassDesc Desc;
             public JClassData[] ClassData;
         }
-        class JArray {
+        public class JArray {
             public JClassDesc Desc;
             public object Values;
         }
-        
+
         // object is actually an int, so a simple cast to ushort will fail
-        static ushort U16(object o) { return (ushort)((int)o); }
-        
-        static void ParseRootObject(Level lvl, JObject obj) {
+        public static ushort U16(object o) { return (ushort)((int)o); }
+
+        public static void ParseRootObject(Level lvl, JObject obj) {
             JFieldDesc[] fields = obj.Desc.Fields;
             object[] values     = obj.ClassData[0].Values;
             
@@ -195,9 +195,9 @@ namespace Flames.Levels.IO
                 if (f.Name == "zSpawn") lvl.spawnz = U16(value);
             }
         }
-        
-        static object ReadObject(DatReader r) { return ReadObject(r, r.ReadUInt8()); }
-        static object ReadObject(DatReader r, byte typeCode) {
+
+        public static object ReadObject(DatReader r) { return ReadObject(r, r.ReadUInt8()); }
+        public static object ReadObject(DatReader r, byte typeCode) {
             switch (typeCode) {
                 case TC_STRING:    return NewString(r);
                 case TC_NULL:      return null;
@@ -207,20 +207,20 @@ namespace Flames.Levels.IO
             }
             throw new InvalidDataException("Invalid typecode: " + typeCode);
         }
-        
-        static string NewString(DatReader r) {
+
+        public static string NewString(DatReader r) {
             string value = r.ReadUtf8();
             r.handles.Add(value);
             return value;
         }
-        
-        static object PrevObject(DatReader r) {
+
+        public static object PrevObject(DatReader r) {
             int handle = r.ReadInt32() - baseWireHandle;
             if (handle >= 0 && handle < r.handles.Count) return r.handles[handle];
             throw new InvalidDataException("Invalid stream handle: " + handle);
         }
-        
-        static JObject NewObject(DatReader r) {
+
+        public static JObject NewObject(DatReader r) {
             JObject obj = new JObject();
             obj.Desc = ClassDesc(r);
             r.handles.Add(obj);
@@ -240,8 +240,8 @@ namespace Flames.Levels.IO
             }
             return obj;
         }
-        
-        static JArray NewArray(DatReader r) {
+
+        public static JArray NewArray(DatReader r) {
             JArray array = new JArray();
             array.Desc = ClassDesc(r);
             r.handles.Add(array);
@@ -259,8 +259,8 @@ namespace Flames.Levels.IO
             }
             return array;
         }
-        
-        static JClassDesc NewClassDesc(DatReader r) {
+
+        public static JClassDesc NewClassDesc(DatReader r) {
             JClassDesc desc = new JClassDesc();
             desc.Name = r.ReadUtf8();
             r.ReadInt64(); // serial UID
@@ -277,8 +277,8 @@ namespace Flames.Levels.IO
             desc.SuperClass = ClassDesc(r);
             return desc;
         }
-        
-        static JClassDesc ClassDesc(DatReader r) {
+
+        public static JClassDesc ClassDesc(DatReader r) {
             byte typeCode = r.ReadUInt8();
             if (typeCode == TC_CLASSDESC) return NewClassDesc(r);
             if (typeCode == TC_NULL)      return null;
@@ -286,8 +286,8 @@ namespace Flames.Levels.IO
             
             throw new InvalidDataException("Invalid type code: " + typeCode);
         }
-        
-        static JClassData ClassData(DatReader r, JClassDesc desc) {
+
+        public static JClassData ClassData(DatReader r, JClassDesc desc) {
             if ((desc.Flags & SC_SERIALIZABLE) == 0) {
                 throw new InvalidDataException("Invalid class data flags: " + desc.Flags);
             }
@@ -303,8 +303,8 @@ namespace Flames.Levels.IO
             }
             return data;
         }
-        
-        static unsafe object Value(DatReader r, char type) {
+
+        public static unsafe object Value(DatReader r, char type) {
             if (type == 'B') return r.ReadUInt8();
             if (type == 'C') return (char)r.ReadUInt16();
             if (type == 'D') { long tmp = r.ReadInt64(); return *(double*)(&tmp); }
@@ -318,12 +318,12 @@ namespace Flames.Levels.IO
             
             throw new InvalidDataException("Invalid value code: " + type);
         }
-        
-        class JFieldDesc {
+
+        public class JFieldDesc {
             public char Type;
             public string Name, ClassName;
         }
-        static JFieldDesc FieldDesc(DatReader r) {
+        public static JFieldDesc FieldDesc(DatReader r) {
             JFieldDesc desc = new JFieldDesc();
             byte type = r.ReadUInt8();
             desc.Type = (char)type;
@@ -338,8 +338,8 @@ namespace Flames.Levels.IO
             }
             return desc;
         }
-        
-        static void SkipAnnotation(DatReader r) {
+
+        public static void SkipAnnotation(DatReader r) {
             byte typeCode;
             while ((typeCode = r.ReadUInt8()) != TC_ENDBLOCKDATA) 
             {

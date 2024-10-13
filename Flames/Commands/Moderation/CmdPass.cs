@@ -50,8 +50,8 @@ namespace Flames.Commands.Moderation {
                 VerifyPassword(p, message);
             }
         }
-        
-        static void VerifyPassword(Player p, string password) {
+
+        public static void VerifyPassword(Player p, string password) {
             if (!p.Unverified) { p.Message("&WYou are already verified."); return; }
             if (p.passtries >= 3) { p.Kick("Did you really think you could keep on guessing?"); return; }
             if (password.IndexOf(' ') >= 0) { p.Message("Your password must be &Wone &Sword!"); return; }
@@ -67,8 +67,8 @@ namespace Flames.Commands.Moderation {
              p.Message("&WWrong Password. &SRemember your password is &Wcase sensitive.");
              p.Message("Forgot your password? Contact &W{0} &Sto &Wreset it.", Server.Config.OwnerName);
         }
-        
-        static void SetPassword(Player p, string password) {
+
+        public static void SetPassword(Player p, string password) {
             if (p.Unverified && PassAuthenticator.Current.HasPassword(p.name)) {
                 PassAuthenticator.Current.RequiresVerification(p, "can change your password");
                 p.Message("Forgot your password? Contact &W{0} &Sto &Wreset it.", Server.Config.OwnerName);
@@ -79,8 +79,8 @@ namespace Flames.Commands.Moderation {
             PassAuthenticator.Current.StorePassword(p.name, password);
             p.Message("Your password was &aset to: &c" + password);
         }
-        
-        void ResetPassword(Player p, string name, CommandData data) {
+
+        public void ResetPassword(Player p, string name, CommandData data) {
             string target = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (target == null) return;
             
@@ -97,7 +97,7 @@ namespace Flames.Commands.Moderation {
             }
         }
 
-        bool CheckResetPerms(Player p, CommandData data) {
+        public bool CheckResetPerms(Player p, CommandData data) {
             // check server owner name for permissions backwards compatibility
             return Server.Config.OwnerName.CaselessEq(p.name) || CheckExtraPerm(p, data, 1);
         }

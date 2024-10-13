@@ -27,7 +27,7 @@ using Flames.Util;
 
 namespace Flames.Modules.Relay.Discord 
 {
-    sealed class DiscordUser : RelayUser
+    public sealed class DiscordUser : RelayUser
     {
         public string ReferencedUser;
         
@@ -41,25 +41,25 @@ namespace Flames.Modules.Relay.Discord
     
     public class DiscordBot : RelayBot
     {
-        protected DiscordApiClient api;
-        protected DiscordWebsocket socket;
-        protected DiscordSession session;
-        protected string botUserID;
-        
-        Dictionary<string, byte> channelTypes = new Dictionary<string, byte>();
-        const byte CHANNEL_DIRECT = 0;
-        const byte CHANNEL_TEXT   = 1;
+        public DiscordApiClient api;
+        public DiscordWebsocket socket;
+        public DiscordSession session;
+        public string botUserID;
 
-        List<string> filter_triggers = new List<string>();
-        List<string> filter_replacements = new List<string>();
-        JsonArray allowed;
+        public Dictionary<string, byte> channelTypes = new Dictionary<string, byte>();
+        public const byte CHANNEL_DIRECT = 0;
+        public const byte CHANNEL_TEXT   = 1;
+
+        public List<string> filter_triggers = new List<string>();
+        public List<string> filter_replacements = new List<string>();
+        public JsonArray allowed;
 
         public override string RelayName { get { return "Discord"; } }
         public override bool Enabled     { get { return Config.Enabled; } }
         public override string UserID    { get { return botUserID; } }
         public DiscordConfig Config;
-        
-        TextFile replacementsFile = new TextFile("text/discord/replacements.txt",
+
+        public TextFile replacementsFile = new TextFile("text/discord/replacements.txt",
                                         "// This file is used to replace words/phrases sent to Discord",
                                         "// Lines starting with // are ignored",
                                         "// Lines should be formatted like this:",
@@ -92,14 +92,14 @@ namespace Flames.Modules.Relay.Discord
             socket.OnGatewayEvent  = HandleGatewayEvent;
             socket.Connect();
         }
-                
+
         // mono wraps exceptions from reading in an AggregateException, e.g:
         //   * AggregateException - One or more errors occurred.
         //      * ObjectDisposedException - Cannot access a disposed object.
         // .NET sometimes wraps exceptions from reading in an IOException, e.g.:
         //   * IOException - The read operation failed, see inner exception.
         //      * ObjectDisposedException - Cannot access a disposed object.
-        static Exception UnpackError(Exception ex) {
+        public static Exception UnpackError(Exception ex) {
             if (ex.InnerException is ObjectDisposedException)
                 return ex.InnerException;
             if (ex.InnerException is IOException)
@@ -150,16 +150,16 @@ namespace Flames.Modules.Relay.Discord
             UpdateAllowed();
             LoadBannedCommands();
         }
-        
-        void UpdateAllowed() {
+
+        public void UpdateAllowed() {
             JsonArray mentions = new JsonArray();
             if (Config.CanMentionUsers) mentions.Add("users");
             if (Config.CanMentionRoles) mentions.Add("roles");
             if (Config.CanMentionHere)  mentions.Add("everyone");
             allowed = mentions;
         }
-        
-        void LoadReplacements() {
+
+        public void LoadReplacements() {
             replacementsFile.EnsureExists();            
             string[] lines = replacementsFile.GetText();
             
@@ -176,9 +176,9 @@ namespace Flames.Modules.Relay.Discord
         public override void LoadControllers() {
             Controllers = PlayerList.Load("text/discord/controllers.txt");
         }
-        
-        
-        DiscordUser ExtractUser(JsonObject data) {
+
+
+        public DiscordUser ExtractUser(JsonObject data) {
             JsonObject author = (JsonObject)data["author"];
             
             DiscordUser user = new DiscordUser();
@@ -188,8 +188,8 @@ namespace Flames.Modules.Relay.Discord
             user.ReferencedUser = ExtractReferencedUser(data);
             return user;
         }
-        
-        string GetNick(JsonObject data) {
+
+        public string GetNick(JsonObject data) {
             if (!Config.UseNicks) return null;
             object raw;
             if (!data.TryGetValue("member", out raw)) return null;
@@ -201,8 +201,8 @@ namespace Flames.Modules.Relay.Discord
             member.TryGetValue("nick", out raw);
             return raw as string;
         }
-        
-        string GetUser(JsonObject author) {
+
+        public string GetUser(JsonObject author) {
             // User's chosen display name (configurable)
             object name = null;
             author.TryGetValue("global_name", out name);
@@ -210,8 +210,8 @@ namespace Flames.Modules.Relay.Discord
 
             return (string)author["username"];
         }
-        
-        string ExtractReferencedUser(JsonObject data) {
+
+        public string ExtractReferencedUser(JsonObject data) {
             object refMsgRaw;
             data.TryGetValue("referenced_message", out refMsgRaw);
             
@@ -224,9 +224,9 @@ namespace Flames.Modules.Relay.Discord
             
             return GetUser((JsonObject)authorRaw);
         }
-        
-        
-        void HandleMessageEvent(JsonObject data) {
+
+
+        public void HandleMessageEvent(JsonObject data) {
             DiscordUser user = ExtractUser(data);
             // ignore messages from self
             if (user.ID == botUserID) return;
@@ -257,8 +257,8 @@ namespace Flames.Modules.Relay.Discord
                 PrintAttachments(user, data, channel);
             }
         }
-        
-        void PrintAttachments(RelayUser user, JsonObject data, string channel) {
+
+        public void PrintAttachments(RelayUser user, JsonObject data, string channel) {
             object raw;
             if (!data.TryGetValue("attachments", out raw)) return;
             
@@ -274,9 +274,9 @@ namespace Flames.Modules.Relay.Discord
                 HandleChannelMessage(user, channel, url);
             }
         }
-        
-        
-        void HandleChannelEvent(JsonObject data) {
+
+
+        public void HandleChannelEvent(JsonObject data) {
             string channel = (string)data["id"];
             string type    = (string)data["type"];
 
@@ -284,7 +284,7 @@ namespace Flames.Modules.Relay.Discord
             if (type == "1") channelTypes[channel] = CHANNEL_DIRECT;
         }
 
-        byte GuessChannelType(JsonObject data) {
+        public byte GuessChannelType(JsonObject data) {
             // As per discord's documentation:
             //  "The member object exists in MESSAGE_CREATE and MESSAGE_UPDATE
             //   events from text-based guild channels, provided that the
@@ -300,14 +300,14 @@ namespace Flames.Modules.Relay.Discord
             return CHANNEL_DIRECT; // unknown
         }
 
-        
-        void HandleReadyEvent(JsonObject data) {
+
+        public void HandleReadyEvent(JsonObject data) {
             JsonObject user = (JsonObject)data["user"];
             botUserID       = (string)user["id"];
             HandleResumedEvent(data);
         }
-        
-        void HandleResumedEvent(JsonObject data) {
+
+        public void HandleResumedEvent(JsonObject data) {
             // May not be null when reconnecting
             if (api == null) {
                 api = new DiscordApiClient();
@@ -317,13 +317,13 @@ namespace Flames.Modules.Relay.Discord
             }
             OnReady();
         }
-        
-        void HandleGatewayEvent(string eventName, JsonObject data) {
+
+        public void HandleGatewayEvent(string eventName, JsonObject data) {
             OnGatewayEventReceivedEvent.Call(this, eventName, data);
         }
 
 
-        static bool IsEscaped(char c) {
+        public static bool IsEscaped(char c) {
             // To match Discord: \a --> \a, \* --> *
             return (c >  ' ' && c <= '/') || (c >= ':' && c <= '@') 
                 || (c >= '[' && c <= '`') || (c >= '{' && c <= '~');
@@ -349,16 +349,16 @@ namespace Flames.Modules.Relay.Discord
             StripMarkdown(sb);
             return sb.ToString();
         }
-        
-        static void StripMarkdown(StringBuilder sb) {
+
+        public static void StripMarkdown(StringBuilder sb) {
             // TODO proper markdown parsing
             sb.Replace("**", "");
         }
 
 
-        readonly object updateLocker = new object();
-        volatile bool updateScheduled;
-        DateTime nextUpdate;
+        public readonly object updateLocker = new object();
+        public volatile bool updateScheduled;
+        public DateTime nextUpdate;
 
         public void UpdateDiscordStatus() {
             TimeSpan delay = default(TimeSpan);
@@ -377,7 +377,7 @@ namespace Flames.Modules.Relay.Discord
             Server.MainScheduler.QueueOnce(DoUpdateStatus, null, delay);
         }
 
-        void DoUpdateStatus(SchedulerTask task) {
+        public void DoUpdateStatus(SchedulerTask task) {
             DateTime now = DateTime.UtcNow;
             // OK to queue next status update now
             lock (updateLocker) {
@@ -394,7 +394,7 @@ namespace Flames.Modules.Relay.Discord
             try { s.UpdateStatus(); } catch { }
         }
 
-        string GetStatusMessage() {
+        public string GetStatusMessage() {
             fakeGuest.group     = Group.DefaultRank;
             List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank); 
 
@@ -426,11 +426,11 @@ namespace Flames.Modules.Relay.Discord
             OnPlayerDisconnectEvent.Unregister(HandlePlayerDisconnect);
             OnPlayerActionEvent.Unregister(HandlePlayerAction);
         }
-        
-        void HandlePlayerConnect(Player p) { UpdateDiscordStatus(); }
-        void HandlePlayerDisconnect(Player p, string reason) { UpdateDiscordStatus(); }
-        
-        void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth) {
+
+        public void HandlePlayerConnect(Player p) { UpdateDiscordStatus(); }
+        public void HandlePlayerDisconnect(Player p, string reason) { UpdateDiscordStatus(); }
+
+        public void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth) {
             if (action != PlayerAction.Hide && action != PlayerAction.Unhide) return;
             UpdateDiscordStatus();
         }
@@ -513,17 +513,17 @@ namespace Flames.Modules.Relay.Discord
             OnSendingWhoEmbedEvent.Call(this, p.User, ref embed);
             Send(embed);
         }
-        
-        static string FormatPlayers(Player p, OnlineListEntry e) {
+
+        public static string FormatPlayers(Player p, OnlineListEntry e) {
             return e.players.Join(pl => FormatNick(p, pl), ", ");
         }
-        
-        static string FormatRank(OnlineListEntry e) {
+
+        public static string FormatRank(OnlineListEntry e) {
             return string.Format(UNDERLINE + "{0}" + UNDERLINE + " (" + CODE + "{1}" + CODE + ")",
                                  e.group.GetFormattedName(), e.players.Count);
         }
 
-        static string FormatNick(Player p, Player pl) {
+        public static string FormatNick(Player p, Player pl) {
             string flags  = OnlineListEntry.GetFlags(pl);
             string format;
             
@@ -538,8 +538,8 @@ namespace Flames.Modules.Relay.Discord
                                  pl.level.name.Replace('_', DiscordUtils.UNDERSCORE),
                                  flags);
         }
-        
-        void AddGameStatus(ChannelSendEmbed embed) {
+
+        public void AddGameStatus(ChannelSendEmbed embed) {
             if (!Config.EmbedGameStatuses) return;
             
             StringBuilder sb = new StringBuilder();

@@ -41,8 +41,8 @@ namespace Flames.Modules.Games.Countdown
             lvl.spawnz = (ushort)(lvl.Length / 2);
             return lvl;
         }
-        
-        static void MakeBoundaries(Level lvl) {
+
+        public static void MakeBoundaries(Level lvl) {
             int maxX = lvl.Width - 1, maxY = lvl.Height - 1, maxZ = lvl.Length - 1;
             Cuboid(0, maxY, 0, maxX, maxY, maxZ, Block.Glass, lvl);
             Cuboid(0, 0, 0, maxX, 0, maxZ, Block.Stone, lvl);
@@ -53,8 +53,8 @@ namespace Flames.Modules.Games.Countdown
             Cuboid(0, 0, 0, 0, maxY, maxZ, Block.Stone, lvl);
             Cuboid(maxX, 0, 0, maxX, maxY, maxZ, Block.Stone, lvl);
         }
-        
-        static void MakeViewAreaRoof(Level lvl) {
+
+        public static void MakeViewAreaRoof(Level lvl) {
             int maxX = lvl.Width - 1, midY = lvl.Height / 2, maxZ = lvl.Length - 1;
             Cuboid(1, midY, 1, maxX - 1, midY, maxZ - 1, Block.Glass, lvl);
             Cuboid(1, midY, 0, 3, midY, maxZ, Block.Stone, lvl);
@@ -62,8 +62,8 @@ namespace Flames.Modules.Games.Countdown
             Cuboid(0, midY, 1, maxX, midY, 3, Block.Stone, lvl);
             Cuboid(0, midY, maxZ - 3, maxX, midY, maxZ - 1, Block.Stone, lvl);
         }
-        
-        static void MakeViewAreaWalls(Level lvl) {
+
+        public static void MakeViewAreaWalls(Level lvl) {
             int maxX = lvl.Width - 1, maxZ = lvl.Length - 1;
             Cuboid(3, 4, 3, 3, 10, maxZ - 3, Block.Stone, lvl);
             Cuboid(maxX - 3, 4, 3, maxX - 3, 10, maxZ - 3, Block.Stone, lvl);
@@ -75,16 +75,16 @@ namespace Flames.Modules.Games.Countdown
             Cuboid(3, 6, 3, maxX - 3, 7, 3, Block.Glass, lvl);
             Cuboid(3, 6, maxZ - 3, maxX - 3, 7, maxZ - 3, Block.Glass, lvl);
         }
-        
-        static void MakeViewAreaFloor(Level lvl) {
+
+        public static void MakeViewAreaFloor(Level lvl) {
             int maxX = lvl.Width - 1, maxZ = lvl.Length - 1;
             Cuboid(1, 4, 0, 3, 4, maxZ, Block.Stone, lvl);
             Cuboid(maxX - 3, 4, 1, maxX - 1, 4, maxZ, Block.Stone, lvl);
             Cuboid(0, 4, 1, maxX, 4, 3, Block.Stone, lvl);
             Cuboid(0, 4, maxZ - 3, maxX, 4, maxZ - 1, Block.Stone, lvl);
         }
-        
-        static void MakeChutesAndElevators(Level lvl) {
+
+        public static void MakeChutesAndElevators(Level lvl) {
             int maxX = lvl.Width - 1, maxY = lvl.Height - 1, maxZ = lvl.Length - 1;
             Cuboid(1, 5, 1, 1, maxY - 1, 1, Block.StillWater, lvl);
             Cuboid(maxX - 1, 5, 1, maxX - 1, maxY - 1, 1, Block.StillWater, lvl);
@@ -103,8 +103,8 @@ namespace Flames.Modules.Games.Countdown
             Cuboid(midX - 2, midY + 1, midZ - 1, midX - 2, midY + 2, midZ, Block.Air, lvl);
             Cuboid(midX + 1, midY + 1, midZ - 1, midX + 1, midY + 2, midZ, Block.Air, lvl);
         }
-        
-        static void MakeSquares(Level lvl) {
+
+        public static void MakeSquares(Level lvl) {
             int maxX = lvl.Width - 1, maxZ = lvl.Length - 1;
             Cuboid(4, 4, 4, maxX - 4, 4, maxZ - 4, Block.Glass, lvl);
             
@@ -118,8 +118,8 @@ namespace Flames.Modules.Games.Countdown
                 Cuboid(x, 4, z, x + 1, 4, z + 1, Block.Green, lvl);
             }
         }
-        
-        static void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, byte block, Level lvl) {
+
+        public static void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, byte block, Level lvl) {
             for (int y = y1; y <= y2; y++)
                 for (int z = z1; z <= z2; z++)
                     for (int x = x1; x <= x2; x++)

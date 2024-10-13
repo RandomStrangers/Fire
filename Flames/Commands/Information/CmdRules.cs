@@ -54,8 +54,8 @@ namespace Flames.Commands.Info
                 target.Message("{0} &Ssent you the rules.", target.FormatNick(p));
             }
         }
-        
-        void Agree(Player p) {
+
+        public void Agree(Player p) {
             if (p.IsSuper) { p.Message("Only in-game players can agree to the rules."); return; }
             if (!Server.Config.AgreeToRulesOnEntry) { p.Message("agree-to-rules-on-entry is not enabled."); return; }
             if (!p.hasreadrules) { p.Message("&9You must read &T/Rules &9before agreeing."); return; }
@@ -68,8 +68,8 @@ namespace Flames.Commands.Info
                 Server.agreed.Save(false);
             }
         }
-        
-        void Disagree(Player p, CommandData data) {
+
+        public void Disagree(Player p, CommandData data) {
             if (p.IsSuper) { p.Message("Only in-game players can disagree with the rules."); return; }
             if (!Server.Config.AgreeToRulesOnEntry) { p.Message("agree-to-rules-on-entry is not enabled."); return; }
             

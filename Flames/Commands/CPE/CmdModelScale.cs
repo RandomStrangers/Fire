@@ -32,8 +32,8 @@ namespace Flames.Commands.CPE
         public override void Use(Player p, string message, CommandData data) {
             UseBotOrOnline(p, data, message, "model scale");
         }
-        
-        protected override void SetBotData(Player p, PlayerBot bot, string args) {
+
+        public override void SetBotData(Player p, PlayerBot bot, string args) {
             string axis;
             if (!ParseArgs(p, bot, args, out axis)) return;
             bot.UpdateModel(bot.Model);
@@ -41,8 +41,8 @@ namespace Flames.Commands.CPE
             p.Message("You changed the {1} scale of bot {0}", bot.ColoredName, axis);
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetOnlineData(Player p, Player who, string args) {
+
+        public override void SetOnlineData(Player p, Player who, string args) {
             string axis;
             if (!ParseArgs(p, who, args, out axis)) return;
             who.UpdateModel(who.Model);
@@ -56,8 +56,8 @@ namespace Flames.Commands.CPE
             UpdateSavedScale(who);
             Server.modelScales.Save();
         }
-        
-        internal static void UpdateSavedScale(Player p) {
+
+        public static void UpdateSavedScale(Player p) {
             if (p.ScaleX != 0 || p.ScaleY != 0 || p.ScaleZ != 0) {
                 Server.modelScales.Update(p.name, p.ScaleX + " " + p.ScaleY + " " + p.ScaleZ);
             } else {
@@ -65,8 +65,8 @@ namespace Flames.Commands.CPE
             }
             Server.modelScales.Save();
         }
-        
-        bool ParseArgs(Player dst, Entity e, string args, out string axis) {
+
+        public bool ParseArgs(Player dst, Entity e, string args, out string axis) {
             string[] bits = args.SplitSpaces(2);
             if (bits.Length < 2) { Help(dst); axis = null; return false; }
             
@@ -78,8 +78,8 @@ namespace Flames.Commands.CPE
             if (axis == "Z") return ParseScale(dst, e, axis, scale, ref e.ScaleZ);
             return false;
         }
-        
-        static bool ParseScale(Player dst, Entity e, string axis, string scale, ref float value) {
+
+        public static bool ParseScale(Player dst, Entity e, string axis, string scale, ref float value) {
             float max = ModelInfo.MaxScale(e, e.Model);
             return CommandParser.GetReal(dst, scale, axis + " scale", ref value, 0, max);
         }

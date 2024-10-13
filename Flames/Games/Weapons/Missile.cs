@@ -30,10 +30,10 @@ namespace Flames.Games
     {
         public override string Name { get { return "Missile"; } }
         public WeaponType type;
-        
-        protected override void OnDisabled(Player p) { }
 
-        protected override void OnActivated(Vec3F32 dir, BlockID block) {
+        public override void OnDisabled(Player p) { }
+
+        public override void OnActivated(Vec3F32 dir, BlockID block) {
             MissileData args = new MissileData();
             args.block = block;
             args.type  = type;
@@ -44,8 +44,8 @@ namespace Flames.Games
             p.CriticalTasks.Add(task);
             Disable();
         }
-        
-        protected class MissileData : AmmunitionData 
+
+        public class MissileData : AmmunitionData 
         {
             public WeaponType type;
             public Vec3U16 pos;
@@ -54,16 +54,16 @@ namespace Flames.Games
 
         /// <summary> Called when a missile has collided with a block. </summary>
         /// <returns> true if this block stops the missile, false if it should continue moving. </returns>
-        protected virtual bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
+        public virtual bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
             return true;
         }
-        
+
         /// <summary> Called when a missile has collided with a player. </summary>
-        protected virtual void OnHitPlayer(MissileData args, Player pl) {
+        public virtual void OnHitPlayer(MissileData args, Player pl) {
             pl.HandleDeath(Block.Cobblestone, "@p &Swas hit by a missile from " + p.ColoredName);
         }
-        
-        void MissileCallback(SchedulerTask task) {
+
+        public void MissileCallback(SchedulerTask task) {
             MissileData args = (MissileData)task.State;
             if (args.moving) { PerformMove(args); return; }
             
@@ -74,8 +74,8 @@ namespace Flames.Games
             }
             task.Repeating = args.visible.Count > 0;
         }
-        
-        void PerformMove(MissileData args) {
+
+        public void PerformMove(MissileData args) {
             while (true) {
                 args.iterations++;
                 Vec3U16 target = MissileTarget(args);
@@ -86,8 +86,8 @@ namespace Flames.Games
                 return;
             }
         }
-        
-        Vec3U16 MissileTarget(MissileData args) {
+
+        public Vec3U16 MissileTarget(MissileData args) {
             args.start = (Vec3U16)p.Pos.BlockCoords;
             args.dir   = DirUtils.GetDirVector(p.Rot.RotY, p.Rot.HeadX);
             int i;
@@ -105,8 +105,8 @@ namespace Flames.Games
             }
             return args.PosAt(i - 1);
         }
-        
-        bool MoveMissile(MissileData args, Vec3U16 pos, Vec3U16 target) {
+
+        public bool MoveMissile(MissileData args, Vec3U16 pos, Vec3U16 target) {
             BlockID block = p.level.GetBlock(pos.X, pos.Y, pos.Z);
             if (block != Block.Air && !args.all.Contains(pos) && OnHitBlock(args, pos, block))
                 return false;
@@ -127,17 +127,17 @@ namespace Flames.Games
                 args.visible.RemoveAt(0);
             }
             return true;
-        }       
-        
-        bool HitsPlayer(MissileData args, Vec3U16 pos) {
+        }
+
+        public bool HitsPlayer(MissileData args, Vec3U16 pos) {
             Player pl = PlayerAt(p, pos, true);
             if (pl == null) return false;
             
             OnHitPlayer(args, pl);
             return true;
         }
-        
-        void FindNext(Vec3U16 lookedAt, ref Vec3U16 pos, List<Vec3S32> buffer) {
+
+        public void FindNext(Vec3U16 lookedAt, ref Vec3U16 pos, List<Vec3S32> buffer) {
             LineDrawOp.DrawLine(pos.X, pos.Y, pos.Z, 2, lookedAt.X, lookedAt.Y, lookedAt.Z, buffer);
             Vec3U16 end = (Vec3U16)buffer[buffer.Count - 1];
             pos.X = end.X; pos.Y = end.Y; pos.Z = end.Z;
@@ -148,8 +148,8 @@ namespace Flames.Games
     public class PenetrativeMissile : Missile 
     {
         public override string Name { get { return "Penetrative missile"; } }
-        
-        protected override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
             if (p.level.physics < 2) return true;
             
             if (!p.level.Props[block].LavaKills) return true;
@@ -162,16 +162,16 @@ namespace Flames.Games
     public class ExplosiveMissile : Missile 
     {
         public override string Name { get { return "Explosive missile"; } }
-        
-        protected override void OnHitPlayer(MissileData args, Player pl) {
+
+        public override void OnHitPlayer(MissileData args, Player pl) {
             if (pl.level.physics >= 3) {
                 pl.HandleDeath(Block.Cobblestone, "@p &Swas blown up by " + p.ColoredName, true);
             } else {
                 base.OnHitPlayer(args, pl);
             }
         }
-                
-        protected override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
             if (p.level.physics >= 3) p.level.MakeExplosion(pos.X, pos.Y, pos.Z, 1);
             return true;
         }
@@ -180,12 +180,12 @@ namespace Flames.Games
     public class TeleportMissile : Missile 
     {
         public override string Name { get { return "Teleporter missile"; } }
-        
-        protected override void OnHitPlayer(MissileData args, Player pl) {
+
+        public override void OnHitPlayer(MissileData args, Player pl) {
             args.DoTeleport(p);
         }
-        
-        protected override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block) {
             args.DoTeleport(p);
             return true;
         }

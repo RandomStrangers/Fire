@@ -7,7 +7,7 @@ namespace Flames.Core
     public class ServerURLSender : Plugin
     {
         public override string name { get { return "Say URL"; } }
-        public override string creator { get { return Server.SoftwareName + " team"; } }
+        public override string creator { get { return Colors.Strip(Server.SoftwareName) + " team"; } }
         public override void Load(bool startup)
         {
             bool CanSend = Server.Config.SendURL;

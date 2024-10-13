@@ -55,8 +55,8 @@ namespace Flames.Commands.CPE
             string opt = args[0], value = args.Length > 1 ? args[1] : "";
             if (!Handle(p, lvl, opt, value, cfg, area)) { Help(p); }
         }
-        
-        internal static bool Handle(Player p, Level lvl, string type, string value, EnvConfig cfg, string area) {
+
+        public static bool Handle(Player p, Level lvl, string type, string value, EnvConfig cfg, string area) {
             if (type.CaselessEq("preset")) {
                 EnvPreset preset = FindPreset(value);
                 if (preset == null) { MessagePresets(p); return false; }
@@ -87,16 +87,16 @@ namespace Flames.Commands.CPE
             }
             return true;
         }
-        
-        static void SendEnv(Level lvl) {
+
+        public static void SendEnv(Level lvl) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) {
                 if (pl.level != lvl) continue;
                 pl.SendCurrentEnv();
             }
         }
-        
-        static EnvPreset FindPreset(string value) {
+
+        public static EnvPreset FindPreset(string value) {
             EnvPreset preset = EnvPreset.Find(value);
             if (preset != null) return preset;
             
@@ -107,7 +107,7 @@ namespace Flames.Commands.CPE
             return null;
         }
 
-        static void MessagePresets(Player p) {
+        public static void MessagePresets(Player p) {
             p.Message("&T/Env preset [type] &H- Applies an env preset on the map");
             p.Message("&HPresets: &f{0}", EnvPreset.Presets.Join(pr => pr.Key));
             

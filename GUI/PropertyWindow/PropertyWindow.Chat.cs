@@ -20,8 +20,8 @@ using Flames.Gui.Popups;
 namespace Flames.Gui {
     
     public partial class PropertyWindow : Form {
-        
-        void LoadChatProps() {
+
+        public void LoadChatProps() {
             chat_ParseColor(Server.Config.DefaultColor, chat_btnDefault);
             chat_ParseColor(Server.Config.IRCColor, chat_btnIRC);
             chat_ParseColor(Server.Config.HelpSyntaxColor, chat_btnSyntax);
@@ -44,8 +44,8 @@ namespace Flames.Gui {
             chat_txtLogin.Text = Server.Config.DefaultLoginMessage;
             chat_txtLogout.Text = Server.Config.DefaultLogoutMessage;
         }
-        
-        void ApplyChatProps() {
+
+        public void ApplyChatProps() {
             Server.Config.DefaultColor = Colors.Parse(chat_btnDefault.Text);
             Server.Config.IRCColor = Colors.Parse(chat_btnIRC.Text);
             Server.Config.HelpSyntaxColor = Colors.Parse(chat_btnSyntax.Text);
@@ -67,34 +67,34 @@ namespace Flames.Gui {
             Server.Config.DefaultLoginMessage = chat_txtLogin.Text;
             Server.Config.DefaultLogoutMessage = chat_txtLogout.Text;
         }
-        
 
-        void chat_chkCheap_CheckedChanged(object sender, EventArgs e) {
+
+        public void chat_chkCheap_CheckedChanged(object sender, EventArgs e) {
             chat_txtCheap.Enabled = chat_chkCheap.Checked;
         }
 
-        void chat_cmbDefault_Click(object sender, EventArgs e) {
+        public void chat_cmbDefault_Click(object sender, EventArgs e) {
             chat_ShowColorDialog(chat_btnDefault, "Default color");
         }
 
-        void chat_btnIRC_Click(object sender, EventArgs e) {
+        public void chat_btnIRC_Click(object sender, EventArgs e) {
             chat_ShowColorDialog(chat_btnIRC, "IRC text color");
         }
-        
-        void chat_btnSyntax_Click(object sender, EventArgs e) {
+
+        public void chat_btnSyntax_Click(object sender, EventArgs e) {
             chat_ShowColorDialog(chat_btnSyntax, "Help syntax color");
         }
 
-        void chat_btnDesc_Click(object sender, EventArgs e) {
+        public void chat_btnDesc_Click(object sender, EventArgs e) {
             chat_ShowColorDialog(chat_btnDesc, "Help description color");
         }
-		
-		void chat_btnWarn_Click(object sender, EventArgs e) {
+
+        public void chat_btnWarn_Click(object sender, EventArgs e) {
             chat_ShowColorDialog(chat_btnWarn, "Warning / error color");
         }
-        
-        
-        void chat_ParseColor(string value, Button target) {
+
+
+        public void chat_ParseColor(string value, Button target) {
             char code = value[1];
             target.Text = Colors.Name(value);
             
@@ -102,8 +102,8 @@ namespace Flames.Gui {
             target.BackColor = ColorSelector.LookupColor(code, out textCol);
             target.ForeColor = textCol;
         }
-        
-        void chat_ShowColorDialog(Button target, string title) {
+
+        public void chat_ShowColorDialog(Button target, string title) {
             string parsed = Colors.Parse(target.Text);
             char col = parsed.Length == 0 ? 'f' : parsed[1];
             

@@ -1336,7 +1336,7 @@ namespace Flames.Gui
             this.rank_numPerm.BackColor = System.Drawing.SystemColors.Window;
             this.rank_numPerm.Location = new System.Drawing.Point(259, 20);
             this.rank_numPerm.Maximum = new decimal(new int[] {
-                                    120,
+                                    127,
                                     0,
                                     0,
                                     0});

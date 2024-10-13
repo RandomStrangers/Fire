@@ -23,7 +23,7 @@ namespace Flames.Eco
 {
     public static partial class Economy 
     {
-        static ColumnDesc[] ecoTable = new ColumnDesc[] {
+        public static ColumnDesc[] ecoTable = new ColumnDesc[] {
             new ColumnDesc("player", ColumnType.VarChar, 20, priKey: true),
             new ColumnDesc("money", ColumnType.Int32),
             new ColumnDesc("total", ColumnType.Int32),
@@ -32,8 +32,8 @@ namespace Flames.Eco
             new ColumnDesc("salary", ColumnType.VarChar, 255),
             new ColumnDesc("fine", ColumnType.VarChar, 255),
         };
-        
-        static EcoStats ParseOld(ISqlRecord record) {
+
+        public static EcoStats ParseOld(ISqlRecord record) {
             EcoStats stats = ParseStats(record);
             stats.__unused = record.GetInt("money");
             return stats;
@@ -77,8 +77,8 @@ namespace Flames.Eco
                                      stats.Player, 0, stats.TotalSpent, stats.Purchase,
                                      stats.Payment, stats.Salary, stats.Fine);
         }
-        
-        static EcoStats ParseStats(ISqlRecord record) {
+
+        public static EcoStats ParseStats(ISqlRecord record) {
             EcoStats stats;
             stats.Player = record.GetText("player");
             stats.Payment  = Parse(record.GetText("payment"));
@@ -90,8 +90,8 @@ namespace Flames.Eco
             stats.__unused   = 0;
             return stats;
         }
-        
-        static string Parse(string raw) {
+
+        public static string Parse(string raw) {
             if (raw == null || raw.Length == 0 || raw.CaselessEq("NULL")) return null;           
             return raw.CaselessEq("%cNone") ? null : raw;
         }

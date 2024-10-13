@@ -44,8 +44,8 @@ namespace Flames.Commands.Moderation {
                 Follow(p, name, data, stealth);
             }
         }
-        
-        static void Unfollow(Player p, CommandData data, bool stealth) {
+
+        public static void Unfollow(Player p, CommandData data, bool stealth) {
             p.Message("Stopped following " + p.FormatNick(p.following));
             p.following = "";
             
@@ -59,8 +59,8 @@ namespace Flames.Commands.Moderation {
                 p.Message("You are still hidden.");
             }
         }
-        
-        static void Follow(Player p, string name, CommandData data, bool stealth) {
+
+        public static void Follow(Player p, string name, CommandData data, bool stealth) {
             Player target = PlayerInfo.FindMatches(p, name);
             if (target == null) return;
             if (target == p) { p.Message("Cannot follow yourself."); return; }

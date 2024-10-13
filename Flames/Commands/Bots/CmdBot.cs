@@ -65,15 +65,15 @@ namespace Flames.Commands.Bots
                 Help(p);
             }
         }
-        
-        void AddBot(Player p, string botName) {
+
+        public void AddBot(Player p, string botName) {
             botName = botName.Replace(' ', '_');
             PlayerBot bot = new PlayerBot(botName, p.level);
             bot.Owner = p.name;
             TryAddBot(p, bot);
         }
-        
-        void TryAddBot(Player p, PlayerBot bot) {
+
+        public void TryAddBot(Player p, PlayerBot bot) {
             if (BotExists(p.level, bot.name, null)) {
                 p.Message("A bot with that name already exists."); return;
             }
@@ -87,8 +87,8 @@ namespace Flames.Commands.Bots
             p.Message("You added the bot " + bot.ColoredName);
             PlayerBot.Add(bot);
         }
-        
-        static bool BotExists(Level lvl, string name, PlayerBot skip) {
+
+        public static bool BotExists(Level lvl, string name, PlayerBot skip) {
             PlayerBot[] bots = lvl.Bots.Items;
             foreach (PlayerBot bot in bots) {
                 if (bot == skip) continue;
@@ -96,8 +96,8 @@ namespace Flames.Commands.Bots
             }
             return false;
         }
-        
-        void RemoveBot(Player p, string botName, string extArgs) {
+
+        public void RemoveBot(Player p, string botName, string extArgs) {
             if (botName.CaselessEq("all")) {
                 //bot remove all[botname] griefer[extArgs]
                 if (extArgs != null) {
@@ -138,8 +138,8 @@ namespace Flames.Commands.Bots
                 p.Message("Removed bot {0}", bot.ColoredName);
             }
         }
-        
-        void SetBotText(Player p, string botName, string text, LevelPermission plRank) {
+
+        public void SetBotText(Player p, string botName, string text, LevelPermission plRank) {
             PlayerBot bot = Matcher.FindBots(p, botName);
             if (bot == null) return;
             if (!bot.EditableBy(p, "set the text of")) return;
@@ -156,8 +156,8 @@ namespace Flames.Commands.Bots
             }
             BotsFile.Save(p.level);
         }
-        
-        void SetDeathMessage(Player p, string botName, string text) {
+
+        public void SetDeathMessage(Player p, string botName, string text) {
             PlayerBot bot = Matcher.FindBots(p, botName);
             if (bot == null) return;
             if (!bot.EditableBy(p, "set the death message of")) return;
@@ -171,8 +171,8 @@ namespace Flames.Commands.Bots
             }
             BotsFile.Save(p.level);
         }
-        
-        void RenameBot(Player p, string botName, string newName) {
+
+        public void RenameBot(Player p, string botName, string newName) {
             if (newName == null) { p.Message("New name of bot required."); return; }
             if (!Formatter.ValidName(p, newName, "bot")) return;
             
@@ -193,8 +193,8 @@ namespace Flames.Commands.Bots
             bot.name = newName;
             BotsFile.Save(p.level);
         }
-        
-        void CopyBot(Player p, string botName, string newName) {
+
+        public void CopyBot(Player p, string botName, string newName) {
             if (newName == null) { p.Message("Name of new bot required."); return; }
             if (!Formatter.ValidName(p, newName, "bot")) return;
             
@@ -212,8 +212,8 @@ namespace Flames.Commands.Bots
             if (bot.DisplayName == bot.name) clone.DisplayName = newName;
             TryAddBot(p, clone);
         }
-        
-        void BotInfo(Player p, string botName) {
+
+        public void BotInfo(Player p, string botName) {
             if (botName.Length == 0) {
                 if (!p.Supports(CpeExt.PlayerClick)) {
                     p.Message("Your client does not support clicking on entities.");

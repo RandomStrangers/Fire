@@ -29,8 +29,8 @@ namespace Flames.Drawing
     }
     
     public sealed class RgbPaletteMatcher : IPaletteMatcher 
-    {   
-        PaletteEntry[] front, back;
+    {
+        public PaletteEntry[] front, back;
         
         public void SetPalette(PaletteEntry[] front, PaletteEntry[] back) {
             this.front = front; this.back = back;
@@ -55,7 +55,7 @@ namespace Flames.Drawing
             return backLayer ? back[backPos].Block : front[frontPos].Block;
         }
 
-        static int MinDist(byte R, byte G, byte B, PaletteEntry[] entries, out int pos) {
+        public static int MinDist(byte R, byte G, byte B, PaletteEntry[] entries, out int pos) {
             int minDist = int.MaxValue; pos = 0;
             for (int i = 0; i < entries.Length; i++) 
             {
@@ -73,9 +73,9 @@ namespace Flames.Drawing
     }
     
     public sealed class LabPaletteMatcher : IPaletteMatcher 
-    {      
-        LabColor[] palette;
-        PaletteEntry[] front, back;
+    {
+        public LabColor[] palette;
+        public PaletteEntry[] front, back;
         
         public void SetPalette(PaletteEntry[] front, PaletteEntry[] back) {
             this.front = front; this.back = back;
@@ -103,8 +103,8 @@ namespace Flames.Drawing
             // TODO avoid duplication with BestMatch
             return front[pos].Block;
         }
-        
-        static double MinDist(byte R, byte G, byte B, LabColor[] entries, out int pos) {
+
+        public static double MinDist(byte R, byte G, byte B, LabColor[] entries, out int pos) {
             double minDist = int.MaxValue; pos = 0;
             LabColor col = RgbToLab(R, G, B);
             
@@ -121,11 +121,11 @@ namespace Flames.Drawing
             }
             return minDist;
         }
-        
-        
-        struct LabColor { public double L, A, B; }
-        
-        static LabColor RgbToLab(byte r, byte g, byte b) {
+
+
+        public struct LabColor { public double L, A, B; }
+
+        public static LabColor RgbToLab(byte r, byte g, byte b) {
             // First convert RGB to CIE-XYZ
             double R = r / 255.0, G = g / 255.0, B = b / 255.0;
             if (R > 0.04045) R = Math.Pow((R + 0.055) / 1.055, 2.4);

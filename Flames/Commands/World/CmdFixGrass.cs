@@ -48,8 +48,8 @@ namespace Flames.Commands.World {
             p.Message("Place or break two blocks to determine the bounds within which grass/dirt is fixed");
             p.MakeSelection(2, "Selecting corners for &SFixGrass", op, DoFixGrass);
         }
-        
-        bool DoFixGrass(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool DoFixGrass(Player p, Vec3S32[] marks, object state, BlockID block) {
             FixGrassDrawOp op = (FixGrassDrawOp)state;
             op.AlwaysUsable = true;
             

@@ -92,8 +92,8 @@ namespace Flames.Blocks.Physics {
                     break;
             }
         }
-        
-        static bool MoveTo(Level lvl, ref PhysInfo C, BlockID target, ushort x, ushort y, ushort z) {
+
+        public static bool MoveTo(Level lvl, ref PhysInfo C, BlockID target, ushort x, ushort y, ushort z) {
             int index;
             BlockID block = lvl.GetBlock(x, y, z, out index);            
             if (block == target && lvl.AddUpdate(index, C.Block)) {

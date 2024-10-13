@@ -42,16 +42,16 @@ namespace Flames.Blocks.Physics {
             }
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
-        
+
         // radius of box around the given leaf block that is checked for logs
-        const int range = 4;
-        const int blocksPerAxis = range * 2 + 1;
+        public const int range = 4;
+        public const int blocksPerAxis = range * 2 + 1;
 
-        const int oneX = 1; // index + oneX = (X + 1, Y, Z)
-        const int oneY = blocksPerAxis; // index + oneY = (X, Y + 1, Z)
-        const int oneZ = blocksPerAxis * blocksPerAxis;
+        public const int oneX = 1; // index + oneX = (X + 1, Y, Z)
+        public const int oneY = blocksPerAxis; // index + oneY = (X, Y + 1, Z)
+        public const int oneZ = blocksPerAxis * blocksPerAxis;
 
-        static bool DoLeafDecay(Level lvl, ref PhysInfo C) {
+        public static bool DoLeafDecay(Level lvl, ref PhysInfo C) {
             int* dists = stackalloc int[blocksPerAxis * blocksPerAxis * blocksPerAxis];
             ushort x = C.X, y = C.Y, z = C.Z;
             int idx  = 0;
@@ -102,8 +102,8 @@ namespace Flames.Blocks.Physics {
             idx = range * oneX + range * oneY + range * oneZ;
             return dists[idx] < 0;
         }
-        
-        static void PropagateDist(int* dists, int dist, int index) {
+
+        public static void PropagateDist(int* dists, int dist, int index) {
             // distances can only propagate through leaf blocks
             if (dists[index] == -2) dists[index] = dist;
         }

@@ -58,9 +58,9 @@ namespace Flames
             this.blocks = blocks;
             Init(name, width, height, length);
         }
-    	internal Level() { }
-    	
-        internal void Init(string name, ushort width, ushort height, ushort length) {
+        public Level() { }
+
+        public void Init(string name, ushort width, ushort height, ushort length) {
             if (width  < 1) width  = 1;
             if (height < 1) height = 1;
             if (length < 1) length = 1;
@@ -132,8 +132,8 @@ namespace Flames
             }
             return true;
         }
-        
-        void Cleanup() {
+
+        public void Cleanup() {
             Physicsint = 0;
             Thread t;
 
@@ -192,7 +192,7 @@ namespace Flames
             return true;
         }
 
-        void MovePlayersToMain() {
+        public void MovePlayersToMain() {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) {
                 if (p.level == this) {
@@ -240,8 +240,8 @@ namespace Flames
             Server.DoGC();
             return true;
         }
-        
-        void SaveCore(string path) {
+
+        public void SaveCore(string path) {
             if (blocks == null) return;
             if (File.Exists(path)) {
                 string prevPath = Paths.PrevMapFile(name);
@@ -352,8 +352,8 @@ namespace Flames
                 if (p.level == this) return true;
             return false;
         }
-        
-        readonly object dbLock = new object();
+
+        public readonly object dbLock = new object();
         public void SaveBlockDBChanges() {
             lock (dbLock) LevelDB.SaveBlockDB(this);
         }
@@ -371,8 +371,8 @@ namespace Flames
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct UndoPos {
             public int Index;
-            int flags;
-            BlockRaw oldRaw, newRaw;
+            public int flags;
+            public BlockRaw oldRaw, newRaw;
             
             public BlockID OldBlock {
                 get { return (BlockID)(oldRaw | ((flags & 0x03)       << Block.ExtendedShift)); }
@@ -392,8 +392,8 @@ namespace Flames
                 newRaw = (BlockRaw)newBlock; flags |= (newBlock >> Block.ExtendedShift) << 2;
             }
         }
-        
-        void LoadDefaultProps() {
+
+        public void LoadDefaultProps() {
             for (int b = 0; b < Props.Length; b++) 
             {
                 Props[b] = BlockProps.MakeDefault(Props, this, (BlockID)b);

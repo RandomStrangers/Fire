@@ -64,8 +64,8 @@ namespace Flames.Commands.Building
                                "nor could the existing block at the coordinates be activated."); return;
             }
         }
-        
-        bool ParseCoords(string message, Player p, ref Vec3S32 P) {
+
+        public bool ParseCoords(string message, Player p, ref Vec3S32 P) {
             string[] args = message.SplitSpaces();
             // Expand /mark ~4 into /mark ~4 ~4 ~4
             if (args.Length == 1) {
@@ -80,7 +80,7 @@ namespace Flames.Commands.Building
             return CommandParser.GetCoords(p, args, 0, ref P);
         }
 
-        void AdjustArg(ref string arg, ref int value, string axis, int last) {
+        public void AdjustArg(ref string arg, ref int value, string axis, int last) {
             if (!arg.CaselessStarts(axis)) return;
 
             if (arg.Length == 1) {
@@ -92,8 +92,8 @@ namespace Flames.Commands.Building
                 value = last;
             }
         }
-        
-        internal static bool DoMark(Player p, int x, int y, int z) {
+
+        public static bool DoMark(Player p, int x, int y, int z) {
             if (!p.HasBlockChange()) return false;
             if (!p.Ignores.DrawOutput) {
                 p.Message("Mark placed at &b({0}, {1}, {2})", x, y, z);

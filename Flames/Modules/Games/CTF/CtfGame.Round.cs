@@ -24,8 +24,8 @@ using Flames.Maths;
 namespace Flames.Modules.Games.CTF
 {    
     public partial class CTFGame : RoundsGame 
-    {   
-        protected override void DoRound() {
+    {
+        public override void DoRound() {
             if (!Running) return;
             
             RoundInProgress = true;
@@ -35,12 +35,12 @@ namespace Flames.Modules.Games.CTF
                 Thread.Sleep(Config.CollisionsCheckInterval);
             }
         }
-              
-        bool HasSomeoneWon() {
+
+        public bool HasSomeoneWon() {
             return Blue.Captures >= cfg.RoundPoints || Red.Captures >= cfg.RoundPoints;
         }
-        
-        void Tick() {
+
+        public void Tick() {
             int dist = (int)(Config.TagDistance * 32);
             Player[] online = PlayerInfo.Online.Items;
             
@@ -75,16 +75,16 @@ namespace Flames.Modules.Games.CTF
                 }
             }
         }
-        
-        void ResetPlayerFlag(Player p, CtfData data) {
+
+        public void ResetPlayerFlag(Player p, CtfData data) {
             Vec3S32 last = data.LastHeadPos;
             ushort x = (ushort)last.X, y = (ushort)last.Y, z = (ushort)last.Z;
             
             data.LastHeadPos = default;            
             Map.BroadcastRevert(x, y, z);
         }
-        
-        void DrawPlayerFlag(Player p, CtfData data) {
+
+        public void DrawPlayerFlag(Player p, CtfData data) {
             Vec3S32 coords = p.Pos.BlockCoords; coords.Y += 3;
             if (coords == data.LastHeadPos) return;         
             ResetPlayerFlag(p, data);
@@ -113,10 +113,10 @@ namespace Flames.Modules.Games.CTF
 
             Map.Message("Starting next round!");
         }
-        
-        
+
+
         /// <summary> Called when the given player takes the opposing team's flag. </summary>
-        void TakeFlag(Player p, CtfTeam team) {
+        public void TakeFlag(Player p, CtfTeam team) {
             CtfTeam opposing = Opposing(team);
             Map.Message(team.Color + p.DisplayName + " took the " + opposing.ColoredName + " &Steam's FLAG");
             
@@ -124,9 +124,9 @@ namespace Flames.Modules.Games.CTF
             data.HasFlag = true;
             DrawPlayerFlag(p, data);
         }
-        
+
         /// <summary> Called when the given player, while holding opposing team's flag, clicks on their own flag. </summary>
-        void ReturnFlag(Player p, CtfTeam team) {
+        public void ReturnFlag(Player p, CtfTeam team) {
             Vec3U16 flagPos = team.FlagPos;
             p.RevertBlock(flagPos.X, flagPos.Y, flagPos.Z);
             
@@ -148,7 +148,7 @@ namespace Flames.Modules.Games.CTF
         }
 
         /// <summary> Called when the given player drops the opposing team's flag. </summary>
-        void DropFlag(Player p, CtfTeam team) {
+        public void DropFlag(Player p, CtfTeam team) {
             CtfData data = Get(p);
             if (!data.HasFlag) return;
             

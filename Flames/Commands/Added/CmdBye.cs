@@ -5,7 +5,7 @@
         public override string name { get { return "Bye"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return CommandTypes.Added; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override bool UseableWhenFrozen { get { return true; } }
         public override void Use(Player p, string message)
@@ -20,7 +20,7 @@
         {
             if (p == null || p.IsSuper || p.IsFire)
             {
-                p.Message("&T/Bye &H- Makes ALL players leave the server with an optional message");
+                p.Message("&T/Bye [message] &H- Makes ALL players leave the server with an optional message");
                 return;
             }
             else

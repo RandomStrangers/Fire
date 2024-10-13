@@ -43,11 +43,11 @@ namespace Flames.Commands.World {
             if (!LevelInfo.Check(p, data.Rank, lvl, "set physics of this level")) return;
             SetPhysics(lvl, state);
         }
-        
-        internal static string[] states = new string[] { "&cOFF", "&aNormal", "&aAdvanced", 
+
+        public static string[] states = new string[] { "&cOFF", "&aNormal", "&aAdvanced", 
             "&aHardcore", "&aInstant", "&4Doors-only" };
-        
-        void ShowPhysics(Player p) {
+
+        public void ShowPhysics(Player p) {
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded) {
                 if (lvl.physics == 0) continue;
@@ -55,8 +55,8 @@ namespace Flames.Commands.World {
                                lvl.ColoredName, lvl.physics, lvl.lastCheck, lvl.lastUpdate);
             }
         }
-        
-        void KillPhysics(Player p) {
+
+        public void KillPhysics(Player p) {
             Level[] levels = LevelInfo.Loaded.Items;
             foreach (Level lvl in levels) {
                 if (lvl.physics == 0) continue;
@@ -64,8 +64,8 @@ namespace Flames.Commands.World {
             }
             p.Message("Physics killed on all levels.");
         }
-        
-        internal static void SetPhysics(Level lvl, int state) {
+
+        public static void SetPhysics(Level lvl, int state) {
             lvl.SetPhysics(state);
             if (state == 0) lvl.ClearPhysics();
             string stateDesc = states[state];

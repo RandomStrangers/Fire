@@ -27,8 +27,8 @@ namespace Flames.Blocks
     {
         public BlockID ID;
         public override string ItemName { get { return ID.ToString(); } }
-        
-        static BlockPerms[] List = new BlockPerms[Block.SUPPORTED_COUNT];
+
+        public static BlockPerms[] List = new BlockPerms[Block.SUPPORTED_COUNT];
         
         
         public BlockPerms(BlockID id, LevelPermission min) : base(min) {
@@ -54,9 +54,9 @@ namespace Flames.Blocks
             p.Message("Only {0} can {1} {2}",
                       Describe(), action, Block.GetName(p, ID));
         }
-        
-        
-        static readonly object ioLock = new object();
+
+
+        public static readonly object ioLock = new object();
         /// <summary> Saves list of block permissions to disc. </summary>
         public static void Save() {
             try {
@@ -65,8 +65,8 @@ namespace Flames.Blocks
                 Logger.LogError("Error saving block perms", ex); 
             }
         }
-        
-        static void SaveCore() {
+
+        public static void SaveCore() {
             using (StreamWriter w = new StreamWriter(Paths.BlockPermsFile)) {
                 WriteHeader(w, "block", "each block", "Block ID", "lava");
 
@@ -101,7 +101,7 @@ namespace Flames.Blocks
             ApplyChanges();
         }
 
-        static void LoadCore() {
+        public static void LoadCore() {
             SetDefaultPerms();
             if (!File.Exists(Paths.BlockPermsFile)) { Save(); return; }
             
@@ -109,8 +109,8 @@ namespace Flames.Blocks
                 ProcessLines(r);
             }
         }
-        
-        static void ProcessLines(StreamReader r) {
+
+        public static void ProcessLines(StreamReader r) {
             string[] args = new string[4];
             string line;
             
@@ -138,8 +138,8 @@ namespace Flames.Blocks
                 }
             }
         }
-        
-        static void Set(BlockID b, LevelPermission min,
+
+        public static void Set(BlockID b, LevelPermission min,
                         List<LevelPermission> allowed, List<LevelPermission> disallowed) {
             BlockPerms perms = List[b];
             if (perms == null) {
@@ -148,9 +148,9 @@ namespace Flames.Blocks
             }
             perms.Init(min, allowed, disallowed);
         }
-        
-        
-        static void SetDefaultPerms() {
+
+
+        public static void SetDefaultPerms() {
             for (BlockID block = 0; block < Block.SUPPORTED_COUNT; block++) {
                 BlockProps props = Block.Props[block];
                 LevelPermission min;
@@ -170,8 +170,8 @@ namespace Flames.Blocks
                 Set(block, min, null, null);
             }
         }
-        
-        static LevelPermission DefaultPerm(BlockID block) {
+
+        public static LevelPermission DefaultPerm(BlockID block) {
             switch (block) {
                 case Block.Bedrock:
                 case Block.Air_Flood:

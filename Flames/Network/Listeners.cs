@@ -40,9 +40,9 @@ namespace Flames.Network
     /// <summary> Abstracts listening on a TCP socket </summary>
     public sealed class TcpListen : INetListen 
     {
-        Socket socket;
-        
-        void DisableIPV6OnlyListener() {
+        public Socket socket;
+
+        public void DisableIPV6OnlyListener() {
             if (socket.AddressFamily != AddressFamily.InterNetworkV6) return;
             // TODO: Make windows only?
 
@@ -55,8 +55,8 @@ namespace Flames.Network
                 Logger.LogError("Failed to disable IPv6 only listener setting", ex);
             }
         }
-        
-        void EnableAddressReuse() {
+
+        public void EnableAddressReuse() {
             // This fixes when on certain environments, if the server is restarted while there are still some
             // sockets in the TIME_WAIT state, the listener in the new server process will fail with EADDRINUSE
             //   https://stackoverflow.com/questions/3229860/what-is-the-meaning-of-so-reuseaddr-setsockopt-option-linux
@@ -99,8 +99,8 @@ namespace Flames.Network
             Listening = true;
             Logger.Log(LogType.SystemActivity, "Started listening on port {0}... ", port);
         }
-        
-        void AcceptNextAsync() {
+
+        public void AcceptNextAsync() {
             // retry, because if we don't call BeginAccept, no one can connect anymore
             for (int i = 0; i < 3; i++) {
                 try {
@@ -110,9 +110,9 @@ namespace Flames.Network
                 }
             }
         }
-        
-        static AsyncCallback acceptCallback = new AsyncCallback(AcceptCallback);
-        static void AcceptCallback(IAsyncResult result) {
+
+        public static AsyncCallback acceptCallback = new AsyncCallback(AcceptCallback);
+        public static void AcceptCallback(IAsyncResult result) {
             if (Server.shuttingDown) return;
             TcpListen listen = (TcpListen)result.AsyncState;
             INetSocket s = null;

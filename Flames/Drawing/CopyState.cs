@@ -25,9 +25,9 @@ namespace Flames.Drawing
 {
     /// <summary> Represents a copied region/area of blocks plus some additional data </summary>
     public sealed class CopyState 
-    {  
-        byte[] blocks;
-        byte[][] extBlocks;
+    {
+        public byte[] blocks;
+        public byte[][] extBlocks;
         public int X, Y, Z;
         public int OriginX, OriginY, OriginZ;
         public int Width, Height, Length;
@@ -39,12 +39,12 @@ namespace Flames.Drawing
         /// <summary> Origin of this copy/where this copy came from </summary>
         /// <example> "level example1", "file example2" </example>
         public string CopySource;
-        
-        internal int OppositeOriginX { get { return OriginX == X ? X + Width - 1 : X; } }
-        internal int OppositeOriginY { get { return OriginY == Y ? Y + Height - 1 : Y; } }
-        internal int OppositeOriginZ { get { return OriginZ == Z ? Z + Length - 1 : Z; } }
-        
-        const int chunkSize = 0x1000, chunkShift = 12, chunkMask = 0xFFF;
+
+        public int OppositeOriginX { get { return OriginX == X ? X + Width - 1 : X; } }
+        public int OppositeOriginY { get { return OriginY == Y ? Y + Height - 1 : Y; } }
+        public int OppositeOriginZ { get { return OriginZ == Z ? Z + Length - 1 : Z; } }
+
+        public const int chunkSize = 0x1000, chunkShift = 12, chunkMask = 0xFFF;
         public int Volume { get { return Width * Height * Length; } }
         public int ExtChunks { get { return (Volume + (chunkSize - 1)) / chunkSize; } }
         
@@ -56,8 +56,8 @@ namespace Flames.Drawing
             Init(x, y, z, width, height, length);
             CopyTime = DateTime.UtcNow;
         }
-        
-        void Init(int x, int y, int z, int width, int height, int length) {
+
+        public void Init(int x, int y, int z, int width, int height, int length) {
             X = x; Y = y; Z = z;
             Width = width; Height = height; Length = length;
             blocks = new byte[Volume];
@@ -111,12 +111,12 @@ namespace Flames.Drawing
         public void Set(BlockID block, int x, int y, int z) {
             Set(block, (y * Length + z) * Width + x);
         }
-        
-        
-        const int identifier1 = 0x434F5059; // version 1, 'COPY' (copy)
-        const int identifier2 = 0x434F5043; // 'COPC' (copy compressed)
-        const int identifier3 = 0x434F504F; // 'COPO' (copy optimised)
-        const int identifier4 = 0x434F5053; // 'COPS' (copy sparse)
+
+
+        public const int identifier1 = 0x434F5059; // version 1, 'COPY' (copy)
+        public const int identifier2 = 0x434F5043; // 'COPC' (copy compressed)
+        public const int identifier3 = 0x434F504F; // 'COPO' (copy optimised)
+        public const int identifier4 = 0x434F5053; // 'COPS' (copy sparse)
         
         /// <summary> Saves this copy state to the given stream. </summary>
         public void SaveTo(Stream stream) {
@@ -168,8 +168,8 @@ namespace Flames.Drawing
             Offset.X = r.ReadInt32(); Offset.Y = r.ReadInt32(); Offset.Z = r.ReadInt32();
             PasteAir = stream.ReadByte() == 1;
         }
-        
-        void LoadBlocks(BinaryReader r, int id) {
+
+        public void LoadBlocks(BinaryReader r, int id) {
             byte[] allExtBlocks;
             int dataLen;
             extBlocks = new byte[(Volume + (chunkSize - 1)) / chunkSize][];
@@ -200,16 +200,16 @@ namespace Flames.Drawing
                 }
             }
         }
-        
-        void UnpackExtBlocks(byte[] allExtBlocks) {
+
+        public void UnpackExtBlocks(byte[] allExtBlocks) {
             for (int i = 0; i < blocks.Length; i++) 
             {
                 if (blocks[i] != Block.custom_block) continue;
                 Set((BlockID)(Block.Extended | allExtBlocks[i]), i);
             }
         }
-        
-        void UnpackPackedExtBlocks(byte[] allExtBlocks) {
+
+        public void UnpackPackedExtBlocks(byte[] allExtBlocks) {
             for (int i = 0; i < blocks.Length; i++) 
             {
                 bool isExt = (allExtBlocks[i >> 3] & (1 << (i & 0x7))) != 0;
@@ -237,8 +237,8 @@ namespace Flames.Drawing
             UsedBlocks = Volume;
             OriginX = X; OriginY = Y; OriginZ = Z;
         }
-        
-        void CalculateBounds(byte[] raw) {
+
+        public void CalculateBounds(byte[] raw) {
             int minX = int.MaxValue, minY = int.MaxValue, minZ = int.MaxValue;
             int maxX = int.MinValue, maxY = int.MinValue, maxZ = int.MinValue;
             

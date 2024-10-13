@@ -55,15 +55,15 @@ namespace Flames.Commands.Moderation {
             }
         }
 
-        static void SetMode(bool enabled, string desc) {
+        public static void SetMode(bool enabled, string desc) {
             Server.Config.WhitelistedOnly = enabled;
             SrvProperties.Save();
 
             Chat.MessageAll("Whitelisted only mode " + desc);
             Logger.Log(LogType.SystemActivity, "Whitelisted only mode is now " + desc);
         }
-        
-        static void Add(Player p, string name) {
+
+        public static void Add(Player p, string name) {
             name = Server.FromRawUsername(name);
            
             if (!Server.whiteList.Add(name)) {
@@ -74,8 +74,8 @@ namespace Flames.Commands.Moderation {
                 Logger.Log(LogType.UserActivity, "WHITELIST: Added " + name);
             }
         }
-        
-        static void Remove(Player p, string name) {
+
+        public static void Remove(Player p, string name) {
             name = Server.FromRawUsername(name);
             
             if (!Server.whiteList.Remove(name)) {
@@ -86,8 +86,8 @@ namespace Flames.Commands.Moderation {
                 Logger.Log(LogType.UserActivity, "WHITELIST: Removed " + name);
             }
         }
-        
-        static void List(Player p, string modifier) {
+
+        public static void List(Player p, string modifier) {
             Server.whiteList.Output(p, "whitelisted players", "Whitelist list", modifier);
         }
 

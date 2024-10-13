@@ -28,19 +28,19 @@ namespace Flames.Commands
         }
         public override void Help(Player p)
         {
-            p.Message("/ccheartbeat - Forces a pump for the ClassiCube heartbeat.  DEBUG PURPOSES ONLY.");
+            p.Message("&T/ccheartbeat &H- Forces a pump for the ClassiCube heartbeat.  DEBUG PURPOSES ONLY.");
         }
     }
-    public sealed class CmdUrl : Command2
+    public sealed class CmdUrl : Command
     {
         public override string name { get { return "ServerUrl"; } }
         public override string shortcut { get { return "url"; } }
-        public override string type { get { return "information"; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override bool SuperUseable { get { return true; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Banned; } }
 
 
-        public override void Use(Player p, string message, CommandData data)
+        public override void Use(Player p, string message)
         {
             bool IsPublic = Server.Config.Public;
             if (IsPublic)
@@ -68,7 +68,7 @@ namespace Flames.Commands
         }
         public override void Help(Player p)
         {
-            p.Message("%T/ServerUrl %H- Shows the server's ClassiCube URL.");
+            p.Message("&T/ServerUrl &H- Shows the server's ClassiCube URL.");
         }
     }
 }

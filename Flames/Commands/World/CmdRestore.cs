@@ -50,8 +50,8 @@ namespace Flames.Commands.World {
                 LevelOperations.OutputBackups(p, lvl);
             }
         }
-        
-        static void DoRestore(Level lvl, string backup) {
+
+        public static void DoRestore(Level lvl, string backup) {
             lock (lvl.saveLock) {
                 File.Copy(LevelInfo.BackupFilePath(lvl.name, backup), LevelInfo.MapPath(lvl.name), true);
                 lvl.SaveChanges = false;

@@ -24,8 +24,8 @@ namespace Flames
     {      
         public static bool ChangeMap(Player p, string name) { return ChangeMap(p, null, name); }
         public static bool ChangeMap(Player p, Level lvl)   { return ChangeMap(p, lvl, null); }
-        
-        static bool ChangeMap(Player p, Level lvl, string name) {
+
+        public static bool ChangeMap(Player p, Level lvl, string name) {
             if (Interlocked.CompareExchange(ref p.UsingGoto, 1, 0) == 1) {
                 p.Message("Cannot use /goto, already joining a map."); return false;
             }
@@ -43,9 +43,9 @@ namespace Flames
             oldLevel.AutoUnload();
             return true;
         }
-        
-        
-        static bool GotoMap(Player p, string name) {
+
+
+        public static bool GotoMap(Player p, string name) {
             Level lvl = LevelInfo.FindExact(name);
             if (lvl != null) return GotoLevel(p, lvl);
             
@@ -66,8 +66,8 @@ namespace Flames
                 return GotoLevel(p, lvl);
             }
         }
-        
-        static bool LoadOfflineLevel(Player p, string map) {
+
+        public static bool LoadOfflineLevel(Player p, string map) {
             string propsPath = LevelInfo.PropsPath(map);
             LevelConfig cfg = new LevelConfig();
             cfg.Load(propsPath);
@@ -89,8 +89,8 @@ namespace Flames
             p.Message("Level \"{0}\" failed to be auto-loaded.", map);
             return false;
         }
-        
-        static bool GotoLevel(Player p, Level lvl) {
+
+        public static bool GotoLevel(Player p, Level lvl) {
             if (p.level == lvl) { p.Message("You are already in {0}&S.", lvl.ColoredName); return false; }
             
             bool canJoin = lvl.CanJoin(p);
@@ -116,8 +116,8 @@ namespace Flames
             Entities.SpawnEntities(p, p.Pos, p.Rot);
             p.Loading = false;
         }
-        
-        internal static void PostSentMap(Player p, Level prev, Level lvl, bool announce) {
+
+        public static void PostSentMap(Player p, Level prev, Level lvl, bool announce) {
             Position pos = lvl.SpawnPos;
             Orientation rot = p.Rot;
             byte yaw = lvl.rotx, pitch = lvl.roty;
@@ -139,8 +139,8 @@ namespace Flames
             Chat.MessageFrom(ChatScope.All, p, msg + lvl.ColoredName,
                              null, FilterGoto(p, prev, lvl), announce);
         }
-        
-        static ChatMessageFilter FilterGoto(Player source, Level prev, Level lvl) {
+
+        public static ChatMessageFilter FilterGoto(Player source, Level prev, Level lvl) {
             return (pl, obj) => 
                 pl.CanSee(source) && !pl.Ignores.WorldChanges &&
                 (Chat.FilterGlobal(pl, obj) || Chat.FilterLevel(pl, prev) || Chat.FilterLevel(pl, lvl));

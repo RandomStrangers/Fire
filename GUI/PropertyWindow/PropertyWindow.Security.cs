@@ -18,8 +18,8 @@ using System.Windows.Forms;
 namespace Flames.Gui {
 
     public partial class PropertyWindow : Form {
-        
-        void LoadSecurityProps() {
+
+        public void LoadSecurityProps() {
             sec_cbLogNotes.Checked = Server.Config.LogNotes;            
             sec_cbVerifyAdmins.Checked = Server.Config.verifyadmins;
             sec_cbWhitelist.Checked = Server.Config.WhitelistedOnly;
@@ -51,7 +51,7 @@ namespace Flames.Gui {
             ToggleIPSpamSettings(sec_cbIPAuto.Checked);
         }
 
-        void ApplySecurityProps() {
+        public void ApplySecurityProps() {
             Server.Config.LogNotes = sec_cbLogNotes.Checked;
             Server.Config.verifyadmins = sec_cbVerifyAdmins.Checked;
             Server.Config.VerifyAdminsRank = GuiPerms.GetSelectedRank(sec_cmbVerifyRank, LevelPermission.Operator);
@@ -76,14 +76,14 @@ namespace Flames.Gui {
             Server.Config.IPSpamInterval = sec_numIPSecs.Value;
             Server.Config.IPSpamBlockTime = sec_numIPMute.Value;
         }
-        
-        
-                
-        void sec_cbChatAuto_Checked(object sender, EventArgs e) {
+
+
+
+        public void sec_cbChatAuto_Checked(object sender, EventArgs e) {
             ToggleChatSpamSettings(sec_cbChatAuto.Checked);
         }
 
-        void sec_cbCmdAuto_Checked(object sender, EventArgs e) {
+        public void sec_cbCmdAuto_Checked(object sender, EventArgs e) {
             ToggleCmdSpamSettings(sec_cbCmdAuto.Checked);
         }
         
@@ -91,34 +91,34 @@ namespace Flames.Gui {
             ToggleBlocksSpamSettings(sec_cbBlocksAuto.Checked);
         }
 
-        void sec_cbIPAuto_Checked(object sender, EventArgs e) {
+        public void sec_cbIPAuto_Checked(object sender, EventArgs e) {
             ToggleIPSpamSettings(sec_cbIPAuto.Checked);
         }
-        
-        void ToggleChatSpamSettings(bool enabled) {
+
+        public void ToggleChatSpamSettings(bool enabled) {
             sec_numChatMsgs.Enabled = enabled;
             sec_numChatMute.Enabled = enabled;
             sec_numChatSecs.Enabled = enabled;
         }
-        
-        void ToggleCmdSpamSettings(bool enabled) {
+
+        public void ToggleCmdSpamSettings(bool enabled) {
             sec_numCmdMsgs.Enabled = enabled;
             sec_numCmdMute.Enabled = enabled;
             sec_numCmdSecs.Enabled = enabled;
         }
-        
-        void ToggleBlocksSpamSettings(bool enabled) {
+
+        public void ToggleBlocksSpamSettings(bool enabled) {
             sec_numBlocksMsgs.Enabled = enabled;
             sec_numBlocksSecs.Enabled = enabled;
         }
 
-        void ToggleIPSpamSettings(bool enabled) {
+        public void ToggleIPSpamSettings(bool enabled) {
             sec_numIPMsgs.Enabled = enabled;
             sec_numIPMute.Enabled = enabled;
             sec_numIPSecs.Enabled = enabled;
         }
-        
-        void VerifyAdminsChecked(object sender, System.EventArgs e) {
+
+        public void VerifyAdminsChecked(object sender, System.EventArgs e) {
             sec_cmbVerifyRank.Enabled = sec_cbVerifyAdmins.Checked;
         }
     }

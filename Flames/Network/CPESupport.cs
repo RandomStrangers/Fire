@@ -152,7 +152,7 @@ namespace Flames
             new CpeExtension(CpeExt.ExtEntityTeleport,   "Allows sending more precisely controlled teleports"),
             new CpeExtension(CpeExt.ExtBlocks,           "Allows using block IDs over 255 in block definitions"),
         };
-        internal static CpeExt[] Empty = new CpeExt[0];
+        public static CpeExt[] Empty = new CpeExt[0];
         
         /// <summary> Retrieves a list of all supported and enabled CPE extensions </summary>
         public static CpeExt[] GetAllEnabled() {
@@ -169,9 +169,9 @@ namespace Flames
             }
             return exts.ToArray();
         }
-        
-        
-        static int supportedCount;
+
+
+        public static int supportedCount;
         public static void LoadDisabledList() {
             supportedCount = 0;
 
@@ -187,7 +187,7 @@ namespace Flames
             }
         }
 
-        static void ParseLine(string name, string value) {
+        public static void ParseLine(string name, string value) {
             foreach (CpeExtension c in All) 
             {
                 if (!name.CaselessEq(c.Name)) continue;
@@ -198,7 +198,7 @@ namespace Flames
             }
         }
 
-        static void SaveDisabledList() {
+        public static void SaveDisabledList() {
             using (StreamWriter w = new StreamWriter(Paths.CPEDisabledFile)) {
                 w.WriteLine("# CPE configuration");
                 w.WriteLine("#   This file allows disabling non-classic (CPE) extensions ");

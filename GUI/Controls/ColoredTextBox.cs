@@ -26,10 +26,10 @@ namespace Flames.Gui.Components {
     /// <summary> Extended rich text box that auto-colors minecraft classic text. </summary>
     public class ColoredTextBox : RichTextBox {
 
-        bool _nightMode = false, _colorize = true;
-        bool _showDateStamp = true, _autoScroll = true;
-        int lines = 0;
-        const int maxLines = 2000, linesToTrim = 25;
+        public bool _nightMode = false, _colorize = true;
+        public bool _showDateStamp = true, _autoScroll = true;
+        public int lines = 0;
+        public const int maxLines = 2000, linesToTrim = 25;
 
         public bool AutoScroll {
             get { return _autoScroll; }
@@ -60,7 +60,7 @@ namespace Flames.Gui.Components {
         }
 
 
-        string CurrentDate { get { return "[" + DateTime.Now.ToString("T") + "] "; } }
+        public string CurrentDate { get { return "[" + DateTime.Now.ToString("T") + "] "; } }
 
         public ColoredTextBox() : base() {
             LinkClicked += HandleLinkClicked;
@@ -92,8 +92,8 @@ namespace Flames.Gui.Components {
             }
             if (AutoScroll) ScrollToEnd(line);
         }
-        
-        void AppendLogCore(string text, Color color, bool dateStamp) {
+
+        public void AppendLogCore(string text, Color color, bool dateStamp) {
             if (dateStamp) AppendColoredText(CurrentDate, Color.Gray);
             
             if (!Colorize) {
@@ -102,8 +102,8 @@ namespace Flames.Gui.Components {
                 AppendFormatted(text, color);
             }
         }
-        
-        void TrimLog(ref int selStart) {
+
+        public void TrimLog(ref int selStart) {
             int trimLength = GetFirstCharIndexFromLine(linesToTrim);
             selStart -= trimLength;
             lines -= linesToTrim;
@@ -113,12 +113,12 @@ namespace Flames.Gui.Components {
             string trimMsg = "----- cut off, see log files for rest of logs -----" + Environment.NewLine;
             
             SelectedText = trimMsg;
-            SelectionColor = System.Drawing.Color.DarkGray;
+            SelectionColor = Color.DarkGray;
             selStart += trimMsg.Length - 1;            
         }
-        
+
         /// <summary> Appends text with a specific color to this textbox. </summary>
-        internal void AppendColoredText(string text, Color color) {
+        public void AppendColoredText(string text, Color color) {
             SelectionStart = TextLength;
             SelectionLength = 0;
             
@@ -127,13 +127,13 @@ namespace Flames.Gui.Components {
             SelectionColor = ForeColor;
         }
 
-        void HandleLinkClicked(object sender, System.Windows.Forms.LinkClickedEventArgs e) {
+        public void HandleLinkClicked(object sender, LinkClickedEventArgs e) {
             if (!Popup.OKCancel("Never open links from people that you don't trust!", "Warning!!")) return;
             GuiUtils.OpenBrowser(e.LinkText);
         }
 
         /// <summary> Scrolls to the end of the log </summary>
-        internal void ScrollToEnd(int startIndex) {
+        public void ScrollToEnd(int startIndex) {
             int lines = GetLineFromCharIndex(TextLength - 1) - startIndex + 1;
             try {
                 for (int i = 0; i < lines; i++) {
@@ -147,10 +147,10 @@ namespace Flames.Gui.Components {
         }
         
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
-        
-        
-        void AppendFormatted(string message, Color foreColor) {
+        public static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+
+        public void AppendFormatted(string message, Color foreColor) {
             int index = 0;
             char col = 'S';
             message = UIHelpers.Format(message);
@@ -161,8 +161,8 @@ namespace Flames.Gui.Components {
                 if (part.Length > 0) AppendColoredText(part, GetCol(curCol, foreColor));
             }
         }
-        
-        static Color GetCol(char c, Color foreCol) {
+
+        public static Color GetCol(char c, Color foreCol) {
             if (c == 'S' || c == 'f' || c == 'F' || c == '0') return foreCol;
             Colors.Map(ref c);
 

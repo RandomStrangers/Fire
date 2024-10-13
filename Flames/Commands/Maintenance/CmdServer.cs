@@ -35,34 +35,34 @@ namespace Flames.Commands.Maintenance {
                     case "backup": DoBackup(p, args); break;
                     case "restore": DoRestore(p); break;
                     case "import": DoImport(p, args); break;
-                    case "update" : Find("Updater").Use(p, message); break;
+                    case "update" : Find("Update").Use(p, message); break;
                     case "upgradeblockdb": DoBlockDBUpgrade(p, args); break;
                     default: Help(p); break;
             }
         }
-        
-        void SetPublic(Player p, string[] args) {
+
+        public void SetPublic(Player p, string[] args) {
             Server.Config.Public = true;
             p.Message("Server is now public!");
             Logger.Log(LogType.SystemActivity, "Server is now public!");
             SrvProperties.Save();
         }
-        
-        void SetPrivate(Player p, string[] args) {
+
+        public void SetPrivate(Player p, string[] args) {
             Server.Config.Public = false; 
             p.Message("Server is now private!");
             Logger.Log(LogType.SystemActivity, "Server is now private!");
             SrvProperties.Save();
         }
-        
-        void DoReload(Player p, string[] args) {
+
+        public void DoReload(Player p, string[] args) {
             p.Message("Reloading settings...");
             Server.LoadAllSettings();
             Server.LoadPlayerLists();
             p.Message("Settings reloaded! You may need to restart the server, however.");
         }
-        
-        void DoBackup(Player p, string[] args) {
+
+        public void DoBackup(Player p, string[] args) {
             string type  = args.Length > 1 ? args[1] : "";
             string value = args.Length > 2 ? args[2] : "";
             
@@ -98,21 +98,21 @@ namespace Flames.Commands.Maintenance {
                 Help(p);
             }
         }
-        
-        static void DoRestore(Player p) {
+
+        public static void DoRestore(Player p) {
             if (!CheckPerms(p)) {
                 p.Message("Only the Flames or the Server Owner can restore the server."); return;
             }
             Backup.Extract(p);
         }
 
-        static bool CheckPerms(Player p) {
+        public static bool CheckPerms(Player p) {
             if (p.IsFire) return true;
             if (Server.Config.OwnerName.CaselessEq("Notch")) return false;
             return p.name.CaselessEq(Server.Config.OwnerName);
         }
-        
-        void DoImport(Player p, string[] args) {
+
+        public void DoImport(Player p, string[] args) {
             if (args.Length == 1) { p.Message("You need to provide the table name to import."); return; }
             if (!Formatter.ValidName(p, args[1], "table")) return;
             if (!File.Exists(args[1] + ".sql")) { p.Message("File \"{0}\".sql does not exist.", args[1]); return; }
@@ -122,8 +122,8 @@ namespace Flames.Commands.Maintenance {
                 Backup.ImportSql(fs);
             p.Message("Finished importing table {0}.", args[1]);
         }
-        
-        void DoBlockDBUpgrade(Player p, string[] args) {
+
+        public void DoBlockDBUpgrade(Player p, string[] args) {
             if (args.Length == 1 || !args[1].CaselessEq("confirm")) {
                 p.Message("This will export all the BlockDB tables in the database to more efficient .cbdb files.");
                 p.Message("Note: This is only useful if you have updated from older {0} versions", Server.SoftwareName);

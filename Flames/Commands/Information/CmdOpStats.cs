@@ -88,12 +88,12 @@ namespace Flames.Commands.Info
                            reviews, ranks + promotesOld + demotesOld,
                            promotes + promotesOld, demotes + demotesOld);
         }
-        
-        static bool ValidTimespan(string value) {
+
+        public static bool ValidTimespan(string value) {
             return value == "today" || value == "yesterday" || value == "thismonth" || value == "lastmonth" || value == "all";
         }
- 
-        static int Count(string start, string end, string name, string cmd, string msg = "!=''") {
+
+        public static int Count(string start, string end, string name, string cmd, string msg = "!=''") {
             const string whereSQL = "WHERE Time >= @0 AND Time < @1 AND Name LIKE @2 AND Cmd LIKE @3 AND Cmdmsg ";
             return Database.CountRows("Opstats", whereSQL + msg, start, end, name, cmd);
         }

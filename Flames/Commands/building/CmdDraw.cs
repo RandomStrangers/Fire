@@ -21,12 +21,12 @@ using Flames.Maths;
 namespace Flames.Commands.Building {
     public sealed class CmdDraw : DrawCmd {
         public override string name { get { return "Draw"; } }
-        
-        protected override int MarksCount { get { return 1; } }
-        protected override string SelectionType { get { return "origin"; } }
-        protected override string PlaceMessage { get { return "Place a block to determine the origin."; } }
-        
-        protected override DrawMode GetMode(string[] parts) {
+
+        public override int MarksCount { get { return 1; } }
+        public override string SelectionType { get { return "origin"; } }
+        public override string PlaceMessage { get { return "Place a block to determine the origin."; } }
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];
             if (msg == "cone")      return DrawMode.cone;
             if (msg == "hcone")     return DrawMode.hcone;
@@ -42,8 +42,8 @@ namespace Flames.Commands.Building {
             if (msg == "cylinder")  return DrawMode.hollow;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             DrawOp op = null;
             switch (dArgs.Mode) {
                 case DrawMode.cone:   op = new ConeDrawOp(); break;
@@ -85,8 +85,8 @@ namespace Flames.Commands.Building {
             dArgs.Meta = meta;
             return op;
         }
-        
-        protected override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
+
+        public override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
             AdvDrawMeta meta = (AdvDrawMeta)dArgs.Meta;
             int radius = meta.radius;
             
@@ -102,15 +102,15 @@ namespace Flames.Commands.Building {
                 m[0].Y -= radius; m[1].Y += radius;
             }
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             int argsUsed = UsesHeight(dArgs) ? 3 : 2;
             dArgs.BrushArgs = dArgs.Message.Splice(argsUsed, 0);
         }
-        
-        class AdvDrawMeta { public int radius, height; }
 
-        static bool UsesHeight(DrawArgs args) {
+        public class AdvDrawMeta { public int radius, height; }
+
+        public static bool UsesHeight(DrawArgs args) {
             DrawMode mode = args.Mode;
             return !(mode == DrawMode.sphere || mode == DrawMode.hsphere);
         }

@@ -39,8 +39,8 @@ namespace Flames.Commands.Info
             Paginator.Output(p, files, (file) => FormatMap(p, file),
                              "Levels", "levels", message);
         }
-        
-        static string FormatMap(Player p, string file) {
+
+        public static string FormatMap(Player p, string file) {
             string map = Path.GetFileNameWithoutExtension(file);
             RetrieveProps(map, out LevelPermission visitP, out LevelPermission buildP, out bool loadOnGoto);
             
@@ -50,8 +50,8 @@ namespace Flames.Commands.Info
             string visit = loadOnGoto && p.Rank >= visitP ? "" : " &c[no]";
             return Group.GetColor(maxPerm) + map + visit;
         }
-        
-        static void RetrieveProps(string level, out LevelPermission visit,
+
+        public static void RetrieveProps(string level, out LevelPermission visit,
                                   out LevelPermission build, out bool loadOnGoto) {
             visit = LevelPermission.Guest;
             build = LevelPermission.Guest;
@@ -66,8 +66,8 @@ namespace Flames.Commands.Info
             if (!bool.TryParse(args.LoadOnGoto, out loadOnGoto))
                 loadOnGoto = true;
         }
-        
-        static void ProcessLine(string key, string value, ref SearchArgs args) {
+
+        public static void ProcessLine(string key, string value, ref SearchArgs args) {
             if (key.CaselessEq("pervisit")) {
                 args.Visit = value;
             } else if (key.CaselessEq("perbuild")) {
@@ -76,8 +76,8 @@ namespace Flames.Commands.Info
                 args.LoadOnGoto = value;
             }
         }
-        
-        struct SearchArgs { public string Visit, Build, LoadOnGoto; }
+
+        public struct SearchArgs { public string Visit, Build, LoadOnGoto; }
 
         public override void Help(Player p) {
             p.Message("&T/Levels");

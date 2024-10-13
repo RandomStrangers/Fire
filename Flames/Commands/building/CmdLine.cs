@@ -26,11 +26,11 @@ namespace Flames.Commands.Building {
         public override CommandAlias[] Aliases {
             get { return new[] { new CommandAlias("ln") }; }
         }
-        
-        protected override string SelectionType { get { return "endpoints"; } }
-        protected override string PlaceMessage { get { return "Place or break two blocks to determine the endpoints."; } }
-        
-        protected override DrawMode GetMode(string[] parts) {
+
+        public override string SelectionType { get { return "endpoints"; } }
+        public override string PlaceMessage { get { return "Place or break two blocks to determine the endpoints."; } }
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];
             if (msg == "normal")    return DrawMode.solid;
             if (msg == "walls")     return DrawMode.walls;
@@ -38,8 +38,8 @@ namespace Flames.Commands.Building {
             if (msg == "connected") return DrawMode.wire;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             LineDrawOp line = new LineDrawOp();
             if (dArgs.Mode == DrawMode.wire) {
                 dArgs.Player.Message("&HIn connected lines mode, endpoint of each line also forms the " +
@@ -55,8 +55,8 @@ namespace Flames.Commands.Building {
             if (ushort.TryParse(arg, out len)) line.MaxLength = len;
             return line;
         }
-        
-        protected override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
+
+        public override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
             if (dArgs.Mode != DrawMode.straight) return;
             int dx = Math.Abs(m[0].X - m[1].X), dy = Math.Abs(m[0].Y - m[1].Y), dz = Math.Abs(m[0].Z - m[1].Z);
 
@@ -68,15 +68,15 @@ namespace Flames.Commands.Building {
                 m[1].X = m[0].X; m[1].Y = m[0].Y;
             }
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             LineDrawOp line = (LineDrawOp)dArgs.Op;
             int endCount = 0;
             if (line.MaxLength != int.MaxValue) endCount++;
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, endCount);
         }
-        
-        protected override bool DoDraw(Player p, Vec3S32[] marks, object state, ushort block) {
+
+        public override bool DoDraw(Player p, Vec3S32[] marks, object state, ushort block) {
             if (!base.DoDraw(p, marks, state, block)) return false;
             DrawArgs dArgs = (DrawArgs)state;
             if (dArgs.Mode != DrawMode.wire) return true;

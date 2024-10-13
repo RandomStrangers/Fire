@@ -24,13 +24,13 @@ namespace Flames.Commands.Building {
         public override CommandAlias[] Aliases {
             get { return new[] { new CommandAlias("eh", "hollow"), new CommandAlias("Cone", "cone"), new CommandAlias("Cylinder", "cylinder") }; }
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             if (dArgs.Mode == DrawMode.solid) dArgs.BrushName = "Normal";
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, 0);
         }
-        
-        protected override DrawMode GetMode(string[] parts) {
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];
             if (msg == "solid")    return DrawMode.solid;
             if (msg == "hollow")   return DrawMode.hollow;
@@ -39,8 +39,8 @@ namespace Flames.Commands.Building {
             if (msg == "cone")     return DrawMode.cone;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             switch (dArgs.Mode) {
                 case DrawMode.hollow:   return new EllipsoidHollowDrawOp();
                 case DrawMode.vertical: return new CylinderDrawOp();

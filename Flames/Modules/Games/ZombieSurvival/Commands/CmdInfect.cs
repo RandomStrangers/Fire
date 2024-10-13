@@ -18,7 +18,7 @@
 
 namespace Flames.Modules.Games.ZS 
 {
-    sealed class CmdInfect : Command2 
+    public sealed class CmdInfect : Command2 
     {
         public override string name { get { return "Infect"; } }
         public override string type { get { return CommandTypes.Games; } }

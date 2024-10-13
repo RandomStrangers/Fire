@@ -29,8 +29,8 @@ namespace Flames
     public delegate string StringFormatter<T>(T value);
     
     public static class Extensions 
-    {       
-        static char[] space = new char[] { ' ' };
+    {
+        public static char[] space = new char[] { ' ' };
         
         /// <summary> Same as value.Split(' '), but doesn't allocate ' ' each time. </summary>
         /// <example> "abc def xyz".SplitSpaces() becomes "abc", "def", "xyz" </example>
@@ -80,9 +80,9 @@ namespace Flames
             // If not enough split strings, set remaining to null
             for (; i < split.Length; i++) { split[i] = null; }
         }
-                
-        static char[] comma = new char[] { ',' };
-        static string[] emptyStrs = new string[0];
+
+        public static char[] comma = new char[] { ',' };
+        public static string[] emptyStrs = new string[0];
         
         /// <summary> Trims spaces then calls Split(','). However, returns an empty array on empty input, 
         /// instead of a array consisting of "" that a .Split() call would. </summary>
@@ -161,8 +161,8 @@ namespace Flames
             }
             return builder.ToString();
         }
-        
-        const StringComparison comp = StringComparison.OrdinalIgnoreCase;
+
+        public const StringComparison comp = StringComparison.OrdinalIgnoreCase;
         public static bool CaselessEq(this string a, string b) { return a.Equals(b, comp); }       
         public static bool CaselessStarts(this string a, string b) { return a.StartsWith(b, comp); }        
         public static bool CaselessEnds(this string a, string b) { return a.EndsWith(b, comp); }

@@ -20,9 +20,9 @@ using Flames.Blocks.Physics;
 using BlockID = System.UInt16;
 
 namespace Flames.Blocks {
-    internal static class WalkthroughBehaviour {
+    public static class WalkthroughBehaviour {
 
-        internal static bool Door(Player p, BlockID block, ushort x, ushort y, ushort z) {
+        public static bool Door(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.physics == 0) return true;
 
             BlockID physForm;
@@ -30,23 +30,23 @@ namespace Flames.Blocks {
             p.level.Blockchange(x, y, z, physForm, false, args);
             return true;
         }
-        
-        internal static bool Train(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static bool Train(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (!p.trainInvincible && p.level.Config.KillerBlocks) p.HandleDeath(Block.Train);
             return true;
         }
-        
-        internal static bool DoPortal(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static bool DoPortal(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.PosToInt(x, y, z) == p.lastWalkthrough) return true;
             return Portal.Handle(p, x, y, z);
         }
-        
-        internal static bool DoMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static bool DoMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.PosToInt(x, y, z) == p.lastWalkthrough) return true;
             return MessageBlock.Handle(p, x, y, z, false);
         }
-        
-        internal static bool Checkpoint(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static bool Checkpoint(Player p, BlockID block, ushort x, ushort y, ushort z) {
             p.useCheckpointSpawn = true;
             p.checkpointX = x; p.checkpointY = (ushort)(y + 1); p.checkpointZ = z;
             p.checkpointRotX = p.Rot.RotY; p.checkpointRotY = p.Rot.HeadX;

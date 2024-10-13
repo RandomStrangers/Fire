@@ -27,7 +27,7 @@ namespace Flames.Modules.Games.LS
 {
     public partial class LSGame : RoundsGame 
     {
-        protected override void HookEventHandlers() {
+        public override void HookEventHandlers() {
             OnJoinedLevelEvent.Register(HandleJoinedLevel, Priority.High);
             OnPlayerDyingEvent.Register(HandlePlayerDying, Priority.High);
             OnPlayerDiedEvent.Register(HandlePlayerDied, Priority.High);
@@ -37,8 +37,8 @@ namespace Flames.Modules.Games.LS
 
             base.HookEventHandlers();
         }
-        
-        protected override void UnhookEventHandlers() {
+
+        public override void UnhookEventHandlers() {
             OnJoinedLevelEvent.Unregister(HandleJoinedLevel);
             OnPlayerDyingEvent.Unregister(HandlePlayerDying);
             OnPlayerDiedEvent.Unregister(HandlePlayerDied);
@@ -48,13 +48,13 @@ namespace Flames.Modules.Games.LS
 
             base.UnhookEventHandlers();
         }
-        
-        void HandleMoneyChanged(Player p) {
+
+        public void HandleMoneyChanged(Player p) {
             if (p.level != Map) return;
             UpdateStatus1(p);
         }
-        
-        void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
             
             if (Map != level) return;
@@ -62,19 +62,19 @@ namespace Flames.Modules.Games.LS
             OutputMapSummary(p, Map.Config);
             if (RoundInProgress) OutputStatus(p);
         }
-        
-        void HandlePlayerDying(Player p, BlockID block, ref bool cancel) {
+
+        public void HandlePlayerDying(Player p, BlockID block, ref bool cancel) {
             if (p.level == Map && IsPlayerDead(p)) cancel = true;
         }
-        
-        void HandlePlayerDied(Player p, BlockID block, ref TimeSpan cooldown) {
+
+        public void HandlePlayerDied(Player p, BlockID block, ref TimeSpan cooldown) {
             if (p.level != Map || IsPlayerDead(p)) return;
             
             cooldown = TimeSpan.FromSeconds(30);
             AddLives(p, -1, false);
         }
-        
-        void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
             if (p.level != Map || !(placing || p.painting)) return;
             
             if (Config.SpawnProtection && NearLavaSpawn(x, y, z)) {
@@ -83,8 +83,8 @@ namespace Flames.Modules.Games.LS
                 cancel = true; return;
             }
         }
-        
-        bool NearLavaSpawn(ushort x, ushort y, ushort z) {
+
+        public bool NearLavaSpawn(ushort x, ushort y, ushort z) {
             Vec3U16 pos = layerMode ? CurrentLayerPos() : cfg.FloodPos;
             int dist    = Config.SpawnProtectionRadius;
             
@@ -93,8 +93,8 @@ namespace Flames.Modules.Games.LS
             int dz = Math.Abs(z - pos.Z);
             return dx <= dist && dy <= dist && dz <= dist;
         }
-        
-        bool TryPlaceBlock(Player p, ref int blocksLeft, string type, 
+
+        public bool TryPlaceBlock(Player p, ref int blocksLeft, string type, 
                            BlockID block, ushort x, ushort y, ushort z) {
             if (!p.Game.Referee && blocksLeft <= 0) {
                 p.Message("You have no {0} left", type);

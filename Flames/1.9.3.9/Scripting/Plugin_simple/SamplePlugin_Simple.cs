@@ -1,6 +1,6 @@
 ﻿namespace Flames.Scripting.Plugin_simple
 {
-    internal class SamplePlugin_Simple 
+    public class SamplePlugin_Simple 
     {
         public string SimplePluginSkeleton
         {

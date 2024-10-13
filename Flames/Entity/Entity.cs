@@ -23,13 +23,13 @@ namespace Flames
     public abstract class Entity 
     {
         // Raw orientation/position - access must be threadsafe
-        volatile uint _rot;
-        long _pos;
+        public volatile uint _rot;
+        public long _pos;
         
         // Last sent orientation/position, for delta calculation
         public Orientation _lastRot;
         public Position _lastPos;
-        internal bool hasExtPositions;
+        public bool hasExtPositions;
         
         public string Model = "humanoid";
         public AABB ModelBB;
@@ -63,10 +63,10 @@ namespace Flames
         public abstract Level Level { get; }
         /// <summary> Whether maximum model scale is limited. </summary>
         public abstract bool RestrictsScale { get; }
-        
-        protected virtual void OnSetPos() { }
-        
-        protected virtual void OnSetRot() { }
+
+        public virtual void OnSetPos() { }
+
+        public virtual void OnSetRot() { }
         
         
         /// <summary> Sets new model and updates internal state. </summary>  

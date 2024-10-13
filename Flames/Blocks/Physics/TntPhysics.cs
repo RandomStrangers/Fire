@@ -23,8 +23,8 @@ namespace Flames.Blocks.Physics
     public delegate bool TNTImmuneFilter(ushort x, ushort y, ushort z);
 	
     public static class TntPhysics 
-    {      
-        internal static void ToggleFuse(Level lvl, ushort x, ushort y, ushort z) {
+    {
+        public static void ToggleFuse(Level lvl, ushort x, ushort y, ushort z) {
             if (lvl.GetBlock(x, y, z) == Block.StillLava) {
                 lvl.Blockchange(x, y, z, Block.Air);
             } else {
@@ -91,12 +91,12 @@ namespace Flames.Blocks.Physics
             Explode(lvl, x, y, z, size + 2, rand,  7, filter);
             Explode(lvl, x, y, z, size + 3, rand,  3, filter);
         }
-        
-        static bool IsFuse(BlockID b, int dx, int dy, int dz) {
+
+        public static bool IsFuse(BlockID b, int dx, int dy, int dz) {
             return dx == 0 && dy == 1 && dz == 0 && b == Block.StillLava;
         }
-        
-        static void Explode(Level lvl, ushort x, ushort y, ushort z,
+
+        public static void Explode(Level lvl, ushort x, ushort y, ushort z,
                             int size, Random rand, int prob, TNTImmuneFilter filter) {
             for (int xx = (x - size); xx <= (x + size ); ++xx)
                 for (int yy = (y - size); yy <= (y + size); ++yy)

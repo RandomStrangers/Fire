@@ -28,9 +28,9 @@ namespace Flames.Games
         public int VoteTime = 20;
         public bool Voting;
 
-        internal string Candidate1 = "", Candidate2 = "", Candidate3 = "";
-        internal int Votes1, Votes2, Votes3;
-        const int MIN_MAPS = 3;
+        public string Candidate1 = "", Candidate2 = "", Candidate3 = "";
+        public int Votes1, Votes2, Votes3;
+        public const int MIN_MAPS = 3;
 
         public void AddRecentMap(string map) {
             if (RecentMaps.Count >= 20)
@@ -72,8 +72,8 @@ namespace Flames.Games
                 return null;
             }
         }
-        
-        void RemoveRecentLevels(List<string> maps) {
+
+        public void RemoveRecentLevels(List<string> maps) {
             // Try to avoid recently played levels, avoiding most recent
             List<string> recent = RecentMaps;
             for (int i = recent.Count - 1; i >= 0; i--) 
@@ -86,8 +86,8 @@ namespace Flames.Games
             if (maps.Count > MIN_MAPS) maps.CaselessRemove(Candidate2);
             if (maps.Count > MIN_MAPS) maps.CaselessRemove(Candidate3);
         }
-        
-        void DoLevelVote(IGame game) {
+
+        public void DoLevelVote(IGame game) {
             Voting = true;
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) {
@@ -98,8 +98,8 @@ namespace Flames.Games
             VoteCountdown(game);
             Voting = false;
         }
-        
-        void VoteCountdown(IGame game) {
+
+        public void VoteCountdown(IGame game) {
             // Show message for non-CPE clients
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) 
@@ -127,8 +127,8 @@ namespace Flames.Games
                 if (pl.level == map) ResetVoteMessage(pl);
             }
         }
-        
-        string NextLevel(Random r, List<string> levels) {
+
+        public string NextLevel(Random r, List<string> levels) {
             Player[] online = PlayerInfo.Online.Items;
             foreach (Player pl in online) pl.voted = false;
             
@@ -140,8 +140,8 @@ namespace Flames.Games
                 return Candidate2;
             }
         }
-        
-        internal static string GetRandomMap(Random r, List<string> maps) {
+
+        public static string GetRandomMap(Random r, List<string> maps) {
             int i = r.Next(0, maps.Count);
             string map = maps[i];
             maps.RemoveAt(i);

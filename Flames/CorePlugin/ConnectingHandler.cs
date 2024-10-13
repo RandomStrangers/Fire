@@ -17,15 +17,15 @@ using Flames.Authentication;
 using Flames.Network;
 
 namespace Flames.Core {
-    internal static class ConnectingHandler {
-        
-        internal static void HandleConnecting(Player p, string mppass) {
+    public static class ConnectingHandler {
+
+        public static void HandleConnecting(Player p, string mppass) {
             if (p.cancelconnecting) return;
             bool success = HandleConnectingCore(p, mppass);
             if (!success) p.cancelconnecting = true;
         }
-        
-        static bool HandleConnectingCore(Player p, string mppass) {
+
+        public static bool HandleConnectingCore(Player p, string mppass) {
             if (!LoginAuthenticator.VerifyLogin(p, mppass)) {
                 p.Leave(null, "Login failed! Close the game and sign in again.", true); return false;
             }
@@ -41,8 +41,8 @@ namespace Flames.Core {
             if (!CheckPlayersCount(p)) return false;
             return true;
         }
-        
-        static bool CheckTempban(Player p) {
+
+        public static bool CheckTempban(Player p) {
             try {
                 string data = Server.tempBans.Get(p.name);
                 if (data == null) return true;
@@ -64,8 +64,8 @@ namespace Flames.Core {
             } catch { } // TODO log error
             return true;
         }
-        
-        static bool CheckPlayersCount(Player p) {
+
+        public static bool CheckPlayersCount(Player p) {
             if (Server.vip.Contains(p.name)) return true;
             
             Player[] online = PlayerInfo.Online.Items;
@@ -86,8 +86,8 @@ namespace Flames.Core {
             p.Leave(null, "Server has reached max number of guests", true);
             return false;
         }
-        
-        static bool CheckBanned(Player p) {
+
+        public static bool CheckBanned(Player p) {
             string ipban = Server.bannedIP.Get(p.ip);
             if (ipban != null) {
                 ipban = ipban.Length > 0 ? ipban : Server.Config.DefaultBanMessage;

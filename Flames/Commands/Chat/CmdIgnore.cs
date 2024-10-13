@@ -74,8 +74,8 @@ namespace Flames.Commands.Chatting
             }
             p.Ignores.Save(p);
         }
-        
-        static void Toggle(Player p, ref bool ignore, string format) {
+
+        public static void Toggle(Player p, ref bool ignore, string format) {
             ignore = !ignore;
             if (format.StartsWith("{0}")) {
                 p.Message(format, ignore ? "&cNow" : "&aNo longer");
@@ -84,8 +84,8 @@ namespace Flames.Commands.Chatting
             }
             p.Ignores.Save(p);
         }
-        
-        static void IgnoreIRCNick(Player p, string nick) {
+
+        public static void IgnoreIRCNick(Player p, string nick) {
             if (p.Ignores.IRCNicks.CaselessRemove(nick)) {
                 p.Message("&aNo longer ignoring IRC nick: {0}", nick);
             } else {

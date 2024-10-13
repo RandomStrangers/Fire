@@ -27,7 +27,7 @@ namespace Flames
 {
     public sealed partial class Server 
     {
-        static void LoadMainLevel(SchedulerTask task) {
+        public static void LoadMainLevel(SchedulerTask task) {
             try {
                 mainLevel = LevelActions.Load(Player.Flame, Config.MainLevel, false);
                 if (mainLevel == null) GenerateMain();
@@ -35,8 +35,8 @@ namespace Flames
                 Logger.LogError("Error loading main level", ex);
             }
         }
-        
-        static void GenerateMain() {
+
+        public static void GenerateMain() {
             Logger.Log(LogType.SystemActivity, "main level not found, generating..");
             mainLevel = new Level(Config.MainLevel, 128, 64, 128);
             
@@ -46,10 +46,10 @@ namespace Flames
             LevelInfo.Add(mainLevel);
         }
 
-        static void LoadAllPlugins(SchedulerTask task) { Plugin.LoadAll(); }
-        static void LoadAllSimplePlugins(SchedulerTask task) { Plugin_Simple.LoadAll(); }
+        public static void LoadAllPlugins(SchedulerTask task) { Plugin.LoadAll(); }
+        public static void LoadAllSimplePlugins(SchedulerTask task) { Plugin_Simple.LoadAll(); }
 
-        static void InitPlayerLists(SchedulerTask task) {
+        public static void InitPlayerLists(SchedulerTask task) {
             try {
                 UpgradeTasks.UpgradeOldAgreed();
             } catch (Exception ex) {
@@ -59,8 +59,8 @@ namespace Flames
             LoadPlayerLists();
             ModerationTasks.QueueTasks();
         }
-        
-        internal static void LoadPlayerLists() {
+
+        public static void LoadPlayerLists() {
             agreed = PlayerList.Load("ranks/agreed.txt");
             invalidIds = PlayerList.Load("extra/invalidids.txt");
             Player.Flame.DatabaseID = NameConverter.InvalidNameID("(flames)");
@@ -83,8 +83,8 @@ namespace Flames
             tempBans  = PlayerExtList.Load(Paths.TempBansFile);
             whiteList = PlayerList.Load("ranks/whitelist.txt");
         }
-        
-        static void LoadAutoloadMaps(SchedulerTask task) {
+
+        public static void LoadAutoloadMaps(SchedulerTask task) {
             AutoloadMaps = PlayerExtList.Load("text/autoload.txt", '=');
             List<string> maps = AutoloadMaps.AllNames();
             
@@ -93,8 +93,8 @@ namespace Flames
                 LevelActions.Load(Player.Flame, map, false);
             }
         }
-        
-        static void SetupSocket(SchedulerTask task) {        
+
+        public static void SetupSocket(SchedulerTask task) {        
             IPAddress ip;
             
             if (!IPAddress.TryParse(Config.ListenIP, out ip)) {
@@ -103,19 +103,19 @@ namespace Flames
             }            
             Listener.Listen(ip, Config.Port);
         }
-        
-        static void InitHeartbeat(SchedulerTask task) {
+
+        public static void InitHeartbeat(SchedulerTask task) {
             Heartbeat.Start();
         }
-        
-        static void InitTimers(SchedulerTask task) {
+
+        public static void InitTimers(SchedulerTask task) {
             MainScheduler.QueueRepeat(RandomMessage, null, 
                                       Config.AnnouncementInterval);
             Critical.QueueRepeat(ServerTasks.UpdateEntityPositions, null,
                                  TimeSpan.FromMilliseconds(Config.PositionUpdateInterval));
         }
-        
-        static void InitRest(SchedulerTask task) {
+
+        public static void InitRest(SchedulerTask task) {
             MainScheduler.QueueRepeat(BlockQueue.Loop, null, 
                                       TimeSpan.FromMilliseconds(BlockQueue.Interval));
             Critical.QueueRepeat(ServerTasks.TickPlayers, null,

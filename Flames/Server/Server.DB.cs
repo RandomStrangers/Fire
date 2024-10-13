@@ -24,7 +24,7 @@ namespace Flames
 {
     public sealed partial class Server
     {
-        static ColumnDesc[] playersTable = new ColumnDesc[] {
+        public static ColumnDesc[] playersTable = new ColumnDesc[] {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
             new ColumnDesc("Name", ColumnType.VarChar, 17),
             new ColumnDesc("IP", ColumnType.Char, 15),
@@ -42,16 +42,16 @@ namespace Flames
             new ColumnDesc("title_color", ColumnType.VarChar, 6),
             new ColumnDesc("Messages", ColumnType.UInt24),
         };
-        
-        static ColumnDesc[] opstatsTable = new ColumnDesc[] {
+
+        public static ColumnDesc[] opstatsTable = new ColumnDesc[] {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
             new ColumnDesc("Time", ColumnType.DateTime),
             new ColumnDesc("Name", ColumnType.VarChar, 17),
             new ColumnDesc("Cmd", ColumnType.VarChar, 40),
             new ColumnDesc("Cmdmsg", ColumnType.VarChar, 40),
         };
-                
-        static void InitDatabase() {
+
+        public static void InitDatabase() {
             if (!Directory.Exists("blockdb")) Directory.CreateDirectory("blockdb");
 
             Logger.Log(LogType.SystemActivity, "Using {0} for database backend", Database.Backend.EngineName);

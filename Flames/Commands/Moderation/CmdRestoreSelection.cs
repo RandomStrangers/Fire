@@ -42,8 +42,8 @@ namespace Flames.Commands.Moderation {
                 LevelOperations.OutputBackups(p, p.level);
             }
         }
-        
-        bool DoRestore(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool DoRestore(Player p, Vec3S32[] marks, object state, BlockID block) {
             string path  = (string)state;
             Level source = IMapImporter.Decode(path, "templevel", false);
 

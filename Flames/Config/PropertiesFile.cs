@@ -55,8 +55,8 @@ namespace Flames {
             }
             return true;
         }
-        
-        internal static void ParseLine(string line, char separator, out string key, out string value) {
+
+        public static void ParseLine(string line, char separator, out string key, out string value) {
             key = null; value = null;
             if (line.IsCommentLine()) return;
             

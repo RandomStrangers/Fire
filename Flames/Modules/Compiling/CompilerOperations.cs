@@ -53,8 +53,8 @@ namespace Flames.Modules.Compiling
             
             return CreateFile(p, name, path, "plugin &f", source);
         }
-    	
-    	static bool CreateFile(Player p, string name, string path, string type, string source) {
+
+        public static bool CreateFile(Player p, string name, string path, string type, string source) {
             if (File.Exists(path)) {
                 p.Message("File {0} already exists. Choose another name.", path); 
                 return false;
@@ -91,9 +91,9 @@ namespace Flames.Modules.Compiling
             SummariseErrors(errors, srcs, p);
             return false;
         }
-        
-        const int MAX_LOG = 5;
-        static void SummariseErrors(ICompilerErrors errors, string[] srcs, Player p) {
+
+        public const int MAX_LOG = 5;
+        public static void SummariseErrors(ICompilerErrors errors, string[] srcs, Player p) {
             int logged = 0;
             foreach (ICompilerError err in errors) 
             {

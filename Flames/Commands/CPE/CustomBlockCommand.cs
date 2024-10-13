@@ -24,9 +24,9 @@ using BlockRaw = System.Byte;
 
 namespace Flames.Commands.CPE 
 {
-    internal static class CustomBlockCommand 
+    public static class CustomBlockCommand 
     {
-        class BlockDefinitionsArgs
+        public class BlockDefinitionsArgs
         {
             public bool global;
             public Level level;
@@ -93,8 +93,8 @@ namespace Flames.Commands.CPE
                     break;
             }
         }
-        
-        static void AddHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
+
+        public static void AddHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
             BlockID target;
             if (parts.Length >= 2) {
                 string id = parts[1];                
@@ -124,8 +124,8 @@ namespace Flames.Commands.CPE
             SetStep(p, args, 2);
             SendStepHelp(p, args);
         }
-        
-        static BlockDefinition[] GetDefs(Player p, CommandData data, string map, ref string coloredMap) {
+
+        public static BlockDefinition[] GetDefs(Player p, CommandData data, string map, ref string coloredMap) {
             map = Matcher.FindMaps(p, map);
             if (map == null) return null;
             
@@ -142,8 +142,8 @@ namespace Flames.Commands.CPE
             return BlockDefinition.Load(path);
         }
 
-        
-        static void CopyAllHandler(Player p, string[] parts, BlockDefinitionsArgs args, CommandData data) {
+
+        public static void CopyAllHandler(Player p, string[] parts, BlockDefinitionsArgs args, CommandData data) {
             if (parts.Length < 2) { Help(p, args.cmd); return; }
             string coloredMap = null;
             int copied = 0;
@@ -166,8 +166,8 @@ namespace Flames.Commands.CPE
                       copied > 0 ? copied.ToString() : "No", coloredMap);
             if (copied > 0) BlockDefinition.Save(args.global, args.level);
         }
-        
-        static void CopyHandler(Player p, string[] parts, BlockDefinitionsArgs args, CommandData data) {
+
+        public static void CopyHandler(Player p, string[] parts, BlockDefinitionsArgs args, CommandData data) {
             if (parts.Length < 2) { Help(p, args.cmd); return; }
             BlockDefinition[] srcDefs = args.defs;
 
@@ -199,9 +199,9 @@ namespace Flames.Commands.CPE
                 changed = true;
             }
             if (changed) BlockDefinition.Save(args.global, args.level);
-        }  
+        }
 
-        static bool DoCopy(Player p, BlockDefinitionsArgs args, bool keepOrder, 
+        public static bool DoCopy(Player p, BlockDefinitionsArgs args, bool keepOrder, 
                            BlockDefinition srcDef, BlockID src, BlockID dst) {
             if (srcDef == null && src < Block.CPE_COUNT) {
                 srcDef = DefaultSet.MakeCustomBlock(src);
@@ -218,9 +218,9 @@ namespace Flames.Commands.CPE
             UpdateBlock(p, args, dstDef);
             return true;
         }
-        
-        
-        static void InfoHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
+
+
+        public static void InfoHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
             if (parts.Length == 1) { Help(p, args.cmd); return; }
             int min, max;
             if (!CheckRawBlocks(p, parts[1], args, out min, out max)) return;
@@ -231,7 +231,7 @@ namespace Flames.Commands.CPE
             }
         }
 
-        static void DoInfo(Player p, BlockDefinitionsArgs args, BlockID block) {
+        public static void DoInfo(Player p, BlockDefinitionsArgs args, BlockID block) {
             BlockDefinition def = args.defs[block];
             if (def == null) { MessageNoBlock(p, block, args); return; }
             
@@ -272,8 +272,8 @@ namespace Flames.Commands.CPE
             }
         }
 
-        
-        static void ListHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
+
+        public static void ListHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
             string modifier = parts.Length > 1 ? parts[1] : "";
             List<BlockDefinition> defsInScope = new List<BlockDefinition>();
             BlockDefinition[] defs = args.defs;
@@ -290,13 +290,13 @@ namespace Flames.Commands.CPE
             Paginator.Output(p, defsInScope, PrintBlock,
                              args.cmd.Substring(1) + " list", "custom blocks", modifier);
         }
-        
-        static void PrintBlock(Player p, BlockDefinition def) {
+
+        public static void PrintBlock(Player p, BlockDefinition def) {
             p.Message("Custom block &T{0} &Shas name &T{1}", def.RawID, def.Name);
         }
 
-        
-        static void RemoveHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
+
+        public static void RemoveHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
             if (parts.Length <= 1) { Help(p, args.cmd); return; }
             
             int min, max;
@@ -310,7 +310,7 @@ namespace Flames.Commands.CPE
             if (changed) BlockDefinition.Save(args.global, args.level);
         }
 
-        static bool DoRemove(Player p, BlockDefinitionsArgs args, BlockID block) {
+        public static bool DoRemove(Player p, BlockDefinitionsArgs args, BlockID block) {
             BlockDefinition def = args.defs[block];
             if (!ExistsInScope(def, block, args)) { MessageNoBlock(p, block, args); return false; }
             
@@ -324,8 +324,8 @@ namespace Flames.Commands.CPE
             return true;
         }
 
-        
-        static void DefineBlockStep(Player p, string value, BlockDefinitionsArgs args) {
+
+        public static void DefineBlockStep(Player p, string value, BlockDefinitionsArgs args) {
             string opt = value.ToLower();
             int step = GetStep(p, args);
             BlockDefinition def = args.curDef;
@@ -415,8 +415,8 @@ namespace Flames.Commands.CPE
             SetStep(p, args, step);
             SendStepHelp(p, args);
         }
-        
-        static bool DoEdit(Player p, string[] parts, BlockDefinitionsArgs args, BlockID block) {
+
+        public static bool DoEdit(Player p, string[] parts, BlockDefinitionsArgs args, BlockID block) {
             BlockDefinition def = args.defs[block], globalDef = BlockDefinition.GlobalDefs[block];
             
             if (def == null && block < Block.CPE_COUNT) {
@@ -554,8 +554,8 @@ namespace Flames.Commands.CPE
             }
             return true;
         }
-        
-        static void EditHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
+
+        public static void EditHandler(Player p, string[] parts, BlockDefinitionsArgs args) {
             if (parts.Length <= 3) {
                 if (parts.Length == 1) {
                     p.Message("Valid properties: " + helpSections.Keys.Join());
@@ -577,17 +577,17 @@ namespace Flames.Commands.CPE
             }
             if (changed) BlockDefinition.Save(args.global, args.level); // TODO SaveChanged(bool changed, bool global, Level lvl) func
         }
-        
-        
-        static void UpdateBlock(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
+
+
+        public static void UpdateBlock(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
             p.Message("Created a new {0} custom block {1}({2})", args.scope, def.Name, def.RawID);
 
             BlockID block = def.GetBlock();
             BlockDefinition.Add(def, args.defs, args.level);
             ResetProps(args, block);
         }
-        
-        static bool AddBlock(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
+
+        public static bool AddBlock(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
             BlockID block = def.GetBlock();
             BlockDefinition old = args.defs[block];
             if (!args.global && old == BlockDefinition.GlobalDefs[block]) old = null; // TODO ExistsInScope
@@ -605,8 +605,8 @@ namespace Flames.Commands.CPE
             UpdateBlock(p, args, def);
             return true;
         }
-        
-        static BlockRaw GetFallback(Player p, string value) {
+
+        public static BlockRaw GetFallback(Player p, string value) {
             BlockID block;
             if (!CommandParser.GetBlock(p, value, out block)) return Block.Invalid;
             
@@ -620,8 +620,8 @@ namespace Flames.Commands.CPE
             }
             return (BlockRaw)block;
         }
-        
-        static BlockID GetFreeBlock(Player p, BlockDefinitionsArgs args) {
+
+        public static BlockID GetFreeBlock(Player p, BlockDefinitionsArgs args) {
             BlockDefinition[] defs = args.defs;
 
             // Start from opposite ends to avoid overlap
@@ -642,33 +642,33 @@ namespace Flames.Commands.CPE
             p.Message("&WThere are no custom block ids left, you must &T{0} remove &Wa custom block first.", args.cmd);
             return Block.Invalid;
         }
-        
-        
-        static void MessageNoBlock(Player p, BlockID block, BlockDefinitionsArgs args) {
+
+
+        public static void MessageNoBlock(Player p, BlockID block, BlockDefinitionsArgs args) {
             p.Message("&WThere is no {1} custom block with the id \"{0}\".", Block.ToRaw(block), args.scope);
             p.Message("Type &T{0} list &Sto see a list of {1} custom blocks.", args.cmd, args.scope);
         }
-        
-        static void MessageAlreadyBlock(Player p, BlockID block, BlockDefinitionsArgs args) {
+
+        public static void MessageAlreadyBlock(Player p, BlockID block, BlockDefinitionsArgs args) {
             p.Message("&WThere is already a {1} custom block with the id \"{0}\".", Block.ToRaw(block), args.scope);
             p.Message("Type &T{0} list &Sto see a list of {1} custom blocks.", args.cmd, args.scope);
         }
-        
-        static bool EditByte(Player p, string value, string propName, ref byte target, string help) {
+
+        public static bool EditByte(Player p, string value, string propName, ref byte target, string help) {
             if (!CommandParser.GetByte(p, value, propName, ref target)) {
                 SendEditHelp(p, help); return false;
             }
             return true;
         }
-         
-        static bool EditUShort(Player p, string value, string propName, ref ushort target, string help) {
+
+        public static bool EditUShort(Player p, string value, string propName, ref ushort target, string help) {
             if (!CommandParser.GetUShort(p, value, propName, ref target)) {
                 SendEditHelp(p, help); return false;
             }
             return true;
         }
-        
-        static bool ParseCoords(Player p, string parts, ref byte x, ref byte y, ref byte z) {
+
+        public static bool ParseCoords(Player p, string parts, ref byte x, ref byte y, ref byte z) {
             string[] coords = parts.SplitSpaces();
             if (coords.Length != 3) return false;
             
@@ -684,8 +684,8 @@ namespace Flames.Commands.CPE
             x = (byte)P.X; z = (byte)P.Y; y = (byte)P.Z; // blockdef files have z being height, we use y being height
             return true;
         }
-        
-        static bool CheckRaw(Player p, string arg, BlockDefinitionsArgs args,
+
+        public static bool CheckRaw(Player p, string arg, BlockDefinitionsArgs args,
                              out int raw, bool air = false) {
             raw = -1;
             int min = (air ? 0 : 1);
@@ -705,8 +705,8 @@ namespace Flames.Commands.CPE
             
             return CommandParser.GetInt(p, arg, "Block ID", ref raw, min, max);
         }
-        
-        static bool CheckRawBlocks(Player p, string arg, BlockDefinitionsArgs args,
+
+        public static bool CheckRawBlocks(Player p, string arg, BlockDefinitionsArgs args,
                                    out int min, out int max, bool air = false) {
             string[] bits;
             bool success;
@@ -721,8 +721,8 @@ namespace Flames.Commands.CPE
             }
             return success;
         }
-        
-        static bool CheckBlock(Player p, string arg, BlockDefinitionsArgs args,
+
+        public static bool CheckBlock(Player p, string arg, BlockDefinitionsArgs args,
                                out BlockID block, bool air = false) {
             int raw;
             bool success = CheckRaw(p, arg, args, out raw, air);
@@ -730,8 +730,8 @@ namespace Flames.Commands.CPE
             block = Block.FromRaw((BlockID)raw);
             return success;
         }
-        
-        static void ResetProps(BlockDefinitionsArgs args, BlockID block) {
+
+        public static void ResetProps(BlockDefinitionsArgs args, BlockID block) {
             Level lvl = args.level;
             BlockProps[] scope = args.global ? Block.Props : lvl.Props;
             int changed = scope[block].ChangedScope & BlockProps.ScopeId(scope);
@@ -741,28 +741,28 @@ namespace Flames.Commands.CPE
             scope[block] = BlockProps.MakeDefault(scope, lvl, block);
             BlockProps.ApplyChanges(scope, lvl, block, false);
         }
-        
-              
-        static int GetStep(Player p, BlockDefinitionsArgs args) {
+
+
+        public static int GetStep(Player p, BlockDefinitionsArgs args) {
             return args.global ? p.gbStep : p.lbStep;
         }
-        
-        static void SetBD(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
+
+        public static void SetBD(Player p, BlockDefinitionsArgs args, BlockDefinition def) {
             if (args.global) p.gbBlock = def;
             else p.lbBlock = def;
         }
-        
-        static void SetStep(Player p, BlockDefinitionsArgs args, int step) {
+
+        public static void SetStep(Player p, BlockDefinitionsArgs args, int step) {
             if (args.global) p.gbStep = step;
             else p.lbStep = step;
         }
-        
-        static bool ExistsInScope(BlockDefinition def, BlockID block, BlockDefinitionsArgs args) {
+
+        public static bool ExistsInScope(BlockDefinition def, BlockID block, BlockDefinitionsArgs args) {
             return def != null && (args.global || def != BlockDefinition.GlobalDefs[block]);
         }
-        
-        
-        static void SendStepHelp(Player p, BlockDefinitionsArgs args) {
+
+
+        public static void SendStepHelp(Player p, BlockDefinitionsArgs args) {
             int step = GetStep(p, args);
             string[] help = helpSections[stepsHelp[step]];
             BlockDefinition def = args.curDef;
@@ -778,14 +778,14 @@ namespace Flames.Commands.CPE
             if (step == 2) p.Message("Use &T{0} [answer] &Sto type your answers", args.cmd);
             p.Message("&f--------------------------");
         }
-        
-        static void SendEditHelp(Player p, string section) {
+
+        public static void SendEditHelp(Player p, string section) {
             string[] help = helpSections[section];
             for (int i = 0; i < help.Length; i++)
                 p.Message(help[i].Replace("Type", "Use"));
         }
-        
-        static string MapPropertyName(string prop) {
+
+        public static string MapPropertyName(string prop) {
             if (prop == "side" || prop == "all" || prop == "top" || prop == "bottom"
                 || prop == "left" || prop == "right" || prop == "front" || prop == "back") return prop + "tex";
             
@@ -803,14 +803,14 @@ namespace Flames.Commands.CPE
             
             return prop;
         }
-        
-        
-        static string[] stepsHelp = new string[] {
+
+
+        public static string[] stepsHelp = new string[] {
             null, null, "name", "shape", "toptex", "sidetex", "bottomtex", "min", "max", "collide",
             "speed", "blockslight", "sound", "fullbright", "blockdraw", "fogdensity", "fogcolor", "fallback" };
-        
-        const string texLine = "Press F10 to see the numbers for each texture in terrain.png";
-        static Dictionary<string, string[]> helpSections = new Dictionary<string, string[]>() {
+
+        public const string texLine = "Press F10 to see the numbers for each texture in terrain.png";
+        public static Dictionary<string, string[]> helpSections = new Dictionary<string, string[]>() {
             { "name", new string[]  { "Type the name for the block." } },
             { "shape", new string[] { "Type '0' if the block is a cube, '1' if a sprite (e.g roses)." } },
             { "blockslight", new string[] { "Type 'yes' if the block casts a shadow, 'no' if it doesn't." } },
@@ -856,9 +856,9 @@ namespace Flames.Commands.CPE
                     "A position of 0 hides the block from the inventory." }
             },
         };
-        
-        
-        internal static void Help(Player p, string cmd) {
+
+
+        public static void Help(Player p, string cmd) {
             p.Message("&H{0} help page 1:", cmd.Substring(1));
             p.Message("&T{0} add [id] &H- begins creating a new custom block", cmd);
             p.Message("&T{0} copy [id] <new id> &H- clones an existing custom block", cmd);
@@ -867,8 +867,8 @@ namespace Flames.Commands.CPE
             p.Message("&HTo see the list of editable properties, type &T{0} edit", cmd);
             p.Message("&HTo read help page 2, type &T/help {0} 2", cmd.Substring(1));
         }
-        
-        internal static void Help(Player p, string cmd, string args) {
+
+        public static void Help(Player p, string cmd, string args) {
             if (args.CaselessEq("2")) { 
                 p.Message("&H{0} help page 2:", cmd.Substring(1));
                 p.Message("&T{0} copyall [level] &H- clones all custom blocks from [level]", cmd);                

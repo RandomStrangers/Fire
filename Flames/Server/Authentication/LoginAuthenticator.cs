@@ -57,8 +57,8 @@ namespace Flames.Authentication
             }
             return false;
         }
-        
-        static bool Authenticate(AuthService auth, Player p, string mppass) {
+
+        public static bool Authenticate(AuthService auth, Player p, string mppass) {
             string calc = Server.CalcMppass(p.truename, auth.Beat.Salt);
             if (!mppass.CaselessEq(calc)) return false;
 
@@ -70,7 +70,7 @@ namespace Flames.Authentication
     /// <summary> Authenticates a player using the Mojang session verification API </summary>
     public class MojangAuthenticator : LoginAuthenticator 
     {
-        static ThreadSafeCache ip_cache = new ThreadSafeCache();
+        public static ThreadSafeCache ip_cache = new ThreadSafeCache();
         public override bool Verify(Player p, string mppass) {
             foreach (AuthService auth in AuthService.Services)
             {
@@ -79,8 +79,8 @@ namespace Flames.Authentication
             }
             return false;
         }
-        
-        static bool Authenticate(AuthService auth, Player p) {
+
+        public static bool Authenticate(AuthService auth, Player p) {
             object locker = ip_cache.GetLocker(p.ip);
             // if a player from an IP is spamming login attempts,
             //  prevent that from spamming Mojang's authentication servers too
@@ -91,9 +91,9 @@ namespace Flames.Authentication
             auth.AcceptPlayer(p);
             return true;
         }
-        
-        
-        const string HAS_JOINED_URL = "https://sessionserver.mojang.com/session/minecraft/hasJoined?username={0}&serverId={1}";
+
+
+        public const string HAS_JOINED_URL = "https://sessionserver.mojang.com/session/minecraft/hasJoined?username={0}&serverId={1}";
         public static bool HasJoined(string username) {
             string url = string.Format(HAS_JOINED_URL, username, GetServerID());
             try
@@ -113,16 +113,16 @@ namespace Flames.Authentication
 
             return false;
         }
-        
-        static string GetServerID() {
+
+        public static string GetServerID() {
             UpdateExternalIP();
             byte[] data = Encoding.UTF8.GetBytes(externalIP + ":" + Server.Config.Port);
             byte[] hash = new SHA1Managed().ComputeHash(data);
             return Utils.ToHexString(hash);
         }
-        
-        static string externalIP;
-        static void UpdateExternalIP() {
+
+        public static string externalIP;
+        public static void UpdateExternalIP() {
             if (externalIP != null) return;
 
             try {

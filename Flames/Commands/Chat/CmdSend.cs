@@ -65,8 +65,8 @@ namespace Flames.Commands.Chatting
                 target.Message("Message received from {0}&S. Check &T/Inbox", target.FormatNick(p));
             }
         }
-        
-        static ColumnDesc[] createInbox = new ColumnDesc[] {
+
+        public static ColumnDesc[] createInbox = new ColumnDesc[] {
             new ColumnDesc("PlayerFrom", ColumnType.Char, 20),
             new ColumnDesc("TimeSent", ColumnType.DateTime),
             new ColumnDesc("Contents", ColumnType.VarChar, 255),

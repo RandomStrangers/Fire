@@ -29,12 +29,12 @@ namespace Flames.Commands.Building {
             get { return new[] { new CommandAlias("F3D"), new CommandAlias("F2D", "2d"),
                     new CommandAlias("Fill3D"), new CommandAlias("Fill2D", "2d") }; }
         }
-                
-        protected override int MarksCount { get { return 1; } }
-        protected override string SelectionType { get { return "origin"; } }
-        protected override string PlaceMessage { get { return "Place or break a block to mark the area you wish to fill."; } }
-        
-        protected override DrawMode GetMode(string[] parts) {
+
+        public override int MarksCount { get { return 1; } }
+        public override string SelectionType { get { return "origin"; } }
+        public override string PlaceMessage { get { return "Place or break a block to mark the area you wish to fill."; } }
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];            
             if (msg == "normal")     return DrawMode.solid;
             if (msg == "up")         return DrawMode.up;
@@ -45,16 +45,16 @@ namespace Flames.Commands.Building {
             if (msg == "2d")         return DrawMode.volcano;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArg) { return new FillDrawOp(); }
 
-        protected override void GetBrush(DrawArgs dArgs) {
+        public override DrawOp GetDrawOp(DrawArgs dArg) { return new FillDrawOp(); }
+
+        public override void GetBrush(DrawArgs dArgs) {
             int endCount = 0;
             if (IsConfirmed(dArgs.Message)) endCount++;
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, endCount);
         }
-        
-        protected override bool DoDraw(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public override bool DoDraw(Player p, Vec3S32[] marks, object state, BlockID block) {
             DrawArgs dArgs = (DrawArgs)state;
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             BlockID old = p.level.GetBlock(x, y, z);
@@ -79,8 +79,8 @@ namespace Flames.Commands.Building {
             op.Positions = null;
             return success;
         }
-        
-        static DrawMode Calc2DFill(Player p, Vec3S32[] marks) {
+
+        public static DrawMode Calc2DFill(Player p, Vec3S32[] marks) {
             int lenX = Math.Abs(p.Pos.BlockX - marks[0].X);
             int lenY = Math.Abs(p.Pos.BlockY - marks[0].Y);
             int lenZ = Math.Abs(p.Pos.BlockZ - marks[0].Z);
@@ -88,8 +88,8 @@ namespace Flames.Commands.Building {
             if (lenY >= lenX && lenY >= lenZ) return DrawMode.layer;
             return lenX >= lenZ ? DrawMode.verticalX : DrawMode.verticalZ;
         }
-        
-        static bool IsConfirmed(string message) {
+
+        public static bool IsConfirmed(string message) {
             return message.CaselessEq("confirm") || message.CaselessEnds(" confirm");
         }
         

@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Flames.Gui.Popups 
 {
-    internal sealed partial class TokenSelector : Form 
+    public sealed partial class TokenSelector : Form 
     {
         public string Token;
 
@@ -24,15 +24,15 @@ namespace Flames.Gui.Popups
             UpdateBaseLayout();
             ResumeLayout(false);
         }
-        
-        void TokenSelector_Load(object sender, EventArgs e) {
+
+        public void TokenSelector_Load(object sender, EventArgs e) {
             GuiUtils.SetIcon(this);
         }
-        
-        
-        const int btnWidth = 110, btnHeight = 40, btnsPerCol = 9;
-        int index = 0;
-        void MakeButton(ChatToken token) {
+
+
+        public const int btnWidth = 110, btnHeight = 40, btnsPerCol = 9;
+        public int index = 0;
+        public void MakeButton(ChatToken token) {
             int row = index / btnsPerCol, col = index % btnsPerCol;
             index++;
             
@@ -51,9 +51,9 @@ namespace Flames.Gui.Popups
             btn.Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Controls.Add(btn);
         }
-        
-        
-        void UpdateBaseLayout() {
+
+
+        public void UpdateBaseLayout() {
             int rows = index / btnsPerCol;
             if ((index % btnsPerCol) != 0) rows++; // round up
             

@@ -22,7 +22,7 @@ namespace Flames.Modules.Games.LS
     public sealed class LSPlugin : Plugin 
     {
         public override string name { get { return "LS"; } }
-        static Command cmdLS = new CmdLavaSurvival();
+        public static Command cmdLS = new CmdLavaSurvival();
         
         public override void Load(bool startup) {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
@@ -37,8 +37,8 @@ namespace Flames.Modules.Games.LS
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdLS);
         }
-        
-        void OnConfigUpdated() { 
+
+        public void OnConfigUpdated() { 
             LSGame.Instance.Config.Load();
         }
     }

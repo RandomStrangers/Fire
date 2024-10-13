@@ -158,8 +158,8 @@ namespace Flames.Commands
                 GetCoordInt(p, args[argsOffset + 1], "Y coordinate", ref P.Y) &&
                 GetCoordInt(p, args[argsOffset + 2], "Z coordinate", ref P.Z);
         }
-        
-        static bool ParseRelative(ref string arg) {
+
+        public static bool ParseRelative(ref string arg) {
             // ~ is preferred for compatibility with modern minecraft command syntax
             // # is also accepted since ~ cannot be typed in original minecraft classic
             bool relative = arg.Length > 0 && (arg[0] == '~' || arg[0] == '#');
@@ -190,9 +190,9 @@ namespace Flames.Commands
             if (relative) value += cur;
             return true;
         }
-        
-        
-        static bool IsSkipBlock(string input, out BlockID block) {
+
+
+        public static bool IsSkipBlock(string input, out BlockID block) {
             // Skip/None block for draw operations
             if (input.CaselessEq("skip") || input.CaselessEq("none")) {
                 block = Block.Invalid; return true;
@@ -261,8 +261,8 @@ namespace Flames.Commands
                       min, max);
             return 0;
         }
-        
-        internal static bool IsRawBlockRange(string input, out string[] bits) {
+
+        public static bool IsRawBlockRange(string input, out string[] bits) {
             bits = null;
             if (input.IndexOf('-') == -1) return false;
             bits = input.Split(new char[] { '-' }, 2);

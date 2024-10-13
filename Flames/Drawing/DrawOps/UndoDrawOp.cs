@@ -42,10 +42,10 @@ namespace Flames.Drawing.Ops
         
         /// <summary> Point in time that the /undo should start updating blocks. </summary>
         public DateTime End = DateTime.MaxValue;
-        
-        internal string who;
-        internal int[] ids;
-        internal bool found = false;
+
+        public string who;
+        public int[] ids;
+        public bool found = false;
         
         public UndoDrawOp() {
             Flags = BlockDBFlags.UndoOther;
@@ -59,8 +59,8 @@ namespace Flames.Drawing.Ops
             PerformUndo();
             this.output = null;
         }
-        
-        void PerformUndo() {
+
+        public void PerformUndo() {
             if (ids.Length == 0) return;
             
             // can't use "using" as it creates a local var, and read lock reference may be changed by DrawOpPerformer class
@@ -83,13 +83,13 @@ namespace Flames.Drawing.Ops
                 output(Place((ushort)x, (ushort)y, (ushort)z, kvp.Value));
             }
         }
-        
-        DrawOpOutput output;
-        Vec3U16 dims;
-        bool conservative;
-        Dictionary<int, BlockID> oldest;
-        
-        void UndoBlock(BlockDBEntry e) {
+
+        public DrawOpOutput output;
+        public Vec3U16 dims;
+        public bool conservative;
+        public Dictionary<int, BlockID> oldest;
+
+        public void UndoBlock(BlockDBEntry e) {
             BlockID block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             

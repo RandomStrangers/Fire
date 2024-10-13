@@ -27,22 +27,22 @@ namespace Flames.Modules.Compiling
         public override string shortcut { get { return "cml"; } }
         public override CommandAlias[] Aliases { get { return null; } }
 
-        protected override void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
+        public override void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
             string dst = IScripting.PluginPath(paths[0]);
             
             UnloadPlugin(p, paths[0]);
             base.CompilePlugin(p, paths, compiler);
             ScriptingOperations.LoadPlugins(p, dst);
         }
-        
-        static void UnloadPlugin(Player p, string name) {
+
+        public static void UnloadPlugin(Player p, string name) {
             Plugin plugin = Plugin.FindCustom(name);
             
             if (plugin == null) return;
             ScriptingOperations.UnloadPlugin(p, plugin);
         }
-        
-        protected override void CompileCommand(Player p, string[] paths, ICompiler compiler) {
+
+        public override void CompileCommand(Player p, string[] paths, ICompiler compiler) {
             string cmd = paths[0];
             string dst = IScripting.CommandPath(cmd);
             
@@ -50,8 +50,8 @@ namespace Flames.Modules.Compiling
             base.CompileCommand(p, paths, compiler);
             ScriptingOperations.LoadCommands(p, dst);
         }
-        
-        static void UnloadCommand(Player p, string cmdName) {
+
+        public static void UnloadCommand(Player p, string cmdName) {
             string cmdArgs = "";
             Search(ref cmdName, ref cmdArgs);
             Command cmd = Find(cmdName);

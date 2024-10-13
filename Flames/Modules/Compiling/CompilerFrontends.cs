@@ -31,7 +31,7 @@ namespace Flames.Modules.Compiling
 #if !NETSTANDARD
         CodeDomProvider compiler;
 
-        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
+        public override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
             CompilerParameters args = ICodeDomCompiler.PrepareInput(srcPaths, dstPath, "//");
             args.CompilerOptions   += " /unsafe";
             // NOTE: Make sure to keep CompilerOptions in sync with RoslynCSharpCompiler
@@ -40,7 +40,7 @@ namespace Flames.Modules.Compiling
             return ICodeDomCompiler.Compile(args, srcPaths, compiler);
         }
 #else
-        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
+        public  override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
             List<string> referenced = ProcessInput(srcPaths, "//");
             return RoslynCSharpCompiler.Compile(srcPaths, dstPath, referenced);
         }
@@ -154,7 +154,7 @@ namespace Flames
 #if !NETSTANDARD
         CodeDomProvider compiler;
 
-        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath)
+        public override ICompilerErrors DoCompile(string[] srcPaths, string dstPath)
         {
             CompilerParameters args = ICodeDomCompiler.PrepareInput(srcPaths, dstPath, "//");
             args.CompilerOptions += " ";
@@ -164,7 +164,7 @@ namespace Flames
         }
 #else
         //Name unknown for Roslyn VB compiler, assuming VisualBasic
-        protected override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
+        public  override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
             List<string> referenced = ProcessInput(srcPaths, "//");
             return RoslynVisualBasicCompiler.Compile(srcPaths, dstPath, referenced);
         }

@@ -92,10 +92,10 @@ namespace Flames.Modules.Games.ZS
         public int HumansRewardMin = 2;
         [ConfigInt("humans-win-reward-max", "Human rewards", 6, 0)]
         public int HumansRewardMax = 6;
-        
-        static ConfigElement[] cfg;
+
+        public static ConfigElement[] cfg;
         public override bool AllowAutoload { get { return true; } }
-        protected override string GameName { get { return "Zombie Survival"; } }
+        public override string GameName { get { return "Zombie Survival"; } }
         
         public override void Save() {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(ZSConfig));
@@ -112,8 +112,8 @@ namespace Flames.Modules.Games.ZS
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(ZSConfig));
             PropertiesFile.Read(Path, ProcessConfigLine);
         }
-        
-        void ProcessConfigLine(string key, string value) {
+
+        public void ProcessConfigLine(string key, string value) {
             // backwards compatibility
             if (key.CaselessEq("zombie-levels-list")) {
                 Maps = new List<string>(value.SplitComma());
@@ -122,8 +122,8 @@ namespace Flames.Modules.Games.ZS
             }
         }
 
-        
-        static string[] defMessages = new string[] { "{0} WIKIWOO'D {1}", "{0} stuck their teeth into {1}",
+
+        public static string[] defMessages = new string[] { "{0} WIKIWOO'D {1}", "{0} stuck their teeth into {1}",
             "{0} licked {1}'s brain ", "{0} danubed {1}", "{0} made {1} meet their maker", "{0} tripped {1}",
             "{0} made some zombie babies with {1}", "{0} made {1} see the dark side", "{0} tweeted {1}",
             "{0} made {1} open source", "{0} infected {1}", "{0} iDotted {1}", "{1} got nommed on",
@@ -143,8 +143,8 @@ namespace Flames.Modules.Games.ZS
             if (msgs.Count == 0) msgs = new List<string>(defMessages);
             return ConvertInfectMessages(msgs);
         }
-        
-        static string InfectPath(string name) { return "text/infect/" + name.ToLower() + ".txt"; }
+
+        public static string InfectPath(string name) { return "text/infect/" + name.ToLower() + ".txt"; }
         public static List<string> LoadPlayerInfectMessages(string name) {
             string path = InfectPath(name);
             if (!File.Exists(path)) return null;
@@ -161,7 +161,7 @@ namespace Flames.Modules.Games.ZS
             File.AppendAllText(path, msg + Environment.NewLine);
         }
 
-        static List<string> ConvertInfectMessages(List<string> messages) {
+        public static List<string> ConvertInfectMessages(List<string> messages) {
             for (int i = 0; i < messages.Count; i++)
             {
                 messages[i] = messages[i]

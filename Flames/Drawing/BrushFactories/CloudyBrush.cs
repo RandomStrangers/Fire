@@ -25,8 +25,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Cloudy"; } }        
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block1/frequency] [block2] <args>..",
             "&HDraws by selecting blocks from the given [blocks] using perlin noise.",
             "&Hfrequency is optional (defaults to 1), and specifies the number of times " +
@@ -55,11 +55,11 @@ namespace Flames.Drawing.Brushes
             
             return new CloudyBrush(toAffect, freqs, n);
         }
-        
+
         // Only want to handle non block options.
-        static bool Filter(string arg) { return arg.Length >= 2 && (arg[1] == '_' || arg[1] == '='); }
-        
-        static bool Handler(string arg, Player p, ref NoiseArgs args) {
+        public static bool Filter(string arg) { return arg.Length >= 2 && (arg[1] == '_' || arg[1] == '='); }
+
+        public static bool Handler(string arg, Player p, ref NoiseArgs args) {
             char opt = arg[0];
             arg = arg.Substring(2); // get part after _ or =
             
@@ -78,8 +78,8 @@ namespace Flames.Drawing.Brushes
             }
             return true;
         }
-        
-        static bool ParseDecimal(Player p, string arg, ref float target, float scale) {
+
+        public static bool ParseDecimal(Player p, string arg, ref float target, float scale) {
             if (!CommandParser.GetReal(p, arg, "Value", ref target)) return false;           
             target *= scale; return true;
         }

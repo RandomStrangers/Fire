@@ -26,7 +26,7 @@ namespace Flames.Commands.Moderation
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        const string UNMUTE_FLAG = "-unmute";
+        public const string UNMUTE_FLAG = "-unmute";
 
         public override CommandAlias[] Aliases
         { get { return new[] { new CommandAlias("Unmute", UNMUTE_FLAG) }; } }
@@ -62,8 +62,8 @@ namespace Flames.Commands.Moderation
                 DoMute(p, target, args);
             }
         }
-        
-        void DoMute(Player p, string target, string[] args) {
+
+        public void DoMute(Player p, string target, string[] args) {
             TimeSpan duration = Server.Config.ChatSpamMuteTime;
             if (args.Length > 1) {
                 if (!CommandParser.GetTimespan(p, args[1], ref duration, "mute for", "s")) return;
@@ -76,8 +76,8 @@ namespace Flames.Commands.Moderation
             ModAction action = new ModAction(target, p, ModActionType.Muted, reason, duration);
             OnModActionEvent.Call(action);
         }
-        
-        void DoUnmute(Player p, string target, string reason) {
+
+        public void DoUnmute(Player p, string target, string reason) {
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;
             if (p.name == target) { p.Message("You cannot unmute yourself."); return; }

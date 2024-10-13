@@ -77,8 +77,8 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        bool Axis(Vec3F32 P, Vec3F32 P1, Vec3F32 P2) {
+
+        public bool Axis(Vec3F32 P, Vec3F32 P1, Vec3F32 P2) {
             // Point to line segment test
             float bottom = (P2 - P1).LengthSquared;
             if (bottom == 0) return (P1 - P).Length <= 0.5f;

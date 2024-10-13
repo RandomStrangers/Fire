@@ -23,11 +23,11 @@ namespace Flames.Commands.Building {
         public override string name { get { return "WriteText"; } }
         public override string shortcut { get { return "wrt"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        
-        protected override string SelectionType { get { return "direction"; } }
-        protected override string PlaceMessage { get { return "Place or break two blocks to determine direction."; } }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override string SelectionType { get { return "direction"; } }
+        public override string PlaceMessage { get { return "Place or break two blocks to determine direction."; } }
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             Player p = dArgs.Player;
             if (!p.CanUse("Write")) {
                 p.Message("You must be able to use &T/Write &Sto use &T/WriteText."); return null;
@@ -49,14 +49,14 @@ namespace Flames.Commands.Building {
             return op;
         }
 
-       
-        protected override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
+
+        public override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
             if (m[0].X != m[1].X || m[0].Z != m[1].Z) return; 
             dArgs.Player.Message("No direction was selected");
             m = null;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) { dArgs.BrushArgs = ""; }
+
+        public override void GetBrush(DrawArgs dArgs) { dArgs.BrushArgs = ""; }
 
         public override void Help(Player p) {
             p.Message("&T/WriteText [scale] [spacing] [message]");

@@ -31,8 +31,8 @@ namespace Flames.Commands.Building
             p.Message("Place or break two blocks to determine the edges.");
             p.MakeSelection(2, "Selecting region for &SCenter", null, DoCentre);
         }
-        
-        bool DoCentre(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool DoCentre(Player p, Vec3S32[] m, object state, BlockID block) {
             int lenX = m[0].X + m[1].X, lenY = m[0].Y + m[1].Y, lenZ = m[0].Z + m[1].Z;
             int x = lenX / 2, y = lenY / 2, z = lenZ / 2;
             
@@ -52,8 +52,8 @@ namespace Flames.Commands.Building
             p.Message("Gold blocks were placed at ({0}, {1}, {2}).", x, y, z);
             return true;
         }
-        
-        static void Place(Player p, int x, int y, int z) {
+
+        public static void Place(Player p, int x, int y, int z) {
             p.level.UpdateBlock(p, (ushort)x, (ushort)y, (ushort)z, Block.Gold, BlockDBFlags.Drawn);
         }
         

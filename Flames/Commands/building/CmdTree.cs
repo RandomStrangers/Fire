@@ -22,12 +22,12 @@ namespace Flames.Commands.Building {
     public sealed class CmdTree : DrawCmd {
         public override string name { get { return "Tree"; } }
         public override string type { get { return CommandTypes.Building; } }
-        
-        protected override int MarksCount { get { return 1; } }
-        protected override string SelectionType { get { return "location"; } }
-        protected override string PlaceMessage { get { return "Select where you wish your tree to grow"; } }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override int MarksCount { get { return 1; } }
+        public override string SelectionType { get { return "location"; } }
+        public override string PlaceMessage { get { return "Select where you wish your tree to grow"; } }
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             string[] args = dArgs.Message.SplitSpaces(3);            
             Tree tree = Tree.Find(args[0]);
             if (tree == null) tree = new NormalTree();
@@ -45,8 +45,8 @@ namespace Flames.Commands.Building {
             op.Tree = tree; op.Size = size;
             return op;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             TreeDrawOp op = (TreeDrawOp)dArgs.Op;
             if (op.Size != -1) {
                 dArgs.BrushArgs = dArgs.Message.Splice(2, 0); // type, value/height, brush args

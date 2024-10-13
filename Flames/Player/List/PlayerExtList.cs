@@ -26,10 +26,10 @@ namespace Flames {
     public class PlayerExtList {
         public char Separator = ' ';
         public string Path;
-        
-        List<string> names = new List<string>(), lines = new List<string>();
-        internal readonly object locker = new object();
-        readonly object saveLocker = new object();
+
+        public List<string> names = new List<string>(), lines = new List<string>();
+        public readonly object locker = new object();
+        public readonly object saveLocker = new object();
 
         public List<string> AllNames() {
             lock (locker) return new List<string>(names);
@@ -109,8 +109,8 @@ namespace Flames {
             }
             if (log) Logger.Log(LogType.BackgroundActivity, "SAVED: " + Path);
         }
-        
-        void SaveEntries(StreamWriter w) {
+
+        public void SaveEntries(StreamWriter w) {
             lock (locker) {
                 foreach (string line in lines) w.WriteLine(line);
             }

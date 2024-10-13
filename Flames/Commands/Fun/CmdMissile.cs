@@ -39,8 +39,8 @@ namespace Flames.Commands.Fun {
             missile.type = type;
             missile.Enable(p);
         }
-                
-        static Missile GetMissile(WeaponType type) {
+
+        public static Missile GetMissile(WeaponType type) {
             if (type == WeaponType.Destroy)  return new PenetrativeMissile();
             if (type == WeaponType.Teleport) return new TeleportMissile();
             if (type == WeaponType.Explode)  return new ExplosiveMissile();

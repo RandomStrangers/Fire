@@ -46,8 +46,8 @@ namespace Flames.Commands.Info
             if (target == null) return;
             Show(p, target.Name, target.FirstLogin, target.LastLogin);
         }
-        
-        static void Show(Player p, string name, DateTime first, DateTime last) {
+
+        public static void Show(Player p, string name, DateTime first, DateTime last) {
             TimeSpan firstDelta = DateTime.Now - first;
             TimeSpan lastDelta  = DateTime.Now - last;
             

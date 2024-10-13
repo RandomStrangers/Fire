@@ -25,8 +25,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Normal"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block]",
             "&HDraws using the specified block.",
             "&H  If [block] is not given, your currently held block is used.",
@@ -57,8 +57,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Checkered"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block1] [block2] <block3>..",
             "&HDraws an alternating pattern of blocks.",
             "&H  If [block1] is not given, your currently held block is used.",
@@ -92,8 +92,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Grid"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [grid block]/<size> [cell block]/<size> <border>",
             "&HDraws an gridline pattern of blocks.",
             "&H  If a <size> is not given, a size of 1 is assumed.",
@@ -116,8 +116,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Paste"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: none",
             "&HDraws by pasting blocks from current &T/Copy.",
             "&TArguments: [block1] [block2]..",
@@ -153,8 +153,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Striped"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block1] [block2]",
             "&HDraws a diagonally-alternating pattern of block1 and block2.",
             "&H   If block1 is not given, the currently held block is used.",
@@ -185,8 +185,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Rainbow"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: none or 'random'",
             "&HIf no arguments are given, draws a diagonally repeating rainbow",
             "&HIf 'random' is given, draws by randomly selecting blocks from the rainbow pattern.",
@@ -203,8 +203,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "BWRainbow"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: none or 'random'",
             "&HIf no arguments are given, draws a diagonally repeating black-white rainbow",
             "&HIf 'random' is given, draws by randomly selecting blocks from the rainbow pattern.",

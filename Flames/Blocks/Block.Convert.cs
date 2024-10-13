@@ -98,13 +98,13 @@ namespace Flames
             return block <= Leaves ? block : v4_fallback[block - Sponge];
         }
 
-        static byte[] v7_fallback = {
+        public static byte[] v7_fallback = {
             // CobbleSlab Rope      Sandstone Snow Fire  LightPink ForestGreen Brown
                Slab,      Mushroom, Sand,     Air, Lava, Pink,     Green,      Dirt,
             // DeepBlue Turquoise Ice    CeramicTile Magma     Pillar Crate StoneBrick
                Blue,    Cyan,     Glass, Iron,       Obsidian, White, Wood, Stone
         };
-        static byte[] v6_fallback = {
+        public static byte[] v6_fallback = {
             // Iron   DoubleSlab Slab  Brick TNT  Bookshelf MossyRocks   Obsidian
                Stone, Gray,      Gray, Red,  Red, Wood,     Cobblestone, Black,
             // CobbleSlab   Rope      Sandstone Snow Fire  LightPink ForestGreen Brown
@@ -112,7 +112,7 @@ namespace Flames
             // DeepBlue Turquoise Ice    CeramicTile Magma        Pillar Crate StoneBrick
                Blue,    Cyan,     Glass, Gold,       Cobblestone, White, Wood, Stone
         };
-        static byte[] v5_fallback = {
+        public static byte[] v5_fallback = {
             // Red   Orange Yellow Lime  Green Teal  Aqua  Cyan
                Sand, Sand,  Sand,  Sand, Sand, Sand, Sand, Sand,
             // Blue  Indigo Violet Magenta Pink  Black  Gray   White
@@ -126,7 +126,7 @@ namespace Flames
             // DeepBlue Turquoise Ice    CeramicTile Magma        Pillar Crate StoneBrick
                Sand,    Sand,     Glass, Stone,      Cobblestone, Stone, Wood, Stone
         };
-        static byte[] v4_fallback = {
+        public static byte[] v4_fallback = {
             // Sponge   Glass
                GoldOre, Leaves,
             // Red   Orange Yellow Lime  Green Teal  Aqua  Cyan

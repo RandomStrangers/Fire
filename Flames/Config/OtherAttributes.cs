@@ -21,7 +21,7 @@ using Flames.Maths;
 namespace Flames.Config {
     
     public sealed class ConfigBoolAttribute : ConfigAttribute {
-        bool defValue;
+        public bool defValue;
         
         public ConfigBoolAttribute() : this(null, null, false) { }
         public ConfigBoolAttribute(string name, string section, bool def)
@@ -43,14 +43,14 @@ namespace Flames.Config {
     }
     
     public sealed class ConfigPermAttribute : ConfigAttribute {
-        LevelPermission defPerm;
+        public LevelPermission defPerm;
         
         public ConfigPermAttribute(string name, string section, LevelPermission def)
             : base(name, section) { defPerm = def; }
         
         public override object Parse(string raw) {
             LevelPermission perm = Group.ParsePermOrName(raw, LevelPermission.Null);
-            if (perm == LevelPermission.Null) {
+            if (perm > LevelPermission.Null) {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid permission '{2}', using default of {1}", 
                                             Name, defPerm, raw);
                 perm = defPerm;
@@ -59,10 +59,6 @@ namespace Flames.Config {
             if (perm < LevelPermission.Banned) {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" cannot be below banned rank.", Name);
                 perm = LevelPermission.Banned;
-            }
-            if (perm > LevelPermission.Flames) {
-                Logger.Log(LogType.Warning, "Config key \"{0}\" cannot be above console rank.", Name);
-                perm = LevelPermission.Flames;
             }
             return perm;
         }
@@ -74,8 +70,8 @@ namespace Flames.Config {
     }
     
     public sealed class ConfigEnumAttribute : ConfigAttribute {
-        object defValue;
-        Type enumType;
+        public object defValue;
+        public Type enumType;
         
         public ConfigEnumAttribute(string name, string section, object def, Type type)
             : base(name, section) { defValue = def; enumType = type; }
@@ -110,8 +106,8 @@ namespace Flames.Config {
     }
     
     public sealed class ConfigBoolArrayAttribute : ConfigAttribute {
-        bool defValue;
-        int minCount;
+        public bool defValue;
+        public int minCount;
         
         public ConfigBoolArrayAttribute() : this(null, null, false, 0) { }
         public ConfigBoolArrayAttribute(string name, string section, bool def, int min)

@@ -28,8 +28,8 @@ using Flames.Games;
 namespace Flames.Modules.Games.TW
 {
     public partial class TWGame : RoundsGame 
-    {    
-        protected override void DoRound() {
+    {
+        public override void DoRound() {
             Player[] all = allPlayers.Items;
             foreach (Player p in all) 
             {
@@ -95,8 +95,8 @@ namespace Flames.Modules.Games.TW
                 Thread.Sleep(250);
             }
         }
-        
-        bool HasSomeoneWon() {
+
+        public bool HasSomeoneWon() {
             if (Config.Mode == TWGameMode.TDM) {
                 return Red.Score >= cfg.ScoreRequired || Blue.Score >= cfg.ScoreRequired;
             }
@@ -107,8 +107,8 @@ namespace Flames.Modules.Games.TW
             }
             return false;
         }
-        
-        void GracePeriod() {
+
+        public void GracePeriod() {
             if (!cfg.GracePeriod) return;
             int duration = (int)cfg.GracePeriodTime.TotalSeconds;
             
@@ -126,8 +126,8 @@ namespace Flames.Modules.Games.TW
             Map.Message("You can now &aplace &cTNT!");
             RestoreBuildPerms();
         }
-        
-        protected override bool SetMap(string map) {
+
+        public override bool SetMap(string map) {
             if (!base.SetMap(map)) return false;
             
             // TODO: Move to DoRound
@@ -172,9 +172,9 @@ namespace Flames.Modules.Games.TW
                 p.Message("TNT Wars: You scored &f" + Get(p).Score + " points");
             }
         }
-        
-        bool buildable = true, deletable = true;
-        void RestoreBuildPerms() {
+
+        public bool buildable = true, deletable = true;
+        public void RestoreBuildPerms() {
             if (Map.Config.Buildable == buildable &&
                 Map.Config.Deletable == deletable) return;
             

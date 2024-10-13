@@ -31,8 +31,8 @@ namespace Flames.Commands.Info
                              "Levels", "levels", message);
             p.Message("Use &T/Levels &Sfor all levels.");
         }
-        
-        static string FormatMap(Player p, Level lvl) {            
+
+        public static string FormatMap(Player p, Level lvl) {            
             bool canVisit = p.IsSuper || lvl.VisitAccess.CheckAllowed(p);
             string physics = " [" +  lvl.physics + "]";
             string visit = canVisit ? "" : " &c[no]";

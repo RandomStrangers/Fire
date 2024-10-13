@@ -31,19 +31,19 @@ using BlockID = System.UInt16;
 namespace Flames.Modules.Games.TW
 {    
     public partial class TWGame : RoundsGame 
-    {    
-        void UpdateBlockHandlers() {
+    {
+        public void UpdateBlockHandlers() {
             Map.UpdateBlockHandlers(Block.TNT);
         }
-    	
-    	void HandleBlockHandlersUpdated(Level lvl, BlockID block) {
+
+        public void HandleBlockHandlersUpdated(Level lvl, BlockID block) {
             if (!Running || lvl != Map || block != Block.TNT) return;
             
             lvl.PlaceHandlers[Block.TNT]   = HandleTNTPlace;
             lvl.PhysicsHandlers[Block.TNT] = HandleTNTPhysics;
         }
-        
-        bool CheckTNTPlace(Player p, TWData data, ushort x, ushort y, ushort z) {
+
+        public bool CheckTNTPlace(Player p, TWData data, ushort x, ushort y, ushort z) {
             if (InZone(x, y, z, tntFreeZones)) {
                 p.Message("TNT cannot be placed in this area"); return false;
             }
@@ -57,8 +57,8 @@ namespace Flames.Modules.Games.TW
             }
             return true;
         }
-        
-        ChangeResult HandleTNTPlace(Player p, BlockID newBlock, ushort x, ushort y, ushort z) {
+
+        public ChangeResult HandleTNTPlace(Player p, BlockID newBlock, ushort x, ushort y, ushort z) {
             TWData data = Get(p);
             if (!CheckTNTPlace(p, data, x, y, z)) 
                 return ChangeResult.Unchanged;
@@ -77,7 +77,7 @@ namespace Flames.Modules.Games.TW
             return p.ChangeBlock(x, y, z, Block.TNT);
         }
 
-        void AddTntCheck(int b, Player p) {
+        public void AddTntCheck(int b, Player p) {
             PhysicsArgs args = default;
             int sessionID = p.Session.ID;
             
@@ -87,13 +87,13 @@ namespace Flames.Modules.Games.TW
             args.Data   = (byte)(sessionID >> 16);
             Map.AddCheck(b, false, args);
         }
-        
-        static void AllowMoreTntTask(SchedulerTask task) {
+
+        public static void AllowMoreTntTask(SchedulerTask task) {
             TWData data = (TWData)task.State;
             data.TNTCounter--;
         }
-        
-        void HandleTNTPhysics(Level lvl, ref PhysInfo C) {
+
+        public void HandleTNTPhysics(Level lvl, ref PhysInfo C) {
             ushort x = C.X, y = C.Y, z = C.Z;
             Player p = GetPlayer(ref C.Data);
             if (p == null) { C.Data.Data = PhysicsArgs.RemoveFromChecks; return; }
@@ -128,8 +128,8 @@ namespace Flames.Modules.Games.TW
             
             KillPlayers(p, data, inRange);
         }
-        
-        static Player GetPlayer(ref PhysicsArgs args) {
+
+        public static Player GetPlayer(ref PhysicsArgs args) {
             if (args.Type1 != PhysicsArgs.Custom) return null;
             
             int id = args.Value1 | args.Value2 << 8 | (args.Data & 0xF) << 16;
@@ -140,8 +140,8 @@ namespace Flames.Modules.Games.TW
             }
             return null;
         }
-        
-        void KillPlayers(Player killer, TWData data, List<Player> inRange) {
+
+        public void KillPlayers(Player killer, TWData data, List<Player> inRange) {
             List<Player> killed = new List<Player>();
             int damage = 1, kills = 0, penalty = 0;
             TWDifficulty diff = Config.Difficulty;

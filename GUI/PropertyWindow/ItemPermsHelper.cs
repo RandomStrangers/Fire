@@ -83,8 +83,8 @@ namespace Flames.Gui {
                 SetSpecific(boxes, boxIdx, perms, rank);
             }
         }
-        
-        static void SetSpecific(ComboBox[] boxes, int boxIdx, List<LevelPermission> perms, GuiRank rank) {
+
+        public static void SetSpecific(ComboBox[] boxes, int boxIdx, List<LevelPermission> perms, GuiRank rank) {
             if (boxIdx < perms.Count) {
                 perms[boxIdx] = rank.Permission;
             } else {
@@ -96,14 +96,14 @@ namespace Flames.Gui {
                 SetAddRank(boxes[boxIdx + 1]);
             }
         }
-        
-        static void SetAddRank(ComboBox box) {
+
+        public static void SetAddRank(ComboBox box) {
             box.Visible = true;
             box.Enabled = true;
             box.Text = "(add rank)";
         }
-        
-        static void SetSpecificPerms(List<LevelPermission> perms, ComboBox[] boxes) {
+
+        public static void SetSpecificPerms(List<LevelPermission> perms, ComboBox[] boxes) {
             ComboBox box = null;
             int permsCount = perms == null ? 0 : perms.Count;
             

@@ -6,11 +6,11 @@ using Flames;
 
 namespace Flames.Gui.Popups 
 {
-    internal sealed partial class ColorSelector : Form 
+    public sealed partial class ColorSelector : Form 
     {
         public char ColorCode;
 
-        internal static Color LookupColor(char colCode, out Color textCol) {
+        public static Color LookupColor(char colCode, out Color textCol) {
             Color rgb = default(Color);
             ColorDesc col = Colors.Get(colCode);
             
@@ -39,15 +39,15 @@ namespace Flames.Gui.Popups
             UpdateBaseLayout();
             ResumeLayout(false);
         }
-        
-        void ColorSelector_Load(object sender, EventArgs e) {
+
+        public void ColorSelector_Load(object sender, EventArgs e) {
             GuiUtils.SetIcon(this);
         }
-        
-        
-        const int btnWidth = 130, btnHeight = 40, btnsPerCol = 8;
-        int index = 0;
-        void MakeButton(char colCode) {
+
+
+        public const int btnWidth = 130, btnHeight = 40, btnsPerCol = 8;
+        public int index = 0;
+        public void MakeButton(char colCode) {
             int row = index / btnsPerCol, col = index % btnsPerCol;
             index++;
             
@@ -67,9 +67,9 @@ namespace Flames.Gui.Popups
             btn.Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Controls.Add(btn);
         }
-        
-        
-        void UpdateBaseLayout() {
+
+
+        public void UpdateBaseLayout() {
             int rows = index / btnsPerCol;
             if ((index % btnsPerCol) != 0) rows++; // round up
             

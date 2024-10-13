@@ -27,25 +27,25 @@ namespace Flames.Config {
         public bool Failed;
         /// <summary> Callback invoked when a member of an object has been parsed. </summary>
         public JsonOnMember OnMember;
-        
-        int offset;
-        char Cur { get { return Value[offset]; } }
-        StringBuilder strBuffer = new StringBuilder(96);
+
+        public int offset;
+        public char Cur { get { return Value[offset]; } }
+        public StringBuilder strBuffer = new StringBuilder(96);
         
         public JsonReader(string value) {
             Value    = value;
             OnMember = DefaultOnMember;
         }
-        
-        static void DefaultOnMember(JsonObject obj, string key, object value) { obj[key] = value; }
-        
-        
-        const int T_NONE = 0, T_NUM = 1, T_TRUE = 2, T_FALSE = 3, T_NULL = 4;
-        static bool IsWhitespace(char c) {
+
+        public static void DefaultOnMember(JsonObject obj, string key, object value) { obj[key] = value; }
+
+
+        public const int T_NONE = 0, T_NUM = 1, T_TRUE = 2, T_FALSE = 3, T_NULL = 4;
+        public static bool IsWhitespace(char c) {
             return c == '\r' || c == '\n' || c == '\t' || c == ' ';
         }
-        
-        bool NextConstant(string value) {
+
+        public bool NextConstant(string value) {
             if (offset + value.Length > Value.Length) return false;
             
             for (int i = 0; i < value.Length; i++) {
@@ -54,8 +54,8 @@ namespace Flames.Config {
             
             offset += value.Length; return true;
         }
-        
-        int NextToken() {
+
+        public int NextToken() {
             for (; offset < Value.Length && IsWhitespace(Cur); offset++);
             if (offset >= Value.Length) return T_NONE;
             
@@ -78,8 +78,8 @@ namespace Flames.Config {
         /// <summary> Parses the given JSON and then returns the root element. </summary>
         /// <returns> Either a JsonObject, a JsonArray, a string, or null </returns>
         public object Parse() { return ParseValue(NextToken()); }
-        
-        object ParseValue(int token) {
+
+        public object ParseValue(int token) {
             switch (token) {
                 case '{': return ParseObject();
                 case '[': return ParseArray();
@@ -93,8 +93,8 @@ namespace Flames.Config {
                 default: return null;
             }
         }
-        
-        JsonObject ParseObject() {
+
+        public JsonObject ParseObject() {
             JsonObject obj = new JsonObject();
             while (true) {
                 int token = NextToken();
@@ -114,8 +114,8 @@ namespace Flames.Config {
                 OnMember(obj, key, value);
             }
         }
-        
-        JsonArray ParseArray() {
+
+        public JsonArray ParseArray() {
             JsonArray arr = new JsonArray();
             while (true) {
                 int token = NextToken();
@@ -126,8 +126,8 @@ namespace Flames.Config {
                 arr.Add(ParseValue(token));
             }
         }
-        
-        string ParseString() {
+
+        public string ParseString() {
             StringBuilder s = strBuffer; s.Length = 0;
             
             for (; offset < Value.Length;) {
@@ -158,17 +158,17 @@ namespace Flames.Config {
             
             Failed = true; return null;
         }
-        
-        static bool IsNumber(char c) {
+
+        public static bool IsNumber(char c) {
             return c == '-' || c == '.' || (c >= '0' && c <= '9');
         }
 
-        static bool IsNumberPart(char c) {
+        public static bool IsNumberPart(char c) {
             // same as IsNumber, but also accepts exponential notation (e.g. "3.40E+38")
             return c == '-' || c == '.' || (c >= '0' && c <= '9') || c == 'E' || c == '+';
         }
 
-        string ParseNumber() {
+        public string ParseNumber() {
             int start = offset - 1;
             for (; offset < Value.Length && IsNumberPart(Cur); offset++);
             return Value.Substring(start, offset - start);
@@ -176,10 +176,10 @@ namespace Flames.Config {
     }
     
     public class JsonWriter {
-        readonly TextWriter w;
+        public readonly TextWriter w;
         public JsonWriter(TextWriter dst) { w = dst; }
-        
-        static char Hex(char c, int shift) {
+
+        public static char Hex(char c, int shift) {
             int x = (c >> shift) & 0x0F;
             return (char)(x <= 9 ? ('0' + x) : ('a' + (x - 10)));
         }
@@ -221,13 +221,13 @@ namespace Flames.Config {
             SerialiseObject(value);
             w.Write("\r\n}");
         }
-        
-        internal void WriteObjectKey(string name) {
+
+        public void WriteObjectKey(string name) {
             Write("    "); WriteString(name); Write(": ");
         }
-        
-        
-        protected virtual void WriteValue(object value) {
+
+
+        public virtual void WriteValue(object value) {
             // TODO this is awful code
             if (value == null) {
                 WriteNull();
@@ -246,8 +246,8 @@ namespace Flames.Config {
                 throw new InvalidOperationException("Unknown datatype: " + value.GetType());
             }
         }
-        
-        protected virtual void SerialiseObject(object value) {
+
+        public virtual void SerialiseObject(object value) {
             string separator = null;
             JsonObject obj   = (JsonObject)value;
             
@@ -261,13 +261,13 @@ namespace Flames.Config {
     }
     
     public class JsonConfigWriter : JsonWriter {
-        ConfigElement[] elems;    
+        public ConfigElement[] elems;    
         public JsonConfigWriter(TextWriter dst, ConfigElement[] cfg) : base(dst) { elems = cfg; }
-        
+
         // Only ever write an object
-        protected override void WriteValue(object value) { WriteObject(value); }
-        
-        void WriteConfigValue(ConfigAttribute a, string value) {
+        public override void WriteValue(object value) { WriteObject(value); }
+
+        public void WriteConfigValue(ConfigAttribute a, string value) {
             if (string.IsNullOrEmpty(value)) {
                 WriteNull();
             } else if (a is ConfigBoolAttribute || a is ConfigSignedIntegerAttribute || a is ConfigRealAttribute) {
@@ -276,8 +276,8 @@ namespace Flames.Config {
                 WriteString(value);
             }
         }
-        
-        protected override void SerialiseObject(object value) {
+
+        public override void SerialiseObject(object value) {
             string separator = null;
             
             for (int i = 0; i < elems.Length; i++) {

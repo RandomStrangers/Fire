@@ -33,8 +33,8 @@ namespace Flames.Network
 
         // these are checked very frequently, so avoid overhead of .Supports(
         public bool hasCustomBlocks, hasExtBlocks, hasBlockDefs, hasBulkBlockUpdate;
-        protected INetSocket socket;
-        protected Player player;
+        public INetSocket socket;
+        public Player player;
         /// <summary> Temporary unique ID for this network session </summary>
         public int ID;
 
@@ -67,7 +67,7 @@ namespace Flames.Network
         /// <summary> Attempts to process the next packet received from the client </summary>
         /// <returns> 0 if insufficient data left to fully process the next packet,
         /// otherwise returns the number of bytes processed </returns>
-        protected abstract int HandlePacket(byte[] buffer, int offset, int left);
+        public abstract int HandlePacket(byte[] buffer, int offset, int left);
         
         /// <summary> Sends a ping packet to the client </summary>
         public abstract void SendPing();

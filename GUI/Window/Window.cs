@@ -33,21 +33,21 @@ namespace Flames.Gui
     public partial class Window : Form 
     {
         // for cross thread use
-        delegate void StringCallback(string s);
-        delegate void PlayerListCallback(List<Player> players);
-        delegate void VoidDelegate();
-        bool mapgen, loaded;
+        public delegate void StringCallback(string s);
+        public delegate void PlayerListCallback(List<Player> players);
+        public delegate void VoidDelegate();
+        public bool mapgen, loaded;
 
-        NotifyIcon notifyIcon = new NotifyIcon();
-        Player curPlayer;
+        public NotifyIcon notifyIcon = new NotifyIcon();
+        public Player curPlayer;
 
         public Window() {
             logCallback = LogMessageCore;
             InitializeComponent();
         }
-        
+
         // warn user if they're using the GUI with a DLL for different server version
-        static void CheckVersions() {
+        public static void CheckVersions() {
             string gui_version = Server.InternalVersion;
             string dll_version = Server.Version;
             if (gui_version.CaselessEq(dll_version)) return;
@@ -63,8 +63,8 @@ Trying to mix two versions is unsupported - you may experience issues";
                                        dll_version, AssemblyFile(typeof(Server), "Flames_.dll"));
             RunAsync(() => Popup.Warning(msg));
         }
-        
-        static string AssemblyFile(Type type, string defPath) {
+
+        public static string AssemblyFile(Type type, string defPath) {
             try {
                 string path = type.Assembly.CodeBase;
                 return Path.GetFileName(path);
@@ -73,7 +73,7 @@ Trying to mix two versions is unsupported - you may experience issues";
             }
         }
 
-        void Window_Load(object sender, EventArgs e) {
+        public void Window_Load(object sender, EventArgs e) {
             LoadIcon();
             // Necessary as some versions of WINE may call Window_Load multiple times
             //  (however icon must still be reloaded each time)
@@ -98,8 +98,8 @@ Trying to mix two versions is unsupported - you may experience issues";
             main_Players.Font = new Font("Calibri", 8.25f);
             main_Maps.Font = new Font("Calibri", 8.25f);
         }
-        
-        void LoadIcon() {
+
+        public void LoadIcon() {
             // Normally this code would be in InitializeComponent method in Window.Designer.cs,
             //  however that doesn't work properly with some WINE versions (you get WINE icon instead)
             try {
@@ -107,8 +107,8 @@ Trying to mix two versions is unsupported - you may experience issues";
                 GuiUtils.WinIcon = Icon;
             } catch { }
         }
-        
-        void UpdateNotifyIconText() {
+
+        public void UpdateNotifyIconText() {
             int playerCount = PlayerInfo.Online.Count;
             string players = " (" + playerCount + " players)";
             
@@ -117,8 +117,8 @@ Trying to mix two versions is unsupported - you may experience issues";
             if (text.Length > 63) text = text.Substring(0, 63);
             notifyIcon.Text = text;
         }
-        
-        void MakeNotifyIcon() {
+
+        public void MakeNotifyIcon() {
             UpdateNotifyIconText();
             notifyIcon.ContextMenuStrip = icon_context;
             notifyIcon.Icon = Icon;
@@ -126,11 +126,11 @@ Trying to mix two versions is unsupported - you may experience issues";
             notifyIcon.MouseClick += notifyIcon_MouseClick;
         }
 
-        void notifyIcon_MouseClick(object sender, MouseEventArgs e) {
+        public void notifyIcon_MouseClick(object sender, MouseEventArgs e) {
             if (e.Button == MouseButtons.Left) icon_OpenConsole_Click(sender, e);
         }
-        
-        void InitServer() {
+
+        public void InitServer() {
             Logger.LogHandler += LogMessage;
             Updater.NewerVersionDetected += OnNewerVersionDetected;
 
@@ -138,12 +138,12 @@ Trying to mix two versions is unsupported - you may experience issues";
             Server.OnSettingsUpdate += SettingsUpdate;
             Server.Background.QueueOnce(InitServerTask);
         }
-        
+
         // cache LogMessage, avoids new object being allocated every time
-        delegate void LogCallback(LogType type, string message);
-        LogCallback logCallback;
-        
-        void LogMessage(LogType type, string message) {
+        public delegate void LogCallback(LogType type, string message);
+        public LogCallback logCallback;
+
+        public void LogMessage(LogType type, string message) {
             if (!Server.Config.FlameLogging[(int)type]) return;
             
             try {
@@ -154,7 +154,7 @@ Trying to mix two versions is unsupported - you may experience issues";
             }
         }
 
-        void LogMessageCore(LogType type, string message) {
+        public void LogMessageCore(LogType type, string message) {
             if (Server.shuttingDown) return;
             string newline = Environment.NewLine;
             
@@ -178,14 +178,14 @@ Trying to mix two versions is unsupported - you may experience issues";
                     break;
             }
         }
-        
-        static string FormatError(string message) {
+
+        public static string FormatError(string message) {
             string date = "----" + DateTime.Now + "----";
             return date + Environment.NewLine + message + Environment.NewLine + "-------------------------";
         }
-        
-        static string msgPrefix = Environment.NewLine + "Message: ";
-        static string ExtractErrorMessage(string raw) {
+
+        public static string msgPrefix = Environment.NewLine + "Message: ";
+        public static string ExtractErrorMessage(string raw) {
             // Error messages are usually structured like so:
             //   Type: whatever
             //   Message: whatever
@@ -200,13 +200,13 @@ Trying to mix two versions is unsupported - you may experience issues";
             
             return " (" + raw.Substring(beg, end - beg) + ")";
         }
-        
 
-        void OnNewerVersionDetected(object sender, EventArgs e) {
+
+        public void OnNewerVersionDetected(object sender, EventArgs e) {
             RunOnUI_Async(ShowUpdateMessageBox);
         }
-        
-        void ShowUpdateMessageBox() {
+
+        public void ShowUpdateMessageBox() {
             if (UpdateAvailable.Active) return;
             UpdateAvailable form = new UpdateAvailable();
             
@@ -215,14 +215,14 @@ Trying to mix two versions is unsupported - you may experience issues";
                                      Location.Y  + (Height - form.Height) / 2);
             form.Show(this);
         }
-        
-        static void RunAsync(ThreadStart func) {
+
+        public static void RunAsync(ThreadStart func) {
             Thread thread = new Thread(func);
             thread.Name = "MsgBox";
             thread.Start();
         }
-        
-        void InitServerTask(SchedulerTask task) {
+
+        public void InitServerTask(SchedulerTask task) {
             Server.Start();
             // The first check for updates is run after 10 seconds, subsequent ones every two hours
             Server.Background.QueueRepeat(Updater.UpdaterTask, null, TimeSpan.FromSeconds(10));
@@ -240,23 +240,23 @@ Trying to mix two versions is unsupported - you may experience issues";
         }
 
         public void RunOnUI_Async(UIAction act) { BeginInvoke(act); }
-        
-        void Player_PlayerConnect(Player p) {
+
+        public void Player_PlayerConnect(Player p) {
             RunOnUI_Async(() => {
                 Main_UpdatePlayersList();
                 Players_UpdateList(); 
             });
         }
-        
-        void Player_PlayerDisconnect(Player p, string reason) {
+
+        public void Player_PlayerDisconnect(Player p, string reason) {
             RunOnUI_Async(() => {
                 Main_UpdateMapList();
                 Main_UpdatePlayersList();
                 Players_UpdateList(); 
             });
         }
-        
-        void Player_OnJoinedLevel(Player p, Level prevLevel, Level lvl) {
+
+        public void Player_OnJoinedLevel(Player p, Level prevLevel, Level lvl) {
             RunOnUI_Async(() => {
                 Main_UpdateMapList();
                 Main_UpdatePlayersList();
@@ -264,31 +264,31 @@ Trying to mix two versions is unsupported - you may experience issues";
             });
         }
 
-        void Player_OnModAction(ModAction action) {
+        public void Player_OnModAction(ModAction action) {
             if (action.Type != ModActionType.Rank) return;
 
             RunOnUI_Async(() => {
                 Main_UpdatePlayersList();
             });
         }
-        
-        void Level_LevelAdded(Level lvl) {
+
+        public void Level_LevelAdded(Level lvl) {
             RunOnUI_Async(() => {
                 Main_UpdateMapList();
                 Map_UpdateLoadedList();
                 Map_UpdateUnloadedList();
             });
         }
-        
-        void Level_LevelRemoved(Level lvl) {
+
+        public void Level_LevelRemoved(Level lvl) {
             RunOnUI_Async(() => {
                 Main_UpdateMapList();
                 Map_UpdateLoadedList();
                 Map_UpdateUnloadedList();
             });
         }
-        
-        void Level_PhysicsLevelChanged(Level lvl, int level) {
+
+        public void Level_PhysicsLevelChanged(Level lvl, int level) {
             RunOnUI_Async(() => {
                 Main_UpdateMapList();
                 Map_UpdateLoadedList();
@@ -296,7 +296,7 @@ Trying to mix two versions is unsupported - you may experience issues";
         }
 
 
-        void SettingsUpdate() {
+        public void SettingsUpdate() {
             RunOnUI_Async(() => {
                 if (Server.shuttingDown) return;
                 Text = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
@@ -308,11 +308,11 @@ Trying to mix two versions is unsupported - you may experience issues";
             notifyIcon.ShowBalloonTip(3000, Server.Config.Name, message, icon);
         }
 
-        void UpdateUrl(string s) {
+        public void UpdateUrl(string s) {
             RunOnUI_Async(() => { Main_UpdateUrl(s); });
         }
 
-        void Window_FormClosing(object sender, FormClosingEventArgs e) {
+        public void Window_FormClosing(object sender, FormClosingEventArgs e) {
             if (e.CloseReason == CloseReason.WindowsShutDown) {
                 Server.Stop(false, "Server shutdown - PC turning off");
                 notifyIcon.Dispose();
@@ -327,9 +327,9 @@ Trying to mix two versions is unsupported - you may experience issues";
             }
         }
 
-        void btnClose_Click(object sender, EventArgs e) { Close(); }
+        public void btnClose_Click(object sender, EventArgs e) { Close(); }
 
-        void btnProperties_Click(object sender, EventArgs e) {
+        public void btnProperties_Click(object sender, EventArgs e) {
             if (!hasPropsForm) {
                 propsForm    = new PropertyWindow();
                 hasPropsForm = true; 
@@ -340,34 +340,34 @@ Trying to mix two versions is unsupported - you may experience issues";
         }
 
         public static bool hasPropsForm;
-        PropertyWindow propsForm;
+        public PropertyWindow propsForm;
 
-        bool alwaysInTaskbar = true;
-        void Window_Resize(object sender, EventArgs e) {
+        public bool alwaysInTaskbar = true;
+        public void Window_Resize(object sender, EventArgs e) {
             ShowInTaskbar = alwaysInTaskbar;
         }
 
-        void icon_HideWindow_Click(object sender, EventArgs e) {
+        public void icon_HideWindow_Click(object sender, EventArgs e) {
             alwaysInTaskbar      = !alwaysInTaskbar;
             ShowInTaskbar        = alwaysInTaskbar;
             icon_hideWindow.Text = alwaysInTaskbar ? "Hide from taskbar" : "Show in taskbar";
         }
 
-        void icon_OpenConsole_Click(object sender, EventArgs e) {
+        public void icon_OpenConsole_Click(object sender, EventArgs e) {
             Show();
             BringToFront();
             WindowState = FormWindowState.Normal;
         }
 
-        void icon_Shutdown_Click(object sender, EventArgs e) {
+        public void icon_Shutdown_Click(object sender, EventArgs e) {
             Close();
-        }     
+        }
 
-        void icon_restart_Click(object sender, EventArgs e) {
+        public void icon_restart_Click(object sender, EventArgs e) {
             main_BtnRestart_Click(sender, e);
         }
 
-       void tabs_Click(object sender, EventArgs e)  {
+        public void tabs_Click(object sender, EventArgs e)  {
             try { Map_UpdateUnloadedList(); }
             catch { }
             try { Players_UpdateList(); }
@@ -387,7 +387,7 @@ Trying to mix two versions is unsupported - you may experience issues";
             tabs.Update();
         }
 
-        void main_players_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
+        public void main_players_RowPrePaint(object sender, DataGridViewRowPrePaintEventArgs e) {
             e.PaintParts &= ~DataGridViewPaintParts.Focus;
         }
     }

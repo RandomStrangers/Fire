@@ -293,7 +293,7 @@ namespace Flames
         [ConfigEnum("default-mapgen-biome", "Mapgen", MapGenBiomeName.Forest, typeof(MapGenBiomeName))]
         public MapGenBiomeName DefaultMapGenBiome = MapGenBiomeName.Forest;
 
-        static readonly bool[] defLogLevels = new bool[] { 
+        public static readonly bool[] defLogLevels = new bool[] { 
             true,true,true,true,true,true, true,true,true, 
             true,true,true,true,true,true, true,true };
         [ConfigBool("log-notes", "Logging", true)]
@@ -337,19 +337,18 @@ namespace Flames
         public TimeSpan IPSpamBlockTime = TimeSpan.FromSeconds(180);
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        public string ConsoleName = "Burning";
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        public bool[] ConsoleLogging = defLogLevels;
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         [ConfigString("Core-State", "Chat", "Burning")]
         public string CoreState = "Burning";
         /// <summary> Work on backwards compatibility with other cores </summary>
-        [ConfigString("host-state", "Chat", "Burning")]
-        public string ConsoleName = "Burning";
-        /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] GoldenSparksLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] RandomLogging = defLogLevels;
-        /// <summary> Work on backwards compatibility with other cores </summary>
-        public bool[] ConsoleLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
         public bool[] NovaLogging = defLogLevels;
 #endif

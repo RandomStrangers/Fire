@@ -22,9 +22,9 @@ using Flames.Tasks;
 namespace Flames {
     
     public static class BotsScheduler {
-        
-        static Scheduler instance;
-        static readonly object activateLock = new object();
+
+        public static Scheduler instance;
+        public static readonly object activateLock = new object();
         
         public static void Activate() {
             lock (activateLock) {
@@ -35,8 +35,8 @@ namespace Flames {
                                      TimeSpan.FromMilliseconds(100));
             }
         }
-        
-        static void BotsTick(SchedulerTask task) {
+
+        public static void BotsTick(SchedulerTask task) {
             Level[] levels = LevelInfo.Loaded.Items;
             for (int i = 0; i < levels.Length; i++) {
                 PlayerBot[] bots = levels[i].Bots.Items;
@@ -44,7 +44,7 @@ namespace Flames {
             }
         }
 
-        static void BotTick(PlayerBot bot) {
+        public static void BotTick(PlayerBot bot) {
             if (bot.kill) {
                 InstructionData data = default;
                 // The kill instruction should not interfere with the bot AI
@@ -71,14 +71,14 @@ namespace Flames {
             
             if (bot.curJump > 0) DoJump(bot);
         }
-        
-        static bool DoInstruction(PlayerBot bot) {
+
+        public static bool DoInstruction(PlayerBot bot) {
             BotInstruction ins = BotInstruction.Find(bot.Instructions[bot.cur].Name);
             if (ins == null) return false;
             return ins.Execute(bot, bot.Instructions[bot.cur]);
         }
-        
-        static void DoJump(PlayerBot bot) {            
+
+        public static void DoJump(PlayerBot bot) {            
             Position pos = bot.Pos;
             switch (bot.curJump) {
                 case 1: pos.Y += 24; break;

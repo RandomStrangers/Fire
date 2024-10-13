@@ -100,8 +100,8 @@ namespace Flames.Generator
             }
             return null;
         }
-        
-        static string FilterThemes(GenType type) { 
+
+        public static string FilterThemes(GenType type) { 
             return Generators.Join(g => g.Type == type ? g.Theme : null); 
         }
         public static void PrintThemes(Player p) {
@@ -172,12 +172,12 @@ namespace Flames.Generator
                 CheckMapAxis(p, args[i + 2], "Length", ref z) &&
                 (!checkVolume || CheckMapVolume(p, x, y, z));
         }
-        
-        static bool CheckMapAxis(Player p, string input, string type, ref ushort len) {
+
+        public static bool CheckMapAxis(Player p, string input, string type, ref ushort len) {
             return CommandParser.GetUShort(p, input, type, ref len, 1, 16384);
         }
-        
-        static bool CheckMapVolume(Player p, int x, int y, int z) {
+
+        public static bool CheckMapVolume(Player p, int x, int y, int z) {
             int limit = p.group.GenVolume;
             if ((long)x * y * z <= limit) return true;
             
@@ -187,10 +187,10 @@ namespace Flames.Generator
             else text += limit + " blocks";
             p.Message(text);
             return false;
-        }        
-                
+        }
+
         /// <summary> Sets default permissions for a newly generated realm map. </summary>
-        internal static void SetRealmPerms(Player p, Level lvl) {
+        public static void SetRealmPerms(Player p, Level lvl) {
             lvl.Config.RealmOwner = p.name;
             const LevelPermission rank = LevelPermission.Flames;
             lvl.BuildAccess.Whitelist(Player.Flame, rank, lvl, p.name);

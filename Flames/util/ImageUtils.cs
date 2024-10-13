@@ -78,7 +78,7 @@ namespace Flames.Util
             }
         }
 
-        static void OnDecodeError(Player p, IBitmap2D bmp) {
+        public static void OnDecodeError(Player p, IBitmap2D bmp) {
             if (bmp != null) bmp.Dispose();
             // TODO failed to decode the image. make sure you are using the URL of the image directly, not just the webpage it is hosted on              
             p.Message("&WThere was an error reading the downloaded image.");
@@ -88,13 +88,13 @@ namespace Flames.Util
 
 
 #if !NETSTANDARD
-    unsafe sealed class GDIPlusBitmap : IBitmap2D
+    public unsafe sealed class GDIPlusBitmap : IBitmap2D
     {
-        Image img;
-        Bitmap bmp;
-        BitmapData data;
-        byte* scan0;
-        int stride;
+        public Image img;
+        public Bitmap bmp;
+        public BitmapData data;
+        public byte* scan0;
+        public int stride;
 
         public override void Decode(byte[] data) {
             Image tmp = Image.FromStream(new MemoryStream(data));
@@ -114,7 +114,7 @@ namespace Flames.Util
             SetBitmap(resized);
         }
 
-        void SetBitmap(Image src) {
+        public void SetBitmap(Image src) {
             img = src;
             // although rare, possible src might actually be a Metafile instead
             bmp = (Bitmap)src;
@@ -152,8 +152,8 @@ namespace Flames.Util
                 Get = Get32BppPixel;
             }
         }
-        
-        Pixel GetGenericPixel(int x, int y) {
+
+        public Pixel GetGenericPixel(int x, int y) {
             Pixel pixel;
             int argb = bmp.GetPixel(x, y).ToArgb(); // R/G/B properties incur overhead            
             pixel.A = (byte)(argb >> 24);
@@ -162,15 +162,15 @@ namespace Flames.Util
             pixel.B = (byte)argb;
             return pixel;
         }
-        
-        Pixel Get24BppPixel(int x, int y) {
+
+        public Pixel Get24BppPixel(int x, int y) {
             Pixel pixel;
             byte* ptr = (scan0 + y * stride) + (x * 3);
             pixel.B = ptr[0]; pixel.G = ptr[1]; pixel.R = ptr[2]; pixel.A = 255;
             return pixel;
         }
-        
-        Pixel Get32BppPixel(int x, int y) {
+
+        public Pixel Get32BppPixel(int x, int y) {
             Pixel pixel;
             byte* ptr = (scan0 + y * stride) + (x * 4);            
             pixel.B = ptr[0]; pixel.G = ptr[1]; pixel.R = ptr[2]; pixel.A = ptr[3];
@@ -183,9 +183,9 @@ namespace Flames.Util
         }
     }
 #else
-    unsafe sealed class ImageSharpBitmap : IBitmap2D
+    public unsafe sealed class ImageSharpBitmap : IBitmap2D
     {
-        Image<Rgba32> img;
+        public Image<Rgba32> img;
 
         public override void Decode(byte[] data) {
             img = Image.Load<Rgba32>(data);
@@ -199,12 +199,12 @@ namespace Flames.Util
             UpdateDimensions();
         }
 
-        void UpdateDimensions() {
+        public void UpdateDimensions() {
             Width  = img.Width;
             Height = img.Height;
         }
 
-        Pixel GetPixel(int x, int y) {
+        public Pixel GetPixel(int x, int y) {
             Pixel pixel;
             Rgba32 src = img[x, y];
             pixel.A = src.A;

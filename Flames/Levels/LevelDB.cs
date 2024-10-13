@@ -26,7 +26,7 @@ namespace Flames
 {
     public static class LevelDB 
     {
-        internal static void SaveBlockDB(Level lvl) {
+        public static void SaveBlockDB(Level lvl) {
             if (lvl.BlockDB.Cache.Head == null) return;
             if (!lvl.Config.UseBlockDB) { lvl.BlockDB.Cache.Clear(); return; }
 
@@ -40,7 +40,7 @@ namespace Flames
             Logger.Log(LogType.BackgroundActivity, "Saved BlockDB changes for: {0}", lvl.name);
         }
 
-        static Zone ParseZone(ISqlRecord record) {
+        public static Zone ParseZone(ISqlRecord record) {
             Zone z = new Zone();
             z.MinX = (ushort)record.GetInt("SmallX");
             z.MinY = (ushort)record.GetInt("SmallY");
@@ -52,8 +52,8 @@ namespace Flames
             z.Config.Name = record.GetText("Owner");
             return z;
         }
-        
-        internal static void LoadZones(Level level, string map) {
+
+        public static void LoadZones(Level level, string map) {
             if (!Database.TableExists("Zone" + map)) return;
             
             List<Zone> zones = new List<Zone>();
@@ -87,8 +87,8 @@ namespace Flames
             Database.DeleteTable("Zone" + map);
             Logger.Log(LogType.SystemActivity, "Upgraded zones for map " + map);
         }
-        
-        internal static void LoadPortals(Level level, string map) {
+
+        public static void LoadPortals(Level level, string map) {
             List<Vec3U16> coords = Portal.GetAllCoords(map);
             level.hasPortals     = coords.Count > 0;
             if (!level.hasPortals) return;
@@ -106,8 +106,8 @@ namespace Flames
             if (deleted == 0) return;
             Logger.Log(LogType.BackgroundActivity, "Autodeleted {0} non-existent portals in {1}", deleted, level.name);
         }
-        
-        internal static void LoadMessages(Level level, string map) {
+
+        public static void LoadMessages(Level level, string map) {
             List<Vec3U16> coords   = MessageBlock.GetAllCoords(map);
             level.hasMessageBlocks = coords.Count > 0;
             if (!level.hasMessageBlocks) return;
@@ -125,8 +125,8 @@ namespace Flames
             if (deleted == 0) return;
             Logger.Log(LogType.BackgroundActivity, "Autodeleted {0} non-existent message blocks in {1}", deleted, level.name);
         }
-        
-        internal static ColumnDesc[] createPortals = new ColumnDesc[] {
+
+        public static ColumnDesc[] createPortals = new ColumnDesc[] {
             new ColumnDesc("EntryX", ColumnType.UInt16),
             new ColumnDesc("EntryY", ColumnType.UInt16),
             new ColumnDesc("EntryZ", ColumnType.UInt16),
@@ -135,8 +135,8 @@ namespace Flames
             new ColumnDesc("ExitY", ColumnType.UInt16),
             new ColumnDesc("ExitZ", ColumnType.UInt16),
         };
-        
-        internal static ColumnDesc[] createMessages = new ColumnDesc[] {
+
+        public static ColumnDesc[] createMessages = new ColumnDesc[] {
             new ColumnDesc("X", ColumnType.UInt16),
             new ColumnDesc("Y", ColumnType.UInt16),
             new ColumnDesc("Z", ColumnType.UInt16),

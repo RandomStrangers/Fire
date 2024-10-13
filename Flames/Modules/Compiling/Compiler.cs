@@ -54,7 +54,7 @@ namespace Flames.Modules.Compiling
         };
 
 
-        static string FormatSource(string source, params string[] args) {
+        public static string FormatSource(string source, params string[] args) {
             // Always use \r\n line endings so it looks correct in Notepad
             source = source.Replace(@"\t", "\t");
             source = source.Replace("\n", "\r\n");
@@ -118,9 +118,9 @@ namespace Flames.Modules.Compiling
                                  srcs.Length > 1 ? " in " + file          : "");
         }
 
-        
+
         /// <summary> Compiles the given source code. </summary>
-        protected abstract ICompilerErrors DoCompile(string[] srcPaths, string dstPath);
+        public abstract ICompilerErrors DoCompile(string[] srcPaths, string dstPath);
 
 
         /// <summary> Converts source file paths to full paths, 
@@ -141,7 +141,7 @@ namespace Flames.Modules.Compiling
             return referenced;
         }
 
-        static void AddReferences(string path, string commentPrefix, List<string> referenced) {
+        public static void AddReferences(string path, string commentPrefix, List<string> referenced) {
             // Allow referencing other assemblies using '//reference [assembly name]' at top of the file
             using (StreamReader r = new StreamReader(path)) {               
                 string refPrefix = commentPrefix + "reference ";
@@ -162,7 +162,7 @@ namespace Flames.Modules.Compiling
             }
         }
 
-        static string GetDLL(string line) {
+        public static string GetDLL(string line) {
             int index = line.IndexOf(' ') + 1;
             // For consistency with C#, treat '//reference X.dll;' as '//reference X.dll'
             return line.Substring(index).Replace(";", "");
@@ -184,18 +184,18 @@ namespace Flames.Modules.Compiling
         public string FileName;
     }
 
-    
-    class SourceMap 
+
+    public class SourceMap 
     {
-        readonly string[] files;
-        readonly List<string>[] sources;
+        public readonly string[] files;
+        public readonly List<string>[] sources;
         
         public SourceMap(string[] paths) {
             files   = paths;
             sources = new List<string>[paths.Length];
         }
-        
-        int FindFile(string file) {
+
+        public int FindFile(string file) {
             for (int i = 0; i < files.Length; i++) 
             {
                 if (file.CaselessEq(files[i])) return i;

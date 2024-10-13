@@ -30,13 +30,13 @@ using Flames.SQL;
 using BlockID = System.UInt16;
 
 namespace Flames {
-    sealed class FlamePlayer : Player {
+    public sealed class FlamePlayer : Player {
         public FlamePlayer() : base("&S(&4F&cl&4a&cm&4e&cs&S)") {
             group = Group.FireRank;
             color = "&S";
             SuperName = "&S&4F&cl&4a&cm&4e&cs&S";
         }
-        
+        public override bool IsNull { get { return true; } }
         public override string FullName {
             get { return "&S&4F&cl&4a&cm&4e&cs&S [&a" + Server.Config.FlameState + "&S]"; }
         }
@@ -45,14 +45,16 @@ namespace Flames {
             Logger.Log(LogType.FlameMessage, message);
         }
     }
+
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-    sealed class GoldenPlayer : Player {
+    public sealed class GoldenPlayer : Player {
         /// <summary> Work on backwards compatibility with other cores </summary>
         public GoldenPlayer() : base("&e(&6S&ep&6a&er&6k&ei&6e&e)") {
             group = Group.GoldenRank;
             color = "&S";
             SuperName = "&6S&ep&6a&er&6k&ei&6e";
+
         }
         /// <summary> Work on backwards compatibility with other cores </summary>
         public override string FullName
@@ -65,7 +67,7 @@ namespace Flames {
         }
     }
         /// <summary> Work on backwards compatibility with other cores </summary>
-        sealed class NovaPlayer : Player {
+        public sealed class NovaPlayer : Player {
         /// <summary> Work on backwards compatibility with other cores </summary>
         public NovaPlayer() : base("&7(&5N&do&5v&da&7)")
         {
@@ -85,7 +87,7 @@ namespace Flames {
         }
     }
     /// <summary> Work on backwards compatibility with other cores </summary>
-    sealed class RandomPlayer : Player
+    public sealed class RandomPlayer : Player
     {
         /// <summary> Work on backwards compatibility with other cores </summary>
         public RandomPlayer() : base("&7(&4Ran&5dom &6Str&0ang&8ers&7)")
@@ -107,11 +109,10 @@ namespace Flames {
     }
 #endif
     public partial class Player : Entity, IDisposable {
-
-        static int sessionCounter;
+        public static int sessionCounter;
         public static Player Flame = new FlamePlayer();
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public static Player Console = new FlamePlayer();
+        public static Player Console = Flame;
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Player Sparks = new GoldenPlayer();
@@ -133,7 +134,7 @@ namespace Flames {
             IsSuper   = true;
         }
 
-        const int SESSION_ID_MASK = (1 << 20) - 1;
+        public const int SESSION_ID_MASK = (1 << 20) - 1;
         public Player(INetSocket socket, IGameSession session) {
             Socket  = socket;
             Session = session;
@@ -212,7 +213,7 @@ namespace Flames {
             prefix = prefixes.Join("");
         }
 
-        internal string MakeTitle(string title, string titleCol) {
+        public string MakeTitle(string title, string titleCol) {
              return color + "[" + titleCol + title + color + "] ";
         }
         
@@ -314,8 +315,8 @@ namespace Flames {
             LeaveServer(msg, msg, false, sync);
         }
 
-        bool leftServer = false;
-        void LeaveServer(string chatMsg, string discMsg, bool isKick, bool sync = false) {
+        public bool leftServer = false;
+        public void LeaveServer(string chatMsg, string discMsg, bool isKick, bool sync = false) {
             if (leftServer || IsSuper) return;
             leftServer = true;
             CriticalTasks.Clear();
@@ -366,8 +367,8 @@ namespace Flames {
                 Socket.Close();
             }
         }
-        
-        void ShowDisconnectInChat(string chatMsg, bool isKick) {
+
+        public void ShowDisconnectInChat(string chatMsg, bool isKick) {
             if (chatMsg == null) return;
             
             if (!isKick) {
@@ -400,8 +401,8 @@ namespace Flames {
         #region == OTHER ==
 
         public const string USERNAME_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890._?";
-        
-        internal byte UserType() { return group.Blocks[Block.Bedrock] ? (byte)100 : (byte)0; }
+
+        public byte UserType() { return group.Blocks[Block.Bedrock] ? (byte)100 : (byte)0; }
 
         #endregion
 
@@ -471,8 +472,8 @@ namespace Flames {
             money = amount;
             OnMoneyChangedEvent.Call(this);
         }
-        
-        internal static bool CheckVote(string msg, Player p, string a, string b, ref int totalVotes) {
+
+        public static bool CheckVote(string msg, Player p, string a, string b, ref int totalVotes) {
             if (!(msg.CaselessEq(a) || msg.CaselessEq(b))) return false;
             
             if (p.voted) {
@@ -489,20 +490,20 @@ namespace Flames {
             if (spamChecker != null) spamChecker.CheckChatSpam();
         }
 
-        internal void SetBaseTotalModified(long modified) {
+        public void SetBaseTotalModified(long modified) {
             long adjust    = modified - TotalModified;
             TotalModified  = modified;
             // adjust so that SessionModified is unaffected
             startModified += adjust;
         }
-        
-        string selTitle;
-        readonly object selLock = new object();
-        Vec3S32[] selMarks;
-        object selState;
-        SelectionHandler selCallback;
-        SelectionMarkHandler selMarkCallback;
-        int selIndex;
+
+        public string selTitle;
+        public readonly object selLock = new object();
+        public Vec3S32[] selMarks;
+        public object selState;
+        public SelectionHandler selCallback;
+        public SelectionMarkHandler selMarkCallback;
+        public int selIndex;
 
         public void MakeSelection(int marks, string title, object state, 
                                   SelectionHandler callback, SelectionMarkHandler markCallback = null) {
@@ -534,8 +535,8 @@ namespace Flames {
                 Blockchange = null;
             }
         }
-        
-        void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
+
+        public void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
             lock (selLock) {
                 Blockchange = SelectionBlockChange;
                 RevertBlock(x, y, z);
@@ -567,19 +568,19 @@ namespace Flames {
                 }
             }
         }
-        
-        string FormatSelectionMark(Vec3S32 P) {
+
+        public string FormatSelectionMark(Vec3S32 P) {
             return ": &S(" + P.X + ", " + P.Y + ", " + P.Z + ")";
         }
-        
-        void InitSelectionHUD() {
+
+        public void InitSelectionHUD() {
             SendCpeMessage(CpeMessageType.BottomRight3, selTitle);
             SendCpeMessage(CpeMessageType.BottomRight2, "Mark #1: &S(Not yet set)");
             string mark2Msg = selMarks.Length >= 2 ? "Mark #2: &S(Not yet set)" : "";
             SendCpeMessage(CpeMessageType.BottomRight1, mark2Msg);
         }
-        
-        void ResetSelectionHUD() {
+
+        public void ResetSelectionHUD() {
             SendCpeMessage(CpeMessageType.BottomRight3, "");
             SendCpeMessage(CpeMessageType.BottomRight2, "");
             SendCpeMessage(CpeMessageType.BottomRight1, "");

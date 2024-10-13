@@ -54,9 +54,9 @@ namespace Flames.Commands.Building {
             if (!DrawOpPerformer.Do(op, brush, p, marks, false)) return;
             p.Message("&4/replaceall finished!");
         }
-        
-        
-        class MeasureDrawOp : DrawOp {
+
+
+        public class MeasureDrawOp : DrawOp {
             public override string Name { get { return null; } }
             public override long BlocksAffected(Level lvl, Vec3S32[] marks) { return 0; }
             public int Total = 0;

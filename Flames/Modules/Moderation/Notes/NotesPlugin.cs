@@ -24,8 +24,8 @@ namespace Flames.Modules.Moderation.Notes
     {
         public override string name { get { return "Notes"; } }
 
-        Command cmdNotes   = new CmdNotes();
-        Command cmdMyNotes = new CmdMyNotes();
+        public Command cmdNotes   = new CmdNotes();
+        public Command cmdMyNotes = new CmdMyNotes();
 
         public override void Load(bool startup) {
             OnModActionEvent.Register(HandleModerationAction, Priority.Low);
@@ -39,7 +39,7 @@ namespace Flames.Modules.Moderation.Notes
         }
 
 
-        static void HandleModerationAction(ModAction action) {
+        public static void HandleModerationAction(ModAction action) {
             switch (action.Type) {
                 case ModActionType.Frozen:
                     AddNote(action, "F"); break;
@@ -54,8 +54,8 @@ namespace Flames.Modules.Moderation.Notes
                     AddNote(action, banType); break;
             }
         }
-        
-        static void AddNote(ModAction e, string type) {
+
+        public static void AddNote(ModAction e, string type) {
              if (!Server.Config.LogNotes) return;
              string src = e.Actor.name;
              

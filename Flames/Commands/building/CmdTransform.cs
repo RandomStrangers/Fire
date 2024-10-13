@@ -46,8 +46,8 @@ namespace Flames.Commands.Building {
                 p.Transform = instance;
             }
         }
-        
-        static void List(Player p) {
+
+        public static void List(Player p) {
             p.Message("&HAvailable transforms: &f" + TransformFactory.Transforms.Join(t => t.Name));
         }
         

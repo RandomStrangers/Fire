@@ -28,20 +28,20 @@ namespace Flames.Network
         public override bool CanRead { get { return false; } }
         public override bool CanSeek { get { return false; } }
         public override bool CanWrite { get { return true; } }
-        
-        static Exception ex = new NotSupportedException();
+
+        public static Exception ex = new NotSupportedException();
         public override void Flush() { }
         public override long Length { get { throw ex; } }
         public override long Position { get { throw ex; } set { throw ex; } }
         public override int Read(byte[] buffer, int offset, int count) { throw ex; }
         public override long Seek(long offset, SeekOrigin origin) { throw ex; }
         public override void SetLength(long length) { throw ex; }
-        
-        int index;
-        byte chunkValue;
-        ClassicProtocol session;
-        byte[] data = new byte[chunkSize + 4];
-        const int chunkSize = 1024;
+
+        public int index;
+        public byte chunkValue;
+        public ClassicProtocol session;
+        public byte[] data = new byte[chunkSize + 4];
+        public const int chunkSize = 1024;
         public LevelChunkStream(ClassicProtocol s) { session = s; }
         
         public override void Close() {
@@ -75,8 +75,8 @@ namespace Flames.Network
             WritePacket();
             data = new byte[chunkSize + 4];
         }
-        
-        void WritePacket() {
+
+        public void WritePacket() {
             data[0] = Opcode.LevelDataChunk;
             NetUtils.WriteU16((ushort)index, data, 1);
             data[1027] = chunkValue;
@@ -97,8 +97,8 @@ namespace Flames.Network
                 }
             }
         }
-        
-        Stream CompressMapHeader(int volume) {
+
+        public Stream CompressMapHeader(int volume) {
             // FastMap sends volume in LevelInit packet instead
             if (session.Supports(CpeExt.FastMap)) {
                return new DeflateStream(this, CompressionMode.Compress, true);
@@ -111,8 +111,8 @@ namespace Flames.Network
             stream.Write(buffer, 0, 4);
             return stream;
         }
-        
-        unsafe static void CompressMapSimple(Level lvl, Stream stream, LevelChunkStream dst) {
+
+        public unsafe static void CompressMapSimple(Level lvl, Stream stream, LevelChunkStream dst) {
             const int bufferSize = 64 * 1024;
             byte[] buffer = new byte[bufferSize];
             int bIndex = 0;
@@ -141,8 +141,8 @@ namespace Flames.Network
             }
             if (bIndex > 0) stream.Write(buffer, 0, bIndex);
         }
-        
-        unsafe static void CompressMap(Level lvl, Stream stream, LevelChunkStream dst) {
+
+        public unsafe static void CompressMap(Level lvl, Stream stream, LevelChunkStream dst) {
             const int bufferSize = 64 * 1024;
             byte[] buffer = new byte[bufferSize];
             int bIndex = 0;

@@ -24,7 +24,7 @@ namespace Flames.Commands.Moderation {
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public override bool SuperUseable { get { return false; } }
 
-        static void Unpossess(Player target) {
+        public static void Unpossess(Player target) {
             target.following = "";
             target.possessed = false;
             Entities.GlobalRespawn(target, true);

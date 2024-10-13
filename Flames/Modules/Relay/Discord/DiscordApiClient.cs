@@ -32,8 +32,8 @@ namespace Flames.Modules.Relay.Discord
     {
         public string Token;
         public string Host;
-        
-        DiscordApiMessage GetNextRequest() {
+
+        public DiscordApiMessage GetNextRequest() {
             if (queue.Count == 0) return null;
             DiscordApiMessage first = queue.Dequeue();
             
@@ -85,8 +85,8 @@ namespace Flames.Modules.Relay.Discord
             string remaining = res.Headers["X-RateLimit-Remaining"];
             if (remaining == "1") SleepForRetryPeriod(res);
         }
-        
-        static bool HandleErrorResponse(WebException ex, DiscordApiMessage msg, int retry) {
+
+        public static bool HandleErrorResponse(WebException ex, DiscordApiMessage msg, int retry) {
             string err = HttpUtil.GetErrorResponse(ex);
             HttpStatusCode status = GetStatus(ex);
             
@@ -119,23 +119,23 @@ namespace Flames.Modules.Relay.Discord
             LogResponse(err);
             return false;
         }
-        
-        
-        static HttpStatusCode GetStatus(WebException ex) {
+
+
+        public static HttpStatusCode GetStatus(WebException ex) {
             if (ex.Response == null) return 0;            
             return ((HttpWebResponse)ex.Response).StatusCode;
         }
-        
-        static void LogError(Exception ex, DiscordApiMessage msg) {
+
+        public static void LogError(Exception ex, DiscordApiMessage msg) {
             string target = "(" + msg.Method + " " + msg.Path + ")";
             Logger.LogError("Error sending request to Discord API " + target, ex);
         }
-        
-        static void LogWarning(Exception ex) {
+
+        public static void LogWarning(Exception ex) {
             Logger.Log(LogType.Warning, "Error sending request to Discord API - " + ex.Message);
         }
-        
-        static void LogResponse(string err) {
+
+        public static void LogResponse(string err) {
             if (string.IsNullOrEmpty(err)) return;
             
             // Discord sometimes returns <html>..</html> responses for internal server errors
@@ -144,9 +144,9 @@ namespace Flames.Modules.Relay.Discord
             
             Logger.Log(LogType.Warning, "Discord API returned: " + err);
         }
-        
-        
-        static void SleepForRetryPeriod(WebResponse res) {
+
+
+        public static void SleepForRetryPeriod(WebResponse res) {
             string resetAfter = res.Headers["X-RateLimit-Reset-After"];
             string retryAfter = res.Headers["Retry-After"];
             float delay;

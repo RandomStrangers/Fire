@@ -64,7 +64,7 @@ namespace Flames.Games {
         
         
         public static List<Team> Teams = new List<Team>();
-        static readonly object ioLock = new object();
+        public static readonly object ioLock = new object();
         
         public static Team TeamIn(Player p) {
             foreach (Team team in Teams) {
@@ -114,8 +114,8 @@ namespace Flames.Games {
                 if (tmp.Name != null) Add(tmp);
             }
         }
-        
-        static void LineProcessor(string key, string value, ref Team tmp) {
+
+        public static void LineProcessor(string key, string value, ref Team tmp) {
             switch (key.ToLower()) {
                 case "name":
                     if (tmp.Name != null) Add(tmp);

@@ -66,8 +66,8 @@ namespace Flames.Commands.Info
             if (env) ShowEnv(p, info, info.Config);
             else ShowNormal(p, info, info.Config);
         }
-        
-        void ShowNormal(Player p, MapInfo data, LevelConfig cfg) {
+
+        public void ShowNormal(Player p, MapInfo data, LevelConfig cfg) {
             p.Message("&bAbout {0}&S: Width={1} Height={2} Length={3}", 
                       cfg.Color + data.Name, data.Width, data.Height, data.Length);
             
@@ -98,8 +98,8 @@ namespace Flames.Commands.Info
             p.Message("Use &T/mi env {0} &Sto see environment settings.", data.MapName);
             ShowGameInfo(p, data, cfg);
         }
-        
-        void ShowPermissions(Player p, MapInfo data, LevelConfig cfg) {
+
+        public void ShowPermissions(Player p, MapInfo data, LevelConfig cfg) {
             PrintRanks(p, data.Visit, "  Visitable by ");
             PrintRanks(p, data.Build, "  Modifiable by ");
             
@@ -112,22 +112,22 @@ namespace Flames.Commands.Info
             string[] owners = realmOwner.SplitComma();
             p.Message("  This map is a personal realm of {0}", owners.Join(n => p.FormatNick(n)));
         }
-        
-        static void PrintRanks(Player p, AccessController access, string initial) {
+
+        public static void PrintRanks(Player p, AccessController access, string initial) {
             StringBuilder perms = new StringBuilder(initial);
             access.Describe(p, perms);
             p.Message(perms.ToString());
         }
-        
-        void ShowGameInfo(Player p, MapInfo data, LevelConfig cfg) {
+
+        public void ShowGameInfo(Player p, MapInfo data, LevelConfig cfg) {
             IGame game = GetAssociatedGame(data.MapName);
             if (game == null) return;
             
             IGame.OutputMapSummary(p, cfg); // TODO: Always show this info?
             game.OutputMapInfo(p, data.MapName, cfg);
         }
-        
-        static IGame GetAssociatedGame(string map)
+
+        public static IGame GetAssociatedGame(string map)
         {
             IGame[] games = IGame.RunningGames.Items;
             foreach (IGame game in games)
@@ -136,8 +136,8 @@ namespace Flames.Commands.Info
             }
             return null;
         }
-        
-        void ShowEnv(Player p, MapInfo data, LevelConfig cfg) {
+
+        public void ShowEnv(Player p, MapInfo data, LevelConfig cfg) {
             string url = cfg.Terrain.Length > 0 ? cfg.Terrain : Server.Config.DefaultTerrain;
             if (url.Length > 0) {
                 p.Message("Terrain: &b" + url);
@@ -171,8 +171,8 @@ namespace Flames.Commands.Info
                       data.GetSkybox(EnvProp.SkyboxHorSpeed), 
                       data.GetSkybox(EnvProp.SkyboxVerSpeed));
         }
-        
-        class MapInfo {
+
+        public class MapInfo {
             public ushort Width, Height, Length;
             public string Name, MapName;
             public long BlockDBEntries = -1;
@@ -218,8 +218,8 @@ namespace Flames.Commands.Info
                 return angle == 0 ? "none" : (angle / 1024.0).ToString("F3") + "/s";
             }
         }
-        
-        static string Color(string src) {
+
+        public static string Color(string src) {
             return (src == null || src.Length == 0 || src == "-1") ? "&bnone" : "&b" + src;
         }
         

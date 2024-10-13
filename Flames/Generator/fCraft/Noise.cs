@@ -58,7 +58,7 @@ namespace Flames.Generator.fCraft
         }
 
 
-        readonly float[,] points = new float[4, 4];
+        public readonly float[,] points = new float[4, 4];
         public float InterpolatedNoise( float x, float y ) {
             int xInt = (int)Math.Floor( x );
             float xFloat = x - xInt;
@@ -183,7 +183,7 @@ namespace Flames.Generator.fCraft
             }
         }
 
-        const float GaussianBlurDivisor = 1 / 273f;
+        public const float GaussianBlurDivisor = 1 / 273f;
         public static float[] GaussianBlur5X5( float[] heightmap, int width, int length ) {
             float[] output = new float[width * length];
             int X1 = length, Y1 = 1, X2 = length * 2, Y2 = 1 * 2;
@@ -233,7 +233,7 @@ namespace Flames.Generator.fCraft
         }
 
 
-        const int ThresholdSearchPasses = 10;
+        public const int ThresholdSearchPasses = 10;
 
         public static float FindThreshold( float[] data, float desiredCoverage ) {
             if( desiredCoverage == 0 ) return 0;

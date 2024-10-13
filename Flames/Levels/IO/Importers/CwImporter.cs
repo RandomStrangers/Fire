@@ -43,8 +43,8 @@ namespace Flames.Levels.IO {
                 ReadMetadata((NbtCompound)file.RootTag["Metadata"], lvl);
             return lvl;
         }
-        
-        static void ReadData(NbtCompound root, string name, out Level lvl) {
+
+        public static void ReadData(NbtCompound root, string name, out Level lvl) {
             if (root["FormatVersion"].ByteValue > 1)
                 throw new NotSupportedException("Only version 1 of ClassicWorld format is supported.");
             
@@ -62,8 +62,8 @@ namespace Flames.Levels.IO {
             }
             ConvertCustom(lvl);
         }
-        
-        static void ReadExtBlocks(NbtCompound root, Level lvl) {
+
+        public static void ReadExtBlocks(NbtCompound root, Level lvl) {
             byte[] lo = root["BlockArray"].ByteArrayValue;
             byte[] hi = root["BlockArray2"].ByteArrayValue;
             
@@ -76,8 +76,8 @@ namespace Flames.Levels.IO {
                 lvl.SetBlock(x, y, z, (BlockID)b);
             }
         }
-        
-        static void ReadSpawn(NbtCompound root, Level lvl) {
+
+        public static void ReadSpawn(NbtCompound root, Level lvl) {
             if (!root.Contains("Spawn")) return;
             NbtTag spawn = root["Spawn"];
             lvl.spawnx = (ushort)spawn["X"].ShortValue;
@@ -86,8 +86,8 @@ namespace Flames.Levels.IO {
             lvl.rotx = spawn["H"].ByteValue;
             lvl.roty = spawn["P"].ByteValue;
         }
-        
-        static void ReadMetadata(NbtCompound root, Level lvl) {
+
+        public static void ReadMetadata(NbtCompound root, Level lvl) {
             if (!root.Contains("CPE")) return;
             NbtCompound cpe = (NbtCompound)root["CPE"];
             
@@ -100,9 +100,9 @@ namespace Flames.Levels.IO {
             if (cpe.Contains("BlockDefinitions"))
                 ParseBlockDefinitions(cpe, lvl);
         }
-        
-        
-        static void ParseEnvMapAppearance(NbtCompound cpe, Level lvl) {
+
+
+        public static void ParseEnvMapAppearance(NbtCompound cpe, Level lvl) {
             NbtCompound comp = (NbtCompound)cpe["EnvMapAppearance"];
             lvl.Config.HorizonBlock = Block.FromRaw(comp["EdgeBlock"].ByteValue);
             lvl.Config.EdgeBlock    = Block.FromRaw(comp["SideBlock"].ByteValue);
@@ -115,8 +115,8 @@ namespace Flames.Levels.IO {
             else
                 lvl.Config.TexturePack = url == Server.Config.DefaultTexture ? "" : url;
         }
-        
-        static void ParseEnvColors(NbtCompound cpe, Level lvl) {
+
+        public static void ParseEnvColors(NbtCompound cpe, Level lvl) {
             NbtCompound comp = (NbtCompound)cpe["EnvColors"];
             lvl.Config.SkyColor    = GetColor(comp, "Sky");
             lvl.Config.CloudColor  = GetColor(comp, "Cloud");
@@ -124,8 +124,8 @@ namespace Flames.Levels.IO {
             lvl.Config.LightColor  = GetColor(comp, "Sunlight");
             lvl.Config.ShadowColor = GetColor(comp, "Ambient");
         }
-        
-        static string GetColor(NbtCompound comp, string type) {
+
+        public static string GetColor(NbtCompound comp, string type) {
             if (!comp.Contains(type)) return "";
             NbtCompound rgb = (NbtCompound)comp[type];
             short r = rgb["R"].ShortValue, g = rgb["G"].ShortValue, b = rgb["B"].ShortValue;
@@ -133,8 +133,8 @@ namespace Flames.Levels.IO {
             if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255) return "";
             return r.ToString("X2") + g.ToString("X2") + b.ToString("X2");
         }
-        
-        static void ParseBlockDefinitions(NbtCompound cpe, Level lvl) {
+
+        public static void ParseBlockDefinitions(NbtCompound cpe, Level lvl) {
             NbtCompound blocks = (NbtCompound)cpe["BlockDefinitions"];
             bool hasBlockDefs = false;
             
@@ -196,15 +196,15 @@ namespace Flames.Levels.IO {
             if (hasBlockDefs)
                 BlockDefinition.Save(false, lvl);
         }
-        
-        static void ImportTexs(BlockDefinition def, byte[] tex, int i) {
+
+        public static void ImportTexs(BlockDefinition def, byte[] tex, int i) {
             int s = i == 0 ? 0 : 8;
             def.TopTex   |= (ushort)(tex[i+0] << s); def.BottomTex |= (ushort)(tex[i+1] << s);
             def.LeftTex  |= (ushort)(tex[i+2] << s); def.RightTex  |= (ushort)(tex[i+3] << s);
             def.FrontTex |= (ushort)(tex[i+4] << s); def.BackTex   |= (ushort)(tex[i+5] << s);
         }
-        
-        static bool PropsEquals(BlockDefinition a, BlockDefinition b) {
+
+        public static bool PropsEquals(BlockDefinition a, BlockDefinition b) {
             if (b == null || b.Name == null) return false;
             return a.Name == b.Name && a.CollideType == b.CollideType && a.Speed == b.Speed && a.TopTex == b.TopTex
                 && a.BottomTex == b.BottomTex && a.BlocksLight == b.BlocksLight && a.WalkSound == b.WalkSound

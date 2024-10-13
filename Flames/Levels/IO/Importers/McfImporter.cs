@@ -56,8 +56,8 @@ namespace Flames.Levels.IO {
                 return lvl;
             }
         }
-        
-        static Vec3U16 ReadHeader(byte[] header, Stream gs) {
+
+        public static Vec3U16 ReadHeader(byte[] header, Stream gs) {
             ReadFully(gs, header, 2);
             if (BitConverter.ToUInt16(header, 0) != 1874)
                 throw new InvalidDataException(".mcf files must have a version of 1874");

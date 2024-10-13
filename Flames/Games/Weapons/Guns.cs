@@ -28,13 +28,13 @@ namespace Flames.Games
     {
         public override string Name { get { return "Gun"; } }
 
-        protected override void OnActivated(Vec3F32 dir, BlockID block) {
+        public override void OnActivated(Vec3F32 dir, BlockID block) {
             AmmunitionData args = MakeArgs(dir, block);
             SchedulerTask task  = new SchedulerTask(GunCallback, args, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
-        
-        protected AmmunitionData MakeArgs(Vec3F32 dir, BlockID block) {
+
+        public AmmunitionData MakeArgs(Vec3F32 dir, BlockID block) {
             AmmunitionData args = new AmmunitionData();
             args.block  = block;
             
@@ -43,17 +43,17 @@ namespace Flames.Games
             args.iterations = 4;
             return args;
         }
-        
-        protected void BufferedRevert(Vec3U16 pos, BufferedBlockSender buffer) {
+
+        public void BufferedRevert(Vec3U16 pos, BufferedBlockSender buffer) {
             int index;
             BlockID block = p.level.GetBlock(pos.X, pos.Y, pos.Z, out index);
             
             if (index == -1) return;
             buffer.Add(index, block);
         }
-        
-        
-        protected void GunCallback(SchedulerTask task) {
+
+
+        public void GunCallback(SchedulerTask task) {
             BufferedBlockSender buffer = p.weaponBuffer;
             buffer.level = p.level;
             AmmunitionData args = (AmmunitionData)task.State;
@@ -66,8 +66,8 @@ namespace Flames.Games
             
             buffer.Flush(); // TODO bufferedblocksender across guns
         }
-        
-        bool TickGun(AmmunitionData args, BufferedBlockSender buffer) {
+
+        public bool TickGun(AmmunitionData args, BufferedBlockSender buffer) {
             while (true) 
             {
                 Vec3U16 pos = args.PosAt(args.iterations);
@@ -87,8 +87,8 @@ namespace Flames.Games
                 if (TickMove(args, buffer)) return true;
             }
         }
-        
-        protected virtual bool TickMove(AmmunitionData args, BufferedBlockSender buffer) {
+
+        public virtual bool TickMove(AmmunitionData args, BufferedBlockSender buffer) {
             if (args.iterations > 12) {
                 Vec3U16 pos = args.visible[0];
                 args.visible.RemoveAt(0);
@@ -96,8 +96,8 @@ namespace Flames.Games
             }
             return true;
         }
-        
-        protected virtual bool TickRevert(SchedulerTask task, BufferedBlockSender buffer) {
+
+        public virtual bool TickRevert(SchedulerTask task, BufferedBlockSender buffer) {
             AmmunitionData args = (AmmunitionData)task.State;
             
             if (args.visible.Count > 0) {
@@ -107,16 +107,16 @@ namespace Flames.Games
             }
             return args.visible.Count > 0;
         }
-        
+
 
         /// <summary> Called when a bullet has collided with a block. </summary>
         /// <returns> true if this block stops the bullet, false if it should continue moving. </returns>
-        protected virtual bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
+        public virtual bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
             return true;
         }
-        
+
         /// <summary> Called when a bullet has collided with a player. </summary>
-        protected virtual void OnHitPlayer(AmmunitionData args, Player pl) {
+        public virtual void OnHitPlayer(AmmunitionData args, Player pl) {
             pl.HandleDeath(Block.Cobblestone, "@p &Swas shot by " + p.ColoredName);
         }
     }
@@ -124,8 +124,8 @@ namespace Flames.Games
     public class PenetrativeGun : Gun 
     {
         public override string Name { get { return "Penetrative gun"; } }
-        
-        protected override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
             if (p.level.physics < 2) return true;
             
             if (!p.level.Props[block].LavaKills) return true;
@@ -138,13 +138,13 @@ namespace Flames.Games
     public class ExplosiveGun : Gun 
     {
         public override string Name { get { return "Explosive gun"; } }
-        
-        protected override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
             if (p.level.physics >= 3) p.level.MakeExplosion(pos.X, pos.Y, pos.Z, 1);
             return true;
         }
-        
-        protected override void OnHitPlayer(AmmunitionData args, Player pl) {
+
+        public override void OnHitPlayer(AmmunitionData args, Player pl) {
             if (pl.level.physics >= 3) {
                 pl.HandleDeath(Block.Cobblestone, "@p &Swas blown up by " + p.ColoredName, true);
             } else {
@@ -156,13 +156,13 @@ namespace Flames.Games
     public class LaserGun : ExplosiveGun 
     {
         public override string Name { get { return "Laser"; } }
-        
-        protected override bool TickMove(AmmunitionData args, BufferedBlockSender buffer) {
+
+        public override bool TickMove(AmmunitionData args, BufferedBlockSender buffer) {
             // laser immediately strikes target
             return false;
         }
-        
-        protected override bool TickRevert(SchedulerTask task, BufferedBlockSender buffer) 
+
+        public override bool TickRevert(SchedulerTask task, BufferedBlockSender buffer) 
         {
             AmmunitionData args = (AmmunitionData)task.State;
             
@@ -184,12 +184,12 @@ namespace Flames.Games
     public class TeleportGun : Gun 
     {
         public override string Name { get { return "Teleporter gun"; } }
-        
-        protected override void OnHitPlayer(AmmunitionData args, Player pl) {
+
+        public override void OnHitPlayer(AmmunitionData args, Player pl) {
             args.DoTeleport(p);
         }
-        
-        protected override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
+
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block) {
             args.DoTeleport(p);
             return true;
         }

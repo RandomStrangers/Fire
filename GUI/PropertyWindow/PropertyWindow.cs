@@ -13,18 +13,15 @@ or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
  */
 using System;
-using System.Drawing;
 using System.Windows.Forms;
-using Flames.Commands;
 using Flames.Eco;
 using Flames.Events.GameEvents;
-using Flames.Games;
 
 namespace Flames.Gui 
 {
     public partial class PropertyWindow : Form 
     {
-        ZombieProperties zsSettings = new ZombieProperties();
+        public ZombieProperties zsSettings = new ZombieProperties();
         
         public PropertyWindow() {
             InitializeComponent();
@@ -34,7 +31,7 @@ namespace Flames.Gui
         
         public void RunOnUI_Async(UIAction act) { BeginInvoke(act); }
 
-        void PropertyWindow_Load(object sender, EventArgs e) {
+        public void PropertyWindow_Load(object sender, EventArgs e) {
             // try to use same icon as main window
             // must be done in OnLoad, otherwise icon doesn't show on Mono
             GuiUtils.SetIcon(this);
@@ -59,13 +56,13 @@ namespace Flames.Gui
             LoadGameProps();
         }
 
-        void PropertyWindow_Unload(object sender, EventArgs e) {
+        public void PropertyWindow_Unload(object sender, EventArgs e) {
             OnMapsChangedEvent.Unregister(HandleMapsChanged);
             OnStateChangedEvent.Unregister(HandleStateChanged);
             Window.hasPropsForm = false;
         }
 
-        void LoadProperties() {
+        public void LoadProperties() {
             SrvProperties.Load();
             LoadGeneralProps();
             LoadChatProps();
@@ -78,7 +75,7 @@ namespace Flames.Gui
             zsSettings.LoadFromServer();
         }
 
-        void SaveProperties() {
+        public void SaveProperties() {
             try {
                 ApplyGeneralProps();
                 ApplyChatProps();
@@ -99,10 +96,10 @@ namespace Flames.Gui
             SaveDiscordProps();
         }
 
-        void btnSave_Click(object sender, EventArgs e) { SaveChanges(); Dispose(); }
-        void btnApply_Click(object sender, EventArgs e) { SaveChanges(); }
+        public void btnSave_Click(object sender, EventArgs e) { SaveChanges(); Dispose(); }
+        public void btnApply_Click(object sender, EventArgs e) { SaveChanges(); }
 
-        void SaveChanges() {
+        public void SaveChanges() {
             SaveProperties();
             SaveRanks();
             SaveCommands();
@@ -112,16 +109,16 @@ namespace Flames.Gui
             SrvProperties.ApplyChanges();
         }
 
-        void btnDiscard_Click(object sender, EventArgs e) { Dispose(); }
+        public void btnDiscard_Click(object sender, EventArgs e) { Dispose(); }
 
-        void GetHelp(string toHelp) {
+        public void GetHelp(string toHelp) {
             ConsoleHelpPlayer p = new ConsoleHelpPlayer();
             Command.Find("Help").Use(p, toHelp);
             Popup.Message(Colors.StripUsed(p.Messages), "Help for /" + toHelp);
         }
     }
-    
-    sealed class ConsoleHelpPlayer : Player {
+
+    public sealed class ConsoleHelpPlayer : Player {
         public string Messages = "";
             
         public ConsoleHelpPlayer() : base("(Flames)") {

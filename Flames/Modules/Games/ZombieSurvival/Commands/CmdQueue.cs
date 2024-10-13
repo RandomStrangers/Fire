@@ -18,7 +18,7 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdQueue : Command2 
+    public sealed class CmdQueue : Command2 
     {
         public override string name { get { return "Queue"; } }
         public override string shortcut { get { return "qz"; } }

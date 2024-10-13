@@ -34,12 +34,12 @@ namespace Flames
 {
     public partial class Player : IDisposable
     {
-        const string mustAgreeMsg = "You must read /rules then agree to them with /agree!";
-        
-        readonly object blockchangeLock = new object();
-        internal bool HasBlockChange() { return Blockchange != null; }
-        
-        internal bool DoBlockchangeCallback(ushort x, ushort y, ushort z, BlockID block) {
+        public const string mustAgreeMsg = "You must read /rules then agree to them with /agree!";
+
+        public readonly object blockchangeLock = new object();
+        public bool HasBlockChange() { return Blockchange != null; }
+
+        public bool DoBlockchangeCallback(ushort x, ushort y, ushort z, BlockID block) {
             lock (blockchangeLock) {
                 lastClick.X = x; lastClick.Y = y; lastClick.Z = z;
                 if (Blockchange == null) return false;
@@ -129,8 +129,8 @@ namespace Flames
             }
             OnBlockChangedEvent.Call(this, x, y, z, result);
         }
-        
-        internal bool CheckManualChange(BlockID old, bool deleteMode) {
+
+        public bool CheckManualChange(BlockID old, bool deleteMode) {
             if (!group.Blocks[old] && !level.BuildIn(old) && !Block.AllowBreak(old)) {
                 string action = deleteMode ? "delete" : "replace";
                 BlockPerms.Find(old).MessageCannotUse(this, action);
@@ -138,8 +138,8 @@ namespace Flames
             }
             return true;
         }
-        
-        ChangeResult DeleteBlock(BlockID old, ushort x, ushort y, ushort z) {
+
+        public ChangeResult DeleteBlock(BlockID old, ushort x, ushort y, ushort z) {
             if (deleteMode) return ChangeBlock(x, y, z, Block.Air);
 
             HandleDelete handler = level.DeleteHandlers[old];
@@ -147,7 +147,7 @@ namespace Flames
             return ChangeBlock(x, y, z, Block.Air);
         }
 
-        ChangeResult PlaceBlock(BlockID old, ushort x, ushort y, ushort z, BlockID block) {
+        public ChangeResult PlaceBlock(BlockID old, ushort x, ushort y, ushort z, BlockID block) {
             HandlePlace handler = level.PlaceHandlers[block];
             if (handler != null) return handler(this, block, x, y, z);
             return ChangeBlock(x, y, z, block);
@@ -241,8 +241,8 @@ namespace Flames
             LastAction = DateTime.UtcNow;
             if (IsAfk) CmdAfk.ToggleAfk(this, "");
         }
-        
-        void CheckZones(Position pos) {
+
+        public void CheckZones(Position pos) {
             Vec3S32 P = pos.BlockCoords;
             Zone zone = ZoneIn;
             
@@ -262,8 +262,8 @@ namespace Flames
             ZoneIn = null;
             if (zone != null) OnChangedZoneEvent.Call(this);
         }
-        
-        int CurrentEnvProp(EnvProp i, Zone zone) {
+
+        public int CurrentEnvProp(EnvProp i, Zone zone) {
             int value    = Server.Config.GetEnvProp(i);
             bool block   = i == EnvProp.SidesBlock || i == EnvProp.EdgeBlock;
             int default_ = block ? Block.Invalid : EnvConfig.ENV_USE_DEFAULT;
@@ -304,8 +304,8 @@ namespace Flames
             int weather = CurrentEnvProp(EnvProp.Weather, zone);
             Session.SendSetWeather((byte)weather);
         }
-        
-        void CheckBlocks(Position prev, Position next) {
+
+        public void CheckBlocks(Position prev, Position next) {
             try {
                 Vec3U16 P = (Vec3U16)prev.BlockCoords;
                 AABB bb = ModelBB.OffsetPosition(next);
@@ -324,8 +324,8 @@ namespace Flames
                 Logger.LogError(ex);
             }
         }
-        
-        bool Moved() { return _lastRot.RotY != Rot.RotY || _lastRot.HeadX != Rot.HeadX; }
+
+        public bool Moved() { return _lastRot.RotY != Rot.RotY || _lastRot.HeadX != Rot.HeadX; }
         
         public void AnnounceDeath(string msg) {
             //Chat.MessageFrom(ChatScope.Level, this, msg.Replace("@p", "λNICK"), level, Chat.FilterVisible(this));
@@ -411,8 +411,8 @@ namespace Flames
             if (cancelchat) { cancelchat = false; return; }
             Chat.MessageChat(this, "λFULL: &f" + text, null, true);
         }
-        
-        bool FilterChat(ref string text, bool continued) {
+
+        public bool FilterChat(ref string text, bool continued) {
             // Handle /womid [version] which informs the server of the WoM client version
             if (text.StartsWith("/womid")) {
                 UsingWom = true;
@@ -449,22 +449,22 @@ namespace Flames
             }
             return text.Length == 0;
         }
-        
-        static bool IsPartialSpaced(string text) {
+
+        public static bool IsPartialSpaced(string text) {
             return text.EndsWith(" >") || text.EndsWith(" /");
         }
-        
-        static bool IsPartialJoined(string text) {
+
+        public static bool IsPartialJoined(string text) {
             return text.EndsWith(" <") || text.EndsWith(" \\");
         }
-        
-        void LimitPartialMessage() {
+
+        public void LimitPartialMessage() {
             if (partialMessage.Length < 100 * 64) return;
             partialMessage = "";
             Message("&WPartial message cleared due to exceeding 100 lines");
         }
 
-        void AppendPartialMessage(string part) {
+        public void AppendPartialMessage(string part) {
             if (!partialLog.AddSpamEntry(20, TimeSpan.FromSeconds(1))) {
                 Message("&WTried to add over 20 partial message in one second, slow down");
                 return;
@@ -475,8 +475,8 @@ namespace Flames
             LimitPartialMessage();
         }
 
-        
-        void DoCommand(string text) {
+
+        public void DoCommand(string text) {
             // Typing / repeats last command executed
             if (text.Length == 0) {
                 text = lastCMD;
@@ -490,8 +490,8 @@ namespace Flames
             text.Separate(' ', out cmd, out args);
             HandleCommand(cmd, args, DefaultCmdData);
         }
-        
-        string HandleJoker(string text) {
+
+        public string HandleJoker(string text) {
             if (!joker) return text;
             Logger.Log(LogType.PlayerChat, "<JOKER>: {0}: {1}", name, text);
             Chat.MessageFromOps(this, "&S<&aJ&bO&cK&5E&9R&S>: λNICK:&f " + text);
@@ -559,8 +559,8 @@ namespace Flames
                 Message("&WCommand failed.");
             }
         }
-        
-        bool CheckMBRecursion(CommandData data) {
+
+        public bool CheckMBRecursion(CommandData data) {
             if (data.Context == CommandContext.MessageBlock) {
                 mbRecursion++;
                 // failsafe for when server has turned off command spam checking
@@ -574,8 +574,8 @@ namespace Flames
             }
             return true;
         }
-        
-        bool CheckCommand(string cmd) {
+
+        public bool CheckCommand(string cmd) {
             if (cmd.Length == 0) { Message("No command entered."); return false; }
             if (Server.Config.AgreeToRulesOnEntry && !agreed && !(cmd == "agree" || cmd == "rules" || cmd == "disagree" || cmd == "pass" || cmd == "setpass")) {
                 Message(mustAgreeMsg); return false;
@@ -595,8 +595,8 @@ namespace Flames
             }
             return true;
         }
-        
-        Command GetCommand(ref string cmdName, ref string cmdArgs, CommandData data) {
+
+        public Command GetCommand(ref string cmdName, ref string cmdArgs, CommandData data) {
             if (!CheckCommand(cmdName)) return null;
             
             string bound;
@@ -638,8 +638,8 @@ namespace Flames
             }
             return command;
         }
-        
-        bool UseCommand(Command command, string args, CommandData data) {
+
+        public bool UseCommand(Command command, string args, CommandData data) {
             string cmd = command.name;
             if (command.UpdatesLastCmd) {
                 lastCMD = args.Length == 0 ? cmd : cmd + " " + args;
@@ -665,8 +665,8 @@ namespace Flames
             if (spamChecker != null && spamChecker.CheckCommandSpam()) return false;
             return true;
         }
-        
-        bool UseCommands(List<Command> commands, List<string> messages, CommandData data) {
+
+        public bool UseCommands(List<Command> commands, List<string> messages, CommandData data) {
             for (int i = 0; i < messages.Count; i++) {
                 if (!UseCommand(commands[i], messages[i], data)) return false;
                 
@@ -675,9 +675,9 @@ namespace Flames
             }
             return true;
         }
-        
-        
-        bool EnqueueSerialCommand(Command cmd, string args, CommandData data) {
+
+
+        public bool EnqueueSerialCommand(Command cmd, string args, CommandData data) {
             SerialCommand head = default;
             SerialCommand scmd;
             
@@ -702,8 +702,8 @@ namespace Flames
             spamChecker.CheckCommandSpam();
             return false;
         }
-        
-        void ExecuteSerialCommands() {
+
+        public void ExecuteSerialCommands() {
             for (;;) 
             {
                 SerialCommand scmd;
@@ -721,8 +721,8 @@ namespace Flames
                 }
             }
         }
-        
-        void ClearSerialCommands() {
+
+        public void ClearSerialCommands() {
             lock (serialCmdsLock) { serialCmds.Clear(); }
         }
     }

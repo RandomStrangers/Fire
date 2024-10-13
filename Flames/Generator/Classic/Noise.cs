@@ -50,13 +50,13 @@ namespace Flames.Generator.Classic
             
             return c1 + v * (c2 - c1);
         }
-        
-        byte[] p = new byte[512];
+
+        public byte[] p = new byte[512];
     }
     
     public sealed class OctaveNoise 
     {
-        readonly ImprovedNoise[] baseNoise;
+        public readonly ImprovedNoise[] baseNoise;
         public OctaveNoise(int octaves, JavaRandom rnd) {
             baseNoise = new ImprovedNoise[octaves];
             for (int i = 0; i < octaves; i++)
@@ -77,7 +77,7 @@ namespace Flames.Generator.Classic
     
     public sealed class CombinedNoise 
     {
-        readonly OctaveNoise noise1, noise2;
+        public readonly OctaveNoise noise1, noise2;
         public CombinedNoise(OctaveNoise noise1, OctaveNoise noise2) {
             this.noise1 = noise1;
             this.noise2 = noise2;

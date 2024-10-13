@@ -45,8 +45,8 @@ namespace Flames.Commands.Chatting
                 Chat.MessageAll("&4Global Chat cleared.");
             }
         }
-        
-        static void ClearChat(Player p) {
+
+        public static void ClearChat(Player p) {
             for (int i = 0; i < 30; i++) 
             {
                 p.Session.SendMessage(CpeMessageType.Normal, "");

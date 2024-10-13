@@ -25,7 +25,7 @@ namespace Flames.Eco
     public static partial class Economy 
     {
         public static bool Enabled;
-        static Dictionary<string, List<string>> itemCfg = new Dictionary<string, List<string>>();
+        public static Dictionary<string, List<string>> itemCfg = new Dictionary<string, List<string>>();
         
         public static bool CheckIsEnabled(Player p, Command cmd) {
             if (Enabled) return true;
@@ -33,8 +33,8 @@ namespace Flames.Eco
             p.Message("Cannot use &T/{0} &Scurrently as economy is disabled", cmd.name);
             return false;
         }
-        
-        static List<string> GetConfig(string item) {
+
+        public static List<string> GetConfig(string item) {
             List<string> cfg;
             if (itemCfg.TryGetValue(item, out cfg)) return cfg;
             
@@ -63,8 +63,8 @@ namespace Flames.Eco
                 }
             }
         }
-        
-        static void ParseLine(string line) {
+
+        public static void ParseLine(string line) {
             string name, value;
             line.Separate(':', out name, out value);
             if (value.Length == 0) return;
@@ -80,7 +80,7 @@ namespace Flames.Eco
             if (item != null) item.LoadConfig(value);
         }
 
-        static readonly object saveLock = new object();
+        public static readonly object saveLock = new object();
         public static void Save() {
             try {
                 lock (saveLock) SaveCore();
@@ -88,8 +88,8 @@ namespace Flames.Eco
                 Logger.LogError("Error saving " + Paths.EconomyPropsFile, e);
             }
         }
-        
-        static void SaveCore() {
+
+        public static void SaveCore() {
             using (StreamWriter w = new StreamWriter(Paths.EconomyPropsFile, false)) {
                 w.WriteLine("enabled:" + Enabled);
                 

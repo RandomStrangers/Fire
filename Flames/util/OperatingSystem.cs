@@ -75,14 +75,14 @@ namespace Flames.Platform
             return info;
         }
 
-        
-        static IOperatingSystem detectedOS;
+
+        public static IOperatingSystem detectedOS;
         public static IOperatingSystem DetectOS() {
             detectedOS = detectedOS ?? DoDetectOS();
             return detectedOS;
         }
 
-        unsafe static IOperatingSystem DoDetectOS() {
+        public unsafe static IOperatingSystem DoDetectOS() {
             PlatformID platform = Environment.OSVersion.Platform;
             if (platform == PlatformID.Win32NT || platform == PlatformID.Win32Windows)
                 return new WindowsOS();
@@ -104,10 +104,10 @@ namespace Flames.Platform
         }
 
         [DllImport("libc")]
-        unsafe static extern void uname(sbyte* uname_struct);
+        public unsafe static extern void uname(sbyte* uname_struct);
     }
 
-    class WindowsOS : IOperatingSystem
+    public class WindowsOS : IOperatingSystem
     {
         public override bool IsWindows { get { return true; } }
         
@@ -123,10 +123,10 @@ namespace Flames.Platform
         }
 
         [DllImport("kernel32.dll")]
-        static extern int GetSystemTimes(out ulong idleTime, out ulong kernelTime, out ulong userTime);
+        public static extern int GetSystemTimes(out ulong idleTime, out ulong kernelTime, out ulong userTime);
     }
 
-    class UnixOS : IOperatingSystem
+    public class UnixOS : IOperatingSystem
     {
         public override bool IsWindows { get { return false; } }
         
@@ -138,8 +138,8 @@ namespace Flames.Platform
             //  instead of allowing a new instance to be spun up which will
             //  be spammed with constant errors
         }
-        
-        protected virtual void RestartInPlace() {
+
+        public virtual void RestartInPlace() {
             // With using normal Process.Start with mono, after Environment.Exit
             //  is called, all FDs (including standard input) are also closed.
             // Unfortunately, this causes the new server process to constantly error with
@@ -182,9 +182,9 @@ namespace Flames.Platform
         }
 
         [DllImport("libc", SetLastError = true)]
-        protected static extern int execvp(string path, string[] argv);
+        public static extern int execvp(string path, string[] argv);
 
-        protected static string GetProcessExePath() {
+        public static string GetProcessExePath() {
             return Process.GetCurrentProcess().MainModule.FileName;
         }
 
@@ -192,10 +192,10 @@ namespace Flames.Platform
         public override CPUTime MeasureAllCPUTime() { return default; }
 
         [DllImport("libc", SetLastError = true)]
-        protected unsafe static extern int sysctlbyname(string name, void* oldp, IntPtr* oldlenp, IntPtr newp, IntPtr newlen);
+        public unsafe static extern int sysctlbyname(string name, void* oldp, IntPtr* oldlenp, IntPtr newp, IntPtr newlen);
     }
 
-    class LinuxOS : UnixOS
+    public class LinuxOS : UnixOS
     {
         public override string StandaloneName {
             get { return IntPtr.Size == 8 ? "nix64" : "nix32"; }
@@ -237,7 +237,7 @@ namespace Flames.Platform
             return default;
         }
 
-        static CPUTime ParseCpuLine(string line) {
+        public static CPUTime ParseCpuLine(string line) {
             // "cpu  [USER TIME] [NICE TIME] [SYSTEM TIME] [IDLE TIME] [I/O WAIT TIME] [IRQ TIME] [SW IRQ TIME]"
             line = line.Replace("  ", " ");
             string[] bits = line.SplitSpaces();
@@ -256,7 +256,7 @@ namespace Flames.Platform
         }
 
 
-        protected override void RestartInPlace() {
+        public override void RestartInPlace() {
             try {
                 // try to restart using process's original command line arguments so that they are preserved
                 // e.g. for "mono --debug FlamesCLI.exe"
@@ -270,7 +270,7 @@ namespace Flames.Platform
             base.RestartInPlace();
         }
 
-        static string[] GetProcessCommandLineArgs() {
+        public static string[] GetProcessCommandLineArgs() {
             // /proc/self/cmdline returns the command line arguments
             //   of the process separated by NUL characters
             using (StreamReader r = new StreamReader("/proc/self/cmdline"))
@@ -283,7 +283,7 @@ namespace Flames.Platform
         }
     }
 
-    class FreeBSD_OS : UnixOS
+    public class FreeBSD_OS : UnixOS
     {
         // https://stackoverflow.com/questions/5329149/using-system-calls-from-c-how-do-i-get-the-utilization-of-the-cpus
         public unsafe override CPUTime MeasureAllCPUTime() {
@@ -302,7 +302,7 @@ namespace Flames.Platform
         }
     }
 
-    class NetBSD_OS : UnixOS
+    public class NetBSD_OS : UnixOS
     {
         // https://man.netbsd.org/sysctl.7
         public unsafe override CPUTime MeasureAllCPUTime() {
@@ -321,7 +321,7 @@ namespace Flames.Platform
         }
     }
 
-    class macOS : UnixOS
+    public class macOS : UnixOS
     {
         public override string StandaloneName { 
             get { return IntPtr.Size == 8 ? "mac64" : "mac32"; } 
@@ -344,8 +344,8 @@ namespace Flames.Platform
         }
 
         [DllImport("libc")]
-        static extern IntPtr mach_host_self();
+        public static extern IntPtr mach_host_self();
         [DllImport("libc")]
-        static extern int host_statistics(IntPtr port, int flavor, uint[] info, ref uint count);
+        public static extern int host_statistics(IntPtr port, int flavor, uint[] info, ref uint count);
     }
 }

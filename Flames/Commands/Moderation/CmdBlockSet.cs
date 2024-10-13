@@ -31,8 +31,8 @@ namespace Flames.Commands.Moderation {
             BlockPerms perms = BlockPerms.Find(block);
             SetPerms(p, args, data, perms, "block");
         }
-        
-        protected override void UpdatePerms(ItemPerms perms, Player p, string msg) {
+
+        public override void UpdatePerms(ItemPerms perms, Player p, string msg) {
             BlockPerms.Save();
             BlockPerms.ApplyChanges();
             

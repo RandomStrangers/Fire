@@ -42,8 +42,8 @@ namespace Flames.Commands.World {
                 ImportName(p, message);
             }
         }
-        
-        static void ImportWeb(Player p, string url) {
+
+        public static void ImportWeb(Player p, string url) {
             HttpUtil.FilterURL(ref url);
             byte[] data = HttpUtil.DownloadData(url, p);
             if (data == null) return;
@@ -56,8 +56,8 @@ namespace Flames.Commands.World {
             using (Stream src = new MemoryStream(data))
                 ImportFrom(p, src, path);
         }
-        
-        static void ImportFiles(Player p, string[] paths) {
+
+        public static void ImportFiles(Player p, string[] paths) {
             foreach (string path in paths)
             {
                 using (Stream src = File.OpenRead(path))
@@ -65,7 +65,7 @@ namespace Flames.Commands.World {
             }
         }
 
-        static void ImportName(Player p, string map) {
+        public static void ImportName(Player p, string map) {
             map = Path.GetFileNameWithoutExtension(map);
             string path = Paths.ImportsDir + map;
             
@@ -82,9 +82,9 @@ namespace Flames.Commands.World {
             string formats = IMapImporter.Formats.Join(x => x.Extension);
             p.Message("&WNo {0} file with that name was found in /extra/import folder.", formats);
         }
-        
-        
-        static void ImportFrom(Player p, Stream src, string path) {
+
+
+        public static void ImportFrom(Player p, Stream src, string path) {
             IMapImporter imp = IMapImporter.GetFor(path);
             if (imp == null) {
                 string formats = IMapImporter.Formats.Join(x => x.Extension);
@@ -95,8 +95,8 @@ namespace Flames.Commands.World {
             string map = Path.GetFileNameWithoutExtension(path);
             Import(p, imp, src, map);
         }
-        
-        static void Import(Player p, IMapImporter importer, Stream src, string map) {
+
+        public static void Import(Player p, IMapImporter importer, Stream src, string map) {
             if (LevelInfo.MapExists(map)) {
                 p.Message("&WMap {0} already exists. Rename the file to something else before importing", map);
                 return;

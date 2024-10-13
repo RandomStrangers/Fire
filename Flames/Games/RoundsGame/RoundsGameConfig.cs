@@ -24,13 +24,13 @@ namespace Flames.Games
 {
     /// <summary> Stores map-specific game configuration state. </summary>
     public abstract class RoundsGameMapConfig 
-    {    
-        protected void LoadFrom(ConfigElement[] cfg, string propsDir, string map) {
+    {
+        public void LoadFrom(ConfigElement[] cfg, string propsDir, string map) {
             string path = propsDir + map + ".properties";
             ConfigElement.ParseFile(cfg, path, this);
         }
-        
-        protected void SaveTo(ConfigElement[] cfg, string propsDir, string map) {
+
+        public void SaveTo(ConfigElement[] cfg, string propsDir, string map) {
             string path = propsDir + map + ".properties";
             if (!Directory.Exists(propsDir)) Directory.CreateDirectory(propsDir);
             ConfigElement.SerialiseSimple(cfg, path, this);
@@ -60,10 +60,10 @@ namespace Flames.Games
         /// <summary> Whether users are allowed to auto-join maps used by this game. </summary>
         /// <remarks> If false, users can only join these maps when manually /load ed. </remarks>
         public abstract bool AllowAutoload { get; }
-        protected abstract string GameName { get; }
+        public abstract string GameName { get; }
         public string Path;
-        
-        ConfigElement[] cfg;
+
+        public ConfigElement[] cfg;
         public virtual void Save() {
             if (cfg == null) cfg = ConfigElement.GetAll(GetType());
             

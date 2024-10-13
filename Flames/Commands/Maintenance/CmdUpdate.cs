@@ -22,13 +22,13 @@ namespace Flames.Commands.Maintenance
         public override string name { get { return "Update"; } }
         public override string shortcut { get { return ""; } }
         public override string type { get { return CommandTypes.Moderation; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
 
         public override void Use(Player p, string message, CommandData data)
         {
             DoUpdate(p);
         }
-        static void DoUpdate(Player p)
+        public static void DoUpdate(Player p)
         {
             if (!CheckPerms(p))
             {
@@ -37,7 +37,7 @@ namespace Flames.Commands.Maintenance
             Updater.PerformUpdate();
         }
 
-        static bool CheckPerms(Player p)
+        public static bool CheckPerms(Player p)
         {
             if (p.IsFire) return true;
 

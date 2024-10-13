@@ -23,8 +23,8 @@ namespace Flames.Drawing.Transforms
     {
         public override string Name { get { return "Rotate"; } }
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [angleX] [angleY] [angleZ]",
             "&HRotates the output of the draw operation around its bottom left corner",
             "&TArguments: [angleX] [angleY] [angleZ] centre",
@@ -51,15 +51,15 @@ namespace Flames.Drawing.Transforms
             rotater.CentreOrigin = true;
             return rotater;
         }
-        
-        static bool ParseAngle(Player p, string input, ref float angle) {
+
+        public static bool ParseAngle(Player p, string input, ref float angle) {
             if (!CommandParser.GetReal(p, input, "Angle", ref angle, -360, 360)) {
                 p.MessageLines(HelpString); return false;
             }
             return true;
         }
-        
-        static bool IsCentre(string input) {
+
+        public static bool IsCentre(string input) {
             return input.CaselessEq("centre") || input.CaselessEq("center");
         }
     }

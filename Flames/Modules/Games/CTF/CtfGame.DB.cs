@@ -24,33 +24,33 @@ namespace Flames.Modules.Games.CTF
 {
     public partial class CTFGame : RoundsGame 
     {
-        struct CtfStats { public int Points, Captures, Tags; }
-        
-        static ColumnDesc[] ctfTable = new ColumnDesc[] {
+        public struct CtfStats { public int Points, Captures, Tags; }
+
+        public static ColumnDesc[] ctfTable = new ColumnDesc[] {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
             new ColumnDesc("Name", ColumnType.VarChar, 20),
             new ColumnDesc("Points", ColumnType.UInt24),
             new ColumnDesc("Captures", ColumnType.UInt24),
             new ColumnDesc("tags", ColumnType.UInt24),
         };
-        
-        static CtfStats ParseStats(ISqlRecord record) {
+
+        public static CtfStats ParseStats(ISqlRecord record) {
             CtfStats stats;
             stats.Points   = record.GetInt("Points");
             stats.Captures = record.GetInt("Captures");
             stats.Tags     = record.GetInt("Tags");
             return stats;
         }
-        
-        static CtfStats LoadStats(string name) {
+
+        public static CtfStats LoadStats(string name) {
             CtfStats stats = default;
             Database.ReadRows("CTF", "*",
                                 record => stats = ParseStats(record),
                                 "WHERE Name=@0", name);
             return stats;
         }
-        
-        protected override void SaveStats(Player p) {
+
+        public override void SaveStats(Player p) {
             CtfData data = TryGet(p);
             if (data == null || data.Points == 0 && data.Captures == 0 && data.Tags == 0) return;
             

@@ -77,8 +77,8 @@ namespace Flames.Commands.Building
                 HandleOther(p, parts, offsetIndex);
             }
         }
-        
-        void HandleOther(Player p, string[] parts, int offsetIndex) {
+
+        public void HandleOther(Player p, string[] parts, int offsetIndex) {
             CopyArgs cArgs = new CopyArgs();
             cArgs.offsetIndex = offsetIndex;
             
@@ -97,8 +97,8 @@ namespace Flames.Commands.Building
             int marks = cArgs.offsetIndex != -1 ? 3 : 2;
             p.MakeSelection(marks, "Selecting region for &SCopy", cArgs, DoCopy, DoCopyMark);
         }
-        
-        void CompleteCopy(Player p, Vec3S32[] m, CopyArgs cArgs) {
+
+        public void CompleteCopy(Player p, Vec3S32[] m, CopyArgs cArgs) {
             if (!cArgs.cut) return;
             DrawOp op = new CuboidDrawOp();
 
@@ -108,7 +108,7 @@ namespace Flames.Commands.Building
             DrawOpPerformer.Do(op, brush, p, new Vec3S32[] { m[0], m[1] }, false);
         }
 
-        void DoCopyMark(Player p, Vec3S32[] m, int i, object state, BlockID block) {
+        public void DoCopyMark(Player p, Vec3S32[] m, int i, object state, BlockID block) {
             CopyArgs cArgs = (CopyArgs)state;
             if (i == 2) {
                 CopyState copy = p.CurrentCopy;
@@ -168,11 +168,11 @@ namespace Flames.Commands.Building
                 CompleteCopy(p, m, cArgs);
             }
         }
-        
-        bool DoCopy(Player p, Vec3S32[] m, object state, BlockID block) { return false; }
-        class CopyArgs { public int offsetIndex; public bool cut, air; }
-        
-        void SaveCopy(Player p, string file) {
+
+        public bool DoCopy(Player p, Vec3S32[] m, object state, BlockID block) { return false; }
+        public class CopyArgs { public int offsetIndex; public bool cut, air; }
+
+        public void SaveCopy(Player p, string file) {
             if (!Directory.Exists("extra/savecopy"))
                 Directory.CreateDirectory("extra/savecopy");
             if (!Directory.Exists("extra/savecopy/" + p.name))
@@ -196,7 +196,7 @@ namespace Flames.Commands.Building
             p.Message("Saved copy as " + file);
         }
 
-        void LoadCopy(Player p, string file) {
+        public void LoadCopy(Player p, string file) {
             string path = FindCopy(p.name, file);
             if (path == null) { p.Message("No such copy exists"); return; }
             
@@ -215,8 +215,8 @@ namespace Flames.Commands.Building
             }
             p.Message("Loaded copy from " + file);
         }
-        
-        static string FindCopy(string player, string file) {
+
+        public static string FindCopy(string player, string file) {
             string path = "extra/savecopy/" + player + "/" + file;
             bool existsNew = File.Exists(path + ".cpb");
             bool existsOld = File.Exists(path + ".cpy");

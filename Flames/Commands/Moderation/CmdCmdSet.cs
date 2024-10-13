@@ -49,8 +49,8 @@ namespace Flames.Commands.Moderation {
                 SetPerms(p, args, data, perms, "extra permission");
             }
         }
-        
-        protected override void UpdatePerms(ItemPerms perms, Player p, string msg) {
+
+        public override void UpdatePerms(ItemPerms perms, Player p, string msg) {
             if (perms is CommandPerms) {
                 CommandPerms.Save();
                 CommandPerms.ApplyChanges();

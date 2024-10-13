@@ -88,8 +88,8 @@ namespace Flames {
         public static bool FilterLevel(Player pl, object arg) {
             return pl.level == arg && !pl.Ignores.All;
         }
-        
-        static bool DeprecatedFilter(Player pl, object arg)   { return false; }    
+
+        public static bool DeprecatedFilter(Player pl, object arg)   { return false; }    
         public static bool FilterRank(Player pl, object arg)  { return pl.Rank == (LevelPermission)arg; }
         public static bool FilterPerms(Player pl, object arg) { return ((ItemPerms)arg).UsableBy(pl); }
         public static bool FilterPM(Player pl, object arg)    { return pl == arg; }
@@ -214,9 +214,9 @@ namespace Flames {
             }
             source.CheckForMessageSpam();
         }
-        
-                
-        static string UnescapeMessage(Player pl, Player src, string msg) {
+
+
+        public static string UnescapeMessage(Player pl, Player src, string msg) {
             string nick = pl.FormatNick(src);
             msg = msg.Replace("λNICK", nick);
             
@@ -228,8 +228,8 @@ namespace Flames {
                 return msg.Replace("λFULL", src.FullName);
             }
         }
-        
-        internal static string ParseInput(string text, out bool isCommand) {
+
+        public static string ParseInput(string text, out bool isCommand) {
             isCommand = false;
             // Typing //Command appears in chat as /command
             // Suggested by McMrCat
@@ -240,17 +240,17 @@ namespace Flames {
             return text.Substring(1);
         }
     }
-    
-    internal class PersistentMessages 
+
+    public class PersistentMessages 
     {
-        class PersistentMessage 
+        public class PersistentMessage 
         {
             public string message; 
             public PersistentMessagePriority priority;
         }
-        
-        readonly object locker = new object();
-        Dictionary<CpeMessageType, List<PersistentMessage>> persistentMsgs = 
+
+        public readonly object locker = new object();
+        public Dictionary<CpeMessageType, List<PersistentMessage>> persistentMsgs = 
             new Dictionary<CpeMessageType, List<PersistentMessage>>();
         
         /// <returns> false if there is currently a higher priority persistent message set for the given type </returns>
@@ -299,8 +299,8 @@ namespace Flames {
             }
             return true;
         }
-        
-        static bool IsPersistent(CpeMessageType type) {
+
+        public static bool IsPersistent(CpeMessageType type) {
             return 
                 type == CpeMessageType.Status1 || type == CpeMessageType.Status2 || type == CpeMessageType.Status3 ||
                 type == CpeMessageType.BottomRight1 || type == CpeMessageType.BottomRight2 || type == CpeMessageType.BottomRight3;

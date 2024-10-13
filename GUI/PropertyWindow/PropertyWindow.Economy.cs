@@ -25,8 +25,8 @@ using Flames.Generator;
 namespace Flames.Gui {
 
     public partial class PropertyWindow : Form {
-        
-        void LoadEcoProps() {
+
+        public void LoadEcoProps() {
             eco_cbEnabled.Checked = Economy.Enabled;
             eco_txtCurrency.Text = Server.Config.Currency;
             Eco_UpdateEnables();
@@ -53,13 +53,13 @@ namespace Flames.Gui {
             }
             eco_dgvMaps.DataError += eco_dgv_DataError;
         }
-        
-        void ApplyEcoProps() {
+
+        public void ApplyEcoProps() {
             Economy.Enabled = eco_cbEnabled.Checked;
             Server.Config.Currency = eco_txtCurrency.Text;
         }
-        
-        class NumericalCell : DataGridViewTextBoxCell {
+
+        public class NumericalCell : DataGridViewTextBoxCell {
             protected override bool SetValue(int rowIndex, object raw) {
                 if (raw == null) return true;
                 string str = raw.ToString(); int num;
@@ -68,8 +68,8 @@ namespace Flames.Gui {
                 return base.SetValue(rowIndex, raw);
             }
         }
-        
-        class ThemeCell : DataGridViewComboBoxCell {
+
+        public class ThemeCell : DataGridViewComboBoxCell {
             protected override object GetFormattedValue(object value, int rowIndex, 
                                                         ref DataGridViewCellStyle cellStyle, TypeConverter valueTypeConverter, 
                                                         TypeConverter formattedValueTypeConverter, DataGridViewDataErrorContexts context) {
@@ -77,9 +77,9 @@ namespace Flames.Gui {
                 return gen != null ? gen.Theme : null;
             }
         }
-        
-        
-        void Eco_UpdateEnables() {
+
+
+        public void Eco_UpdateEnables() {
             eco_lblCurrency.Enabled = eco_cbEnabled.Checked;
             eco_txtCurrency.Enabled = eco_cbEnabled.Checked;
             eco_lblCfg.Enabled = eco_cbEnabled.Checked;
@@ -89,12 +89,12 @@ namespace Flames.Gui {
             eco_gbLvl.Enabled = eco_cbEnabled.Checked;
             eco_gbRank.Enabled  = eco_cbEnabled.Checked;
         }
-        
-        void eco_cbEnabled_CheckedChanged(object sender, EventArgs e) {
+
+        public void eco_cbEnabled_CheckedChanged(object sender, EventArgs e) {
             Eco_UpdateEnables();
         }
-        
-        void Eco_cmbCfg_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void Eco_cmbCfg_SelectedIndexChanged(object sender, EventArgs e) {
             string text = "(none)";
             if (eco_cmbCfg.SelectedIndex != -1) {
                 text = eco_cmbCfg.SelectedItem.ToString();
@@ -123,45 +123,45 @@ namespace Flames.Gui {
                 Eco_UpdateItem();
             }
         }
-        
-        SimpleItem eco_curItem;
-        void Eco_UpdateItemEnables() {
+
+        public SimpleItem eco_curItem;
+        public void Eco_UpdateItemEnables() {
             eco_lblItemPrice.Enabled = eco_cbItem.Checked;
             eco_numItemPrice.Enabled = eco_cbItem.Checked;
             eco_lblItemRank.Enabled  = eco_cbItem.Checked;
             eco_cmbItemRank.Enabled   = eco_cbItem.Checked;
         }
-        
-        void Eco_UpdateItem() {
+
+        public void Eco_UpdateItem() {
             eco_gbItem.Text = eco_curItem.Name;
             eco_numItemPrice.Value = eco_curItem.Price;
             Eco_UpdateItemEnables();
             
             GuiPerms.SetSelectedRank(eco_cmbItemRank, eco_curItem.PurchaseRank);
         }
-        
-        void eco_cbItem_CheckedChanged(object sender, EventArgs e) {
+
+        public void eco_cbItem_CheckedChanged(object sender, EventArgs e) {
             Eco_UpdateItemEnables();
             eco_curItem.Enabled = eco_cbItem.Checked;
         }
-        
-        void eco_numItemPrice_ValueChanged(object sender, EventArgs e) {
+
+        public void eco_numItemPrice_ValueChanged(object sender, EventArgs e) {
             eco_curItem.Price = (int)eco_numItemPrice.Value;
         }
-        
-        void eco_cmbItemRank_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void eco_cmbItemRank_SelectedIndexChanged(object sender, EventArgs e) {
             const LevelPermission perm = LevelPermission.Guest;
             if (eco_curItem == null) return;
 
             eco_curItem.PurchaseRank = GuiPerms.GetSelectedRank(eco_cmbItemRank, perm);
         }
 
-        
-        void Eco_UpdateRankEnables() {
+
+        public void Eco_UpdateRankEnables() {
             eco_dgvRanks.Enabled = eco_cbRank.Enabled;
         }
-        
-        void Eco_UpdateRanks() {
+
+        public void Eco_UpdateRanks() {
             eco_dgvRanks.Rows.Clear();
             foreach (Group grp in Group.GroupList)
             {
@@ -174,13 +174,13 @@ namespace Flames.Gui {
             
             Eco_UpdateRankEnables();
         }
-        
-        void eco_cbRank_CheckedChanged(object sender, EventArgs e) {
+
+        public void eco_cbRank_CheckedChanged(object sender, EventArgs e) {
             Eco_UpdateRankEnables();
             Economy.Ranks.Enabled = eco_cbRank.Checked;
         }
-        
-        void eco_dgv_DataError(object sender, DataGridViewDataErrorEventArgs e) {
+
+        public void eco_dgv_DataError(object sender, DataGridViewDataErrorEventArgs e) {
             string col = eco_dgvMaps.Columns[e.ColumnIndex].HeaderText;
             if (e.ColumnIndex > 0) {
                 Popup.Warning(col + " must be an integer greater than zero");
@@ -188,8 +188,8 @@ namespace Flames.Gui {
                 Popup.Warning("Error setting contents of column " + col);
             }
         }
-        
-        void eco_dgvRanks_CellValueChanged(object sender, DataGridViewCellEventArgs e) {
+
+        public void eco_dgvRanks_CellValueChanged(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex == -1) return;
             DataGridViewRow row = eco_dgvRanks.Rows[e.RowIndex];
             object price        = row.Cells[1].Value;
@@ -204,14 +204,14 @@ namespace Flames.Gui {
             if (rank.Price == 0) Economy.Ranks.Remove(perm);
         }
 
-        
-        void Eco_UpdateLevelEnables() {
+
+        public void Eco_UpdateLevelEnables() {
             eco_dgvMaps.Enabled   = eco_cbLvl.Checked;
             eco_btnLvlAdd.Enabled = eco_cbLvl.Checked;
             eco_btnLvlDel.Enabled = eco_cbLvl.Checked;
         }
-        
-        void Eco_UpdateLevels() {
+
+        public void Eco_UpdateLevels() {
             eco_dgvMaps.Rows.Clear();
             foreach (LevelItem.LevelPreset p in Economy.Levels.Presets) 
             {
@@ -219,13 +219,13 @@ namespace Flames.Gui {
             }
             Eco_UpdateLevelEnables();
         }
-        
-        void eco_lvlEnabled_CheckedChanged(object sender, EventArgs e) {
+
+        public void eco_lvlEnabled_CheckedChanged(object sender, EventArgs e) {
             Eco_UpdateLevelEnables();
             Economy.Levels.Enabled = eco_cbLvl.Checked;
         }
-        
-        void eco_dgvMaps_Apply() {
+
+        public void eco_dgvMaps_Apply() {
             List<LevelItem.LevelPreset> presets = new List<LevelItem.LevelPreset>();
             foreach (DataGridViewRow row in eco_dgvMaps.Rows) 
             {
@@ -243,18 +243,18 @@ namespace Flames.Gui {
             }
             Economy.Levels.Presets = presets;
         }
-        
-        void eco_dgvMaps_CellValueChanged(object sender, DataGridViewCellEventArgs e) {
+
+        public void eco_dgvMaps_CellValueChanged(object sender, DataGridViewCellEventArgs e) {
             if (e.RowIndex >= 0) eco_dgvMaps_Apply();
         }
-        
-        void eco_lvlAdd_Click(object sender, EventArgs e) {
+
+        public void eco_lvlAdd_Click(object sender, EventArgs e) {
             string name = "preset_" + (eco_dgvMaps.RowCount + 1);
             eco_dgvMaps.Rows.Add(name, 1000, "64", "64", "64", "flat");
             eco_dgvMaps_Apply();
         }
-        
-        void eco_lvlDelete_Click(object sender, EventArgs e) {
+
+        public void eco_lvlDelete_Click(object sender, EventArgs e) {
             if (eco_dgvMaps.SelectedRows.Count == 0) {
                 Popup.Warning("No available presets to remove");
             } else {

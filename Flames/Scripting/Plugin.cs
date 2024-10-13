@@ -30,7 +30,6 @@ using Flames.Modules.Relay.IRC;
 using Flames.Modules.Security;
 using Flames.Network;
 using Flames.Scripting;
-using static System.Net.WebRequestMethods;
 
 namespace Flames 
 {
@@ -94,8 +93,7 @@ namespace Flames
             string ver = pl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for plugins
-            WebClient client = HttpUtil.CreateWebClient();
-            string CurrentVersion = client.DownloadString("https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/current.txt");
+            string CurrentVersion = Server.FlamesVersion;
 
             if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
@@ -132,8 +130,8 @@ namespace Flames
             core.Remove(pl);
             return success;
         }
-        
-        static bool UnloadPlugin(Plugin pl, bool auto) {
+
+        public static bool UnloadPlugin(Plugin pl, bool auto) {
             try {
                 pl.Unload(auto);
                 return true;
@@ -171,8 +169,8 @@ namespace Flames
             LoadCorePlugin(new ZSPlugin());
             IScripting.AutoloadPlugins();
         }
-        
-        static void LoadCorePlugin(Plugin plugin) {
+
+        public static void LoadCorePlugin(Plugin plugin) {
             List<string> disabled = Server.Config.DisabledModules;
             if (disabled.CaselessContains(plugin.name)) return;
             

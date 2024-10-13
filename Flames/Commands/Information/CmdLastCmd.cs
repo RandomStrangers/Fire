@@ -39,8 +39,8 @@ namespace Flames.Commands.Info
                 if (who != null) ShowLastCommand(p, who);
             }
         }
-        
-        static void ShowLastCommand(Player p, Player target) {
+
+        public static void ShowLastCommand(Player p, Player target) {
             if (target.lastCMD.Length == 0) {
                 p.Message("{0} &Shas not used any commands yet.", 
                           p.FormatNick(target));

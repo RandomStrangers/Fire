@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Flames.Modules.Moderation.Notes
 {
-    class CmdNotes : Command2
+    public class CmdNotes : Command2
     {
         public override string name { get { return "Notes"; } }
         public override string type { get { return CommandTypes.Moderation; } }
@@ -39,8 +39,8 @@ namespace Flames.Modules.Moderation.Notes
             string modifier = args.Length > 1 ? args[1] : "";
             PrintNotes(p, "Notes " + name, name, modifier);
         }
-        
-        protected static void PrintNotes(Player p, string cmd, string name, string modifier) {
+
+        public static void PrintNotes(Player p, string cmd, string name, string modifier) {
             if (!Server.Config.LogNotes) {
                 p.Message("The server does not have notes logging enabled."); return;
             }
@@ -65,8 +65,8 @@ namespace Flames.Modules.Moderation.Notes
             Paginator.Output(p, notes, PrintNote,
                              cmd, "Notes", modifier);
         }
-        
-        static void PrintNote(Player p, string line) {
+
+        public static void PrintNote(Player p, string line) {
             string[] args = line.SplitSpaces();
             if (args.Length <= 3) return;
             
@@ -79,8 +79,8 @@ namespace Flames.Modules.Moderation.Notes
                       duration      == 0 ? "" : " for " + TimeSpan.FromTicks(duration).Shorten(true),
                       reason.Length == 0 ? "" : " - "   + reason.Replace("%20", " "));
         }
-        
-        static string Action(string arg) {
+
+        public static string Action(string arg) {
             if (arg.CaselessEq("W")) return "Warned";
             if (arg.CaselessEq("K")) return "Kicked";
             if (arg.CaselessEq("M")) return "Muted";
@@ -96,8 +96,8 @@ namespace Flames.Modules.Moderation.Notes
             p.Message("&HNotes are things such as bans, kicks, warns, mutes.");
         }
     }
-    
-    sealed class CmdMyNotes : CmdNotes
+
+    public sealed class CmdMyNotes : CmdNotes
     {
         public override string name { get { return "MyNotes"; } }
         public override string type { get { return CommandTypes.Other; } }

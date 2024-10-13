@@ -58,10 +58,10 @@ namespace Flames.Commands.Info
             if (HasExtraPerm(p, data.Rank, 1)) OutputResourceUsage(p);
         }
 
-        static DateTime startTime;
-        static ProcInfo startUsg;
+        public static DateTime startTime;
+        public static ProcInfo startUsg;
 
-        static void OutputResourceUsage(Player p) {
+        public static void OutputResourceUsage(Player p) {
             Process proc = Process.GetCurrentProcess();
             p.Message("Measuring resource usage...one second");
             IOperatingSystem os = IOperatingSystem.DetectOS();
@@ -97,7 +97,7 @@ namespace Flames.Commands.Info
                 endUsg.NumThreads, memory);
         }
 
-        static string MeasureCPU(TimeSpan beg, TimeSpan end, TimeSpan interval) {
+        public static string MeasureCPU(TimeSpan beg, TimeSpan end, TimeSpan interval) {
             if (end < beg) return "0.00"; // TODO: Can this ever happen
             int cores = Math.Max(1, Environment.ProcessorCount);
 

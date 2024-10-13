@@ -38,7 +38,7 @@ namespace Flames.Commands.CPE
             UseBotOrPlayer(p, data, message, "skin");
         }
 
-        protected override void SetBotData(Player p, PlayerBot bot, string skin) {
+        public override void SetBotData(Player p, PlayerBot bot, string skin) {
             skin = ParseSkin(p, skin, bot.name);
             if (skin == null) return;
             
@@ -49,8 +49,8 @@ namespace Flames.Commands.CPE
             bot.GlobalSpawn();
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetPlayerData(Player p, string target, string skin) {
+
+        public override void SetPlayerData(Player p, string target, string skin) {
             string rawName = target.RemoveLastPlus();
             skin = ParseSkin(p, skin, rawName);    
             if (skin == null) return;
@@ -72,8 +72,8 @@ namespace Flames.Commands.CPE
             }
             Server.skins.Save();
         }
-        
-        static string ParseSkin(Player p, string skin, string defSkin) {
+
+        public static string ParseSkin(Player p, string skin, string defSkin) {
             if (skin.Length == 0) skin = defSkin;
             if (skin[0] == '+')
                 skin = "https://minotar.net/skin/" + skin.Substring(1) + ".png";

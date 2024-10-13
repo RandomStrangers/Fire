@@ -44,10 +44,10 @@ namespace Flames.SQL
         public abstract void LoadDependencies();
         /// <summary> Creates the schema for this database (if required). </summary>
         public abstract void CreateDatabase();
-        
-        protected internal virtual void ParseCreate(ref string cmd) { }
-        
-        protected static List<string> GetStrings(string sql, params object[] args) {
+
+        public virtual void ParseCreate(ref string cmd) { }
+
+        public static List<string> GetStrings(string sql, params object[] args) {
             List<string> values = new List<string>();
             Database.Iterate(sql, 
                             record => values.Add(record.GetText(0)), 
@@ -78,8 +78,8 @@ namespace Flames.SQL
             sql.AppendLine(");");
             return sql.ToString();
         }
-        
-        protected abstract void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns);
+
+        public abstract void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns);
         
         /// <summary> Returns SQL for completely removing the given table. </summary>
         public virtual string DeleteTableSql(string table) {
@@ -129,9 +129,9 @@ namespace Flames.SQL
         
         /// <summary> Returns SQL for adding or replacing a row (same primary key) in the given table. </summary>
         public abstract string AddOrReplaceRowSql(string table, string columns, int numArgs);
-      
-        
-        protected string InsertSql(string cmd, string table, string columns, int numArgs) {
+
+
+        public string InsertSql(string cmd, string table, string columns, int numArgs) {
             StringBuilder sql = new StringBuilder(cmd);
             sql.Append(" `").Append(table).Append("` ");
             sql.Append('(').Append(columns).Append(')');
@@ -199,9 +199,9 @@ namespace Flames.SQL
                 cmd.AddParameter(names[i], parameters[i]);
             }
         }
-        
-        volatile static string[] ids;
-        internal static string[] GetNames(int count) {
+
+        public volatile static string[] ids;
+        public static string[] GetNames(int count) {
             // Avoid allocation overhead from string concat every query by caching
             string[] names = ids;
             if (names == null || count > names.Length) {

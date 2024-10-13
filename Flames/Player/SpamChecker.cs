@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using Flames.Events;
 
 namespace Flames {
-    internal sealed class SpamChecker {
+    public sealed class SpamChecker {
         
         public SpamChecker(Player p) {
             this.p = p;
@@ -25,10 +25,10 @@ namespace Flames {
             chatLog  = new List<DateTime>(Server.Config.ChatSpamCount);
             cmdLog   = new List<DateTime>(Server.Config.CmdSpamCount);
         }
-        
-        Player p;
-        readonly object chatLock = new object(), cmdLock = new object();
-        readonly List<DateTime> blockLog, chatLog, cmdLog;
+
+        public Player p;
+        public readonly object chatLock = new object(), cmdLock = new object();
+        public readonly List<DateTime> blockLog, chatLog, cmdLog;
         
         public void Clear() {
             blockLog.Clear();

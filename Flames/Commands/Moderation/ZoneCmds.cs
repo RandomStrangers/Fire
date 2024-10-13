@@ -62,8 +62,8 @@ namespace Flames.Commands.Moderation {
                 CreateZone(p, args, data, 0);
             }
         }
-        
-        void CreateZone(Player p, string[] args, CommandData data, int offset) {
+
+        public void CreateZone(Player p, string[] args, CommandData data, int offset) {
             if (p.level.FindZoneExact(args[offset]) != null) {
                 p.Message("A zone with that name already exists. Use &T/zedit &Sto change it.");
                 return;
@@ -83,8 +83,8 @@ namespace Flames.Commands.Moderation {
             p.Message("Place or break two blocks to determine the edges.");
             p.MakeSelection(2, "Selecting region for &SNew zone", z, AddZone);
         }
-        
-        bool AddZone(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool AddZone(Player p, Vec3S32[] marks, object state, BlockID block) {
             Zone zone = (Zone)state;
             zone.MinX = (ushort)Math.Min(marks[0].X, marks[1].X);
             zone.MinY = (ushort)Math.Min(marks[0].Y, marks[1].Y);
@@ -98,8 +98,8 @@ namespace Flames.Commands.Moderation {
             p.Message("Created zone " + zone.ColoredName);
             return false;
         }
-        
-        void DeleteZone(Player p, string[] args, CommandData data) {
+
+        public void DeleteZone(Player p, string[] args, CommandData data) {
             Level lvl = p.level;
             Zone zone = Matcher.FindZones(p, lvl, args[1]);
             if (zone == null) return;
@@ -111,12 +111,12 @@ namespace Flames.Commands.Moderation {
             p.Message("Zone {0} &Sdeleted", zone.ColoredName);
             lvl.Save(true);
         }
-        
-        void EditZone(Player p, string[] args, CommandData data, Zone zone) {
+
+        public void EditZone(Player p, string[] args, CommandData data, Zone zone) {
             PermissionCmd.Do(p, args, 2, false, zone.Access, data, p.level);
         }
-        
-        void SetZoneProp(Player p, string[] args, Zone zone) {
+
+        public void SetZoneProp(Player p, string[] args, Zone zone) {
             ColorDesc desc = default;
             if (args.Length < 4) { 
                 p.Message("No value provided. See &T/Help zone properties");
@@ -146,8 +146,8 @@ namespace Flames.Commands.Moderation {
             }
             p.level.Save(true);
         }
-        
-        void OnChangedZone(Zone zone) {
+
+        public void OnChangedZone(Zone zone) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) {
                 if (pl.ZoneIn == zone) OnChangedZoneEvent.Call(pl);
@@ -193,8 +193,8 @@ namespace Flames.Commands.Moderation {
             p.Message("Place or delete a block where you would like to check for zones.");
             p.MakeSelection(1, "Selecting point for &SZone check", data, TestZone);
         }
-        
-        bool TestZone(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool TestZone(Player p, Vec3S32[] marks, object state, BlockID block) {
             Vec3S32 P = marks[0];
             Level lvl = p.level;
             bool found = false;
@@ -232,8 +232,8 @@ namespace Flames.Commands.Moderation {
             Paginator.Output(p, zones, PrintZone, 
                              "ZoneList", "zones", message);
         }
-        
-        static void PrintZone(Player p, Zone zone) {
+
+        public static void PrintZone(Player p, Zone zone) {
             p.Message("{0} &b- ({1}, {2}, {3}) to ({4}, {5}, {6})",
                       zone.ColoredName, 
                       zone.MinX, zone.MinY, zone.MinZ,

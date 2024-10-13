@@ -44,8 +44,8 @@ namespace Flames.Commands.Info
                 p.Message("Could not find command, plugin or block specified.");
             }
         }
-        
-        static void PrintHelpMenu(Player p) {
+
+        public static void PrintHelpMenu(Player p) {
             p.Message("&HCommand Categories:");
             p.Message("  &T{0}", CmdCommands.GetCategories());
             p.Message("&HOther Categories:");
@@ -58,16 +58,16 @@ namespace Flames.Commands.Info
             p.Message("&HTo join a map, type &T/Goto WorldName");
             p.Message("&HTo send private messages, type &T@PlayerName Message");
         }
-        
-        static void PrintRanks(Player p) {
+
+        public static void PrintRanks(Player p) {
             foreach (Group grp in Group.GroupList) 
             {
                 p.Message("{0} &S- Draw: {1}, Perm: {2}, max realms: {3}",
                           grp.ColoredName, grp.DrawLimit, (int)grp.Permission, grp.OverseerMaps);
             }
         }
-        
-        static void PrintColors(Player p) {
+
+        public static void PrintColors(Player p) {
             p.Message("&fTo use a color, put a '%' and then put the color code.");
             p.Message("Colors Available:");
             
@@ -87,8 +87,8 @@ namespace Flames.Commands.Info
                 CmdCustomColors.PrintColor(p, color);
             }
         }
-        
-        static void PrintEmotes(Player p, string message) {
+
+        public static void PrintEmotes(Player p, string message) {
             char[] emotes = EmotesHandler.ControlCharReplacements.ToCharArray();
             emotes[0] = EmotesHandler.ExtendedCharReplacements[0]; // replace NULL with house
             
@@ -97,8 +97,8 @@ namespace Flames.Commands.Info
             Paginator.Output(p, emotes, PrintEmote,
                              "Help emotes", "emotes", modifier);
         }
-        
-        static void PrintEmote(Player p, char emote) {
+
+        public static void PrintEmote(Player p, char emote) {
             List<string> keywords = new List<string>();
             foreach (var kvp in EmotesHandler.Keywords) 
             {
@@ -106,25 +106,32 @@ namespace Flames.Commands.Info
             }
             p.Message("&f{0} &S- {1}", emote, keywords.Join());
         }
-        
-        bool ParseCommand(Player p, string message) {
+
+        public bool ParseCommand(Player p, string message) {
             string[] args = message.SplitSpaces(2);
             string cmdName = args[0], cmdArgs = "";
             Search(ref cmdName, ref cmdArgs);
             
             Command cmd = Find(cmdName);
             if (cmd == null) return false;
-            
-            if (args.Length == 1) {
+
+            if (args.Length == 1)
+            {
                 cmd.Help(p);
                 Formatter.PrintCommandInfo(p, cmd);
-            } else {
+            }
+            else if (args.Length == 1 && !ShowCommandInfo)
+            {
+                cmd.Help(p);
+            } 
+            else 
+            {
                 cmd.Help(p, args[1]);
             }
             return true;
         }
-        
-        bool ParseBlock(Player p, string message) {
+
+        public bool ParseBlock(Player p, string message) {
             BlockID block = Block.Parse(p, message);
             if (block == Block.Invalid) return false;
             
@@ -135,8 +142,8 @@ namespace Flames.Commands.Info
             DescribePhysics(p, message, block);
             return true;
         }
-        
-        void DescribePhysics(Player p, string message, BlockID b) {
+
+        public void DescribePhysics(Player p, string message, BlockID b) {
             BlockProps props = p.IsSuper ? Block.Props[b] : p.level.Props[b];
             
             if (props.IsDoor) {
@@ -209,8 +216,8 @@ namespace Flames.Commands.Info
                                "sharks and lava sharks eat players they touch.");
             }
         }
-        
-        bool ParsePlugin(Player p, string message) {
+
+        public bool ParsePlugin(Player p, string message) {
             Plugin pl = Plugin.FindCustom(message);
             if (pl == null) return false;
             

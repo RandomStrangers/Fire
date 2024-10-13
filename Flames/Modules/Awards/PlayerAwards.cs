@@ -23,11 +23,11 @@ namespace Flames.Modules.Awards
 {
     /// <summary> Manages which players have which awards. </summary>
     public static class PlayerAwards 
-    {  
-        struct PlayerAward { public string Player; public List<string> Awards; }
+    {
+        public struct PlayerAward { public string Player; public List<string> Awards; }
 
         /// <summary> List of all players who have awards </summary>
-        static List<PlayerAward> Awards = new List<PlayerAward>();
+        public static List<PlayerAward> Awards = new List<PlayerAward>();
         
         
         /// <summary> Adds the given award to the given player's list of awards </summary>
@@ -75,8 +75,8 @@ namespace Flames.Modules.Awards
             return count + "/" + total + " (" + percentHas + "%)";
         }
 
-        
-        static readonly object saveLock = new object();
+
+        public static readonly object saveLock = new object();
         public static void Save() {
             lock (saveLock)
                 using (StreamWriter w = new StreamWriter("text/playerAwards.txt"))
@@ -90,8 +90,8 @@ namespace Flames.Modules.Awards
             Awards = new List<PlayerAward>();
             PropertiesFile.Read("text/playerAwards.txt", ProcessLine, ':');
         }
-        
-        static void ProcessLine(string key, string value) {
+
+        public static void ProcessLine(string key, string value) {
             if (value.Length == 0) return;
             PlayerAward a;
             a.Player = key;

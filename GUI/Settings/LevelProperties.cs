@@ -17,13 +17,11 @@
  */
 using System;
 using System.ComponentModel;
-using Flames.Commands.World;
-using Flames.UI;
 
 namespace Flames.Gui {
-    public sealed class LevelProperties {     
-        readonly Level lvl;
-        readonly LevelConfig cfg;
+    public sealed class LevelProperties {
+        public readonly Level lvl;
+        public readonly LevelConfig cfg;
         
         public LevelProperties(Level lvl) {
             this.lvl = lvl;
@@ -126,13 +124,13 @@ namespace Flames.Gui {
         [Category("Survival")]
         [DisplayName("Fall height")]
         public int FallHeight { get { return cfg.FallHeight; } set { DoMap(LevelOptions.Fall, value); } }
-        
-        
-        bool GetAutoload() {
+
+
+        public bool GetAutoload() {
             return Server.AutoloadMaps.Contains(lvl.name);
         }
-        
-        void SetAutoload(bool value) {
+
+        public void SetAutoload(bool value) {
             if (value) {
                 Server.AutoloadMaps.Update(lvl.name, lvl.physics.ToString());
             } else {
@@ -140,9 +138,9 @@ namespace Flames.Gui {
             }
             Server.AutoloadMaps.Save();
         }
-        
-        void DoMap(string key, object raw) { DoCmd("Map", key + " " + raw); }
-        void DoCmd(string cmd, object raw) {
+
+        public void DoMap(string key, object raw) { DoCmd("Map", key + " " + raw); }
+        public void DoCmd(string cmd, object raw) {
             try {
                 string args = raw == null ? "" : raw.ToString();
                 string cmdArgs = args.Length == 0 ? lvl.name : lvl.name + " " + args;

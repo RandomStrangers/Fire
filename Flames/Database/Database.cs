@@ -49,8 +49,8 @@ namespace Flames.SQL
                     modifier, args);
             return value;
         }
-        
-        internal static string[] ParseFields(ISqlRecord record) {
+
+        public static string[] ParseFields(ISqlRecord record) {
             string[] field = new string[record.FieldCount];
             for (int i = 0; i < field.Length; i++) { field[i] = record.GetStringValue(i); }
             return field;
@@ -185,7 +185,7 @@ namespace Flames.SQL
             return Do(sql, false, callback, args);
         }
 
-        internal static int Do(string sql, bool createDB, ReaderCallback callback, object[] args) {
+        public static int Do(string sql, bool createDB, ReaderCallback callback, object[] args) {
             IDatabaseBackend db = Backend;
             Exception e = null;
             
@@ -205,17 +205,17 @@ namespace Flames.SQL
             return 0;
         }
         #endregion
-        
-        
-        internal static bool ValidNameChar(char c) {
+
+
+        public static bool ValidNameChar(char c) {
             return 
                 c > ' '   && c != '"' && c != '%' && c != '&'  &&
                 c != '\'' && c != '*' && c != '/' && c != ':'  &&
                 c != '<'  && c != '>' && c != '`' && c != '\\' &&
                 c != '|'  && c <= '~';
         }
-        
-        internal static void ValidateName(string table) {
+
+        public static void ValidateName(string table) {
             foreach (char c in table) 
             {
                 if (ValidNameChar(c)) continue;
@@ -224,15 +224,15 @@ namespace Flames.SQL
         }
 
         public static void UpdateActiveBackend() {
-#if H_STANDALONE
+#if F_STANDALONE
             Backend = SQLiteBackend.Instance;
 #else
             Backend = Server.Config.UseMySQL ? MySQLBackend.Instance : SQLiteBackend.Instance;
 #endif
         }
-        
-        
-        internal static TimeSpan ParseOldDBTimeSpent(string value) {
+
+
+        public static TimeSpan ParseOldDBTimeSpent(string value) {
             string[] parts = value.SplitSpaces();
             return new TimeSpan(int.Parse(parts[0]), int.Parse(parts[1]),
                                 int.Parse(parts[2]), int.Parse(parts[3]));

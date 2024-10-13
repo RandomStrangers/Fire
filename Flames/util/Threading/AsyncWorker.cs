@@ -24,8 +24,8 @@ namespace Flames
     /// <summary> Asynchronously performs work on a background thread </summary>
     public abstract class AsyncWorker<T> 
     {
-        AutoResetEvent handle = new AutoResetEvent(false);
-        volatile bool terminating;
+        public AutoResetEvent handle = new AutoResetEvent(false);
+        public volatile bool terminating;
 
         public Queue<T> queue = new Queue<T>();
         public readonly object queueLock = new object();
@@ -33,8 +33,8 @@ namespace Flames
         public abstract void HandleNext();
         /// <summary> Name to assign the worker thread </summary>
         public abstract string ThreadName { get; }
-        
-        void SendLoop() {
+
+        public void SendLoop() {
             for (;;) {
                 if (terminating) break;
                 
@@ -51,9 +51,9 @@ namespace Flames
                 handle.Close();
             } catch {
             }
-        }      
-        
-        void WakeupWorker() {
+        }
+
+        public void WakeupWorker() {
             try {
                 handle.Set();
             } catch (ObjectDisposedException) {

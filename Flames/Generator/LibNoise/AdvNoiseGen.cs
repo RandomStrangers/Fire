@@ -32,48 +32,48 @@ namespace Flames.Generator
             MapGen.Register("Perlin3Dyadjust", type, GenPerlin3DYAdjust, MapGen.DEFAULT_HELP);
             MapGen.Register("Billow3D",        type, GenBillow3D,        MapGen.DEFAULT_HELP);
         }
-        
-        
+
+
         #region Implementations
-        
-        static bool GenBillow2D(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenBillow2D(Player p, Level lvl, MapGenArgs args) {
             Billow module = new Billow();
             return Gen2D(p, lvl, module, args);
         }
-        
-        static bool GenRidged2D(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenRidged2D(Player p, Level lvl, MapGenArgs args) {
             RidgedMultifractal module = new RidgedMultifractal();
             return Gen2D(p, lvl, module, args);
         }
-        
-        static bool GenPerlin2D(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenPerlin2D(Player p, Level lvl, MapGenArgs args) {
             Perlin module = new Perlin();
             return Gen2D(p, lvl, module, args);
         }
-        
-        static bool GenVoronoi(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenVoronoi(Player p, Level lvl, MapGenArgs args) {
             Voronoi module = new Voronoi();
             return Gen2D(p, lvl, module, args);
         }
-        
-        static bool GenPerlin3D(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenPerlin3D(Player p, Level lvl, MapGenArgs args) {
             Perlin module = new Perlin();
             return Gen3D(p, lvl, module, args);
         }
-        
-        static bool GenPerlin3DYAdjust(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenPerlin3DYAdjust(Player p, Level lvl, MapGenArgs args) {
             Perlin module = new Perlin();
             return Gen3DYAdjust(p, lvl, module, args);
         }
-        
-        static bool GenBillow3D(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenBillow3D(Player p, Level lvl, MapGenArgs args) {
             Billow module = new Billow();
             return Gen3D(p, lvl, module, args);
         }
-        
+
         #endregion
-        
-        static bool Gen2D(Player p, Level lvl, IModule module, MapGenArgs args) {
+
+        public static bool Gen2D(Player p, Level lvl, IModule module, MapGenArgs args) {
             int width = lvl.Width, length = lvl.Length, half = lvl.Height / 2;
             int waterHeight  = half - 1;
             module.Frequency = 1 / 100.0;
@@ -109,8 +109,8 @@ namespace Flames.Generator
             }
             return true;
         }
-        
-        static bool Gen3D(Player p, Level lvl, IModule module, MapGenArgs args) {
+
+        public static bool Gen3D(Player p, Level lvl, IModule module, MapGenArgs args) {
             module.Frequency = 1 / 100.0;
             
             if (!args.ParseArgs(p)) return false;
@@ -128,8 +128,8 @@ namespace Flames.Generator
             }
             return true;
         }
-        
-        static bool Gen3DYAdjust(Player p, Level lvl, IModule module, MapGenArgs args) {
+
+        public static bool Gen3DYAdjust(Player p, Level lvl, IModule module, MapGenArgs args) {
             module.Frequency = 1 / 100.0;
             
             if (!args.ParseArgs(p)) return false;

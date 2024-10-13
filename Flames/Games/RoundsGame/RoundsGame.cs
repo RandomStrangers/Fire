@@ -29,8 +29,8 @@ namespace Flames.Games
         public DateTime RoundStart;
         public string LastMap = "";
         public LevelPicker Picker;
-        
-        protected abstract string WelcomeMessage { get; }
+
+        public abstract string WelcomeMessage { get; }
         
         /// <summary> Messages general info about current round and players. </summary>
         /// <remarks> e.g. who is alive, points of each team, etc. </remarks>
@@ -39,13 +39,13 @@ namespace Flames.Games
         public abstract RoundsGameConfig GetConfig();
         /// <summary> Updates state from the map specific configuration file. </summary>
         public abstract void UpdateMapConfig();
-        
+
         /// <summary> Runs a single round of this game. </summary>
-        protected abstract void DoRound();
+        public abstract void DoRound();
         /// <summary> Gets the list of all players in this game. </summary>
-        protected abstract List<Player> GetPlayers();
+        public abstract List<Player> GetPlayers();
         /// <summary> Saves stats to the database for the given player. </summary>
-        protected virtual void SaveStats(Player pl) { }
+        public virtual void SaveStats(Player pl) { }
         
         public override bool HandlesChatMessage(Player p, string message) {
             return Picker.HandlesMessage(p, message);
@@ -54,8 +54,8 @@ namespace Flames.Games
         public override bool ClaimsMap(string map) {
             return GetConfig().Maps.CaselessContains(map);
         }
-        
-        protected abstract void StartGame();
+
+        public abstract void StartGame();
         public virtual void Start(Player p, string map, int rounds) {
             map = GetStartMap(p, map);
             if (map == null) {
@@ -95,16 +95,16 @@ namespace Flames.Games
                 Logger.LogError("Error auto-starting " + GameName, ex); 
             }
         }
-        
-        protected virtual string GetStartMap(Player p, string forcedMap) {
+
+        public virtual string GetStartMap(Player p, string forcedMap) {
             if (forcedMap.Length > 0) return forcedMap;
             List<string> maps = Picker.GetCandidateMaps(this);
             
             if (maps == null || maps.Count == 0) return null;
             return LevelPicker.GetRandomMap(new Random(), maps);
         }
-        
-        void RunGame() {
+
+        public void RunGame() {
             try {
                 while (Running && RoundsLeft > 0) {
                     RoundInProgress = false;
@@ -125,8 +125,8 @@ namespace Flames.Games
             }
             RunningGames.Remove(this);
         }
-        
-        protected virtual bool SetMap(string map) {
+
+        public virtual bool SetMap(string map) {
             Picker.QueuedMap = null;
             Level next = LevelInfo.FindExact(map);
             if (next == null) next = LevelActions.Load(Player.Flame, map, false);
@@ -139,8 +139,8 @@ namespace Flames.Games
             UpdateMapConfig();
             return true;
         }
-        
-        protected void DoCountdown(string format, int delay, int minThreshold) {
+
+        public void DoCountdown(string format, int delay, int minThreshold) {
             for (int i = delay; i > 0 && Running; i--) 
             {
                 MessageCountdown(format, i, minThreshold);
@@ -149,7 +149,7 @@ namespace Flames.Games
             MessageMap(CpeMessageType.Announcement, "");
         }
 
-        protected void MessageCountdown(string format, int i, int minThreshold) {
+        public void MessageCountdown(string format, int i, int minThreshold) {
             const CpeMessageType type = CpeMessageType.Announcement;
             
             if (i == 1) {
@@ -159,8 +159,8 @@ namespace Flames.Games
                 MessageMap(type, string.Format(format, i));
             }
         }
-        
-        protected List<Player> DoRoundCountdown(int delay) {
+
+        public List<Player> DoRoundCountdown(int delay) {
             while (true) {
                 RoundStart = DateTime.UtcNow.AddSeconds(delay);
                 if (!Running) return null;
@@ -173,8 +173,8 @@ namespace Flames.Games
                 Map.Message("&WNeed 2 or more non-ref players to start a round.");
             }
         }
-        
-        protected virtual void VoteAndMoveToNextMap() {
+
+        public virtual void VoteAndMoveToNextMap() {
             Picker.AddRecentMap(Map.MapName);
             if (RoundsLeft == 0) return;
             
@@ -196,13 +196,13 @@ namespace Flames.Games
                 lastMap.Unload(true);
             }
         }
-        
-        protected virtual void AnnounceMapChange(string newMap) {
+
+        public virtual void AnnounceMapChange(string newMap) {
             Map.Message("The next map has been chosen - &c" + newMap);
             Map.Message("Please wait while you are transfered.");
         }
-        
-        protected virtual void ContinueOnSameMap() {
+
+        public virtual void ContinueOnSameMap() {
             Map.Message("Continuing " + GameName + " on the same map");
             Level old = Level.Load(Map.MapName);
             
@@ -223,8 +223,8 @@ namespace Flames.Games
             Map.Message("Reset map to latest backup");
             UpdateMapConfig();
         }
-        
-        void TransferPlayers(Level lastMap) {
+
+        public void TransferPlayers(Level lastMap) {
             Random rnd = new Random();
             Player[] online = PlayerInfo.Online.Items;
             List<Player> transfers = new List<Player>(online.Length);
@@ -243,8 +243,8 @@ namespace Flames.Games
                 transfers.RemoveAt(i);
             }
         }
-        
-        protected abstract void EndGame();
+
+        public abstract void EndGame();
         public override void End() {
             if (!Running) return;
             Running = false;
@@ -286,8 +286,8 @@ namespace Flames.Games
             if (Map != null) Map.AutoUnload();
             Map = null;
         }
-        
-        protected void UpdateAllMotd() {
+
+        public void UpdateAllMotd() {
             List<Player> players = GetPlayers();
             foreach (Player p in players) {
                 if (p.Supports(CpeExt.InstantMOTD)) p.SendMapMotd();

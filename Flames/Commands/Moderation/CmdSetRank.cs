@@ -69,8 +69,8 @@ namespace Flames.Commands.Moderation {
             };
             OnModActionEvent.Call(action);
         }
-        
-        internal static bool CanChangeRank(string name, Group curRank, Group newRank,
+
+        public static bool CanChangeRank(string name, Group curRank, Group newRank,
                                            Player p, CommandData data, ref string reason) {
             Group banned = Group.BannedRank;
             if (reason == null) {
@@ -101,14 +101,14 @@ namespace Flames.Commands.Moderation {
             OnChangingGroupEvent.Call(name, curRank, newRank, ref cancel);
             return !cancel;
         }
-        
-        static Group TargetRank(Player p, string name, Group curRank) {
+
+        public static Group TargetRank(Player p, string name, Group curRank) {
             if (name.CaselessEq("+up"))   return NextRankUp(p, curRank);
             if (name.CaselessEq("-down")) return NextRankDown(p, curRank);
             return Matcher.FindRanks(p, name);
         }
-        
-        static Group NextRankDown(Player p, Group curRank) {
+
+        public static Group NextRankDown(Player p, Group curRank) {
             int index = Group.GroupList.IndexOf(curRank);
             if (index > 0) {
                 Group next = Group.GroupList[index - 1];
@@ -116,8 +116,8 @@ namespace Flames.Commands.Moderation {
             }
             p.Message("No lower ranks exist"); return null;
         }
-        
-        static Group NextRankUp(Player p, Group curRank) {
+
+        public static Group NextRankUp(Player p, Group curRank) {
             int index = Group.GroupList.IndexOf(curRank);
             if (index < Group.GroupList.Count - 1) {
                 Group next = Group.GroupList[index + 1];

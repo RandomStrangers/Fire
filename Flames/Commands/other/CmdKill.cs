@@ -40,8 +40,8 @@ namespace Flames.Commands.Misc {
             string deathMsg = GetDeathMessage(args, p.ColoredName, ref explode);
             target.HandleDeath(Block.Stone, deathMsg, explode);
         }
-        
-        static string GetDeathMessage(string[] args, string killer, ref bool explode) {
+
+        public static string GetDeathMessage(string[] args, string killer, ref bool explode) {
             if (args.Length < 2) return "@p &Swas killed by " + killer;
             
             if (args[1].CaselessEq("explode")) {

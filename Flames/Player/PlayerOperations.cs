@@ -145,12 +145,12 @@ namespace Flames
             if (who != null) who.UpdateColor(color);
             return true;
         }
-        
-        
+
+
         /// <remarks> λACTOR is replaced with nick of player performing the action </remarks>
         /// <remarks> λTARGET is replaced with either "their" or "[target nick]'s", depending 
         /// on whether the actor is the same player as the target or not </remarks>
-        internal static void MessageAction(Player actor, string target, Player who, string message) {
+        public static void MessageAction(Player actor, string target, Player who, string message) {
             // TODO: this needs to be compoletely rethought
             bool global = who == null || actor.IsSuper 
                             || (!actor.level.SeesServerWideChat && actor.level != who.level);

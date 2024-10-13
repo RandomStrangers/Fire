@@ -37,7 +37,7 @@ namespace Flames.SQL
         public override string EngineName { get { return "SQLite"; } }
         
         public override ISqlConnection CreateConnection() {
-            return new MCGSQLiteConnection();
+            return new FSQLiteConnection();
         }
 
 
@@ -89,8 +89,8 @@ namespace Flames.SQL
         public override string RenameTableSql(string srcTable, string dstTable) {
             return "ALTER TABLE `" + srcTable + "` RENAME TO `" + dstTable + "`";
         }
-        
-        protected override void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns) {
+
+        public override void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns) {
             string priKey = null;
             for (int i = 0; i < columns.Length; i++) {
                 ColumnDesc col = columns[i];
@@ -134,10 +134,10 @@ namespace Flames.SQL
             return InsertSql("INSERT OR REPLACE INTO", table, columns, numArgs);
         }
     }
-    
-    sealed class MCGSQLiteConnection : SQLiteConnection 
+
+    public sealed class FSQLiteConnection : SQLiteConnection 
     {
-        protected override bool ConnectionPooling { get { return Server.Config.DatabasePooling; } }
-        protected override string DBPath { get { return "Flames.db"; } }
+        public override bool ConnectionPooling { get { return Server.Config.DatabasePooling; } }
+        public override string DBPath { get { return "Flames.db"; } }
     }
 }

@@ -45,8 +45,8 @@ namespace Flames.Commands.Eco
                 item.OnStoreCommand(p);
             }
         }
-        
-        static void PrintItemOverview(Player p, Item item) {
+
+        public static void PrintItemOverview(Player p, Item item) {
         	item.OnStoreOverview(p);
         }
         

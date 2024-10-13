@@ -18,8 +18,8 @@
 using Flames.Eco;
 
 namespace Flames.Modules.Games.LS 
-{    
-    sealed class LifeItem : SimpleItem 
+{
+    public sealed class LifeItem : SimpleItem 
     {    
         public LifeItem() {
             Aliases = new string[] { "life", "lifes", "live", "lives" };
@@ -42,8 +42,8 @@ namespace Flames.Modules.Games.LS
             Economy.MakePurchase(p, Price, "%3Life:");
         }
     }
-    
-    sealed class SpongesItem : SimpleItem 
+
+    public sealed class SpongesItem : SimpleItem 
     {
         public SpongesItem() {
             Aliases = new string[] { "sponge", "sponges" };
@@ -67,8 +67,8 @@ namespace Flames.Modules.Games.LS
             Economy.MakePurchase(p, Price, "%3Sponges:");
         }
     }
-    
-    sealed class WaterItem : SimpleItem 
+
+    public sealed class WaterItem : SimpleItem 
     {
         public WaterItem() {
             Aliases = new string[] { "water", "waters" };
@@ -92,8 +92,8 @@ namespace Flames.Modules.Games.LS
             Economy.MakePurchase(p, Price, "%3Water:");
         }
     }
-    
-    sealed class DoorsItem : SimpleItem 
+
+    public sealed class DoorsItem : SimpleItem 
     {
         public DoorsItem() {
             Aliases = new string[] { "door", "doors" };

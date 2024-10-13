@@ -39,11 +39,11 @@ namespace Flames.Drawing.Ops
         
         /// <summary> Block to highlight deletions with. </summary>
         public BlockID DeleteHighlight = DefaultDeleteHighlight;
-        
-        
-        internal string who;
-        internal int[] ids;
-        internal int totalChanges = 0;
+
+
+        public string who;
+        public int[] ids;
+        public int totalChanges = 0;
         
         public HighlightDrawOp() {
             Flags = 0;
@@ -58,8 +58,8 @@ namespace Flames.Drawing.Ops
             PerformHighlight();
             this.output = null;
         }
-        
-        void PerformHighlight() {
+
+        public void PerformHighlight() {
             if (ids.Length == 0) return;
                 
             // can't use "using" as it creates a local var, and read lock reference may be changed by DrawOpPerformer class
@@ -70,11 +70,11 @@ namespace Flames.Drawing.Ops
                 if (BlockDBReadLock != null) BlockDBReadLock.Dispose();
             }
         }
-        
-        DrawOpOutput output;
-        Vec3U16 dims;
-        
-        void HighlightBlock(BlockDBEntry e) {
+
+        public DrawOpOutput output;
+        public Vec3U16 dims;
+
+        public void HighlightBlock(BlockDBEntry e) {
             BlockID oldBlock = e.OldBlock;
             if (oldBlock == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             BlockID newBlock = e.NewBlock;

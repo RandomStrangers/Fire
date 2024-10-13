@@ -23,7 +23,7 @@ namespace Flames.DB
 {
     public unsafe sealed class BlockDBFile_V2 : BlockDBFile 
     {
-        const int BlockSize = BulkEntries;
+        public const int BlockSize = BulkEntries;
         
         /* TODO: Last chunk in file may only be partially filled. need to prepend these entries when compressing more. */
         public override void WriteEntries(Stream s, FastList<BlockDBEntry> entries) {
@@ -75,8 +75,8 @@ namespace Flames.DB
             }
             return 0;
         }
-        
-        unsafe static int DecompressChunk(byte[] bulk, int idx, BlockDBEntry* ptr) {
+
+        public unsafe static int DecompressChunk(byte[] bulk, int idx, BlockDBEntry* ptr) {
             byte comp = bulk[idx]; idx++;
             int count = bulk[idx] | (bulk[idx + 1] << 8); idx += 2;
             
@@ -131,8 +131,8 @@ namespace Flames.DB
             }
             return count;
         }
-        
-        static int ReadInt32(byte[] bulk, int idx) {
+
+        public static int ReadInt32(byte[] bulk, int idx) {
             return bulk[idx] | (bulk[idx + 1] << 8) | (bulk[idx + 2] << 16) | (bulk[idx + 3] << 24);
         }
     }

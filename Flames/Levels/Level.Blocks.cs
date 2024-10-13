@@ -203,9 +203,9 @@ namespace Flames {
                 blocks[index] = (BlockRaw)block;
             }
         }
-        
-  
-        internal bool BuildIn(BlockID block) {
+
+
+        public bool BuildIn(BlockID block) {
             if (block == Block.Op_Water || block == Block.Op_Lava || Props[block].IsPortal || Props[block].IsMessageBlock) return false;
             block = Block.Convert(block);
             return block >= Block.Water && block <= Block.StillLava;

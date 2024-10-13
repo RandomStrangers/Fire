@@ -44,8 +44,8 @@ namespace Flames.Commands.Maintenance {
             p.Message("Successfully infoswapped {0} &Sand {1}",
                       p.FormatNick(src), p.FormatNick(dst));
         }
-        
-        static string GetName(Player p, string name) {
+
+        public static string GetName(Player p, string name) {
             if (!Formatter.ValidPlayerName(p, name)) return null;
             if (PlayerInfo.FindExact(name) != null) {
                 p.Message("\"{0}\" must be offline to use &T/InfoSwap", name); return null;
@@ -57,8 +57,8 @@ namespace Flames.Commands.Maintenance {
             }
             return match;
         }
-        
-        static void SwapStats(string src, string dst) {
+
+        public static void SwapStats(string src, string dst) {
             int tmpNum = new Random().Next(0, 10000000);
             string tmpName = "-tmp" + tmpNum + "-";
             
@@ -66,8 +66,8 @@ namespace Flames.Commands.Maintenance {
             Database.UpdateRows("Players", "Name=@1", "WHERE Name=@0", src, dst);     // PLAYERS[src] = dst
             Database.UpdateRows("Players", "Name=@1", "WHERE Name=@0", tmpName, src); // PLAYERS[tmp] = src
         }
-        
-        static void SwapGroups(string src, string dst, Group srcGroup, Group dstGroup) {
+
+        public static void SwapGroups(string src, string dst, Group srcGroup, Group dstGroup) {
             srcGroup.Players.Remove(src);
             dstGroup.Players.Remove(dst);
             srcGroup.Players.Add(dst);

@@ -18,7 +18,7 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdShowQueue : Command2 
+    public sealed class CmdShowQueue : Command2 
     {
         public override string name { get { return "ShowQueue"; } }
         public override string shortcut { get { return "sq"; } }
@@ -28,8 +28,8 @@ namespace Flames.Modules.Games.ZS
             ShowQueued(p, ZSGame.Instance.Picker.QueuedMap, "level");
             ShowQueued(p, ZSGame.Instance.QueuedZombie, "zombie");
         }
-        
-        void ShowQueued(Player p, string queued, string type) {
+
+        public void ShowQueued(Player p, string queued, string type) {
             if (string.IsNullOrEmpty(queued))
                 p.Message("There is no " + type + " queued.");
             else

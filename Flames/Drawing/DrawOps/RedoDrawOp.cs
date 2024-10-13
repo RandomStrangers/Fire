@@ -54,11 +54,11 @@ namespace Flames.Drawing.Ops
             }
             this.output = null;
         }
-        
-        DrawOpOutput output;
-        Vec3U16 dims;
-        
-        void RedoBlock(BlockDBEntry e) {
+
+        public DrawOpOutput output;
+        public Vec3U16 dims;
+
+        public void RedoBlock(BlockDBEntry e) {
             BlockID block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             if ((e.Flags & BlockDBFlags.UndoSelf) == 0) return; // not an undo

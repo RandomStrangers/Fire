@@ -20,21 +20,20 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Flames.Blocks;
 using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Gui {
     public partial class PropertyWindow : Form {
-        BlockID curBlock;
-        List<BlockID> blockIDMap;
-        ItemPermsHelper blockItems = new ItemPermsHelper();
-        
+        public BlockID curBlock;
+        public List<BlockID> blockIDMap;
+        public ItemPermsHelper blockItems = new ItemPermsHelper();
+
         // need to keep a list of changed block perms, because we don't want
         // to modify the server's live permissions if user clicks 'discard'
-        BlockPerms blockPermsOrig, blockPermsCopy;
-        List<BlockPerms> blockPermsChanged = new List<BlockPerms>();
-        BlockProps[] blockPropsChanged = new BlockProps[Block.Props.Length];
-        
-        void LoadBlocks() {
+        public BlockPerms blockPermsOrig, blockPermsCopy;
+        public List<BlockPerms> blockPermsChanged = new List<BlockPerms>();
+        public BlockProps[] blockPropsChanged = new BlockProps[Block.Props.Length];
+
+        public void LoadBlocks() {
             blk_list.Items.Clear();
             blockPermsChanged.Clear();
             blockIDMap = new List<BlockID>();
@@ -58,7 +57,7 @@ namespace Flames.Gui {
             }
         }
 
-        void SaveBlocks() {
+        public void SaveBlocks() {
             if (blockPermsChanged.Count > 0)
                 SaveBlockPermissions();            
             if (AnyBlockPropsChanged())
@@ -66,8 +65,8 @@ namespace Flames.Gui {
             
             LoadBlocks();
         }
-        
-        void SaveBlockPermissions() {
+
+        public void SaveBlockPermissions() {
             foreach (BlockPerms changed in blockPermsChanged) 
             {
                 BlockPerms orig = BlockPerms.Find(changed.ID);
@@ -78,16 +77,16 @@ namespace Flames.Gui {
             BlockPerms.ApplyChanges();
             BlockPerms.ResendAllBlockPermissions();
         }
-        
-        bool AnyBlockPropsChanged() {
+
+        public bool AnyBlockPropsChanged() {
             for (int b = 0; b < blockPropsChanged.Length; b++) 
             {
                 if (blockPropsChanged[b].ChangedScope != 0) return true;
             }
             return false;
         }
-        
-        void SaveBlockProps() {
+
+        public void SaveBlockProps() {
             for (int b = 0; b < blockPropsChanged.Length; b++) 
             {
                 if (blockPropsChanged[b].ChangedScope == 0) continue;
@@ -97,9 +96,9 @@ namespace Flames.Gui {
             BlockProps.Save("default", Block.Props, 1); 
             Block.SetBlocks();
         }
-        
-        
-        void blk_list_SelectedIndexChanged(object sender, EventArgs e) {
+
+
+        public void blk_list_SelectedIndexChanged(object sender, EventArgs e) {
             curBlock = blockIDMap[blk_list.SelectedIndex];
             blockPermsOrig = BlockPerms.Find(curBlock);
             blockPermsCopy = blockPermsChanged.Find(p => p.ID == curBlock);
@@ -122,83 +121,83 @@ namespace Flames.Gui {
             BlockPerms perms = blockPermsCopy != null ? blockPermsCopy : blockPermsOrig;
             blockItems.Update(perms);
         }
-        
-        void BlockInitSpecificArrays() {
+
+        public void BlockInitSpecificArrays() {
             if (blockItems.MinBox != null) return;
             blockItems.MinBox = blk_cmbMin;
             blockItems.AllowBoxes = new ComboBox[] { blk_cmbAlw1, blk_cmbAlw2, blk_cmbAlw3 };
             blockItems.DisallowBoxes = new ComboBox[] { blk_cmbDis1, blk_cmbDis2, blk_cmbDis3 };
             blockItems.FillInitial();
         }
-        
-        ItemPerms BlockGetOrAddPermsChanged() {
+
+        public ItemPerms BlockGetOrAddPermsChanged() {
             if (blockPermsCopy != null) return blockPermsCopy;
             blockPermsCopy = blockPermsOrig.Copy();
             blockPermsChanged.Add(blockPermsCopy);
             return blockPermsCopy;
         }
-        
-        
-        void blk_cmbMin_SelectedIndexChanged(object sender, EventArgs e) {
+
+
+        public void blk_cmbMin_SelectedIndexChanged(object sender, EventArgs e) {
             blockItems.OnMinRankChanged((ComboBox)sender);
         }
-        
-        void blk_cmbSpecific_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void blk_cmbSpecific_SelectedIndexChanged(object sender, EventArgs e) {
             blockItems.OnSpecificChanged((ComboBox)sender);
         }
 
-        void blk_btnHelp_Click(object sender, EventArgs e) {
+        public void blk_btnHelp_Click(object sender, EventArgs e) {
             GetHelp(blk_list.SelectedItem.ToString());
         }
-        
-        
-        void blk_cbMsgBlock_CheckedChanged(object sender, EventArgs e) {
+
+
+        public void blk_cbMsgBlock_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].IsMessageBlock = blk_cbMsgBlock.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbPortal_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbPortal_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].IsPortal = blk_cbPortal.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbDeath_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbDeath_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].KillerBlock = blk_cbDeath.Checked;
             blk_txtDeath.Enabled = blk_cbDeath.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_txtDeath_TextChanged(object sender, EventArgs e) {
+
+        public void blk_txtDeath_TextChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].DeathMessage = blk_txtDeath.Text;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbDoor_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbDoor_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].IsDoor = blk_cbDoor.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbTdoor_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbTdoor_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].IsTDoor = blk_cbTdoor.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbRails_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbRails_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].IsRails = blk_cbRails.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbLava_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbLava_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].LavaKills = blk_cbLava.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void blk_cbWater_CheckedChanged(object sender, EventArgs e) {
+
+        public void blk_cbWater_CheckedChanged(object sender, EventArgs e) {
             blockPropsChanged[curBlock].WaterKills = blk_cbWater.Checked;
             MarkBlockPropsChanged();
         }
-        
-        void MarkBlockPropsChanged() {
+
+        public void MarkBlockPropsChanged() {
             // don't mark props as changed when supressing events
             int changed = blockItems.SupressEvents ? 0 : BlockProps.SCOPE_GLOBAL;
             blockPropsChanged[curBlock].ChangedScope = (byte)changed;

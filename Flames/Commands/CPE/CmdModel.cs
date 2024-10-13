@@ -39,8 +39,8 @@ namespace Flames.Commands.CPE
             }
             UseBotOrOnline(p, data, message, "model");
         }
-        
-        protected override void SetBotData(Player p, PlayerBot bot, string model) {
+
+        public override void SetBotData(Player p, PlayerBot bot, string model) {
             model = ParseModel(p, bot, model);
             if (model == null) return;
             bot.UpdateModel(model);
@@ -48,8 +48,8 @@ namespace Flames.Commands.CPE
             p.Message("You changed the model of bot {0} &Sto a &c{1}", bot.ColoredName, model);
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetOnlineData(Player p, Player who, string model) {
+
+        public override void SetOnlineData(Player p, Player who, string model) {
             string orig = model;
             model = ParseModel(p, who, model);
             if (model == null) return;
@@ -71,8 +71,8 @@ namespace Flames.Commands.CPE
             // Remove model scale too when resetting model
             if (orig.Length == 0) CmdModelScale.UpdateSavedScale(who);
         }
-        
-        static string ParseModel(Player dst, Entity e, string model) {
+
+        public static string ParseModel(Player dst, Entity e, string model) {
             // Reset entity's model
             if (model.Length == 0) {
                 e.ScaleX = 0; e.ScaleY = 0; e.ScaleZ = 0;

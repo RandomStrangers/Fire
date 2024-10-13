@@ -22,7 +22,7 @@ namespace Flames.Modules.Games.Countdown
     public sealed class CountdownPlugin : Plugin 
     {
         public override string name { get { return "Countdown"; } }
-        static Command cmdCD = new CmdCountdown();
+        public static Command cmdCD = new CmdCountdown();
         
         public override void Load(bool startup) {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
@@ -37,8 +37,8 @@ namespace Flames.Modules.Games.Countdown
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdCD);
         }
-        
-        void OnConfigUpdated() { 
+
+        public void OnConfigUpdated() { 
             CountdownGame.Instance.Config.Load();
         }
     }

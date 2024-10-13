@@ -39,8 +39,8 @@ namespace Flames.Commands.Building {
             p.Message("Place or break two blocks to determine the edges.");
             p.MakeSelection(2, "Selecting region for &SRestart physics", extraInfo, DoRestart);
         }
-        
-        bool ParseArgs(Player p, string message, ref PhysicsArgs args) {
+
+        public bool ParseArgs(Player p, string message, ref PhysicsArgs args) {
             string[] parts = message.SplitSpaces();
             if (parts.Length % 2 == 1) {
                 p.Message("Number of parameters must be even");
@@ -64,8 +64,8 @@ namespace Flames.Commands.Building {
             args.ExtBlock = extBits;
             return true;
         }
-        
-        bool Parse(Player p, string name, string arg, ref byte type, ref byte value, ref byte isExt) {
+
+        public bool Parse(Player p, string name, string arg, ref byte type, ref byte value, ref byte isExt) {
             if (name == "revert") {
                 BlockID block;
                 if (!CommandParser.GetBlock(p, arg, out block)) return false;
@@ -87,8 +87,8 @@ namespace Flames.Commands.Building {
             p.Message(name + " type is not supported.");
             return false;
         }
-        
-        bool DoRestart(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool DoRestart(Player p, Vec3S32[] m, object state, BlockID block) {
             PhysicsArgs args = (PhysicsArgs)state;
             List<int> buffer = new List<int>();
             int index;
@@ -122,10 +122,10 @@ namespace Flames.Commands.Building {
         }
         
         public override void Help(Player p) {
-            p.Message("/restartphysics ([type] [num]) ([type2] [num2]) - Restarts every physics block in an area");
-            p.Message("[type] will set custom physics for selected blocks");
-            p.Message("Possible [types]: drop, explode, dissipate, wait, rainbow, revert");
-            p.Message("/rp revert takes block names");
+            p.Message("&T/restartphysics ([type] [num]) ([type2] [num2]) &H- Restarts every physics block in an area");
+            p.Message("&H[type] will set custom physics for selected blocks");
+            p.Message("&HPossible [types]: drop, explode, dissipate, wait, rainbow, revert");
+            p.Message("&H/rp revert takes block names");
         }
     }
 }

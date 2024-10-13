@@ -37,8 +37,8 @@ namespace Flames.Commands.Misc {
                 DoTpa(p, message);
             }
         }
-        
-        void DoTpa(Player p, string message) {
+
+        public void DoTpa(Player p, string message) {
             Player target = PlayerInfo.FindMatches(p, message);
             if (target == null) return;
             if (target == p) { p.Message("You cannot /tpa to yourself."); return; }
@@ -71,21 +71,21 @@ namespace Flames.Commands.Misc {
                 p.currentTpa = "";
             }
         }
-        
-        static void ShowSentMessage(Player p, Player target) {
+
+        public static void ShowSentMessage(Player p, Player target) {
             p.Message("Your teleport request has been sent to {0}", p.FormatNick(target));
             p.Message("This request will timeout after &b90 &Sseconds.");
         }
-        
-        static void ShowRequestMessage(Player p, Player target) {
+
+        public static void ShowRequestMessage(Player p, Player target) {
             if (Chat.Ignoring(target, p)) return;
             
             target.Message("{0} &Swould like to teleport to you.", target.FormatNick(p));
             target.Message("Type &2/tpaccept &Sor &4/tpdeny&S.");
             target.Message("This request will timeout after &b90 &Sseconds.");
         }
-        
-        void DoAccept(Player p) {
+
+        public void DoAccept(Player p) {
             if (!p.Request) { p.Message("You do not have any pending teleport requests."); return; }
             
             Player sender = PlayerInfo.FindExact(p.senderName);
@@ -106,8 +106,8 @@ namespace Flames.Commands.Misc {
 
             sender.SendPosition(p.Pos, p.Rot);
         }
-        
-        void DoDeny(Player p) {
+
+        public void DoDeny(Player p) {
             if (!p.Request) { p.Message("You do not have any pending teleport requests."); return; }
             
             Player sender = PlayerInfo.FindExact(p.senderName);

@@ -31,8 +31,8 @@ namespace Flames.Commands.Chatting
         public override void Use(Player p, string message, CommandData data) { 
             UsePlayer(p, data, message, "title color"); 
         }
-        
-        protected override void SetPlayerData(Player p, string target, string colName) {
+
+        public override void SetPlayerData(Player p, string target, string colName) {
             PlayerOperations.SetTitleColor(p, target, colName);
         }
 

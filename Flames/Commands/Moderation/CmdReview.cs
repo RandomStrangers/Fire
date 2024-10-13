@@ -49,8 +49,8 @@ namespace Flames.Commands.Moderation {
                 Help(p);
             }
         }
-        
-        void HandleEnter(Player p, CommandData data) {
+
+        public void HandleEnter(Player p, CommandData data) {
             if (p.IsSuper) { p.Message("{0} cannot enter the review queue.", p.SuperName); return; }
             TimeSpan delta = p.NextReviewTime - DateTime.UtcNow;
             
@@ -89,7 +89,7 @@ namespace Flames.Commands.Moderation {
             p.NextReviewTime = DateTime.UtcNow.Add(Server.Config.ReviewCooldown);
         }
 
-        void HandleView(Player p, CommandData data) {
+        public void HandleView(Player p, CommandData data) {
             if (!CheckExtraPerm(p, data, 1)) return;
 
             List<string> inQueue = Server.reviewlist.All();
@@ -105,8 +105,8 @@ namespace Flames.Commands.Moderation {
                 pos++;
             }
         }
-        
-        void HandleLeave(Player p) {
+
+        public void HandleLeave(Player p) {
             if (Server.reviewlist.Remove(p.name)) {
                 AnnounceQueueChanged();
                 p.Message("You have left the review queue!");
@@ -114,8 +114,8 @@ namespace Flames.Commands.Moderation {
                 p.Message("You weren't in the review queue to begin with.");
             }
         }
-        
-        void HandleNext(Player p, CommandData data) {
+
+        public void HandleNext(Player p, CommandData data) {
             if (p.IsSuper) { p.Message("{0} cannot answer the review queue.", p.SuperName); return; }
             if (!CheckExtraPerm(p, data, 2)) return;
 
@@ -137,14 +137,14 @@ namespace Flames.Commands.Moderation {
             target.Message("Your review request has been answered by {0}.", target.FormatNick(p));
             AnnounceQueueChanged();
         }
-        
-        void HandleClear(Player p, CommandData data) {
+
+        public void HandleClear(Player p, CommandData data) {
             if (!CheckExtraPerm(p, data, 3)) return;
             Server.reviewlist.Clear();
             p.Message("The review queue has been cleared");
         }
-        
-        static void AnnounceQueueChanged() {
+
+        public static void AnnounceQueueChanged() {
             List<string> inQueue = Server.reviewlist.All();
             int pos = 1;
             

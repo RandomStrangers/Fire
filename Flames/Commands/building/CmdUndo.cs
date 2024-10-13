@@ -45,8 +45,8 @@ namespace Flames.Commands.Building {
             if (undoPhysics) { UndoPhysics(p, data, delta); }
             else { UndoSelf(p, delta); }
         }
-        
-        void UndoLastDrawOp(Player p) {
+
+        public void UndoLastDrawOp(Player p) {
             UndoDrawOpEntry[] entries = p.DrawOps.Items;
             if (entries.Length == 0) {
                 p.Message("You have no draw operations to undo.");
@@ -72,8 +72,8 @@ namespace Flames.Commands.Building {
                                "past 50 draw operations are &T/Undo &Sor &T/Undo [timespan]");
             p.Message("Try using &T/Undo [timespan] &Sinstead");
         }
-        
-        void UndoPhysics(Player p, CommandData data, TimeSpan delta) {
+
+        public void UndoPhysics(Player p, CommandData data, TimeSpan delta) {
             if (!CheckExtraPerm(p, data, 1)) return;
             if (!p.CanUse("Physics")) {
                 p.Message("&WYou can only undo physics if you can use &T/Physics"); return;
@@ -88,8 +88,8 @@ namespace Flames.Commands.Building {
             Logger.Log(LogType.UserActivity, "Physics were undone &b" + delta.Shorten());
             p.level.Save(true);
         }
-        
-        void UndoSelf(Player p, TimeSpan delta) {
+
+        public void UndoSelf(Player p, TimeSpan delta) {
             UndoDrawOp op = new UndoSelfDrawOp();
             op.Start = DateTime.UtcNow.Subtract(delta);
             op.who = p.name; op.ids = NameConverter.FindIds(p.name);
@@ -103,9 +103,9 @@ namespace Flames.Commands.Building {
                 p.Message("No changes found by you in the past &b{0}", delta.Shorten(true));
             }
         }
-        
-                
-        internal static TimeSpan GetDelta(Player p, string name, string[] parts, int offset) {
+
+
+        public static TimeSpan GetDelta(Player p, string name, string[] parts, int offset) {
             TimeSpan delta = TimeSpan.Zero;
             string timespan = parts.Length > offset ? parts[parts.Length - 1] : "30m";
             bool self = p.name.CaselessEq(name);

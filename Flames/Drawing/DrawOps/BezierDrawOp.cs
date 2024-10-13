@@ -32,7 +32,7 @@ namespace Flames.Drawing.Ops
             return (long)((p1 - p0).Length + (p1 - p2).Length);
         }
 
-        static Vec3F32 offset = new Vec3F32(0.5f);
+        public static Vec3F32 offset = new Vec3F32(0.5f);
         public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
             points.Clear();
             
@@ -50,12 +50,12 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        List<Vec3S32> points = new List<Vec3S32>();
-        const float objspace_flatness_squared = 0.35f * 0.35f;
-        
+
+        public List<Vec3S32> points = new List<Vec3S32>();
+        public const float objspace_flatness_squared = 0.35f * 0.35f;
+
         // Based off stbtt__tesselate_curve from https://github.com/nothings/stb/blob/master/stb_truetype.h
-        void TesselateCurve(Vec3F32 p0, Vec3F32 p1, Vec3F32 p2, int n) {
+        public void TesselateCurve(Vec3F32 p0, Vec3F32 p1, Vec3F32 p2, int n) {
             // midpoint
             Vec3F32 m;
             m.X = (p0.X + 2 * p1.X + p2.X) * 0.25f;
@@ -83,11 +83,11 @@ namespace Flames.Drawing.Ops
             }
         }
 
-        /*static ushort Round(float value) {
+        /*public static ushort Round(float value) {
             int valueI = (int)value;
             int floored = value < valueI ? valueI - 1 : valueI;
             float frac = (value % 1.0f);
             return (ushort)(floored + (frac > 0.5f ? 1 : 0));
-        }*/        
+        }*/
     }
 }

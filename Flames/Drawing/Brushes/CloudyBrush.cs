@@ -25,10 +25,10 @@ namespace Flames.Drawing.Brushes
 {
     public sealed class CloudyBrush : Brush 
     {
-        readonly BlockID[] blocks;
-        readonly int[] counts;
-        readonly float[] thresholds;
-        readonly ImprovedNoise noise;
+        public readonly BlockID[] blocks;
+        public readonly int[] counts;
+        public readonly float[] thresholds;
+        public readonly ImprovedNoise noise;
         
         public CloudyBrush(List<BlockID> blocks, List<int> counts, NoiseArgs n) {
             this.blocks = blocks.ToArray();
@@ -104,8 +104,8 @@ namespace Flames.Drawing.Brushes
                 p.Message("Finished calculating, now drawing.");
             }
         }
-        
-        int next;
+
+        public int next;
         public override BlockID NextBlock(DrawOp op) {
             float N = noise.NormalisedNoise(op.Coords.X, op.Coords.Y, op.Coords.Z);
             N = (N + 1) * 0.5f; // rescale to [0, 1];

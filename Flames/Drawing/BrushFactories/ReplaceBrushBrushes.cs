@@ -24,8 +24,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "ReplaceBrush"; } }       
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block] [brush name] <brush args>",
             "&HDraws by replacing existing blocks that are the given [block] with the output of the given brush"
         };
@@ -37,8 +37,8 @@ namespace Flames.Drawing.Brushes
             if (brush == null) return null;
             return new ReplaceBrushBrush(include, brush);
         }
-        
-        protected Brush ParseArguments(BrushArgs args, ref BlockID target) {
+
+        public Brush ParseArguments(BrushArgs args, ref BlockID target) {
             string[] parts = args.Message.SplitSpaces(3);
             Player p = args.Player;
             
@@ -60,8 +60,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "ReplaceNotBrush"; } }        
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block] [brush name] <brush args>",
             "&HDraws by replacing existing blocks that not the given [block] with the output of the given brush"
         };    

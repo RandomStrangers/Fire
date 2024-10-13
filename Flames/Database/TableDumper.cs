@@ -21,10 +21,10 @@ namespace Flames.SQL
 {
     public sealed class TableDumper 
     {
-        bool gottenRows;
-        string table, insertCols;
-        internal StreamWriter sql;
-        int numColumns;
+        public bool gottenRows;
+        public string table, insertCols;
+        public StreamWriter sql;
+        public int numColumns;
         
         public void DumpTable(StreamWriter sql, string table) {
             gottenRows = false;
@@ -37,8 +37,8 @@ namespace Flames.SQL
                 sql.WriteLine();
             }
         }
-        
-        void MakeInsertFormat(ISqlRecord record) {
+
+        public void MakeInsertFormat(ISqlRecord record) {
             sql.WriteLine("--");
             sql.WriteLine("-- Dumping data for table `{0}`", table);
             sql.WriteLine("--");
@@ -55,8 +55,8 @@ namespace Flames.SQL
             gottenRows = true;
             numColumns = record.FieldCount;
         }
-        
-        void DumpRow(ISqlRecord record) {
+
+        public void DumpRow(ISqlRecord record) {
             if (!gottenRows) MakeInsertFormat(record);
             sql.WriteLine(insertCols);
 

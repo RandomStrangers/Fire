@@ -28,8 +28,8 @@ namespace Flames.Commands.Chatting
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
         public override CommandParallelism Parallelism { get { return CommandParallelism.NoAndWarn; } }
-        
-        const int i_text = 0, i_sent = 1, i_from = 2;
+
+        public const int i_text = 0, i_sent = 1, i_from = 2;
         
         public override void Use(Player p, string message, CommandData data) {
             if (!Database.TableExists("Inbox" + p.name)) {
@@ -61,8 +61,8 @@ namespace Flames.Commands.Chatting
                 OutputByID(p, message, entries);
             }
         }
-        
-        static void DeleteByID(Player p, string value, List<string[]> entries) {
+
+        public static void DeleteByID(Player p, string value, List<string[]> entries) {
             int num = 1;
             if (!CommandParser.GetInt(p, value, "Message number", ref num, 1)) return;
             
@@ -75,8 +75,8 @@ namespace Flames.Commands.Chatting
                 p.Message("Deleted message #{0}", num);
             }
         }
-        
-        static void OutputByID(Player p, string value, List<string[]> entries) {
+
+        public static void OutputByID(Player p, string value, List<string[]> entries) {
             int num = 1;
             if (!CommandParser.GetInt(p, value, "Message number", ref num, 1)) return;
             
@@ -86,8 +86,8 @@ namespace Flames.Commands.Chatting
                 Output(p, num, entries[num - 1]);
             }
         }
-        
-        static void Output(Player p, int num, string[] entry) {
+
+        public static void Output(Player p, int num, string[] entry) {
             DateTime time  = Database.ParseDBDate(entry[i_sent]);
             TimeSpan delta = DateTime.Now - time;
             string sender  = p.FormatNick(entry[i_from]);

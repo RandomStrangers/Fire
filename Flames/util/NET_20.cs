@@ -15,11 +15,10 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+#if NET_20
 using System;
 using System.Collections.Generic;
 using System.Threading;
-
-#if NET_20
 namespace System.Runtime.CompilerServices {
     [AttributeUsage(AttributeTargets.Assembly | AttributeTargets.Class | AttributeTargets.Method)]
     public sealed class ExtensionAttribute : Attribute {}
@@ -29,7 +28,7 @@ namespace Flames.Util {
 
     public sealed class IReaderWriterLock {
         
-        ReaderWriterLock locker = new ReaderWriterLock();
+        public ReaderWriterLock locker = new ReaderWriterLock();
 
         public IDisposable AccquireRead() { return AccquireRead(int.MaxValue); }
         public IDisposable AccquireWrite() { return AccquireWrite(int.MaxValue); }
@@ -53,9 +52,9 @@ namespace Flames.Util {
         }
         
         
-        class SlimLock : IDisposable {
-            ReaderWriterLock locker;
-            bool writeMode;
+        public class SlimLock : IDisposable {
+            public ReaderWriterLock locker;
+            public bool writeMode;
             
             public SlimLock(ReaderWriterLock locker, bool writeMode) {
                 this.locker = locker;

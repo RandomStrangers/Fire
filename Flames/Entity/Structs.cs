@@ -71,22 +71,22 @@ namespace Flames
         public static bool operator == (Position a, Position b) { return a.Equals(b); }
         
         public static bool operator != (Position a, Position b) { return !a.Equals(b); }
-        
-        
-        const long mask = 0x1FFFFF;
-        internal long Pack() {
+
+
+        public const long mask = 0x1FFFFF;
+        public long Pack() {
             return (X & mask) | ((Y & mask) << 21) | ((Z & mask) << 42);
         }
-        
-        internal static Position Unpack(long raw) {
+
+        public static Position Unpack(long raw) {
             Position pos;
             pos.X = SignExtend(raw);
             pos.Y = SignExtend(raw >> 21);
             pos.Z = SignExtend(raw >> 42);
             return pos;
         }
-        
-        static int SignExtend(long parts) {
+
+        public static int SignExtend(long parts) {
             int value = (int)(parts & mask);
             value <<= (32 - 21);
             value >>= (32 - 21);
@@ -122,13 +122,13 @@ namespace Flames
         public static byte DegreesToPacked(int degrees) {
             return (byte)(degrees * 256 / 360);
         }
-        
-        
-        internal uint Pack() {
+
+
+        public uint Pack() {
             return (uint)(RotX | (RotY << 8) | (RotZ << 16) | (HeadX << 24));
         }
-        
-        internal static Orientation Unpack(uint raw) {
+
+        public static Orientation Unpack(uint raw) {
             Orientation rot;
             rot.RotX = (byte)raw; rot.RotY = (byte)(raw >> 8);
             rot.RotZ = (byte)(raw >> 16); rot.HeadX = (byte)(raw >> 24);

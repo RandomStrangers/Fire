@@ -22,7 +22,7 @@ namespace Flames.Commands.Building {
     public sealed class CmdHollow : DrawCmd {
         public override string name { get { return "Hollow"; } }
 
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             BlockID skip = Block.Invalid;
             if (dArgs.Message.Length > 0) {
                 if (!CommandParser.GetBlock(dArgs.Player, dArgs.Message, out skip)) return null;
@@ -32,8 +32,8 @@ namespace Flames.Commands.Building {
             op.Skip = skip;
             return op;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
+
+        public override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
         
         public override void Help(Player p) {
             p.Message("&T/Hollow");

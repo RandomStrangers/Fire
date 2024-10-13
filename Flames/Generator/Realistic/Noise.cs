@@ -54,13 +54,13 @@ namespace Flames.Generator.Realistic
             for (int i = 0; i < array.Length; ++i)
                 array[i] = (array[i] - min) / range;
         }
-        
-        static float Interpolate(float a, float b, float x) {
+
+        public static float Interpolate(float a, float b, float x) {
             float ft = x * 3.1415927f;
             float f = (float)(1 - Math.Cos(ft)) * 0.5f;
             return a * (1 - f) + b * f;
         }
-        static float Noise(int x, int y, int seed) {
+        public static float Noise(int x, int y, int seed) {
             int n = x + y * 57 + seed;
             n = (n << 13) ^ n;
             return (float)(1.0 - ((n * (n * n * 15731 + 789221) + 1376312589) & 0x7fffffff) / 1073741824.0);
@@ -68,7 +68,7 @@ namespace Flames.Generator.Realistic
         }
 
 
-        unsafe static float InterpolatedNoise(float x, float y, int seed) {
+        public unsafe static float InterpolatedNoise(float x, float y, int seed) {
             int wholeX = (int)x, wholeY = (int)y, i = 0;
             float fracX = x - wholeX, fracY = y - wholeY;
 
@@ -97,12 +97,12 @@ namespace Flames.Generator.Realistic
             return Interpolate(N0, N1, fracY);
         }
 
-        const int RANGE = 4;
-        const int ONEX  = 1;
-        const int ONEY  = RANGE;
+        public const int RANGE = 4;
+        public const int ONEX  = 1;
+        public const int ONEY  = RANGE;
 
         /// <summary> Calculates smoothed noise across the given cell and its 8 neighbours </summary>
-        unsafe static float SmoothNoise(float* noise, int i) {
+        public unsafe static float SmoothNoise(float* noise, int i) {
             float corners = (noise[i - ONEX - ONEY] + noise[i + ONEX - ONEY] + noise[i - ONEX + ONEY] + noise[i + ONEX + ONEY]) / 16;
             float sides   = (noise[i - ONEX] + noise[i + ONEX] + noise[i - ONEY] + noise[i + ONEY] / 8); // should be outside brackets, but kept for backwards compatibility
             float center  = noise[i] / 4;

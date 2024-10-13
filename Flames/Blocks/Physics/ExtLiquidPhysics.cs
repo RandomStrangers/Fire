@@ -52,8 +52,8 @@ namespace Flames.Blocks.Physics {
             if (flowUp)
                 MagmaFlow(lvl, x, y + 1, z, ref flowUp);
         }
-        
-        static void MagmaFlow(Level lvl, int x, int y, int z, ref bool flowUp) {
+
+        public static void MagmaFlow(Level lvl, int x, int y, int z, ref bool flowUp) {
             int index;
             BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
             
@@ -92,8 +92,8 @@ namespace Flames.Blocks.Physics {
             if (flowUp)
                 GeyserFlow(lvl, x, y + 1, z, ref flowUp);
         }
-        
-        static void GeyserFlow(Level lvl, int x, int y, int z, ref bool flowUp) {
+
+        public static void GeyserFlow(Level lvl, int x, int y, int z, ref bool flowUp) {
             int index;
             BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
             

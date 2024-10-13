@@ -20,20 +20,20 @@ using Flames.Gui.Popups;
 
 namespace Flames.Gui {
     public partial class PropertyWindow : Form {
-        
-        ItemPermsHelper commandItems = new ItemPermsHelper();
-        ComboBox[] commandExtraBoxes;
-        Label[] commandExtraLabels;
-        Command cmd;
-        
+
+        public ItemPermsHelper commandItems = new ItemPermsHelper();
+        public ComboBox[] commandExtraBoxes;
+        public Label[] commandExtraLabels;
+        public Command cmd;
+
         // need to keep a list of changed command perms, because we don't want
         // to modify the server's live permissions if user clicks 'discard'
-        CommandPerms commandPermsOrig, commandPermsCopy;
-        List<CommandExtraPerms> extraPermsList;
-        List<CommandPerms> commandPermsChanged = new List<CommandPerms>();
-        List<CommandExtraPerms> commandExtraPermsChanged = new List<CommandExtraPerms>();
-        
-        void LoadCommands() {
+        public CommandPerms commandPermsOrig, commandPermsCopy;
+        public List<CommandExtraPerms> extraPermsList;
+        public List<CommandPerms> commandPermsChanged = new List<CommandPerms>();
+        public List<CommandExtraPerms> commandExtraPermsChanged = new List<CommandExtraPerms>();
+
+        public void LoadCommands() {
             cmd_list.Items.Clear();
             List<Command> all = Command.CopyAll();
             all.Sort((a, b) => a.name.CompareTo(b.name));
@@ -46,8 +46,8 @@ namespace Flames.Gui {
             if (cmd_list.SelectedIndex == -1)
                 cmd_list.SelectedIndex = 0;
         }
-        
-        void SaveCommands() {
+
+        public void SaveCommands() {
             if (commandPermsChanged.Count > 0)
                 SaveCommandPermissions();
             if (commandExtraPermsChanged.Count > 0) 
@@ -55,8 +55,8 @@ namespace Flames.Gui {
             
             LoadCommands();
         }
-        
-        void SaveCommandPermissions() {
+
+        public void SaveCommandPermissions() {
             foreach (CommandPerms changed in commandPermsChanged) 
             {
                 CommandPerms orig = CommandPerms.Find(changed.CmdName);
@@ -66,8 +66,8 @@ namespace Flames.Gui {
             CommandPerms.Save();
             CommandPerms.ApplyChanges();
         }
-        
-        void SaveExtraCommandPermissions() {
+
+        public void SaveExtraCommandPermissions() {
             foreach (CommandExtraPerms changed in commandExtraPermsChanged) 
             {
                 CommandExtraPerms orig = CommandExtraPerms.Find(changed.CmdName, changed.Num);
@@ -76,9 +76,9 @@ namespace Flames.Gui {
             
             CommandExtraPerms.Save();
         }
-        
-        
-        void cmd_list_SelectedIndexChanged(object sender, EventArgs e) {
+
+
+        public void cmd_list_SelectedIndexChanged(object sender, EventArgs e) {
             string cmdName = cmd_list.SelectedItem.ToString();        
             CommandInitSpecificArrays();          
             cmd = Command.Find(cmdName);
@@ -92,8 +92,8 @@ namespace Flames.Gui {
             CommandPerms perms = commandPermsCopy != null ? commandPermsCopy : commandPermsOrig;
             commandItems.Update(perms);
         }
-        
-        void CommandInitSpecificArrays() {
+
+        public void CommandInitSpecificArrays() {
             if (commandItems.MinBox != null) return;
             commandItems.MinBox = cmd_cmbMin;
             commandItems.AllowBoxes = new ComboBox[] { cmd_cmbAlw1, cmd_cmbAlw2, cmd_cmbAlw3 };
@@ -106,35 +106,35 @@ namespace Flames.Gui {
                 cmd_lblExtra4, cmd_lblExtra5, cmd_lblExtra6, cmd_lblExtra7 };
             GuiPerms.SetRanks(commandExtraBoxes);
         }
-        
-        ItemPerms CommandGetOrAddPermsChanged() {
+
+        public ItemPerms CommandGetOrAddPermsChanged() {
             if (commandPermsCopy != null) return commandPermsCopy;
             commandPermsCopy = commandPermsOrig.Copy();
             commandPermsChanged.Add(commandPermsCopy);
             return commandPermsCopy;
         }
-        
-        
-        void cmd_cmbMin_SelectedIndexChanged(object sender, EventArgs e) {
+
+
+        public void cmd_cmbMin_SelectedIndexChanged(object sender, EventArgs e) {
             commandItems.OnMinRankChanged((ComboBox)sender);
         }
-        
-        void cmd_cmbSpecific_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void cmd_cmbSpecific_SelectedIndexChanged(object sender, EventArgs e) {
             commandItems.OnSpecificChanged(((ComboBox)sender));
         }
-        
-        void cmd_btnHelp_Click(object sender, EventArgs e) {
+
+        public void cmd_btnHelp_Click(object sender, EventArgs e) {
             GetHelp(cmd_list.SelectedItem.ToString());
         }
-        
-        void cmd_btnCustom_Click(object sender, EventArgs e) {
+
+        public void cmd_btnCustom_Click(object sender, EventArgs e) {
             using (CustomCommands form = new CustomCommands()) {
                 form.ShowDialog();
             }
         }
-        
-        
-        void CommandInitExtraPerms() {
+
+
+        public void CommandInitExtraPerms() {
             extraPermsList = CommandExtraPerms.FindAll(cmd.name);
             for (int i = 0; i < commandExtraBoxes.Length; i++) {
                 commandExtraBoxes[i].Visible = false;
@@ -156,13 +156,13 @@ namespace Flames.Gui {
             cmd_grpExtra.Visible = extraPermsList.Count > 0;
             cmd_grpExtra.Height = height;
         }
-        
-        CommandExtraPerms LookupExtraPerms(string cmdName, int number) {
+
+        public CommandExtraPerms LookupExtraPerms(string cmdName, int number) {
             return commandExtraPermsChanged.Find(
                 p => p.CmdName == cmdName && p.Num == number);
         }
-        
-        void cmd_cmbExtra_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void cmd_cmbExtra_SelectedIndexChanged(object sender, EventArgs e) {
             ComboBox box = (ComboBox)sender;
             if (commandItems.SupressEvents) return;
             GuiRank rank = (GuiRank)box.SelectedItem;

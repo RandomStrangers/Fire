@@ -34,7 +34,7 @@ namespace Flames.Network
         
         // Pings are stored using a circular array 
         public PingEntry[] Entries = new PingEntry[10];
-        int pingCounter, nextPingHead;
+        public int pingCounter, nextPingHead;
         
         
         public ushort NextTwoWayPingData() {
@@ -56,9 +56,9 @@ namespace Flames.Network
                 return;
             }
         }
-        
-        
-        bool Valid(int i) {
+
+
+        public bool Valid(int i) {
             PingEntry e = Entries[i];
             return e.TimeSent.Ticks != 0 && e.TimeRecv.Ticks != 0;
         }

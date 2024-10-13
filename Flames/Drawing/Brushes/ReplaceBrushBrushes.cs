@@ -23,8 +23,8 @@ namespace Flames.Drawing.Brushes
 {
     public class ReplaceBrushBrush : Brush 
     {
-        protected readonly BlockID target;
-        protected readonly Brush replacement;
+        public readonly BlockID target;
+        public readonly Brush replacement;
         
         public ReplaceBrushBrush(BlockID include, Brush replacement) {
             target = include; this.replacement = replacement;

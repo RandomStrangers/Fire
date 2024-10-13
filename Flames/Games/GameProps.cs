@@ -24,10 +24,10 @@ namespace Flames.Games {
         public Team Team;
         
         /// <summary> Last team the player was invited to. </summary>
-        public string TeamInvite; 
-        
+        public string TeamInvite;
+
         /// <summary> Whether the player has liked or disliked the map in this round. </summary>
-        internal bool RatedMap = false, LikedMap = false;
+        public bool RatedMap = false, LikedMap = false;
 
         //Zombie
         public bool Referee = false;

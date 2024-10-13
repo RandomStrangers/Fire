@@ -77,8 +77,8 @@ namespace Flames.Commands.Info
             Ban.GetUnbanData(target, out banner, out reason, out time);
             DisplayDetails(p, banner, reason, time, permaBanned ? "Last unbanned" : "Unbanned");
         }
-        
-        static void DisplayDetails(Player p, string banner, string reason, DateTime time, string type) {
+
+        public static void DisplayDetails(Player p, string banner, string reason, DateTime time, string type) {
             if (banner == null) return;
             
             TimeSpan delta = DateTime.UtcNow - time;

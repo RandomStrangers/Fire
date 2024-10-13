@@ -48,14 +48,14 @@ namespace Flames {
         public BlockProps[] Props = new BlockProps[Block.SUPPORTED_COUNT];
         public ExtrasCollection Extras = new ExtrasCollection();
         public VolatileArray<PlayerBot> Bots = new VolatileArray<PlayerBot>();
-        bool unloadedBots;
+        public bool unloadedBots;
         
         public HandleDelete[] DeleteHandlers = new HandleDelete[Block.SUPPORTED_COUNT];
         public HandlePlace[] PlaceHandlers = new HandlePlace[Block.SUPPORTED_COUNT];
         public HandleWalkthrough[] WalkthroughHandlers = new HandleWalkthrough[Block.SUPPORTED_COUNT];
         public HandlePhysics[] PhysicsHandlers = new HandlePhysics[Block.SUPPORTED_COUNT];
-        internal HandlePhysics[] physicsDoorsHandlers = new HandlePhysics[Block.SUPPORTED_COUNT];
-        internal AABB[] blockAABBs = new AABB[Block.SUPPORTED_COUNT];
+        public HandlePhysics[] physicsDoorsHandlers = new HandlePhysics[Block.SUPPORTED_COUNT];
+        public AABB[] blockAABBs = new AABB[Block.SUPPORTED_COUNT];
         
         /// <summary> The width of this level (Number of blocks across in X dimension) </summary>
         public ushort Width;
@@ -84,10 +84,10 @@ namespace Flames {
         
         /// <summary> Whether players on this level sees server-wide chat. </summary>
         public bool SeesServerWideChat { get { return Config.ServerWideChat && Server.Config.ServerWideChat; } }
-        
-        internal readonly object saveLock = new object(), botsIOLock = new object();
+
+        public readonly object saveLock = new object(), botsIOLock = new object();
         public BlockQueue blockqueue = new BlockQueue();
-        BufferedBlockSender bulkSender;
+        public BufferedBlockSender bulkSender;
 
         public List<UndoPos> UndoBuffer = new List<UndoPos>();
         public VolatileArray<Zone> Zones = new VolatileArray<Zone>();
@@ -96,21 +96,21 @@ namespace Flames {
         
         // Physics fields and settings
         public int physics { get { return Physicsint; } }
-        int Physicsint;
+        public int Physicsint;
         public int currentUndo;
         
         public int lastCheck, lastUpdate;
-        internal FastList<Check> ListCheck = new FastList<Check>(); //A list of blocks that need to be updated
-        internal FastList<Update> ListUpdate = new FastList<Update>(); //A list of block to change after calculation
-        internal SparseBitSet listCheckExists, listUpdateExists;
+        public FastList<Check> ListCheck = new FastList<Check>(); //A list of blocks that need to be updated
+        public FastList<Update> ListUpdate = new FastList<Update>(); //A list of block to change after calculation
+        public SparseBitSet listCheckExists, listUpdateExists;
         
         public Random physRandom = new Random();
         public bool PhysicsPaused;
-        Thread physThread;
-        readonly object physThreadLock = new object();
-        internal readonly object physTickLock = new object();
-        bool physThreadStarted = false;
-        internal DateTime lastBackup;
+        public Thread physThread;
+        public readonly object physThreadLock = new object();
+        public readonly object physTickLock = new object();
+        public bool physThreadStarted = false;
+        public DateTime lastBackup;
         
         public List<C4Data> C4list = new List<C4Data>();
 
@@ -120,7 +120,7 @@ namespace Flames {
         public int WinChance {
             get { return Config.RoundsPlayed == 0 ? 100 : (Config.RoundsHumanWon * 100) / Config.RoundsPlayed; }
         }
-        
-        internal bool hasPortals, hasMessageBlocks;
+
+        public bool hasPortals, hasMessageBlocks;
     }
 }

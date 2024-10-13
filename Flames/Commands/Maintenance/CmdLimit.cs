@@ -76,8 +76,8 @@ namespace Flames.Commands.Maintenance {
             }
             Group.SaveAll(Group.GroupList);
         }
-        
-        static void SetLimitPercent(Player p, ref float target, float value, bool hasValue) {
+
+        public static void SetLimitPercent(Player p, ref float target, float value, bool hasValue) {
             const string type = "Threshold before drawing reloads map";
             if (hasValue) target = value / 100.0f;
             string percent = (target * 100).ToString("F2") + "%";
@@ -89,8 +89,8 @@ namespace Flames.Commands.Maintenance {
                 SrvProperties.Save();
             }
         }
-        
-        static void SetLimit(Player p, string type, ref int target, int value, bool hasValue) {
+
+        public static void SetLimit(Player p, string type, ref int target, int value, bool hasValue) {
             if (!hasValue) {
                 p.Message(type + ": &b" + target);
             } else {

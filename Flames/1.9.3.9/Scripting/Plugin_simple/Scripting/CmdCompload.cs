@@ -19,8 +19,8 @@ namespace Flames.Commands.Scripting {
     public sealed class CmdCompLoad_Simple : Command2 {
         public override string name { get { return "SimpleCompLoad"; } }
         public override string shortcut { get { return "scml"; } }
-        public override string type { get { return CommandTypes.Other; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
+        public override string type { get { return CommandTypes.Added; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override CommandAlias[] Aliases
         {

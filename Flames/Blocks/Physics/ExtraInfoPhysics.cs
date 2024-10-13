@@ -57,12 +57,12 @@ namespace Flames.Blocks.Physics {
             DoOther(lvl, ref C, ref args);
             return false;
         }
-        
+
         // cache to avoid allocation each time accessed
-        internal static ExtraInfoHandler doorsHandler = DoDoorsOnly;
-        internal static ExtraInfoHandler normalHandler = DoNormal;
-        
-        static void ParseType(byte type, ref ExtraInfoArgs args, byte value) {
+        public static ExtraInfoHandler doorsHandler = DoDoorsOnly;
+        public static ExtraInfoHandler normalHandler = DoNormal;
+
+        public static void ParseType(byte type, ref ExtraInfoArgs args, byte value) {
             switch (type) {
                 case PhysicsArgs.Wait:
                     args.Wait = true; args.WaitTime = value; break;
@@ -78,8 +78,8 @@ namespace Flames.Blocks.Physics {
                     args.Rainbow = true; args.RainbowNum = value; break;
             }
         }
-        
-        static void DoOther(Level lvl, ref PhysInfo C, ref ExtraInfoArgs args) {
+
+        public static void DoOther(Level lvl, ref PhysInfo C, ref ExtraInfoArgs args) {
             Random rand = lvl.physRandom;
             if (args.Rainbow) {
                 if (C.Data.Data < 4) C.Data.Data++;
@@ -118,8 +118,8 @@ namespace Flames.Blocks.Physics {
             if (args.Drop && rand.Next(1, 100) <= args.DropNum)
                 DoDrop(lvl, ref C, rand, args.DropNum, x, y, z);
         }
-        
-        static void DoRainbow(Level lvl, ref PhysInfo C, Random rand, int rainbownum) {
+
+        public static void DoRainbow(Level lvl, ref PhysInfo C, Random rand, int rainbownum) {
             if (rainbownum > 2) {
                 BlockID block = C.Block;
                 if (block < Block.Red || block > Block.Pink) {
@@ -132,8 +132,8 @@ namespace Flames.Blocks.Physics {
                 lvl.AddUpdate(C.Index, (BlockID)rand.Next(Block.Red, Block.Pink + 1), default(PhysicsArgs));
             }
         }
-        
-        static void DoDrop(Level lvl, ref PhysInfo C, Random rand, int dropnum, ushort x, ushort y, ushort z) {
+
+        public static void DoDrop(Level lvl, ref PhysInfo C, Random rand, int dropnum, ushort x, ushort y, ushort z) {
             int index;
             BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
             if (!(below == Block.Air || below == Block.Lava || below == Block.Water)) return;
@@ -143,8 +143,8 @@ namespace Flames.Blocks.Physics {
                 C.Data.ResetTypes();
             }
         }
-        
-        struct ExtraInfoArgs {
+
+        public struct ExtraInfoArgs {
             public bool Wait, Drop, Dissipate, Revert, Explode, Rainbow;
             public int WaitTime, DropNum, DissipateNum, ExplodeNum, RainbowNum;
             public byte RevertType, ExtBlock;

@@ -22,8 +22,8 @@ using System.Threading;
 namespace Flames.Util {
 
     public sealed class IReaderWriterLock {
-        
-        ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
+
+        public ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
 
         public IDisposable AccquireRead() { return AccquireRead(-1); }
         public IDisposable AccquireWrite() { return AccquireWrite(-1); }
@@ -37,11 +37,11 @@ namespace Flames.Util {
             if (!locker.TryEnterWriteLock(msTimeout)) return null;
             return new SlimLock(locker, true);
         }
-        
-        
-        class SlimLock : IDisposable {
-            ReaderWriterLockSlim locker;
-            bool writeMode;
+
+
+        public class SlimLock : IDisposable {
+            public ReaderWriterLockSlim locker;
+            public bool writeMode;
             
             public SlimLock(ReaderWriterLockSlim locker, bool writeMode) {
                 this.locker = locker;

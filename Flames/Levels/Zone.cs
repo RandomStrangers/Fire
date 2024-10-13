@@ -35,8 +35,8 @@ namespace Flames {
     }
     
     /// <summary> Encapuslates build access permissions for a zone. </summary>
-    public sealed class ZoneAccessController : AccessController {        
-        readonly ZoneConfig cfg;
+    public sealed class ZoneAccessController : AccessController {
+        public readonly ZoneConfig cfg;
         
         public ZoneAccessController(ZoneConfig cfg) {
             this.cfg = cfg;
@@ -52,15 +52,15 @@ namespace Flames {
         
         public override List<string> Whitelisted { get { return cfg.BuildWhitelist; } }
         public override List<string> Blacklisted { get { return cfg.BuildBlacklist; } }
-        
-        protected override string ColoredName { get { return "zone " + cfg.Color + cfg.Name; } }
-        protected override string Action { get { return "build in"; } }
-        protected override string ActionIng { get { return "building in"; } }
-        protected override string Type { get { return "build"; } }
-        protected override string MaxCmd { get { return null; } }
 
-        
-        protected override void ApplyChanges(Player p, Level lvl, string msg) {
+        public override string ColoredName { get { return "zone " + cfg.Color + cfg.Name; } }
+        public override string Action { get { return "build in"; } }
+        public override string ActionIng { get { return "building in"; } }
+        public override string Type { get { return "build"; } }
+        public override string MaxCmd { get { return null; } }
+
+
+        public override void ApplyChanges(Player p, Level lvl, string msg) {
             lvl.Save(true);
             msg += " &Sin " + ColoredName;
             Logger.Log(LogType.UserActivity, "{0} &Son {1}", msg, lvl.name);
@@ -144,8 +144,8 @@ namespace Flames {
                 OnChangedZoneEvent.Call(pl);
             }
         }
-        
-        unsafe byte NextFreeZoneId(Level level) {
+
+        public unsafe byte NextFreeZoneId(Level level) {
             byte* used = stackalloc byte[256];
             for (int i = 0; i < 256; i++) used[i] = 0;
 

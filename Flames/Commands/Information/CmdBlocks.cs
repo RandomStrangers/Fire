@@ -59,8 +59,8 @@ namespace Flames.Commands.Info
                 p.Message("Unable to find block or rank");
             }
         }
-        
-        static void OutputBlocks(Player p, string type, string modifier, Predicate<BlockID> selector) {
+
+        public static void OutputBlocks(Player p, string type, string modifier, Predicate<BlockID> selector) {
             List<BlockID> blocks = new List<BlockID>(Block.SUPPORTED_COUNT);
             for (BlockID b = 0; b < Block.SUPPORTED_COUNT; b++) 
             {
@@ -70,8 +70,8 @@ namespace Flames.Commands.Info
             Paginator.Output(p, blocks, b => Block.GetColoredName(p, b),
                              "Blocks " + type, "blocks", modifier);
         }
-        
-        static void OutputBlockInfo(Player p, BlockID block) {
+
+        public static void OutputBlockInfo(Player p, BlockID block) {
             string name = Block.GetName(p, block);
             BlockProps[] scope = p.IsSuper ? Block.Props : p.level.Props;
             CmdBlockProperties.Detail(p, scope, block);
@@ -95,8 +95,8 @@ namespace Flames.Commands.Info
                 p.Message("No complex blocks look like \"{0}\"", name);
             }
         }
-        
-        static void OutputPhysicsInfo(Player p, BlockProps[] scope, BlockID b) {
+
+        public static void OutputPhysicsInfo(Player p, BlockProps[] scope, BlockID b) {
             BlockID conv = Block.Convert(b);
             p.Message("&c  Appears as a \"{0}\" block", Block.GetName(p, conv));
 
@@ -114,13 +114,13 @@ namespace Flames.Commands.Info
             if (Block.Walkthrough(conv)) p.Message("  Can be walked through");
             if (Mover(scope, conv))      p.Message("  Can be activated by walking through it");
         }
-        
-        static bool Mover(BlockProps[] scope, BlockID conv) {
+
+        public static bool Mover(BlockProps[] scope, BlockID conv) {
             bool nonSolid = Block.Walkthrough(conv);
             return BlockBehaviour.GetWalkthroughHandler(conv, scope, nonSolid) != null;
         }
-        
-        static bool Physics(BlockProps[] scope, BlockID b) {
+
+        public static bool Physics(BlockProps[] scope, BlockID b) {
             if (scope[b].IsMessageBlock || scope[b].IsPortal) return false;
             if (scope[b].IsDoor || scope[b].IsTDoor) return false;
             if (scope[b].OPBlock) return false;

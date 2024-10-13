@@ -51,8 +51,8 @@ namespace Flames.Commands.Misc {
                 Chat.MessageFromLevel(p, "λNICK &Ssummoned everyone");
             }
         }
-        
-        static void SummonPlayer(Player p, string message, CommandData data) {
+
+        public static void SummonPlayer(Player p, string message, CommandData data) {
             string[] args = message.SplitSpaces();
             bool confirmed = args.Length > 1 && args[1].CaselessEq("confirm");
             
@@ -76,8 +76,8 @@ namespace Flames.Commands.Misc {
             target.SendPosition(p.Pos, p.Rot);
             target.Message("You were summoned by {0}&S.", target.FormatNick(p));
         }
-        
-        static bool CheckVisitPerm(Player p, Player target, bool confirmed) {
+
+        public static bool CheckVisitPerm(Player p, Player target, bool confirmed) {
             AccessResult result = p.level.VisitAccess.Check(target.name, target.Rank);
             if (result == AccessResult.Allowed) return true;
             if (result == AccessResult.Whitelisted) return true;

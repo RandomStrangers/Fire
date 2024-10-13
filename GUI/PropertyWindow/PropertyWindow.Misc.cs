@@ -19,9 +19,9 @@ using Flames.SQL;
 
 namespace Flames.Gui {
 
-    public partial class PropertyWindow : Form {  
-        
-        void LoadMiscProps() {
+    public partial class PropertyWindow : Form {
+
+        public void LoadMiscProps() {
             bak_numTime.Value = Server.Config.BackupInterval;
             bak_txtLocation.Text = Server.Config.BackupDirectory;
             hack_lbl.Checked = Server.Config.HackrankKicks;
@@ -40,8 +40,8 @@ namespace Flames.Gui {
             misc_numReview.Value = Server.Config.ReviewCooldown;
             chkRestart.Checked = Server.Config.restartOnError;
         }
-        
-        void ApplyMiscProps() {
+
+        public void ApplyMiscProps() {
             Server.Config.BackupInterval = bak_numTime.Value;
             Server.Config.BackupDirectory = bak_txtLocation.Text;
             Server.Config.HackrankKicks = hack_lbl.Checked;
@@ -60,15 +60,15 @@ namespace Flames.Gui {
             Server.Config.ReviewCooldown = misc_numReview.Value;
             Server.Config.restartOnError = chkRestart.Checked; 
         }
-        
-        void adv_btnEditTexts_Click(object sender, EventArgs e) {
+
+        public void adv_btnEditTexts_Click(object sender, EventArgs e) {
             using (Form form = new EditText()) {
                 form.ShowDialog();
             }
         }
-		
-		
-        void LoadSqlProps() {
+
+
+        public void LoadSqlProps() {
             sql_chkUseSQL.Checked = Server.Config.UseMySQL;
             sql_txtUser.Text = Server.Config.MySQLUsername;
             sql_txtPass.Text = Server.Config.MySQLPassword;
@@ -77,8 +77,8 @@ namespace Flames.Gui {
             sql_txtPort.Text = Server.Config.MySQLPort;
             ToggleMySQLSettings(Server.Config.UseMySQL);
         }
-        
-        void ApplySqlProps() {
+
+        public void ApplySqlProps() {
             Server.Config.UseMySQL = sql_chkUseSQL.Checked;
             Server.Config.MySQLUsername = sql_txtUser.Text;
             Server.Config.MySQLPassword = sql_txtPass.Text;
@@ -91,7 +91,7 @@ namespace Flames.Gui {
         }
 
 
-        void ToggleMySQLSettings(bool enabled) {
+        public void ToggleMySQLSettings(bool enabled) {
             sql_txtUser.Enabled = enabled; sql_lblUser.Enabled = enabled;
             sql_txtPass.Enabled = enabled; sql_lblPass.Enabled = enabled;
             sql_txtPort.Enabled = enabled; sql_lblPort.Enabled = enabled;
@@ -99,11 +99,11 @@ namespace Flames.Gui {
             sql_txtDBName.Enabled = enabled; sql_lblDBName.Enabled = enabled;
         }
 
-        void sql_linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+        public void sql_linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             GuiUtils.OpenBrowser("https://dev.mysql.com/downloads/");
         }
 
-        void sql_chkUseSQL_CheckedChanged(object sender, EventArgs e) {
+        public void sql_chkUseSQL_CheckedChanged(object sender, EventArgs e) {
             ToggleMySQLSettings(sql_chkUseSQL.Checked);
         }
     }

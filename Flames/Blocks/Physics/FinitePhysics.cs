@@ -75,8 +75,8 @@ namespace Flames.Blocks.Physics {
                 }
             }
         }
-        
-        static bool Expand(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static bool Expand(Level lvl, ushort x, ushort y, ushort z) {
             int index;
             return lvl.IsAirAt(x, y, z, out index) && lvl.AddUpdate(index, Block.FiniteWater, default(PhysicsArgs));
         }

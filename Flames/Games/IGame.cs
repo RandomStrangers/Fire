@@ -107,8 +107,8 @@ namespace Flames.Games
             UpdateAllStatus2();
             UpdateAllStatus3();
         }
-        
-        void UpdateAllStatus(CpeMessageType status) {
+
+        public void UpdateAllStatus(CpeMessageType status) {
             Player[] online = PlayerInfo.Online.Items;
             foreach (Player p in online) 
             {
@@ -119,29 +119,29 @@ namespace Flames.Games
                 p.SendCpeMessage(status, msg);
             }
         }
-        
-        
-        protected virtual string FormatStatus1(Player p) { return ""; }
-        protected virtual string FormatStatus2(Player p) { return ""; }
-        protected virtual string FormatStatus3(Player p) { return ""; }
-        
+
+
+        public virtual string FormatStatus1(Player p) { return ""; }
+        public virtual string FormatStatus2(Player p) { return ""; }
+        public virtual string FormatStatus3(Player p) { return ""; }
+
         /// <summary> Sends a CPE Status1 message (using FormatStatus1) to the given player </summary>
-        protected void UpdateStatus1(Player p) {
+        public void UpdateStatus1(Player p) {
             p.SendCpeMessage(CpeMessageType.Status1, FormatStatus1(p));
         }
-        
+
         /// <summary> Sends a CPE Status2 message (using FormatStatus2) to the given player </summary>
-        protected void UpdateStatus2(Player p) {
+        public void UpdateStatus2(Player p) {
             p.SendCpeMessage(CpeMessageType.Status2, FormatStatus2(p));
         }
-        
+
         /// <summary> Sends a CPE Status3 message (using FormatStatus3) to the given player </summary>
-        protected void UpdateStatus3(Player p) {
+        public void UpdateStatus3(Player p) {
             p.SendCpeMessage(CpeMessageType.Status3, FormatStatus3(p));
         }
-        
+
         /// <summary> Resets all CPE Status messages to blank for the given player </summary>
-        protected void ResetStatus(Player p) {
+        public void ResetStatus(Player p) {
             p.SendCpeMessage(CpeMessageType.Status1, "");
             p.SendCpeMessage(CpeMessageType.Status2, "");
             p.SendCpeMessage(CpeMessageType.Status3, "");
@@ -154,8 +154,8 @@ namespace Flames.Games
             int dz = Math.Abs(a.Pos.Z - b.Pos.Z);
             return dx <= dist && dy <= dist && dz <= dist;
         }
-        
-        protected virtual void AwardMoney(Player p, int min, int max, Random rnd, int baseAmount) {
+
+        public virtual void AwardMoney(Player p, int min, int max, Random rnd, int baseAmount) {
             int reward = baseAmount;
             if (min >= max) {
                 reward += min;

@@ -62,7 +62,7 @@ namespace Flames.Modules.Relay.Discord
         public int ExtraIntents;
         
         public const string PROPS_PATH = "properties/discordbot.properties";
-        static ConfigElement[] cfg;
+        public static ConfigElement[] cfg;
         
         public void Load() {
             // create default config file
@@ -93,9 +93,9 @@ namespace Flames.Modules.Relay.Discord
         
         public static DiscordConfig Config = new DiscordConfig();
         public static DiscordBot Bot = new DiscordBot();
-        
-        static Command cmdDiscordBot   = new CmdDiscordBot();
-        static Command cmdDiscordCtrls = new CmdDiscordControllers();
+
+        public static Command cmdDiscordBot   = new CmdDiscordBot();
+        public static Command cmdDiscordCtrls = new CmdDiscordControllers();
         
         public override void Load(bool startup) {
             Server.EnsureDirectoryExists("text/discord");
@@ -114,17 +114,17 @@ namespace Flames.Modules.Relay.Discord
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Bot.Disconnect("Disconnecting Discord bot");
         }
-        
-        void OnConfigUpdated() { Bot.ReloadConfig(); }
+
+        public void OnConfigUpdated() { Bot.ReloadConfig(); }
     }
-    
-    sealed class CmdDiscordBot : RelayBotCmd 
+
+    public sealed class CmdDiscordBot : RelayBotCmd 
     {
         public override string name { get { return "DiscordBot"; } }
         public override RelayBot Bot { get { return DiscordPlugin.Bot; } }
     }
-    
-    sealed class CmdDiscordControllers : BotControllersCmd 
+
+    public sealed class CmdDiscordControllers : BotControllersCmd 
     {
         public override string name { get { return "DiscordControllers"; } }
         public override RelayBot Bot { get { return DiscordPlugin.Bot; } }

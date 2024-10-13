@@ -68,8 +68,8 @@ namespace Flames.Levels.IO {
             ConvertCustom(lvl);
             return lvl;
         }
-        
-        static Vec3U16 ReadHeader(BinaryReader reader) {
+
+        public static Vec3U16 ReadHeader(BinaryReader reader) {
             if (reader.ReadInt32() != 0x0FC2AF40 || reader.ReadByte() != 13) {
                 throw new InvalidDataException( "Unexpected constant in .fcm file" );
             }
@@ -80,15 +80,15 @@ namespace Flames.Levels.IO {
             dims.Z = reader.ReadUInt16();
             return dims;
         }
-        
-        static string ReadString(BinaryReader reader) {
+
+        public static string ReadString(BinaryReader reader) {
             int length  = reader.ReadUInt16();
             byte[] data = reader.ReadBytes(length);
             return Encoding.ASCII.GetString(data);
         }
-        
-        static char[] comma = new char[] { ',' };
-        static void ParseZone(Level lvl, string raw) {
+
+        public static char[] comma = new char[] { ',' };
+        public static void ParseZone(Level lvl, string raw) {
             string[] parts = raw.Split(comma);
             string[] header = parts[0].SplitSpaces();
             Zone zone = new Zone();

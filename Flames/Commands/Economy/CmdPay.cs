@@ -59,7 +59,7 @@ namespace Flames.Commands.Eco {
             OnEcoTransactionEvent.Call(trans);
         }
 
-        static bool IsLegalPayment(Player p, int payer, int receiver, int amount) {
+        public static bool IsLegalPayment(Player p, int payer, int receiver, int amount) {
             if (receiver + amount > int.MaxValue) { 
                 p.Message("&WPlayers cannot have over &f" + int.MaxValue + " &3" + Server.Config.Currency); return false; 
             }

@@ -22,8 +22,8 @@ namespace Flames.Commands.Scripting {
     public sealed class CmdPlugin_simple : Command2 {
         public override string name { get { return "SimplePlugin"; } }
         public override string shortcut { get { return "p_s"; } }
-        public override string type { get { return CommandTypes.Other; } }
-        public override LevelPermission defaultRank { get { return LevelPermission.Nobody; } }
+        public override string type { get { return CommandTypes.Added; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override CommandAlias[] Aliases {
             get
             {

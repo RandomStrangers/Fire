@@ -18,7 +18,7 @@
 
 namespace Flames.Modules.Games.LS 
 {
-    sealed class CmdLives : Command2 
+    public sealed class CmdLives : Command2 
     {
         public override string name { get { return "Lives"; } }
         public override string type { get { return CommandTypes.Games; } }

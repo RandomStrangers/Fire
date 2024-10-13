@@ -44,11 +44,11 @@ namespace Flames.Modules.Games.ZS
             return null;
         }
     }
-    
-    internal sealed class ZSData 
+
+    public sealed class ZSData 
     {
         public int BlocksLeft = 50, BlocksStacked;
-        internal int LastX, LastY, LastZ;
+        public int LastX, LastY, LastZ;
         
         public bool AkaMode, Invisible;
         public DateTime TimeInfected, InvisibilityEnd;
@@ -78,8 +78,8 @@ namespace Flames.Modules.Games.ZS
         
         public static ZSGame Instance = new ZSGame();
         public ZSGame() { Picker = new LevelPicker(); }
-        
-        protected override string WelcomeMessage {
+
+        public override string WelcomeMessage {
             get { return "&2Zombie Survival &Sis running! Type &T/ZS go &Sto join"; }
 		}
         
@@ -87,11 +87,11 @@ namespace Flames.Modules.Games.ZS
         public VolatileArray<Player> Alive = new VolatileArray<Player>();
         public VolatileArray<Player> Infected = new VolatileArray<Player>();
         public string QueuedZombie;
-        internal List<string> infectMessages = new List<string>();
-        static bool hooked;
-        
-        const string zsExtrasKey = "F_ZS_DATA";
-        internal static ZSData Get(Player p) {
+        public List<string> infectMessages = new List<string>();
+        public static bool hooked;
+
+        public const string zsExtrasKey = "F_ZS_DATA";
+        public static ZSData Get(Player p) {
             ZSData data = TryGet(p);
             if (data != null) return data;
             data = new ZSData();
@@ -107,14 +107,14 @@ namespace Flames.Modules.Games.ZS
             return data;
         }
 
-        internal static ZSData TryGet(Player p) {
+        public static ZSData TryGet(Player p) {
             object data; p.Extras.TryGet(zsExtrasKey, out data); return (ZSData)data;
         }
         
         // TODO: Move ZS map config to per-game properties
         public override void UpdateMapConfig() { }
-        
-        protected override List<Player> GetPlayers() {
+
+        public override List<Player> GetPlayers() {
             Player[] players = PlayerInfo.Online.Items;
             List<Player> playing = new List<Player>();
             
@@ -136,8 +136,8 @@ namespace Flames.Modules.Games.ZS
             if (!p.IsSuper && map.Length == 0) map = p.level.name;
             base.Start(p, map, rounds);
         }
-        
-        protected override void StartGame() {
+
+        public override void StartGame() {
             Database.CreateTable("ZombieStats", zsTable); 
             if (hooked) return;
             
@@ -147,7 +147,7 @@ namespace Flames.Modules.Games.ZS
             HookItems();
         }
 
-        protected override void EndGame() {
+        public override void EndGame() {
             RoundEnd = DateTime.MinValue;
             hooked   = false;
             UnhookStats();
@@ -197,8 +197,8 @@ namespace Flames.Modules.Games.ZS
             UpdatePlayer(p, data, false);
             RespawnPlayer(p);
         }
-        
-        static void ResetRoundState(Player p, ZSData data) {
+
+        public static void ResetRoundState(Player p, ZSData data) {
             p.infected           = false;
             data.BlocksLeft      = 50;
             data.CurrentInfected = 0;
@@ -207,8 +207,8 @@ namespace Flames.Modules.Games.ZS
             data.RevivesUsed = 0;
             data.TimeInfected = DateTime.MinValue;
         }
-        
-        void UpdatePlayer(Player p, ZSData data, bool infected) {
+
+        public void UpdatePlayer(Player p, ZSData data, bool infected) {
             p.infected      = infected;
             data.BlocksLeft = infected ? 25 : 50;
             
@@ -216,8 +216,8 @@ namespace Flames.Modules.Games.ZS
             UpdateAllStatus1();
             UpdateStatus3(p);
         }
-        
-        static void ResetInvisibility(Player p, ZSData data) {
+
+        public static void ResetInvisibility(Player p, ZSData data) {
             if (!data.Invisible) return;
             p.SendCpeMessage(CpeMessageType.BottomRight2, "");
             
@@ -246,8 +246,8 @@ namespace Flames.Modules.Games.ZS
             Map.Message("&c" + zombie.DisplayName + " &Scontinued the infection!");
             InfectPlayer(zombie, null);
         }
-        
-        void RemoveAssociatedBounties(Player p) {
+
+        public void RemoveAssociatedBounties(Player p) {
             BountyData[] bounties = BountyData.Bounties.Items;
             foreach (BountyData b in bounties) 
             {
@@ -298,16 +298,16 @@ namespace Flames.Modules.Games.ZS
             p.Message("&a{0} &Srounds played total, &a{1}% &Swin chance for humans.",
                       cfg.RoundsPlayed, winChance);
         }
-        
-        static string GetTimeLeft(int seconds) {
+
+        public static string GetTimeLeft(int seconds) {
             if (seconds < 0) return "";
             if (seconds <= 10) return "10s left";
             if (seconds <= 30) return "30s left";
             if (seconds <= 60) return "1m left";
             return ((seconds + 59) / 60) + "m left";
         }
-        
-        protected override string FormatStatus1(Player p) {
+
+        public override string FormatStatus1(Player p) {
             int left = (int)(RoundEnd - DateTime.UtcNow).TotalSeconds;
             string timespan = GetTimeLeft(left);
             
@@ -315,14 +315,14 @@ namespace Flames.Modules.Games.ZS
                 "&a{0} &Salive &S({2}, map: {1})";
             return string.Format(format, Alive.Count, Map.MapName, timespan);
         }
-        
-        protected override string FormatStatus2(Player p) {
+
+        public override string FormatStatus2(Player p) {
             string pillar = "&SPillaring " + (Map.Config.Pillaring ? "&aYes" : "&cNo");
             string type = "&S, Type is &a" + Map.Config.BuildType;
             return pillar + type;
         }
 
-        protected override string FormatStatus3(Player p) {
+        public override string FormatStatus3(Player p) {
             string money = "&a" + p.money + " &S" + Server.Config.Currency;
             string state = ", you are " + (IsInfected(p) ? "&cdead" : "&aalive");
             return money + state;

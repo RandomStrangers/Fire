@@ -23,8 +23,8 @@ namespace Flames.Drawing.Ops
 {
     public abstract class PyramidDrawOp : DrawOp 
     {
-        protected DrawOp baseOp;
-        protected int yDir;
+        public DrawOp baseOp;
+        public int yDir;
         
         public PyramidDrawOp(DrawOp baseOp, int yDir) {
             this.baseOp = baseOp;
@@ -77,8 +77,8 @@ namespace Flames.Drawing.Ops
     
     public class PyramidReverseDrawOp : PyramidDrawOp 
     {
-        DrawOp wallOp;
-        Brush airBrush;
+        public DrawOp wallOp;
+        public Brush airBrush;
         public PyramidReverseDrawOp() : base(new CuboidDrawOp(), -1) {
             wallOp   = new CuboidWallsDrawOp();
             airBrush = new SolidBrush(Block.Air);

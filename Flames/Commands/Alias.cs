@@ -49,8 +49,8 @@ namespace Flames.Commands
             if (!File.Exists(Paths.AliasesFile)) { SaveCustom(); return; }
             PropertiesFile.Read(Paths.AliasesFile, LineProcessor, ':');
         }
-        
-        static void LineProcessor(string key, string value) {
+
+        public static void LineProcessor(string key, string value) {
             aliases.Add(new Alias(key, value));
         }
 
@@ -86,9 +86,9 @@ namespace Flames.Commands
             }
             return null;
         }
-        
+
         /// <summary> Registers default aliases specified by a command. </summary>
-        internal static void RegisterDefaults(Command cmd) {
+        public static void RegisterDefaults(Command cmd) {
             CommandAlias[] aliases = cmd.Aliases;
             if (aliases == null) return;
             
@@ -98,8 +98,8 @@ namespace Flames.Commands
                 coreAliases.Add(alias);
             }
         }
-        
-        internal static void UnregisterDefaults(Command cmd) {
+
+        public static void UnregisterDefaults(Command cmd) {
             if (cmd.Aliases == null) return;
             coreAliases.RemoveAll(a => a.Target == cmd.name);
         }

@@ -64,7 +64,7 @@ namespace Flames.Modules.Games.LS
         public int SpongeLife = 200;
         
         public override bool AllowAutoload { get { return false; } }
-        protected override string GameName { get { return "Lava Survival"; } }
+        public override string GameName { get { return "Lava Survival"; } }
         
         
         public TimeSpan GetRoundTime(LSMapConfig mapCfg) {
@@ -78,8 +78,8 @@ namespace Flames.Modules.Games.LS
         public TimeSpan GetLayerInterval(LSMapConfig mapCfg) {
             return GetTimespan(mapCfg._LayerInterval, DefaultLayerInterval);
         }
-        
-        static TimeSpan GetTimespan(TimeSpan? mapValue, TimeSpan defaultValue) {         
+
+        public static TimeSpan GetTimespan(TimeSpan? mapValue, TimeSpan defaultValue) {         
             return mapValue.HasValue ? mapValue.Value : defaultValue;
         }
     }
@@ -111,10 +111,10 @@ namespace Flames.Modules.Games.LS
         [ConfigVec3("block-layer", null)] public Vec3U16 LayerPos;
         [ConfigVec3("safe-zone-min", null)] public Vec3U16 SafeZoneMin;
         [ConfigVec3("safe-zone-max", null)] public Vec3U16 SafeZoneMax;
-        
-        
-        const string propsDir = "properties/lavasurvival/";
-        static ConfigElement[] cfg;       
+
+
+        public const string propsDir = "properties/lavasurvival/";
+        public static ConfigElement[] cfg;       
         public override void Load(string map) {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(LSMapConfig));
             LoadFrom(cfg, propsDir, map);

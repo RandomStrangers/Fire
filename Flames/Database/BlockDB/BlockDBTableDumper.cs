@@ -27,15 +27,15 @@ namespace Flames.DB
 {
     /// <summary> Exports a BlockDB table to the new binary format. </summary>
     public sealed class BlockDBTableDumper 
-    {       
-        string mapName;
-        Dictionary<string, int> nameCache = new Dictionary<string, int>();
-        Stream stream;
-        bool errorOccurred;
-        Vec3U16 dims;
-        BlockDBEntry entry;
-        FastList<BlockDBEntry> buffer = new FastList<BlockDBEntry>(4096);
-        uint entriesWritten;
+    {
+        public string mapName;
+        public Dictionary<string, int> nameCache = new Dictionary<string, int>();
+        public Stream stream;
+        public bool errorOccurred;
+        public Vec3U16 dims;
+        public BlockDBEntry entry;
+        public FastList<BlockDBEntry> buffer = new FastList<BlockDBEntry>(4096);
+        public uint entriesWritten;
         
         public void DumpTable(string table) {
             buffer.Count = 0;
@@ -56,8 +56,8 @@ namespace Flames.DB
             if (errorOccurred) return;
             Database.DeleteTable(table);
         }
-        
-        void DumpRow(ISqlRecord record) {
+
+        public void DumpRow(ISqlRecord record) {
             if (errorOccurred) return;
             
             try {
@@ -87,16 +87,16 @@ namespace Flames.DB
                 errorOccurred = true;
             }
         }
-        
-        void WriteBuffer(bool force) {
+
+        public void WriteBuffer(bool force) {
             if (buffer.Count == 0) return;
             if (!force && buffer.Count < 4096) return;
             
             BlockDBFile.V1.WriteEntries(stream, buffer);
             buffer.Count = 0;
         }
-        
-        void AppendCbdbFile() {
+
+        public void AppendCbdbFile() {
             string path = BlockDBFile.FilePath(mapName);
             if (!File.Exists(path) || stream == null) return;
             
@@ -109,8 +109,8 @@ namespace Flames.DB
                 }
             }
         }
-        
-        void SaveCbdbFile() {
+
+        public void SaveCbdbFile() {
             if (stream == null) return;
             stream.Close();
             stream = null;
@@ -120,9 +120,9 @@ namespace Flames.DB
             if (File.Exists(filePath)) File.Delete(filePath);
             File.Move(dumpPath, filePath);
         }
-        
-        
-        void UpdateBlock(ISqlRecord record) {
+
+
+        public void UpdateBlock(ISqlRecord record) {
             entry.OldRaw    = Block.Invalid;
             entry.NewRaw    = (byte)record.GetInt32(5);
             byte blockFlags = (byte)record.GetInt32(6);
@@ -135,15 +135,15 @@ namespace Flames.DB
                 entry.Flags |= BlockDBFlags.NewExtended;
             }
         }
-        
-        void UpdateCoords(ISqlRecord record) {
+
+        public void UpdateCoords(ISqlRecord record) {
             int x = record.GetInt32(2);
             int y = record.GetInt32(3);
             int z = record.GetInt32(4);
             entry.Index = x + dims.X * (z + dims.Z * y);
         }
-        
-        void UpdatePlayerID(ISqlRecord record) {
+
+        public void UpdatePlayerID(ISqlRecord record) {
             int id;
             string user = record.GetString(0);
             if (!nameCache.TryGetValue(user, out id)) {
@@ -156,8 +156,8 @@ namespace Flames.DB
             }
             entry.PlayerID = id;
         }
-        
-        void UpdateTimestamp(ISqlRecord record) {
+
+        public void UpdateTimestamp(ISqlRecord record) {
             DateTime time   = record.GetDateTime(1).ToUniversalTime();
             entry.TimeDelta = (int)time.Subtract(BlockDB.Epoch).TotalSeconds;
         }

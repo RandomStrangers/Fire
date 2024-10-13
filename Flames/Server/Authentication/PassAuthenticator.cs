@@ -73,7 +73,7 @@ namespace Flames.Authentication
     /// <summary> Password authenticator that loads/stores passwords in /extra/passwords folder </summary>
     public class DefaultPassAuthenticator : PassAuthenticator 
     {
-        const string PASS_FOLDER = "extra/passwords/";
+        public const string PASS_FOLDER = "extra/passwords/";
         
         public override bool HasPassword(string name) { return GetHashPath(name) != null; }
         
@@ -98,35 +98,35 @@ namespace Flames.Authentication
             Directory.CreateDirectory(PASS_FOLDER);
             File.WriteAllBytes(HashPath(name), hash);
         }
-        
-        
-        static string GetHashPath(string name) {
+
+
+        public static string GetHashPath(string name) {
             string path = HashPath(name);
             return File.Exists(path) ? path : null;
         }
 
-        static string HashPath(string name) {
+        public static string HashPath(string name) {
             // unfortunately necessary for backwards compatibility
             name = Server.ToRawUsername(name);
             
             return PASS_FOLDER + name.ToLower() + ".pwd";
         }
 
-        static bool CheckHash(string path, string name, string pass) {
+        public static bool CheckHash(string path, string name, string pass) {
             byte[] stored   = File.ReadAllBytes(path);
             byte[] computed = ComputeHash(name, pass);
             return ArraysEqual(computed, stored);
         }
 
-        static byte[] ComputeHash(string name, string pass) {
+        public static byte[] ComputeHash(string name, string pass) {
             // The constant string added to the username salt is to mitigate
             // rainbow tables. We should really have a unique salt for each
             // user, but this is close enough.
             byte[] data = Encoding.UTF8.GetBytes("0bec662b-416f-450c-8f50-664fd4a41d49" + name.ToLower() + " " + pass);
             return SHA256.Create().ComputeHash(data);
         }
-        
-        static bool ArraysEqual(byte[] a, byte[] b) {
+
+        public static bool ArraysEqual(byte[] a, byte[] b) {
             if (a.Length != b.Length) return false;
             
             for (int i = 0; i < a.Length; i++) 

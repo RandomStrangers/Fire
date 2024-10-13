@@ -31,8 +31,8 @@ namespace Flames.Commands.Chatting
         public override void Use(Player p, string message, CommandData data) {
             UsePlayer(p, data, message, "login message");
         }
-        
-        protected override void SetPlayerData(Player p, string target, string msg) {
+
+        public override void SetPlayerData(Player p, string target, string msg) {
             PlayerOperations.SetLoginMessage(p, target, msg);
         }
         

@@ -26,8 +26,8 @@ namespace Flames.Commands.Fun
         public override bool SuperUseable { get { return false; } }
         
         public override void Use(Player p, string message, CommandData data) { RateMap(p, true); }
-        
-        protected bool RateMap(Player p, bool like) {
+
+        public bool RateMap(Player p, bool like) {
             string prefix = like ? "" : "dis";
             
             IGame game = IGame.GameOn(p.level);
@@ -54,8 +54,8 @@ namespace Flames.Commands.Fun
             p.Message("You have {0}liked &Sthis map.", prefix);
             return true;
         }
-        
-        protected static bool CheckIsAuthor(Player p) {
+
+        public static bool CheckIsAuthor(Player p) {
             string[] authors = p.level.Config.Authors.SplitComma();
             return authors.CaselessContains(p.name);
         }

@@ -21,9 +21,9 @@ using System.IO;
 using Flames.SQL;
 
 namespace Flames.Tasks {
-    internal static class UpgradeTasks {
+    public static class UpgradeTasks {
 
-        internal static void UpgradeOldAgreed() {
+        public static void UpgradeOldAgreed() {
             // agreed.txt format used to be names separated by spaces, we need to fix that up.
             if (!File.Exists("ranks/agreed.txt")) return;
             
@@ -35,8 +35,8 @@ namespace Flames.Tasks {
             }
             File.WriteAllText("ranks/agreed.txt", data);
         }
-        
-        internal static void UpgradeOldTempranks(SchedulerTask task) {
+
+        public static void UpgradeOldTempranks(SchedulerTask task) {
             if (!File.Exists(Paths.TempRanksFile)) return;
 
             // Check if empty, or not old form
@@ -67,8 +67,8 @@ namespace Flames.Tasks {
             File.WriteAllLines(Paths.TempRanksFile, lines);
         }
 
-        
-        internal static void UpgradeDBTimeSpent(SchedulerTask task) {
+
+        public static void UpgradeDBTimeSpent(SchedulerTask task) {
             string time = Database.ReadString("Players", "TimeSpent", "LIMIT 1");
             if (time == null) return; // no players at all in DB
             if (time.IndexOf(' ') == -1) return; // already upgraded
@@ -78,18 +78,18 @@ namespace Flames.Tasks {
             UpgradePlayerTimeSpents();
             Logger.Log(LogType.SystemActivity, "Upgraded {0} rows. ({1} rows failed)", playerCount, playerFailed);
         }
-        
-        static List<int> playerIds;
-        static List<long> playerSeconds;
-        static int playerCount, playerFailed = 0;
-        
-        static void DumpPlayerTimeSpents() {
+
+        public static List<int> playerIds;
+        public static List<long> playerSeconds;
+        public static int playerCount, playerFailed = 0;
+
+        public static void DumpPlayerTimeSpents() {
             playerIds = new List<int>();
             playerSeconds = new List<long>();
             Database.ReadRows("Players", "ID,TimeSpent", ReadTimeSpent);
         }
-        
-        static void ReadTimeSpent(ISqlRecord record) {
+
+        public static void ReadTimeSpent(ISqlRecord record) {
             playerCount++;
             try {
                 int id = record.GetInt32(0);
@@ -101,8 +101,8 @@ namespace Flames.Tasks {
                 playerFailed++;
             }
         }
-        
-        static void UpgradePlayerTimeSpents() {
+
+        public static void UpgradePlayerTimeSpents() {
             using (SqlTransaction bulk = new SqlTransaction()) {
                 for (int i = 0; i < playerIds.Count; i++) {
                     bulk.Execute("UPDATE Players SET TimeSpent=@1 WHERE ID=@0", 

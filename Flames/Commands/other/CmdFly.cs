@@ -45,15 +45,15 @@ namespace Flames.Commands.Misc {
             SchedulerTask task = new SchedulerTask(FlyCallback, state, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
-        
-        class FlyState {
+
+        public class FlyState {
             public Player player;
             public Position oldPos = default;
             public List<Vec3U16> lastGlass = new List<Vec3U16>();
             public List<Vec3U16> glassCoords = new List<Vec3U16>();
         }
-        
-        static void FlyCallback(SchedulerTask task) {
+
+        public static void FlyCallback(SchedulerTask task) {
             FlyState state = (FlyState)task.State;
             Player p = state.player;
             if (state.player.isFlying) { DoFly(state); return; }
@@ -65,7 +65,7 @@ namespace Flames.Commands.Misc {
             task.Repeating = false;
         }
 
-        static void DoFly(FlyState state) {
+        public static void DoFly(FlyState state) {
             Player p = state.player;
             if (p.Pos == state.oldPos) return;
 

@@ -67,8 +67,8 @@ namespace Flames.Network
             else SendLevel();
             count = 0;
         }
-        
-        void SendLevel() {
+
+        public void SendLevel() {
             byte[] bulk = null, normal = null, classic = null, ext = null, extBulk = null;
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) 
@@ -80,17 +80,17 @@ namespace Flames.Network
                 p.Socket.Send(packet, SendFlags.LowPriority);
             }
         }
-        
-        void SendPlayer() {
+
+        public void SendPlayer() {
             byte[] bulk = null, normal = null,classic = null, ext = null, extBulk = null;
             byte[] packet = MakePacket(player, ref bulk, ref normal,
                                        ref classic, ref ext, ref extBulk);
             player.Socket.Send(packet, SendFlags.LowPriority);
         }
-        
+
         #region Packet construction
-        
-        byte[] MakePacket(Player p, ref byte[] bulk, ref byte[] normal,
+
+        public byte[] MakePacket(Player p, ref byte[] bulk, ref byte[] normal,
                           ref byte[] classic, ref byte[] ext, ref byte[] extBulk) {
             IGameSession s = p.Session;
             if (s.hasExtBlocks) {
@@ -122,7 +122,7 @@ namespace Flames.Network
             }
         }
 
-        byte[] MakeBulkExt() {
+        public byte[] MakeBulkExt() {
             byte[] data = new byte[2 + 256 * 5 + (256 / 4)];
             data[0] = Opcode.CpeBulkBlockUpdate;
             data[1] = (byte)(count - 1);
@@ -149,8 +149,8 @@ namespace Flames.Network
             }
             return data;
         }
-        
-        byte[] MakeExt() {
+
+        public byte[] MakeExt() {
             byte[] data = new byte[count * 9];
             for (int i = 0, j = 0; i < count; i++) 
             {
@@ -171,7 +171,7 @@ namespace Flames.Network
         }
 
 
-        internal byte[] MakeBulk() {
+        public byte[] MakeBulk() {
             byte[] data = new byte[2 + 256 * 5];
             data[0] = Opcode.CpeBulkBlockUpdate;
             data[1] = (byte)(count - 1);
@@ -188,8 +188,8 @@ namespace Flames.Network
             }
             return data;
         }
-        
-        internal byte[] MakeNormal() {
+
+        public byte[] MakeNormal() {
             byte[] data = new byte[count * 8];
             for (int i = 0, j = 0; i < count; i++) 
             {
@@ -208,7 +208,7 @@ namespace Flames.Network
             return data;
         }
 
-        internal byte[] MakeLimited(byte[] fallback) {
+        public byte[] MakeLimited(byte[] fallback) {
             byte[] data = new byte[count * 8];
             for (int i = 0, j = 0; i < count; i++) 
             {

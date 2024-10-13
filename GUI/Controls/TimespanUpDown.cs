@@ -24,8 +24,8 @@ using System.Windows.Forms;
 namespace Flames.Gui {
     [DefaultBindingProperty("Seconds"), DefaultEvent("ValueChanged"), DefaultProperty("Seconds")]
     public class TimespanUpDown : UpDownBase, ISupportInitialize {
-        long totalSecs;
-        bool initialising;
+        public long totalSecs;
+        public bool initialising;
 
         public event EventHandler ValueChanged;
         
@@ -62,7 +62,7 @@ namespace Flames.Gui {
         protected override void OnTextBoxKeyPress(object source, KeyPressEventArgs e) {
             base.OnTextBoxKeyPress(source, e);
             // don't intercept ctrl+A, ctrl+C etc
-            if ((Control.ModifierKeys & (Keys.Control | Keys.Alt)) != Keys.None) return;
+            if ((ModifierKeys & (Keys.Control | Keys.Alt)) != Keys.None) return;
             // always allowed to input numbers
             if (e.KeyChar == '\b' || char.IsDigit(e.KeyChar)) return;
             
@@ -91,7 +91,7 @@ namespace Flames.Gui {
             Seconds = totalSecs + 1;
         }
 
-        void ParseEditText() {
+        public void ParseEditText() {
             try {
                 Value = Text.ParseShort("s");
             } catch {

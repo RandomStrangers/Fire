@@ -51,17 +51,17 @@ namespace Flames.Blocks.Extended {
             p.SendPosition(pos, rot);
             return true;
         }
-        
-        
-        internal static Vec3U16 ParseCoords(ISqlRecord record) {
+
+
+        public static Vec3U16 ParseCoords(ISqlRecord record) {
             Vec3U16 pos;
             pos.X = (ushort)record.GetInt32(0);
             pos.Y = (ushort)record.GetInt32(1);
             pos.Z = (ushort)record.GetInt32(2);
             return pos;
         }
-        
-        static PortalExit ParseExit(ISqlRecord record) {
+
+        public static PortalExit ParseExit(ISqlRecord record) {
             PortalExit data = new PortalExit
             {
                 Map = record.GetText(0),

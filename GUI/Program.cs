@@ -40,7 +40,7 @@ namespace Flames.Gui
             }    
         }
 
-        static void SetCurrentDirectory() {
+        public static void SetCurrentDirectory() {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             try {
                 Environment.CurrentDirectory = path;
@@ -52,8 +52,8 @@ namespace Flames.Gui
                 //  (since most users will not be trying to run .exe from a different folder anyways)
             }
         }
-        
-        static void StartGUI() {
+
+        public static void StartGUI() {
             FileLogger.Init();
             Server.RestartPath = Application.ExecutablePath;
             AppDomain.CurrentDomain.UnhandledException += GlobalExHandler;
@@ -68,8 +68,8 @@ namespace Flames.Gui
                 Logger.LogError(e);
             }
         }
-        
-        static void LogAndRestart(Exception ex) {
+
+        public static void LogAndRestart(Exception ex) {
             Logger.LogError(ex);
             FileLogger.Flush(null);
             
@@ -79,16 +79,16 @@ namespace Flames.Gui
                 stopThread.Join();
             }
         }
-        
-        static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e) {
+
+        public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e) {
             LogAndRestart((Exception)e.ExceptionObject);
         }
 
-        static void ThreadExHandler(object sender, ThreadExceptionEventArgs e) {
+        public static void ThreadExHandler(object sender, ThreadExceptionEventArgs e) {
             LogAndRestart(e.Exception);
         }
 
-        static void DetectBuggyCursors() {
+        public static void DetectBuggyCursors() {
             // In very rare cases, trying to create SizeNWSE cursor on Mono on Linux will throw an ArgumentException
             // Message: A null reference or invalid value was found[GDI + status: InvalidParameter]
             //   ..
@@ -101,7 +101,7 @@ namespace Flames.Gui
             //   ..
             // However, some X11 video drivers will cause XQueryBestCursor to return width/height 0,
             //  which will then cause the subsequent 'new Bitmap(width, height)' in XplatUIX11.DefineCursor to fail
-            // See https://github.com/UnknownShadow200/MCGalaxy/issues/658 for more details
+            // See https://github.com/ClassiCube/MCGalaxy/issues/658 for more details
             try {
                 Cursor c = Cursors.SizeNWSE;
             } catch (ArgumentException ex) {
@@ -113,7 +113,7 @@ namespace Flames.Gui
             } 
         }
 
-        static void BypassCursorsHACK() {
+        public static void BypassCursorsHACK() {
             if (!Server.RunningOnMono()) return;
             Type stdCursorType = typeof(Cursor).Assembly.GetType("System.Windows.Forms.StdCursor");
 

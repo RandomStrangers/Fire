@@ -21,9 +21,9 @@ using Flames.Gui.Popups;
 namespace Flames.Gui {
 
     public partial class PropertyWindow : Form {
-        bool warnDisabledVerification = true;
-        
-        void LoadGeneralProps() {
+        public bool warnDisabledVerification = true;
+
+        public void LoadGeneralProps() {
             srv_txtName.Text = Server.Config.Name;
             srv_txtMOTD.Text = Server.Config.MOTD;
             srv_numPort.Value = Server.Config.Port;
@@ -45,8 +45,8 @@ namespace Flames.Gui {
             adv_chkCPE.Checked = Server.Config.EnableCPE;       
             chkUpdates.Checked = Server.Config.CheckForUpdates;
         }
-        
-        void ApplyGeneralProps() {
+
+        public void ApplyGeneralProps() {
             Server.Config.Name = srv_txtName.Text;
             Server.Config.MOTD = srv_txtMOTD.Text;
             Server.Config.Port = (int)srv_numPort.Value;
@@ -65,33 +65,33 @@ namespace Flames.Gui {
             Server.Config.EnableCPE = adv_chkCPE.Checked;            
             Server.Config.CheckForUpdates = chkUpdates.Checked;
             //Server.Config.reportBack = ;  //No setting for this?                
-        }        
-        
-        
-        const string warnMsg = "Disabling name verification means players\ncan login as anyone, including YOU\n\n" +
+        }
+
+
+        public const string warnMsg = "Disabling name verification means players\ncan login as anyone, including YOU\n\n" +
             "Are you sure you want to disable name verification?";
-        void chkVerify_CheckedChanged(object sender, EventArgs e) {
+        public void chkVerify_CheckedChanged(object sender, EventArgs e) {
             if (!warnDisabledVerification || adv_chkVerify.Checked) return;            
             if (Popup.OKCancel(warnMsg, "Security warning")) return;
             adv_chkVerify.Checked = true;
         }
-        
-        void numPlayers_ValueChanged(object sender, EventArgs e) {
+
+        public void numPlayers_ValueChanged(object sender, EventArgs e) {
             // Ensure that number of guests is never more than number of players
             if (srv_numGuests.Value > srv_numPlayers.Value) {
                 srv_numGuests.Value = srv_numPlayers.Value;
             }
             srv_numGuests.Maximum = srv_numPlayers.Value;
         }
-        
-        void ChkPort_Click(object sender, EventArgs e) {
+
+        public void ChkPort_Click(object sender, EventArgs e) {
             int port = (int)srv_numPort.Value;
             using (PortTools form = new PortTools(port)) {
                 form.ShowDialog();
             }
         }
 
-        void forceUpdateBtn_Click(object sender, EventArgs e) {
+        public void forceUpdateBtn_Click(object sender, EventArgs e) {
             srv_btnForceUpdate.Enabled = false;
             string msg = "Would you like to force update " + Colors.Strip(Server.SoftwareName) + " now?";
             

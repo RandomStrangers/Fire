@@ -23,7 +23,7 @@ namespace Flames
     public static class TabList 
     {
         // Want higher ranks at top of tab list, banned at bottom of tab list
-        const LevelPermission offset = LevelPermission.Flames;
+        public const LevelPermission offset = LevelPermission.Flames;
         
         /// <summary> Adds the given player to that player's tab list (if their client supports it). </summary>
         public static void Add(Player dst, Player p, byte id) {
@@ -37,8 +37,8 @@ namespace Flames
             name = Colors.Escape(name); // for nicks
             dst.Session.SendAddTabEntry(id, p.truename, name, group, grpPerm);
         }
-        
-        static void GetEntry(Player p, Player dst, out string name, out string group) {
+
+        public static void GetEntry(Player p, Player dst, out string name, out string group) {
             string map = p.level.name;
             if (!p.level.SeesServerWideChat) map += " &S<Local chat>";
             
@@ -68,11 +68,11 @@ namespace Flames
             byte id = dst == entity ? Entities.SelfID : entity.EntityID;
             dst.Session.SendRemoveTabEntry(id);
         }
-        
-        
+
+
         /// <summary> Updates the tab list entry for this player to all other players 
         /// (whose clients support it) who can see the player in the tab list. </summary>
-        internal static void Update(Player p, bool self) {
+        public static void Update(Player p, bool self) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player other in players) {
                 if (p == other) {
@@ -85,10 +85,10 @@ namespace Flames
                 if (p.CanSee(other)) Add(p, other, other.id);
             }
         }
-        
+
         /// <summary> Removes this tab list entry for this player to all other players 
         /// (whose clients support it) in the server. </summary>
-        internal static void RemoveAll(Player p, bool self, bool toVisible) {
+        public static void RemoveAll(Player p, bool self, bool toVisible) {
             if (!Server.Config.TablistGlobal) return;
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player other in players) {               

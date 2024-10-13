@@ -21,8 +21,8 @@ using BlockID = System.UInt16;
 namespace Flames.Blocks.Physics {
     
     public static class FirePhysics {
-        
-        static bool ExpandToAir(Level lvl, int x, int y, int z) {
+
+        public static bool ExpandToAir(Level lvl, int x, int y, int z) {
             int index;
             if (lvl.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index)) {
                 lvl.AddUpdate(index, Block.Fire, default(PhysicsArgs));
@@ -30,8 +30,8 @@ namespace Flames.Blocks.Physics {
             }
             return false;
         }
-        
-        static void ExpandDiagonal(Level lvl, ushort x, ushort y, ushort z,
+
+        public static void ExpandDiagonal(Level lvl, ushort x, ushort y, ushort z,
                                    int dx, int dy, int dz) {
             BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
             if (block == Block.Air || !lvl.Props[block].LavaKills) return;
@@ -43,8 +43,8 @@ namespace Flames.Blocks.Physics {
             if (dz != 0)
                 lvl.AddUpdate(lvl.PosToInt(x, y, (ushort)(z + dz)), Block.Fire, default(PhysicsArgs));
         }
-        
-        static void ExpandAvanced(Level lvl, int x, int y, int z) {
+
+        public static void ExpandAvanced(Level lvl, int x, int y, int z) {
             int index;
             BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
             

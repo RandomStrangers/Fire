@@ -24,10 +24,10 @@ namespace Flames.Bots {
 
     /// <summary> Maintains persistent data for in-game bots. </summary>
     public static class BotsFile {
-        static ConfigElement[] elems;
+        public static ConfigElement[] elems;
         
         public static void Load(Level lvl) { lock (lvl.botsIOLock) { LoadCore(lvl); } }
-        static void LoadCore(Level lvl) {
+        public static void LoadCore(Level lvl) {
             string path = Paths.BotsPath(lvl.MapName);
             if (!File.Exists(path)) return;
             List<BotProperties> props = null;
@@ -47,8 +47,8 @@ namespace Flames.Bots {
                 PlayerBot.Add(bot, false);
             }
         }
-        
-        internal static List<BotProperties> ReadAll(string path) {
+
+        public static List<BotProperties> ReadAll(string path) {
             List<BotProperties> props = new List<BotProperties>();
             if (elems == null) elems = ConfigElement.GetAll(typeof(BotProperties));
             string json = File.ReadAllText(path);
@@ -74,7 +74,7 @@ namespace Flames.Bots {
         }
         
         public static void Save(Level lvl) { lock (lvl.botsIOLock) { SaveCore(lvl); } }
-        static void SaveCore(Level lvl) {
+        public static void SaveCore(Level lvl) {
             PlayerBot[] bots = lvl.Bots.Items;
             string path = Paths.BotsPath(lvl.MapName);
             if (!File.Exists(path) && bots.Length == 0) return;
@@ -93,14 +93,14 @@ namespace Flames.Bots {
             }
         }
 
-        internal static void WriteAll(TextWriter dst, List<BotProperties> props) {
+        public static void WriteAll(TextWriter dst, List<BotProperties> props) {
             if (elems == null) elems = ConfigElement.GetAll(typeof(BotProperties));
 
             JsonConfigWriter w = new JsonConfigWriter(dst, elems);
             w.WriteArray(props);
         }
-        
-        internal static void LoadAi(BotProperties props, PlayerBot bot) {
+
+        public static void LoadAi(BotProperties props, PlayerBot bot) {
             if (string.IsNullOrEmpty(props.AI)) return;
             try {
                 ScriptFile.Parse(Player.Flame, bot, props.AI);

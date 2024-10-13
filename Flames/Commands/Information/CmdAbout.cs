@@ -43,7 +43,7 @@ namespace Flames.Commands.Info
             p.MakeSelection(1, "Selecting location for &SBlock info", data, PlacedMark);
         }
 
-        bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block) {
+        public bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block) {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             block = p.level.GetBlock(x, y, z);
             p.RevertBlock(x, y, z);
@@ -77,7 +77,7 @@ namespace Flames.Commands.Info
             return true;
         }
 
-        static void ListFromDatabase(Player p, ref bool foundAny, ushort x, ushort y, ushort z) {
+        public static void ListFromDatabase(Player p, ref bool foundAny, ushort x, ushort y, ushort z) {
             if (!Database.TableExists("Block" + p.level.name)) return;
             
             List<string[]> entries = Database.GetRows("Block" + p.level.name, "Username,TimePerformed,Deleted,Type",
@@ -102,15 +102,15 @@ namespace Flames.Commands.Info
                 BlockDBChange.Output(p, row[0], entry);
             }
         }
-        
-        static byte ParseFlags(string value) {
+
+        public static byte ParseFlags(string value) {
             // This used to be a 'deleted' boolean, so we need to make sure we account for that
             if (value.CaselessEq("true"))  return 1;
             if (value.CaselessEq("false")) return 0;
             return byte.Parse(value);
         }
-        
-        static void OutputEntry(Player p, ref bool foundAny, Dictionary<int, string> names, BlockDBEntry entry) {
+
+        public static void OutputEntry(Player p, ref bool foundAny, Dictionary<int, string> names, BlockDBEntry entry) {
             if (!names.TryGetValue(entry.PlayerID, out string name))
             {
                 name = NameConverter.FindName(entry.PlayerID);

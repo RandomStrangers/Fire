@@ -21,8 +21,8 @@ namespace Flames
 {
     public static class NumberUtils
     {
-        const NumberStyles DECIMAL_STYLE = NumberStyles.Integer | NumberStyles.AllowDecimalPoint;
-        const NumberStyles INTEGER_STYLE = NumberStyles.Integer;
+        public const NumberStyles DECIMAL_STYLE = NumberStyles.Integer | NumberStyles.AllowDecimalPoint;
+        public const NumberStyles INTEGER_STYLE = NumberStyles.Integer;
 
 
         // Not all languages use . as their decimal point separator

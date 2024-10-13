@@ -35,8 +35,8 @@ namespace Flames.Commands.Misc {
             SchedulerTask task = new SchedulerTask(RideCallback, p, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
-        
-        static void RideCallback(SchedulerTask task) {
+
+        public static void RideCallback(SchedulerTask task) {
             Player p = (Player)task.State;
             if (!p.onTrain) {
                 p.trainGrab = false;
@@ -72,8 +72,8 @@ namespace Flames.Commands.Misc {
             }
             p.trainGrab = false;
         }
-        
-        static void TrainInvincibleCallback(SchedulerTask task) {
+
+        public static void TrainInvincibleCallback(SchedulerTask task) {
             Player p = (Player)task.State;
             p.trainInvincible = false;
         }

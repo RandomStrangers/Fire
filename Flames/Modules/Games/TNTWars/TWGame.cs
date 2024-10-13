@@ -38,8 +38,8 @@ namespace Flames.Modules.Games.TW
         Extreme, // 1 Hit to die, Tnt has short delay and BIG exlosion
     }
     public sealed class PlayerAndScore { public Player p; public int Score; }
-    
-    internal sealed class TWData 
+
+    public sealed class TWData 
     {
         public int Score, Health = 2, KillStreak, TNTCounter;
         public float ScoreMultiplier = 1f;
@@ -56,9 +56,9 @@ namespace Flames.Modules.Games.TW
             ScoreMultiplier = 1f;
             HarmedBy = null;
         }
-    }   
-        
-    sealed class TWTeam 
+    }
+
+    public sealed class TWTeam 
     {
         public string Name, Color;
         public string ColoredName { get { return Color + Name; } }
@@ -71,27 +71,27 @@ namespace Flames.Modules.Games.TW
     
     public partial class TWGame : RoundsGame 
     {
-        TWMapConfig cfg = new TWMapConfig();
+        public TWMapConfig cfg = new TWMapConfig();
         public TWConfig Config = new TWConfig();
         public override string GameName { get { return "TNT Wars"; } }
         public override RoundsGameConfig GetConfig() { return Config; }
-        
-        protected override string WelcomeMessage {
+
+        public override string WelcomeMessage {
             get { return "&4TNT Wars &Sis running! Type &T/TW go &Sto join"; }
 		}
-        
-        TWTeam Red  = new TWTeam("Red", Colors.red);
-        TWTeam Blue = new TWTeam("Blue", Colors.blue);
+
+        public TWTeam Red  = new TWTeam("Red", Colors.red);
+        public TWTeam Blue = new TWTeam("Blue", Colors.blue);
         public List<TWZone> tntFreeZones = new List<TWZone>();
         public List<TWZone> tntImmuneZones = new List<TWZone>();
-        VolatileArray<Player> allPlayers = new VolatileArray<Player>();
-        TNTImmuneFilter tntImmuneFilter;
+        public VolatileArray<Player> allPlayers = new VolatileArray<Player>();
+        public TNTImmuneFilter tntImmuneFilter;
         
         public static TWGame Instance = new TWGame();
         public TWGame() { Picker = new LevelPicker(); }
-        
-        const string twExtrasKey = "F_TW_DATA";
-        static TWData Get(Player p) {
+
+        public const string twExtrasKey = "F_TW_DATA";
+        public static TWData Get(Player p) {
             TWData data = TryGet(p);
             if (data != null) return data;
             data = new TWData();
@@ -100,8 +100,8 @@ namespace Flames.Modules.Games.TW
             p.Extras[twExtrasKey] = data;
             return data;
         }
-        
-        static TWData TryGet(Player p) {
+
+        public static TWData TryGet(Player p) {
             object data; p.Extras.TryGet(twExtrasKey, out data); return (TWData)data;
         }
         
@@ -118,8 +118,8 @@ namespace Flames.Modules.Games.TW
             UpdateAllStatus1();
             UpdateAllStatus2();
         }
-        
-        protected override List<Player> GetPlayers() {
+
+        public override List<Player> GetPlayers() {
             List<Player> playing = new List<Player>();
             playing.AddRange(Red.Members.Items);
             playing.AddRange(Blue.Members.Items);
@@ -137,12 +137,12 @@ namespace Flames.Modules.Games.TW
                            Get(p).Score, cfg.ScoreRequired, Get(p).Health);
         }
 
-        protected override void StartGame() {
+        public override void StartGame() {
             ResetTeams();
             tntImmuneFilter = (x, y, z) => InZone(x, y, z, tntImmuneZones);
         }
-        
-        protected override void EndGame() {
+
+        public override void EndGame() {
             RestoreBuildPerms();
             ResetTeams();
             
@@ -150,8 +150,8 @@ namespace Flames.Modules.Games.TW
             UpdateBlockHandlers();
             Map.UpdateBlockProps();
         }
-        
-        void ResetTeams() {
+
+        public void ResetTeams() {
             Blue.Members.Clear();
             Red.Members.Clear();
             Blue.Score = 0;
@@ -177,8 +177,8 @@ namespace Flames.Modules.Games.TW
             team.Members.Remove(p);
             RestoreColor(p);
         }
-        
-        void RestoreColor(Player p) {
+
+        public void RestoreColor(Player p) {
             TWData data = TryGet(p);
             // TODO: p.Socket.Disconnected check should be elsewhere
             if (data == null || p.Socket.Disconnected) return;
@@ -186,8 +186,8 @@ namespace Flames.Modules.Games.TW
             p.UpdateColor(PlayerInfo.DefaultColor(p));
             TabList.Update(p, true);
         }
-        
-        void JoinTeam(Player p, TWTeam team) {
+
+        public void JoinTeam(Player p, TWTeam team) {
             team.Members.Add(p);
             Map.Message(p.ColoredName + " &Sjoined the " + team.ColoredName + " &Steam");
             
@@ -195,8 +195,8 @@ namespace Flames.Modules.Games.TW
             p.Message("You are now on the " + team.ColoredName + " team!");
             TabList.Update(p, true);
         }
-        
-        TWTeam TeamOf(Player p) {
+
+        public TWTeam TeamOf(Player p) {
             if (Red.Members.Contains(p)) return Red;
             if (Blue.Members.Contains(p)) return Blue;
             return null;
@@ -271,8 +271,8 @@ namespace Flames.Modules.Games.TW
             }
             return false;
         }
-        
-        void AutoAssignTeam(Player p) {
+
+        public void AutoAssignTeam(Player p) {
             if (Blue.Members.Count > Red.Members.Count) {
                 JoinTeam(p, Red);
             } else if (Red.Members.Count > Blue.Members.Count) {
@@ -326,19 +326,19 @@ namespace Flames.Modules.Games.TW
             team.Score += amount;
             UpdateAllStatus1();
         }
-        
-        bool TeamKill(Player p1, Player p2) {
+
+        public bool TeamKill(Player p1, Player p2) {
             return Config.Mode == TWGameMode.TDM && TeamOf(p1) == TeamOf(p2);
         }
-        
-        protected override string FormatStatus1(Player p) {
+
+        public override string FormatStatus1(Player p) {
             if (Config.Mode != TWGameMode.TDM) return "";
             
             return Red.ColoredName + ": &f" + Red.Score  + "/" + cfg.ScoreRequired + ", "
                 + Blue.ColoredName + ": &f" + Blue.Score + "/" + cfg.ScoreRequired;
         }
-        
-        protected override string FormatStatus2(Player p) {
+
+        public override string FormatStatus2(Player p) {
             TWData data = Get(p);
             return "&aHealth: &f" + data.Health + " HP, &eScore: &f" 
                 + data.Score + "/" + cfg.ScoreRequired + " points";

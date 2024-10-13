@@ -54,8 +54,8 @@ namespace Flames.DB
             if (Dims.Z < lvl.Length) Dims.Z = lvl.Length;
             Cache.Dims = Dims;
         }
-        
-        void ReadDimensions() {
+
+        public void ReadDimensions() {
             if (!File.Exists(FilePath)) return;
             using (Stream s = OpenRead())
                 BlockDBFile.ReadHeader(s, out Dims);
@@ -102,8 +102,8 @@ namespace Flames.DB
             }
             FindInMemoryAt(x, y, z, output);
         }
-        
-        void FindInMemoryAt(ushort x, ushort y, ushort z, Action<BlockDBEntry> output) {
+
+        public void FindInMemoryAt(ushort x, ushort y, ushort z, Action<BlockDBEntry> output) {
             int index = (y * Dims.Z + z) * Dims.X + x;
             BlockDBCacheNode node = Cache.Tail;
             while (node != null) {
@@ -136,8 +136,8 @@ namespace Flames.DB
                 return format.FindChangesBy(s, ids, startDelta, endDelta, output);
             }
         }
-        
-        bool FindInMemoryBy(int[] ids, int startDelta, int endDelta, Action<BlockDBEntry> output) {
+
+        public bool FindInMemoryBy(int[] ids, int startDelta, int endDelta, Action<BlockDBEntry> output) {
             BlockDBCacheNode node = Cache.Head;
             while (node != null) {
                 int count = node.Count;
@@ -157,8 +157,8 @@ namespace Flames.DB
             }
             return false;
         }
-        
-        static int ClampDelta(TimeSpan delta) {
+
+        public static int ClampDelta(TimeSpan delta) {
             long secs = (long)delta.TotalSeconds;
             if (secs < int.MinValue) return int.MinValue;
             if (secs > int.MaxValue) return int.MaxValue;
@@ -176,7 +176,7 @@ namespace Flames.DB
 
         /// <summary> Checks if the backing file exists on disc, and if not, creates it.
         /// Also recreates the backing file if dimensions on disc are less than those in memory. </summary>
-        BlockDBFile ValidateBackingFile() {
+        public BlockDBFile ValidateBackingFile() {
             Vec3U16 fileDims;
 
             BlockDBFile format = BlockDBFile.V1;
@@ -195,13 +195,13 @@ namespace Flames.DB
             }
             return format;
         }
-        
-                
-        FileStream OpenWrite() { 
+
+
+        public FileStream OpenWrite() { 
             return new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite); 
         }
-        
-        FileStream OpenRead() {
+
+        public FileStream OpenRead() {
             return new FileStream(FilePath, FileMode.OpenOrCreate, FileAccess.Read, FileShare.ReadWrite); 
         }
     }

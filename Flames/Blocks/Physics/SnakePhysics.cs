@@ -109,8 +109,8 @@ namespace Flames.Blocks.Physics {
                 C.Data.Type1 = PhysicsArgs.Revert; C.Data.Value1 = Block.Air;
             }
         }
-        
-        static bool MoveSnake(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
+
+        public static bool MoveSnake(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
             int index;
             
             // Move snake up or down blocks
@@ -130,8 +130,8 @@ namespace Flames.Blocks.Physics {
             }
             return false;
         }
-        
-        static bool MoveSnakeY(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
+
+        public static bool MoveSnakeY(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
             int index;
             BlockID block  = lvl.GetBlock(x, y, z, out index);
             BlockID above  = lvl.GetBlock(x, (ushort)(y + 1), z);

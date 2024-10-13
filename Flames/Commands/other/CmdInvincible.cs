@@ -38,8 +38,8 @@ namespace Flames.Commands.Misc {
             who.invincible = !who.invincible;
             ShowPlayerMessage(p, who);
         }
-        
-        static void ShowPlayerMessage(Player p, Player target) {
+
+        public static void ShowPlayerMessage(Player p, Player target) {
             string msg = target.invincible ? "now invincible" : "no longer invincible";
             if (p == target) p.Message("You are {0}", msg);
 

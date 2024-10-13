@@ -22,10 +22,10 @@ using Flames.Maths;
 using BlockID = System.UInt16;
 
 namespace Flames.Blocks {
-    
-    internal static class DeleteBehaviour {
 
-        internal static ChangeResult RocketStart(Player p, BlockID old, ushort x, ushort y, ushort z) {
+    public static class DeleteBehaviour {
+
+        public static ChangeResult RocketStart(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (p.level.physics < 2 || p.level.physics == 5) return ChangeResult.Unchanged;
             
             int dx = 0, dy = 0, dz = 0;
@@ -46,8 +46,8 @@ namespace Flames.Blocks {
             }
             return ChangeResult.Unchanged;
         }
-        
-        internal static ChangeResult Firework(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult Firework(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (p.level.physics == 0 || p.level.physics == 5) return ChangeResult.Unchanged;
             
             Random rand = new Random();
@@ -69,18 +69,18 @@ namespace Flames.Blocks {
             }
             return ChangeResult.Unchanged;
         }
-        
-        internal static ChangeResult C4Det(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult C4Det(Player p, BlockID old, ushort x, ushort y, ushort z) {
             int index = p.level.PosToInt(x, y, z);
             C4Physics.BlowUp(index, p.level);
             return p.ChangeBlock(x, y, z, Block.Air);
         }
-        
-        internal static ChangeResult RevertDoor(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult RevertDoor(Player p, BlockID old, ushort x, ushort y, ushort z) {
             return ChangeResult.Unchanged;
         }
-        
-        internal static ChangeResult Door(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult Door(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (p.level.physics == 0) return p.ChangeBlock(x, y, z, Block.Air);
             
             BlockID physForm;
@@ -88,8 +88,8 @@ namespace Flames.Blocks {
             p.level.Blockchange(x, y, z, physForm, false, args);
             return ChangeResult.Modified;
         }
-        
-        internal static ChangeResult oDoor(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult oDoor(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (old == Block.oDoor_Green || old == Block.oDoor_Green_air) {
                 BlockID oDoorOpposite = p.level.Props[old].oDoorBlock;
                 p.level.Blockchange(x, y, z, oDoorOpposite);
@@ -97,15 +97,15 @@ namespace Flames.Blocks {
             }
             return ChangeResult.Unchanged;
         }
-        
-        internal static ChangeResult DoPortal(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult DoPortal(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (!Portal.Handle(p, x, y, z)) {
                 return p.ChangeBlock(x, y, z, Block.Air);
             }
             return ChangeResult.Unchanged;
         }
-        
-        internal static ChangeResult DoMessageBlock(Player p, BlockID old, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult DoMessageBlock(Player p, BlockID old, ushort x, ushort y, ushort z) {
             if (!MessageBlock.Handle(p, x, y, z, true)) {
                 return p.ChangeBlock(x, y, z, Block.Air);
             }

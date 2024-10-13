@@ -36,8 +36,8 @@ namespace Flames.Bots
             if (bot.countdown == 0) { bot.NextInstruction(); return false; }
             return true;
         }
-        
-        protected class Metadata { public short Seconds, Speed; }
+
+        public class Metadata { public short Seconds, Speed; }
         
         public override InstructionData Parse(string[] args) {
             InstructionData data = default;
@@ -55,7 +55,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] { "&T/BotAI add [name] spin <interval> <speed>",
+        public static string[] help = new string[] { "&T/BotAI add [name] spin <interval> <speed>",
             "&HCauses the bot to spin around for a period of time.",
             "&H  <interval> is in tenths of a second, so an interval of 20 means " +
             "spin for two seconds. (defaults to 1 second)",
@@ -97,7 +97,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] { "" +
+        public static string[] help = new string[] { "" +
             "T/BotAI add [name] nod <interval> <speed>",
             "&HCauses the bot to nod up and down for a period of time.",
             "&H  <interval> is in tenths of a second, so an interval of 20 means " +

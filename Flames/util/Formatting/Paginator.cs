@@ -38,8 +38,8 @@ namespace Flames
                                      string cmd, string type, string modifier) {
             Output(p, items, null, printer, cmd, type, modifier, 8);
         }
-        
-        static void Output<T>(Player p, IList<T> items,
+
+        public static void Output<T>(Player p, IList<T> items,
                               StringFormatter<T> formatter, ItemPrinter<T> printer,
                               string cmd, string type, string modifier, int perPage) {
             int page, total = items.Count;
@@ -57,8 +57,8 @@ namespace Flames
                 OutputPage(p, items, formatter, printer, cmd, type, page, perPage);
             }
         }
-        
-        static void OutputPage<T>(Player p, IList<T> items,
+
+        public static void OutputPage<T>(Player p, IList<T> items,
                                   StringFormatter<T> formatter, ItemPrinter<T> printer,
                                   string cmd, string type, int start, int perPage) {
             start = Utils.Clamp(start - 1, 0, items.Count - 1); // want item numbers to start at 1
@@ -75,8 +75,8 @@ namespace Flames
                           type, start + 1, end, items.Count);
             }
         }
-        
-        static void OutputItems<T>(Player p, IList<T> items, int beg, int end,
+
+        public static void OutputItems<T>(Player p, IList<T> items, int beg, int end,
                                    StringFormatter<T> formatter, ItemPrinter<T> printer) {
             if (printer != null) {
                 for (int i = beg; i < end; i++)
@@ -86,8 +86,8 @@ namespace Flames
                 p.Message(output.Join());
             }
         }
-        
-        static IEnumerable<string> Subset<T>(IList<T> items, int start, int end,
+
+        public static IEnumerable<string> Subset<T>(IList<T> items, int start, int end,
                                              StringFormatter<T> formatter) {
             for (int i = start; i < end; i++)
                 yield return formatter(items[i]);

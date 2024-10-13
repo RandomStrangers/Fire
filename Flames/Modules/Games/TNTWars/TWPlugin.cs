@@ -22,7 +22,7 @@ namespace Flames.Modules.Games.TW
     public sealed class TWPlugin : Plugin 
     {
         public override string name { get { return "TW"; } }
-        static Command cmdTW = new CmdTntWars();
+        public static Command cmdTW = new CmdTntWars();
         
         public override void Load(bool startup) {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
@@ -37,8 +37,8 @@ namespace Flames.Modules.Games.TW
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdTW);
         }
-        
-        void OnConfigUpdated() { 
+
+        public void OnConfigUpdated() { 
             TWGame.Instance.Config.Load();
         }
     }

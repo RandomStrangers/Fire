@@ -21,9 +21,9 @@ using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics {
 
-    internal static class PlayerPhysics {
-        
-        internal static void Walkthrough(Player p, AABB bb) {
+    public static class PlayerPhysics {
+
+        public static void Walkthrough(Player p, AABB bb) {
             Vec3S32 min = bb.BlockMin, max = bb.BlockMax;
             bool hitWalkthrough = false;
             
@@ -55,8 +55,8 @@ namespace Flames.Blocks.Physics {
             
             if (!hitWalkthrough) p.lastWalkthrough = -1;
         }
-        
-        internal static void Fall(Player p, AABB bb, bool movingDown) {
+
+        public static void Fall(Player p, AABB bb, bool movingDown) {
             // Client position is slightly more precise than server's
             // If don't adjust, it's possible for player to land on edge of a block and not die    
             // Only do when not moving down, so hitting a pillar while falling doesn't trigger
@@ -90,8 +90,8 @@ namespace Flames.Blocks.Physics {
             if (bb.Min.Y > p.lastFallY) p.startFallY = -1; // flying up resets fall height
             p.startFallY = Math.Max(bb.Min.Y, p.startFallY);
         }
-        
-        internal static void Drown(Player p, AABB bb) {
+
+        public static void Drown(Player p, AABB bb) {
             // Want to check block at centre of bounding box
             bb.Max.X -= (bb.Max.X - bb.Min.X) / 2;
             bb.Max.Z -= (bb.Max.Z - bb.Min.Z) / 2;
@@ -121,8 +121,8 @@ namespace Flames.Blocks.Physics {
                 p.drownTime = DateTime.MaxValue;
             }
         }
-        
-        static BlockID GetSurvivalBlock(Player p, int x, int y, int z) {
+
+        public static BlockID GetSurvivalBlock(Player p, int x, int y, int z) {
             if (y < 0) return Block.Bedrock;
             if (y >= p.level.Height) return Block.Air;
             return p.level.GetBlock((ushort)x, (ushort)y, (ushort)z);

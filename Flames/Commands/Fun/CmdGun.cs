@@ -36,8 +36,8 @@ namespace Flames.Commands.Fun {
             if (type == WeaponType.Invalid) { Help(p); return; }
             GetGun(type).Enable(p);
         }
-        
-        static Gun GetGun(WeaponType type) {
+
+        public static Gun GetGun(WeaponType type) {
             if (type == WeaponType.Destroy)  return new PenetrativeGun();
             if (type == WeaponType.Teleport) return new TeleportGun();
             if (type == WeaponType.Explode)  return new ExplosiveGun();

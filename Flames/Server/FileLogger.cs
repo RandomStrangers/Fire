@@ -28,13 +28,13 @@ namespace Flames
         public static string LogPath      { get { return msg.Path; } }
         public static string ErrorLogPath { get { return err.Path; } }
 
-        static bool disposed;
-        static DateTime last;
+        public static bool disposed;
+        public static DateTime last;
 
-        static object logLock = new object();
-        static FileLogGroup err = new FileLogGroup();
-        static FileLogGroup msg = new FileLogGroup();
-        static SchedulerTask logTask;
+        public static object logLock = new object();
+        public static FileLogGroup err = new FileLogGroup();
+        public static FileLogGroup msg = new FileLogGroup();
+        public static SchedulerTask logTask;
 
         public static void Init() {
             if (!Directory.Exists("logs")) Directory.CreateDirectory("logs");
@@ -45,9 +45,9 @@ namespace Flames
             logTask = Server.MainScheduler.QueueRepeat(Flush, null,
                                                        TimeSpan.FromMilliseconds(500));
         }
-        
+
         // Update paths only if a new date
-        static void UpdatePaths() {
+        public static void UpdatePaths() {
             DateTime now = DateTime.Now;
             if (now.Year == last.Year && now.Month == last.Month && now.Day == last.Day) return;
             
@@ -58,8 +58,8 @@ namespace Flames
             err.Close();
             msg.Close();
         }
-        
-        static void LogMessage(LogType type, string message) {
+
+        public static void LogMessage(LogType type, string message) {
             if (string.IsNullOrEmpty(message)) return;
             if (!Server.Config.FileLogging[(int)type]) return;
             
@@ -104,14 +104,14 @@ namespace Flames
         }
     }
 
-    class FileLogGroup
+    public class FileLogGroup
     {
         public string Path;
         public Queue<string> Cache = new Queue<string>();
-        Stream stream;
-        StreamWriter writer;
+        public Stream stream;
+        public StreamWriter writer;
 
-        const int MAX_LOG_SIZE = 1024 * 1024 * 1024; // 1 GB
+        public const int MAX_LOG_SIZE = 1024 * 1024 * 1024; // 1 GB
 
         public void FlushCache() {
             if (stream == null) {

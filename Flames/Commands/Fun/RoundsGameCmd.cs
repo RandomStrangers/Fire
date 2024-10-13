@@ -22,7 +22,7 @@ namespace Flames.Commands.Fun {
         public override string type { get { return CommandTypes.Games; } }
         public override bool museumUsable { get { return false; } }
         public override bool SuperUseable { get { return false; } }
-        protected abstract RoundsGame Game { get; }
+        public abstract RoundsGame Game { get; }
         
         public override void Use(Player p, string message, CommandData data) {
             RoundsGame game = Game;
@@ -50,30 +50,30 @@ namespace Flames.Commands.Fun {
             }
         }
 
-        protected virtual void HandleGo(Player p, RoundsGame game) {
+        public virtual void HandleGo(Player p, RoundsGame game) {
             if (!game.Running) {
                 p.Message("{0} is not running", game.GameName);
             } else {
                 PlayerActions.ChangeMap(p, game.Map);
             }
         }
-        
-        protected virtual void HandleStart(Player p, RoundsGame game, string[] args) {
+
+        public virtual void HandleStart(Player p, RoundsGame game, string[] args) {
             if (game.Running) { p.Message("{0} is already running", game.GameName); return; }
 
             string map = args.Length > 1 ? args[1] : "";
             game.Start(p, map, int.MaxValue);
         }
-        
-        protected virtual void HandleEnd(Player p, RoundsGame game) {
+
+        public virtual void HandleEnd(Player p, RoundsGame game) {
             if (game.RoundInProgress) {
                 game.EndRound();
             } else {
                 p.Message("No round is currently in progress");
             }
         }
-        
-        protected virtual void HandleStop(Player p, RoundsGame game) {
+
+        public virtual void HandleStop(Player p, RoundsGame game) {
             if (!game.Running) {
                 p.Message("{0} is not running", game.GameName);
             } else {
@@ -82,7 +82,7 @@ namespace Flames.Commands.Fun {
             }
         }
 
-        protected virtual void HandleStatus(Player p, RoundsGame game) {
+        public virtual void HandleStatus(Player p, RoundsGame game) {
             if (!game.Running) {
                 p.Message("{0} is not running", game.GameName);
             } else {
@@ -90,15 +90,15 @@ namespace Flames.Commands.Fun {
                 game.OutputStatus(p);
             }
         }
-        
-        protected abstract void HandleSet(Player p, RoundsGame game, string[] args);
-        
-        protected void LoadMapConfig(Player p, RoundsGameMapConfig cfg) {
+
+        public abstract void HandleSet(Player p, RoundsGame game, string[] args);
+
+        public void LoadMapConfig(Player p, RoundsGameMapConfig cfg) {
             cfg.SetDefaults(p.level);
             cfg.Load(p.level.name);
         }
-        
-        protected void SaveMapConfig(Player p, RoundsGameMapConfig cfg) {
+
+        public void SaveMapConfig(Player p, RoundsGameMapConfig cfg) {
             RoundsGame game = Game;
             cfg.Save(p.level.name);
             if (p.level == game.Map) game.UpdateMapConfig();

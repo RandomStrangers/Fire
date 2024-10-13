@@ -64,8 +64,8 @@ namespace Flames {
         
         /// <summary> Divides by 16, rounding up if there is a remainder. </summary>
         public static int CeilDiv16(int x) { return (x + 15) / 16; }
-        
-        const NumberStyles style = NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite
+
+        public const NumberStyles style = NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite
             | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint;
         
         // Not all languages use . as their decimal point separator
@@ -117,7 +117,7 @@ namespace Flames {
             return new string(hex);
         }
 
-        static char HexEncode(int i) {
+        public static char HexEncode(int i) {
             return i < 10 ? (char)(i + '0') : (char)((i - 10) + 'a');
         }
     }

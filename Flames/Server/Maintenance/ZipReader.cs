@@ -22,8 +22,8 @@ using System.IO.Compression;
 using System.Text;
 
 namespace Flames 
-{    
-    sealed class ZipReaderStream : Stream 
+{
+    public sealed class ZipReaderStream : Stream 
     {
         public long CompressedLen;
         public Stream stream;
@@ -32,8 +32,8 @@ namespace Flames
         public override bool CanRead  { get { return true;  } }
         public override bool CanSeek  { get { return false; } }
         public override bool CanWrite { get { return false; } }
-        
-        static Exception ex = new NotSupportedException();
+
+        public static Exception ex = new NotSupportedException();
         public override void Flush() { stream.Flush(); }
         public override long Length { get { throw ex; } }
         public override long Position { get { throw ex; } set { throw ex; } }
@@ -63,12 +63,12 @@ namespace Flames
     /// <summary> Reads entries from a ZIP archive. </summary>
     public sealed class ZipReader 
     {
-        BinaryReader reader;
-        Stream stream;
-        
-        List<ZipEntry> entries = new List<ZipEntry>();
-        int numEntries;
-        long centralDirOffset, zip64EndOffset;
+        public BinaryReader reader;
+        public Stream stream;
+
+        public List<ZipEntry> entries = new List<ZipEntry>();
+        public int numEntries;
+        public long centralDirOffset, zip64EndOffset;
         
         public ZipReader(Stream stream) {
             this.stream = stream;
@@ -145,9 +145,9 @@ namespace Flames
             }
             ReadZip64EndOfCentralDirectoryRecord();
         }
-        
-        
-        ZipEntry ReadLocalFileRecord() {
+
+
+        public ZipEntry ReadLocalFileRecord() {
             BinaryReader r = reader;
             ZipEntry entry = default;
             
@@ -177,8 +177,8 @@ namespace Flames
             stream.Seek(extraEnd, SeekOrigin.Begin);
             return entry;
         }
-        
-        ZipEntry ReadCentralDirectoryRecord() {
+
+        public ZipEntry ReadCentralDirectoryRecord() {
             BinaryReader r = reader;
             ZipEntry entry = default;
             
@@ -216,8 +216,8 @@ namespace Flames
             stream.Seek(extraEnd, SeekOrigin.Begin);
             return entry;
         }
-        
-        void ReadZip64EndOfCentralDirectoryRecord() {
+
+        public void ReadZip64EndOfCentralDirectoryRecord() {
             BinaryReader r = reader;
             r.ReadInt64(); // zip64 end of central dir size
             r.ReadUInt16(); // version
@@ -229,15 +229,15 @@ namespace Flames
             r.ReadInt64(); // central dir size
             centralDirOffset = r.ReadInt64();
         }
-        
-        void ReadZip64EndOfCentralDirectoryLocator() {
+
+        public void ReadZip64EndOfCentralDirectoryLocator() {
             BinaryReader r = reader;
             r.ReadUInt32(); // disc number of zip64 end of central directory
             zip64EndOffset = reader.ReadInt64();
             r.ReadUInt32(); // total number of discs
         }
-        
-        void ReadEndOfCentralDirectoryRecord() {
+
+        public void ReadEndOfCentralDirectoryRecord() {
             BinaryReader r = reader;
             r.ReadUInt16(); // disc number
             r.ReadUInt16(); // disc number of start

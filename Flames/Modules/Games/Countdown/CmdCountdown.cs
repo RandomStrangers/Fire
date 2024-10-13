@@ -23,12 +23,12 @@ using Flames.Games;
 using Flames.Generator;
 
 namespace Flames.Modules.Games.Countdown
-{    
-    sealed class CmdCountdown : RoundsGameCmd 
+{
+    public sealed class CmdCountdown : RoundsGameCmd 
     {
         public override string name { get { return "CountDown"; } }
         public override string shortcut { get { return "CD"; } }
-        protected override RoundsGame Game { get { return CountdownGame.Instance; } }
+        public override RoundsGame Game { get { return CountdownGame.Instance; } }
         public override CommandPerm[] ExtraPerms {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage countdown") }; }
         }
@@ -40,8 +40,8 @@ namespace Flames.Modules.Games.Countdown
                 base.Use(p, message, data);
             }
         }
-        
-        void HandleJoin(Player p, CountdownGame game) {
+
+        public void HandleJoin(Player p, CountdownGame game) {
             if (!game.Running) {
                 p.Message("Cannot join as countdown is not running.");
             } else if (game.RoundInProgress) {
@@ -51,7 +51,7 @@ namespace Flames.Modules.Games.Countdown
             }
         }
 
-        protected override void HandleSet(Player p, RoundsGame game_, string[] args) {
+        public override void HandleSet(Player p, RoundsGame game_, string[] args) {
             if (args.Length < 4) { Help(p); return; }
             if (game_.Running) {
                 p.Message("You must stop Countdown before replacing the map."); return;
@@ -62,9 +62,9 @@ namespace Flames.Modules.Games.Countdown
             
             CountdownGame game = (CountdownGame)game_;
             game.GenerateMap(p, x, y, z);
-        }        
-        
-        protected override void HandleStart(Player p, RoundsGame game_, string[] args) {
+        }
+
+        public override void HandleStart(Player p, RoundsGame game_, string[] args) {
             if (game_.Running) { p.Message("{0} is already running", game_.GameName); return; }
             
             CountdownGame game   = (CountdownGame)game_;

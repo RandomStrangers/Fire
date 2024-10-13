@@ -86,12 +86,12 @@ namespace Flames
             SpawnRaw(dst, id, p, pos, rot, skin, name, model);
             if (!Server.Config.TablistGlobal) TabList.Add(dst, p, id);
         }
-        
+
         /// <summary> Spawns this player to all other players, and spawns all others players to this player. </summary>
-        internal static void SpawnEntities(Player p, bool bots = true) { SpawnEntities(p, p.Pos, p.Rot, bots); }
-        
+        public static void SpawnEntities(Player p, bool bots = true) { SpawnEntities(p, p.Pos, p.Rot, bots); }
+
         /// <summary> Spawns this player to all other players, and spawns all others players to this player. </summary>
-        internal static void SpawnEntities(Player p, Position pos, Orientation rot, bool bots = true) {
+        public static void SpawnEntities(Player p, Position pos, Orientation rot, bool bots = true) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player other in players) {
                 if (other.level != p.level || !p.CanSeeEntity(other) || p == other) continue;
@@ -103,9 +103,9 @@ namespace Flames
             PlayerBot[] botsList = p.level.Bots.Items;
             foreach (PlayerBot b in botsList) { Spawn(p, b); }
         }
-        
+
         /// <summary> Despawns this player to all other players, and despawns all others players to this player. </summary>
-        internal static void DespawnEntities(Player p, bool bots = true) {
+        public static void DespawnEntities(Player p, bool bots = true) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player other in players) {
                 if (p.level == other.level && p != other) Despawn(p, other);
@@ -127,8 +127,8 @@ namespace Flames
             SpawnRaw(dst, b.id, b, b.Pos, b.Rot, skin, name, model);
             if (Server.Config.TablistBots) TabList.Add(dst, b);
         }
-        
-        static void SpawnRaw(Player dst, byte id, Entity e, Position pos, Orientation rot,
+
+        public static void SpawnRaw(Player dst, byte id, Entity e, Position pos, Orientation rot,
                              string skin, string name, string model) {
             dst.Session.SendSpawnEntity(id, name, skin, pos, rot);
 
@@ -172,7 +172,7 @@ namespace Flames
         [Obsolete("Use entity.UpdateModel")]
         public static void UpdateModel(Entity e, string model) { e.UpdateModel(model); }
 
-        internal static void BroadcastModel(Entity e, string m) {
+        public static void BroadcastModel(Entity e, string m) {
             Player[] players = PlayerInfo.Online.Items;
             Level lvl = e.Level;
             
@@ -189,8 +189,8 @@ namespace Flames
                 SendModelScales(pl, id, e);
             }
         }
-        
-        static void SendModelScales(Player dst, byte id, Entity e) {
+
+        public static void SendModelScales(Player dst, byte id, Entity e) {
             if (!dst.Supports(CpeExt.EntityProperty)) return;
             
             float max = ModelInfo.MaxScale(e, e.Model);
@@ -198,8 +198,8 @@ namespace Flames
             SendModelScale(dst, id, EntityProp.ScaleY, e.ScaleY, max);
             SendModelScale(dst, id, EntityProp.ScaleZ, e.ScaleZ, max);
         }
-        
-        static void SendModelScale(Player dst, byte id, EntityProp axis, float value, float max) {
+
+        public static void SendModelScale(Player dst, byte id, EntityProp axis, float value, float max) {
             if (value == 0) return;
             value = Math.Min(value, max);
             
@@ -267,17 +267,17 @@ namespace Flames
                 *ptr = rot.HeadX; ptr++;
             }
         }
-        
-        unsafe static void WriteI32(ref byte* ptr, int value) {
+
+        public unsafe static void WriteI32(ref byte* ptr, int value) {
             *ptr = (byte)(value >> 24); ptr++; *ptr = (byte)(value >> 16); ptr++;
             *ptr = (byte)(value >> 8); ptr++; *ptr = (byte)value; ptr++;
         }
-        
-        unsafe static void WriteI16(ref byte* ptr, short value) {
+
+        public unsafe static void WriteI16(ref byte* ptr, short value) {
             *ptr = (byte)(value >> 8); ptr++; *ptr = (byte)value; ptr++;
         }
-        
-        static Position GetDelta(Position pos, Position old, bool extPositions) {
+
+        public static Position GetDelta(Position pos, Position old, bool extPositions) {
             Position delta = new Position(pos.X - old.X, pos.Y - old.Y, pos.Z - old.Z);
             if (extPositions) return delta;
             

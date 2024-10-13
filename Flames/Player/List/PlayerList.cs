@@ -24,10 +24,10 @@ namespace Flames {
     /// <summary> Represents a list of player names. Case insensitive. Thread safe. </summary>
     public class PlayerList {
         public string Path;
-        
-        List<string> names = new List<string>();        
-        internal readonly object locker = new object();
-        readonly object saveLocker = new object();
+
+        public List<string> names = new List<string>();
+        public readonly object locker = new object();
+        public readonly object saveLocker = new object();
         
         public PlayerList() { }
         
@@ -64,13 +64,13 @@ namespace Flames {
         public void Clear() {
             lock (locker) names.Clear();
         }
-        
 
-        internal int IndexOf(string name) {
+
+        public int IndexOf(string name) {
             lock (locker) return names.CaselessIndexOf(name);
         }
-        
-        internal string GetAt(int index) {
+
+        public string GetAt(int index) {
             lock (locker) {
                 if (index < 0 || index >= names.Count) return null;
                 return names[index];
@@ -121,8 +121,8 @@ namespace Flames {
             }
             if (log) Logger.Log(LogType.BackgroundActivity, "SAVED: " + Path);
         }
-        
-        void SaveEntries(StreamWriter w) {
+
+        public void SaveEntries(StreamWriter w) {
             lock (locker) {
                 foreach (string p in names) w.WriteLine(p);
             }

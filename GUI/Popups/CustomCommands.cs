@@ -33,12 +33,12 @@ namespace Flames.Gui.Popups {
                 if (!Command.IsCore(cmd)) lstCommands.Items.Add(cmd.name);
             }
         }
-        
-        void CustomCommands_Load(object sender, EventArgs e) {
+
+        public void CustomCommands_Load(object sender, EventArgs e) {
             GuiUtils.SetIcon(this);
         }
-        
-        void LoadCompilers() {
+
+        public void LoadCompilers() {
             Button[] buttons = { btnCreate1, btnCreate2, btnCreate3, btnCreate4, btnCreate5 };
             List<ICompiler> compilers = ICompiler.Compilers;
             int i;
@@ -56,8 +56,8 @@ namespace Flames.Gui.Popups {
             
             for (; i < buttons.Length; i++) buttons[i].Visible = false;
         }
-        
-        void CreateCommand(ICompiler compiler) {
+
+        public void CreateCommand(ICompiler compiler) {
             string cmdName = txtCmdName.Text.Trim();
             if (cmdName.Length == 0) {
                 Popup.Warning("Command must have a name"); return;
@@ -78,8 +78,8 @@ namespace Flames.Gui.Popups {
             }
             Popup.Message("Command Cmd" + cmdName + compiler.FileExtension + " created.");
         }
-        
-        void btnLoad_Click(object sender, EventArgs e) {
+
+        public void btnLoad_Click(object sender, EventArgs e) {
             string path;
             
             using (FileDialog dialog = new OpenFileDialog()) {
@@ -102,7 +102,7 @@ namespace Flames.Gui.Popups {
             DeleteAssembly(tmp);
         }
 
-        void btnUnload_Click(object sender, EventArgs e) {
+        public void btnUnload_Click(object sender, EventArgs e) {
             string cmdName = lstCommands.SelectedItem.ToString();
             Command cmd = Command.Find(cmdName);
             if (cmd == null) {
@@ -113,13 +113,13 @@ namespace Flames.Gui.Popups {
             Command.Unregister(cmd);
             Popup.Message("Command successfully unloaded.");
         }
-        
-        void lstCommands_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public void lstCommands_SelectedIndexChanged(object sender, EventArgs e) {
             btnUnload.Enabled = lstCommands.SelectedIndex != -1;
         }
-        
-        
-        void LoadCommands(string path) {
+
+
+        public void LoadCommands(string path) {
             Assembly lib = IScripting.LoadAssembly(path);
             if (lib == null) return;
             List<Command> commands = IScripting.LoadTypes<Command>(lib);
@@ -138,8 +138,8 @@ namespace Flames.Gui.Popups {
                 Logger.Log(LogType.SystemActivity, "Added /" + cmd.name + " to commands");
             }
         }
-        
-        string CompileCommands(string path) {
+
+        public string CompileCommands(string path) {
             ICompiler compiler = GetCompiler(path);
             if (compiler == null) {
                 Popup.Warning("Unsupported file '" + path + "'");
@@ -155,27 +155,27 @@ namespace Flames.Gui.Popups {
             DeleteAssembly(tmp);
             return null;
         }
-        
-        static ICompiler GetCompiler(string path) {
+
+        public static ICompiler GetCompiler(string path) {
             foreach (ICompiler c in ICompiler.Compilers)
             {
                 if (path.CaselessEnds(c.FileExtension)) return c;
             }
             return null;
         }
-        
-        static void DeleteAssembly(string path) {
+
+        public static void DeleteAssembly(string path) {
             try { File.Delete(path); } catch { }
             try { File.Delete(path.Replace(".dll", ".pdb")); } catch { }
             try { File.Delete(path + ".mdb"); } catch { }
         }
-        
-        
-        static string ListCompilers(StringFormatter<ICompiler> formatter) {
+
+
+        public static string ListCompilers(StringFormatter<ICompiler> formatter) {
             return ICompiler.Compilers.Join(formatter, "");
         }
-               
-        static string GetFilterText() {
+
+        public static string GetFilterText() {
             StringBuilder sb = new StringBuilder();
             // Returns e.g. "Accepted File Types (*.cs, *.dll)|*.cs;*.dll|C# Source (*.cs)|*.cs|.NET Assemblies (*.dll)|*.dll";
             

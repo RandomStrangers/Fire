@@ -33,14 +33,14 @@ namespace Flames.Generator.Realistic
 	
     public sealed class RealisticMapGen 
     {
-        float[] terrain, overlay, overlayT;
-        float treeDens;
-        short treeDist;
-        Random rng;
-        ushort waterHeight;
-        RealisticMapGenArgs args;
-        MapGenBiome biome;
-        Tree tree;
+        public float[] terrain, overlay, overlayT;
+        public float treeDens;
+        public short treeDist;
+        public Random rng;
+        public ushort waterHeight;
+        public RealisticMapGenArgs args;
+        public MapGenBiome biome;
+        public Tree tree;
         
         public bool Gen(Player p, Level lvl, MapGenArgs gen_args, 
                         RealisticMapGenArgs args, PreprocessGen preprocessor) {
@@ -99,8 +99,8 @@ namespace Flames.Generator.Realistic
             }
             return true;
         }
-        
-        void GenAboveWaterColumn(ushort x, ushort height, ushort z, Level lvl, int index) {
+
+        public void GenAboveWaterColumn(ushort x, ushort height, ushort z, Level lvl, int index) {
             int pos = x + lvl.Width * (z + height * lvl.Length);
             
             if (args.SimpleColumns) {
@@ -150,7 +150,7 @@ namespace Flames.Generator.Realistic
             }
         }
 
-        void GenFoliage(ushort x, ushort height, ushort z, Level lvl, int index) {
+        public void GenFoliage(ushort x, ushort height, ushort z, Level lvl, int index) {
             if (args.GenFlowers && overlay[index] < 0.25f) {
                 switch (rng.Next(12)) {
                     case 10:
@@ -176,7 +176,7 @@ namespace Flames.Generator.Realistic
             }
         }
 
-        void GenUnderwaterColumn(ushort x, ushort height, ushort z, Level lvl, int index) {
+        public void GenUnderwaterColumn(ushort x, ushort height, ushort z, Level lvl, int index) {
             int pos = x + lvl.Width * (z + waterHeight * lvl.Length);
             byte block;
             
@@ -214,7 +214,7 @@ namespace Flames.Generator.Realistic
 
 
         // https://www.lighthouse3d.com/opengl/terrain/index.php?fault
-        void GenerateFault(float[] array, Level lvl) {
+        public void GenerateFault(float[] array, Level lvl) {
             float baseHeight = args.StartHeight;
             float dispMax  = args.DisplacementMax;
             float dispStep = args.DisplacementStep;
@@ -253,12 +253,12 @@ namespace Flames.Generator.Realistic
             }
         }
 
-        void GeneratePerlinNoise(float[] array, Level Lvl) {
+        public void GeneratePerlinNoise(float[] array, Level Lvl) {
             NoiseGen.GenerateNormalized(array, 0.7f, 8, Lvl.Width, Lvl.Length, rng.Next(), 64);
         }
 
         //converts the float into a ushort for map height
-        static ushort Evaluate(Level lvl, float height) {
+        public static ushort Evaluate(Level lvl, float height) {
             ushort y = (ushort)(height * lvl.Height);
             if (y < 0) return 0;
             if (y > lvl.Height - 1) return (ushort)(lvl.Height - 1); // TODO >= lvl.Height
@@ -266,7 +266,7 @@ namespace Flames.Generator.Realistic
         }
 
         //applys the average filter
-        void FilterAverage(Level lvl) {
+        public void FilterAverage(Level lvl) {
             float[] filtered = new float[terrain.Length];
 
             for (int i = 0; i < filtered.Length; i++) 
@@ -281,7 +281,7 @@ namespace Flames.Generator.Realistic
         }
 
         //Averages over 9 points
-        float GetAverage9(ushort x, ushort z, Level lvl) {
+        public float GetAverage9(ushort x, ushort z, Level lvl) {
             int points = 0;
             float sum = GetPixel(ref points, x, z, lvl);
             sum += GetPixel(ref points, (ushort)(x + 1), z, lvl);
@@ -298,7 +298,7 @@ namespace Flames.Generator.Realistic
         }
 
         //returns the value of a x,y terrain coordinate
-        float GetPixel(ref int points, ushort x, ushort z, Level lvl) {
+        public float GetPixel(ref int points, ushort x, ushort z, Level lvl) {
             if (x < 0 || x >= lvl.Width || z < 0 || z >= lvl.Length)
                 return 0;
             points++;
@@ -306,13 +306,13 @@ namespace Flames.Generator.Realistic
         }
 
         //converts the height into a range
-        static float Range(float input, float low, float high) {
+        public static float Range(float input, float low, float high) {
             if (high <= low) return low;
             return low + (input * (high - low));
         }
 
         //Forces the edge of a map to slope lower for island map types
-        static float NegateEdge(ushort x, ushort z, Level lvl) {
+        public static float NegateEdge(ushort x, ushort z, Level lvl) {
             float xAdj = x / (float)lvl.Width  * 0.5f;
             float zAdj = z / (float)lvl.Length * 0.5f;
             float adj;
@@ -337,32 +337,32 @@ namespace Flames.Generator.Realistic
             MapGen.Register("Desert",    type, GenDesert,  MapGen.DEFAULT_HELP);
             MapGen.Register("Hell",      type, GenHell,    MapGen.DEFAULT_HELP);
         }
-        
-        static bool GenIsland(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenIsland(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Island);
         }
-        
-        static bool GenMountains(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenMountains(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Mountains);
         }
-        
-        static bool GenForest(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenForest(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Forest);
         }
-        
-        static bool GenOcean(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenOcean(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Ocean);
         }
-        
-        static bool GenDesert(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenDesert(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Desert);
         }
-        
-        static bool GenHell(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool GenHell(Player p, Level lvl, MapGenArgs args) {
             return GenRealistic(p, lvl, args, RealisticMapGenArgs.Hell, PreprocessHell);
         }
-        
-        static void PreprocessHell(Level lvl, MapGenArgs args) {
+
+        public static void PreprocessHell(Level lvl, MapGenArgs args) {
             Random rng = new Random(args.Seed);
             int width = lvl.Width, height = lvl.Height, length = lvl.Length;
             int index = 0, oneY = width * length;
@@ -393,8 +393,8 @@ namespace Flames.Generator.Realistic
                 index++;
             }
         }
-        
-        static bool GenRealistic(Player p, Level lvl, MapGenArgs gen_args, 
+
+        public static bool GenRealistic(Player p, Level lvl, MapGenArgs gen_args, 
                                  RealisticMapGenArgs args, PreprocessGen preprocessor = null) {
             return new RealisticMapGen().Gen(p, lvl, gen_args, args, preprocessor);
         }

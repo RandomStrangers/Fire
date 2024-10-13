@@ -29,10 +29,10 @@ namespace Flames {
         public static int Interval = 100;
         /// <summary> Maximum number of block updates broadcasted in one tick. </summary>
         public static int UpdatesPerTick = 750;
-        static BufferedBlockSender bulkSender = new BufferedBlockSender();
-        
-        const int posShift = 32;
-        readonly object locker = new object();
+        public static BufferedBlockSender bulkSender = new BufferedBlockSender();
+
+        public const int posShift = 32;
+        public readonly object locker = new object();
 
         /// <summary> Flushes the block updates queue for each loaded level. </summary>
         public static void Loop(SchedulerTask task) {
@@ -60,8 +60,8 @@ namespace Flames {
         
         /// <summary> Removes all block updates from the queue. </summary>
         public void ClearAll() { lock (locker) Clear(); }
-        
-        void Process(Level lvl) {
+
+        public void Process(Level lvl) {
             try {
                 if (Count == 0) return;
                 if (!lvl.HasPlayers()) { Clear(); return; }

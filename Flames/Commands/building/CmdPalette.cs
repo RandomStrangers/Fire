@@ -44,8 +44,8 @@ namespace Flames.Commands.Building {
                 Help(p);
             }
         }
-        
-        void HandleCreate(Player p, string[] args) {
+
+        public void HandleCreate(Player p, string[] args) {
             if (args.Length != 2) { Help(p); return; }
             if (!Formatter.ValidFilename(p, args[1])) return;
             
@@ -57,8 +57,8 @@ namespace Flames.Commands.Building {
                 p.Message("Created palette {0}", args[1]);
             }
         }
-        
-        void HandleDelete(Player p, string[] args) {
+
+        public void HandleDelete(Player p, string[] args) {
             if (args.Length != 2) { Help(p); return; }
             
             ImagePalette palette = ImagePalette.Find(args[1]);
@@ -69,8 +69,8 @@ namespace Flames.Commands.Building {
                 p.Message("Removed palette {0}", args[1]);
             }
         }
-        
-        void HandleAdd(Player p, string[] args) {
+
+        public void HandleAdd(Player p, string[] args) {
             if (args.Length != 4) { Help(p); return; }
             
             ImagePalette palette = ImagePalette.Find(args[1]);
@@ -86,8 +86,8 @@ namespace Flames.Commands.Building {
             PaletteEntry entry = new PaletteEntry(rgb.R, rgb.G, rgb.B, block);
             AddEntry(p, palette, entry);
         }
-        
-        static void AddEntry(Player p, ImagePalette palette, PaletteEntry entry) {
+
+        public static void AddEntry(Player p, ImagePalette palette, PaletteEntry entry) {
             PaletteEntry[] entries = palette.Entries;
             List<PaletteEntry> newEntries = new List<PaletteEntry>();
             if (entries != null) newEntries.AddRange(entries);
@@ -97,8 +97,8 @@ namespace Flames.Commands.Building {
             palette.Save();
             p.Message("Added block to entries of palette {0}", palette.Name);
         }
-        
-        void HandleRemove(Player p, string[] args) {
+
+        public void HandleRemove(Player p, string[] args) {
             if (args.Length != 3) { Help(p); return; }
             
             ImagePalette palette = ImagePalette.Find(args[1]);
@@ -110,9 +110,9 @@ namespace Flames.Commands.Building {
             if (!CommandParser.GetBlock(p, args[2], out block)) return;
             RemoveEntry(p, palette, block);
         }
-        
-        
-        static void RemoveEntry(Player p, ImagePalette palette, BlockID block) {
+
+
+        public static void RemoveEntry(Player p, ImagePalette palette, BlockID block) {
             PaletteEntry[] entries = palette.Entries;
             if (entries == null) {
                 p.Message("Block not found in entries of palette {0}", palette.Name);
@@ -132,8 +132,8 @@ namespace Flames.Commands.Building {
             palette.Save();
             p.Message("Removed block from entries of palette {0}", palette.Name);
         }
-        
-        void HandleEntries(Player p, string[] args) {
+
+        public void HandleEntries(Player p, string[] args) {
             if (args.Length < 2 || args.Length > 3) { Help(p); return; }
             
             ImagePalette palette = ImagePalette.Find(args[1]);
@@ -145,8 +145,8 @@ namespace Flames.Commands.Building {
             Paginator.Output(p, palette.Entries, PrintEntry, 
                              "Palette entries", "entries", modifer);
         }
-        
-        static void PrintEntry(Player p, PaletteEntry e) {
+
+        public static void PrintEntry(Player p, PaletteEntry e) {
             p.Message("{0} - {1}", Block.GetName(p, e.Block), Utils.Hex(e.R, e.G, e.B));
         }
 

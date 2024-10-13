@@ -53,8 +53,8 @@ namespace Flames.Commands.Building {
             p.blockchangeObject = pArgs;
             p.Blockchange += EntryChange;
         }
-        
-        BlockID GetBlock(Player p, string name) {
+
+        public BlockID GetBlock(Player p, string name) {
             if (name == "show") { ShowPortals(p); return Block.Invalid; }
             BlockID block = Block.Parse(p, name);
             if (block != Block.Invalid && p.level.Props[block].IsPortal) return block;
@@ -72,7 +72,7 @@ namespace Flames.Commands.Building {
             Help(p); return Block.Invalid;
         }
 
-        void EntryChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
+        public void EntryChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
             PortalArgs args = (PortalArgs)p.blockchangeObject;
             BlockID old = p.level.GetBlock(x, y, z);
             if (!p.level.CheckAffect(p, x, y, z, old, args.Block)) {
@@ -102,8 +102,8 @@ namespace Flames.Commands.Building {
                               Block.GetName(p, Block.Red));
             }
         }
-        
-        void ExitChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
+
+        public void ExitChange(Player p, ushort x, ushort y, ushort z, BlockID block) {
             p.ClearBlockchange();
             p.RevertBlock(x, y, z);
             
@@ -127,11 +127,11 @@ namespace Flames.Commands.Building {
             p.Blockchange += EntryChange;
         }
 
-        class PortalArgs { public List<PortalPos> Entries; public BlockID Block; public bool Multi; }
-        struct PortalPos { public ushort x, y, z; public string Map; }
+        public class PortalArgs { public List<PortalPos> Entries; public BlockID Block; public bool Multi; }
+        public struct PortalPos { public ushort x, y, z; public string Map; }
 
-        
-        static void ShowPortals(Player p) {
+
+        public static void ShowPortals(Player p) {
             p.showPortals = !p.showPortals;
             List<Vec3U16> coords = Portal.GetAllCoords(p.level.MapName);
             
@@ -157,9 +157,9 @@ namespace Flames.Commands.Building {
             p.Message("Now {0} &Sportals.", 
                            p.showPortals ? "showing &a" + coords.Count : "hiding");
         }
-        
-        
-        static string Format(BlockID block, Player p, BlockProps[] props) {
+
+
+        public static string Format(BlockID block, Player p, BlockProps[] props) {
             if (!props[block].IsPortal) return null;
             
             // We want to use the simple aliases if possible
@@ -170,8 +170,8 @@ namespace Flames.Commands.Building {
             if (block == Block.Portal_Water)  return "water";           
             return Block.GetName(p, block);
         }
-        
-        static List<string> SupportedBlocks(Player p) {
+
+        public static List<string> SupportedBlocks(Player p) {
             List<string> names = new List<string>();
             BlockProps[] props = p.IsSuper ? Block.Props : p.level.Props;
             

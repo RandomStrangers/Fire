@@ -29,8 +29,8 @@ namespace Flames
         public List<LevelPermission> Allowed, Disallowed;
         
         public ItemPerms(LevelPermission min) { MinRank = min; }
-        
-        protected void Init(LevelPermission min, List<LevelPermission> allowed,
+
+        public void Init(LevelPermission min, List<LevelPermission> allowed,
                             List<LevelPermission> disallowed) {
             MinRank = min; Allowed = allowed; Disallowed = disallowed;
         }
@@ -95,9 +95,9 @@ namespace Flames
             Describe(builder);
             return builder.ToString();
         }
-        
-        
-        protected static void WriteHeader(StreamWriter w, string itemName, string itemDesc, 
+
+
+        public static void WriteHeader(StreamWriter w, string itemName, string itemDesc, 
                                           string headerName, string headerExample) {
             w.WriteLine("#Version 2");
             w.WriteLine("#   This file contains the permissions to use {0}", itemDesc);
@@ -113,26 +113,26 @@ namespace Flames
             w.WriteLine("#   - Works entirely on rank permission values, not rank names");
             w.WriteLine("");
         }
-        
-        protected string Serialise() {
+
+        public string Serialise() {
             return ItemName + " : " + (int)MinRank + " : "
                 + JoinPerms(Disallowed) + " : " + JoinPerms(Allowed);
         }
-        
-        static string JoinPerms(List<LevelPermission> list) {
+
+        public static string JoinPerms(List<LevelPermission> list) {
             if (list == null || list.Count == 0) return "";
             return list.Join(p => ((int)p).ToString(), ",");
         }
-        
-        protected static void Deserialise(string[] args, int idx, out LevelPermission min,
+
+        public static void Deserialise(string[] args, int idx, out LevelPermission min,
                                           out List<LevelPermission> allowed, 
                                           out List<LevelPermission> disallowed) {
             min = (LevelPermission)int.Parse(args[idx]);
             disallowed = ExpandPerms(args[idx + 1]);
             allowed = ExpandPerms(args[idx + 2]);
         }
-        
-        static List<LevelPermission> ExpandPerms(string input) {
+
+        public static List<LevelPermission> ExpandPerms(string input) {
             if (input == null || input.Length == 0) return null;
             
             List<LevelPermission> perms = new List<LevelPermission>();

@@ -27,7 +27,7 @@ namespace Flames.Modules.Games.CTF
     public sealed class CTFConfig : RoundsGameConfig 
     {
         public override bool AllowAutoload { get { return false; } }
-        protected override string GameName { get { return "CTF"; } }
+        public override string GameName { get { return "CTF"; } }
         
         [ConfigFloat("tag-distance", "Collisions", 1f)]
         public float TagDistance = 1f;
@@ -60,9 +60,9 @@ namespace Flames.Modules.Games.CTF
         [ConfigInt("game.capture.points-lose", null, 10)]
         public int Capture_PointsLost = 10;
 
-        
-        const string propsDir = "properties/CTF/";
-        static ConfigElement[] cfg;
+
+        public const string propsDir = "properties/CTF/";
+        public static ConfigElement[] cfg;
         public override void Load(string map) {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(CTFMapConfig));
             LoadFrom(cfg, propsDir, map);

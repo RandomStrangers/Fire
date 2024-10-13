@@ -56,8 +56,8 @@ namespace Flames.Commands.World {
                 Chat.MessageGlobal("Physics on {0} &Swere temporarily disabled.", lvl.ColoredName);
             }
         }
-        
-        static void PauseCallback(SchedulerTask task) {
+
+        public static void PauseCallback(SchedulerTask task) {
             string lvlName = (string)task.State;
             Level lvl = LevelInfo.FindExact(lvlName);
             if (lvl == null) return;

@@ -22,9 +22,9 @@ using Flames.Eco;
 using Flames.SQL;
 
 namespace Flames.Core {
-    internal static class EcoHandlers {
-        
-        internal static void HandleEcoTransaction(EcoTransaction transaction) {
+    public static class EcoHandlers {
+
+        public static void HandleEcoTransaction(EcoTransaction transaction) {
             switch (transaction.Type) {
                 case EcoTransactionType.Purchase:
                     HandlePurchase(transaction); break;
@@ -36,8 +36,8 @@ namespace Flames.Core {
                     HandlePayment(transaction); break;
             }
         }
-        
-        static void HandlePurchase(EcoTransaction data) {
+
+        public static void HandlePurchase(EcoTransaction data) {
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.TotalSpent += data.Amount;
             stats.Purchase = data.ItemDescription + " &3for &f" + data.Amount + " &3$currency"
@@ -47,22 +47,22 @@ namespace Flames.Core {
             if (p != null) p.Message("Your balance is now &f{0} &3{1}", p.money, Server.Config.Currency);
             Economy.UpdateStats(stats);
         }
-        
-        static void HandleTake(EcoTransaction data) {
+
+        public static void HandleTake(EcoTransaction data) {
             MessageAll("{0} &Stook &f{2} &3{3} &Sfrom {1}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Fine = Format(" by " + data.Source.name, data);
             Economy.UpdateStats(stats);
         }
-        
-        static void HandleGive(EcoTransaction data) {
+
+        public static void HandleGive(EcoTransaction data) {
             MessageAll("{0} &Sgave {1} &f{2} &3{3}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Salary = Format(" by " + data.Source.name, data);
             Economy.UpdateStats(stats);
         }
-        
-        static void HandlePayment(EcoTransaction data) {
+
+        public static void HandlePayment(EcoTransaction data) {
             MessageAll("{0} &Spaid {1} &f{2} &3{3}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Salary = Format(" by " + data.Source.name, data);
@@ -75,16 +75,16 @@ namespace Flames.Core {
             Economy.UpdateStats(stats);
             data.Source.SetMoney(data.Source.money - data.Amount);
         }
-        
-        
-        static void MessageAll(string format, EcoTransaction data) {
+
+
+        public static void MessageAll(string format, EcoTransaction data) {
             string reason = data.Reason == null ? "" : " &S(" + data.Reason + "&S)";
             string msg = string.Format(format, data.Source.ColoredName, data.TargetFormatted,
                                        data.Amount, Server.Config.Currency, reason);
             Chat.MessageGlobal(msg);
         }
 
-        static string Format(string action, EcoTransaction data) {
+        public static string Format(string action, EcoTransaction data) {
             string entry = "&f" + data.Amount + " &3$currency" + action
                 + "&3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             string reason = data.Reason;

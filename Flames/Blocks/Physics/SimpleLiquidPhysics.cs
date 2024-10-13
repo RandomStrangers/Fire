@@ -56,17 +56,17 @@ namespace Flames.Blocks.Physics {
                 DoLavaUniformFlow(lvl, ref C, false);
             }
         }
-        
-        
-        const int flowed_xMax = (1 << 0);
-        const int flowed_xMin = (1 << 1);
-        const int flowed_zMax = (1 << 2);
-        const int flowed_zMin = (1 << 3);
-        const int flowed_yMin = (1 << 4);
-        const int flowed_maskAll = 0x1F;
-        
-        
-        static void DoWaterRandowFlow(Level lvl, ref PhysInfo C) {
+
+
+        public const int flowed_xMax = (1 << 0);
+        public const int flowed_xMin = (1 << 1);
+        public const int flowed_zMax = (1 << 2);
+        public const int flowed_zMin = (1 << 3);
+        public const int flowed_yMin = (1 << 4);
+        public const int flowed_maskAll = 0x1F;
+
+
+        public static void DoWaterRandowFlow(Level lvl, ref PhysInfo C) {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
             
@@ -126,8 +126,8 @@ namespace Flames.Blocks.Physics {
                 }
             }
         }
-        
-        static void DoWaterUniformFlow(Level lvl, ref PhysInfo C) {
+
+        public static void DoWaterUniformFlow(Level lvl, ref PhysInfo C) {
             ushort x = C.X, y = C.Y, z = C.Z;
             
             if (!lvl.CheckSpongeWater(x, y, z)) {
@@ -146,8 +146,8 @@ namespace Flames.Blocks.Physics {
             }
             if (!C.Data.HasWait) C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
-        
-        static bool WaterBlocked(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static bool WaterBlocked(Level lvl, ushort x, ushort y, ushort z) {
             BlockID block = lvl.GetBlock(x, y, z);
 
             switch (block) {
@@ -175,9 +175,9 @@ namespace Flames.Blocks.Physics {
             }
             return true;
         }
-        
-        
-        static void DoLavaRandowFlow(Level lvl, ref PhysInfo C, bool checkWait) {
+
+
+        public static void DoLavaRandowFlow(Level lvl, ref PhysInfo C, bool checkWait) {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
 
@@ -237,8 +237,8 @@ namespace Flames.Blocks.Physics {
                 }
             }
         }
-        
-        static void DoLavaUniformFlow(Level lvl, ref PhysInfo C, bool checkWait) {
+
+        public static void DoLavaUniformFlow(Level lvl, ref PhysInfo C, bool checkWait) {
             ushort x = C.X, y = C.Y, z = C.Z;
             
             if (!lvl.CheckSpongeLava(x, y, z)) {
@@ -256,8 +256,8 @@ namespace Flames.Blocks.Physics {
                 C.Data.Data = PhysicsArgs.RemoveFromChecks;
             }
         }
-        
-        static bool LavaBlocked(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static bool LavaBlocked(Level lvl, ushort x, ushort y, ushort z) {
             BlockID block = lvl.GetBlock(x, y, z);
             
             switch (block) {
@@ -285,8 +285,8 @@ namespace Flames.Blocks.Physics {
             }
             return true;
         }
-        
-        static void CheckFallingBlocks(Level lvl, int b) {
+
+        public static void CheckFallingBlocks(Level lvl, int b) {
             switch (lvl.blocks[b]) {
                 case Block.Sand:
                 case Block.Gravel:

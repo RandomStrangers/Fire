@@ -35,7 +35,7 @@ namespace Flames.Commands.Chatting
             UseBotOrPlayer(p, data, message, "color"); 
         }
 
-        protected override void SetBotData(Player p, PlayerBot bot, string colName) {
+        public override void SetBotData(Player p, PlayerBot bot, string colName) {
             string color = colName.Length == 0 ? "&1" : Matcher.FindColor(p, colName);
             if (color == null) return;
             
@@ -47,8 +47,8 @@ namespace Flames.Commands.Chatting
             bot.GlobalSpawn();
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetPlayerData(Player p, string target, string colName) {
+
+        public override void SetPlayerData(Player p, string target, string colName) {
             PlayerOperations.SetColor(p, target, colName);
         }
         

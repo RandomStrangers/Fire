@@ -37,9 +37,9 @@ namespace Flames.Drawing.Transforms
         public override string Name { get { return "Scale"; } }
         public bool CentreOrigin;
         public int XMul, XDiv, YMul, YDiv, ZMul, ZDiv;
-        int dirX, dirY, dirZ, signX, signY, signZ;
-        int width, height, length;
-        Vec3S32 P;
+        public int dirX, dirY, dirZ, signX, signY, signZ;
+        public int width, height, length;
+        public Vec3S32 P;
         
         public void CheckScales() {
             // Need to reverse direction for negative scales
@@ -76,8 +76,8 @@ namespace Flames.Drawing.Transforms
             }
             op.Perform(marks, brush, b => OutputBlock(b, output));
         }
-        
-        void OutputBlock(DrawOpBlock b, DrawOpOutput output) {
+
+        public void OutputBlock(DrawOpBlock b, DrawOpOutput output) {
             int dx = (b.X - P.X) * signX, dy = (b.Y - P.Y) * signY, dz = (b.Z - P.Z) * signZ;
             
             int begX = P.X + dx * XMul / XDiv, endX = P.X + (dx + dirX) * XMul / XDiv;

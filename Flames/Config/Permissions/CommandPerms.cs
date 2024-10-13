@@ -26,8 +26,8 @@ namespace Flames.Commands
     {
         public string CmdName;
         public override string ItemName { get { return CmdName; } }
-        
-        static List<CommandPerms> List = new List<CommandPerms>();
+
+        public static List<CommandPerms> List = new List<CommandPerms>();
         
         
         public CommandPerms(string cmd, LevelPermission min) : base(min) {
@@ -65,7 +65,7 @@ namespace Flames.Commands
         }
 
 
-        static readonly object ioLock = new object();
+        public static readonly object ioLock = new object();
         /// <summary> Saves list of command permissions to disc. </summary>
         public static void Save() {
             try {
@@ -74,8 +74,8 @@ namespace Flames.Commands
                 Logger.LogError("Error saving " + Paths.CmdPermsFile, ex);
             }
         }
-        
-        static void SaveCore() {
+
+        public static void SaveCore() {
             using (StreamWriter w = new StreamWriter(Paths.CmdPermsFile)) {
                 WriteHeader(w, "command", "each command", "CommandName", "gun");
 
@@ -100,16 +100,16 @@ namespace Flames.Commands
             lock (ioLock) LoadCore();
             ApplyChanges();
         }
-        
-        static void LoadCore() {
+
+        public static void LoadCore() {
             if (!File.Exists(Paths.CmdPermsFile)) { Save(); return; }
             
             using (StreamReader r = new StreamReader(Paths.CmdPermsFile)) {
                  ProcessLines(r);
             }
         }
-        
-        static void ProcessLines(StreamReader r) {
+
+        public static void ProcessLines(StreamReader r) {
             string[] args = new string[4];
             CommandPerms perms;
             string line;

@@ -27,8 +27,8 @@ namespace Flames.Commands.Misc {
         public override CommandAlias[] Aliases {
             get { return new [] { new CommandAlias("Teleport"), new CommandAlias("TPP", "-precise") }; }
         }
-        
-        const string precisePrefix = "-precise ";
+
+        public const string precisePrefix = "-precise ";
         public override void Use(Player p, string message, CommandData data) {           
             if (message.Length == 0) { Help(p); return; }
             
@@ -70,8 +70,8 @@ namespace Flames.Commands.Misc {
             p.BlockUntilLoad(10);  //Wait for player to spawn in new map
             p.SendPosition(pos, rot);
         }
-        
-        internal static bool GetTeleportCoords(Player p, Entity ori, string[] args, bool precise, 
+
+        public static bool GetTeleportCoords(Player p, Entity ori, string[] args, bool precise, 
                                                out Position pos, out byte yaw, out byte pitch) {
             Vec3S32 P;
             pos = p.Pos; yaw = ori.Rot.RotY; pitch = ori.Rot.HeadX;
@@ -99,21 +99,21 @@ namespace Flames.Commands.Misc {
             }
             return true;
         }
-        
-        static void TeleportCoords(Player p, string[] args, bool precise) {
+
+        public static void TeleportCoords(Player p, string[] args, bool precise) {
             if (!GetTeleportCoords(p, p, args, precise, out Position pos, out byte yaw, out byte pitch)) return;
 
             SavePreTeleportState(p);
             p.SendPosition(pos, new Orientation(yaw, pitch));
         }
-        
-        static void SavePreTeleportState(Player p) {
+
+        public static void SavePreTeleportState(Player p) {
             p.PreTeleportMap = p.level.name;
             p.PreTeleportPos = p.Pos;
             p.PreTeleportRot = p.Rot;
         }
-        
-        static bool CheckPlayer(Player p, Player target, CommandData data) {
+
+        public static bool CheckPlayer(Player p, Player target, CommandData data) {
             if (target.level.IsMuseum) {
                 p.Message("{0} &Sis in a museum.", p.FormatNick(target)); return false;
             }          

@@ -23,12 +23,12 @@ namespace Flames.Commands.Building {
         public override CommandAlias[] Aliases {
             get { return new CommandAlias[] { new CommandAlias("Curve") }; }
         }
-        
-        protected override int MarksCount { get { return 3; } }
-        protected override string SelectionType { get { return "points"; } }
-        protected override string PlaceMessage { get { return "Place or break two blocks to determine the endpoints, then another for the control point"; } }
 
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) { return new BezierDrawOp(); }
+        public override int MarksCount { get { return 3; } }
+        public override string SelectionType { get { return "points"; } }
+        public override string PlaceMessage { get { return "Place or break two blocks to determine the endpoints, then another for the control point"; } }
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) { return new BezierDrawOp(); }
         
         public override void Help(Player p) {
             p.Message("&T/Bezier <brush args>");

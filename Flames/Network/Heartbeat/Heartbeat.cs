@@ -47,15 +47,15 @@ namespace Flames.Network
                 return URL;
             }
         }
-        
+
         /// <summary> Gets the data to be sent for the next heartbeat </summary>
-        protected abstract string GetHeartbeatData();
+        public abstract string GetHeartbeatData();
         /// <summary> Called when a heartbeat is about to be sent to the web server </summary>
-        protected abstract void OnRequest(HttpWebRequest request);
+        public abstract void OnRequest(HttpWebRequest request);
         /// <summary> Called when a response is received from the web server </summary>
-        protected abstract void OnResponse(WebResponse response);
+        public abstract void OnResponse(WebResponse response);
         /// <summary> Called when a failure HTTP response is received from the web server </summary>
-        protected abstract void OnFailure(string response);
+        public abstract void OnFailure(string response);
         
 
         /// <summary> Sends a heartbeat to the web server and then reads the response </summary>
@@ -105,8 +105,8 @@ namespace Flames.Network
             OnBeat(null); // immedately call so URL is shown as soon as possible in console
             Server.Heartbeats.QueueRepeat(OnBeat, null, TimeSpan.FromSeconds(30));
         }
-        
-        static void OnBeat(SchedulerTask task) {
+
+        public static void OnBeat(SchedulerTask task) {
             // no point if can't accept connections anyways
             if (!Server.Listener.Listening) return;
             

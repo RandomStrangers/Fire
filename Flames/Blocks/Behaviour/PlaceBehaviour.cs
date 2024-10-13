@@ -19,15 +19,15 @@ using Flames.Blocks.Physics;
 using BlockID = System.UInt16;
 
 namespace Flames.Blocks {
-    
-    internal static class PlaceBehaviour {
 
-        static bool SkipGrassDirt(Player p, BlockID block) {
+    public static class PlaceBehaviour {
+
+        public static bool SkipGrassDirt(Player p, BlockID block) {
             Level lvl = p.level;
             return !lvl.Config.GrassGrow || p.ModeBlock == block || !(lvl.physics == 0 || lvl.physics == 5);
         }
-        
-        internal static ChangeResult GrassDie(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult GrassDie(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (SkipGrassDirt(p, block)) return p.ChangeBlock(x, y, z, block);
             Level lvl = p.level;
             BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
@@ -37,8 +37,8 @@ namespace Flames.Blocks {
             }
             return p.ChangeBlock(x, y, z, block);
         }
-        
-        internal static ChangeResult DirtGrow(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult DirtGrow(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (SkipGrassDirt(p, block)) return p.ChangeBlock(x, y, z, block);
             Level lvl = p.level;
             BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
@@ -49,7 +49,7 @@ namespace Flames.Blocks {
             return p.ChangeBlock(x, y, z, block);
         }
 
-        internal static ChangeResult Stack(Player p, BlockID block, ushort x, ushort y, ushort z) {
+        public static ChangeResult Stack(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.GetBlock(x, (ushort)(y - 1), z) != block) {
                 return p.ChangeBlock(x, y, z, block);
             }
@@ -58,9 +58,9 @@ namespace Flames.Blocks {
             BlockID stack = p.level.Props[block].StackBlock;
             p.ChangeBlock(x, (ushort)(y - 1), z, stack);
             return ChangeResult.Modified;
-        }        
-        
-        internal static ChangeResult C4(Player p, BlockID block, ushort x, ushort y, ushort z) {
+        }
+
+        public static ChangeResult C4(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.physics == 0 || p.level.physics == 5) return ChangeResult.Unchanged;
             
             // Use red wool to detonate c4
@@ -84,8 +84,8 @@ namespace Flames.Blocks {
             if (c4 != null) c4.list.Add(p.level.PosToInt(x, y, z));
             return p.ChangeBlock(x, y, z, Block.C4);
         }
-        
-        internal static ChangeResult C4Det(Player p, BlockID block, ushort x, ushort y, ushort z) {
+
+        public static ChangeResult C4Det(Player p, BlockID block, ushort x, ushort y, ushort z) {
             if (p.level.physics == 0 || p.level.physics == 5) {
                 p.c4circuitNumber = -1;
                 return ChangeResult.Unchanged;

@@ -75,8 +75,8 @@ namespace Flames.Generator
             }
             return true;
         }
-        
-        static bool IsCliff(int height, IBitmap2D bmp, int x, int z) {
+
+        public static bool IsCliff(int height, IBitmap2D bmp, int x, int z) {
             if (x >= bmp.Width || x < 0 || z >= bmp.Height || z < 0) return false;
             int neighbourHeight = bmp.Get(x, z).R;
             return height >= neighbourHeight + 2;

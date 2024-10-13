@@ -54,7 +54,7 @@ namespace Flames
             }
         }
 
-        static void OutputPage<T>(Player p, IList<T> items, StringFormatter<T> formatter,
+        public static void OutputPage<T>(Player p, IList<T> items, StringFormatter<T> formatter,
                                   string cmd, string type, int start, bool lines)
         {
             int perPage = lines ? 8 : 30;
@@ -78,7 +78,7 @@ namespace Flames
             }
         }
 
-        static void OutputItems<T>(Player p, IList<T> items,
+        public static void OutputItems<T>(Player p, IList<T> items,
                                    int start, int end, bool lines,
                                    StringFormatter<T> formatter)
         {
@@ -94,7 +94,7 @@ namespace Flames
             }
         }
 
-        static IEnumerable<string> Subset<T>(IList<T> items, int start, int end,
+        public static IEnumerable<string> Subset<T>(IList<T> items, int start, int end,
                                              StringFormatter<T> formatter)
         {
             for (int i = start; i < end; i++)

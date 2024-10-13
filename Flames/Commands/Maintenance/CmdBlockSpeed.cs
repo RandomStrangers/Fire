@@ -45,8 +45,8 @@ namespace Flames.Commands.Maintenance {
             }
             SendEstimation(p, data.Rank);
         }
-        
-        static void SendEstimation(Player p, LevelPermission plRank) {
+
+        public static void SendEstimation(Player p, LevelPermission plRank) {
             int updates = BlockQueue.UpdatesPerTick, interval = BlockQueue.Interval;
             int count   = PlayerInfo.GetOnlineCanSee(p, plRank).Count;
             int blocksPerSec = updates * (1000 / interval);

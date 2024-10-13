@@ -93,18 +93,18 @@ namespace Flames.Commands.CPE
                 Help(p);
             }
         }
-        
-        static string GetPath(string url) { return url.Length == 0 ? "(none)" : url; }
-        
-        static void UpdateGlobal(Player p) {
+
+        public static string GetPath(string url) { return url.Length == 0 ? "(none)" : url; }
+
+        public static void UpdateGlobal(Player p) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) {
                 pl.SendCurrentTextures();
             }
             SrvProperties.Save();
         }
-        
-        static void UpdateLevel(Player p) {
+
+        public static void UpdateLevel(Player p) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) {
                 if (pl.level != p.level) continue;

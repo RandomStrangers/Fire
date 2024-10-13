@@ -32,8 +32,8 @@ namespace Flames
             object value = Field.GetValue(instance);
             return Attrib.Name + " = " + Attrib.Serialise(value);
         }
-        
-        const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
+
+        public const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
         
         public static ConfigElement[] GetAll(Type type) {
             List<ConfigElement> elems = new List<ConfigElement>();

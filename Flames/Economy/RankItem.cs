@@ -73,7 +73,7 @@ namespace Flames.Eco
         }        
         public bool Remove(LevelPermission perm) { return Ranks.Remove(Find(perm)); }
 
-        RankEntry NextRank(Player p) {
+        public RankEntry NextRank(Player p) {
             if (p.IsSuper) return null;
             foreach (RankEntry rank in Ranks) {
                 if (rank.Perm > p.Rank) return rank;
@@ -97,8 +97,8 @@ namespace Flames.Eco
             p.Message("You bought the rank " + rank.ColoredName);
             Economy.MakePurchase(p, nextRank.Price, "&3Rank: " + rank.ColoredName);
         }
-        
-        protected internal override void OnSetup(Player p, string[] args) {
+
+        public override void OnSetup(Player p, string[] args) {
             if (args[1].CaselessEq("price")) {
                 Group grp = Matcher.FindRanks(p, args[2]);
                 if (grp == null) return;
@@ -122,8 +122,8 @@ namespace Flames.Eco
                 OnSetupHelp(p);
             }
         }
-        
-        protected internal override void OnSetupHelp(Player p) {
+
+        public override void OnSetupHelp(Player p) {
             base.OnSetupHelp(p);
             p.Message("&T/Eco rank price [rank] [amount]");
             p.Message("&HSets how many &3{0} &Hthat rank costs.", Server.Config.Currency);
@@ -131,7 +131,7 @@ namespace Flames.Eco
             p.Message("&HMakes that rank no longer buyable");
         }
 
-        protected internal override void OnStoreOverview(Player p) {
+        public override void OnStoreOverview(Player p) {
             RankEntry next = NextRank(p);
             if (next == null) {
                 p.Message("&6Rankup &S- &Wno further ranks to buy.");
@@ -140,8 +140,8 @@ namespace Flames.Eco
                                Group.GetColoredName(next.Perm), next.Price, Server.Config.Currency);
             }
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             p.Message("&T/Buy rankup");
             if (Ranks.Count == 0) {
                 p.Message("&WNo ranks have been setup be buyable. See &T/eco help rank"); return;

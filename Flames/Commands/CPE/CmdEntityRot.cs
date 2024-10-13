@@ -37,19 +37,19 @@ namespace Flames.Commands.CPE
             }
             UseBotOrOnline(p, data, message, "rotation");
         }
-        
-        protected override void SetBotData(Player p, PlayerBot bot, string args) {
+
+        public override void SetBotData(Player p, PlayerBot bot, string args) {
             if (!ParseArgs(p, args, bot)) return;
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetOnlineData(Player p, Player who, string args) {
+
+        public override void SetOnlineData(Player p, Player who, string args) {
             if (!ParseArgs(p, args, who)) return;
             Server.rotations.Update(who.name, who.Rot.RotX + " " + who.Rot.RotZ);
             Server.rotations.Save();
         }
-        
-        static bool ParseArgs(Player p, string args, Entity entity) {
+
+        public static bool ParseArgs(Player p, string args, Entity entity) {
             if (args.Length == 0) {
                 Entities.UpdateEntityProp(entity, EntityProp.RotX, 0);
                 Entities.UpdateEntityProp(entity, EntityProp.RotZ, 0);

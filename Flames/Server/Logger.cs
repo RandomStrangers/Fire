@@ -78,7 +78,7 @@ namespace Flames
         /// <summary> Message shown to the Flames. </summary>
         FlameMessage,
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        ConsoleMessage,
+        ConsoleMessage = FlameMessage,
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         RandomMessage,
@@ -97,7 +97,7 @@ namespace Flames
     public static class Logger 
     {
         public static LogHandler LogHandler;
-        static readonly object logLock = new object();
+        public static readonly object logLock = new object();
         
         public static void Log(LogType type, string message) {
             lock (logLock) {
@@ -109,8 +109,8 @@ namespace Flames
                 }
             }
         }
-        
-        static void LogLoggerError(Exception ex) {
+
+        public static void LogLoggerError(Exception ex) {
             try {
                 LogHandler(LogType.Error, FormatException(ex));
             } catch {
@@ -155,7 +155,7 @@ namespace Flames
             return sb.ToString();
         }
 
-        static void DescribeError(Exception ex, StringBuilder sb) {
+        public static void DescribeError(Exception ex, StringBuilder sb) {
             // Attempt to gather this info. Skip anything that you can't read for whatever reason
             try { sb.AppendLine("Type: " + ex.GetType().Name); } catch { }
             try { sb.AppendLine("Source: " + ex.Source); } catch { }
@@ -173,8 +173,8 @@ namespace Flames
                 if (sockEx != null) LogSocketErrors(sockEx, sb);
             } catch { }
         }
-        
-        static void LogLoaderErrors(ReflectionTypeLoadException ex, StringBuilder sb) {
+
+        public static void LogLoaderErrors(ReflectionTypeLoadException ex, StringBuilder sb) {
             // For errors with loading plugins (e.g. missing dependancy) you get a 
             //   Message: Unable to load one or more of the requested types. Retrieve the LoaderExceptions property for more information.
             // which is pretty useless by itself, so specifically handle this case
@@ -184,8 +184,8 @@ namespace Flames
                 DescribeError(loadEx, sb);
             }
         }
-        
-        static void LogSocketErrors(SocketException ex, StringBuilder sb) {
+
+        public static void LogSocketErrors(SocketException ex, StringBuilder sb) {
             sb.AppendLine("Error: " + ex.SocketErrorCode);
         }
     }

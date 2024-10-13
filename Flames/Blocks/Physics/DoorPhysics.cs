@@ -44,7 +44,7 @@ namespace Flames.Blocks.Physics {
         }
 
         // Change anys door blocks nearby into air forms
-        static void Door(Level lvl, ref PhysInfo C) {
+        public static void Door(Level lvl, ref PhysInfo C) {
             ushort x = C.X, y = C.Y, z = C.Z;
             BlockID block = (BlockID)(C.Data.Value2 | (C.Data.ExtBlock << Block.ExtendedShift));
             bool instant = block == Block.Door_Air || block == Block.Door_AirActivatable;
@@ -73,8 +73,8 @@ namespace Flames.Blocks.Physics {
             ActivateODoor(lvl, block, x, y, (ushort)(z + 1));
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
-        
-        static void ActivateODoor(Level lvl, BlockID target, ushort x, ushort y, ushort z) {
+
+        public static void ActivateODoor(Level lvl, BlockID target, ushort x, ushort y, ushort z) {
             int index;
             BlockID block = lvl.GetBlock(x, y, z, out index);
             block = lvl.Props[block].oDoorBlock;
@@ -82,9 +82,9 @@ namespace Flames.Blocks.Physics {
             if (index >= 0 && block == target) {
                 lvl.AddUpdate(index, target, true);
             }
-        }        
-        
-         static void tDoor(Level lvl, ref PhysInfo C) {
+        }
+
+        public static void tDoor(Level lvl, ref PhysInfo C) {
             ushort x = C.X, y = C.Y, z = C.Z;
             ActivateTDoor(lvl, (ushort)(x - 1), y, z);
             ActivateTDoor(lvl, (ushort)(x + 1), y, z);
@@ -93,8 +93,8 @@ namespace Flames.Blocks.Physics {
             ActivateTDoor(lvl, x, y, (ushort)(z - 1));
             ActivateTDoor(lvl, x, y, (ushort)(z + 1));
         }
-        
-        static void ActivateTDoor(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static void ActivateTDoor(Level lvl, ushort x, ushort y, ushort z) {
             int index;
             BlockID block = lvl.GetBlock(x, y, z, out index);
             

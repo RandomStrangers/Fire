@@ -50,8 +50,8 @@ namespace Flames {
             Items.Add(warp);
             Save();
         }
-        
-        void Make(Warp warp, string name, Player p) {
+
+        public void Make(Warp warp, string name, Player p) {
             warp.Pos = p.Pos; warp.Name = name;
             warp.Yaw = p.Rot.RotY; warp.Pitch = p.Rot.HeadX;            
             warp.Level = p.level.name;

@@ -29,9 +29,9 @@ namespace Flames.Commands.Building {
                     new CommandAlias("sph", "hollow"), new CommandAlias("Circle", "circle" ),
                     new CommandAlias("CircleH", "hollowcircle") }; }
         }
-        protected override string PlaceMessage { get { return "Place a block for the centre, then another for the radius."; } }
-        
-        protected override DrawMode GetMode(string[] parts) {
+        public override string PlaceMessage { get { return "Place a block for the centre, then another for the radius."; } }
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];
             if (msg == "solid")        return DrawMode.solid;
             if (msg == "hollow")       return DrawMode.hollow;
@@ -39,8 +39,8 @@ namespace Flames.Commands.Building {
             if (msg == "hollowcircle") return DrawMode.hcircle;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             switch (dArgs.Mode) {
                 case DrawMode.hollow:  return new AdvHollowSphereDrawOp();
                 case DrawMode.circle:  return new EllipsoidDrawOp();
@@ -48,20 +48,20 @@ namespace Flames.Commands.Building {
             }
             return new AdvSphereDrawOp();
         }
-        
-        protected override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
+
+        public override void GetMarks(DrawArgs dArgs, ref Vec3S32[] m) {
             Vec3S32 p0 = m[0];
             Vec3S32 radius = GetRadius(dArgs.Mode, m);
             m[0] = p0 - radius; m[1] = p0 + radius;
         }
-        
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+
+        public override void GetBrush(DrawArgs dArgs) {
             if (dArgs.Mode == DrawMode.solid) dArgs.BrushName = "Normal";
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, 0);
         }
-        
-        static Vec3S32 GetRadius(DrawMode mode, Vec3S32[] m) {
+
+        public static Vec3S32 GetRadius(DrawMode mode, Vec3S32[] m) {
             int dx = Math.Abs(m[0].X - m[1].X);
             int dy = Math.Abs(m[0].Y - m[1].Y);
             int dz = Math.Abs(m[0].Z - m[1].Z);

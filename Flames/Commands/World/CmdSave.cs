@@ -46,16 +46,16 @@ namespace Flames.Commands.World {
                 Help(p);
             }
         }
-        
-        static void SaveAll(Player p) {
+
+        public static void SaveAll(Player p) {
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded) {
                 TrySave(p, lvl, false);
             }
             Chat.MessageGlobal("All levels have been saved.");
         }
-        
-        static bool TrySave(Player p, Level lvl, bool force) {
+
+        public static bool TrySave(Player p, Level lvl, bool force) {
             if (!force && !lvl.Changed) return false;
             
             if (!lvl.SaveChanges) {
@@ -67,8 +67,8 @@ namespace Flames.Commands.World {
             if (!saved) p.Message("Saving of level {0} &Swas cancelled", lvl.ColoredName);
             return saved;
         }
-        
-        static void Save(Player p, Level lvl, string backup) {
+
+        public static void Save(Player p, Level lvl, string backup) {
             if (!TrySave(p, lvl, true)) return;
             p.Message("Level {0} &Ssaved", lvl.ColoredName);
             

@@ -57,9 +57,9 @@ namespace Flames.DB
         public override long CountEntries(Stream s) {
             return (s.Length / EntrySize) - HeaderEntries;
         }
-        
+
         // Inlined WriteI32/WriteU16 for better performance
-        static void WriteEntry(BlockDBEntry entry, byte[] bulk, int index) {
+        public static void WriteEntry(BlockDBEntry entry, byte[] bulk, int index) {
             bulk[index + 0 ] = (byte)(entry.PlayerID);
             bulk[index + 1 ] = (byte)(entry.PlayerID >> 8);
             bulk[index + 2 ] = (byte)(entry.PlayerID >> 16);

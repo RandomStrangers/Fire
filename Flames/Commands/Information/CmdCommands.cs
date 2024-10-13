@@ -29,8 +29,8 @@ namespace Flames.Commands.Info
         public override void Use(Player p, string message, CommandData data) {
             if (!ListCommands(p, message)) Help(p);
         }
-        
-        internal static bool ListCommands(Player p, string message) {
+
+        public static bool ListCommands(Player p, string message) {
             string[] args = message.SplitSpaces();
             string sort = args.Length > 1 ? args[1].ToLower() : "";
             string modifier = args.Length > 2 ? args[2] : sort;
@@ -62,8 +62,8 @@ namespace Flames.Commands.Info
             }
             return true;
         }
-        
-        static void PrintShortcuts(Player p, string modifier) {
+
+        public static void PrintShortcuts(Player p, string modifier) {
             List<Command> shortcuts = new List<Command>();
             foreach (Command cmd in allCmds) {
                 if (cmd.shortcut.Length == 0) continue;
@@ -75,8 +75,8 @@ namespace Flames.Commands.Info
                              (cmd) => "&b" + cmd.shortcut + " &S[" + cmd.name + "]",
                              "Commands shortcuts", "shortcuts", modifier);
         }
-        
-        static void PrintRankCommands(Player p, string sort, string modifier, Group group, bool own) {
+
+        public static void PrintRankCommands(Player p, string sort, string modifier, Group group, bool own) {
             List<Command> cmds = new List<Command>();
             foreach (Command c in allCmds) 
             {
@@ -98,8 +98,8 @@ namespace Flames.Commands.Info
                              type, "commands", modifier);
             p.Message("Type &T/Help <command> &Sfor more help on a command.");
         }
-        
-        static void PrintAllCommands(Player p, string sort, string modifier) {
+
+        public static void PrintAllCommands(Player p, string sort, string modifier) {
             List<Command> cmds = CopyAll();
             SortCommands(cmds, sort);
             p.Message("All commands:");
@@ -110,8 +110,8 @@ namespace Flames.Commands.Info
                              type, "commands", modifier);            
             p.Message("Type &T/Help <command> &Sfor more help on a command.");
         }
-        
-        static bool PrintCategoryCommands(Player p, string sort, string modifier, string type) {
+
+        public static bool PrintCategoryCommands(Player p, string sort, string modifier, string type) {
             List<Command> cmds = new List<Command>();
             bool foundAny = false;
             
@@ -143,8 +143,8 @@ namespace Flames.Commands.Info
             p.Message("Type &T/Help <command> &Sfor more help on a command.");
             return true;
         }
-        
-        static void SortCommands(List<Command> cmds, string sort) {
+
+        public static void SortCommands(List<Command> cmds, string sort) {
             if (sort == "name" || sort == "names") {
                 cmds.Sort((a, b) => a.name
                           .CompareTo(b.name));
@@ -154,8 +154,8 @@ namespace Flames.Commands.Info
                           .CompareTo(b.Permissions.MinRank));
             }
         }
-        
-        static string MapCategory(string type) {
+
+        public static string MapCategory(string type) {
             // convert old category/type names
             if (type == "add") return CommandTypes.Added;
             if (type == "build")   return CommandTypes.Building;
@@ -168,8 +168,8 @@ namespace Flames.Commands.Info
             if (type == "information") return CommandTypes.Information;
             return type;
         }
-        
-        internal static string GetCategories() {
+
+        public static string GetCategories() {
             Dictionary<string, bool> categories = new Dictionary<string, bool>();
             foreach (Command cmd in allCmds)
             {

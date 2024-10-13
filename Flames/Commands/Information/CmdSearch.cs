@@ -51,9 +51,9 @@ namespace Flames.Commands.Info
                 Help(p);
             }
         }
-        
-        
-        static void SearchBlocks(Player p, string keyword, string modifier) {
+
+
+        public static void SearchBlocks(Player p, string keyword, string modifier) {
             List<BlockID> blocks = new List<BlockID>();
             for (int b = 0; b < Block.SUPPORTED_COUNT; b++) 
             {
@@ -66,8 +66,8 @@ namespace Flames.Commands.Info
                                                       b => Block.GetColoredName(p, b));
             OutputList(p, keyword, "search blocks", "blocks", modifier, blockNames);
         }
-        
-        static void SearchCommands(Player p, string keyword, string modifier) {
+
+        public static void SearchCommands(Player p, string keyword, string modifier) {
             List<string> commands  = Wildcard.Filter(allCmds, keyword, cmd => cmd.name,
                                                      null, GetColoredName);
             List<string> shortcuts = Wildcard.Filter(allCmds, keyword, cmd => cmd.shortcut,
@@ -83,42 +83,42 @@ namespace Flames.Commands.Info
             
             OutputList(p, keyword, "search commands", "commands", modifier, commands);
         }
-        
-        static void SearchRanks(Player p, string keyword, string modifier) {
+
+        public static void SearchRanks(Player p, string keyword, string modifier) {
             List<string> ranks = Wildcard.Filter(Group.GroupList, keyword, grp => grp.Name,
                                                 null, grp => grp.ColoredName);
             OutputList(p, keyword, "search ranks", "ranks", modifier, ranks);
         }
-        
-        static void SearchOnline(Player p, string keyword, string modifier) {
+
+        public static void SearchOnline(Player p, string keyword, string modifier) {
             Player[] online = PlayerInfo.Online.Items;
             List<string> players = Wildcard.Filter(online, keyword, pl => pl.name,
                                                   pl => p.CanSee(pl), pl => pl.ColoredName);
             OutputList(p, keyword, "search online", "players", modifier, players);
         }
-        
-        static void SearchLoaded(Player p, string keyword, string modifier) {
+
+        public static void SearchLoaded(Player p, string keyword, string modifier) {
             Level[] loaded = LevelInfo.Loaded.Items;
             List<string> levels = Wildcard.Filter(loaded, keyword, level => level.name);
             OutputList(p, keyword, "search loaded", "loaded levels", modifier, levels);
         }
-        
-        static void SearchMaps(Player p, string keyword, string modifier) {
+
+        public static void SearchMaps(Player p, string keyword, string modifier) {
             string[] allMaps = LevelInfo.AllMapNames();
             List<string> maps = Wildcard.Filter(allMaps, keyword, map => map);
             OutputList(p, keyword, "search levels", "maps", modifier, maps);
         }
 
-        static void OutputList(Player p, string keyword, string cmd, string type, string modifier, List<string> items) {
+        public static void OutputList(Player p, string keyword, string cmd, string type, string modifier, List<string> items) {
             if (items.Count == 0) {
                 p.Message("No {0} found containing \"{1}\"", type, keyword);
             } else {
                 Paginator.Output(p, items, item => item, cmd + " " + keyword, type, modifier);
             }
         }
-        
-        
-        static void SearchPlayers(Player p, string keyword, string modifier) {
+
+
+        public static void SearchPlayers(Player p, string keyword, string modifier) {
         	List<string> names = new List<string>();
             string suffix = Database.Backend.CaselessLikeSuffix;
         	

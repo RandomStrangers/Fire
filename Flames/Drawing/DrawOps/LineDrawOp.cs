@@ -59,8 +59,8 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        internal static void DrawLine(int x1, int y1, int z1, int maxLen,
+
+        public static void DrawLine(int x1, int y1, int z1, int maxLen,
                                       int x2, int y2, int z2, List<Vec3S32> buffer) {
             Line lx, ly, lz;
             int[] pixel = new int[] { x1, y1, z1 };
@@ -82,10 +82,10 @@ namespace Flames.Drawing.Ops
             pos.X = pixel[0]; pos.Y = pixel[1]; pos.Z = pixel[2];
             buffer.Add(pos);
         }
-        
-        struct Line { public int len2, dir, axis; }
-        
-        static void DoLine(Line l1, Line l2, Line l3, int len, 
+
+        public struct Line { public int len2, dir, axis; }
+
+        public static void DoLine(Line l1, Line l2, Line l3, int len, 
                            int[] pixel, int maxLen, List<Vec3S32> buffer) {
             int err_1 = l1.len2 - len, err_2 = l2.len2 - len;
             Vec3S32 pos;

@@ -21,8 +21,8 @@ namespace Flames.SQL
 {    
     public sealed class SqlTransaction : IDisposable 
     {
-        internal ISqlConnection conn;
-        internal ISqlTransaction transaction;
+        public ISqlConnection conn;
+        public ISqlTransaction transaction;
         
         public SqlTransaction() {
             IDatabaseBackend db = Database.Backend;

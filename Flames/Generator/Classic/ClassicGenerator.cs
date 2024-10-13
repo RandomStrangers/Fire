@@ -7,13 +7,13 @@ namespace Flames.Generator.Classic
 {    
     public sealed partial class ClassicGenerator 
     {
-        int waterLevel, oneY, Width, Length, Height;
-        byte[] blocks;
-        short[] heightmap;
-        JavaRandom rnd;
-        int minHeight;
-        string CurrentState;
-        MapGenBiome biome;
+        public int waterLevel, oneY, Width, Length, Height;
+        public byte[] blocks;
+        public short[] heightmap;
+        public JavaRandom rnd;
+        public int minHeight;
+        public string CurrentState;
+        public MapGenBiome biome;
         
         public byte[] Generate(Level lvl, MapGenArgs args) {
             blocks = lvl.blocks;
@@ -45,8 +45,8 @@ namespace Flames.Generator.Classic
             PlantTrees();
             return blocks;
         }
-        
-        void CreateHeightmap() {
+
+        public void CreateHeightmap() {
             CombinedNoise n1 = new CombinedNoise(
                 new OctaveNoise(8, rnd), new OctaveNoise(8, rnd));
             CombinedNoise n2 = new CombinedNoise(
@@ -73,8 +73,8 @@ namespace Flames.Generator.Classic
             }
             heightmap = hMap;
         }
-        
-        void CreateStrata() {
+
+        public void CreateStrata() {
             OctaveNoise n = new OctaveNoise(8, rnd);
             CurrentState = "Creating strata";            
             int hMapIndex = 0, maxY = Height - 1, mapIndex = 0;
@@ -107,8 +107,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        int CreateStrataFast() {
+
+        public int CreateStrataFast() {
             int count, mapIndex = 0;
             
             // Make lava layer at bottom
@@ -131,8 +131,8 @@ namespace Flames.Generator.Classic
             }
             return stoneHeight;
         }
-        
-        void CarveCaves() {
+
+        public void CarveCaves() {
             int cavesCount = blocks.Length / 8192;
             CurrentState = "Carving caves";
             
@@ -170,8 +170,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void CarveOreVeins(float abundance, string blockName, byte block) {
+
+        public void CarveOreVeins(float abundance, string blockName, byte block) {
             int numVeins = (int)(blocks.Length * abundance / 16384);
             CurrentState = "Carving " + blockName;
             
@@ -201,8 +201,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void FloodFillWaterBorders() {
+
+        public void FloodFillWaterBorders() {
             int waterY = waterLevel - 1;
             int index1 = (waterY * Length + 0) * Width + 0;
             int index2 = (waterY * Length + (Length - 1)) * Width + 0;
@@ -227,8 +227,8 @@ namespace Flames.Generator.Classic
                 index1 += Width; index2 += Width;
             }
         }
-        
-        void FloodFillWater() {
+
+        public void FloodFillWater() {
             int numSources = Width * Length / 800;
             
             CurrentState = "Flooding water";
@@ -242,8 +242,8 @@ namespace Flames.Generator.Classic
                 FloodFill((y * Length + z) * Width + x, water);
             }
         }
-        
-        void FloodFillLava() {
+
+        public void FloodFillLava() {
             int numSources = Width * Length / 20000;
             CurrentState = "Flooding lava";
             
@@ -254,8 +254,8 @@ namespace Flames.Generator.Classic
                 FloodFill((y * Length + z) * Width + x, Block.StillLava);
             }
         }
-        
-        void CreateSurfaceLayer() {
+
+        public void CreateSurfaceLayer() {
             OctaveNoise n1 = new OctaveNoise(8, rnd), n2 = new OctaveNoise(8, rnd);
             CurrentState = "Creating surface";
             // TODO: update heightmap
@@ -280,8 +280,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void PlantFlowers() {
+
+        public void PlantFlowers() {
             int numPatches = Width * Length / 3000;
             CurrentState = "Planting flowers";
             byte surface = biome.Surface;
@@ -310,8 +310,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void PlantMushrooms() {
+
+        public void PlantMushrooms() {
             int numPatches = blocks.Length / 2000;
             CurrentState = "Planting mushrooms";
             byte cliff = biome.Cliff;
@@ -343,8 +343,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void PlantTrees() {
+
+        public void PlantTrees() {
             int numPatches = Width * Length / 4000;
             CurrentState = "Planting trees";
             byte surface = biome.Surface;
@@ -390,15 +390,15 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        Tree GetTreeGen() {
+
+        public Tree GetTreeGen() {
             if (biome.TreeType == null) return null;
             if (biome.TreeType == "")   return new ClassicTree() { rng = rnd };
             
             return Tree.TreeTypes[biome.TreeType]();
         }
-        
-        bool CanGrowTree(int treeX, int treeY, int treeZ, int treeHeight) {
+
+        public bool CanGrowTree(int treeX, int treeY, int treeZ, int treeHeight) {
             // check tree bounds
             if (treeY < 0     || (treeY + treeHeight - 1) >= Height) return false;
             if (treeX - 2 < 0 || treeX + 2 >= Width)  return false;
@@ -429,8 +429,8 @@ namespace Flames.Generator.Classic
         public static void RegisterGenerators() {
             MapGen.Register("Classic", GenType.Simple, Gen, MapGen.DEFAULT_HELP);
         }
-        
-        static bool Gen(Player p, Level lvl, MapGenArgs args) {
+
+        public static bool Gen(Player p, Level lvl, MapGenArgs args) {
             if (!args.ParseArgs(p)) return false;
             
             new ClassicGenerator().Generate(lvl, args);

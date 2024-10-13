@@ -27,9 +27,9 @@ namespace Flames.Gui
 {
     public partial class PropertyWindow : Form 
     {
-        GamesHelper lsHelper, zsHelper, ctfHelper, twHelper, cdHelper;
-        
-        void LoadGameProps() {
+        public GamesHelper lsHelper, zsHelper, ctfHelper, twHelper, cdHelper;
+
+        public void LoadGameProps() {
             string[] allMaps = LevelInfo.AllMapNames();
             LoadZSSettings(allMaps);
             LoadCTFSettings(allMaps);
@@ -38,15 +38,15 @@ namespace Flames.Gui
             LoadCDSettings(allMaps);
         }
 
-        void SaveGameProps() {
+        public void SaveGameProps() {
             SaveZSSettings();
             SaveCTFSettings();
             SaveLSSettings();
             SaveTWSettings();
             SaveCDSettings();
         }
-        
-        GamesHelper GetGameHelper(IGame game) {
+
+        public GamesHelper GetGameHelper(IGame game) {
             // TODO: Find a better way of doing this
             if (game == ZSGame.Instance)  return zsHelper;
             if (game == CTFGame.Instance) return ctfHelper;
@@ -54,21 +54,21 @@ namespace Flames.Gui
             if (game == TWGame.Instance)  return twHelper;
             return null;
         }
-        
-        void HandleMapsChanged(RoundsGame game) {
+
+        public void HandleMapsChanged(RoundsGame game) {
             GamesHelper helper = GetGameHelper(game);
             if (helper == null) return;
             RunOnUI_Async(() => helper.UpdateMaps());
         }
-        
-        void HandleStateChanged(IGame game) {
+
+        public void HandleStateChanged(IGame game) {
             GamesHelper helper = GetGameHelper(game);
             if (helper == null) return;
             RunOnUI_Async(() => helper.UpdateButtons());
         }
-        
-        
-        void LoadZSSettings(string[] allMaps) {
+
+
+        public void LoadZSSettings(string[] allMaps) {
             zsHelper = new GamesHelper(
                 ZSGame.Instance, zs_cbStart, zs_cbMap, zs_cbMain,
                 zs_btnStart, zs_btnStop, zs_btnEnd,
@@ -88,8 +88,8 @@ namespace Flames.Gui
             zs_txtName.Text  = cfg.ZombieName;
             zs_txtModel.Text = cfg.ZombieModel;
         }
-        
-        void SaveZSSettings() {
+
+        public void SaveZSSettings() {
             try {
                 ZSConfig cfg = ZSGame.Instance.Config;
                 cfg.InvisibilityDuration = (int)zs_numInvHumanDur.Value;
@@ -110,26 +110,26 @@ namespace Flames.Gui
                 Logger.LogError("Error saving ZS settings", ex);
             }
         }
-        
-        
-        void LoadCTFSettings(string[] allMaps) {
+
+
+        public void LoadCTFSettings(string[] allMaps) {
             ctfHelper = new GamesHelper(
                 CTFGame.Instance, ctf_cbStart, ctf_cbMap, ctf_cbMain,
                 ctf_btnStart, ctf_btnStop, ctf_btnEnd,
                 ctf_btnAdd, ctf_btnRemove, ctf_lstUsed, ctf_lstNotUsed);
             ctfHelper.Load(allMaps);
         }
-        
-        void SaveCTFSettings() {
+
+        public void SaveCTFSettings() {
             try {
                 ctfHelper.Save();
             } catch (Exception ex) {
                 Logger.LogError("Error saving CTF settings", ex);
             }
         }
-        
 
-        void LoadLSSettings(string[] allMaps) {
+
+        public void LoadLSSettings(string[] allMaps) {
              lsHelper = new GamesHelper(
                 LSGame.Instance, ls_cbStart, ls_cbMap, ls_cbMain,
                 ls_btnStart, ls_btnStop, ls_btnEnd,
@@ -139,8 +139,8 @@ namespace Flames.Gui
             LSConfig cfg = LSGame.Instance.Config;
             ls_numMax.Value = cfg.MaxLives;
         }
-        
-        void SaveLSSettings() {
+
+        public void SaveLSSettings() {
             try {
                 LSConfig cfg = LSGame.Instance.Config;
                 cfg.MaxLives = (int)ls_numMax.Value;
@@ -151,10 +151,10 @@ namespace Flames.Gui
                 Logger.LogError("Error saving Lava Survival settings", ex);
             }
         }
-        
-        string lsCurMap;
-        LSMapConfig lsCurCfg;
-        void lsMapUse_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public string lsCurMap;
+        public LSMapConfig lsCurCfg;
+        public void lsMapUse_SelectedIndexChanged(object sender, EventArgs e) {
             SaveLSMapSettings();
             if (ls_lstUsed.SelectedIndex == -1) {
                 ls_grpMapSettings.Text = "Map settings";
@@ -191,8 +191,8 @@ namespace Flames.Gui
             ls_numFlood.Value = cfg.GetFloodTime(lsCurCfg);
             ls_numLayerTime.Value = cfg.GetLayerInterval(lsCurCfg);
         }
-        
-        void SaveLSMapSettings() {
+
+        public void SaveLSMapSettings() {
             if (lsCurCfg == null) return;
             LSConfig cfg = LSGame.Instance.Config;
             
@@ -213,9 +213,9 @@ namespace Flames.Gui
             lsCurCfg.Save(lsCurMap);
             lsHelper.UpdateMapConfig(lsCurMap);
         }
-        
-        
-        void LoadTWSettings(string[] allMaps) {
+
+
+        public void LoadTWSettings(string[] allMaps) {
              twHelper = new GamesHelper(
                 TWGame.Instance, tw_cbStart, tw_cbMap, tw_cbMain,
                 tw_btnStart, tw_btnStop, tw_btnEnd,
@@ -226,8 +226,8 @@ namespace Flames.Gui
             tw_cmbDiff.SelectedIndex = (int)cfg.Difficulty;
             tw_cmbMode.SelectedIndex = (int)cfg.Mode;
         }
-        
-        void SaveTWSettings() {
+
+        public void SaveTWSettings() {
             try {
                 TWConfig cfg = TWGame.Instance.Config;
                 if (tw_cmbDiff.SelectedIndex >= 0) 
@@ -240,10 +240,10 @@ namespace Flames.Gui
                 Logger.LogError("Error saving TNT wars settings", ex);
             }
         }
-        
-        string twCurMap;
-        TWMapConfig twCurCfg;
-        void twMapUse_SelectedIndexChanged(object sender, EventArgs e) {
+
+        public string twCurMap;
+        public TWMapConfig twCurCfg;
+        public void twMapUse_SelectedIndexChanged(object sender, EventArgs e) {
             SaveTWMapSettings();
             if (tw_lstUsed.SelectedIndex == -1) {
                 tw_grpMapSettings.Text = "Map settings";
@@ -276,8 +276,8 @@ namespace Flames.Gui
             tw_cbBalance.Checked = twCurCfg.BalanceTeams;
             tw_cbKills.Checked = twCurCfg.TeamKills;
         }
-        
-        void SaveTWMapSettings() {
+
+        public void SaveTWMapSettings() {
             if (twCurCfg == null) return;
             twCurCfg.ScoreRequired = (int)tw_numScoreLimit.Value;
             twCurCfg.ScorePerKill = (int)tw_numScorePerKill.Value;
@@ -292,18 +292,18 @@ namespace Flames.Gui
             
             twCurCfg.Save(twCurMap);          
             twHelper.UpdateMapConfig(twCurMap);
-        } 
-        
-        
-        void LoadCDSettings(string[] allMaps) {
+        }
+
+
+        public void LoadCDSettings(string[] allMaps) {
             cdHelper = new GamesHelper(
                 CountdownGame.Instance, cd_cbStart, cd_cbMap, cd_cbMain,
                 cd_btnStart, cd_btnStop, cd_btnEnd,
                 cd_btnAdd, cd_btnRemove, cd_lstUsed, cd_lstNotUsed);
             cdHelper.Load(allMaps);
         }
-        
-        void SaveCDSettings() {
+
+        public void SaveCDSettings() {
             try {
                 cdHelper.Save();
             } catch (Exception ex) {

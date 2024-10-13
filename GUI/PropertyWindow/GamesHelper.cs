@@ -22,11 +22,11 @@ using Flames.Games;
 
 namespace Flames.Gui {
     public sealed class GamesHelper {
-        CheckBox cbStart, cbMap, cbMain;
-        Button btnStart, btnStop, btnEnd, btnAdd, btnDel;
-        ListBox lbUsed, lbNotUsed;
-        
-        RoundsGame game;
+        public CheckBox cbStart, cbMap, cbMain;
+        public Button btnStart, btnStop, btnEnd, btnAdd, btnDel;
+        public ListBox lbUsed, lbNotUsed;
+
+        public RoundsGame game;
         public GamesHelper(RoundsGame game,
                            CheckBox start_, CheckBox map, CheckBox main,
                            Button start, Button stop, Button end,
@@ -73,24 +73,24 @@ namespace Flames.Gui {
             btnStop.Enabled  = game.Running;
             btnEnd.Enabled   = game.Running; // && game.RoundInProgress;
         }
-        
-        void StartGame_Click(object sender, EventArgs e) {
+
+        public void StartGame_Click(object sender, EventArgs e) {
             if (!game.Running) game.Start(Player.Flame, "", int.MaxValue);
             UpdateButtons();
         }
 
-        void StopGame_Click(object sender, EventArgs e) {
+        public void StopGame_Click(object sender, EventArgs e) {
             if (game.Running) game.End();
             UpdateButtons();
         }
 
-        void EndRound_Click(object sender, EventArgs e) {
+        public void EndRound_Click(object sender, EventArgs e) {
             if (game.RoundInProgress) game.EndRound();
             UpdateButtons();
         }
-        
-        
-        void AddMap_Click(object sender, EventArgs e) {
+
+
+        public void AddMap_Click(object sender, EventArgs e) {
             try {
                 object selected = lbNotUsed.SelectedItem;
                 if (selected == null) { Popup.Warning("No map selected"); return; }
@@ -103,7 +103,7 @@ namespace Flames.Gui {
             }
         }
 
-        void DelMap_Click(object sender, EventArgs e) {
+        public void DelMap_Click(object sender, EventArgs e) {
             try {
                 object selected = lbUsed.SelectedItem;
                 if (selected == null) { Popup.Warning("No map selected"); return; }
@@ -156,8 +156,8 @@ namespace Flames.Gui {
             
             Reselect(lbNotUsed, selected);
         }
-        
-        void Reselect(ListBox box, object selected) {
+
+        public void Reselect(ListBox box, object selected) {
             int i = -1;
             if (selected != null) i = box.Items.IndexOf(selected);
             box.SelectedIndex = i;

@@ -67,28 +67,28 @@ namespace Flames.Modules.Relay.Discord
         public Action<JsonObject> OnChannelCreate;
         /// <summary> Callback invoked when a gateway event has been received </summary>
         public GatewayEventCallback OnGatewayEvent;
-        
-        readonly object sendLock = new object();
-        SchedulerTask heartbeat;
-        TcpClient client;
-        SslStream stream;
-        bool readable;
+
+        public readonly object sendLock = new object();
+        public SchedulerTask heartbeat;
+        public TcpClient client;
+        public SslStream stream;
+        public bool readable;
 
         public const int DEFAULT_INTENTS = INTENT_GUILD_MESSAGES | INTENT_DIRECT_MESSAGES | INTENT_MESSAGE_CONTENT;
-        const int INTENT_GUILD_MESSAGES  = 1 << 9;
-        const int INTENT_DIRECT_MESSAGES = 1 << 12;
-        const int INTENT_MESSAGE_CONTENT = 1 << 15;
+        public const int INTENT_GUILD_MESSAGES  = 1 << 9;
+        public const int INTENT_DIRECT_MESSAGES = 1 << 12;
+        public const int INTENT_MESSAGE_CONTENT = 1 << 15;
 
-        const int OPCODE_DISPATCH        = 0;
-        const int OPCODE_HEARTBEAT       = 1;
-        const int OPCODE_IDENTIFY        = 2;
-        const int OPCODE_STATUS_UPDATE   = 3;
-        const int OPCODE_VOICE_STATE_UPDATE = 4;
-        const int OPCODE_RESUME          = 6;
-        const int OPCODE_REQUEST_SERVER_MEMBERS = 8;
-        const int OPCODE_INVALID_SESSION = 9;
-        const int OPCODE_HELLO           = 10;
-        const int OPCODE_HEARTBEAT_ACK   = 11;
+        public const int OPCODE_DISPATCH        = 0;
+        public const int OPCODE_HEARTBEAT       = 1;
+        public const int OPCODE_IDENTIFY        = 2;
+        public const int OPCODE_STATUS_UPDATE   = 3;
+        public const int OPCODE_VOICE_STATE_UPDATE = 4;
+        public const int OPCODE_RESUME          = 6;
+        public const int OPCODE_REQUEST_SERVER_MEMBERS = 8;
+        public const int OPCODE_INVALID_SESSION = 9;
+        public const int OPCODE_HELLO           = 10;
+        public const int OPCODE_HEARTBEAT_ACK   = 11;
         
         
         public DiscordWebsocket(string apiPath) {
@@ -123,9 +123,9 @@ namespace Flames.Modules.Relay.Discord
                 // ignore errors when closing socket
             }
         }
-        
-        const int REASON_INVALID_TOKEN = 4004;
-        const int REASON_DENIED_INTENT = 4014;
+
+        public const int REASON_INVALID_TOKEN = 4004;
+        public const int REASON_DENIED_INTENT = 4014;
 
         public override void OnDisconnected(int reason) {
             SentIdentify = false;
@@ -167,8 +167,8 @@ namespace Flames.Modules.Relay.Discord
             int opcode = NumberUtils.ParseInt32((string)obj["op"]);
             DispatchPacket(opcode, obj);
         }
-        
-        void DispatchPacket(int opcode, JsonObject obj) {
+
+        public void DispatchPacket(int opcode, JsonObject obj) {
             if (opcode == OPCODE_DISPATCH) {
                 HandleDispatch(obj);
             } else if (opcode == OPCODE_HELLO) {
@@ -185,9 +185,9 @@ namespace Flames.Modules.Relay.Discord
                 Identify();
             }
         }
-        
-        
-        void HandleHello(JsonObject obj) {
+
+
+        public void HandleHello(JsonObject obj) {
             JsonObject data = (JsonObject)obj["d"];
             string interval = (string)data["heartbeat_interval"];            
             int msInterval  = NumberUtils.ParseInt32(interval);
@@ -196,8 +196,8 @@ namespace Flames.Modules.Relay.Discord
                                           TimeSpan.FromMilliseconds(msInterval));
             Identify();
         }
-        
-        void HandleDispatch(JsonObject obj) {
+
+        public void HandleDispatch(JsonObject obj) {
             // update last sequence number
             object sequence;
             if (obj.TryGetValue("s", out sequence)) 
@@ -221,8 +221,8 @@ namespace Flames.Modules.Relay.Discord
             }
             OnGatewayEvent(eventName, data);
         }
-        
-        void HandleReady(JsonObject data) {
+
+        public void HandleReady(JsonObject data) {
             object session;
             if (data.TryGetValue("session_id", out session)) 
                 Session.ID = (string)session;
@@ -246,8 +246,8 @@ namespace Flames.Modules.Relay.Discord
         public override void SendRaw(byte[] data, SendFlags flags) {
             lock (sendLock) stream.Write(data);
         }
-        
-        void SendHeartbeat(SchedulerTask task) {
+
+        public void SendHeartbeat(SchedulerTask task) {
             JsonObject obj = new JsonObject();
             obj["op"] = OPCODE_HEARTBEAT;
             
@@ -272,8 +272,8 @@ namespace Flames.Modules.Relay.Discord
             JsonObject data = MakePresence();
             SendMessage(OPCODE_STATUS_UPDATE, data);
         }
-        
-        JsonObject MakeResume() {
+
+        public JsonObject MakeResume() {
             return new JsonObject()
             {
                 { "token",      Token },
@@ -281,8 +281,8 @@ namespace Flames.Modules.Relay.Discord
                 { "seq",        NumberUtils.ParseInt32(Session.LastSeq) }
             };
         }
-        
-        JsonObject MakeIdentify() {
+
+        public JsonObject MakeIdentify() {
             JsonObject props = new JsonObject()
             {
                 { "$os",      "linux" },
@@ -298,8 +298,8 @@ namespace Flames.Modules.Relay.Discord
                 { "presence",   MakePresence() }
             };
         }
-        
-        JsonObject MakePresence() {
+
+        public JsonObject MakePresence() {
             if (!Presence) return null;
             
             JsonObject activity = new JsonObject()

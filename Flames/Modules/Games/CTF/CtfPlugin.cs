@@ -22,7 +22,7 @@ namespace Flames.Modules.Games.CTF
     public sealed class CTFPlugin : Plugin 
     {
         public override string name { get { return "CTF"; } }
-        static Command cmdCTF = new CmdCTF();
+        public static Command cmdCTF = new CmdCTF();
         
         public override void Load(bool startup) {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
@@ -37,8 +37,8 @@ namespace Flames.Modules.Games.CTF
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdCTF);
         }
-        
-        void OnConfigUpdated() { 
+
+        public void OnConfigUpdated() { 
             CTFGame.Instance.Config.Load();
         }
     }

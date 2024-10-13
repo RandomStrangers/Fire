@@ -21,7 +21,7 @@ namespace Flames.Config
 {    
     public sealed class ConfigColorAttribute : ConfigAttribute 
     {
-        string defCol;
+        public string defCol;
         
         public ConfigColorAttribute(string name, string section, string def)
             : base(name, section) { defCol = def; }
@@ -43,8 +43,8 @@ namespace Flames.Config
     
     public sealed class ConfigStringAttribute : ConfigAttribute 
     {
-        bool allowEmpty;
-        string defValue, allowedChars;
+        public bool allowEmpty;
+        public string defValue, allowedChars;
  
         // NOTE: required to define these, some compilers error when we try using optional parameters with:
         // "An attribute argument must be a constant expression, typeof expression.."
@@ -69,8 +69,8 @@ namespace Flames.Config
             if (allowedChars != null) value = Constrain(value);
             return value;
         }
-        
-        string Constrain(string value) {
+
+        public string Constrain(string value) {
             foreach (char c in value) 
             {
                 if ((c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')) continue;                

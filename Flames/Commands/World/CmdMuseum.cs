@@ -24,8 +24,8 @@ namespace Flames.Commands.World {
         public override string type { get { return CommandTypes.World; } }
         public override bool SuperUseable { get { return false; } }
 
-        const string currentFlag = "*current";
-        const string latestFlag = "*latest";
+        public const string currentFlag = "*current";
+        public const string latestFlag = "*latest";
         
         public override void Use(Player p, string message, CommandData data) {
             if (message.Length == 0) { LevelOperations.OutputBackups(p, p.level); return; }

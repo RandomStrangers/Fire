@@ -19,9 +19,9 @@
 namespace Flames.Modules.Relay.Discord 
 {
     public static class DiscordUtils
-    {        
-        static readonly string[] markdown_special = {  @"\",  @"*",  @"_",  @"~",  @"`",  @"|",  @"-",  @"#" };
-        static readonly string[] markdown_escaped = { @"\\", @"\*", @"\_", @"\~", @"\`", @"\|", @"\-", @"\#" };
+    {
+        public static readonly string[] markdown_special = {  @"\",  @"*",  @"_",  @"~",  @"`",  @"|",  @"-",  @"#" };
+        public static readonly string[] markdown_escaped = { @"\\", @"\*", @"\_", @"\~", @"\`", @"\|", @"\-", @"\#" };
         public static string EscapeMarkdown(string message) {
             // don't let user use bold/italic etc markdown
             for (int i = 0; i < markdown_special.Length; i++) 

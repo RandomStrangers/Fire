@@ -27,8 +27,8 @@ namespace Flames.Modules.Compiling
         public override CommandAlias[] Aliases {
         	get { return new[] { new CommandAlias("PCreate", "plugin") }; }
         }
-        
-        protected override void CompileCommand(Player p, string[] paths, ICompiler compiler) {
+
+        public override void CompileCommand(Player p, string[] paths, ICompiler compiler) {
             if (compiler == null) { compiler = new CSCompiler(); }
 
             foreach (string cmd in paths)
@@ -36,8 +36,8 @@ namespace Flames.Modules.Compiling
                 CompilerOperations.CreateCommand(p, cmd, compiler);
             }
         }
-        
-        protected override void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
+
+        public override void CompilePlugin(Player p, string[] paths, ICompiler compiler) {
             foreach (string cmd in paths)
             {
                 CompilerOperations.CreatePlugin(p, cmd, compiler);

@@ -28,7 +28,7 @@ namespace Flames.Modules.Games.CTF
 {
     public partial class CTFGame : RoundsGame 
     {
-        protected override void HookEventHandlers() {
+        public override void HookEventHandlers() {
             OnPlayerDiedEvent.Register(HandlePlayerDied, Priority.High);
             OnPlayerChatEvent.Register(HandlePlayerChat, Priority.High);
             OnPlayerCommandEvent.Register(HandlePlayerCommand, Priority.High);            
@@ -41,8 +41,8 @@ namespace Flames.Modules.Games.CTF
             
             base.HookEventHandlers();
         }
-        
-        protected override void UnhookEventHandlers() {
+
+        public override void UnhookEventHandlers() {
             OnPlayerDiedEvent.Unregister(HandlePlayerDied);
             OnPlayerChatEvent.Unregister(HandlePlayerChat);
             OnPlayerCommandEvent.Unregister(HandlePlayerCommand);           
@@ -55,15 +55,15 @@ namespace Flames.Modules.Games.CTF
             
             base.UnhookEventHandlers();
         }
-        
-        
-        void HandlePlayerDied(Player p, BlockID deathblock, ref TimeSpan cooldown) {
+
+
+        public void HandlePlayerDied(Player p, BlockID deathblock, ref TimeSpan cooldown) {
             if (p.level != Map || !Get(p).HasFlag) return;
             CtfTeam team = TeamOf(p);
             if (team != null) DropFlag(p, team);
         }
-        
-        void HandlePlayerChat(Player p, string message) {
+
+        public void HandlePlayerChat(Player p, string message) {
             if (p.level != Map || !Get(p).TeamChatting) return;
             
             CtfTeam team = TeamOf(p);
@@ -74,8 +74,8 @@ namespace Flames.Modules.Games.CTF
                              Map, (pl, arg) => pl.Game.Referee || TeamOf(pl) == team);
             p.cancelchat = true;
         }
-        
-        void HandlePlayerCommand(Player p, string cmd, string args, CommandData data) {
+
+        public void HandlePlayerCommand(Player p, string cmd, string args, CommandData data) {
             if (p.level != Map || cmd != "teamchat") return;
             CtfData data_ = Get(p);
             
@@ -88,8 +88,8 @@ namespace Flames.Modules.Games.CTF
             data_.TeamChatting = !data_.TeamChatting;
             p.cancelcommand = true;
         }
-        
-        void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
             if (p.level != Map) return;
             CtfTeam team = TeamOf(p);
             if (team == null) {
@@ -108,8 +108,8 @@ namespace Flames.Modules.Games.CTF
                 cancel = true;
             }
         }
-        
-        void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
+
+        public void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
             if (p.level != Map) return;
             CtfTeam team = TeamOf(p);
             
@@ -119,8 +119,8 @@ namespace Flames.Modules.Games.CTF
             Vec3U16 coords = team.SpawnPos;
             pos = Position.FromFeetBlockCoords(coords.X, coords.Y, coords.Z);
         }
-        
-        void HandleTabListEntryAdded(Entity entity, ref string tabName, ref string tabGroup, Player dst) {
+
+        public void HandleTabListEntryAdded(Entity entity, ref string tabName, ref string tabGroup, Player dst) {
             Player p = entity as Player;
             if (p == null || p.level != Map) return;
             CtfTeam team = TeamOf(p);
@@ -133,14 +133,14 @@ namespace Flames.Modules.Games.CTF
                 tabGroup = "&7Spectators";
             }
         }
-        
-        void HandleSentMap(Player p, Level prevLevel, Level level) {
+
+        public void HandleSentMap(Player p, Level prevLevel, Level level) {
             if (level != Map) return;
             OutputMapSummary(p, Map.Config);
             if (TeamOf(p) == null) AutoAssignTeam(p);
         }
-        
-        void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
         }
     }

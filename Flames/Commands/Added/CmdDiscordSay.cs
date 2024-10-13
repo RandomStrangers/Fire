@@ -1,7 +1,7 @@
 ﻿using Flames.Modules.Relay.Discord;
 namespace Flames.Commands.Chatting
 {
-    public sealed class CmdSayDiscord : Command2
+    public sealed class CmdSayDiscord : Command
     {
         public override string name { get { return "SayDiscord"; } }
         public override string shortcut { get { return "DiscordBroadcast"; } }
@@ -9,7 +9,7 @@ namespace Flames.Commands.Chatting
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override CommandAlias[] Aliases { get { return new[] { new CommandAlias("sayd"), 
             new CommandAlias("dsay"), new CommandAlias("discordann") }; } }
-        public override void Use(Player p, string message, CommandData data)
+        public override void Use(Player p, string message)
         {
             if (message.Length == 0) { Help(p); return; }
 

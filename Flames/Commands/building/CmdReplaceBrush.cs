@@ -24,9 +24,9 @@ namespace Flames.Commands.Building
         public override string name { get { return "ReplaceBrush"; } }
         public override string shortcut { get { return "rb"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        protected virtual bool ReplaceNot { get { return false; } }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+        public virtual bool ReplaceNot { get { return false; } }
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             Player p = dArgs.Player;
             
             string replaceCmd = ReplaceNot ? "ReplaceNot" : "Replace";
@@ -41,8 +41,8 @@ namespace Flames.Commands.Building
             };
             return op;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
         	dArgs.BrushName = ReplaceNot ? "ReplaceNotBrush" : "ReplaceBrush";
             dArgs.BrushArgs = dArgs.Message;
         }
@@ -58,8 +58,8 @@ namespace Flames.Commands.Building
     public class CmdReplaceNotBrush : CmdReplaceBrush 
     {
         public override string name { get { return "ReplaceNotBrush"; } }
-        public override string shortcut { get { return "rnb"; } }        
-        protected override bool ReplaceNot { get { return true; } }
+        public override string shortcut { get { return "rnb"; } }
+        public override bool ReplaceNot { get { return true; } }
         
         public override void Help(Player p) {
             p.Message("&T/ReplaceNotBrush [block] [brush name] <brush args>");

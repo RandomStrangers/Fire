@@ -27,10 +27,10 @@ namespace LibNoise
     public sealed class RidgedMultifractal : IModule
     {
         public int OctaveCount;
-        
-        double mLacunarity;
-        const int MaxOctaves = 30;
-        double[] SpectralWeights = new double[MaxOctaves];
+
+        public double mLacunarity;
+        public const int MaxOctaves = 30;
+        public double[] SpectralWeights = new double[MaxOctaves];
 
         public RidgedMultifractal()
         {
@@ -102,7 +102,7 @@ namespace LibNoise
             }
         }
 
-        void CalculateSpectralWeights()
+        public void CalculateSpectralWeights()
         {
             double h = 1.0;
 

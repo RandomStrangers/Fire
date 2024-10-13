@@ -18,11 +18,11 @@
 using System.Collections.Generic;
 
 namespace Flames.Modules.Relay.IRC 
-{    
+{
     /// <summary> Manages a list of IRC nicks and asssociated permissions </summary>
-    sealed class IRCNickList 
+    public sealed class IRCNickList 
     {
-        Dictionary<string, List<string>> userMap = new Dictionary<string, List<string>>();     
+        public Dictionary<string, List<string>> userMap = new Dictionary<string, List<string>>();     
         public IRCBot bot;
         
         public void Clear() { userMap.Clear(); }
@@ -58,9 +58,9 @@ namespace Flames.Modules.Relay.IRC
             foreach (string n in nicks)
                 UpdateNick(n, chanNicks);
         }
-        
-        
-        List<string> GetNicks(string channel) {
+
+
+        public List<string> GetNicks(string channel) {
             foreach (var chan in userMap) 
             {
                 if (chan.Key.CaselessEq(channel)) return chan.Value;
@@ -70,8 +70,8 @@ namespace Flames.Modules.Relay.IRC
             userMap[channel] = nicks;
             return nicks;
         }
-        
-        void UpdateNick(string n, List<string> chanNicks) {
+
+        public void UpdateNick(string n, List<string> chanNicks) {
             string unprefixNick = Unprefix(n);
             for (int i = 0; i < chanNicks.Count; i++ ) 
             {
@@ -81,13 +81,13 @@ namespace Flames.Modules.Relay.IRC
             }
             chanNicks.Add(n);
         }
-        
-        void RemoveNick(string n, List<string> chanNicks) {
+
+        public void RemoveNick(string n, List<string> chanNicks) {
             int index = GetNickIndex(n, chanNicks);
             if (index >= 0) chanNicks.RemoveAt(index);
         }
-        
-        int GetNickIndex(string n, List<string> chanNicks) {
+
+        public int GetNickIndex(string n, List<string> chanNicks) {
             if (chanNicks == null) return -1;
             string unprefixNick = Unprefix(n);
             
@@ -98,16 +98,16 @@ namespace Flames.Modules.Relay.IRC
             }
             return -1;
         }
-        
-        string Unprefix(string nick) {
+
+        public string Unprefix(string nick) {
             return nick.Substring(GetPrefixLength(nick));
         }
-        
-        string GetPrefix(string nick) {
+
+        public string GetPrefix(string nick) {
             return nick.Substring(0, GetPrefixLength(nick));
         }
-        
-        int GetPrefixLength(string nick) {
+
+        public int GetPrefixLength(string nick) {
             int prefixChars = 0;
             for (int i = 0; i < nick.Length; i++) 
             {
@@ -118,8 +118,8 @@ namespace Flames.Modules.Relay.IRC
             }
             return prefixChars;
         }
-        
-        bool IsNickChar(char c) {
+
+        public bool IsNickChar(char c) {
             return (c >= '0' && c <= '9') || (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') ||
                 c == '[' || c == ']' || c == '{' || c == '}' || c == '^' || c == '`' || c == '_' || c == '|';
         }

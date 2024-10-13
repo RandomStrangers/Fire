@@ -26,8 +26,8 @@ namespace Flames.Drawing.Ops
     {
         public override string Name { get { return "Hollow"; } }
         public BlockID Skip;
-        
-        static bool CanHollow(BlockID block, bool andAir = false) {
+
+        public static bool CanHollow(BlockID block, bool andAir = false) {
             block = Block.Convert(block);
             if (andAir && block == Block.Air) return true;
             return block >= Block.Water && block <= Block.StillLava;
@@ -56,8 +56,8 @@ namespace Flames.Drawing.Ops
                 if (hollow) output(Place(x, y, z, Block.Air));
             }
         }
-        
-        void CheckTile(int x, int y, int z, ref bool hollow) {
+
+        public void CheckTile(int x, int y, int z, ref bool hollow) {
             BlockID block = Level.GetBlock((ushort)x, (ushort)y, (ushort)z);
             if (CanHollow(block) || block == Skip) hollow = false;
         }

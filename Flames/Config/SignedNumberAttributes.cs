@@ -23,9 +23,9 @@ namespace Flames.Config
     {
         public ConfigSignedIntegerAttribute(string name, string section) 
             : base(name, section) { }
-         
+
         // separate function to avoid boxing in derived classes
-        protected long ParseLong(string raw, long def, long min, long max) {
+        public long ParseLong(string raw, long def, long min, long max) {
             long value;
             if (!long.TryParse(raw, out value)) {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid integer '{2}', using default of {1}", Name, def, raw);
@@ -42,7 +42,7 @@ namespace Flames.Config
             }
             return value;
         }
-        protected int ParseInteger(string raw, int def, int min, int max)
+        public int ParseInteger(string raw, int def, int min, int max)
         {
             int value;
             if (!int.TryParse(raw, out value))
@@ -67,7 +67,7 @@ namespace Flames.Config
 
     public sealed class ConfigIntAttribute : ConfigSignedIntegerAttribute 
     {
-        int defValue, minValue, maxValue;
+        public int defValue, minValue, maxValue;
         
         public ConfigIntAttribute()
             : this(null, null, 0, int.MinValue, int.MaxValue) { }
@@ -131,7 +131,7 @@ namespace Flames.Config
     
     public class ConfigFloatAttribute : ConfigRealAttribute 
     {
-        float defValue, minValue, maxValue;
+        public float defValue, minValue, maxValue;
         
         public ConfigFloatAttribute()
             : this(null, null, 0, float.NegativeInfinity, float.PositiveInfinity) { }
@@ -146,7 +146,8 @@ namespace Flames.Config
     
     public class ConfigTimespanAttribute : ConfigRealAttribute 
     {
-        bool mins; int def;
+        public bool mins; 
+        public int def;
         public ConfigTimespanAttribute(string name, string section, int def, bool mins)
             : base(name, section) { this.def = def; this.mins = mins; }
         
@@ -154,8 +155,8 @@ namespace Flames.Config
             double value = ParseReal(raw, def, 0, int.MaxValue);
             return ParseInput(value);
         }
-        
-        protected TimeSpan ParseInput(double value) {
+
+        public TimeSpan ParseInput(double value) {
             if (mins) {
                 return TimeSpan.FromMinutes(value);
             } else {

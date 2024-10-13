@@ -19,7 +19,7 @@ using Flames.Commands;
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdBounty : Command2 
+    public sealed class CmdBounty : Command2 
     {
         public override string name { get { return "Bounty"; } }
         public override string type { get { return CommandTypes.Games; } }

@@ -50,8 +50,8 @@ namespace Flames.Commands.World {
                 SetProps(p, scope, block, args);
             }
         }
-        
-        static BlockProps[] GetScope(Player p, CommandData data, string scope) {
+
+        public static BlockProps[] GetScope(Player p, CommandData data, string scope) {
             if (scope.CaselessEq("core") || scope.CaselessEq("global")) return Block.Props;
 
             if (scope.CaselessEq("level")) {
@@ -63,8 +63,8 @@ namespace Flames.Commands.World {
             p.Message("&WScope must be: global or level");
             return null;
         }
-        
-        static BlockID GetBlock(Player p, BlockProps[] scope, string str) {
+
+        public static BlockID GetBlock(Player p, BlockProps[] scope, string str) {
             Player pScope = scope == Block.Props ? Player.Flame : p;
             BlockID block = Block.Parse(pScope, str);
             
@@ -73,8 +73,8 @@ namespace Flames.Commands.World {
             }
             return block;
         }
-        
-        internal static void Detail(Player p, BlockProps[] scope, BlockID block) {
+
+        public static void Detail(Player p, BlockProps[] scope, BlockID block) {
             BlockProps props = scope[block];
             string name = BlockProps.ScopedName(scope, p, block);
             p.Message("&TProperties of {0}:", name);
@@ -114,8 +114,8 @@ namespace Flames.Commands.World {
                           BlockProps.ScopedName(scope, p, props.DirtBlock));
             }
         }
-        
-        static List<BlockID> FilterProps(BlockProps[] scope) {
+
+        public static List<BlockID> FilterProps(BlockProps[] scope) {
             int changed = BlockProps.ScopeId(scope);
             List<BlockID> filtered = new List<BlockID>();
             
@@ -125,8 +125,8 @@ namespace Flames.Commands.World {
             }
             return filtered;
         }
-        
-        void ListProps(Player p, BlockProps[] scope, string[] args) {
+
+        public void ListProps(Player p, BlockProps[] scope, string[] args) {
             List<BlockID> filtered = FilterProps(scope);
             string cmd      = "BlockProps " + args[0] + " list";
             string modifier = args.Length > 2 ? args[2] : "";
@@ -134,8 +134,8 @@ namespace Flames.Commands.World {
             Paginator.Output(p, filtered, b => BlockProps.ScopedName(scope, p, b),
                              cmd, "modified blocks", modifier);
         }
-        
-        void CopyProps(Player p, BlockProps[] scope, BlockID block, string[] args) {
+
+        public void CopyProps(Player p, BlockProps[] scope, BlockID block, string[] args) {
             if (args.Length < 4) { Help(p); return; }
             BlockID dst = GetBlock(p, scope, args[3]);
             if (dst == Block.Invalid) return;
@@ -148,16 +148,16 @@ namespace Flames.Commands.World {
                       BlockProps.ScopedName(scope, p, dst));
             BlockProps.ApplyChanges(scope, p.level, block, true);
         }
-        
-        void ResetProps(Player p, BlockProps[] scope, BlockID block) {
+
+        public void ResetProps(Player p, BlockProps[] scope, BlockID block) {
             scope[block] = BlockProps.MakeDefault(scope, p.level, block);
             string name  = BlockProps.ScopedName(scope, p, block);
             
             p.Message("Reset properties of {0} to default", name);
             BlockProps.ApplyChanges(scope, p.level, block, true);
         }
-        
-        void SetProps(Player p, BlockProps[] scope, BlockID block, string[] args) {
+
+        public void SetProps(Player p, BlockProps[] scope, BlockID block, string[] args) {
             BlockOption opt = BlockOptions.Find(args[2]);
             if (opt == null) { Help(p); return; }
             string value = args.Length > 3 ? args[3] : "";

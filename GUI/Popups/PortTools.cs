@@ -24,9 +24,9 @@ namespace Flames.Gui.Popups
 {
     public partial class PortTools : Form
     {
-        readonly BackgroundWorker worker;
-        readonly UPnP upnp;
-        int port;
+        public readonly BackgroundWorker worker;
+        public readonly UPnP upnp;
+        public int port;
         
         public PortTools(int port) {
             InitializeComponent();
@@ -40,53 +40,53 @@ namespace Flames.Gui.Popups
             upnp = new UPnP();
             upnp.Log = LogUPnP;
         }
-        
-        void PortTools_Load(object sender, EventArgs e) {
+
+        public void PortTools_Load(object sender, EventArgs e) {
             GuiUtils.SetIcon(this);
         }
 
-        void PortChecker_FormClosing(object sender, FormClosingEventArgs e) {
+        public void PortChecker_FormClosing(object sender, FormClosingEventArgs e) {
             worker.CancelAsync();
         }
 
-        void linkManually_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+        public void linkManually_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             GuiUtils.OpenBrowser("https://www.canyouseeme.org/");
         }
 
-        void linkHelpForward_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+        public void linkHelpForward_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
             GuiUtils.OpenBrowser("https://portforward.com");
         }
-        
-        void btnForward_Click(object sender, EventArgs e) {
+
+        public void btnForward_Click(object sender, EventArgs e) {
             StartForwardOrDelete(true);
         }
 
-        void btnDelete_Click(object sender, EventArgs e) {
+        public void btnDelete_Click(object sender, EventArgs e) {
             StartForwardOrDelete(false);
         }
-        
-        
-        void StartForwardOrDelete(bool forwardingMode) {
+
+
+        public void StartForwardOrDelete(bool forwardingMode) {
             SetUPnPEnabled(false);
             txtLogs.Text = "";
             MakeLogsVisible();
             worker.RunWorkerAsync(forwardingMode);
         }
-        
-        void MakeLogsVisible() {
+
+        public void MakeLogsVisible() {
             if (gbLogs.Visible) return;
             // https://stackoverflow.com/questions/5962595/how-do-you-resize-a-form-to-fit-its-content-automatically
             this.AutoSize  = true;
             gbLogs.Visible = true;
         }
-        
-        void SetUPnPEnabled(bool enabled) {
+
+        public void SetUPnPEnabled(bool enabled) {
             btnDelete.Enabled  = enabled;
             btnForward.Enabled = enabled;
         }
 
-        
-        void AsyncWorker_DoWork(object sender, DoWorkEventArgs e) {
+
+        public void AsyncWorker_DoWork(object sender, DoWorkEventArgs e) {
             bool forwarding = (bool)e.Argument;
             
             try {
@@ -105,7 +105,7 @@ namespace Flames.Gui.Popups
             }
         }
 
-        void AsyncWorker_OnCompleted(object sender, RunWorkerCompletedEventArgs e) {
+        public void AsyncWorker_OnCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if (e.Cancelled) return;
             SetUPnPEnabled(true);
 
@@ -129,11 +129,11 @@ namespace Flames.Gui.Popups
                     return;
             }
         }
-        
-        void LogUPnP(string message) {
+
+        public void LogUPnP(string message) {
             RunOnUI_Async(() => txtLogs.AppendText(message + "\r\n"));
         }
-        
-        void RunOnUI_Async(UIAction act) { BeginInvoke(act); }
+
+        public void RunOnUI_Async(UIAction act) { BeginInvoke(act); }
     }
 }

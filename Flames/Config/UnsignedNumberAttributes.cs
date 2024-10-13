@@ -10,7 +10,7 @@ namespace Flames.Config
 
         // separate function to avoid boxing in derived classes
         // Use ulong instead of uint to allow larger inputs
-        protected ulong ParseUnsignedLong(string raw, ulong def, ulong min, ulong max)
+        public ulong ParseUnsignedLong(string raw, ulong def, ulong min, ulong max)
         {
             ulong value;
             if (!ulong.TryParse(raw, out value))
@@ -31,7 +31,7 @@ namespace Flames.Config
             }
             return value;
         }
-        protected uint ParseUnsignedInteger(string raw, uint def, uint min, uint max)
+        public uint ParseUnsignedInteger(string raw, uint def, uint min, uint max)
         {
             uint value;
             if (!uint.TryParse(raw, out value))
@@ -66,7 +66,7 @@ namespace Flames.Config
 
     public sealed class ConfigBlockAttribute : ConfigUnsignedIntegerAttribute
     {
-        BlockID defBlock;
+        public BlockID defBlock;
         public ConfigBlockAttribute() : this(null, null, Block.Air) { }
         public ConfigBlockAttribute(string name, string section, BlockID def)
             : base(name, section) { defBlock = def; }
@@ -90,7 +90,7 @@ namespace Flames.Config
     }
     public sealed class ConfigUIntAttribute : ConfigUnsignedIntegerAttribute
     {
-        uint defValue, minValue, maxValue;
+        public uint defValue, minValue, maxValue;
 
         public ConfigUIntAttribute()
             : this(null, null, 0, uint.MinValue, uint.MaxValue) { }

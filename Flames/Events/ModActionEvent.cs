@@ -24,8 +24,8 @@ namespace Flames.Events
     {     
         /// <summary> Target player name or IP. </summary>
         public string Target;
-        
-        internal Group targetGroup;
+
+        public Group targetGroup;
         /// <summary> Gets the rank/group target is in. </summary>
         public Group TargetGroup {
             get {

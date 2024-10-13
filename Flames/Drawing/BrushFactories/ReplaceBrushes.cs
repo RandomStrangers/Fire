@@ -25,16 +25,16 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "Replace"; } }       
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block1] [block2].. [new]",
             "&HDraws by replacing existing blocks that are in the given [blocks] with [new]",
             "&H  If only [block] is given, replaces with your held block.",
         };
         
         public override Brush Construct(BrushArgs args) { return ProcessReplace(args, false); }
-        
-        internal static Brush ProcessReplace(BrushArgs args, bool not) {
+
+        public static Brush ProcessReplace(BrushArgs args, bool not) {
             string[] parts = args.Message.SplitSpaces();
             if (args.Message.Length == 0) {
                 args.Player.Message("You need at least one block to replace."); return null;
@@ -50,8 +50,8 @@ namespace Flames.Drawing.Brushes
             if (not) return new ReplaceNotBrush(toAffect, target);
             return new ReplaceBrush(toAffect, target);
         }
-        
-        internal static BlockID[] GetBlocks(Player p, int start, int max, string[] parts) {
+
+        public static BlockID[] GetBlocks(Player p, int start, int max, string[] parts) {
             List<BlockID> blocks = new List<BlockID>(max - start);
             
             for (int i = 0; start < max; start++, i++) 
@@ -67,8 +67,8 @@ namespace Flames.Drawing.Brushes
             }
             return blocks.ToArray();
         }
-        
-        static bool GetTargetBlock(BrushArgs args, string[] parts, out BlockID target) {
+
+        public static bool GetTargetBlock(BrushArgs args, string[] parts, out BlockID target) {
             Player p = args.Player;
             target = 0;
             
@@ -85,8 +85,8 @@ namespace Flames.Drawing.Brushes
     {
         public override string Name { get { return "ReplaceNot"; } }        
         public override string[] Help { get { return HelpString; } }
-        
-        static string[] HelpString = new string[] {
+
+        public static string[] HelpString = new string[] {
             "&TArguments: [block1] [block2].. [new]",
             "&HDraws by replacing existing blocks that not are in the given [blocks] with [new]",
             "&H  If only [block] is given, replaces with your held block.",

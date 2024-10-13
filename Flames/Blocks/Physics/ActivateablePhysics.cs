@@ -77,9 +77,9 @@ namespace Flames.Blocks.Physics {
                 lvl.AddUpdate(index, oDoor, true);
             }
         }
-        
-        
-        internal static PhysicsArgs GetDoorArgs(BlockID block, out BlockID physForm) {
+
+
+        public static PhysicsArgs GetDoorArgs(BlockID block, out BlockID physForm) {
             PhysicsArgs args = default;
             args.Type1 = PhysicsArgs.Custom; args.Value1 = 16 - 1;
             args.Type2 = PhysicsArgs.Revert; args.Value2 = (BlockRaw)block;
@@ -95,17 +95,17 @@ namespace Flames.Blocks.Physics {
             }
             return args;
         }
-        
-        internal static PhysicsArgs GetTDoorArgs(BlockID block) {
+
+        public static PhysicsArgs GetTDoorArgs(BlockID block) {
             PhysicsArgs args = default;
             args.Type1 = PhysicsArgs.Custom; args.Value1 = 16;
             args.Type2 = PhysicsArgs.Revert; args.Value2 = (BlockRaw)block;
             args.ExtBlock = (byte)(block >> Block.ExtendedShift);
             return args;
         }
-        
-        
-        internal static void CheckNeighbours(Level lvl, ushort x, ushort y, ushort z) {
+
+
+        public static void CheckNeighbours(Level lvl, ushort x, ushort y, ushort z) {
             CheckAt(lvl, (ushort)(x + 1), y, z);
             CheckAt(lvl, (ushort)(x - 1), y, z);
             CheckAt(lvl, x, y, (ushort)(z + 1));
@@ -113,9 +113,9 @@ namespace Flames.Blocks.Physics {
             CheckAt(lvl, x, (ushort)(y + 1), z);
             // NOTE: omission of y-1 to match original behaviour
         }
-        
+
         // TODO: Stop checking block type and just always call lvl.AddCheck
-        internal static void CheckAt(Level lvl, ushort x, ushort y, ushort z) {
+        public static void CheckAt(Level lvl, ushort x, ushort y, ushort z) {
             BlockID block = lvl.GetBlock(x, y, z, out int index);
 
             switch (block) {

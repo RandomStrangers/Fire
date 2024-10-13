@@ -22,8 +22,8 @@ namespace Flames.Drawing
     /// <summary> Utility methods for rotating and mirroring a CopyState. </summary>
     public static class Flip 
     {
-        static string[] rotX_90_270 = new string[] { "NS", "UD" };
-        static string[] rotX_180 = new string[] { "N", "S",  "NE", "SE",  "NW", "SW" };
+        public static string[] rotX_90_270 = new string[] { "NS", "UD" };
+        public static string[] rotX_180 = new string[] { "N", "S",  "NE", "SE",  "NW", "SW" };
         public static CopyState RotateX(CopyState state, int angle, BlockDefinition[] defs) {
             CopyState newState = Clone(state);
             newState.Height = angle == 180 ? state.Height : state.Length;
@@ -40,9 +40,9 @@ namespace Flames.Drawing
             return Rotate(state, newState, m, transform);
         }
 
-        static string[] rotY_90 = new string[]  { "N", "E", "S", "W",  "NE", "SE", "SW", "NW",  "WE", "NS", "WE", "NS" };
-        static string[] rotY_180 = new string[] { "W", "E", "N", "S",  "NE", "SW", "NW", "SE"                          };
-        static string[] rotY_270 = new string[] { "N", "W", "S", "E",  "NE", "NW", "SW", "SE",  "WE", "NS", "WE", "NS" };
+        public static string[] rotY_90 = new string[]  { "N", "E", "S", "W",  "NE", "SE", "SW", "NW",  "WE", "NS", "WE", "NS" };
+        public static string[] rotY_180 = new string[] { "W", "E", "N", "S",  "NE", "SW", "NW", "SE"                          };
+        public static string[] rotY_270 = new string[] { "N", "W", "S", "E",  "NE", "NW", "SW", "SE",  "WE", "NS", "WE", "NS" };
         public static CopyState RotateY(CopyState state, int angle, BlockDefinition[] defs) {
             CopyState newState = Clone(state);
             newState.Width = angle == 180 ? state.Width : state.Length;
@@ -59,9 +59,9 @@ namespace Flames.Drawing
             if (angle == 270) { m[0] = posZ; m[2] = negX; }
             return Rotate(state, newState, m, transform);
         }
-        
-        static string[] rotZ_90_270 = new string[] { "WE", "UD" };
-        static string[] rotZ_180 = new string[] { "W", "E",  "NW", "NE",  "SW", "SE" };
+
+        public static string[] rotZ_90_270 = new string[] { "WE", "UD" };
+        public static string[] rotZ_180 = new string[] { "W", "E",  "NW", "NE",  "SW", "SE" };
         public static CopyState RotateZ(CopyState state, int angle, BlockDefinition[] defs) {
             CopyState newState = Clone(state);
             newState.Width = angle == 180 ? state.Width : state.Height;
@@ -78,7 +78,7 @@ namespace Flames.Drawing
             return Rotate(state, newState, m, transform);
         }
 
-        static CopyState Rotate(CopyState state, CopyState flipped, int[] m, BlockID[] transform) {
+        public static CopyState Rotate(CopyState state, CopyState flipped, int[] m, BlockID[] transform) {
             int volume = state.Volume;
             for (int i = 0; i < volume; i++) {
                 ushort x, y, z;
@@ -103,9 +103,9 @@ namespace Flames.Drawing
             flipped.Offset.Z = state.Z + Rotate(m[2], oX, oY, oZ, state) - flipped.OriginZ;
             return flipped;
         }
-        
-        const int posX = 0, negX = 1, posY = 2, negY = 3, posZ = 4, negZ = 5;
-        static int Rotate(int row, int x, int y, int z, CopyState state) {
+
+        public const int posX = 0, negX = 1, posY = 2, negY = 3, posZ = 4, negZ = 5;
+        public static int Rotate(int row, int x, int y, int z, CopyState state) {
             switch (row) {
                     case posX: return x;
                     case negX: return (state.Width - 1 - x);
@@ -116,16 +116,16 @@ namespace Flames.Drawing
             }
             return 0;
         }
-        
-        static CopyState Clone(CopyState state) {
+
+        public static CopyState Clone(CopyState state) {
             CopyState newState = new CopyState(state.X, state.Y, state.Z,
                                                state.Width, state.Height, state.Length);
             newState.UsedBlocks = state.UsedBlocks;
             newState.PasteAir = state.PasteAir;
             return newState;
         }
-        
-        static string[] mirrorX = new string[] { "W", "E",  "NW", "NE",  "SW", "SE" };
+
+        public static string[] mirrorX = new string[] { "W", "E",  "NW", "NE",  "SW", "SE" };
         public static void MirrorX(CopyState state, BlockDefinition[] defs) {
             // ceiling division by 2, because for odd length, we still want to
             // mirror the middle row to rotate directional blocks
@@ -148,8 +148,8 @@ namespace Flames.Drawing
                 }
             }
         }
-        
-        static string[] mirrorY = new string[] { "D", "U" };
+
+        public static string[] mirrorY = new string[] { "D", "U" };
         public static void MirrorY(CopyState state, BlockDefinition[] defs) {
             int midY = (state.Height + 1) / 2, maxY = state.Height - 1;
             state.OriginY = state.OppositeOriginY;
@@ -171,8 +171,8 @@ namespace Flames.Drawing
                 }
             }
         }
-        
-        static string[] mirrorZ = new string[] { "N", "S",  "NW", "SW",  "NE", "SE" };
+
+        public static string[] mirrorZ = new string[] { "N", "S",  "NW", "SW",  "NE", "SE" };
         public static void MirrorZ(CopyState state, BlockDefinition[] defs) {
             int midZ = (state.Length + 1) / 2, maxZ = state.Length - 1;
             state.OriginZ  = state.OppositeOriginZ;
@@ -194,9 +194,9 @@ namespace Flames.Drawing
                 }
             }
         }
- 
-        
-        static BlockID[] Transform(BlockDefinition[] defs, string[] mirrorDirs, string[] rotateDirs) {
+
+
+        public static BlockID[] Transform(BlockDefinition[] defs, string[] mirrorDirs, string[] rotateDirs) {
             BlockID[] transform = new BlockID[Block.SUPPORTED_COUNT];
             for (int i = 0; i < transform.Length; i++) {
                 transform[i] = (BlockID)i;
@@ -222,8 +222,8 @@ namespace Flames.Drawing
             }
             return transform;
         }
-        
-        static BlockDefinition MirrorTransform(BlockDefinition[] defs, int i, int dirIndex, string[] mirrorDirs) {
+
+        public static BlockDefinition MirrorTransform(BlockDefinition[] defs, int i, int dirIndex, string[] mirrorDirs) {
             string dir = defs[i].Name.Substring(dirIndex + 1);
             for (int j = 0; j < mirrorDirs.Length; j++) {
                 if (!mirrorDirs[j].CaselessEq(dir)) continue;
@@ -236,8 +236,8 @@ namespace Flames.Drawing
             }
             return null;
         }
-        
-        static BlockDefinition RotateTransform(BlockDefinition[] defs, int i, int dirIndex, string[] rotateDirs) {
+
+        public static BlockDefinition RotateTransform(BlockDefinition[] defs, int i, int dirIndex, string[] rotateDirs) {
             string dir = defs[i].Name.Substring(dirIndex + 1);
             for (int j = 0; j < rotateDirs.Length; j++) {
                 if (!rotateDirs[j].CaselessEq(dir)) continue;
@@ -251,8 +251,8 @@ namespace Flames.Drawing
             }
             return null;
         }
-        
-        static BlockDefinition Find(BlockDefinition[] defs, string name) {
+
+        public static BlockDefinition Find(BlockDefinition[] defs, string name) {
             for (int i = 0; i < defs.Length; i++) {
                 if (defs[i] != null && defs[i].Name.CaselessEq(name)) return defs[i];
             }

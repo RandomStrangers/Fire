@@ -56,8 +56,8 @@ namespace Flames.SQL
             string sql = "CREATE DATABASE if not exists `" + Server.Config.MySQLDatabaseName + "`";
             Database.Do(sql, true, null, null);
         }
-        
-        protected internal override void ParseCreate(ref string cmd) {
+
+        public override void ParseCreate(ref string cmd) {
             // MySQL does not support the format used by the SQLite backend for the primary key
             const string priKey = " PRIMARY KEY AUTOINCREMENT";
             int priIndex = cmd.ToUpper().IndexOf(priKey);
@@ -103,8 +103,8 @@ namespace Flames.SQL
         public override string RenameTableSql(string srcTable, string dstTable) {
             return "RENAME TABLE `" + srcTable + "` TO `" + dstTable + "`";
         }
-        
-        protected override void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns) {
+
+        public override void CreateTableColumns(StringBuilder sql, ColumnDesc[] columns) {
             string priKey = null;
             for (int i = 0; i < columns.Length; i++) {
                 ColumnDesc col = columns[i];
@@ -159,7 +159,7 @@ namespace Flames.SQL
         }
     }
 
-    sealed class MySQLConnection : ISqlConnection 
+    public sealed class MySQLConnection : ISqlConnection 
     {
         public readonly MySqlConnection conn;        
         public MySQLConnection(MySqlConnection conn) { this.conn = conn; }
@@ -180,9 +180,9 @@ namespace Flames.SQL
         public override void Dispose() { conn.Dispose(); }
     }
 
-    sealed class MySQLCommand : ISqlCommand
-    {        
-        readonly MySqlCommand cmd;
+    public sealed class MySQLCommand : ISqlCommand
+    {
+        public readonly MySqlCommand cmd;
         public MySQLCommand(MySqlCommand cmd) { this.cmd = cmd; }
 
         public override void ClearParameters() { 
@@ -202,9 +202,9 @@ namespace Flames.SQL
         }
     }
 
-    sealed class MySQLTransaction : ISqlTransaction
+    public sealed class MySQLTransaction : ISqlTransaction
     {
-        readonly MySqlTransaction trn;
+        public readonly MySqlTransaction trn;
         public MySQLTransaction(MySqlTransaction trn) { this.trn = trn; }        
 
         public override void Commit()   { trn.Commit(); }
@@ -212,9 +212,9 @@ namespace Flames.SQL
         public override void Dispose()  { trn.Dispose(); }
     }
 
-    sealed class MySQLReader : ISqlReader
+    public sealed class MySQLReader : ISqlReader
     {
-        readonly MySqlDataReader rdr;
+        public readonly MySqlDataReader rdr;
         public MySQLReader(MySqlDataReader rdr) { this.rdr = rdr; }
 
         public override int RowsAffected { get { return rdr.RecordsAffected; } }
@@ -239,7 +239,7 @@ namespace Flames.SQL
         public override object GetValue(int i) { return rdr.GetValue(i); }
 
 
-        string RawGetDateTime(int col) {
+        public string RawGetDateTime(int col) {
             DateTime date = GetDateTime(col);
             return date.ToString(Database.DateFormat);
         }

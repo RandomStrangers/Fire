@@ -22,9 +22,9 @@ namespace Flames.Drawing.Brushes
 {   
     public sealed class GradientBrush : Brush 
     {
-        readonly BlockID[] blocks;
-        CustomModelAnimAxis axis, _axis;
-        int xLen, yLen, zLen;
+        public readonly BlockID[] blocks;
+        public CustomModelAnimAxis axis, _axis;
+        public int xLen, yLen, zLen;
 
         public GradientBrush(BlockID[] blocks, CustomModelAnimAxis axis) {
             this.blocks = blocks;

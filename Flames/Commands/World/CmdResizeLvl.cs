@@ -38,8 +38,8 @@ namespace Flames.Commands.World {
             p.Message("Type &T/ResizeLvl {0} {1} {2} {3} confirm &Sif you're sure.",
                       args[0], args[1], args[2], args[3]);
         }
-        
-        internal static bool DoResize(Player p, string[] args, CommandData data, out bool needConfirm) {
+
+        public static bool DoResize(Player p, string[] args, CommandData data, out bool needConfirm) {
             needConfirm = false;
             Level lvl = Matcher.FindLevels(p, args[0]);
             

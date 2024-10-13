@@ -30,13 +30,13 @@ namespace Flames.Drawing.Ops
         public override long BlocksAffected(Level lvl, Vec3S32[] marks) {
             return Source.Width * Source.Height;
         }
-        
-        internal IBitmap2D Source;
-        internal bool DualLayer, LayerMode;
+
+        public IBitmap2D Source;
+        public bool DualLayer, LayerMode;
         public ImagePalette Palette;
-        
-        internal Vec3S32 dx, dy, adj;
-        protected IPaletteMatcher selector;
+
+        public Vec3S32 dx, dy, adj;
+        public IPaletteMatcher selector;
         
         public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
             selector = new RgbPaletteMatcher();
@@ -67,8 +67,8 @@ namespace Flames.Drawing.Ops
             Source = null;
             Player.Message("Finished printing image using {0} palette.", Palette.Name);
         }
-        
-        void CalcLayerColors() {
+
+        public void CalcLayerColors() {
             PaletteEntry[] front = new PaletteEntry[Palette.Entries.Length];
             PaletteEntry[] back  = new PaletteEntry[Palette.Entries.Length];
             
@@ -95,15 +95,15 @@ namespace Flames.Drawing.Ops
             }
             selector.SetPalette(front, back);
         }
-        
-        static PaletteEntry Multiply(PaletteEntry entry, ColorDesc rgb) {
+
+        public static PaletteEntry Multiply(PaletteEntry entry, ColorDesc rgb) {
             entry.R = (byte)(entry.R * rgb.R / 255);
             entry.G = (byte)(entry.G * rgb.G / 255);
             entry.B = (byte)(entry.B * rgb.B / 255);
             return entry;
         }
-        
-        protected virtual void OutputPixels(DrawOpOutput output) {
+
+        public virtual void OutputPixels(DrawOpOutput output) {
             int width = Source.Width, height = Source.Height;
             int srcY = height - 1; // need to flip coords in bitmap vertically
             
@@ -166,7 +166,7 @@ namespace Flames.Drawing.Ops
     
     public class ImagePrintDitheredDrawOp : ImagePrintDrawOp
     {
-        protected override void OutputPixels(DrawOpOutput output) {
+        public override void OutputPixels(DrawOpOutput output) {
             int width = Source.Width, height = Source.Height;
             int srcY = height - 1; // need to flip coords in bitmap vertically
 

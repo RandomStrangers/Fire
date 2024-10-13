@@ -94,8 +94,8 @@ namespace Flames.Modules.Compiling
     /// <summary> Compiles C# source code files, using Roslyn for the compiler </summary>
     public static class RoslynCSharpCompiler 
     {
-        static Regex outputRegWithFileAndLine;
-        static Regex outputRegSimple;
+        public static Regex outputRegWithFileAndLine;
+        public static Regex outputRegSimple;
 
         public static ICompilerErrors Compile(string[] srcPaths, string dstPath, List<string> referenced) {         
             string args    = GetCommandLineArguments(srcPaths, dstPath, referenced);
@@ -117,9 +117,9 @@ namespace Flames.Modules.Compiling
             return errors;
         }
 
-        static string Quote(string value) { return "\"" + value + "\""; }
+        public static string Quote(string value) { return "\"" + value + "\""; }
 
-        static string GetBinaryFile(string varName, string desc) {
+        public static string GetBinaryFile(string varName, string desc) {
             string path = Environment.GetEnvironmentVariable(varName);
             if (string.IsNullOrEmpty(path))
                 throw new InvalidOperationException("Env variable '" + varName + " must specify the path to " + desc);
@@ -129,7 +129,7 @@ namespace Flames.Modules.Compiling
             return path;
         }
 
-        static int Compile(string path, string exeArgs, string args, List<string> output) {
+        public static int Compile(string path, string exeArgs, string args, List<string> output) {
             // e.g. /home/test/.dotnet/dotnet exec "/home/test/.dotnet/sdk/6.0.300/Roslyn/bincore/csc.dll" [COMPILER ARGS]
             args = "exec " + Quote(exeArgs) + " " + args;
 
@@ -159,7 +159,7 @@ namespace Flames.Modules.Compiling
             }
         }
 
-        static void ProcessCompilerOutputLine(ICompilerErrors errors, string line) {
+        public static void ProcessCompilerOutputLine(ICompilerErrors errors, string line) {
             if (outputRegSimple == null) {
                 outputRegWithFileAndLine =
                     new Regex(@"(^(.*)(\(([0-9]+),([0-9]+)\)): )(error|warning) ([A-Z]+[0-9]+) ?: (.*)");
@@ -192,7 +192,7 @@ namespace Flames.Modules.Compiling
             errors.Add(ce);
         }
 
-        static string GetCommandLineArguments(string[] srcPaths, string dstPath, List<string> referencedAssemblies) {
+        public static string GetCommandLineArguments(string[] srcPaths, string dstPath, List<string> referencedAssemblies) {
             StringBuilder sb = new StringBuilder();
             sb.Append("/t:library ");
 
@@ -239,20 +239,20 @@ namespace Flames.Modules.Compiling
             return sb.ToString();
         }
 
-        static string[] GetSystemAssemblyPaths() {
+        public static string[] GetSystemAssemblyPaths() {
             string assemblies = AppContext.GetData("TRUSTED_PLATFORM_ASSEMBLIES") as string;
             if (string.IsNullOrEmpty(assemblies)) return new string[0];
 
             return assemblies.Split(Path.PathSeparator);
         }
 
-        static void AddReferencedAssembly(StringBuilder sb, string[] sysAssemblyPaths, string path) {
+        public static void AddReferencedAssembly(StringBuilder sb, string[] sysAssemblyPaths, string path) {
             path = MapAssembly(sysAssemblyPaths, path);
             sb.AppendFormat("/R:{0} ", Quote(path));
         }
 
         // Try to use full system .dll path (otherwise roslyn may not always find the .dll)
-        static string MapAssembly(string[] sysAssemblyPaths, string file) {
+        public static string MapAssembly(string[] sysAssemblyPaths, string file) {
             foreach (string sysPath in sysAssemblyPaths)
             {
                 if (file == Path.GetFileName(sysPath)) return sysPath;

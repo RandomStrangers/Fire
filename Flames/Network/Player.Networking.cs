@@ -43,8 +43,8 @@ namespace Flames
             
             SendRawMessage(message);
         }
-        
-        void SendRawMessage(string message) {
+
+        public void SendRawMessage(string message) {
         	bool cancel = false;
             OnMessageRecievedEvent.Call(this, ref message, ref cancel);
             if (cancel) return;
@@ -87,13 +87,13 @@ namespace Flames
             Session.SendMotd(motd);
         }
 
-        readonly object joinLock = new object();
+        public readonly object joinLock = new object();
         public bool SendRawMap(Level oldLevel, Level level) {
             lock (joinLock)
                 return SendRawMapCore(oldLevel, level);
         }
-        
-        bool SendRawMapCore(Level prev, Level level) {
+
+        public bool SendRawMapCore(Level prev, Level level) {
             bool success = true;
             try {
                 if (level.blocks == null)
@@ -159,9 +159,9 @@ namespace Flames
             }
             return url;
         }
-        
-        
-        string lastUrl = "";
+
+
+        public string lastUrl = "";
         public void SendCurrentTextures() {
             Zone zone = ZoneIn;
             int cloudsHeight = CurrentEnvProp(EnvProp.CloudsLevel, zone);
@@ -198,8 +198,8 @@ namespace Flames
             // Write the block permissions as one bulk TCP packet
             SendAllBlockPermissions();
         }
-        
-        void SendAllBlockPermissions() {
+
+        public void SendAllBlockPermissions() {
             bool extBlocks = Session.hasExtBlocks;
             int count = Session.MaxRawBlock + 1;
             int size  = extBlocks ? 5 : 4;

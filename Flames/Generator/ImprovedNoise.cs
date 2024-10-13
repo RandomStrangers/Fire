@@ -27,8 +27,8 @@ namespace Flames.Generator
         public float Lacunarity = 2;
         public float Persistence = 2;
         public int Octaves = 1;
-        
-        byte[] p = new byte[512];
+
+        public byte[] p = new byte[512];
         
         public ImprovedNoise( Random rnd ) {
             for( int i = 0; i < 256; i++ )
@@ -98,13 +98,13 @@ namespace Flames.Generator
                     v),
                 w);
         }
-        
-        
-        static float Fade(float t) {
+
+
+        public static float Fade(float t) {
             return t * t * t * (t * (t * 6 - 15) + 10);
         }
-        
-        static float Grad(int hash, float x, float y, float z) {
+
+        public static float Grad(int hash, float x, float y, float z) {
             switch (hash & 0xF) {
                     case 0x0: return  x + y;
                     case 0x1: return -x + y;
@@ -125,8 +125,8 @@ namespace Flames.Generator
                     default: return 0; // never happens
             }
         }
-        
-        static float Lerp(float a, float b, float t) {
+
+        public static float Lerp(float a, float b, float t) {
             return a + t * (b - a);
         }
     }

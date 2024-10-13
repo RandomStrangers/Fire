@@ -41,9 +41,9 @@ namespace Flames.Drawing.Ops
             }
             
             Player.Message("Fixed " + TotalModified + " blocks.");
-        }        
-        
-        void Fix(DrawOpOutput output, bool fixGrass, bool fixDirt) {
+        }
+
+        public void Fix(DrawOpOutput output, bool fixGrass, bool fixDirt) {
             Level lvl = Level;
             int maxY = lvl.Height - 1, oneY = lvl.Width * lvl.Length;
             int index, width = lvl.Width, length = lvl.Length;
@@ -71,8 +71,8 @@ namespace Flames.Drawing.Ops
                 index++;
             }
         }
-        
-        void FixLight(DrawOpOutput output) {
+
+        public void FixLight(DrawOpOutput output) {
             Level lvl = Level;
             int oneY = lvl.Width * lvl.Length;
             int index, width = lvl.Width, length = lvl.Length;

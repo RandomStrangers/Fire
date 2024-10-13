@@ -64,8 +64,8 @@ namespace Flames.Commands.Building {
             p.CurrentCopy = newState;
             p.Message("Rotated copy {0} degrees around the {1} axis", angle, axis);       
         }
-        
-        bool Handle(ref char axis, ref int angle, string arg) {
+
+        public bool Handle(ref char axis, ref int angle, string arg) {
             int value;
             if (arg == "x" || arg == "y" || arg == "z") {
                 axis = char.ToUpper(arg[0]); return true;

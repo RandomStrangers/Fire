@@ -35,22 +35,22 @@ namespace Flames.Modules.Games.LS
     
     public partial class LSGame : RoundsGame 
     {
-        LSMapConfig cfg = new LSMapConfig();
+        public LSMapConfig cfg = new LSMapConfig();
         public LSConfig Config = new LSConfig();
         public override string GameName { get { return "Lava survival"; } }
         public override RoundsGameConfig GetConfig() { return Config; }
-        
-        protected override string WelcomeMessage {
+
+        public override string WelcomeMessage {
             get { return "&cLava Survival &Sis running! Type &T/LS go &Sto join"; }
         }
-        
-        bool flooded, fastMode, waterMode, layerMode, floodUp;
-        BlockID floodBlock;
-        LSFloodMode floodMode;
-        int curLayer, spreadDelay;
-        int roundTotalSecs, floodDelaySecs, layerIntervalSecs;
-        byte destroyDelay, dissipateChance, burnChance;
-        static bool hooked;
+
+        public bool flooded, fastMode, waterMode, layerMode, floodUp;
+        public BlockID floodBlock;
+        public LSFloodMode floodMode;
+        public int curLayer, spreadDelay;
+        public int roundTotalSecs, floodDelaySecs, layerIntervalSecs;
+        public byte destroyDelay, dissipateChance, burnChance;
+        public static bool hooked;
         
         public static LSGame Instance = new LSGame();
         public LSGame() { Picker = new LevelPicker(); }
@@ -88,8 +88,8 @@ namespace Flames.Modules.Games.LS
             layerIntervalSecs = (int)Config.GetLayerInterval(cfg).TotalSeconds;
             SetFloodMode(RandomFloodMode(rnd));
         }
-        
-        LSFloodMode RandomFloodMode(Random rnd) {
+
+        public LSFloodMode RandomFloodMode(Random rnd) {
             int likelihood = rnd.Next(1, 101);
             int threshold = 0;
             
@@ -113,17 +113,17 @@ namespace Flames.Modules.Games.LS
             
             if (RoundInProgress) UpdatePhysicsLevel();
         }
-        
-        void UpdatePhysicsLevel() {
+
+        public void UpdatePhysicsLevel() {
             Map.SetPhysics(floodMode > LSFloodMode.Calm ? 2 : 1);
         }
-        
-                
-        protected override List<Player> GetPlayers() {
+
+
+        public override List<Player> GetPlayers() {
             return Map.getPlayers();
         }
-        
-        protected override void StartGame() {
+
+        public override void StartGame() {
             ResetPlayerDeaths();
             if (hooked) return;
             
@@ -132,8 +132,8 @@ namespace Flames.Modules.Games.LS
             HookCommands();
             HookItems();
         }
-        
-        protected override void EndGame() {
+
+        public override void EndGame() {
             flooded = false;
             ResetPlayerDeaths();
             UpdateBlockHandlers();
@@ -151,8 +151,8 @@ namespace Flames.Modules.Games.LS
             p.RevertBlock(x, y, z); 
             return true;
         }
-        
-        void ResetPlayerDeaths() {
+
+        public void ResetPlayerDeaths() {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) 
             {
@@ -166,25 +166,25 @@ namespace Flames.Modules.Games.LS
             HandleJoinedLevel(p, Map, Map, ref announce);
         }
 
-        static void ResetRoundState(Player p, LSData data) {
+        public static void ResetRoundState(Player p, LSData data) {
             data.SpongesLeft = 10;
             data.WaterLeft   = 30;
             data.DoorsLeft   =  0;
         }
-        
-        
-        bool InSafeZone(ushort x, ushort y, ushort z) {
+
+
+        public bool InSafeZone(ushort x, ushort y, ushort z) {
             return x >= cfg.SafeZoneMin.X && x <= cfg.SafeZoneMax.X && y >= cfg.SafeZoneMin.Y
                 && y <= cfg.SafeZoneMax.Y && z >= cfg.SafeZoneMin.Z && z <= cfg.SafeZoneMax.Z;
         }
-        
-        Vec3U16 CurrentLayerPos() {
+
+        public Vec3U16 CurrentLayerPos() {
             Vec3U16 pos = cfg.LayerPos;
             pos.Y = (ushort)(pos.Y + ((cfg.LayerHeight * curLayer) - 1));
             return pos;
         }
-        
-        string FloodBlockName() {
+
+        public string FloodBlockName() {
             return waterMode ? "water" : "lava";
         }
         
@@ -215,8 +215,8 @@ namespace Flames.Modules.Games.LS
             p.Message("&4You can still watch, but you cannot build.");
             // TODO: Buy life message
         }
-        
-        protected override string FormatStatus1(Player p) {
+
+        public override string FormatStatus1(Player p) {
             string money = "&a" + p.money + " &S" + Server.Config.Currency;
             return money + ", you " + DescribeLives(p);
         }

@@ -45,8 +45,8 @@ namespace Flames.Commands.Misc {
                 p.SendPosition(pos, p.Rot);
             }
         }
-        
-        static int FindYAbove(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static int FindYAbove(Level lvl, ushort x, ushort y, ushort z) {
             for (; y <= lvl.Height; y++) {
                 BlockID block = lvl.GetBlock(x, y, z);
                 if (block != Block.Invalid && CollideType.IsSolid(lvl.CollideType(block))) continue;

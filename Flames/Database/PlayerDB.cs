@@ -23,11 +23,11 @@ namespace Flames.DB
 {
     /// <summary> Stores per-player persistent data. </summary>
     public static class PlayerDB 
-    {        
-        static string LoginPath(string name)  { return "text/login/"  + name.ToLower() + ".txt"; }
-        static string LogoutPath(string name) { return "text/logout/" + name.ToLower() + ".txt"; }
+    {
+        public static string LoginPath(string name)  { return "text/login/"  + name.ToLower() + ".txt"; }
+        public static string LogoutPath(string name) { return "text/logout/" + name.ToLower() + ".txt"; }
 
-        const string NICK_PREFIX = "Nick = ";
+        public const string NICK_PREFIX = "Nick = ";
         public static string LoadNick(string name) {
             string path = "players/" + name + "DB.txt";
             if (!File.Exists(path)) return null;
@@ -64,8 +64,8 @@ namespace Flames.DB
             path = "text/logout/" + name + ".txt";
             return File.Exists(path) ? File.ReadAllText(path) : "";
         }
-        
-        static void SetMessage(string path, string msg) {
+
+        public static void SetMessage(string path, string msg) {
             EnsureDirectoriesExist();
             if (msg.Length > 0) {
                 File.WriteAllText(path, msg);
@@ -141,10 +141,10 @@ namespace Flames.DB
             return Matcher.Find(p, name, out matches, stats,
                                 null, stat => stat.Name, "players", 20);
         }
-        
-        
-        delegate T RecordParser<T>(ISqlRecord record); 
-        static List<T> MatchMulti<T>(string name, string columns, RecordParser<T> parseRecord) where T : class {
+
+
+        public delegate T RecordParser<T>(ISqlRecord record);
+        public static List<T> MatchMulti<T>(string name, string columns, RecordParser<T> parseRecord) where T : class {
             List<T> list = FindPartial(name, columns, parseRecord);
             if (list.Count < 25) return list;
             
@@ -159,8 +159,8 @@ namespace Flames.DB
             list.Add(exact);
             return list;
         }
-        
-        static List<T> FindPartial<T>(string name, string columns, RecordParser<T> parseRecord) {
+
+        public static List<T> FindPartial<T>(string name, string columns, RecordParser<T> parseRecord) {
             string suffix = Database.Backend.CaselessLikeSuffix;
             List<T> list  = new List<T>();
             
@@ -169,8 +169,8 @@ namespace Flames.DB
                               "%" + name.Replace("_", "#_") + "%");
             return list;
         }
-        
-        static T FindExact<T>(string name, string columns, RecordParser<T> parseRecord) where T : class {
+
+        public static T FindExact<T>(string name, string columns, RecordParser<T> parseRecord) where T : class {
             string suffix = Database.Backend.CaselessWhereSuffix;
             T exact = null;
             

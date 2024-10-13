@@ -45,8 +45,8 @@ namespace Flames.Commands.Fun {
             if (!CheckRank(p, data, who, "slap", true)) return;
             DoSlap(p, who);
         }
-        
-        void DoSlap(Player p, Player who) {
+
+        public void DoSlap(Player p, Player who) {
             int x = who.Pos.BlockX, y = who.Pos.BlockY, z = who.Pos.BlockZ;
             if (y < 0) y = 0;            
             Position pos = who.Pos;
@@ -64,8 +64,8 @@ namespace Flames.Commands.Fun {
             Chat.MessageFromLevel(who, "λNICK &Swas slapped sky high by " + p.ColoredName);
             who.SendPosition(pos, who.Rot);
         }
-        
-        static int FindYAbove(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static int FindYAbove(Level lvl, ushort x, ushort y, ushort z) {
             for (; y <= lvl.Height; y++) {
                 BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
                 if (above == Block.Invalid) continue;

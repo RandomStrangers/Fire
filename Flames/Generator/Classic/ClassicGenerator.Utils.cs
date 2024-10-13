@@ -6,12 +6,12 @@ namespace Flames.Generator.Classic
 {
     public sealed partial class ClassicGenerator 
     {
-        static int Floor(float value) {
+        public static int Floor(float value) {
             int valueI = (int)value;
             return value < valueI ? valueI - 1 : valueI;
         }
-        
-        void FillOblateSpheroid(int x, int y, int z, float radius, byte block) {
+
+        public void FillOblateSpheroid(int x, int y, int z, float radius, byte block) {
             int xBeg = Floor(Math.Max(x - radius, 0));
             int xEnd = Floor(Math.Min(x + radius, Width - 1));
             int yBeg = Floor(Math.Max(y - radius, 0));
@@ -32,8 +32,8 @@ namespace Flames.Generator.Classic
                 }
             }
         }
-        
-        void FloodFill(int startIndex, byte block) {
+
+        public void FloodFill(int startIndex, byte block) {
             if (startIndex < 0) return; // y below map, immediately ignore
             FastIntStack stack = new FastIntStack(4);
             stack.Push(startIndex);    
@@ -54,8 +54,8 @@ namespace Flames.Generator.Classic
                 if (y > 0) stack.Push(index - oneY);
             }
         }
-        
-        sealed class FastIntStack {
+
+        public sealed class FastIntStack {
             public int[] Values;
             public int Size;
             
@@ -81,10 +81,10 @@ namespace Flames.Generator.Classic
     
     // Based on https://docs.oracle.com/javase/7/docs/api/java/util/Random.html
     public sealed class JavaRandom {
-        
-        long seed;
-        const long value = 0x5DEECE66DL;
-        const long mask = (1L << 48) - 1;
+
+        public long seed;
+        public const long value = 0x5DEECE66DL;
+        public const long mask = (1L << 48) - 1;
         
         public JavaRandom(int seed) { SetSeed(seed); }
         public void SetSeed(int seed) {

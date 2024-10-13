@@ -22,9 +22,9 @@ using Flames.Maths;
 using BlockID = System.UInt16;
 
 namespace Flames.Core {
-    internal static class MiscHandlers {
-        
-        internal static void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
+    public static class MiscHandlers {
+
+        public static void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
             if (!p.frozen) return;
             
             bool movedX = Math.Abs(next.X - p.Pos.X) > 4;  // moved more than 0.125 blocks horizontally
@@ -35,8 +35,8 @@ namespace Flames.Core {
             if (movedX || movedY || movedZ) { p.SendPosition(p.Pos, p.Rot); }
             cancel = true;
         }
-        
-        internal static void HandleSentMap(Player p, Level prevLevel, Level level) {
+
+        public static void HandleSentMap(Player p, Level prevLevel, Level level) {
             p.AFKCooldown = DateTime.UtcNow.AddSeconds(2);
             p.prevMsg = "";
             p.showMBs = false;
@@ -59,8 +59,8 @@ namespace Flames.Core {
                 p.Message("BlockDB is disabled here, &Wyou will not be able to /undo or /redo");
             }
         }
-        
-        internal static void HandleChangedZone(Player p) {
+
+        public static void HandleChangedZone(Player p) {
             if (p.Supports(CpeExt.InstantMOTD)) p.SendMapMotd();
             p.SendCurrentEnv();
             
@@ -69,8 +69,8 @@ namespace Flames.Core {
                 p.isFlying = false;
             }
         }
-        
-        internal static void HandlePlayerClick(Player p, MouseButton button, MouseAction action, ushort yaw, ushort pitch,
+
+        public static void HandlePlayerClick(Player p, MouseButton button, MouseAction action, ushort yaw, ushort pitch,
                                                byte entity, ushort x, ushort y, ushort z, TargetBlockFace face) {
             if (action != MouseAction.Pressed) return;           
             if (entity != Entities.SelfID && ClickOnBot(p, entity)) return;
@@ -84,8 +84,8 @@ namespace Flames.Core {
             if (isMB) { MessageBlock.Handle(p, x, y, z, true); }
             if (isPortal) { Portal.Handle(p, x, y, z); }
         }
-        
-        static bool ClickOnBot(Player p, byte entity) {
+
+        public static bool ClickOnBot(Player p, byte entity) {
             PlayerBot[] bots = p.level.Bots.Items;
             for (int i = 0; i < bots.Length; i++) {
                 if (bots[i].EntityID != entity) continue;

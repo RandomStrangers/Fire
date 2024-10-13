@@ -25,9 +25,9 @@ namespace Flames.Modules.Relay.IRC
         public override string name { get { return "IRCRelay"; } }
 
         public static IRCBot Bot = new IRCBot();
-        
-        static Command cmdIrcBot   = new CmdIRCBot();
-        static Command cmdIrcCtrls = new CmdIrcControllers();
+
+        public static Command cmdIrcBot   = new CmdIRCBot();
+        public static Command cmdIrcCtrls = new CmdIrcControllers();
         
         public override void Load(bool startup) {
             Command.Register(cmdIrcBot);
@@ -44,11 +44,11 @@ namespace Flames.Modules.Relay.IRC
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Bot.Disconnect("Disconnecting IRC bot");
         }
-        
-        void OnConfigUpdated() { Bot.ReloadConfig(); }
+
+        public void OnConfigUpdated() { Bot.ReloadConfig(); }
     }
-    
-    sealed class CmdIRCBot : RelayBotCmd 
+
+    public sealed class CmdIRCBot : RelayBotCmd 
     {
         public override string name { get { return "IRCBot"; } }
         public override CommandAlias[] Aliases {
@@ -56,8 +56,8 @@ namespace Flames.Modules.Relay.IRC
         }
         public override RelayBot Bot { get { return IRCPlugin.Bot; } }
     }
-    
-    sealed class CmdIrcControllers : BotControllersCmd 
+
+    public sealed class CmdIrcControllers : BotControllersCmd 
     {
         public override string name { get { return "IRCControllers"; } }
         public override string shortcut { get { return "IRCCtrl"; } }

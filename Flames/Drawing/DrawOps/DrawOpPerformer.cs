@@ -26,7 +26,7 @@ using BlockRaw = System.Byte;
 
 namespace Flames.Drawing 
 {
-    internal struct PendingDrawOp 
+    public struct PendingDrawOp 
     {
         public DrawOp Op;
         public Brush Brush;
@@ -37,8 +37,8 @@ namespace Flames.Drawing
 namespace Flames.Drawing.Ops 
 {
     public static class DrawOpPerformer 
-    {     
-        static bool CannotBuildIn(Player p, Level lvl) {
+    {
+        public static bool CannotBuildIn(Player p, Level lvl) {
             Zone[] zones = lvl.Zones.Items;
             for (int i = 0; i < zones.Length; i++) {
                 // player could potentially modify blocks in this particular zone
@@ -78,8 +78,8 @@ namespace Flames.Drawing.Ops
             DoQueuedDrawOp(p, op, brush, marks);
             return true;
         }
-        
-        static void DoQueuedDrawOp(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
+
+        public static void DoQueuedDrawOp(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
             PendingDrawOp item = new PendingDrawOp();
             item.Op = op; item.Brush = brush; item.Marks = marks;
 
@@ -90,8 +90,8 @@ namespace Flames.Drawing.Ops
             }
             ProcessDrawOps(p);
         }
-        
-        static void ProcessDrawOps(Player p) {
+
+        public static void ProcessDrawOps(Player p) {
             while (true) {
                 PendingDrawOp item;
                 lock (p.pendingDrawOpsLock) {
@@ -109,8 +109,8 @@ namespace Flames.Drawing.Ops
                 Execute(p, item.Op, item.Brush, item.Marks);
             }
         }
-        
-        internal static void Execute(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
+
+        public static void Execute(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
             UndoDrawOpEntry entry = new UndoDrawOpEntry();
             entry.Init(op.Name, op.Level.name);
             
@@ -129,15 +129,15 @@ namespace Flames.Drawing.Ops
             op.TotalModified = 0; // reset total modified (as drawop instances are reused in static mode)
         }
 
-        static void DoReload(Player p, Level lvl) {
+        public static void DoReload(Player p, Level lvl) {
             LevelActions.ReloadAll(lvl, p, true);
             Server.DoGC();
         }
 
-        
-        class DrawOpOutputter {
-            readonly DrawOp op;
-            internal readonly int reloadThreshold;
+
+        public class DrawOpOutputter {
+            public readonly DrawOp op;
+            public readonly int reloadThreshold;
             
             public DrawOpOutputter(DrawOp op) {
                 this.op = op;

@@ -104,8 +104,8 @@ namespace Flames {
             };
             return def;
         }
-        
-        static ConfigElement[] elems;
+
+        public static ConfigElement[] elems;
         public static BlockDefinition[] Load(string path) {
             BlockDefinition[] defs = new BlockDefinition[Block.SUPPORTED_COUNT];
             if (!File.Exists(path)) return defs;
@@ -161,7 +161,7 @@ namespace Flames {
             lock (defs) SaveCore(global, defs, path);
         }
 
-        static void SaveCore(bool global, BlockDefinition[] defs, string path) {
+        public static void SaveCore(bool global, BlockDefinition[] defs, string path) {
             string separator = null;
 
             using (StreamWriter w = new StreamWriter(path)) {
@@ -200,8 +200,8 @@ namespace Flames {
             // to the instances in GlobalDefs, we need to update them.
             if (oldDefs != null) UpdateLoadedLevels(oldDefs);
         }
-        
-        static void UpdateLoadedLevels(BlockDefinition[] oldGlobalDefs) {
+
+        public static void UpdateLoadedLevels(BlockDefinition[] oldGlobalDefs) {
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded) {
                 for (int b = 0; b < lvl.CustomBlockDefs.Length; b++) {
@@ -264,8 +264,8 @@ namespace Flames {
                 SendLevelInventoryOrder(pl);
             }
         }
-        
-        static void UpdateGlobalCustom(BlockID block, BlockDefinition def) {
+
+        public static void UpdateGlobalCustom(BlockID block, BlockDefinition def) {
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded) 
             {
@@ -282,9 +282,9 @@ namespace Flames {
         public void SetSideTex(ushort id) {
             LeftTex = id; RightTex = id; FrontTex = id; BackTex = id;
         }
-        
-        
-        internal static void SendLevelCustomBlocks(Player pl) {
+
+
+        public static void SendLevelCustomBlocks(Player pl) {
             BlockDefinition[] defs = pl.level.CustomBlockDefs;
             for (int i = 0; i < defs.Length; i++) 
             {
@@ -294,8 +294,8 @@ namespace Flames {
                 pl.Session.SendDefineBlock(def);
             }
         }
-        
-        internal unsafe static void SendLevelInventoryOrder(Player pl) {
+
+        public unsafe static void SendLevelInventoryOrder(Player pl) {
             BlockDefinition[] defs = pl.level.CustomBlockDefs;
             int maxRaw = pl.Session.MaxRawBlock;
             int count  = maxRaw + 1;

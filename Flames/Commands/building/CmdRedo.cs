@@ -29,8 +29,8 @@ namespace Flames.Commands.Building {
             if (message.Length > 0) { Help(p); return; }
             PerformRedo(p);
         }
-        
-        static void PerformRedo(Player p) {
+
+        public static void PerformRedo(Player p) {
             UndoDrawOpEntry[] entries = p.DrawOps.Items;
             if (entries.Length == 0) {
                 p.Message("You have no &T/Undo &Sor &T/Undo [seconds] &Sto redo."); return;

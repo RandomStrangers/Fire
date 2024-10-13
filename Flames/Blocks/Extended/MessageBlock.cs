@@ -61,8 +61,8 @@ namespace Flames.Blocks.Extended {
             }
             return true;
         }
-        
-        static bool CheckCommand(Player p, string message, bool allCmds) {
+
+        public static bool CheckCommand(Player p, string message, bool allCmds) {
             string[] parts = message.SplitSpaces(2);
             string cmdName = parts[0], cmdArgs = "";
             Command.Search(ref cmdName, ref cmdArgs);
@@ -74,11 +74,11 @@ namespace Flames.Blocks.Extended {
             p.Message("You cannot use &T/{0} &Sin a messageblock.", cmd.name);
             return false;
         }
-        
-        static string[] sep = new string[] { " |/" };
-        const StringSplitOptions opts = StringSplitOptions.RemoveEmptyEntries;
-        static List<string> empty = new List<string>();
-        static List<string> GetParts(string message, out string text) {
+
+        public static string[] sep = new string[] { " |/" };
+        public const StringSplitOptions opts = StringSplitOptions.RemoveEmptyEntries;
+        public static List<string> empty = new List<string>();
+        public static List<string> GetParts(string message, out string text) {
             if (message.IndexOf('|') == -1) return ParseSingle(message, out text);
             
             string[] parts = message.Split(sep, opts);
@@ -90,8 +90,8 @@ namespace Flames.Blocks.Extended {
                 cmds.Add(parts[i]);
             return cmds;
         }
-        
-        static List<string> ParseSingle(string message, out string text) {
+
+        public static List<string> ParseSingle(string message, out string text) {
             bool isCommand;
             message = Chat.ParseInput(message, out isCommand);
             

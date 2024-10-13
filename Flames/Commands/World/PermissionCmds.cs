@@ -43,7 +43,7 @@ namespace Flames.Commands.World
             return true;
         }
 
-        static bool SetList(Player p, string name,
+        public static bool SetList(Player p, string name,
                             AccessController access, CommandData data, Level lvl) {
             bool include = name[0] == '+';
             string mode = include ? "whitelist" : "blacklist";
@@ -99,8 +99,8 @@ namespace Flames.Commands.World
                 UpdatePerms(p, map, data, args, max);
             }
         }
-        
-        void UpdatePerms(Player p, string map, CommandData data, string[] args, bool max) {
+
+        public void UpdatePerms(Player p, string map, CommandData data, string[] args, bool max) {
             Level lvl;
             LevelConfig cfg = LevelInfo.GetConfig(map, out lvl);
             int offset = args.Length == 1 ? 0 : 1;

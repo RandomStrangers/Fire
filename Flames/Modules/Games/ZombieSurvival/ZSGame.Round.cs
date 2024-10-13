@@ -25,10 +25,10 @@ namespace Flames.Modules.Games.ZS
 {    
     public partial class ZSGame : RoundsGame 
     {
-        string lastKiller = "";
-        int infectCombo = 0;
-        
-        protected override void DoRound() {
+        public string lastKiller = "";
+        public int infectCombo = 0;
+
+        public override void DoRound() {
             if (!Running) return;
 
             ResetPledges();
@@ -43,14 +43,14 @@ namespace Flames.Modules.Games.ZS
             DoCoreGame();
         }
 
-        void ResetPledges() {
+        public void ResetPledges() {
             foreach (Player pl in GetPlayers())
             {
                 Get(pl).PledgeSurvive = false;
             }
         }
-        
-        void StartRound(List<Player> players) {
+
+        public void StartRound(List<Player> players) {
             TimeSpan duration = Map.Config.RoundTime;
             Map.Message("This round will last for &a" + duration.Shorten(true, true));
             RoundEnd = DateTime.UtcNow.Add(duration);
@@ -72,8 +72,8 @@ namespace Flames.Modules.Games.ZS
             Map.Message("&c" + first.DisplayName + " &Sstarted the infection!");
             InfectPlayer(first, null);
         }
-        
-        void DoCoreGame() {
+
+        public void DoCoreGame() {
             Player[] alive = Alive.Items;
             string lastTimeLeft = null;
             int lastCountdown = -1;
@@ -107,8 +107,8 @@ namespace Flames.Modules.Games.ZS
                 alive = Alive.Items;
             }
         }
-        
-        void DoCollisions(Player[] aliveList, Player[] deadList, Random random) {
+
+        public void DoCollisions(Player[] aliveList, Player[] deadList, Random random) {
             int dist = (int)(Config.HitboxDist * 32);
             foreach (Player killer in deadList)
             {
@@ -149,8 +149,8 @@ namespace Flames.Modules.Games.ZS
                 }
             }
         }
-        
-        void CheckInvisibilityTime() {
+
+        public void CheckInvisibilityTime() {
             DateTime now = DateTime.UtcNow;
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) 
@@ -178,8 +178,8 @@ namespace Flames.Modules.Games.ZS
                 }
             }
         }
-        
-        void CheckHumanPledge(Player p, Player killer) {
+
+        public void CheckHumanPledge(Player p, Player killer) {
             ZSData data = Get(p);
             if (!data.PledgeSurvive) return;
             data.PledgeSurvive = false;
@@ -191,8 +191,8 @@ namespace Flames.Modules.Games.ZS
                 p.SetMoney(Math.Max(p.money - 2, 0));
             }
         }
-        
-        void CheckBounty(Player p, Player pKiller) {
+
+        public void CheckBounty(Player p, Player pKiller) {
             BountyData bounty = BountyData.Find(p.name);
             if (bounty == null) return;
             BountyData.Bounties.Remove(bounty);
@@ -209,8 +209,8 @@ namespace Flames.Modules.Games.ZS
                 pKiller.SetMoney(pKiller.money + bounty.Amount);
             }
         }
-        
-        void ShowInfectMessage(Random random, Player pAlive, Player pKiller) {
+
+        public void ShowInfectMessage(Random random, Player pAlive, Player pKiller) {
             string text = null;
             List<string> infectMsgs = Get(pKiller).InfectMessages;
             
@@ -224,7 +224,7 @@ namespace Flames.Modules.Games.ZS
                             .Replace("<human>",          pAlive.ColoredName + "&S"));
         }
 
-        internal static void RespawnPlayer(Player p) {
+        public static void RespawnPlayer(Player p) {
             Entities.GlobalRespawn(p, false);
             TabList.Add(p, p, Entities.SelfID);
         }
@@ -255,7 +255,7 @@ namespace Flames.Modules.Games.ZS
             Map.SaveSettings();
         }
 
-        void AnnounceWinners(Player[] alive, Player[] dead) {
+        public void AnnounceWinners(Player[] alive, Player[] dead) {
             if (alive.Length > 0) {
                 Map.Message(alive.Join(p => p.ColoredName)); return;
             }
@@ -276,7 +276,7 @@ namespace Flames.Modules.Games.ZS
             Map.Message("&8Best" + group + "&S(&b" + maxKills + suffix + "&S)&8: " + dead.Join(formatter));
         }
 
-        void IncreaseAliveStats(Player p) {
+        public void IncreaseAliveStats(Player p) {
             ZSData data = Get(p);
 
             if (data.PledgeSurvive) {
@@ -291,7 +291,7 @@ namespace Flames.Modules.Games.ZS
             p.SetPrefix(); // stars before name
         }
 
-        void GiveMoney(Player[] alive) {
+        public void GiveMoney(Player[] alive) {
             Player[] online = PlayerInfo.Online.Items;
             Random rand = new Random();
             
@@ -315,7 +315,7 @@ namespace Flames.Modules.Games.ZS
             }
         }
 
-        void RewardMoney(Player p, ZSData data, Player[] alive, Random rnd) {
+        public void RewardMoney(Player p, ZSData data, Player[] alive, Random rnd) {
             if (p.IsLikelyInsideBlock()) {
                 p.Message("You may not hide inside a block! No " + Server.Config.Currency + " for you.");
                 return;

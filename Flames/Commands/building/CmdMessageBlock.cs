@@ -60,8 +60,8 @@ namespace Flames.Commands.Building {
             p.Message("Place where you wish the message block to go.");
             p.MakeSelection(1, mbArgs, PlacedMark);
         }
-        
-        BlockID GetBlock(Player p, string name, ref bool allMessage) {
+
+        public BlockID GetBlock(Player p, string name, ref bool allMessage) {
             if (name == "show") { ShowMessageBlocks(p); return Block.Invalid; }
             BlockID block = Block.Parse(p, name);
             if (block != Block.Invalid && p.level.Props[block].IsMessageBlock)
@@ -81,7 +81,7 @@ namespace Flames.Commands.Building {
             Help(p); return Block.Invalid;
         }
 
-        bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block) {
+        public bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block) {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             MBArgs args = (MBArgs)state;
             
@@ -95,8 +95,8 @@ namespace Flames.Commands.Building {
             }
             return true;
         }
-        
-        void UpdateDatabase(Player p, MBArgs args, ushort x, ushort y, ushort z) {
+
+        public void UpdateDatabase(Player p, MBArgs args, ushort x, ushort y, ushort z) {
             string map = p.level.name;
             object locker = ThreadSafeCache.DBCache.GetLocker(map);
             
@@ -105,10 +105,10 @@ namespace Flames.Commands.Building {
             }
         }
 
-        class MBArgs { public string Message; public BlockID Block; }
+        public class MBArgs { public string Message; public BlockID Block; }
 
-        
-        void ShowMessageBlocks(Player p) {
+
+        public void ShowMessageBlocks(Player p) {
             p.showMBs = !p.showMBs;
             List<Vec3U16> coords = MessageBlock.GetAllCoords(p.level.MapName);
             
@@ -123,8 +123,8 @@ namespace Flames.Commands.Building {
             p.Message("Now {0} &SMBs.", 
                            p.showMBs ? "showing &a" + coords.Count : "hiding");
         }
-        
-        static string Format(BlockID block, Player p, BlockProps[] props) {
+
+        public static string Format(BlockID block, Player p, BlockProps[] props) {
             if (!props[block].IsMessageBlock) return null;
             
             // We want to use the simple aliases if possible
@@ -135,8 +135,8 @@ namespace Flames.Commands.Building {
             if (block == Block.MB_Water) return "water";            
             return Block.GetName(p, block);
         }
-        
-        static List<string> SupportedBlocks(Player p) {
+
+        public static List<string> SupportedBlocks(Player p) {
             List<string> names = new List<string>();
             BlockProps[] props = p.IsSuper ? Block.Props : p.level.Props;
             

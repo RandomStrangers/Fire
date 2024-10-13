@@ -22,16 +22,16 @@ namespace Flames.Commands.Building {
         public override string name { get { return "Replace"; } }
         public override string shortcut { get { return "r"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             DrawOp op = new CuboidDrawOp
             {
                 AffectedByTransform = false
             };
             return op;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             dArgs.BrushName = "Replace";
             dArgs.BrushArgs = dArgs.Message;
         }
@@ -47,8 +47,8 @@ namespace Flames.Commands.Building {
     public sealed class CmdReplaceNot : CmdReplace {
         public override string name { get { return "ReplaceNot"; } }
         public override string shortcut { get { return "rn"; } }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             dArgs.BrushName = "ReplaceNot";
             dArgs.BrushArgs = dArgs.Message;
         }

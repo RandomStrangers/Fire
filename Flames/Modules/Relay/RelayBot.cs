@@ -50,11 +50,11 @@ namespace Flames.Modules.Relay
 
         public readonly Player fakeGuest = new Player("RelayBot");
         public readonly Player fakeStaff = new Player("RelayBot");
-        DateTime lastWho, lastOpWho, lastWarn;
+        public DateTime lastWho, lastOpWho, lastWarn;
 
         public bool canReconnect;
         public byte retries;
-        Thread worker;
+        public Thread worker;
         /// <summary> Whether this relay bot can automatically reconnect </summary>
         public abstract bool CanReconnect { get; }
         
@@ -152,9 +152,9 @@ namespace Flames.Modules.Relay
             Logger.Log(LogType.RelayActivity, "Connected to {0}!", RelayName);
             retries  = 0;
         }
-        
 
-        void IOThreadCore() {
+
+        public void IOThreadCore() {
             OnStart();
             
             while (CanReconnect && retries < 3) {
@@ -189,8 +189,8 @@ namespace Flames.Modules.Relay
             }
             OnStop();
         }
-        
-        void IOThread() {
+
+        public void IOThread() {
             try {
                 IOThreadCore();
             } catch (Exception ex) {
@@ -198,9 +198,9 @@ namespace Flames.Modules.Relay
             }
             worker = null;
         }
-        
+
         /// <summary> Starts the read loop in a background thread </summary>
-        void RunAsync() {
+        public void RunAsync() {
             Server.StartThread(out worker, RelayName + "_RelayBot", 
                                IOThread);
             worker.IsBackground = true;
@@ -251,17 +251,18 @@ namespace Flames.Modules.Relay
             OnChatFromEvent.Unregister(OnChatFrom);
             OnShuttingDownEvent.Unregister(OnShutdown);
         }
-        
-        
-        static bool FilterIRC(Player pl, object arg) {
+
+
+        public static bool FilterIRC(Player pl, object arg) {
             return !pl.Ignores.IRC && !pl.Ignores.IRCNicks.Contains((string)arg);
-        } static ChatMessageFilter filterIRC = FilterIRC;
+        }
+        public static ChatMessageFilter filterIRC = FilterIRC;
         
         public static void MessageInGame(string srcNick, string message) {
             Chat.Message(ChatScope.Global, message, srcNick, filterIRC);
         }
-        
-        string Unescape(Player p, string msg) {
+
+        public string Unescape(Player p, string msg) {
             return msg
                 .Replace("λFULL", UnescapeFull(p))
                 .Replace("λNICK", UnescapeNick(p));
@@ -273,9 +274,9 @@ namespace Flames.Modules.Relay
 
         public virtual string UnescapeNick(Player p) { return p.ColoredName; }
         public virtual string PrepareMessage(string msg) { return msg; }
-        
-        
-        void MessageToRelay(ChatScope scope, string msg, object arg, ChatMessageFilter filter) {
+
+
+        public void MessageToRelay(ChatScope scope, string msg, object arg, ChatMessageFilter filter) {
             ChatMessageFilter scopeFilter = Chat.scopeFilters[(int)scope];
             fakeGuest.group = Group.DefaultRank;
             
@@ -296,24 +297,24 @@ namespace Flames.Modules.Relay
             string text = PrepareMessage(msg);
             MessageToRelay(scope, text, arg, filter);
         }
-        
-        void OnChatFrom(ChatScope scope, Player source, string msg,
+
+        public void OnChatFrom(ChatScope scope, Player source, string msg,
                             object arg, ref ChatMessageFilter filter, bool relay) {
             if (!relay) return;
             
             string text = PrepareMessage(msg);
             MessageToRelay(scope, Unescape(source, text), arg, filter);
         }
-        
-        void OnChat(ChatScope scope, Player source, string msg,
+
+        public void OnChat(ChatScope scope, Player source, string msg,
                         object arg, ref ChatMessageFilter filter, bool relay) {
             if (!relay) return;
             
             string text = PrepareMessage(msg);
             MessageToRelay(scope, Unescape(source, text), arg, filter);
         }
-        
-        void OnShutdown(bool restarting, string message) {
+
+        public void OnShutdown(bool restarting, string message) {
             Disconnect(restarting ? "Server is restarting" : "Server is shutting down");
         }
 
@@ -389,8 +390,8 @@ namespace Flames.Modules.Relay
                                                        Server.Config.ProfanityFiltering ? ProfanityFilter.Parse(msg) : msg));
             }
         }
-        
-        bool HandleListPlayers(RelayUser user, string channel, string cmd, bool opchat) {
+
+        public bool HandleListPlayers(RelayUser user, string channel, string cmd, bool opchat) {
             bool isWho    = cmd == ".who" || cmd == ".players" || cmd == "!players";
             DateTime last = opchat ? lastOpWho : lastWho;
             if (!isWho || (DateTime.UtcNow - last).TotalSeconds <= 5) return false;
@@ -407,7 +408,7 @@ namespace Flames.Modules.Relay
             else lastWho = DateTime.UtcNow;
             return true;
         }
-        bool HandleLogo(RelayUser user, string channel, string cmd)
+        public bool HandleLogo(RelayUser user, string channel, string cmd)
         {
             bool isLogo = cmd.ToLower() == ".serverlogo" || cmd.ToLower() == ".logo";
             if (!isLogo) return false;
@@ -425,7 +426,7 @@ namespace Flames.Modules.Relay
             }
             return true;
         }
-        bool HandleURL(RelayUser user, string channel, string cmd)
+        public bool HandleURL(RelayUser user, string channel, string cmd)
         {
             bool isURL = cmd.ToLower() == ".serverurl" || cmd.ToLower() == ".url";
             if (!isURL) return false;
@@ -456,7 +457,7 @@ namespace Flames.Modules.Relay
             Command.Find("ServerUrl").Use(p, "", p.DefaultCmdData);
         }
 
-        bool HandleCommand(RelayUser user, string channel, string message, string[] parts) {
+        public bool HandleCommand(RelayUser user, string channel, string message, string[] parts) {
             string cmdName = parts.Length > 1 ? parts[1].ToLower() : "";
             string cmdArgs = parts.Length > 2 ? parts[2].Trim()    : "";
             Command.Search(ref cmdName, ref cmdArgs);
@@ -469,8 +470,8 @@ namespace Flames.Modules.Relay
             
             return ExecuteCommand(user, channel, cmdName, cmdArgs);
         }
-        
-        bool ExecuteCommand(RelayUser user, string channel, string cmdName, string cmdArgs) {
+
+        public bool ExecuteCommand(RelayUser user, string channel, string cmdName, string cmdArgs) {
             Command cmd = Command.Find(cmdName);
             Player p = new RelayPlayer(channel, user, this);
             if (cmd == null) { p.Message("Unknown command \"{0}\"", cmdName); return false; }

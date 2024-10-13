@@ -18,8 +18,8 @@ namespace Flames.Generator.Foliage
             size   = 2;
             EnsureRNG(rnd);
         }
-        
-        void EnsureRNG(Random rnd) {
+
+        public void EnsureRNG(Random rnd) {
             if (rng == null) rng = new JavaRandom(rnd.Next());
         }
         

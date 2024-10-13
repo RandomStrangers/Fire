@@ -40,8 +40,8 @@ namespace Flames
             Database.UpdateActiveBackend();
             Server.SetMainLevel(Server.Config.MainLevel);
         }
-        
-        static void LineProcessor(string key, string value, ref OldPerms perms) {
+
+        public static void LineProcessor(string key, string value, ref OldPerms perms) {
             // Backwards compatibility: some command extra permissions used to be part of server.properties
             // Backwards compatibility: map generation volume used to be part of server.properties
             if (key.CaselessEq("review-view-perm")) {
@@ -66,16 +66,16 @@ namespace Flames
                 ConfigElement.Parse(Server.serverConfig, Server.Config, key, value);
             }
         }
-        
-        
-        static OldPerms old;
-        class OldPerms {
+
+
+        public static OldPerms old;
+        public class OldPerms {
             public int viewPerm = -1, nextPerm = -1, clearPerm = -1, opchatPerm = -1, adminchatPerm = -1;
             public int mapGenLimit = -1, mapGenLimitAdmin = -1;
             public int afkKickMins = -1; public LevelPermission afkKickMax = LevelPermission.Banned;
         }
-        
-        internal static void FixupOldPerms() {
+
+        public static void FixupOldPerms() {
             SetOldReview();
             if (old.mapGenLimit != -1) SetOldGenVolume();
             if (old.mapGenLimitAdmin != -1) SetOldGenVolumeAdmin();
@@ -85,8 +85,8 @@ namespace Flames
                 Group.SaveAll(Group.GroupList);
             }
         }
-        
-        static void SetOldReview() {
+
+        public static void SetOldReview() {
             if (old.clearPerm == -1 && old.nextPerm == -1 && old.viewPerm == -1
                 && old.opchatPerm == -1 && old.adminchatPerm == -1) return;
             
@@ -103,33 +103,33 @@ namespace Flames
                 Chat.AdminchatPerms.MinRank = (LevelPermission)old.adminchatPerm;
             CommandExtraPerms.Save();
         }
-        
-        static void SetOldGenVolume() {
+
+        public static void SetOldGenVolume() {
             foreach (Group grp in Group.GroupList) {
                 if (grp.Permission < LevelPermission.Admin) {
                     grp.GenVolume = old.mapGenLimit;
                 }
             }
         }
-        
-        static void SetOldGenVolumeAdmin() {
+
+        public static void SetOldGenVolumeAdmin() {
             foreach (Group grp in Group.GroupList) {
                 if (grp.Permission >= LevelPermission.Admin) {
                     grp.GenVolume = old.mapGenLimitAdmin;
                 }
             }
         }
-        
-        static void SetOldAfkKick() {
+
+        public static void SetOldAfkKick() {
             foreach (Group grp in Group.GroupList) {
                 grp.AfkKickTime = TimeSpan.FromMinutes(old.afkKickMins);
                 // 0 minutes had the special meaning of 'not AFK kicked'
                 grp.AfkKicked = old.afkKickMins > 0 && grp.Permission < old.afkKickMax;
             }
         }
-        
-        
-        static readonly object saveLock = new object();
+
+
+        public static readonly object saveLock = new object();
         public static void Save() {
             try {
                 lock (saveLock) {
@@ -140,8 +140,8 @@ namespace Flames
                 Logger.LogError("Error saving " + Paths.ServerPropsFile, ex);
             }
         }
-        
-        static void SaveProps(StreamWriter w) {
+
+        public static void SaveProps(StreamWriter w) {
             w.WriteLine("# Edit the settings below to modify how your server operates.");
             w.WriteLine("#");
             w.WriteLine("# Explanation of Server settings:");

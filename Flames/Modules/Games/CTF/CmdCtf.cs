@@ -23,16 +23,16 @@ using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
-    sealed class CmdCTF : RoundsGameCmd 
+    public sealed class CmdCTF : RoundsGameCmd 
     {
         public override string name { get { return "CTF"; } }
         public override string shortcut { get { return "CTFSetup"; } }
-        protected override RoundsGame Game { get { return CTFGame.Instance; } }
+        public override RoundsGame Game { get { return CTFGame.Instance; } }
         public override CommandPerm[] ExtraPerms {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage CTF") }; }
         }
-        
-        protected override void HandleSet(Player p, RoundsGame game, string[] args) {
+
+        public override void HandleSet(Player p, RoundsGame game, string[] args) {
             string prop = args[1];
             CTFMapConfig cfg = new CTFMapConfig();
             LoadMapConfig(p, cfg);
@@ -59,8 +59,8 @@ namespace Flames.Modules.Games.CTF
                 Help(p, "set");
             }
         }
-        
-        bool BlueFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool BlueFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
             CTFMapConfig cfg = (CTFMapConfig)state;
             Vec3U16 P = (Vec3U16)marks[0];
             cfg.BlueFlagPos = P;
@@ -74,8 +74,8 @@ namespace Flames.Modules.Games.CTF
             SaveMapConfig(p, cfg);
             return false;
         }
-        
-        bool RedFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool RedFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
             CTFMapConfig cfg = (CTFMapConfig)state;
             Vec3U16 P = (Vec3U16)marks[0];         
             cfg.RedFlagPos = P;

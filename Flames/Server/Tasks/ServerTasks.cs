@@ -20,16 +20,16 @@ using System;
 using Flames.Commands.Chatting;
 
 namespace Flames.Tasks {
-    internal static class ServerTasks {
+    public static class ServerTasks {
 
-        internal static void QueueTasks() {
+        public static void QueueTasks() {
             Server.MainScheduler.QueueRepeat(CheckState, null, TimeSpan.FromSeconds(3));
             Server.Background.QueueRepeat(AutoSave, 1, Server.Config.BackupInterval);
             Server.Background.QueueRepeat(BlockUpdates, null, Server.Config.BlockDBSaveInterval);
         }
-        
-        
-        internal static void TickPlayers(SchedulerTask task) {
+
+
+        public static void TickPlayers(SchedulerTask task) {
             Player[] players = PlayerInfo.Online.Items;
             int delay  = players.Length == 0 ? 100 : 20;
             task.Delay = TimeSpan.FromMilliseconds(delay);
@@ -42,8 +42,8 @@ namespace Flames.Tasks {
                 }
             }
         }
-        
-        static void TickPlayer(Player p) {
+
+        public static void TickPlayer(Player p) {
             if (p.following.Length > 0) {
                 Player who = PlayerInfo.FindExact(p.following);
                 if (who == null || who.level != p.level) {
@@ -74,14 +74,14 @@ namespace Flames.Tasks {
                 p.CriticalTasks.Remove(task);
             }
         }
-        
-        internal static void UpdateEntityPositions(SchedulerTask task) {
+
+        public static void UpdateEntityPositions(SchedulerTask task) {
             Entities.GlobalUpdate();
             PlayerBot.GlobalUpdatePosition();
             task.Delay = TimeSpan.FromMilliseconds(Server.Config.PositionUpdateInterval);
         }
-        
-        internal static void CheckState(SchedulerTask task) {
+
+        public static void CheckState(SchedulerTask task) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players)
             {
@@ -108,8 +108,8 @@ namespace Flames.Tasks {
                 }
             }
         }
-        
-        internal static void BlockUpdates(SchedulerTask task) {
+
+        public static void BlockUpdates(SchedulerTask task) {
             Level[] loaded = LevelInfo.Loaded.Items;
             task.Delay = Server.Config.BlockDBSaveInterval;
             
@@ -122,8 +122,8 @@ namespace Flames.Tasks {
                 }
             }
         }
-        
-        internal static void AutoSave(SchedulerTask task) {
+
+        public static void AutoSave(SchedulerTask task) {
             int count = (int)task.State;
             count--;
             Level[] levels = LevelInfo.Loaded.Items;

@@ -123,8 +123,8 @@ namespace Flames {
         public static LevelConfig GetConfig(string map) {
             Level lvl; return GetConfig(map, out lvl);
         }
-        
-        internal static LevelConfig GetConfig(string map, out Level lvl) {
+
+        public static LevelConfig GetConfig(string map, out Level lvl) {
             lvl = FindExact(map);
             if (lvl != null) return lvl.Config;
             
@@ -191,8 +191,8 @@ namespace Flames {
             // If no + though, don't use because otherwise people can register accounts and claim maps
             return Server.Config.ClassicubeAccountPlus && map.CaselessStarts(name);
         }
-        
-        internal static string DefaultRealmOwner(string map) {
+
+        public static string DefaultRealmOwner(string map) {
             bool plus = Server.Config.ClassicubeAccountPlus;
             // Early out when either
             //  1) accounts aren't using +

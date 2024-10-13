@@ -45,7 +45,7 @@ namespace Flames.Network
         public abstract void OnGotAllHeaders();
         public abstract void OnGotHeader(string name, string value);
 
-        void ProcessHeader(string raw) {
+        public void ProcessHeader(string raw) {
             // end of all headers
             if (raw.Length == 0) OnGotAllHeaders();
             
@@ -66,8 +66,8 @@ namespace Flames.Network
                 OnGotHeader(name, value);
             }
         }
-        
-        int ReadHeaders(byte[] buffer, int bufferLen) {
+
+        public int ReadHeaders(byte[] buffer, int bufferLen) {
             int i;
             for (i = 0; i < bufferLen - 1; ) {
                 int end = -1;
@@ -85,16 +85,16 @@ namespace Flames.Network
             }
             return i;
         }
-        
-        int state, opcode, frameLen, maskRead, frameRead;
-        byte[] mask = new byte[4], frame;
-        
-        const int state_header1 = 0;
-        const int state_header2 = 1;
-        const int state_extLen1 = 2;
-        const int state_extLen2 = 3;
-        const int state_mask    = 4;
-        const int state_data    = 5;
+
+        public int state, opcode, frameLen, maskRead, frameRead;
+        public byte[] mask = new byte[4], frame;
+
+        public const int state_header1 = 0;
+        public const int state_header2 = 1;
+        public const int state_extLen1 = 2;
+        public const int state_extLen2 = 3;
+        public const int state_mask    = 4;
+        public const int state_data    = 5;
 
         public const int OPCODE_CONTINUED  = 0;
         public const int OPCODE_TEXT       = 1;
@@ -105,8 +105,8 @@ namespace Flames.Network
         public const int REASON_NORMAL         = 1000;
         public const int REASON_INVALID_DATA   = 1003;
         public const int REASON_EXCESSIVE_SIZE = 1009;
-        
-        int GetDisconnectReason() {
+
+        public int GetDisconnectReason() {
             if (frameLen < 2) return REASON_NORMAL;
             
             // RFC 6455, section 5.5.1 - Close
@@ -114,8 +114,8 @@ namespace Flames.Network
             //    be a 2-byte unsigned integer (in network byte order)...
             return (frame[0] << 8) | frame[1];
         }
-        
-        void DecodeFrame() {
+
+        public void DecodeFrame() {
             for (int i = 0; i < frameLen; i++) {
                 frame[i] ^= mask[i & 3];
             }
@@ -135,8 +135,8 @@ namespace Flames.Network
                     Disconnect(REASON_INVALID_DATA); break;
             }
         }
-        
-        int ProcessData(byte[] data, int offset, int len) {
+
+        public int ProcessData(byte[] data, int offset, int len) {
             switch (state) {
                 case state_header1:
                     if (offset >= len) break;
@@ -250,10 +250,10 @@ namespace Flames.Network
     /// <summary> Abstracts a server side WebSocket </summary>
     public abstract class ServerWebSocket : BaseWebSocket 
     {
-        bool version;
-        string verKey;
-        
-        void AcceptConnection() {
+        public bool version;
+        public string verKey;
+
+        public void AcceptConnection() {
             const string fmt =
                 "HTTP/1.1 101 Switching Protocols\r\n" +
                 "Upgrade: websocket\r\n" +
@@ -307,11 +307,11 @@ namespace Flames.Network
     public abstract class ClientWebSocket : BaseWebSocket 
     {
         public string path = "/";
-        string verKey;
+        public string verKey;
         // TODO: use a random securely generated key
-        const string key = "xTNDiuZRoMKtxrnJDWyLmA==";
-        
-        void AcceptConnection() {
+        public const string key = "xTNDiuZRoMKtxrnJDWyLmA==";
+
+        public void AcceptConnection() {
             readingHeaders = false;
         }
 

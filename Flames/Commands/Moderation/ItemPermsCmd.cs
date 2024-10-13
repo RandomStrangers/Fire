@@ -20,8 +20,8 @@ namespace Flames.Commands.Moderation {
     public abstract class ItemPermsCmd : Command2 {
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        
-        protected void SetPerms(Player p, string[] args, CommandData data, ItemPerms perms, string type) {
+
+        public void SetPerms(Player p, string[] args, CommandData data, ItemPerms perms, string type) {
             string grpName = args[1];          
             if (!perms.UsableBy(data.Rank)) {
                 p.Message("You rank cannot use this {0}.", type); return;
@@ -51,10 +51,10 @@ namespace Flames.Commands.Moderation {
                 UpdatePerms(perms, p, " &Sis now usable by " + grp.ColoredName + "&S+");
             }
         }
-        
-        protected abstract void UpdatePerms(ItemPerms perms, Player p, string msg);
-        
-        protected static Group GetGroup(Player p, CommandData data, string grpName) {
+
+        public abstract void UpdatePerms(ItemPerms perms, Player p, string msg);
+
+        public static Group GetGroup(Player p, CommandData data, string grpName) {
             Group grp = Matcher.FindRanks(p, grpName);
             if (grp == null) return null;
             
@@ -63,8 +63,8 @@ namespace Flames.Commands.Moderation {
             }
             return grp;
         }
-        
-        protected static void Announce(Player p, string msg) {
+
+        public static void Announce(Player p, string msg) {
             Chat.MessageAll("&d" + msg);
             if (p.IsSuper) p.Message(msg);
         }

@@ -24,9 +24,9 @@ using Flames.Events;
 using Flames.Tasks;
 
 namespace Flames.Core {
-    internal static class ModActionHandler {
-        
-        internal static void HandleModAction(ModAction action) {
+    public static class ModActionHandler {
+
+        public static void HandleModAction(ModAction action) {
             switch (action.Type) {
                     case ModActionType.Frozen: DoFreeze(action); break;
                     case ModActionType.Unfrozen: DoUnfreeze(action); break;
@@ -40,8 +40,8 @@ namespace Flames.Core {
                     case ModActionType.Rank: DoRank(action); break;
             }
         }
-        
-        static void LogAction(ModAction e, Player target, string action) {
+
+        public static void LogAction(ModAction e, Player target, string action) {
             // TODO should use per-player nick settings
             string targetNick = e.Actor.FormatNick(e.Target);
 
@@ -63,8 +63,8 @@ namespace Flames.Core {
                        e.Target, action, e.Actor.name + suffix);
         }
 
-        
-        static void DoFreeze(ModAction e) {
+
+        public static void DoFreeze(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) who.frozen = true;
             LogAction(e, who, "&bfrozen");
@@ -73,8 +73,8 @@ namespace Flames.Core {
             ModerationTasks.FreezeCalcNextRun();
             Server.frozen.Save();
         }
-        
-        static void DoUnfreeze(ModAction e) {
+
+        public static void DoUnfreeze(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) who.frozen = false;
             LogAction(e, who, "&adefrosted");
@@ -83,9 +83,9 @@ namespace Flames.Core {
             ModerationTasks.FreezeCalcNextRun();
             Server.frozen.Save();
         }
-        
-        
-        static void DoMute(ModAction e) {
+
+
+        public static void DoMute(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) who.muted = true;
             LogAction(e, who, "&8muted");
@@ -94,8 +94,8 @@ namespace Flames.Core {
             ModerationTasks.MuteCalcNextRun();
             Server.muted.Save();
         }
-        
-        static void DoUnmute(ModAction e) {
+
+        public static void DoUnmute(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) who.muted = false;
             LogAction(e, who, "&aun-muted");
@@ -104,9 +104,9 @@ namespace Flames.Core {
             ModerationTasks.MuteCalcNextRun();
             Server.muted.Save();
         }
-        
-        
-        static void DoBan(ModAction e) {
+
+
+        public static void DoBan(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             LogAction(e, who, "&8banned");
             
@@ -130,8 +130,8 @@ namespace Flames.Core {
                 }
             }
         }
-        
-        static void DoUnban(ModAction e) {
+
+        public static void DoUnban(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             LogAction(e, who, "&8unbanned");
             
@@ -149,29 +149,29 @@ namespace Flames.Core {
                 e.Actor.Message("NOTE: Their IP is still banned.");
             }
         }
-        
-        
-        static void LogIPAction(ModAction e, string type) {
+
+
+        public static void LogIPAction(ModAction e, string type) {
             ItemPerms perms = CommandExtraPerms.Find("WhoIs", 1);
             Chat.Message(ChatScope.Global, e.FormatMessage("An IP", type), perms,
                          FilterNotItemPerms, true);
             Chat.Message(ChatScope.Global, e.FormatMessage(e.Target, type), perms,
                          Chat.FilterPerms, true);
         }
-        
-        static bool FilterNotItemPerms(Player pl, object arg) {
+
+        public static bool FilterNotItemPerms(Player pl, object arg) {
             return !Chat.FilterPerms(pl, arg);
         }
-        
-        static void DoBanIP(ModAction e) {
+
+        public static void DoBanIP(ModAction e) {
             LogIPAction(e, "&8IP banned");
             Logger.Log(LogType.UserActivity, "IP-BANNED: {0} by {1}.{2}", 
                        e.Target, e.Actor.name, e.ReasonSuffixed);
             Server.bannedIP.Update(e.Target, e.Reason);
             Server.bannedIP.Save();
         }
-        
-        static void DoUnbanIP(ModAction e) {
+
+        public static void DoUnbanIP(ModAction e) {
             LogIPAction(e, "&8IP unbanned");
             Logger.Log(LogType.UserActivity, "IP-UNBANNED: {0} by {1}.", 
                        e.Target, e.Actor.name);
@@ -179,8 +179,8 @@ namespace Flames.Core {
             Server.bannedIP.Save();
         }
 
-        
-        static void DoWarn(ModAction e) {
+
+        public static void DoWarn(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) {
                 LogAction(e, who, "&ewarned");
@@ -202,9 +202,9 @@ namespace Flames.Core {
                 LogAction(e, who, "&ewarned");
             }
         }
-        
-        
-        static void DoRank(ModAction e) {
+
+
+        public static void DoRank(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             Group newRank = (Group)e.Metadata;
             string action = newRank.Permission >= e.TargetGroup.Permission ? "promoted to " : "demoted to ";
@@ -222,8 +222,8 @@ namespace Flames.Core {
             if (e.Duration != TimeSpan.Zero) AddTempRank(e, newRank);
             ModActionCmd.ChangeRank(e.Target, e.TargetGroup, newRank, who);
         }
-        
-        static void WriteRankInfo(ModAction e, Group newRank) {
+
+        public static void WriteRankInfo(ModAction e, Group newRank) {
             string assigner = e.Actor.name;
             long time = DateTime.UtcNow.ToUnixTime();
 
@@ -231,15 +231,15 @@ namespace Flames.Core {
                 + " " + e.TargetGroup.Name + " " + e.Reason.Replace(" ", "%20");
             Server.RankInfo.Append(line);
         }
-        
-        static void AddTempRank(ModAction e, Group newRank) {
+
+        public static void AddTempRank(ModAction e, Group newRank) {
             string data = FormatModTaskData(e) + " " + e.TargetGroup.Name + " " + newRank.Name;
             Server.tempRanks.Update(e.Target, data);
             ModerationTasks.TemprankCalcNextRun();
             Server.tempRanks.Save();
         }
-        
-        static string FormatModTaskData(ModAction e) {
+
+        public static string FormatModTaskData(ModAction e) {
             long assign  = DateTime.UtcNow.ToUnixTime();
             DateTime end = DateTime.MaxValue.AddYears(-1);
             

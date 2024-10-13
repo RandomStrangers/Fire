@@ -28,8 +28,8 @@ namespace Flames.Generator.Foliage
     
     public abstract class Tree 
     {
-        protected internal int height, size;
-        protected Random rnd;
+        public int height, size;
+        public Random rnd;
         
 
         /// <summary> Minimum allowed size (usually means height) for this tree. </summary>

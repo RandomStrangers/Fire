@@ -39,7 +39,7 @@ namespace Flames.Events
     /// This is because the static event lists are unique to each new generic type instantiation, not each new subclass. </remarks>
     public class IEvent<IMethod> 
     {
-        protected internal static VolatileArray<IEvent<IMethod>> handlers = new VolatileArray<IEvent<IMethod>>();
+        public static VolatileArray<IEvent<IMethod>> handlers = new VolatileArray<IEvent<IMethod>>();
         public IMethod method;
         public Priority priority;
         
@@ -80,9 +80,9 @@ namespace Flames.Events
             }
             return null;
         }
-        
-        
-        static void AddHandler(IEvent<IMethod> handler) {
+
+
+        public static void AddHandler(IEvent<IMethod> handler) {
             // We want both the add and sorting is in one step
             lock (handlers.locker) {
                 IEvent<IMethod>[] old = handlers.Items;
@@ -96,8 +96,8 @@ namespace Flames.Events
                 handlers.Items = items;
             }
         }
-        
-        protected static void CallCommon(Action<IMethod> action) {
+
+        public static void CallCommon(Action<IMethod> action) {
             IEvent<IMethod>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++) 
             {
@@ -107,13 +107,13 @@ namespace Flames.Events
                 catch (Exception ex) { LogHandlerException(ex, handler); }
             }
         }
-        
-        protected static void LogHandlerException(Exception ex, IEvent<IMethod> handler) {
+
+        public static void LogHandlerException(Exception ex, IEvent<IMethod> handler) {
             string msg = MethodFormat("Method {0} errored when calling {1} event", handler.method);
             Logger.LogError(msg, ex);
         }
-        
-        static string MethodFormat(string format, IMethod method) {
+
+        public static string MethodFormat(string format, IMethod method) {
             Delegate del = (Delegate)((object)method);
             string fullName = del.Method.ReflectedType.FullName + "." + del.Method.Name;
             return string.Format(format, fullName, typeof(IMethod).Name);

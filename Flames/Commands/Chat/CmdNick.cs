@@ -37,7 +37,7 @@ namespace Flames.Commands.Chatting
             UseBotOrPlayer(p, data, message, "nick");
         }
 
-        protected override void SetBotData(Player p, PlayerBot bot, string nick) {
+        public override void SetBotData(Player p, PlayerBot bot, string nick) {
             if (!MessageCmd.CanSpeak(p, name)) return;
             
             if (nick.Length == 0) {
@@ -55,8 +55,8 @@ namespace Flames.Commands.Chatting
             bot.GlobalSpawn();
             BotsFile.Save(p.level);
         }
-        
-        protected override void SetPlayerData(Player p, string target, string nick) {
+
+        public override void SetPlayerData(Player p, string target, string nick) {
             PlayerOperations.SetNick(p, target, nick);
         }
         

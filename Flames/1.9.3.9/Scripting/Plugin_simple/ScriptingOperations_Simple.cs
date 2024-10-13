@@ -40,11 +40,11 @@ namespace Flames.Scripting
         }
 
 
-        const int MAX_LOG = 2;
+        public const int MAX_LOG = 2;
 
         /// <summary> Attempts to compile the given source code files into a .dll </summary>
         /// <param name="p"> Player to send messages to </param>
-        /// <param name="type"> Type of files being compiled (e.g. Plugin, Command) </param>
+        /// <param name="type"> Type of files being compiled (e.g. SimplePlugin, Command) </param>
         /// <param name="srcs"> Path of the source code files </param>
         /// <param name="dst"> Path to the destination .dll </param>
         /// <returns> The compiler results, or null if compilation failed </returns>
@@ -71,7 +71,7 @@ namespace Flames.Scripting
             return null;
         }
 
-        static void SummariseErrors(CompilerResults results, string[] srcs, Player p)
+        public static void SummariseErrors(CompilerResults results, string[] srcs, Player p)
         {
             int logged = 0;
             foreach (CompilerError err in results.Errors)

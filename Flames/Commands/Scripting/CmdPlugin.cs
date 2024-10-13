@@ -58,8 +58,8 @@ namespace Flames.Commands.Scripting
                 Help(p);
             }
         }
-        
-        static void UnloadPlugin(Player p, string name) {
+
+        public static void UnloadPlugin(Player p, string name) {
             Plugin plugin = Matcher.Find(p, name, out int matches, Plugin.custom,
                                          null, pln => pln.name, "plugins");
 

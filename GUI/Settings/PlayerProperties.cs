@@ -16,14 +16,13 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using Flames.DB;
 
 namespace Flames.Gui {
     public sealed class PlayerProperties {
-        readonly Player p;
-        string inMsg, outMsg;
+        public readonly Player p;
+        public string inMsg, outMsg;
         
         public PlayerProperties(Player player) {
             this.p = player;
@@ -100,9 +99,9 @@ namespace Flames.Gui {
         [Category("Status")]
         [DisplayName("Voiced")]
         public bool Voiced { get { return p.voice; } set { DoCmd("Voice"); } }
-        
-        void DoCmd(string cmd) { DoCmd(cmd, ""); }
-        void DoCmd(string cmd, string args) {
+
+        public void DoCmd(string cmd) { DoCmd(cmd, ""); }
+        public void DoCmd(string cmd, string args) {
             // Is the player still on the server?
             Player pl = PlayerInfo.FindExact(p.name);
             if (pl == null) return;

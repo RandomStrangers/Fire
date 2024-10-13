@@ -21,10 +21,10 @@ using Flames.Commands.Moderation;
 using Flames.Events;
 
 namespace Flames.Tasks {
-    internal static class ModerationTasks {
+    public static class ModerationTasks {
 
-        static SchedulerTask temprankTask, freezeTask, muteTask;
-        internal static void QueueTasks() {
+        public static SchedulerTask temprankTask, freezeTask, muteTask;
+        public static void QueueTasks() {
             temprankTask = Server.MainScheduler.QueueRepeat(
                 TemprankCheckTask, null, NextRun(Server.tempRanks));
             freezeTask = Server.MainScheduler.QueueRepeat(
@@ -33,47 +33,47 @@ namespace Flames.Tasks {
                 MuteCheckTask, null, NextRun(Server.muted));
         }
 
-        
-        internal static void TemprankCheckTask(SchedulerTask task) {
+
+        public static void TemprankCheckTask(SchedulerTask task) {
             DoTask(task, Server.tempRanks, TemprankCallback);
         }
-        
-        internal static void TemprankCalcNextRun() { CalcNextRun(temprankTask, Server.tempRanks); }
-        
-        static void TemprankCallback(string[] args) {
+
+        public static void TemprankCalcNextRun() { CalcNextRun(temprankTask, Server.tempRanks); }
+
+        public static void TemprankCallback(string[] args) {
             CmdTempRank.Delete(Player.Flame, args[0], Player.Flame.DefaultCmdData);
             // Handle case of old rank no longer existing
             if (Server.tempRanks.Remove(args[0])) {
                 Server.tempRanks.Save();
             }
         }
-        
-        
-        internal static void FreezeCheckTask(SchedulerTask task) {
+
+
+        public static void FreezeCheckTask(SchedulerTask task) {
             DoTask(task, Server.frozen, FreezeCallback);
         }
-        
-        internal static void FreezeCalcNextRun() { CalcNextRun(freezeTask, Server.frozen); }
-        
-        static void FreezeCallback(string[] args) {
+
+        public static void FreezeCalcNextRun() { CalcNextRun(freezeTask, Server.frozen); }
+
+        public static void FreezeCallback(string[] args) {
             ModAction action = new ModAction(args[0], Player.Flame, ModActionType.Unfrozen, "auto unfreeze");
             OnModActionEvent.Call(action);
         }
-        
-        
-        internal static void MuteCheckTask(SchedulerTask task) {
+
+
+        public static void MuteCheckTask(SchedulerTask task) {
             DoTask(task, Server.muted, MuteCallback);
         }
-        
-        internal static void MuteCalcNextRun() { CalcNextRun(muteTask, Server.muted); }
-        
-        static void MuteCallback(string[] args) {
+
+        public static void MuteCalcNextRun() { CalcNextRun(muteTask, Server.muted); }
+
+        public static void MuteCallback(string[] args) {
             ModAction action = new ModAction(args[0], Player.Flame, ModActionType.Unmuted, "auto unmute");
             OnModActionEvent.Call(action);
         }
-        
-        
-        static void DoTask(SchedulerTask task, PlayerExtList list, Action<string[]> callback) {
+
+
+        public static void DoTask(SchedulerTask task, PlayerExtList list, Action<string[]> callback) {
             List<string> lines = list.AllLines();
             foreach (string line in lines) {
                 string[] args = line.SplitSpaces();
@@ -87,14 +87,14 @@ namespace Flames.Tasks {
             }
             task.Delay = NextRun(list);
         }
-        
-        static void CalcNextRun(SchedulerTask task, PlayerExtList list) {
+
+        public static void CalcNextRun(SchedulerTask task, PlayerExtList list) {
             task.Delay = NextRun(list);
             task.NextRun = DateTime.UtcNow.Add(task.Delay);
             Server.MainScheduler.Recheck();
         }
-        
-        static TimeSpan NextRun(PlayerExtList list) {
+
+        public static TimeSpan NextRun(PlayerExtList list) {
             DateTime nextRun = DateTime.MaxValue.AddYears(-1);
             // Lock because we want to ensure list not modified from under us
             lock (list.locker) {

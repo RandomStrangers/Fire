@@ -30,9 +30,9 @@ namespace Flames.Commands {
         public readonly string Name;
         public readonly int ArgCount;
         public readonly Behavior behavior;
-        string[] Help;
-        readonly bool MapOnly;
-        string[] Aliases;
+        public string[] Help;
+        public readonly bool MapOnly;
+        public string[] Aliases;
 
         /// <summary>
         /// When mapOnly is true, the subcommand can only be used when the player is the realm owner.
@@ -89,7 +89,7 @@ namespace Flames.Commands {
         public enum UsageResult { NoneFound, Success, Disallowed }
 
         public readonly string parentCommandName;
-        List<SubCommand> subCommands;
+        public List<SubCommand> subCommands;
 
         public SubCommandGroup(string parentCmd, List<SubCommand> initialCmds) {
             parentCommandName = parentCmd;

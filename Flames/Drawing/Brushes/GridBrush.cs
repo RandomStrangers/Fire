@@ -23,8 +23,8 @@ namespace Flames.Drawing.Brushes
 {
     public class GridBrush : Brush
     {
-        readonly BlockID gridBlock, cellBlock, borderBlock;
-        readonly int gridSize, blocksCount;
+        public readonly BlockID gridBlock, cellBlock, borderBlock;
+        public readonly int gridSize, blocksCount;
 
         public GridBrush(List<BlockID> blocks, List<int> counts) {
             gridBlock   = blocks[0];

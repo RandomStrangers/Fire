@@ -21,10 +21,10 @@ namespace Flames.Commands.Building {
     public sealed class CmdRainbow : DrawCmd {
         public override string name { get { return "Rainbow"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        
-        protected override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) { dArgs.BrushName = "Normal"; }
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             string args = dArgs.Message;
             RainbowDrawOp op = new RainbowDrawOp();
             if (args.Length > 0 && !CommandParser.GetBool(dArgs.Player, args, ref op.AllowAir)) return null;

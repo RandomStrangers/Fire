@@ -29,7 +29,7 @@ namespace Flames.Modules.Games.ZS
 {
     public partial class ZSGame : RoundsGame 
     {
-        protected override void HookEventHandlers() {
+        public override void HookEventHandlers() {
             OnEntitySpawnedEvent.Register(HandleEntitySpawned, Priority.High);
             OnTabListEntryAddedEvent.Register(HandleTabListEntryAdded, Priority.High);
             OnMoneyChangedEvent.Register(HandleMoneyChanged, Priority.High);
@@ -44,8 +44,8 @@ namespace Flames.Modules.Games.ZS
             
             base.HookEventHandlers();
         }
-        
-        protected override void UnhookEventHandlers() {
+
+        public override void UnhookEventHandlers() {
             OnEntitySpawnedEvent.Unregister(HandleEntitySpawned);
             OnTabListEntryAddedEvent.Unregister(HandleTabListEntryAdded);
             OnMoneyChangedEvent.Unregister(HandleMoneyChanged);
@@ -60,9 +60,9 @@ namespace Flames.Modules.Games.ZS
             
             base.UnhookEventHandlers();
         }
-        
-        
-        void HandleCanSeeEntity(Player p, ref bool canSee, Entity other) {
+
+
+        public void HandleCanSeeEntity(Player p, ref bool canSee, Entity other) {
             Player target = other as Player;
             if (!canSee || p.Game.Referee || target == null) return;
             
@@ -70,14 +70,14 @@ namespace Flames.Modules.Games.ZS
             if (data == null || target.level != Map) return;
             canSee = !(target.Game.Referee || data.Invisible);
         }
-        
-        void HandleSendingModel(Entity e, ref string model, Player dst) {
+
+        public void HandleSendingModel(Entity e, ref string model, Player dst) {
             Player p = e as Player;
             if (p == null || !IsInfected(p)) return;
             model = p == dst ? p.Model : Config.ZombieModel;
         }
-        
-        void HandleTabListEntryAdded(Entity e, ref string tabName, ref string tabGroup, Player dst) {
+
+        public void HandleTabListEntryAdded(Entity e, ref string tabName, ref string tabGroup, Player dst) {
             Player p = e as Player;
             if (p == null || p.level != Map) return;
             
@@ -94,13 +94,13 @@ namespace Flames.Modules.Games.ZS
                 tabGroup = Config.HumanTabListGroup;
             }
         }
-        
-        void HandleMoneyChanged(Player p) {
+
+        public void HandleMoneyChanged(Player p) {
             if (p.level != Map) return;
             UpdateStatus3(p);
         }
-        
-        void HandleEntitySpawned(Entity e, ref string name, ref string skin, ref string model, Player dst) {
+
+        public void HandleEntitySpawned(Entity e, ref string name, ref string skin, ref string model, Player dst) {
             Player p = e as Player;
             if (p == null || !IsInfected(p)) return;
 
@@ -110,8 +110,8 @@ namespace Flames.Modules.Games.ZS
             }
             name = Colors.red + name;
         }
-        
-        void HandlePlayerMove(Player p, Position next, byte rotX, byte rotY, ref bool cancel) {
+
+        public void HandlePlayerMove(Player p, Position next, byte rotX, byte rotY, ref bool cancel) {
             if (!RoundInProgress || p.level != Map) return;
             
             // TODO: Maybe tidy this up?
@@ -122,15 +122,15 @@ namespace Flames.Modules.Games.ZS
             if (reverted) cancel = true;
         }
 
-        void HandlePlayerDied(Player p, BlockID cause, ref TimeSpan cooldown) {
+        public void HandlePlayerDied(Player p, BlockID cause, ref TimeSpan cooldown) {
             if (p.level != Map || !Config.InfectUponDeath) return;
 
             if (!p.Game.Referee && RoundInProgress && !IsInfected(p)) {
                 InfectPlayer(p, null);
             }
         }
-        
-        void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
             p.SetPrefix(); // TODO: Kinda hacky, not sure if needed 
             if (level != Map) return;
@@ -158,8 +158,8 @@ namespace Flames.Modules.Games.ZS
             OutputMapSummary(p, Map.Config);
             p.Message("This map's win chance is &a{0}&S%", Map.WinChance);
         }
-        
-        void HandlePlayerChat(Player p, string message) {
+
+        public void HandlePlayerChat(Player p, string message) {
             if (p.level != Map || message.Length <= 1) return;
             
             if (message[0] == '~') {
@@ -182,9 +182,9 @@ namespace Flames.Modules.Games.ZS
                 p.cancelchat = true;
             }
         }
-        
-        
-        void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+
+
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
             if (p.level != Map) return;
             BlockID old = Map.GetBlock(x, y, z);
             ZSData data = Get(p);
@@ -221,9 +221,9 @@ namespace Flames.Modules.Games.ZS
                     p.Message("Blocks Left: &4" + data.BlocksLeft);
                 }
             }
-        }       
+        }
 
-        bool NotPillaring(BlockID b, BlockID old) {
+        public bool NotPillaring(BlockID b, BlockID old) {
             byte collide = Map.CollideType(b);
             if (collide == CollideType.WalkThrough) return true;
             
@@ -231,8 +231,8 @@ namespace Flames.Modules.Games.ZS
             return collide == CollideType.SwimThrough || collide == CollideType.LiquidWater
                 || collide == CollideType.LiquidLava;
         }
-        
-        static bool CheckCoords(Player p, ZSData data, ushort x, ushort y, ushort z) {
+
+        public static bool CheckCoords(Player p, ZSData data, ushort x, ushort y, ushort z) {
             if (data.LastY != y - 1 || data.LastX != x || data.LastZ != z) return false;
             int minX = (p.Pos.X - 8) / 32, minZ = (p.Pos.Z - 8) / 32;
             int maxX = (p.Pos.X + 8) / 32, maxZ = (p.Pos.Z + 8) / 32;
@@ -241,8 +241,8 @@ namespace Flames.Modules.Games.ZS
             return (minX == x && minZ == z) || (minX == x && maxZ == z)
                 || (maxX == x && minZ == z) || (maxX == x && maxZ == z);
         }
-        
-        static bool WarnPillaring(Player p, ZSData data, ushort x, ushort y, ushort z, bool nonReplacable) {
+
+        public static bool WarnPillaring(Player p, ZSData data, ushort x, ushort y, ushort z, bool nonReplacable) {
             if ((!nonReplacable && data.BlocksStacked == 2) || (nonReplacable && data.BlocksStacked == 1)) {
                 TimeSpan delta = DateTime.UtcNow - data.LastPillarWarn;
                 if (delta.TotalSeconds >= 5) {

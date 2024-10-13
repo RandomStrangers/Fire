@@ -44,7 +44,7 @@ namespace Flames {
         public Position TargetPos;
         public bool movement = false;
         public int movementSpeed = 3;
-        internal int curJump = 0;
+        public int curJump = 0;
         
         public PlayerBot(string n, Level lvl) {
             name = n; DisplayName = n; SkinName = n;
@@ -91,16 +91,16 @@ namespace Flames {
             bot.curJump = 0;
             if (save) BotsFile.Save(bot.level);
         }
-        
-        internal static int RemoveLoadedBots(Level lvl, bool save) {
+
+        public static int RemoveLoadedBots(Level lvl, bool save) {
             PlayerBot[] bots = lvl.Bots.Items;
             for (int i = 0; i < bots.Length; i++) {
                 Remove(bots[i], save);
             }
             return bots.Length;
         }
-        
-        internal static int RemoveBotsOwnedBy(Player p, string ownerName, Level lvl, bool save) {
+
+        public static int RemoveBotsOwnedBy(Player p, string ownerName, Level lvl, bool save) {
             PlayerBot[] bots = lvl.Bots.Items;
             int removedCount = 0;
             for (int i = 0; i < bots.Length; i++) {
@@ -126,8 +126,8 @@ namespace Flames {
                 if (p.level == level) Entities.Despawn(p, this);
             }
         }
-        
-        unsafe static byte NextFreeId(PlayerBot bot) {
+
+        public unsafe static byte NextFreeId(PlayerBot bot) {
             byte* used = stackalloc byte[256];
             for (int i = 0; i < 256; i++) used[i] = 0;
 
@@ -177,8 +177,8 @@ namespace Flames {
                 UpdatePositions(levels[i]);
             }
         }
-        
-        unsafe static void UpdatePositions(Level lvl) {
+
+        public unsafe static void UpdatePositions(Level lvl) {
             byte* src = stackalloc byte[16 * 256]; // 16 = size of absolute update, with extended positions
             byte* ext = stackalloc byte[16 * 256];
             byte* ptrSrc = src, ptrExt = ext;
@@ -212,29 +212,29 @@ namespace Flames {
                 p.Send(packet);
             }
         }
-        
-        static AABB[] downs = new AABB[16], ups = new AABB[16];
-        static int downsCount, upsCount;
-        
-        void RecalcDownExtent(ref AABB bb, int steps, int dx, int dz) {
+
+        public static AABB[] downs = new AABB[16], ups = new AABB[16];
+        public static int downsCount, upsCount;
+
+        public void RecalcDownExtent(ref AABB bb, int steps, int dx, int dz) {
             AABB downExtent = bb.Adjust(dx * steps, -32, dz * steps);
             downsCount = AABB.FindIntersectingSolids(downExtent, level, ref downs);
         }
-        
-        void RecalcUpExtent(ref AABB bb, int steps, int dx, int dz) {
+
+        public void RecalcUpExtent(ref AABB bb, int steps, int dx, int dz) {
             AABB upExtent = bb.Adjust(dx * steps, 32, dz * steps);
             upsCount = AABB.FindIntersectingSolids(upExtent, level, ref ups);
         }
-        
-        void PerformMovement() {
+
+        public void PerformMovement() {
             double scale = Math.Ceiling(Server.Config.PositionUpdateInterval / 25.0);
             int steps = movementSpeed * (int)scale;
             
             downsCount = -1;
             for (int i = 0; i < steps; i++) DoMove(steps);
         }
-        
-        void DoMove(int steps) {
+
+        public void DoMove(int steps) {
             Position pos = Pos;
             AABB bb = ModelBB.OffsetPosition(pos);
             int dx = Math.Sign(TargetPos.X - pos.X);

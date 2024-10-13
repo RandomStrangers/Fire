@@ -32,9 +32,12 @@ namespace Flames
         public virtual string shortcut { get { return ""; } }
         /// <summary> The type/group of this command (see `CommandTypes` class) </summary>
         public abstract string type { get; }
-        /// <summary> Whether this comand can be used in museums </summary>
+        /// <summary> Whether this command can be used in museums </summary>
         /// <remarks> Level altering (e.g. places a block) commands should return false </remarks>
         public virtual bool museumUsable { get { return true; } }
+        /// <summary> Whether to show full command info in /help (cmd) </summary>
+        public virtual bool ShowCommandInfo { get { return true; } }
+
         /// <summary> The default minimum rank that is required to use this command </summary>
         public virtual LevelPermission defaultRank { get { return LevelPermission.Guest; } }
         

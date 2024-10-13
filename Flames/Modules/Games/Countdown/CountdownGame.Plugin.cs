@@ -21,8 +21,8 @@ using Flames.Games;
 namespace Flames.Modules.Games.Countdown 
 {    
     public partial class CountdownGame : RoundsGame 
-    {       
-         protected override void HookEventHandlers() {
+    {
+        public override void HookEventHandlers() {
             OnPlayerMoveEvent.Register(HandlePlayerMove, Priority.High);
             OnPlayerSpawningEvent.Register(HandlePlayerSpawning, Priority.High);
             OnJoinedLevelEvent.Register(HandleOnJoinedLevel, Priority.High);
@@ -30,8 +30,8 @@ namespace Flames.Modules.Games.Countdown
             
             base.HookEventHandlers();
         }
-        
-        protected override void UnhookEventHandlers() {
+
+        public override void UnhookEventHandlers() {
             OnPlayerMoveEvent.Unregister(HandlePlayerMove);
             OnPlayerSpawningEvent.Unregister(HandlePlayerSpawning);
             OnJoinedLevelEvent.Unregister(HandleOnJoinedLevel);
@@ -39,8 +39,8 @@ namespace Flames.Modules.Games.Countdown
             
             base.UnhookEventHandlers();
         }
-        
-        void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
+
+        public void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
             if (!RoundInProgress || !FreezeMode) return;
             if (!Remaining.Contains(p)) return;
             
@@ -55,18 +55,18 @@ namespace Flames.Modules.Games.Countdown
             p.SetYawPitch(yaw, pitch);
             cancel = true;
         }
-        
-        void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
+
+        public void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
             if (!respawning || !Remaining.Contains(p)) return;
             Map.Message(p.ColoredName + " &Sis out of countdown!");
             OnPlayerDied(p);
         }
-        
-        void HandleOnJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+
+        public void HandleOnJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
         }
-        
-        void HandleGettingMotd(Player p, ref string motd) {
+
+        public void HandleGettingMotd(Player p, ref string motd) {
             if (p.level != Map || !FreezeMode || !RoundInProgress) return;
             motd += " horspeed=0";
         }

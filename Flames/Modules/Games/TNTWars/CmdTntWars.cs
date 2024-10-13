@@ -25,11 +25,11 @@ using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.TW
 {
-    sealed class CmdTntWars : RoundsGameCmd 
+    public sealed class CmdTntWars : RoundsGameCmd 
     {
         public override string name { get { return "TntWars"; } }
         public override string shortcut { get { return "tw"; } }
-        protected override RoundsGame Game { get { return TWGame.Instance; } }
+        public override RoundsGame Game { get { return TWGame.Instance; } }
         public override CommandPerm[] ExtraPerms {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage TNT wars") }; }
         }
@@ -41,8 +41,8 @@ namespace Flames.Modules.Games.TW
                 base.Use(p, message, data);
             }
         }
-        
-        void HandleScores(Player p) {
+
+        public void HandleScores(Player p) {
             TWGame game = (TWGame)Game;
             if (!game.RoundInProgress) {
                 p.Message("Round is not in progress!"); return;
@@ -56,8 +56,8 @@ namespace Flames.Modules.Games.TW
                 p.Message(game.FormatTopScore(top, i));
             }
         }
-        
-        protected override void HandleSet(Player p, RoundsGame game_, string[] args) {
+
+        public override void HandleSet(Player p, RoundsGame game_, string[] args) {
             TWGame game = (TWGame)game_;
             TWMapConfig cfg  = new TWMapConfig();
             TWConfig gameCfg = game.Config;
@@ -140,8 +140,8 @@ namespace Flames.Modules.Games.TW
             }
             SaveMapConfig(p, cfg);
         }
-        
-        static void OutputStatus(Player p, TWConfig gameCfg, TWMapConfig cfg) {
+
+        public static void OutputStatus(Player p, TWConfig gameCfg, TWMapConfig cfg) {
             p.Message("Gamemode: &a{0} &Sat difficulty &a{1}",
                            gameCfg.Mode, gameCfg.Difficulty);
             p.Message("TNT per player at a time: &a{0}",
@@ -157,10 +157,10 @@ namespace Flames.Modules.Games.TW
             p.Message("Assists: {0} &S(at {1} points)",
                            GetBool(cfg.AssistScore > 0), cfg.AssistScore);
         }
-        
-        static string GetBool(bool value) { return value ? "&aEnabled" : "&cDisabled"; }
-        
-        bool HandleSetScore(Player p, TWMapConfig cfg, string[] args) {
+
+        public static string GetBool(bool value) { return value ? "&aEnabled" : "&cDisabled"; }
+
+        public bool HandleSetScore(Player p, TWMapConfig cfg, string[] args) {
             string opt = args[2], value = args[3];            
             if (opt.CaselessEq("required")) {
                 int score = 1;
@@ -201,8 +201,8 @@ namespace Flames.Modules.Games.TW
             }
             return true;
         }
-        
-        bool HandleZone(Player p, TWGame game, bool noTntZone, string[] args) {
+
+        public bool HandleZone(Player p, TWGame game, bool noTntZone, string[] args) {
             string type = noTntZone ? "no TNT" : "no blocks deleted on explosions";
             List<TWGame.TWZone> zones = noTntZone ? game.tntFreeZones : game.tntImmuneZones;
             string opt = args[3];
@@ -226,8 +226,8 @@ namespace Flames.Modules.Games.TW
             }
             return true;
         }
-        
-        static bool AddZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public static bool AddZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
             Vec3U16 p1 = (Vec3U16)marks[0], p2 = (Vec3U16)marks[1];
             TWGame.TWZone zn = new TWGame.TWZone(p1, p2);
 
@@ -236,8 +236,8 @@ namespace Flames.Modules.Games.TW
             p.Message("TNT Wars: Zone added!");
             return false;
         }
-        
-        static bool DeleteZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public static bool DeleteZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             List<TWGame.TWZone> zones = (List<TWGame.TWZone>)state;
             bool any = false;
@@ -254,8 +254,8 @@ namespace Flames.Modules.Games.TW
             if (!any) p.Message("TNT Wars Error: You weren't in any zone");
             return false;
         }
-        
-        static bool CheckZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public static bool CheckZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block) {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             
             List<TWGame.TWZone> zones = (List<TWGame.TWZone>)state;
@@ -275,14 +275,14 @@ namespace Flames.Modules.Games.TW
             }
             return false;
         }
-        
-        static void SetDifficulty(TWGame game, TWDifficulty diff, Player p) {
+
+        public static void SetDifficulty(TWGame game, TWDifficulty diff, Player p) {
             if (p.level != game.Map)
                 p.Message("Changed TNT wars difficulty to {0}", diff);
             game.SetDifficulty(diff);
         }
-        
-        static void SetBool(Player p, ref bool target, string opt, string name) {
+
+        public static void SetBool(Player p, ref bool target, string opt, string name) {
             if (!CommandParser.GetBool(p, opt, ref target)) return;
             p.Message("{0} is now {1}", name, GetBool(target));
         }

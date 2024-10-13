@@ -42,8 +42,8 @@ namespace Flames.Commands.Moderation {
                 Help(p);
             }
         }
-        
-        static void Add(Player p, string name) {
+
+        public static void Add(Player p, string name) {
             name = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (name == null) return;
             
@@ -57,8 +57,8 @@ namespace Flames.Commands.Moderation {
                 vip?.Message("You are now a VIP!");
             }
         }
-        
-        static void Remove(Player p, string name) {
+
+        public static void Remove(Player p, string name) {
             name = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (name == null) return;
             
@@ -72,8 +72,8 @@ namespace Flames.Commands.Moderation {
                 vip?.Message("You are no longer a VIP!");
             }
         }
-        
-        static void List(Player p, string modifier) {
+
+        public static void List(Player p, string modifier) {
             Server.vip.Output(p, "VIPs", "VIP list", modifier);
         }
 

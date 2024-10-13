@@ -23,7 +23,7 @@ namespace Flames.Drawing.Brushes
 {
     public class SimplePasteBrush : Brush 
     {
-        readonly CopyState state;
+        public readonly CopyState state;
         
         public SimplePasteBrush(CopyState state) { this.state = state; }
         

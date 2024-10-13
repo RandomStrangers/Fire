@@ -44,8 +44,8 @@ namespace Flames.Commands.CPE
                 Help(p);
             }
         }
-        
-        void AddHandler(Player p, string[] args) {
+
+        public void AddHandler(Player p, string[] args) {
             if (args.Length <= 4) { Help(p); return; }         
             char code = args[1][0];
             if (code >= 'A' && code <= 'F') code += ' ';
@@ -67,8 +67,8 @@ namespace Flames.Commands.CPE
             Colors.Update(col);
             p.Message("Successfully added '{0}' color", code);
         }
-        
-        void RemoveHandler(Player p, string[] args) {
+
+        public void RemoveHandler(Player p, string[] args) {
             if (args.Length < 2) { Help(p); return; }
             
             char code = ParseColor(p, args[1]);
@@ -77,8 +77,8 @@ namespace Flames.Commands.CPE
             Colors.Update(Colors.DefaultCol(code));
             p.Message("Successfully removed '{0}' color", code);
         }
-        
-        static void ListHandler(Player p, string cmd, string modifier) {
+
+        public static void ListHandler(Player p, string cmd, string modifier) {
             List<ColorDesc> validColors = new List<ColorDesc>(Colors.List.Length);
             foreach (ColorDesc color in Colors.List) 
             {
@@ -88,16 +88,16 @@ namespace Flames.Commands.CPE
             Paginator.Output(p, validColors, PrintColor, 
                              cmd, "Colors", modifier);
         }
-        
+
         // Not very elegant, because we don't want the % to be escaped like everywhere else
-        internal static void PrintColor(Player p, ColorDesc col) {
+        public static void PrintColor(Player p, ColorDesc col) {
             string format = "{0} &{1}({2})&S - %&S{1}, falls back to &{3}%&{3}{3}";
             if (col.Code == col.Fallback) format = "{0} &{1}({2})&S - %&S{1}";
 
             p.Message(format, col.Name, col.Code, Utils.Hex(col.R, col.G, col.B), col.Fallback);
         }
-        
-        void EditHandler(Player p, string[] args) {
+
+        public void EditHandler(Player p, string[] args) {
             if (args.Length < 4) { Help(p); return; }
             
             char code = ParseColor(p, args[1]);
@@ -126,17 +126,17 @@ namespace Flames.Commands.CPE
             
             Colors.Update(col);
         }
-        
-        
-        static bool CheckName(Player p, string arg) {
+
+
+        public static bool CheckName(Player p, string arg) {
             if (Colors.Parse(arg).Length > 0) {
                 p.Message("There is already an existing color named \"{0}\".", arg);
                 return false;
             }
             return true;
         }
-        
-        static char ParseColor(Player p, string arg) {
+
+        public static char ParseColor(Player p, string arg) {
             if (arg.Length != 1) {
                 string colCode = Matcher.FindColor(p, arg);
                 if (colCode != null) return colCode[1];
@@ -149,8 +149,8 @@ namespace Flames.Commands.CPE
             }
             return '\0';
         }
-        
-        static bool CheckFallback(Player p, string arg, char code, out char fallback) {
+
+        public static bool CheckFallback(Player p, string arg, char code, out char fallback) {
             fallback = arg[0];
             if (!Colors.IsStandard(fallback)) {
                 p.Message("{0} must be a standard color code.", fallback); return false;

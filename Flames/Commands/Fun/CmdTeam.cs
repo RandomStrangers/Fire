@@ -50,7 +50,7 @@ namespace Flames.Commands.Fun {
             team.Message(p, message);
         }
 
-        void HandleOwner(Player p, string[] args) {
+        public void HandleOwner(Player p, string[] args) {
             Team team = p.Game.Team;
             if (team == null) { p.Message("You need to be in a team first."); return; }
             
@@ -69,7 +69,7 @@ namespace Flames.Commands.Fun {
             Team.SaveList();
         }
 
-        void HandleKick(Player p, string[] args) {
+        public void HandleKick(Player p, string[] args) {
             Team team = p.Game.Team;
             if (team == null) { p.Message("You need to be in a team first."); return; }
             if (args.Length == 1) {
@@ -93,8 +93,8 @@ namespace Flames.Commands.Fun {
                 p.Message("The given player was not found. You need to use their full account name.");
             }
         }
-        
-        void HandleColor(Player p, string[] args) {
+
+        public void HandleColor(Player p, string[] args) {
             Team team = p.Game.Team;
             if (team == null) { p.Message("You need to be in a team first."); return; }
             if (args.Length == 1) {
@@ -109,8 +109,8 @@ namespace Flames.Commands.Fun {
             team.UpdatePrefix();
             Team.SaveList();
         }
-        
-        void HandleCreate(Player p, string[] args, CommandData data) {
+
+        public void HandleCreate(Player p, string[] args, CommandData data) {
             if (!CheckExtraPerm(p, data, 1)) return;
             Team team = p.Game.Team;
             if (team != null) { p.Message("You need to leave your current team before you can create one."); return; }
@@ -130,8 +130,8 @@ namespace Flames.Commands.Fun {
             Team.SaveList();
             Chat.MessageFrom(p, "λNICK &Screated the &a" + args[1] + " &Steam");
         }
-        
-        void HandleJoin(Player p, string[] args) {
+
+        public void HandleJoin(Player p, string[] args) {
             Team team = p.Game.Team;
             if (p.Game.TeamInvite == null) { p.Message("You do not currently have any invitation to join a team."); return; }
             if (team != null) { p.Message("You need to leave your current team before you can join another one."); return; }
@@ -147,8 +147,8 @@ namespace Flames.Commands.Fun {
             team.Action(p, "joined the team.");
             Team.SaveList();
         }
-        
-        void HandleInvite(Player p, string[] args) {
+
+        public void HandleInvite(Player p, string[] args) {
             Team team = p.Game.Team;
             if (team == null) { p.Message("You need to be in a team first to invite players."); return; }
             if (args.Length == 1) {
@@ -170,8 +170,8 @@ namespace Flames.Commands.Fun {
             target.Message(p.ColoredName + " &Sinvited you to join the " + team.Color + team.Name + " &Steam.");
             target.Game.TeamInvite = team.Name;
         }
-        
-        void HandleLeave(Player p, string[] args) {
+
+        public void HandleLeave(Player p, string[] args) {
             Team team = p.Game.Team;
             if (team == null) { p.Message("You need to be in a team first to leave one."); return; }
             
@@ -188,8 +188,8 @@ namespace Flames.Commands.Fun {
             p.SetPrefix();
             Team.SaveList();
         }
-        
-        void HandleMembers(Player p, string[] args) {
+
+        public void HandleMembers(Player p, string[] args) {
             Team team = p.Game.Team;
             if (args.Length == 1) {
                 if (team == null) { p.Message("You are not in a team, so must provide a team name."); return; }
@@ -200,8 +200,8 @@ namespace Flames.Commands.Fun {
             p.Message("Team owner: " + team.Owner);
             p.Message("Members: " + team.Members.Join());
         }
-        
-        void HandleList(Player p, string[] args) {
+
+        public void HandleList(Player p, string[] args) {
             string modifier = args.Length > 1 ? args[1] : "";
             Paginator.Output(p, Team.Teams, team => team.Color + team.Name,
                              "team list", "teams", modifier);

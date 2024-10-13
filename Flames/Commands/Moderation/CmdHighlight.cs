@@ -65,17 +65,17 @@ namespace Flames.Commands.Moderation {
                 p.MakeSelection(2,  "Selecting region for &SHighlight", args, DoHighlightArea);
             }
         }
-        
-        bool DoHighlightArea(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool DoHighlightArea(Player p, Vec3S32[] marks, object state, BlockID block) {
             HighlightAreaArgs args = (HighlightAreaArgs)state;
             HighlightPlayer(p, args.delta, args.who, args.ids, marks);
             return false;
         }
 
-        struct HighlightAreaArgs { public string who; public int[] ids; public TimeSpan delta; }
-        
-        
-        static void HighlightPlayer(Player p, TimeSpan delta, string who, int[] ids, Vec3S32[] marks) {
+        public struct HighlightAreaArgs { public string who; public int[] ids; public TimeSpan delta; }
+
+
+        public static void HighlightPlayer(Player p, TimeSpan delta, string who, int[] ids, Vec3S32[] marks) {
             HighlightDrawOp op = new HighlightDrawOp
             {
                 Start = DateTime.UtcNow.Subtract(delta),

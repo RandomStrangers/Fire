@@ -26,8 +26,8 @@ namespace Flames.Commands.Building {
                     new CommandAlias("ch", "hollow"), new CommandAlias("Walls", "walls"),
                     new CommandAlias("box"), new CommandAlias("hbox", "hollow") }; }
         }
-        
-        protected override DrawMode GetMode(string[] parts) {
+
+        public override DrawMode GetMode(string[] parts) {
             string msg = parts[0];
             if (msg == "solid")  return DrawMode.solid;
             if (msg == "hollow") return DrawMode.hollow;
@@ -37,8 +37,8 @@ namespace Flames.Commands.Building {
             if (msg == "random") return DrawMode.random;
             return DrawMode.normal;
         }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             switch (dArgs.Mode) {
                 case DrawMode.hollow: return new CuboidHollowsDrawOp();
                 case DrawMode.walls:  return new CuboidWallsDrawOp();
@@ -48,8 +48,8 @@ namespace Flames.Commands.Building {
             }
             return new CuboidDrawOp();
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             if (dArgs.Mode == DrawMode.solid)  dArgs.BrushName = "Normal";
             if (dArgs.Mode == DrawMode.holes)  dArgs.BrushName = "Checkered";
             if (dArgs.Mode == DrawMode.random) dArgs.BrushName = "Random";

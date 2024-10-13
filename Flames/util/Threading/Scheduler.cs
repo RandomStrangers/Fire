@@ -25,11 +25,11 @@ namespace Flames.Tasks {
     
     public sealed class Scheduler {
 
-        readonly List<SchedulerTask> tasks = new List<SchedulerTask>();
-        readonly AutoResetEvent handle = new AutoResetEvent(false);
-        readonly Thread thread;
-        readonly object taskLock = new object();
-        volatile SchedulerTask curTask; // for .ToString()
+        public readonly List<SchedulerTask> tasks = new List<SchedulerTask>();
+        public readonly AutoResetEvent handle = new AutoResetEvent(false);
+        public readonly Thread thread;
+        public readonly object taskLock = new object();
+        public volatile SchedulerTask curTask; // for .ToString()
 
         public Scheduler(string name) {
             thread = new Thread(Loop);
@@ -68,9 +68,9 @@ namespace Flames.Tasks {
                 handle.Set();
             }
         }
-        
-        
-        SchedulerTask EnqueueTask(SchedulerTask task) {
+
+
+        public SchedulerTask EnqueueTask(SchedulerTask task) {
             lock (taskLock) {
                 tasks.Add(task);
                 handle.Set();
@@ -78,16 +78,16 @@ namespace Flames.Tasks {
             return task;
         }
 
-        void Loop() {
+        public void Loop() {
             while (true) {
                 SchedulerTask task = GetNextTask();
                 if (task != null) DoTask(task);
                 handle.WaitOne(GetWaitTime(), false);
             }
         }
-        
-        
-        SchedulerTask GetNextTask() {
+
+
+        public SchedulerTask GetNextTask() {
             DateTime minTime = DateTime.UtcNow.AddMilliseconds(1);
             SchedulerTask minTask = null;
             
@@ -100,7 +100,7 @@ namespace Flames.Tasks {
             return minTask;
         }
 
-        void DoTask(SchedulerTask task) {
+        public void DoTask(SchedulerTask task) {
             curTask = task;
             try {
                 task.Callback(task);
@@ -116,8 +116,8 @@ namespace Flames.Tasks {
                     tasks.Remove(task);
             }
         }
-        
-        int GetWaitTime() {
+
+        public int GetWaitTime() {
             long wait = int.MaxValue;
             DateTime now = DateTime.UtcNow;
             

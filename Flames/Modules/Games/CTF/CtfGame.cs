@@ -26,14 +26,14 @@ using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
-    internal sealed class CtfData 
+    public sealed class CtfData 
     {
         public int Captures, Tags, Points;
         public bool HasFlag, TagCooldown, TeamChatting;
         public Vec3S32 LastHeadPos;
     }
-    
-    sealed class CtfTeam 
+
+    public sealed class CtfTeam 
     {
         public string Name, Color;
         public string ColoredName { get { return Color + Name; } }
@@ -52,23 +52,23 @@ namespace Flames.Modules.Games.CTF
 
     public partial class CTFGame : RoundsGame 
     {
-        CTFMapConfig cfg = new CTFMapConfig();
+        public CTFMapConfig cfg = new CTFMapConfig();
         public CTFConfig Config = new CTFConfig();
         public override string GameName { get { return "CTF"; } }
         public override RoundsGameConfig GetConfig() { return Config; }
-        
-        CtfTeam Red  = new CtfTeam("Red", Colors.red);
-        CtfTeam Blue = new CtfTeam("Blue", Colors.blue);
+
+        public CtfTeam Red  = new CtfTeam("Red", Colors.red);
+        public CtfTeam Blue = new CtfTeam("Blue", Colors.blue);
         
         public static CTFGame Instance = new CTFGame();
         public CTFGame() { Picker = new LevelPicker(); }
-        
-        protected override string WelcomeMessage {
+
+        public override string WelcomeMessage {
             get { return "&9Capture the Flag &Sis running! Type &T/CTF go &Sto join"; }
 		}
-        
-        const string ctfExtrasKey = "F_CTF_DATA";
-        internal static CtfData Get(Player p) {
+
+        public const string ctfExtrasKey = "F_CTF_DATA";
+        public static CtfData Get(Player p) {
             CtfData data = TryGet(p);
             if (data != null) return data;
             data = new CtfData();
@@ -80,8 +80,8 @@ namespace Flames.Modules.Games.CTF
             p.Extras[ctfExtrasKey] = data;
             return data;
         }
-        
-        static CtfData TryGet(Player p) {
+
+        public static CtfData TryGet(Player p) {
             object data; p.Extras.TryGet(ctfExtrasKey, out data); return (CtfData)data;
         }
         
@@ -100,8 +100,8 @@ namespace Flames.Modules.Games.CTF
             Blue.SpawnPos  = cfg.BlueSpawn;
         }
 
-        
-        protected override List<Player> GetPlayers() {
+
+        public override List<Player> GetPlayers() {
             List<Player> playing = new List<Player>();
             playing.AddRange(Red.Members.Items);
             playing.AddRange(Blue.Members.Items);
@@ -114,27 +114,27 @@ namespace Flames.Modules.Games.CTF
             p.Message("{0} &Steam: {1} captures", Red.ColoredName,  Red.Captures);
         }
 
-        protected override void StartGame() {
+        public override void StartGame() {
             Blue.RespawnFlag(Map);
             Red.RespawnFlag(Map);
             ResetTeams();
 
             Database.CreateTable("CTF", ctfTable);
         }
-        
-        protected override void EndGame() {
+
+        public override void EndGame() {
             ResetTeams();
             ResetFlagsState();
         }
-        
-        void ResetTeams() {
+
+        public void ResetTeams() {
             Blue.Members.Clear();
             Red.Members.Clear();
             Blue.Captures = 0;
             Red.Captures = 0;
         }
 
-        void ResetFlagsState() {
+        public void ResetFlagsState() {
             Blue.RespawnFlag(Map);
             Red.RespawnFlag(Map);
             Player[] players = PlayerInfo.Online.Items;
@@ -162,8 +162,8 @@ namespace Flames.Modules.Games.CTF
             
             DropFlag(p, team);          
         }
-        
-        void AutoAssignTeam(Player p) {     
+
+        public void AutoAssignTeam(Player p) {     
             if (Blue.Members.Count > Red.Members.Count) {
                 JoinTeam(p, Red);
             } else if (Red.Members.Count > Blue.Members.Count) {
@@ -173,29 +173,29 @@ namespace Flames.Modules.Games.CTF
                 JoinTeam(p, red ? Red : Blue);
             }
         }
-        
-        void JoinTeam(Player p, CtfTeam team) {
+
+        public void JoinTeam(Player p, CtfTeam team) {
             Get(p).HasFlag = false;
             team.Members.Add(p);
             Map.Message(p.ColoredName + " &Sjoined the " + team.ColoredName + " &Steam");
             p.Message("You are now on the " + team.ColoredName + " team!");
             TabList.Update(p, true);
         }
-        
-        bool OnOwnTeamSide(int z, CtfTeam team) {
+
+        public bool OnOwnTeamSide(int z, CtfTeam team) {
             int baseZ = team.FlagPos.Z, zline = cfg.ZDivider;
             if (baseZ < zline && z < zline) return true;
             if (baseZ > zline && z > zline) return true;
             return false;
         }
-        
-        CtfTeam TeamOf(Player p) {
+
+        public CtfTeam TeamOf(Player p) {
             if (Red.Members.Contains(p))  return Red;
             if (Blue.Members.Contains(p)) return Blue;
             return null;
         }
-        
-        CtfTeam Opposing(CtfTeam team) {
+
+        public CtfTeam Opposing(CtfTeam team) {
             return team == Red ? Blue : Red;
         }
     }

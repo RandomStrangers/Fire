@@ -16,7 +16,7 @@ namespace Flames.Commands.Misc
         }
         public override void Help(Player p)
         {
-            p.Message("/Disconnect (message)- Leaves the server with an optional message.");
+            p.Message("&T/Disconnect [message] &H- Leaves the server with an optional message.");
         }
     }
 }

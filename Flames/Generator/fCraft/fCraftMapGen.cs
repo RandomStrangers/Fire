@@ -16,18 +16,18 @@ namespace Flames.Generator.fCraft {
     /// <summary> Provides functionality for generating map files. </summary>
     public sealed class fCraftMapGen 
     {
-        readonly fCraftMapGenArgs args;
-        readonly Random rand;
-        readonly Noise noise;
-        float[] heightmap, slopemap;
-        ushort[] surfaceMap; // height of tallest non-air block
-        int _width, _length;
+        public readonly fCraftMapGenArgs args;
+        public readonly Random rand;
+        public readonly Noise noise;
+        public float[] heightmap, slopemap;
+        public ushort[] surfaceMap; // height of tallest non-air block
+        public int _width, _length;
 
         // theme-dependent vars
-        byte bGroundSurface, bWater, bGround, bSeaFloor, bBedrock, bCliff;
-        int groundThickness = 5;
-        const int SeaFloorThickness = 3;
-        Tree tree;
+        public byte bGroundSurface, bWater, bGround, bSeaFloor, bBedrock, bCliff;
+        public int groundThickness = 5;
+        public const int SeaFloorThickness = 3;
+        public Tree tree;
 
         public fCraftMapGen( fCraftMapGenArgs generatorArgs ) {
             args  = generatorArgs;
@@ -45,11 +45,11 @@ namespace Flames.Generator.fCraft {
             GenerateMap(map);
         }
 
-        void ReportProgress(int relativeIncrease, string message) {
+        public void ReportProgress(int relativeIncrease, string message) {
             Logger.Log(LogType.SystemActivity, message);
         }
-        
-        void ApplyBiome(Level map) {
+
+        public void ApplyBiome(Level map) {
             MapGenBiome biome = MapGenBiome.Get(args.Biome);
             bGroundSurface    = biome.Surface;
             bWater    = biome.Water;
@@ -66,11 +66,11 @@ namespace Flames.Generator.fCraft {
             
             tree = biome.GetTreeGen("fCraft");
         }
-        
+
 
         #region Heightmap Processing
 
-        void GenerateHeightmap(Level map) {
+        public void GenerateHeightmap(Level map) {
             ReportProgress( 10, "Heightmap: Priming" );
             heightmap  = new float[_width * _length];
             surfaceMap = new ushort[_width * _length];
@@ -105,7 +105,7 @@ namespace Flames.Generator.fCraft {
         }
 
 
-        void ApplyBias() {
+        public void ApplyBias() {
             // set corners and midpoint
             float[] corners = new float[4];
             int c = 0;
@@ -132,7 +132,7 @@ namespace Flames.Generator.fCraft {
 
         #region Map Processing
 
-        void GenerateMap(Level map) {
+        public void GenerateMap(Level map) {
             // Match water coverage
             float desiredWaterLevel = .5f;
             if( args.MatchWaterCoverage ) {
@@ -182,8 +182,8 @@ namespace Flames.Generator.fCraft {
                 GenerateTrees( map );
             }
         }
-        
-        void Fill( Level map, float desiredWaterLevel, float aboveWaterMultiplier, float[] altmap ) {
+
+        public void Fill( Level map, float desiredWaterLevel, float aboveWaterMultiplier, float[] altmap ) {
             int width = map.Width, length = map.Length, mapHeight = map.Height;
             int snowStartThreshold = args.SnowAltitude - args.SnowTransition;
             int snowThreshold = args.SnowAltitude;
@@ -298,7 +298,7 @@ namespace Flames.Generator.fCraft {
         }
 
 
-        void AddBeaches( Level map ) {
+        public void AddBeaches( Level map ) {
             int beachExtentSqr = (args.BeachExtent + 1) * (args.BeachExtent + 1);
             for( int x = 0; x < map.Width; x++ )
                 for( int z = 0; z < map.Length; z++ )
@@ -331,7 +331,7 @@ namespace Flames.Generator.fCraft {
         }
 
 
-        void GenerateTrees( Level map ) {
+        public void GenerateTrees( Level map ) {
             int minTrunkPadding = args.TreeSpacingMin;
             int maxTrunkPadding = args.TreeSpacingMax;
 
@@ -385,8 +385,8 @@ namespace Flames.Generator.fCraft {
                                 (p, lvl, args) => Gen(p, lvl, args, type_), desc);
             }
         }
-        
-        static bool Gen(Player p, Level lvl, MapGenArgs gen_args, MapGenTemplate type) {
+
+        public static bool Gen(Player p, Level lvl, MapGenArgs gen_args, MapGenTemplate type) {
             fCraftMapGenArgs args = fCraftMapGenArgs.MakeTemplate(type);
             
             gen_args.Biome = args.Biome;

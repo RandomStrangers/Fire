@@ -48,9 +48,9 @@ namespace Flames
         
 
         public const ushort MaxRaw = 767;
-        internal const int SUPPORTED_COUNT = 256 * 4;
-        internal static ushort[] ExtendedBase = new ushort[CORE_COUNT];
-        internal static byte[] ExtendedClass  = new byte[4];
+        public const int SUPPORTED_COUNT = 256 * 4;
+        public static ushort[] ExtendedBase = new ushort[CORE_COUNT];
+        public static byte[] ExtendedClass  = new byte[4];
         
         static Block() {
             ExtendedBase[custom_block]   = Extended;

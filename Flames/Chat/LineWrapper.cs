@@ -18,8 +18,8 @@ using System.Collections.Generic;
 namespace Flames {
 
     public static class LineWrapper {
-        
-        static bool EndsInEmote(char[] line, int length, int lineLength) {
+
+        public static bool EndsInEmote(char[] line, int length, int lineLength) {
             length = Math.Min(length, lineLength);
             
             // skip trailing spaces
@@ -29,8 +29,8 @@ namespace Flames {
             char last = line[length - 1];
             return last.UnicodeToCp437() != last;
         }
-        
-        static char LastColor(char[] line, int length) {
+
+        public static char LastColor(char[] line, int length) {
             for (int i = length - 2; i >= 0; i--) {
                 if (line[i] != '&') continue;
                 
@@ -39,8 +39,8 @@ namespace Flames {
             }
             return 'f';
         }
-        
-        static string MakeLine(char[] line, int length, bool emotePad) {
+
+        public static string MakeLine(char[] line, int length, bool emotePad) {
             // necessary to remove useless trailing color codes, 
             //  as crashes original minecraft classic otherwise
             length = TrimTrailingInvisible(line, length);
@@ -49,7 +49,7 @@ namespace Flames {
             return new string(line, 0, length);
         }
 
-        static bool IsWrapper(char[] line, int i) {
+        public static bool IsWrapper(char[] line, int i) {
             char c = line[i];
             if (c == ' ') return true;
             
@@ -59,7 +59,7 @@ namespace Flames {
             return (c == '-' || c == '/' || c == '\\') && line[i - 1] != ' ';
         }
 
-        static bool StartsWithColor(char[] message, int messageLen, int offset) {
+        public static bool StartsWithColor(char[] message, int messageLen, int offset) {
             return message[offset] == '&' 
                 && (offset + 1) < messageLen
                 && Colors.Lookup(message[offset + 1]) != '\0';
@@ -219,7 +219,7 @@ namespace Flames {
         }
 
         // Trims trailing color codes and whitespace
-        static int TrimTrailingInvisible(char[] chars, int len) {
+        public static int TrimTrailingInvisible(char[] chars, int len) {
             while (len >= 2)
             {
                 char c = chars[len - 1];

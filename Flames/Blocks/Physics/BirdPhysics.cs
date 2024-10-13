@@ -62,8 +62,8 @@ namespace Flames.Blocks.Physics {
             lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
-        
-        static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, BlockID block) {
+
+        public static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, BlockID block) {
             BlockID neighbour = lvl.GetBlock(x, y, z, out int index);
             if (neighbour == Block.Invalid) return;
             

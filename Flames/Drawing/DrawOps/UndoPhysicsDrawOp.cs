@@ -25,8 +25,8 @@ namespace Flames.Drawing.Ops
 {
     public class UndoPhysicsDrawOp : DrawOp 
     {
-        public override string Name { get { return "UndoPhysics"; } }        
-        internal DateTime Start;
+        public override string Name { get { return "UndoPhysics"; } }
+        public DateTime Start;
 
         public UndoPhysicsDrawOp() {
             AffectedByTransform = false;
@@ -56,8 +56,8 @@ namespace Flames.Drawing.Ops
                 }
             }
         }
-        
-        bool CheckBlockPhysics(Player p, Level lvl, int i) {
+
+        public bool CheckBlockPhysics(Player p, Level lvl, int i) {
             Level.UndoPos undo = lvl.UndoBuffer[i];
             if (undo.Time < Start) return false;
             

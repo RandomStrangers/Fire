@@ -25,16 +25,16 @@ using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS 
 {
-    sealed class CmdLavaSurvival : RoundsGameCmd 
+    public sealed class CmdLavaSurvival : RoundsGameCmd 
     {
         public override string name { get { return "LavaSurvival"; } }
         public override string shortcut { get { return "LS"; } }
-        protected override RoundsGame Game { get { return LSGame.Instance; } }
+        public override RoundsGame Game { get { return LSGame.Instance; } }
         public override CommandPerm[] ExtraPerms {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage lava survival") }; }
         }
 
-        protected override void HandleSet(Player p, RoundsGame game, string[] args) {
+        public override void HandleSet(Player p, RoundsGame game, string[] args) {
             string prop = args[1];
             LSMapConfig cfg = new LSMapConfig();
             LoadMapConfig(p, cfg);
@@ -54,13 +54,13 @@ namespace Flames.Modules.Games.LS
             }
         }
 
-        static bool ParseChance(Player p, string arg, string[] args, ref int value) {
+        public static bool ParseChance(Player p, string arg, string[] args, ref int value) {
             if (!CommandParser.GetInt(p, args[3], "Chance", ref value, 0, 100)) return false;
             p.Message("Set {0} chance to &b{1}%", arg, value);
             return true;
         }
-        
-        static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan? span) {
+
+        public static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan? span) {
             TimeSpan value = default;
             if (!CommandParser.GetTimespan(p, args[3], ref value, "set " + arg + " to", "m")) return false;
             
@@ -68,9 +68,9 @@ namespace Flames.Modules.Games.LS
             p.Message("Set {0} to &b{1}", arg, value.Shorten(true));
             return true;
         }
-        
-        
-        void HandleSetSpawn(Player p, string[] args, LSMapConfig cfg) {
+
+
+        public void HandleSetSpawn(Player p, string[] args, LSMapConfig cfg) {
             if (args.Length < 3) {
                 p.Message("Flood position: &b" + cfg.FloodPos);
                 p.Message("Safe zone: &b({0}) ({1})", cfg.SafeZoneMin, cfg.SafeZoneMax);
@@ -90,8 +90,8 @@ namespace Flames.Modules.Games.LS
             
             Help(p, "spawn");
         }
-        
-        bool SetFloodPos(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool SetFloodPos(Player p, Vec3S32[] m, object state, BlockID block) {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.FloodPos    = (Vec3U16)m[0];
             SaveMapConfig(p, cfg);
@@ -99,8 +99,8 @@ namespace Flames.Modules.Games.LS
             p.Message("Flood position set to &b({0})", m[0]);
             return false;
         }
-        
-        bool SetSafeZone(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool SetSafeZone(Player p, Vec3S32[] m, object state, BlockID block) {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.SafeZoneMin = (Vec3U16)Vec3S32.Min(m[0], m[1]);
             cfg.SafeZoneMax = (Vec3U16)Vec3S32.Max(m[0], m[1]);
@@ -109,8 +109,8 @@ namespace Flames.Modules.Games.LS
             p.Message("Safe zone set! &b({0}) ({1})", cfg.SafeZoneMin, cfg.SafeZoneMax);
             return false;
         }
-        
-        void HandleSetBlock(Player p, string[] args, LSMapConfig cfg) {
+
+        public void HandleSetBlock(Player p, string[] args, LSMapConfig cfg) {
             if (args.Length < 3) {
                 p.Message("Fast lava chance: &b" + cfg.FastChance + "%");
                 p.Message("Water flood chance: &b" + cfg.WaterChance + "%");
@@ -134,8 +134,8 @@ namespace Flames.Modules.Games.LS
             
             if (ok) SaveMapConfig(p, cfg);
         }
-        
-        void HandleSetOther(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
+
+        public void HandleSetOther(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
             if (args.Length < 3) {
                 p.Message("Round time: &b" + gameCfg.GetRoundTime(cfg).Shorten(true));
                 p.Message("Flood time: &b" + gameCfg.GetFloodTime(cfg).Shorten(true));
@@ -158,7 +158,7 @@ namespace Flames.Modules.Games.LS
         }
 
 
-        void HandleSetLayer(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
+        public void HandleSetLayer(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
             if (args.Length < 3) {
                 p.Message("Layer flood chance: &b" + cfg.LayerChance + "%");
                 p.Message("Layer time: &b" + gameCfg.GetLayerInterval(cfg).Shorten(true));
@@ -194,8 +194,8 @@ namespace Flames.Modules.Games.LS
             
             if (ok) SaveMapConfig(p, cfg);
         }
-        
-        bool SetLayerPos(Player p, Vec3S32[] m, object state, BlockID block) {
+
+        public bool SetLayerPos(Player p, Vec3S32[] m, object state, BlockID block) {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.LayerPos    = (Vec3U16)m[0];
             SaveMapConfig(p, cfg);

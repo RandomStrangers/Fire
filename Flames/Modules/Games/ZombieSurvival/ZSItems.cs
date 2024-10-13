@@ -21,8 +21,8 @@ using Flames.Commands;
 using Flames.Eco;
 
 namespace Flames.Modules.Games.ZS 
-{    
-    sealed class BlocksItem : SimpleItem 
+{
+    public sealed class BlocksItem : SimpleItem 
     {    
         public BlocksItem() {
             Aliases = new string[] { "blocks", "bl", "b" };
@@ -43,15 +43,15 @@ namespace Flames.Modules.Games.ZS
             data.BlocksLeft += 10 * count;
             Economy.MakePurchase(p, Price * count, "%310Blocks: " + (10 * count));
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             p.Message("&T/Buy 10blocks [num]");
             p.Message("&HCosts &a{0} * [num] &H{1}", Price, Server.Config.Currency);
             p.Message("Increases the blocks you are able to place by 10 * [num].");
         }
     }
     
-    sealed class QueueLevelItem : SimpleItem 
+    public sealed class QueueLevelItem : SimpleItem 
     {    
         public QueueLevelItem() {
             Aliases = new string[] { "queuelevel", "queuelvl", "queue" };
@@ -72,16 +72,16 @@ namespace Flames.Modules.Games.ZS
             if (!ZSGame.Instance.SetQueuedLevel(p, args)) return;
             Economy.MakePurchase(p, Price, "%3QueueLevel: " + args);
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             p.Message("&T/Buy {0} [level]", Name);
             OutputItemInfo(p);
             p.Message("The map used for the next round of " +
                            "zombie survival will be the given map.");
         }
     }
-    
-    sealed class InfectMessageItem : SimpleItem 
+
+    public sealed class InfectMessageItem : SimpleItem 
     {    
         public InfectMessageItem() {
             Aliases = new string[] { "infectmessage", "infectmsg" };
@@ -109,13 +109,13 @@ namespace Flames.Modules.Games.ZS
             Economy.MakePurchase(p, Price, "%3InfectMessage: " + msg);
         }
 
-        protected internal override void OnStoreCommand(Player p) {
+        public override void OnStoreCommand(Player p) {
             base.OnStoreCommand(p);
             p.Message("&HInfect messages must include either \"<zombie>\" or \"<human>\" (placeholders for zombie and/or human player) in them");
         }
     }
-    
-    sealed class InvisibilityItem : SimpleItem 
+
+    public sealed class InvisibilityItem : SimpleItem 
     {    
         public InvisibilityItem() {
             // old aliases for when invisibility and zombie invisibility were seperate
@@ -155,8 +155,8 @@ namespace Flames.Modules.Games.ZS
             ZSGame.Instance.GoInvisible(p, duration);
             Economy.MakePurchase(p, Price, "%3Invisibility: " + duration);
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             ZSConfig cfg = ZSGame.Instance.Config;
             p.Message("&T/Buy " + Name);
             OutputItemInfo(p);
@@ -167,8 +167,8 @@ namespace Flames.Modules.Games.ZS
             p.Message("  &WYou can still infect humans while invisible");
         }
     }
-    
-    sealed class ReviveItem : SimpleItem 
+
+    public sealed class ReviveItem : SimpleItem 
     {   
         public ReviveItem() {
             Aliases = new string[] { "revive", "rev" };
@@ -211,8 +211,8 @@ namespace Flames.Modules.Games.ZS
             data.RevivesUsed++;
             Economy.MakePurchase(p, Price, "%3Revive:");
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             ZSConfig cfg = ZSGame.Instance.Config;
             p.Message("&T/Buy " + Name);
             OutputItemInfo(p);

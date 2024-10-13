@@ -50,14 +50,14 @@ namespace Flames.Bots
         public override void Output(Player p, string[] args, TextWriter w) {
             w.WriteLine(Name + " " + p.Pos.X + " " + p.Pos.Y + " " + p.Pos.Z + " " + p.Rot.RotY + " " + p.Rot.HeadX);
         }
-        
-        protected struct Coords {
+
+        public struct Coords {
             public int X, Y, Z;
             public byte RotX, RotY;
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] {
+        public static string[] help = new string[] {
             "&T/BotAI add [name] teleport",
             "&HCauses the bot to instantly teleport to a position.",
             "&H  Note: The position saved to the AI is your current position.",
@@ -85,7 +85,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] {
+        public static string[] help = new string[] {
             "&T/BotAI add [name] walk",
             "&HCauses the bot to walk towards to a position.",
             "&H  Note: The position saved to the AI is your current position.",
@@ -103,7 +103,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] {
+        public static string[] help = new string[] {
             "&T/BotAI add [name] jump",
             "&HCauses the bot to perform a jump.",
             "&H  Note bots can also do other instructions while jumping",
@@ -134,7 +134,7 @@ namespace Flames.Bots
         }
         
         public override string[] Help { get { return help; } }
-        static string[] help = new string[] {
+        public static string[] help = new string[] {
             "&T/BotAI add [name] speed [percentage]",
             "&HSets how fast the bot moves, relative to its normal speed.",
             "&H  100 means it moves at normal speed",

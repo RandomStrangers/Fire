@@ -29,16 +29,16 @@ namespace Flames.Generator.Foliage {
     public abstract class ForesterTree : Tree {
 
         public Vec3S32 pos;
-        protected double random() { return rnd.NextDouble(); }
-        protected const double none = double.MaxValue;
-        TreeOutput output;
-        
-        protected const float FOLIAGE_DENSITY = 1.0f;
-        protected const float BRANCH_DENSITY  = 1.0f;
-        protected const float TRUNK_THICKNESS = 1.0f;
-        protected const float TRUNK_HEIGHT    = 0.7f;
-        protected const float EDGE_HEIGHT     =  25f;
-        protected const bool  ROOT_BUTTRESSES = true;
+        public double random() { return rnd.NextDouble(); }
+        public const double none = double.MaxValue;
+        public TreeOutput output;
+
+        public const float FOLIAGE_DENSITY = 1.0f;
+        public const float BRANCH_DENSITY  = 1.0f;
+        public const float TRUNK_THICKNESS = 1.0f;
+        public const float TRUNK_HEIGHT    = 0.7f;
+        public const float EDGE_HEIGHT     =  25f;
+        public const bool  ROOT_BUTTRESSES = true;
         
         public override long EstimateBlocksAffected() { return (long)height * height * height; }
         
@@ -63,7 +63,7 @@ namespace Flames.Generator.Foliage {
         /// <summary> Generates the foliage </summary>
         public virtual void MakeFoliage() { }
 
-        protected void Place(int x, int y, int z, byte block) {
+        public void Place(int x, int y, int z, byte block) {
             if (x < 0 || y < 0 || z < 0) return;
             output((ushort)x, (ushort)y, (ushort)z, block);
         }
@@ -76,10 +76,10 @@ namespace Flames.Generator.Foliage {
     /// MUST BE SUBCLASSED. Specifically, self.foliage_shape must be set.
     /// Subclass 'prepare' and 'shapefunc' to make different shaped trees.</remarks>
     public abstract class ProceduralTree : ForesterTree {
-        
-        protected List<Vec3S32> foliage_coords = new List<Vec3S32>();
-        protected float[] foliage_shape;
-        protected float branchslope, branchdensity, trunkradius, trunkheight;
+
+        public List<Vec3S32> foliage_coords = new List<Vec3S32>();
+        public float[] foliage_shape;
+        public float branchslope, branchdensity, trunkradius, trunkheight;
 
         /// <summary> Create a round section of type matidx in mcmap. </summary>
         /// <remarks> Passed values:
@@ -89,7 +89,7 @@ namespace Flames.Generator.Foliage {
         /// perpendicular to. 0 indicates the x axis, 1 the y, 2 the z.  The
         /// section will extend along the other two axies.
         /// </remarks>
-        protected void CrossSection(Vec3S32 center, float radius, int diraxis, byte block) {
+        public void CrossSection(Vec3S32 center, float radius, int diraxis, byte block) {
             int rad = (int)(radius + 0.618f);
             if (rad <= 0) return;
             
@@ -110,11 +110,11 @@ namespace Flames.Generator.Foliage {
                 Place(coord.X, coord.Y, coord.Z, block);
             }
         }
-        
+
         /// <summary> Take y and return a radius for the location of the foliage cluster. </summary>
         /// <remarks> If no foliage cluster is to be created, return None
         /// Designed for sublcassing.  Only makes clusters close to the trunk. </remarks>
-        protected virtual double ShapeFunc(int y) {
+        public virtual double ShapeFunc(int y) {
             if (random() < (100.0 / (height * height)) && y < trunkheight)
                 return height * 0.12;
             return none;
@@ -123,7 +123,7 @@ namespace Flames.Generator.Foliage {
         /// <summary> generate a round cluster of foliage at the location center. </summary>
         /// <remarks> The shape of the cluster is defined by the list self.foliage_shape.
         /// This list must be set in a subclass of ProceduralTree. </remarks>
-        protected void FoilageCluster(Vec3S32 center) {
+        public void FoilageCluster(Vec3S32 center) {
             float[] level_radius = foliage_shape;
             foreach (float i in level_radius) {
                 CrossSection(center, i, 1, Block.Leaves);
@@ -136,7 +136,7 @@ namespace Flames.Generator.Foliage {
         /// start and end are the beginning and ending coordinates of form [x,y,z].
         /// startsize and endsize are the beginning and ending radius.
         /// </remarks>
-        protected void TaperedCylinder(Vec3S32 start, Vec3S32 end, float startsize, float endsize) {
+        public void TaperedCylinder(Vec3S32 start, Vec3S32 end, float startsize, float endsize) {
             // delta is the coordinate vector for the difference between start and end.
             Vec3S32 delta = end - start;
             
@@ -194,7 +194,7 @@ namespace Flames.Generator.Foliage {
         }
 
         /// <summary> Generates the branches </summary>
-        protected void MakeBranches() {
+        public void MakeBranches() {
             Vec3S32 treeposition = pos;
             int topy = treeposition.Y + (int)(trunkheight + 0.5f);
             // endrad is the base radius of the branches at the trunk
@@ -344,8 +344,8 @@ namespace Flames.Generator.Foliage {
             trunkradius = trunkradius * 0.8f;
             trunkheight = TRUNK_HEIGHT * trunkheight;
         }
-        
-        protected override double ShapeFunc(int y) {
+
+        public override double ShapeFunc(int y) {
             double twigs = base.ShapeFunc(y);
             if (twigs != none) return twigs;
             if (y < height * (0.282 + 0.1 * Math.Sqrt(random())))
@@ -377,8 +377,8 @@ namespace Flames.Generator.Foliage {
             foliage_shape = new float[] { 3, 2.6f, 2, 1 };
             trunkradius = trunkradius * 0.5f;
         }
-        
-        protected override double ShapeFunc(int y) {
+
+        public override double ShapeFunc(int y) {
             double twigs = base.ShapeFunc(y);
             if (twigs != none) return twigs;
             if (y < height * (0.25 + 0.05 * Math.Sqrt(random())))
@@ -402,8 +402,8 @@ namespace Flames.Generator.Foliage {
             trunkradius = trunkradius * 0.382f;
             trunkheight = trunkheight * 0.9f;
         }
-        
-        protected override double ShapeFunc(int y) {
+
+        public override double ShapeFunc(int y) {
             if (y < height * 0.8) {
                 if (EDGE_HEIGHT < height) {
                     double twigs = base.ShapeFunc(y);
@@ -431,8 +431,8 @@ namespace Flames.Generator.Foliage {
             branchslope = 1.0f;
             trunkradius = trunkradius * 0.618f;
         }
-        
-        protected override double ShapeFunc(int y) {
+
+        public override double ShapeFunc(int y) {
             double val = base.ShapeFunc(y);
             if (val == none) return none;
             return val * 1.618;

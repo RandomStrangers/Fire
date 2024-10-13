@@ -22,6 +22,7 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Security.Policy;
 using System.Text;
 
 namespace Flames.Scripting
@@ -47,7 +48,7 @@ namespace Flames.Scripting
             byte[] debug = GetDebugData(path);
             return Assembly.Load(data, debug);
         }
-        static byte[] GetDebugData(string path)
+        public static byte[] GetDebugData(string path)
         {
             if (Server.RunningOnMono())
             {
@@ -89,8 +90,26 @@ namespace Flames.Scripting
             }
             return instances;
         }
-
-
+        //TODO: Some system files might not contain these
+        public static bool IsSystemDLL(string file)
+        {
+            if (file.CaselessContains("SQL"))
+            {
+                return true;
+            }
+            if (file.CaselessContains("Newtonsoft"))
+            {
+                return true;
+            }
+            if (file.CaselessContains("System"))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         public static void AutoloadSimplePlugins()
         {
             string simplepluginpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -100,11 +119,13 @@ namespace Flames.Scripting
             {
                 foreach (string file in files)
                 {
-                    //TODO: Some system files might not contain these
-                    if (!file.CaselessContains("SQL") || file.CaselessContains("Newtonsoft")
-                        || file.CaselessContains("System"))
+                    if (!IsSystemDLL(file))
                     {
                         LoadSimplePlugin(file, true);
+                    }
+                    else 
+                    {
+                        return;
                     }
                 }
             }
@@ -120,11 +141,11 @@ namespace Flames.Scripting
             try
             {
                 Assembly lib = LoadAssembly(path);
-                List<Plugin_Simple> plugins = LoadTypes<Plugin_Simple>(lib);
+                List<Plugin_Simple> simpleplugins = LoadTypes<Plugin_Simple>(lib);
 
-                foreach (Plugin_Simple plugin in plugins)
+                foreach (Plugin_Simple simpleplugin in simpleplugins)
                 {
-                    if (!Plugin_Simple.Load(plugin, auto)) return false;
+                    if (!Plugin_Simple.Load(simpleplugin, auto)) return false;
                 }
                 return true;
             }
@@ -163,18 +184,18 @@ namespace Flames.Scripting
         public static List<ICompiler_Simple> Compilers = new List<ICompiler_Simple>() { CS, VB };
 
 
-        static string FormatSource(string source, params string[] args)
+        public static string FormatSource(string source, params string[] args)
         {
             // Always use \r\n line endings so it looks correct in Notepad
             source = source.Replace(@"\t", "\t");
             source = source.Replace("\n", "\r\n");
             return string.Format(source, args);
         }
-        /// <summary> Generates source code for an example plugin, 
+        /// <summary> Generates source code for an example simple plugin, 
         /// preformatted with the given name and creator </summary>
-        public string GenExamplePlugin(string plugin, string creator)
+        public string GenExamplePlugin(string simpleplugin, string creator)
         {
-            return FormatSource(SimplePluginSkeleton, plugin, creator, Server.Version);
+            return FormatSource(SimplePluginSkeleton, simpleplugin, creator, Server.Version);
         }
 
         /// <summary> Attempts to compile the given source code file to a .dll file. </summary>
@@ -239,8 +260,8 @@ namespace Flames.Scripting
     /// <summary> Compiles source code files from a particular language into a .dll file, using a CodeDomProvider for the compiler. </summary>
     public abstract class ICodeDomCompiler_Simple : ICompiler_Simple
     {
-        readonly object compilerLock = new object();
-        CodeDomProvider compiler;
+        public readonly object compilerLock = new object();
+        public CodeDomProvider compiler;
 
         /// <summary> Creates a CodeDomProvider instance for this programming language </summary>
         public abstract CodeDomProvider CreateProvider();
@@ -251,7 +272,7 @@ namespace Flames.Scripting
         public virtual string CommentPrefix { get { return "//"; } }
 
         // Lazy init compiler when it's actually needed
-        void InitCompiler()
+        public void InitCompiler()
         {
             lock (compilerLock)
             {
@@ -266,7 +287,7 @@ namespace Flames.Scripting
             }
         }
 
-        void AddReferences(string path, CompilerParameters args)
+        public void AddReferences(string path, CompilerParameters args)
         {
             // Allow referencing other assemblies using '//reference [assembly name]' at top of the file
             using (StreamReader r = new StreamReader(path))
@@ -314,10 +335,10 @@ namespace Flames.Scripting
         }
     }
 
-    class SimpleSourceMap
+    public class SimpleSourceMap
     {
-        readonly string[] files;
-        readonly List<string>[] sources;
+        public readonly string[] files;
+        public readonly List<string>[] sources;
 
         public SimpleSourceMap(string[] paths)
         {
@@ -325,7 +346,7 @@ namespace Flames.Scripting
             sources = new List<string>[paths.Length];
         }
 
-        int FindFile(string file)
+        public int FindFile(string file)
         {
             for (int i = 0; i < files.Length; i++)
             {

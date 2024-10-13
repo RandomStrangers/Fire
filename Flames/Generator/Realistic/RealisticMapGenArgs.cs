@@ -40,8 +40,8 @@ namespace Flames.Generator.Realistic
         public float StartHeight = 0.5f;
         public float DisplacementMax = 0.01f;
         public float DisplacementStep = -0.0025f;
-        
-        internal static RealisticMapGenArgs Hell = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Hell = new RealisticMapGenArgs() {
             RangeLow  = 0.3f,
             RangeHigh = 1.3f,
             StartHeight = 0.04f,
@@ -51,38 +51,38 @@ namespace Flames.Generator.Realistic
             GetLiquidLevel  = (height) => 5,
             Biome = MapGenBiomeName.Hell,
         };
-        
-        internal static RealisticMapGenArgs Island = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Island = new RealisticMapGenArgs() {
             RangeLow  = 0.40f,
             RangeHigh = 0.75f,
             FalloffEdges  = true,
             IslandColumns = true
         };
-        
-        internal static RealisticMapGenArgs Forest = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Forest = new RealisticMapGenArgs() {
             RangeLow  = 0.45f,
             RangeHigh = 0.80f,
             TreeDensity  = 0.7f,
             TreeDistance = 2
         };
-        
-        internal static RealisticMapGenArgs Mountains = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Mountains = new RealisticMapGenArgs() {
             RangeLow  = 0.3f,
             RangeHigh = 0.9f,
             TreeDistance = 4,
             StartHeight = 0.6f,
             DisplacementMax = 0.02f,
         };
-        
-        internal static RealisticMapGenArgs Ocean = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Ocean = new RealisticMapGenArgs() {
             RangeLow  = 0.1f, 
             RangeHigh = 0.6f,
             GenTrees  = false, 
             GenOverlay2 = false,
             GetLiquidLevel = (height) => (ushort)(height * 0.85f)
         };
-        
-        internal static RealisticMapGenArgs Desert = new RealisticMapGenArgs() {
+
+        public static RealisticMapGenArgs Desert = new RealisticMapGenArgs() {
             RangeLow  = 0.5f, 
             RangeHigh = 0.85f,
             TreeDistance = 24,

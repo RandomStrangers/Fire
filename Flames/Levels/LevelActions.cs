@@ -29,9 +29,9 @@ using Flames.Util;
 namespace Flames 
 {    
     public static class LevelActions 
-    {       
-        static string BlockPropsLvlPath(string map) { return Paths.BlockPropsPath("_" + map); }
-        static string BlockPropsOldPath(string map) { return Paths.BlockPropsPath("lvl_" + map); }
+    {
+        public static string BlockPropsLvlPath(string map) { return Paths.BlockPropsPath("_" + map); }
+        public static string BlockPropsOldPath(string map) { return Paths.BlockPropsPath("lvl_" + map); }
         
         public static bool Backup(string map, string backupName) {
             string basePath = LevelInfo.BackupBasePath(map);
@@ -91,8 +91,8 @@ namespace Flames
                 PlayerActions.ChangeMap(pl, dst);
             return true;
         }
-        
-        static void RenameDatabaseTables(Player p, string src, string dst) {
+
+        public static void RenameDatabaseTables(Player p, string src, string dst) {
             if (Database.TableExists("Block" + src)) {
                 Database.RenameTable("Block" + src, "Block" + dst);
             }
@@ -173,8 +173,8 @@ namespace Flames
             OnLevelDeletedEvent.Call(map);
             return true;
         }
-        
-        static void DeleteDatabaseTables(string map) {
+
+        public static void DeleteDatabaseTables(string map) {
             Database.DeleteTable("Block" + map);
             
             object locker = ThreadSafeCache.DBCache.GetLocker(map);
@@ -227,8 +227,8 @@ namespace Flames
             OnLevelCopiedEvent.Call(src, dst);
             return true;
         }
-        
-        static void CopyDatabaseTables(string src, string dst) {
+
+        public static void CopyDatabaseTables(string src, string dst) {
             object srcLocker = ThreadSafeCache.DBCache.GetLocker(src);
             object dstLocker = ThreadSafeCache.DBCache.GetLocker(dst);
             
@@ -261,12 +261,12 @@ namespace Flames
                 }
             }
         }
-        
-        const byte action_delete = 0;
-        const byte action_move = 1;
-        const byte action_copy = 2;
-        
-        static void DoAll(string src, string dst, byte action) {
+
+        public const byte action_delete = 0;
+        public const byte action_move = 1;
+        public const byte action_copy = 2;
+
+        public static void DoAll(string src, string dst, byte action) {
             DoAction(LevelInfo.MapPath(src) + ".backup",
                      LevelInfo.MapPath(dst) + ".backup", action);
             DoAction(LevelInfo.PropsPath(src),
@@ -282,8 +282,8 @@ namespace Flames
             DoAction(Paths.BotsPath(src),
                      Paths.BotsPath(dst), action);
         }
-        
-        static bool DoAction(string src, string dst, byte action) {
+
+        public static bool DoAction(string src, string dst, byte action) {
             if (!File.Exists(src)) return true;
             try {
                 if (action == action_delete) {
@@ -327,8 +327,8 @@ namespace Flames
                 Server.DoGC();
             }
         }
-        
-        static Level ReadBackup(Player p, string map, string path, string type) {
+
+        public static Level ReadBackup(Player p, string map, string path, string type) {
             Logger.Log(LogType.Warning, "Attempting to load {1} for {0}", map, type);
             Level lvl = Level.Load(map, path);
             
@@ -336,8 +336,8 @@ namespace Flames
             p.Message("&WLoading {1} of {0} failed.", map, type);
             return null;
         }
-        
-        static Level ReadLevel(Player p, string map) {
+
+        public static Level ReadLevel(Player p, string map) {
             Level lvl = Level.Load(map);
             if (lvl != null) return lvl;
             
@@ -372,8 +372,8 @@ namespace Flames
             lvl.Config.Physics = 0;
             return lvl;
         }
-        
-        static Level GetMuseum(string name, string path) {
+
+        public static Level GetMuseum(string name, string path) {
             Player[] players = PlayerInfo.Online.Items;            
             // Since museums are essentially readonly anyways, try to reuse
             //  blocks/CustomBlocks from existing museum to reduce memory usage

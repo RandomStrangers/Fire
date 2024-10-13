@@ -24,9 +24,9 @@ namespace Flames.Modules.Games.LS
 {
     public partial class LSGame : RoundsGame 
     {
-        int roundSecs, layerSecs;
-        
-        protected override void DoRound() {
+        public int roundSecs, layerSecs;
+
+        public override void DoRound() {
             if (!Running) return;
             roundSecs = 0;
             layerSecs = 0;
@@ -66,8 +66,8 @@ namespace Flames.Modules.Games.LS
                 Thread.Sleep(1000);
             }
         }
-        
-        void FloodFrom(Vec3U16 pos) {
+
+        public void FloodFrom(Vec3U16 pos) {
             Map.Blockchange(pos.X, pos.Y, pos.Z, floodBlock, true);
             if (flooded) return;
             
@@ -75,8 +75,8 @@ namespace Flames.Modules.Games.LS
             Logger.Log(LogType.GameActivity, "[Lava Survival] Starting map flood.");
             flooded = true;
         }
-        
-        void RewardPlayer(Player p, Random rnd) {
+
+        public void RewardPlayer(Player p, Random rnd) {
             if (IsPlayerDead(p)) return;
             
             if (p.Pos.FeetBlockCoords.Y >= Map.GetEdgeLevel()) {
@@ -88,7 +88,7 @@ namespace Flames.Modules.Games.LS
             }
         }
 
-        void AnnounceFloodTime() {
+        public void AnnounceFloodTime() {
             int left = floodDelaySecs - roundSecs;
 
             if (left == 0) {
@@ -115,19 +115,19 @@ namespace Flames.Modules.Games.LS
                 if (p.level == Map) RewardPlayer(p, rnd);
             }
         }
-        
 
-        string FloodTimeLeftMessage() {
+
+        public string FloodTimeLeftMessage() {
             TimeSpan left = TimeSpan.FromSeconds(floodDelaySecs - roundSecs);
             return "&3" + left.Shorten(true) + " &Suntil the flood starts";
         }
-        
-        string RoundTimeLeftMessage() {
+
+        public string RoundTimeLeftMessage() {
             TimeSpan left = TimeSpan.FromSeconds(roundTotalSecs - roundSecs);
             return "&3" + left.Shorten(true) + " &Suntil the round ends";
         }
-        
-        string ModeMessage(string block) {
+
+        public string ModeMessage(string block) {
             LSFloodMode mode = floodMode;
             
             return block.Capitalize() + " will be &c" + mode + " &Sthis round";
@@ -143,8 +143,8 @@ namespace Flames.Modules.Games.LS
             OutputRoundInfo(p);
             OutputTimeInfo(p);
         }
-        
-        void OutputRoundInfo(Player p) {
+
+        public void OutputRoundInfo(Player p) {
             string block = FloodBlockName();
             if (waterMode) p.Message("The map will be flooded with &9water &Sthis round!");
             if (layerMode) p.Message("The {0} will &aflood in layers &Sthis round!", block);
@@ -158,9 +158,9 @@ namespace Flames.Modules.Games.LS
             if (!flooded) p.Message(FloodTimeLeftMessage());
             p.Message(RoundTimeLeftMessage());
         }
-        
 
-        protected override bool SetMap(string map) {
+
+        public override bool SetMap(string map) {
             if (!base.SetMap(map)) return false;
             
             Map.Config.PhysicsOverload = 1000000;

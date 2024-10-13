@@ -146,7 +146,7 @@ namespace Flames
             Loading = false;
         }
 
-        static Player FindClone(string name) {
+        public static Player FindClone(string name) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players)
             {
@@ -154,8 +154,8 @@ namespace Flames
             }
             return null;
         }
-        
-        void ShowWelcome() {
+
+        public void ShowWelcome() {
             LastAction = DateTime.UtcNow;
             TextFile welcomeFile = TextFile.Files["Welcome"];
             
@@ -167,8 +167,8 @@ namespace Flames
                 Logger.LogError("Error loading welcome text", ex);
             }
         }
-        
-        unsafe static byte NextFreeId() {
+
+        public unsafe static byte NextFreeId() {
             byte* used = stackalloc byte[256];
             for (int i = 0; i < 256; i++) used[i] = 0;
 
@@ -183,8 +183,8 @@ namespace Flames
             }
             return 1;
         }
-        
-        void LoadCpeData() {
+
+        public void LoadCpeData() {
             string skin = Server.skins.Get(name);
             if (skin != null) SkinName = skin;           
             string model = Server.models.Get(name);
@@ -208,8 +208,8 @@ namespace Flames
             }            
             SetModel(Model);
         }
-        
-        void GetPlayerStats() {
+
+        public void GetPlayerStats() {
             PlayerData data = null;
             
             if (verifiedName || Server.Config.VerifyNames) {
@@ -233,8 +233,8 @@ namespace Flames
             }
             gotSQLData = true;
         }
-        
-        void CheckState() {
+
+        public void CheckState() {
             if (Server.muted.Contains(name)) {
                 muted = true;
                 Chat.MessageFrom(this, "λNICK &Wis still muted from previously.");
@@ -245,8 +245,8 @@ namespace Flames
                 Chat.MessageFrom(this, "λNICK &Wis still frozen from previously.");
             }
         }
-        
-        static void ShowAltsTask(SchedulerTask task) {
+
+        public static void ShowAltsTask(SchedulerTask task) {
             string name = (string)task.State;
             Player p    = PlayerInfo.FindExact(name);
             if (p == null || p.Socket.Disconnected) return;

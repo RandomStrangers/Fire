@@ -50,8 +50,8 @@ namespace Flames.Commands.Moderation {
             ModAction action = new ModAction(addr, p, ModActionType.BanIP, reason);
             OnModActionEvent.Call(action);
         }
-        
-        static bool CheckIP(Player p, CommandData data, string ip) {
+
+        public static bool CheckIP(Player p, CommandData data, string ip) {
             if (p.IsFire) return true;
             List<string> accounts = PlayerInfo.FindAccounts(ip);
             

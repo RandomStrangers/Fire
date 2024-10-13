@@ -42,8 +42,8 @@ namespace Flames.Commands.Moderation {
                 Help(p);
             }
         }
-        
-        static void Assign(Player p, string[] args, CommandData data) {
+
+        public static void Assign(Player p, string[] args, CommandData data) {
             string target = PlayerInfo.FindMatchesPreferOnline(p, args[0]);
             if (target == null) return;
 
@@ -71,8 +71,8 @@ namespace Flames.Commands.Moderation {
             };
             OnModActionEvent.Call(action);
         }
-        
-        internal static void Delete(Player p, string target, CommandData data) {
+
+        public static void Delete(Player p, string target, CommandData data) {
             string line = Server.tempRanks.Get(target);
             if (string.IsNullOrEmpty(line)) {
                 p.Message("{0} &Whas not been assigned a temp rank.", p.FormatNick(target));
@@ -95,8 +95,8 @@ namespace Flames.Commands.Moderation {
             };
             OnModActionEvent.Call(action);
         }
-        
-        static void Info(Player p, string target) {
+
+        public static void Info(Player p, string target) {
             string data = Server.tempRanks.Get(target);
             if (string.IsNullOrEmpty(data)) {
                 p.Message("{0} &Whas not been assigned a temp rank.", p.FormatNick(target));
@@ -104,8 +104,8 @@ namespace Flames.Commands.Moderation {
                 PrintTempRankInfo(p, target, data);
             }
         }
-        
-        static void List(Player p) {
+
+        public static void List(Player p) {
             List<string> lines = Server.tempRanks.AllLines();
             if (lines.Count == 0) {
                 p.Message("&WThere are no players with a temporary rank assigned.");
@@ -117,8 +117,8 @@ namespace Flames.Commands.Moderation {
                 }
             }
         }
-        
-        static void PrintTempRankInfo(Player p, string name, string data) {
+
+        public static void PrintTempRankInfo(Player p, string name, string data) {
             string[] args = data.SplitSpaces();
             if (args.Length < 4) return;
             

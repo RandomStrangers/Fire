@@ -49,8 +49,8 @@ namespace Flames.Commands.Eco {
             trans.Type = EcoTransactionType.Take;
             OnEcoTransactionEvent.Call(trans);
         }
-        
-        static void Take(ref int money, bool all, EcoTransaction data) {
+
+        public static void Take(ref int money, bool all, EcoTransaction data) {
             if (all || money < data.Amount) {
                 data.Amount = money;
                 money = 0;

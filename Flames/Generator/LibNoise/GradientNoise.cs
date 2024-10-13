@@ -25,13 +25,13 @@ namespace LibNoise
 {
     public static class GradientNoise
     {
-        const int X_NOISE_GEN = 1619;
-        const int Y_NOISE_GEN = 31337;
-        const int Z_NOISE_GEN = 6971;
-        const int SEED_NOISE = 1013;
-        const int SHIFT_NOISE_GEN = 8;
+        public const int X_NOISE_GEN = 1619;
+        public const int Y_NOISE_GEN = 31337;
+        public const int Z_NOISE_GEN = 6971;
+        public const int SEED_NOISE = 1013;
+        public const int SHIFT_NOISE_GEN = 8;
 
-        static double[] RandomVectors = 
+        public static double[] RandomVectors = 
         {
             -0.763874, -0.596439, -0.246489,
             0.396055, 0.904518, -0.158073,
@@ -326,7 +326,7 @@ namespace LibNoise
             return LinearInterpolate(iy0, iy1, zs);
         }
 
-        static double GradientRawNoise(double fx, double fy, double fz, int ix, int iy, int iz, int seed)
+        public static double GradientRawNoise(double fx, double fy, double fz, int ix, int iy, int iz, int seed)
         {
             int vectorIndex = (
                   X_NOISE_GEN * ix
@@ -348,13 +348,13 @@ namespace LibNoise
                  ((xvGradient * xvPoint)
                 + (yvGradient * yvPoint)
                 + (zvGradient * zvPoint)) * 2.12;
-        }   
-        
+        }
+
 
         /// <summary>
         /// Returns the linear interpolation of two values with the given alpha.
         /// </summary>
-        static double LinearInterpolate(double n0, double n1, double a)
+        public static double LinearInterpolate(double n0, double n1, double a)
         {
             return ((1.0 - a) * n0) + (a * n1);
         }
@@ -362,7 +362,7 @@ namespace LibNoise
         /// <summary>
         /// Returns the given value mapped onto a cubic S-curve.
         /// </summary>
-        static double SCurve3(double a)
+        public static double SCurve3(double a)
         {
             return (a * a * (3.0 - 2.0 * a));
         }      

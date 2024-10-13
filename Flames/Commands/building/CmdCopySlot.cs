@@ -41,8 +41,8 @@ namespace Flames.Commands.Building
                 SetCopySlot(p, i);
             }
         }
-        
-        static void OutputCopySlots(Player p) {
+
+        public static void OutputCopySlots(Player p) {
             List<CopyState> copySlots = p.CopySlots;
             int used = 0;
             
@@ -56,8 +56,8 @@ namespace Flames.Commands.Building
             p.Message("Using {0} of {1} slots, with slot #{2} selected.",
                       used, p.group.CopySlots, p.CurrentCopySlot + 1);
         }
-        
-        static void SetRandomCopySlot(Player p) {
+
+        public static void SetRandomCopySlot(Player p) {
             List<CopyState> copySlots = p.CopySlots;
             List<int> slots = new List<int>();
             
@@ -75,8 +75,8 @@ namespace Flames.Commands.Building
             int idx = new Random().Next(slots.Count);
             SetCopySlot(p, slots[idx] + 1);
         }
-        
-        static void SetCopySlot(Player p, int i) {
+
+        public static void SetCopySlot(Player p, int i) {
             p.CurrentCopySlot = i - 1;
             if (p.CurrentCopy == null) {
                 p.Message("Selected copy slot {0} (unused)", i);

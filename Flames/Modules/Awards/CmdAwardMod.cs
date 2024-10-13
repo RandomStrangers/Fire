@@ -23,7 +23,7 @@ namespace Flames.Modules.Awards
         public override string name { get { return "AwardMod"; } }
         public override string type { get { return CommandTypes.Economy; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
-        static char[] awardArgs = new char[] { ':' };
+        public static char[] awardArgs = new char[] { ':' };
 
         public override void Use(Player p, string message, CommandData data) {
             string[] args = message.SplitSpaces(2);

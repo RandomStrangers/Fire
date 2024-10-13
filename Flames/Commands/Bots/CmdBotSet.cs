@@ -65,8 +65,8 @@ namespace Flames.Commands.Bots
             if (!ScriptFile.Parse(p, bot, ai)) return;
             UpdateBot(p, bot, "'s AI was set to " + ai);
         }
-        
-        static void UpdateBot(Player p, PlayerBot bot, string msg) {
+
+        public static void UpdateBot(Player p, PlayerBot bot, string msg) {
             p.Message(bot.ColoredName + "&S" + msg);
             Logger.Log(LogType.UserActivity, bot.name + msg);
             BotsFile.Save(p.level);

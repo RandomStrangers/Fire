@@ -73,8 +73,8 @@ namespace Flames.Blocks.Physics {
             }
             C.Data.Data++;
         }
-        
-        static void FloodAir(Level lvl, ushort x, ushort y, ushort z, BlockID block) {
+
+        public static void FloodAir(Level lvl, ushort x, ushort y, ushort z, BlockID block) {
             BlockID curBlock = Block.Convert(lvl.GetBlock(x, y, z, out int index));
             if (curBlock == Block.Water || curBlock == Block.Lava) {
                 lvl.AddUpdate(index, block);

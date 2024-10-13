@@ -49,8 +49,8 @@ namespace Flames.DB
             string fullName = prefix + who.ColoredName;
             CommonCoreLine(p, fullName, who.name, who.group, who.TotalMessagesSent);
         }
-        
-        internal static void CommonCoreLine(Player p, string fullName, string name, Group grp, int messages) {
+
+        public static void CommonCoreLine(Player p, string fullName, string name, Group grp, int messages) {
             p.Message("{0} &S({1}) has:", fullName, name);
             p.Message("  Rank of {0}&S, wrote &a{1} &Smessages", grp.ColoredName, messages);
         }

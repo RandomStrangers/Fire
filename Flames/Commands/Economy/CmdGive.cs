@@ -50,8 +50,8 @@ namespace Flames.Commands.Eco {
             trans.Type = EcoTransactionType.Give;
             OnEcoTransactionEvent.Call(trans);
         }
-        
-        static bool ReachedMax(Player p, int current, int amount) {
+
+        public static bool ReachedMax(Player p, int current, int amount) {
             if (current + amount > int.MaxValue) {
                 p.Message("&WPlayers cannot have over &3" + int.MaxValue + " &3" + Server.Config.Currency); return true;
             }

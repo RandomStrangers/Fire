@@ -33,8 +33,8 @@ namespace Flames.Commands.Chatting
         public override void Use(Player p, string message, CommandData data) {
             UsePlayer(p, data, message, "title");
         }
-        
-        protected override void SetPlayerData(Player p, string target, string title) {
+
+        public override void SetPlayerData(Player p, string target, string title) {
             PlayerOperations.SetTitle(p, target, title);
         }
         

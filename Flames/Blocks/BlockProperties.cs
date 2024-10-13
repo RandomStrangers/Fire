@@ -98,8 +98,8 @@ namespace Flames.Blocks {
                 SaveCore(group, list, scope);
             }
         }
-        
-        static void SaveCore(string group, BlockProps[] list, byte scope) {
+
+        public static void SaveCore(string group, BlockProps[] list, byte scope) {
             using (StreamWriter w = new StreamWriter("blockprops/" + group + ".txt")) {
                 w.WriteLine("# This represents the physics properties for blocks, in the format of:");
                 w.WriteLine("# id : Is rails : Is tdoor : Is door : Is message block : Is portal : " +
@@ -128,8 +128,8 @@ namespace Flames.Blocks {
                 if (File.Exists(path)) LoadCore(path, list, scope, mapOld);
             }
         }
-        
-        static void LoadCore(string path, BlockProps[] list, byte scope, bool mapOld) {
+
+        public static void LoadCore(string path, BlockProps[] list, byte scope, bool mapOld) {
             string[] lines = File.ReadAllLines(path);
             for (int i = 0; i < lines.Length; i++) {
                 string line = lines[i].Trim();
@@ -198,8 +198,8 @@ namespace Flames.Blocks {
             if (scope == Block.Props) return Block.MakeDefaultProps(block);
             return IsDefaultBlock(lvl, block) ? Block.Props[block] : MakeEmpty();
         }
-        
-        static bool IsDefaultBlock(Level lvl, BlockID b) {
+
+        public static bool IsDefaultBlock(Level lvl, BlockID b) {
             return Block.IsPhysicsType(b) || lvl.CustomBlockDefs[b] == BlockDefinition.GlobalDefs[b];
         }
         
@@ -225,8 +225,8 @@ namespace Flames.Blocks {
             
             if (save) Save(path, scope, scopeId);
         }
-        
-        internal static byte ScopeId(BlockProps[] scope) { return scope == Block.Props ? (byte)1 : (byte)2; }
+
+        public static byte ScopeId(BlockProps[] scope) { return scope == Block.Props ? (byte)1 : (byte)2; }
         
         public static string ScopedName(BlockProps[] scope, Player p, BlockID block) {
             return scope == Block.Props ? Block.GetName(Player.Flame, block) : Block.GetName(p, block);

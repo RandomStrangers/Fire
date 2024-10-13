@@ -50,7 +50,7 @@ namespace Flames.Scripting
         }
 
         // only used for resolving plugin DLLs depending on other plugin DLLs
-        static Assembly ResolvePluginAssembly(object sender, ResolveEventArgs args) {
+        public static Assembly ResolvePluginAssembly(object sender, ResolveEventArgs args) {
             #if !NET_20
             if (args.RequestingAssembly == null)       return null;
             if (!IsPluginDLL(args.RequestingAssembly)) return null;
@@ -69,7 +69,7 @@ namespace Flames.Scripting
             return null;
         }
 
-        static bool IsPluginDLL(Assembly a) { return string.IsNullOrEmpty(a.Location); }
+        public static bool IsPluginDLL(Assembly a) { return string.IsNullOrEmpty(a.Location); }
         
         
         /// <summary> Constructs instances of all types which derive from T in the given assembly. </summary>
@@ -97,8 +97,8 @@ namespace Flames.Scripting
             byte[] debug = GetDebugData(path);
             return Assembly.Load(data, debug);
         }
-        
-        static byte[] GetDebugData(string path) {
+
+        public static byte[] GetDebugData(string path) {
             if (Server.RunningOnMono()) {
                 // Cmdtest.dll -> Cmdtest.dll.mdb
                 path += ".mdb";
@@ -123,8 +123,8 @@ namespace Flames.Scripting
             
             foreach (string path in files) { AutoloadCommands(path); }
         }
-        
-        static void AutoloadCommands(string path) {
+
+        public static void AutoloadCommands(string path) {
             List<Command> cmds;
             
             try {

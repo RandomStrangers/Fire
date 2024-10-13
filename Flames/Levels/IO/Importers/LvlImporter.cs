@@ -29,7 +29,7 @@ namespace Flames.Levels.IO
     {
         public override string Extension { get { return ".lvl"; } }
         public override string Description { get { return "MCDzienny/MCForge/MCGalaxy map"; } }
-        const int HEADER_SIZE = 18;
+        public const int HEADER_SIZE = 18;
         
         public override Vec3U16 ReadDimensions(Stream src) {
             using (Stream gs = new GZipStream(src, CompressionMode.Decompress, true)) {
@@ -68,8 +68,8 @@ namespace Flames.Levels.IO
                 }
             }
         }
-        
-        static Vec3U16 ReadHeader(Stream gs, byte[] header) {
+
+        public static Vec3U16 ReadHeader(Stream gs, byte[] header) {
             ReadFully(gs, header, HEADER_SIZE);
             int signature = BitConverter.ToUInt16(header, 0);
             if (signature != 1874)
@@ -81,8 +81,8 @@ namespace Flames.Levels.IO
             dims.Y = BitConverter.ToUInt16(header, 6);
             return dims;
         }
-        
-        static void ReadCustomBlocksSection(Level lvl, Stream gs) {
+
+        public static void ReadCustomBlocksSection(Level lvl, Stream gs) {
             byte[] data = new byte[1];
             int read = gs.Read(data, 0, 1);
             if (read == 0 || data[0] != 0xBD) return;
@@ -101,9 +101,9 @@ namespace Flames.Levels.IO
                 index++;
             }
         }
-        
-        
-        static void ReadPhysicsSection(Level lvl, Stream gs) {
+
+
+        public static void ReadPhysicsSection(Level lvl, Stream gs) {
             byte[] buffer = new byte[sizeof(int)];
             int count = TryRead_I32(buffer, gs);
             if (count == 0) return;
@@ -112,8 +112,8 @@ namespace Flames.Levels.IO
             lvl.ListCheck.Items = new Check[count];
             ReadPhysicsEntries(lvl, gs, count);
         }
-        
-        static void ReadPhysicsEntries(Level lvl, Stream gs, int count) {
+
+        public static void ReadPhysicsEntries(Level lvl, Stream gs, int count) {
             byte[] buffer = new byte[Math.Min(count, 1024) * 8];
             Check C;
             
@@ -132,8 +132,8 @@ namespace Flames.Levels.IO
                 }
             }
         }
-        
-        static void ReadZonesSection(Level lvl, Stream gs) {
+
+        public static void ReadZonesSection(Level lvl, Stream gs) {
             byte[] buffer = new byte[sizeof(int)];
             int count = TryRead_I32(buffer, gs);
             if (count == 0) return;
@@ -146,8 +146,8 @@ namespace Flames.Levels.IO
                 }
             }
         }
-        
-        static void ParseZone(Level lvl, ref byte[] buffer, Stream gs) {
+
+        public static void ParseZone(Level lvl, ref byte[] buffer, Stream gs) {
             Zone z = new Zone();
             z.MinX = Read_U16(buffer, gs); z.MaxX = Read_U16(buffer, gs);
             z.MinY = Read_U16(buffer, gs); z.MaxY = Read_U16(buffer, gs);
@@ -170,14 +170,14 @@ namespace Flames.Levels.IO
             }
             z.AddTo(lvl);
         }
-        
-        static int TryRead_I32(byte[] buffer, Stream gs) {
+
+        public static int TryRead_I32(byte[] buffer, Stream gs) {
             int read = gs.Read(buffer, 0, sizeof(int));
             if (read < sizeof(int)) return 0;
             return NetUtils.ReadI32(buffer, 0);
         }
-        
-        static ushort Read_U16(byte[] buffer, Stream gs) {
+
+        public static ushort Read_U16(byte[] buffer, Stream gs) {
             ReadFully(gs, buffer, sizeof(ushort));
             return NetUtils.ReadU16(buffer, 0);
         }

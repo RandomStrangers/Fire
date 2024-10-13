@@ -28,9 +28,9 @@ namespace Flames {
     public enum PhysicsState { Stopped, Warning, Other }
 
     public sealed partial class Level : IDisposable {
-        
-        readonly object updateLock = new object();
-        readonly object checkLock  = new object();
+
+        public readonly object updateLock = new object();
+        public readonly object checkLock  = new object();
         
         public void SetPhysics(int level) {
             if (IsMuseum) return;
@@ -63,7 +63,7 @@ namespace Flames {
             }
         }
 
-        void PhysicsLoop() {
+        public void PhysicsLoop() {
             int wait = Config.PhysicsSpeed;
             while (true) {
                 try {
@@ -135,7 +135,7 @@ namespace Flames {
             return default;
         }
 
-        void PhysicsTick() {
+        public void PhysicsTick() {
             lastCheck = ListCheck.Count;
             const uint mask = PhysicsArgs.TypeMask;
             
@@ -285,13 +285,13 @@ namespace Flames {
                     StartPhysics();
                 return true;
             } catch {
-                //s.Log("Warning-PhysicsUpdate");
+                //Logger.Log(LogType.Warning, "Warning-PhysicsUpdate");
                 //ListUpdate.Add(new Update(b, (byte)type));    //Lousy back up plan
                 return false;
             }
         }
-        
-        void RemoveExpiredChecks() {
+
+        public void RemoveExpiredChecks() {
             Check[] items = ListCheck.Items;
             int j = 0, count = ListCheck.Count;
             ushort x, y, z;
@@ -307,8 +307,8 @@ namespace Flames {
             ListCheck.Items = items;
             ListCheck.Count = j;
         }
-        
-        void RemoveUpdatesAtPos(int b) {
+
+        public void RemoveUpdatesAtPos(int b) {
             Update[] items = ListUpdate.Items;
             int j = 0, count = ListUpdate.Count;
             
@@ -319,9 +319,9 @@ namespace Flames {
             ListUpdate.Items = items;
             ListUpdate.Count = j;
         }
-        
-        
-        void ClearPhysicsLists() {
+
+
+        public void ClearPhysicsLists() {
             ListCheck.Count  = 0; listCheckExists.Clear();
             ListUpdate.Count = 0; listUpdateExists.Clear();
         }
@@ -333,8 +333,8 @@ namespace Flames {
             }
             ClearPhysicsLists();
         }
-        
-        void RevertPhysics(Check C) {
+
+        public void RevertPhysics(Check C) {
             //attemps on shutdown to change blocks back into normal selves that are active, hopefully without needing to send into to clients.
             switch (blocks[C.Index]) {
                 case Block.Air_Flood:
@@ -358,16 +358,16 @@ namespace Flames {
                 Logger.LogError(e);
             }
         }
-        
-        
-        internal bool ActivatesPhysics(BlockID block) {
+
+
+        public bool ActivatesPhysics(BlockID block) {
             if (Props[block].IsMessageBlock || Props[block].IsPortal) return false;
             if (Props[block].IsDoor || Props[block].IsTDoor) return false;
             if (Props[block].OPBlock) return false;
             return PhysicsHandlers[block] != null;
         }
-        
-        internal bool CheckSpongeWater(ushort x, ushort y, ushort z) {
+
+        public bool CheckSpongeWater(ushort x, ushort y, ushort z) {
             for (int yy = y - 2; yy <= y + 2; ++yy) {
                 if (yy < 0 || yy >= Height) continue;
                 for (int zz = z - 2; zz <= z + 2; ++zz) {
@@ -381,8 +381,8 @@ namespace Flames {
             }
             return false;
         }
-        
-        internal bool CheckSpongeLava(ushort x, ushort y, ushort z) {
+
+        public bool CheckSpongeLava(ushort x, ushort y, ushort z) {
             for (int yy = y - 2; yy <= y + 2; ++yy) {
                 if (yy < 0 || yy >= Height) continue;
                 for (int zz = z - 2; zz <= z + 2; ++zz) {
@@ -414,14 +414,14 @@ namespace Flames {
         /// <summary> Data/State of this tick entry </summary>
         public PhysicsArgs Data;
     }
-    
-    internal struct Check 
+
+    public struct Check 
     {
         public int Index;
         public PhysicsArgs data;
     }
 
-    internal struct Update 
+    public struct Update 
     {
         public int Index;
         public PhysicsArgs data;

@@ -30,10 +30,10 @@ namespace Flames.Games
     public abstract class Weapon 
     {
         public abstract string Name { get; }
-        static bool hookedEvents;
-        
-        protected Player p;
-        AimBox aimer;
+        public static bool hookedEvents;
+
+        public Player p;
+        public AimBox aimer;
         
         /// <summary> Applies this weapon to the given player, and sets up necessary state. </summary>
         public virtual void Enable(Player p) {
@@ -63,25 +63,25 @@ namespace Flames.Games
             p.aiming = false;
             OnDisabled(p);
             p.weapon = null;
-        }      
-        
+        }
+
         /// <summary> Called when the given player engages/equips this weapon </summary>
-        protected virtual void OnEnabled(Player p, bool clickToActivate) {
+        public virtual void OnEnabled(Player p, bool clickToActivate) {
             p.Message("{0} engaged, {1}fire at will", Name, clickToActivate ? "click to " : "");
         }
-        
+
         /// <summary> Called when given player disengages/releases this weapon </summary>
-        protected virtual void OnDisabled(Player p) {
+        public virtual void OnDisabled(Player p) {
             p.Message(Name + " disabled");    
         }
-        
-        
+
+
         /// <summary> Called when the player fires this weapon. </summary>
         /// <remarks> Activated by clicking through either PlayerClick or on a glass box around the player. </remarks>
-        protected abstract void OnActivated(Vec3F32 dir, BlockID block);
+        public abstract void OnActivated(Vec3F32 dir, BlockID block);
 
-        
-        static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+
+        public static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
             Weapon weapon = p.weapon;
             if (weapon == null) return;
             
@@ -98,8 +98,8 @@ namespace Flames.Games
             Vec3F32 dir = DirUtils.GetDirVector(p.Rot.RotY, p.Rot.HeadX);
             weapon.OnActivated(dir, block);
         }
-        
-        static void PlayerClickCallback(Player p, MouseButton btn, MouseAction action,
+
+        public static void PlayerClickCallback(Player p, MouseButton btn, MouseAction action,
                                         ushort yaw, ushort pitch, byte entity,
                                         ushort x, ushort y, ushort z, TargetBlockFace face) {
             Weapon weapon = p.weapon;
@@ -114,8 +114,8 @@ namespace Flames.Games
             Vec3F32 dir = DirUtils.GetDirVectorExt(yaw, pitch);
             weapon.OnActivated(dir, held);
         }
-        
-        protected static Player PlayerAt(Player p, Vec3U16 pos, bool skipSelf) {
+
+        public static Player PlayerAt(Player p, Vec3U16 pos, bool skipSelf) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) 
             {
@@ -176,21 +176,21 @@ namespace Flames.Games
             }
         }
     }
-    
+
     /// <summary> Manages the glass box around the player. Adjusts based on where player is looking. </summary>
-    internal sealed class AimBox 
-    {        
-        Player player;
-        List<Vec3U16> lastGlass = new List<Vec3U16>();
-        List<Vec3U16> curGlass  = new List<Vec3U16>();
+    public sealed class AimBox 
+    {
+        public Player player;
+        public List<Vec3U16> lastGlass = new List<Vec3U16>();
+        public List<Vec3U16> curGlass  = new List<Vec3U16>();
         
         public void Hook(Player p) {
             player = p;
             SchedulerTask task = new SchedulerTask(AimCallback, null, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
-        
-        void AimCallback(SchedulerTask task) {
+
+        public void AimCallback(SchedulerTask task) {
             Player p = player;
             if (p.aiming) { Update(); return; }
             
@@ -200,8 +200,8 @@ namespace Flames.Games
             }
             task.Repeating = false;
         }
-        
-        void Update() {
+
+        public void Update() {
             Player p = player;
             Vec3F32 dir = DirUtils.GetDirVector(p.Rot.RotY, p.Rot.HeadX);
             ushort x = (ushort)Math.Round(p.Pos.BlockX + dir.X * 3);
@@ -234,8 +234,8 @@ namespace Flames.Games
             }
             curGlass.Clear();
         }
-        
-        void Check(Level lvl, int x, int y, int z) {
+
+        public void Check(Level lvl, int x, int y, int z) {
             Vec3U16 pos = new Vec3U16((ushort)x, (ushort)(y - 1), (ushort)z);
             if (lvl.IsAirAt(pos.X, pos.Y, pos.Z)) curGlass.Add(pos);
             

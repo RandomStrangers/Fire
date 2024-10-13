@@ -17,12 +17,12 @@ namespace Flames
                 return;
             }
             {
-                Chat.MessageChat(ChatScope.Global, p, $"{p.color}{p.DisplayName}" + " %6QUACKED %elike a duck!", null, null);
+                Chat.MessageChat(ChatScope.Global, p, $"{p.color}{p.DisplayName}" + " &6QUACKED &elike a duck!", null, null);
             }
         }
         public override void Help(Player p)
         {
-            p.Message("/Quack - Quack like a duck.");
+            p.Message("*T/Quack &H- Quack like a duck.");
         }
     }
 }

@@ -54,8 +54,8 @@ namespace Flames.Commands.Bots
                 Help(p);
             }
         }
-        
-        void HandleDelete(Player p, string ai, string[] args) {
+
+        public void HandleDelete(Player p, string ai, string[] args) {
             if (!Directory.Exists("bots/deleted"))
                 Directory.CreateDirectory("bots/deleted");
             if (!File.Exists("bots/" + ai)) {
@@ -75,8 +75,8 @@ namespace Flames.Commands.Bots
                 }
             }
         }
-        
-        static void DeleteAI(Player p, string ai, int attempt) {
+
+        public static void DeleteAI(Player p, string ai, int attempt) {
             if (attempt == 0) {
                 File.Move("bots/" + ai, "bots/deleted/" + ai);
             } else {
@@ -84,8 +84,8 @@ namespace Flames.Commands.Bots
             }
             p.Message("Deleted bot AI &b" + ai);
         }
-        
-        static void DeleteLast(Player p, string ai) {
+
+        public static void DeleteLast(Player p, string ai) {
             List<string> lines = Utils.ReadAllLinesList("bots/" + ai);
             if (lines.Count > 0) lines.RemoveAt(lines.Count - 1);
 
@@ -93,7 +93,7 @@ namespace Flames.Commands.Bots
             p.Message("Deleted last instruction from bot AI &b" + ai);
         }
 
-        void HandleAdd(Player p, string ai, string[] args) {
+        public void HandleAdd(Player p, string ai, string[] args) {
             if (!File.Exists("bots/" + ai)) {
                 p.Message("Created new bot AI: &b" + ai);
                 using (StreamWriter w = new StreamWriter("bots/" + ai)) {
@@ -108,14 +108,14 @@ namespace Flames.Commands.Bots
                 p.Message("Appended " + instruction + " instruction to bot AI &b" + ai);
             }
         }
-        
-        void HandleList(Player p, string modifier) {
+
+        public void HandleList(Player p, string modifier) {
             string[] files = Directory.GetFiles("bots");
             Paginator.Output(p, files, f => Path.GetFileName(f),
                              "BotAI list", "bot AIs", modifier);
         }
-        
-        void HandleInfo(Player p, string ai) {
+
+        public void HandleInfo(Player p, string ai) {
             if (!File.Exists("bots/" + ai)) {
                 p.Message("There is no bot AI with that name."); return;
             }

@@ -28,8 +28,8 @@ namespace Flames.Modules.Games.Countdown
         public CountdownConfig Config = new CountdownConfig();
         public override string GameName { get { return "Countdown"; } }
         public override RoundsGameConfig GetConfig() { return Config; }
-        
-        protected override string WelcomeMessage {
+
+        public override string WelcomeMessage {
             get { return "&aCountdown &Sis running! Type &T/CD join &Sto join"; }
         }
                 
@@ -41,8 +41,8 @@ namespace Flames.Modules.Games.Countdown
         public CountdownGame() { Picker = new LevelPicker(); }
         
         public override void UpdateMapConfig() { }
-        
-        protected override List<Player> GetPlayers() {
+
+        public override List<Player> GetPlayers() {
             List<Player> playing = new List<Player>();
             playing.AddRange(Players.Items);
             return playing;
@@ -60,13 +60,13 @@ namespace Flames.Modules.Games.Countdown
             
             p.Message(squaresLeft.Count + " squares left");
         }
-        
-        string FormatPlayer(Player pl) {
+
+        public string FormatPlayer(Player pl) {
             string suffix = Remaining.Contains(pl) ? " &a[IN]" : " &c[OUT]";
             return pl.ColoredName + suffix;
         }
-        
-        protected override string GetStartMap(Player p, string forcedMap) {
+
+        public override string GetStartMap(Player p, string forcedMap) {
             if (!LevelInfo.MapExists("countdown")) {
                 p.Message("Countdown level not found, generating..");
                 GenerateMap(p, 32, 32, 32);
@@ -74,8 +74,8 @@ namespace Flames.Modules.Games.Countdown
             return "countdown";
         }
 
-        protected override void StartGame() { }
-        protected override void EndGame() {
+        public override void StartGame() { }
+        public override void EndGame() {
             Players.Clear();
             Remaining.Clear();
             squaresLeft.Clear();
@@ -110,12 +110,12 @@ namespace Flames.Modules.Games.Countdown
             Players.Remove(p);
             OnPlayerDied(p);
         }
-        
-        protected override string FormatStatus1(Player p) {
+
+        public override string FormatStatus1(Player p) {
             return RoundInProgress ? squaresLeft.Count + " squares left" : "";
         }
-        
-        protected override string FormatStatus2(Player p) {
+
+        public override string FormatStatus2(Player p) {
             return RoundInProgress ? Remaining.Count + " players left" : "";
         }
         

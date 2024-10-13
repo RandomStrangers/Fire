@@ -99,8 +99,8 @@ namespace Flames
             }
             return '?';
         }
-        
-        static bool HasSpecial(string str) {
+
+        public static bool HasSpecial(string str) {
             for (int i = 0; i < str.Length; i++) {
                 if (str[i] < ' ' || str[i] > '~') {
                     return true;

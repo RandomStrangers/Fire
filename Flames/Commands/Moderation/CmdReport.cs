@@ -53,8 +53,8 @@ namespace Flames.Commands.Moderation {
                 HandleAdd(p, args);
             }
         }
-        
-        void HandleList(Player p, string[] args, CommandData data) {
+
+        public void HandleList(Player p, string[] args, CommandData data) {
             if (!CheckExtraPerm(p, data, 1)) return;
             string[] users = GetReportedUsers();
             
@@ -70,8 +70,8 @@ namespace Flames.Commands.Moderation {
                 p.Message("No players have been reported currently.");
             }
         }
-        
-        void HandleCheck(Player p, string[] args, CommandData data) {
+
+        public void HandleCheck(Player p, string[] args, CommandData data) {
             if (args.Length != 2) {
                 p.Message("You need to provide a player's name."); return;
             }
@@ -88,8 +88,8 @@ namespace Flames.Commands.Moderation {
             string[] reports = File.ReadAllLines("extra/reported/" + target + ".txt");
             p.MessageLines(reports);
         }
-        
-        void HandleDelete(Player p, string[] args, CommandData data) {
+
+        public void HandleDelete(Player p, string[] args, CommandData data) {
             if (args.Length != 2) {
                 p.Message("You need to provide a player's name."); return;
             }
@@ -110,8 +110,8 @@ namespace Flames.Commands.Moderation {
             Chat.MessageFromOps(p, "λNICK &Sdeleted reports on " + nick);
             Logger.Log(LogType.UserActivity, "Reports on {1} were deleted by {0}", p.name, target);
         }
-        
-        void HandleClear(Player p, string[] args, CommandData data) {
+
+        public void HandleClear(Player p, string[] args, CommandData data) {
             if (!CheckExtraPerm(p, data, 1)) return;
             if (!Directory.Exists("extra/reportedbackups"))
                 Directory.CreateDirectory("extra/reportedbackups");
@@ -123,8 +123,8 @@ namespace Flames.Commands.Moderation {
             Chat.MessageFromOps(p, "λNICK &ccleared ALL reports!");
             Logger.Log(LogType.UserActivity, p.name + " cleared ALL reports!");
         }
-        
-        void HandleAdd(Player p, string[] args) {
+
+        public void HandleAdd(Player p, string[] args) {
             if (args.Length != 2) {
                 p.Message("You need to provide a reason for the report."); return;
             }
@@ -162,24 +162,24 @@ namespace Flames.Commands.Moderation {
             string allMsg = "Use &T/Report check " + target + " &Sto see all of their reports";
             Chat.MessageFrom(ChatScope.Perms, p, allMsg, checkPerms, null, true);
         }
-        
-        
-        static bool HasReports(string user) {
+
+
+        public static bool HasReports(string user) {
             return File.Exists(ReportPath(user));
         }
-        static string ReportPath(string user) {
+        public static string ReportPath(string user) {
             return "extra/reported/" + user + ".txt";
         }
-                
-        static string[] GetReportedUsers() {
+
+        public static string[] GetReportedUsers() {
             string[] users = Directory.GetFiles("extra/reported", "*.txt");
             for (int i = 0; i < users.Length; i++) {
                 users[i] = Path.GetFileNameWithoutExtension(users[i]);
             }
             return users;
         }
-        
-        static void DeleteReport(string user) {
+
+        public static void DeleteReport(string user) {
             string backup = "extra/reportedbackups/" + user + ".txt";
             AtomicIO.TryDelete(backup);           
             File.Move(ReportPath(user), backup);

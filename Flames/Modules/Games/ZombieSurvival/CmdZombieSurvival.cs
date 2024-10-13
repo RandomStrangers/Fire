@@ -23,19 +23,19 @@ using Flames.Games;
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdZombieSurvival : RoundsGameCmd 
+    public sealed class CmdZombieSurvival : RoundsGameCmd 
     {
         public override string name { get { return "ZombieSurvival"; } }
         public override string shortcut { get { return "ZS"; } }
-        protected override RoundsGame Game { get { return ZSGame.Instance; } }
+        public override RoundsGame Game { get { return ZSGame.Instance; } }
         public override CommandAlias[] Aliases {
             get { return new[] { new CommandAlias("ZG"), new CommandAlias("RoundTime", "set roundtime") }; }
         }
         public override CommandPerm[] ExtraPerms {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage zombie survival") }; }
         }
-        
-        protected override void HandleSet(Player p, RoundsGame game_, string[] args) {
+
+        public override void HandleSet(Player p, RoundsGame game_, string[] args) {
             ZSGame game  = (ZSGame)game_;
             ZSConfig cfg = game.Config;
             string prop  = args[1];
@@ -77,8 +77,8 @@ namespace Flames.Modules.Games.ZS
             }
             p.level.SaveSettings();
         }
-        
-        static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan span) {
+
+        public static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan span) {
             if (!CommandParser.GetTimespan(p, args[2], ref span, "set " + arg + " to", "m")) return false;
             p.Message("Set {0} to &b{1}", arg, span.Shorten(true));
             return true;

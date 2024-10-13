@@ -18,7 +18,7 @@
 using System.Collections.Generic;
 
 namespace Flames {
-    internal sealed class EnvPreset {
+    public sealed class EnvPreset {
         public string Fog, Sky, Clouds, Sun, Shadow;
         
         public EnvPreset(string raw) {

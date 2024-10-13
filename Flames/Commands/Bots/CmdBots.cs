@@ -43,8 +43,8 @@ namespace Flames.Commands.Bots
             p.Message("Bots in " + lvl.ColoredName + ":");
             Paginator.Output(p, bots, FormatBot, cmd, "Bots", modifier);
         }
-        
-        static string FormatBot(PlayerBot bot) {
+
+        public static string FormatBot(PlayerBot bot) {
             string desc = bot.DisplayName;
             if (bot.DisplayName != bot.name) desc += "&S(&1" + bot.name + "&S)";
             

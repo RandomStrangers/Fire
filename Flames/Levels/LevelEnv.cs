@@ -75,71 +75,71 @@ namespace Flames {
                 if (option.Name.CaselessEq(opt)) return option;
             }
             return null;
-        }        
-        
-        
-        static void SetHorizon(Player p, string area, EnvConfig cfg, string value) {
+        }
+
+
+        public static void SetHorizon(Player p, string area, EnvConfig cfg, string value) {
             SetBlock(p, value, area, "edge block", ref cfg.HorizonBlock);
-        }        
-        static void SetBorder(Player p, string area, EnvConfig cfg, string value) {
+        }
+        public static void SetBorder(Player p, string area, EnvConfig cfg, string value) {
             SetBlock(p, value, area, "sides block", ref cfg.EdgeBlock);
         }
-        
-        static void SetCloudsHeight(Player p, string area, EnvConfig cfg, string value) {
+
+        public static void SetCloudsHeight(Player p, string area, EnvConfig cfg, string value) {
             SetInt(p, value, area, "clouds height", ref cfg.CloudsHeight);
         }
-        static void SetEdgeLevel(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetEdgeLevel(Player p, string area, EnvConfig cfg, string value) {
             SetInt(p, value, area, "edge level", ref cfg.EdgeLevel);
         }
-        static void SetSidesOffset(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetSidesOffset(Player p, string area, EnvConfig cfg, string value) {
             SetInt(p, value, area, "sides offset", ref cfg.SidesOffset);
         }
-        static void SetMaxFog(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetMaxFog(Player p, string area, EnvConfig cfg, string value) {
             SetInt(p, value, area, "max fog distance", ref cfg.MaxFogDistance);
         }
-        
-        static void SetSky(Player p, string area, EnvConfig cfg, string value) {
+
+        public static void SetSky(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "sky color", ref cfg.SkyColor);
         }
-        static void SetClouds(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetClouds(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "cloud color", ref cfg.CloudColor);
         }
-        static void SetFog(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetFog(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "fog color", ref cfg.FogColor);
         }
-        static void SetSun(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetSun(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "sun color", ref cfg.LightColor);
         }
-        static void SetShadow(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetShadow(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "shadow color", ref cfg.ShadowColor);
         }
-        static void SetSkybox(Player p, string area, EnvConfig cfg, string value) {
+        public static void SetSkybox(Player p, string area, EnvConfig cfg, string value) {
             SetColor(p, value, area, "skybox color", ref cfg.SkyboxColor);
         }
-        
-        static void SetCloudsSpeed(Player p, string area, EnvConfig cfg, string value) {
+
+        public static void SetCloudsSpeed(Player p, string area, EnvConfig cfg, string value) {
             SetFloat(p, value, area, 256, "clouds speed", ref cfg.CloudsSpeed, -0xFFFFFF, 0xFFFFFF);
-        }       
-        static void SetWeatherSpeed(Player p, string area, EnvConfig cfg, string value) {
+        }
+        public static void SetWeatherSpeed(Player p, string area, EnvConfig cfg, string value) {
             SetFloat(p, value, area, 256, "weather speed", ref cfg.WeatherSpeed, -0xFFFFFF, 0xFFFFFF);
-        }      
-        static void SetWeatherFade(Player p, string area, EnvConfig cfg, string value) {
+        }
+        public static void SetWeatherFade(Player p, string area, EnvConfig cfg, string value) {
             SetFloat(p, value, area, 128, "weather fade rate", ref cfg.WeatherFade, 0, 255);
-        }        
-        static void SetSkyboxHor(Player p, string area, EnvConfig cfg, string value) {
+        }
+        public static void SetSkyboxHor(Player p, string area, EnvConfig cfg, string value) {
             SetFloat(p, value, area, 1024, "skybox horizontal speed", ref cfg.SkyboxHorSpeed, -0xFFFFFF, 0xFFFFFF);
-        }        
-        static void SetSkyboxVer(Player p, string area, EnvConfig cfg, string value) {
+        }
+        public static void SetSkyboxVer(Player p, string area, EnvConfig cfg, string value) {
             SetFloat(p, value, area, 1024, "skybox vertical speed", ref cfg.SkyboxVerSpeed, -0xFFFFFF, 0xFFFFFF);
         }
-        
-        
-        static bool IsResetString(string value) {
+
+
+        public static bool IsResetString(string value) {
             return value.CaselessEq("normal") || value.CaselessEq("default") 
                 || value.CaselessEq("reset")  || value.Length == 0;
         }
-        
-        static void SetWeather(Player p, string area, EnvConfig cfg, string value) {
+
+        public static void SetWeather(Player p, string area, EnvConfig cfg, string value) {
             int weather;
             if (IsResetString(value)) {
                 p.Message("Reset weather for {0} &Sto 0 (Sun)", area);
@@ -159,8 +159,8 @@ namespace Flames {
             }
             cfg.Weather = weather;
         }
-        
-        static void SetSmoothFog(Player p, string area, EnvConfig cfg, string value) {
+
+        public static void SetSmoothFog(Player p, string area, EnvConfig cfg, string value) {
             if (IsResetString(value)) {
                 p.Message("Reset smooth fog for {0} &Sto &cOFF", area);
                 cfg.ExpFog = EnvConfig.ENV_USE_DEFAULT;
@@ -172,8 +172,8 @@ namespace Flames {
                 p.Message("Set smooth fog for {0} &Sto {1}", area, enabled ? "&aON" : "&cOFF");
             }
         }
-        
-        static void SetBlock(Player p, string input, string area, string type, ref BlockID target) {
+
+        public static void SetBlock(Player p, string input, string area, string type, ref BlockID target) {
             if (IsResetString(input)) {
                 p.Message("Reset {0} for {1} &Sto normal", type, area);
                 target = Block.Invalid;
@@ -189,8 +189,8 @@ namespace Flames {
                 p.Message("Set {0} for {1} &Sto {2}", type, area, name);
             }
         }
-        
-        static void SetInt(Player p, string input, string area, string type, ref int target) {
+
+        public static void SetInt(Player p, string input, string area, string type, ref int target) {
             if (IsResetString(input)) {
                 p.Message("Reset {0} for {1} &Sto normal", type, area);
                 target = EnvConfig.ENV_USE_DEFAULT;
@@ -203,8 +203,8 @@ namespace Flames {
                 p.Message("Set {0} for {1} &Sto {2}", type, area, value);
             }
         }
-        
-        static void SetFloat(Player p, string input, string area, int scale, string type, ref int target, int min, int max) {
+
+        public static void SetFloat(Player p, string input, string area, int scale, string type, ref int target, int min, int max) {
             if (IsResetString(input)) {
                 p.Message("Reset {0} for {1} &Sto normal", type, area);
                 target = EnvConfig.ENV_USE_DEFAULT;
@@ -216,8 +216,8 @@ namespace Flames {
                 p.Message("Set {0} for {1} &Sto {2}", type, area, value.ToString("F4"));
             }
         }
-        
-        static void SetColor(Player p, string input, string area, string variable, ref string target) {
+
+        public static void SetColor(Player p, string input, string area, string variable, ref string target) {
             if (IsResetString(input)) {
                 p.Message("Reset {0} for {1} &Sto normal", variable, area);
                 target = "";

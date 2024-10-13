@@ -15,7 +15,7 @@ using SQLiteErrorCode = System.Int32;
 
 namespace Flames.SQL 
 {
-    enum SqlType
+    public enum SqlType
     {
         Single, Double, Decimal,
         SByte, Int16, Int32, Int64,
@@ -25,94 +25,94 @@ namespace Flames.SQL
     }
 
     [SuppressUnmanagedCodeSecurity]
-    static class Interop 
+    public static class Interop 
     {
-        const string lib = "sqlite3";
+        public const string lib = "sqlite3";
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_open_v2(byte[] utf8Filename, ref IntPtr db, int flags, IntPtr vfs);
+        public static extern SQLiteErrorCode sqlite3_open_v2(byte[] utf8Filename, ref IntPtr db, int flags, IntPtr vfs);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_close_v2(IntPtr db); /* 3.7.14+ */
+        public static extern SQLiteErrorCode sqlite3_close_v2(IntPtr db); /* 3.7.14+ */
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_exec(IntPtr db, byte[] strSql, IntPtr pvCallback, IntPtr pvParam, ref IntPtr errMsg);
+        public static extern SQLiteErrorCode sqlite3_exec(IntPtr db, byte[] strSql, IntPtr pvCallback, IntPtr pvParam, ref IntPtr errMsg);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_prepare_v2(IntPtr db, byte[] strSql, int nBytes, ref IntPtr stmt, ref IntPtr ptrRemain);
+        public static extern SQLiteErrorCode sqlite3_prepare_v2(IntPtr db, byte[] strSql, int nBytes, ref IntPtr stmt, ref IntPtr ptrRemain);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_busy_timeout(IntPtr db, int ms);
+        public static extern SQLiteErrorCode sqlite3_busy_timeout(IntPtr db, int ms);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long sqlite3_last_insert_rowid(IntPtr db);
+        public static extern long sqlite3_last_insert_rowid(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_changes(IntPtr db);
+        public static extern int sqlite3_changes(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_get_autocommit(IntPtr db);
+        public static extern int sqlite3_get_autocommit(IntPtr db);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_double(IntPtr stmt, int index, double value);
+        public static extern SQLiteErrorCode sqlite3_bind_double(IntPtr stmt, int index, double value);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_int(IntPtr stmt, int index, int value);
+        public static extern SQLiteErrorCode sqlite3_bind_int(IntPtr stmt, int index, int value);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_int64(IntPtr stmt, int index, long value);
+        public static extern SQLiteErrorCode sqlite3_bind_int64(IntPtr stmt, int index, long value);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_null(IntPtr stmt, int index);
+        public static extern SQLiteErrorCode sqlite3_bind_null(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_blob(IntPtr stmt, int index, byte[] value, int nSize, IntPtr nTransient);
+        public static extern SQLiteErrorCode sqlite3_bind_blob(IntPtr stmt, int index, byte[] value, int nSize, IntPtr nTransient);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_bind_text(IntPtr stmt, int index, byte[] value, int nlen, IntPtr pvReserved);
+        public static extern SQLiteErrorCode sqlite3_bind_text(IntPtr stmt, int index, byte[] value, int nlen, IntPtr pvReserved);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_bind_parameter_count(IntPtr stmt);
+        public static extern int sqlite3_bind_parameter_count(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_bind_parameter_name(IntPtr stmt, int index);
+        public static extern IntPtr sqlite3_bind_parameter_name(IntPtr stmt, int index);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern double sqlite3_column_double(IntPtr stmt, int index);
+        public static extern double sqlite3_column_double(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_column_int(IntPtr stmt, int index);
+        public static extern int sqlite3_column_int(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern long sqlite3_column_int64(IntPtr stmt, int index);
+        public static extern long sqlite3_column_int64(IntPtr stmt, int index);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_column_bytes(IntPtr stmt, int index);
+        public static extern int sqlite3_column_bytes(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_column_blob(IntPtr stmt, int index);
+        public static extern IntPtr sqlite3_column_blob(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_column_text(IntPtr stmt, int index);
+        public static extern IntPtr sqlite3_column_text(IntPtr stmt, int index);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern int sqlite3_column_count(IntPtr stmt);
+        public static extern int sqlite3_column_count(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern TypeAffinity sqlite3_column_type(IntPtr stmt, int index);
+        public static extern TypeAffinity sqlite3_column_type(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_column_name(IntPtr stmt, int index);
+        public static extern IntPtr sqlite3_column_name(IntPtr stmt, int index);
         
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_next_stmt(IntPtr db, IntPtr stmt);
+        public static extern IntPtr sqlite3_next_stmt(IntPtr db, IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_step(IntPtr stmt);
+        public static extern SQLiteErrorCode sqlite3_step(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_reset(IntPtr stmt);
+        public static extern SQLiteErrorCode sqlite3_reset(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_finalize(IntPtr stmt);
+        public static extern SQLiteErrorCode sqlite3_finalize(IntPtr stmt);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_errmsg(IntPtr db);
+        public static extern IntPtr sqlite3_errmsg(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_errcode(IntPtr db);
+        public static extern SQLiteErrorCode sqlite3_errcode(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern SQLiteErrorCode sqlite3_extended_errcode(IntPtr db);
+        public static extern SQLiteErrorCode sqlite3_extended_errcode(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        internal static extern IntPtr sqlite3_errstr(SQLiteErrorCode rc); /* 3.7.15+ */
+        public static extern IntPtr sqlite3_errstr(SQLiteErrorCode rc); /* 3.7.15+ */
     }
 
     public abstract class SQLiteConnection : ISqlConnection 
     {
-        internal int _transactionLevel;
+        public int _transactionLevel;
         public IntPtr handle;
-        
-        protected abstract bool ConnectionPooling { get; }
-        protected abstract string DBPath { get; }
+
+        public abstract bool ConnectionPooling { get; }
+        public abstract string DBPath { get; }
 
         public override ISqlTransaction BeginTransaction() {
             return new SQLiteTransaction(this);
@@ -152,13 +152,13 @@ namespace Flames.SQL
             if (handle == IntPtr.Zero) throw new InvalidOperationException("Database connection closed");
             return Interop.sqlite3_extended_errcode(handle);
         }
-        
-        internal string GetLastError() {
+
+        public string GetLastError() {
             if (handle == IntPtr.Zero) return "database connection closed";
             return SQLiteConvert.FromUTF8(Interop.sqlite3_errmsg(handle), -1);
         }
-        
-        internal SQLiteStatement Prepare(string strSql, ref string strRemain) {
+
+        public SQLiteStatement Prepare(string strSql, ref string strRemain) {
             byte[] b = SQLiteConvert.ToUTF8(strSql);
             uint start = (uint)Environment.TickCount;
             while (true) {
@@ -201,21 +201,21 @@ namespace Flames.SQL
                 throw;
             }
         }
-        
-        void SetTimeout(int timeoutMS) {
+
+        public void SetTimeout(int timeoutMS) {
             if (handle == IntPtr.Zero) throw new SQLiteException("no connection handle available");
             SQLiteErrorCode n = Interop.sqlite3_busy_timeout(handle, timeoutMS);
             if (n != SQLiteErrorCodes.Ok) throw new SQLiteException(n, GetLastError());
         }
-        
-        internal static void Check(SQLiteConnection connection) {
+
+        public static void Check(SQLiteConnection connection) {
             if (connection == null)
                 throw new ArgumentNullException("connection");
             if (connection.handle == IntPtr.Zero)
                 throw new InvalidOperationException("The connection is not open.");
         }
-        
-        internal bool Reset(bool canThrow) {
+
+        public bool Reset(bool canThrow) {
             if (handle == IntPtr.Zero) return false;
             IntPtr stmt = IntPtr.Zero;
 
@@ -237,8 +237,8 @@ namespace Flames.SQL
         
         public override void Dispose() { Close(false); }
         public override void Close() { Close(true); }
-        
-        void Close(bool canThrow) {
+
+        public void Close(bool canThrow) {
             if (handle == IntPtr.Zero) return;
 
             // TODO: handle leak here??
@@ -253,12 +253,12 @@ namespace Flames.SQL
             handle = IntPtr.Zero;
             _transactionLevel = 0;
         }
-        
-        static readonly Queue<IntPtr> pool = new Queue<IntPtr>();
-        const int MaxPoolSize = 300;
-        static readonly object poolLocker = new object();
-        
-        static void LimitPool(int max) {
+
+        public static readonly Queue<IntPtr> pool = new Queue<IntPtr>();
+        public const int MaxPoolSize = 300;
+        public static readonly object poolLocker = new object();
+
+        public static void LimitPool(int max) {
             lock (poolLocker) {
                 while (pool.Count > max) {
                     IntPtr handle = pool.Dequeue();
@@ -266,15 +266,15 @@ namespace Flames.SQL
                 }                
             }
         }
-        
-        static void AddToPool(IntPtr handle) {
+
+        public static void AddToPool(IntPtr handle) {
             lock (poolLocker) {
                 LimitPool(MaxPoolSize - 1);
                 pool.Enqueue(handle);
             }
         }
-        
-        static IntPtr RemoveFromPool() {
+
+        public static IntPtr RemoveFromPool() {
             lock (poolLocker) {
                 if (pool.Count > 0) return pool.Dequeue();
                 return IntPtr.Zero;
@@ -284,18 +284,18 @@ namespace Flames.SQL
 
     public sealed class SQLiteCommand : ISqlCommand 
     {
-        string sqlCmd;
-        internal SQLiteConnection conn;
-        SQLiteStatement stmt;
-        List<string> param_names  = new List<string>();
-        List<object> param_values = new List<object>();
+        public string sqlCmd;
+        public SQLiteConnection conn;
+        public SQLiteStatement stmt;
+        public List<string> param_names  = new List<string>();
+        public List<object> param_values = new List<object>();
         
         public SQLiteCommand(string sql, SQLiteConnection connection) {
             sqlCmd = sql;
             conn   = connection;
         }
-        
-        void DisposeStatement() {
+
+        public void DisposeStatement() {
             if (stmt != null) stmt.Dispose();
             stmt = null;
         }
@@ -308,9 +308,9 @@ namespace Flames.SQL
             DisposeStatement();
         }
 
-        internal SQLiteStatement NextStatement() {
+        public SQLiteStatement NextStatement() {
             if (stmt != null) DisposeStatement();
-            if (String.IsNullOrEmpty(sqlCmd)) return null;
+            if (string.IsNullOrEmpty(sqlCmd)) return null;
             
             try {
                 stmt = conn.Prepare(sqlCmd, ref sqlCmd);
@@ -353,15 +353,15 @@ namespace Flames.SQL
         }
     }
 
-    static class SQLiteConvert 
+    public static class SQLiteConvert 
     {
-        static string[] _datetimeFormats = new string[] {
+        public static string[] _datetimeFormats = new string[] {
             DATEFORMAT_UTC, DATEFORMAT_LOCAL
         };
 
-        const string DATEFORMAT_UTC   = "yyyy-MM-dd HH:mm:ssK";
-        const string DATEFORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss";
-        static Encoding utf8 = new UTF8Encoding();
+        public const string DATEFORMAT_UTC   = "yyyy-MM-dd HH:mm:ssK";
+        public const string DATEFORMAT_LOCAL = "yyyy-MM-dd HH:mm:ss";
+        public static Encoding utf8 = new UTF8Encoding();
 
         public static byte[] ToUTF8(string text) {
             int count = utf8.GetByteCount(text) + 1;
@@ -400,9 +400,9 @@ namespace Flames.SQL
         
         
         public const int Timeout = 30;
-        static uint seed = 123456789;
-        
-        internal static void TrySleep(SQLiteConnection conn, SQLiteErrorCode n, uint start) {
+        public static uint seed = 123456789;
+
+        public static void TrySleep(SQLiteConnection conn, SQLiteErrorCode n, uint start) {
             if ((uint)Environment.TickCount > start + (Timeout * 1000)) {
                 throw new SQLiteException(n, conn.GetLastError());
             } else {
@@ -410,9 +410,9 @@ namespace Flames.SQL
                 Thread.Sleep((int)(seed % 150) + 1);
             }
         }
-        
 
-        internal static SqlType TypeToDbType(Type typ) {
+
+        public static SqlType TypeToDbType(Type typ) {
             TypeCode tc = Type.GetTypeCode(typ);
             if (tc == TypeCode.Object) {
                 if (typ == typeof(byte[])) return SqlType.Binary;
@@ -421,7 +421,7 @@ namespace Flames.SQL
             return type_to_dbtype[(int)tc];
         }
 
-        static SqlType[] type_to_dbtype = {
+        public static SqlType[] type_to_dbtype = {
             SqlType.Object,   // Empty (0)
             SqlType.Binary,   // Object (1)
             SqlType.Object,   // DBNull (2)
@@ -444,7 +444,7 @@ namespace Flames.SQL
         };
     }
 
-    enum TypeAffinity 
+    public enum TypeAffinity 
     {
         Uninitialized = 0,
         Int64 = 1,
@@ -456,12 +456,12 @@ namespace Flames.SQL
 
     public sealed class SQLiteDataReader : ISqlReader 
     {
-        SQLiteCommand _command;
-        SQLiteStatement stmt;
-        int readState, rowsAffected, columns;
-        string[] fieldNames;
+        public SQLiteCommand _command;
+        public SQLiteStatement stmt;
+        public int readState, rowsAffected, columns;
+        public string[] fieldNames;
 
-        internal SQLiteDataReader(SQLiteCommand cmd) {
+        public SQLiteDataReader(SQLiteCommand cmd) {
             _command = cmd;
         }
         
@@ -471,20 +471,20 @@ namespace Flames.SQL
             stmt = null;
             fieldNames = null;
         }
-        
-        void CheckClosed() {
+
+        public void CheckClosed() {
             if (_command == null)
                 throw new InvalidOperationException("DataReader has been closed");
 
             SQLiteConnection.Check(_command.conn);
         }
 
-        void VerifyForGet() {
+        public void VerifyForGet() {
             CheckClosed();
             if (readState != 0) throw new InvalidOperationException("No current row");
         }
 
-        TypeAffinity GetAffinity(int i) {
+        public TypeAffinity GetAffinity(int i) {
             VerifyForGet();
             return stmt.ColumnAffinity(i);
         }
@@ -614,19 +614,19 @@ namespace Flames.SQL
         }
     }
 
-    sealed class SQLiteException : ExternalException 
+    public sealed class SQLiteException : ExternalException 
     {
         public SQLiteException(SQLiteErrorCode code, string message)
             : base(FormatError(code, message)) { }
 
         public SQLiteException(string message) : this(SQLiteErrorCodes.Unknown, message) { }
-        
-        static string FormatError(SQLiteErrorCode code, string message) {
+
+        public static string FormatError(SQLiteErrorCode code, string message) {
             string msg = GetErrorString(code) + Environment.NewLine + message;
             return msg.Trim();
         }
-        
-        static string[] errors = new string[] {
+
+        public static string[] errors = new string[] {
             /* SQLITE_OK          */ "not an error",
             /* SQLITE_ERROR       */ "SQL logic error or missing database",
             /* SQLITE_INTERNAL    */ "internal logic error",
@@ -658,7 +658,7 @@ namespace Flames.SQL
             /* SQLITE_WARNING     */ "warning message"
         };
 
-        internal static string GetErrorString(SQLiteErrorCode rc) {
+        public static string GetErrorString(SQLiteErrorCode rc) {
             try {
                 IntPtr ptr = Interop.sqlite3_errstr(rc);
                 if (ptr != IntPtr.Zero) {
@@ -674,7 +674,7 @@ namespace Flames.SQL
         }
     }
 
-    static class SQLiteErrorCodes 
+    public static class SQLiteErrorCodes 
     {
         public const int Unknown = -1;
         public const int Ok = 0;
@@ -685,13 +685,13 @@ namespace Flames.SQL
         public const int Done = 101;
     }
 
-    sealed class SQLiteStatement : IDisposable 
+    public sealed class SQLiteStatement : IDisposable 
     {
-        IntPtr handle;
-        internal SQLiteConnection conn;
-        string[] paramNames;
+        public IntPtr handle;
+        public SQLiteConnection conn;
+        public string[] paramNames;
 
-        internal SQLiteStatement(SQLiteConnection connection, IntPtr handle) {
+        public SQLiteStatement(SQLiteConnection connection, IntPtr handle) {
             conn = connection;
             this.handle = handle;
 
@@ -715,8 +715,8 @@ namespace Flames.SQL
             paramNames = null;
             conn = null;
         }
-        
-        internal bool Step() {
+
+        public bool Step() {
             uint start = (uint)Environment.TickCount;
             while (true) {
                 SQLiteErrorCode n = Interop.sqlite3_step(handle);
@@ -734,19 +734,19 @@ namespace Flames.SQL
                 }
             }
         }
-        
-        internal int ColumnCount() { return Interop.sqlite3_column_count(handle); }
 
-        internal string ColumnName(int index) {
+        public int ColumnCount() { return Interop.sqlite3_column_count(handle); }
+
+        public string ColumnName(int index) {
             IntPtr p = Interop.sqlite3_column_name(handle, index);
             return SQLiteConvert.FromUTF8(p, -1);
         }
 
-        internal TypeAffinity ColumnAffinity(int index) {
+        public TypeAffinity ColumnAffinity(int index) {
             return Interop.sqlite3_column_type(handle, index);
         }
 
-        internal void BindAll(List<string> names, List<object> values) {
+        public void BindAll(List<string> names, List<object> values) {
             if (paramNames == null || names.Count == 0) return;
             
             for (int idx = 0; idx < names.Count; idx++) 
@@ -758,8 +758,8 @@ namespace Flames.SQL
                 if (n != SQLiteErrorCodes.Ok) throw new SQLiteException(n, conn.GetLastError());
             }
         }
-        
-        int FindParameter(string name) {
+
+        public int FindParameter(string name) {
             int count = paramNames.Length;
             for (int i = 0; i < count; i++) {
                 if (name.Equals(paramNames[i], StringComparison.OrdinalIgnoreCase)) return i;
@@ -767,7 +767,7 @@ namespace Flames.SQL
             return -1;
         }
 
-        SQLiteErrorCode BindParameter(int i, object obj) {
+        public SQLiteErrorCode BindParameter(int i, object obj) {
             if (obj == null || obj == DBNull.Value) {
                 return Interop.sqlite3_bind_null(handle, i);
             }
@@ -806,24 +806,24 @@ namespace Flames.SQL
             }
         }
 
-        SQLiteErrorCode Bind_Int32(int index, int value) {
+        public SQLiteErrorCode Bind_Int32(int index, int value) {
             return Interop.sqlite3_bind_int(handle, index, value);
         }
 
-        SQLiteErrorCode Bind_Int64(int index, long value) {
+        public SQLiteErrorCode Bind_Int64(int index, long value) {
             return Interop.sqlite3_bind_int64(handle, index, value);
         }
 
-        SQLiteErrorCode Bind_Text(int index, string value) {
+        public SQLiteErrorCode Bind_Text(int index, string value) {
             byte[] b = SQLiteConvert.ToUTF8(value);
             return Interop.sqlite3_bind_text(handle, index, b, b.Length - 1, (IntPtr)(-1));
         }
 
-        SQLiteErrorCode Bind_DateTime(int index, DateTime dt) {
+        public SQLiteErrorCode Bind_DateTime(int index, DateTime dt) {
             return Bind_Text(index, SQLiteConvert.ToString(dt));
         }
-        
-        internal object GetValue(int index, TypeAffinity affinity) {
+
+        public object GetValue(int index, TypeAffinity affinity) {
             switch (affinity) {
                 case TypeAffinity.Blob:
                     return GetBytes(index);
@@ -836,29 +836,29 @@ namespace Flames.SQL
             }
             return GetText(index);
         }
-        
-        internal double GetDouble(int index) {
+
+        public double GetDouble(int index) {
             return Interop.sqlite3_column_double(handle, index);
         }
-        
-        internal int GetInt32(int index) {
+
+        public int GetInt32(int index) {
             return Interop.sqlite3_column_int(handle, index);
         }
 
-        internal long GetInt64(int index) {
+        public long GetInt64(int index) {
             return Interop.sqlite3_column_int64(handle, index);
         }
 
-        internal string GetText(int index) {
+        public string GetText(int index) {
             return SQLiteConvert.FromUTF8(Interop.sqlite3_column_text(handle, index),
                                           Interop.sqlite3_column_bytes(handle, index));
         }
 
-        internal DateTime GetDateTime(int index) {
+        public DateTime GetDateTime(int index) {
             return SQLiteConvert.ToDateTime(GetText(index));
         }
 
-        internal byte[] GetBytes(int index) {
+        public byte[] GetBytes(int index) {
             int srcLen = Interop.sqlite3_column_bytes(handle, index);
             if (srcLen <= 0) return null;
             byte[] dst = new byte[srcLen];
@@ -871,9 +871,9 @@ namespace Flames.SQL
 
     public sealed class SQLiteTransaction : ISqlTransaction 
     {
-        SQLiteConnection conn;
-        
-        internal SQLiteTransaction(SQLiteConnection connection) {
+        public SQLiteConnection conn;
+
+        public SQLiteTransaction(SQLiteConnection connection) {
             conn = connection;
             if (conn._transactionLevel++ == 0) {
                 try {
@@ -887,8 +887,8 @@ namespace Flames.SQL
                 }
             }
         }
-        
-        bool disposed;
+
+        public bool disposed;
         public override void Dispose() {
             if (disposed) return;
             if (IsValid(false)) IssueRollback(false);
@@ -913,7 +913,7 @@ namespace Flames.SQL
             IssueRollback(true);
         }
 
-        void IssueRollback(bool throwError) {
+        public void IssueRollback(bool throwError) {
             if (conn == null) return;
             
             try {
@@ -926,7 +926,7 @@ namespace Flames.SQL
             conn._transactionLevel = 0;
         }
 
-        bool IsValid(bool throwError) {
+        public bool IsValid(bool throwError) {
             if (conn == null) {
                 if (throwError) throw new ArgumentNullException("No connection associated with this transaction");
                 return false;

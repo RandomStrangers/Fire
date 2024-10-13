@@ -27,8 +27,8 @@ namespace Flames.Levels.IO {
     public unsafe sealed class LvlExporter : IMapExporter 
     {
         public override string Extension { get { return ".lvl"; } }
-        
-        const int bufferSize = 64 * 1024;
+
+        public const int bufferSize = 64 * 1024;
         public override void Write(Stream dst, Level lvl) {
             using (Stream gs = new GZipStream(dst, CompressionMode.Compress)) 
             {
@@ -47,13 +47,13 @@ namespace Flames.Levels.IO {
                 WriteZonesSection(lvl, gs, buffer);
             }
         }
-        
-        static void WriteU16(byte[] dst, int idx, ushort value) {
+
+        public static void WriteU16(byte[] dst, int idx, ushort value) {
             dst[idx]     = (byte)value;
             dst[idx + 1] = (byte)(value >> 8);
         }
-        
-        static void WriteHeader(Level lvl, Stream gs, byte[] header) {
+
+        public static void WriteHeader(Level lvl, Stream gs, byte[] header) {
             WriteU16(header,  0, 1874);
             WriteU16(header,  2, lvl.Width);
             WriteU16(header,  4, lvl.Length);
@@ -68,8 +68,8 @@ namespace Flames.Levels.IO {
             header[17] = (byte)lvl.BuildAccess.Min;
             gs.Write(header, 0, 18);
         }
-        
-        static void WriteBlocksSection(Level lvl, Stream gs, byte[] buffer) {
+
+        public static void WriteBlocksSection(Level lvl, Stream gs, byte[] buffer) {
             byte[] blocks = lvl.blocks;
             for (int i = 0; i < blocks.Length; i += bufferSize) {
                 int len = Math.Min(bufferSize, blocks.Length - i);
@@ -82,8 +82,8 @@ namespace Flames.Levels.IO {
                 gs.Write(buffer, 0, len);
             }
         }
-        
-        static void WriteBlockDefsSection(Level lvl, Stream gs, byte[] buffer) {
+
+        public static void WriteBlockDefsSection(Level lvl, Stream gs, byte[] buffer) {
             gs.WriteByte(0xBD); // 'B'lock 'D'efinitions
             int index = 0;
             
@@ -103,8 +103,8 @@ namespace Flames.Levels.IO {
                 index++;
             }
         }
-        
-        static void WritePhysicsSection(Level lvl, Stream gs, byte[] buffer) {
+
+        public static void WritePhysicsSection(Level lvl, Stream gs, byte[] buffer) {
             int count = lvl.ListCheck.Count;
             Check[] checks = lvl.ListCheck.Items;
             if (count == 0) return;
@@ -145,8 +145,8 @@ namespace Flames.Levels.IO {
                 gs.Write(buffer, 0, entries * 8);
             }
         }
-        
-        static void WriteZonesSection(Level lvl, Stream gs, byte[] buffer) {
+
+        public static void WriteZonesSection(Level lvl, Stream gs, byte[] buffer) {
             Zone[] zones = lvl.Zones.Items;
             if (zones.Length == 0) return;
             

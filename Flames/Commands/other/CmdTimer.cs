@@ -51,14 +51,14 @@ namespace Flames.Commands.Misc {
             p.level.Message(args.Message);
             Server.MainScheduler.QueueRepeat(TimerCallback, args, TimeSpan.FromSeconds(5));
         }
-        
-        class TimerArgs {
+
+        public class TimerArgs {
             public string Message;
             public int Repeats;
             public Player Player;
         }
-        
-        static void TimerCallback(SchedulerTask task) {
+
+        public static void TimerCallback(SchedulerTask task) {
             TimerArgs args = (TimerArgs)task.State;            
             Player p = args.Player;
 

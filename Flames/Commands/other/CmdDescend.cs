@@ -48,8 +48,8 @@ namespace Flames.Commands.Misc {
                 p.SendPosition(pos, p.Rot);
             }
         }
-        
-        static int FindYBelow(Level lvl, ushort x, int y, ushort z) {
+
+        public static int FindYBelow(Level lvl, ushort x, int y, ushort z) {
             for (; y >= 0; y--) {
                 if (SolidAt(lvl, x, y    , z)) continue;
                 if (SolidAt(lvl, x, y + 1, z)) continue;
@@ -57,8 +57,8 @@ namespace Flames.Commands.Misc {
             }
             return -1;
         }
-        
-        static bool SolidAt(Level lvl, ushort x, int y, ushort z) {
+
+        public static bool SolidAt(Level lvl, ushort x, int y, ushort z) {
             if (y >= lvl.Height) return false;
             BlockID block = lvl.GetBlock(x, (ushort)y, z);
             return CollideType.IsSolid(lvl.CollideType(block));

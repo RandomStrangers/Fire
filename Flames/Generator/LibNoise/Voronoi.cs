@@ -87,14 +87,14 @@ namespace LibNoise
             // Return the calculated distance with the displacement value applied.
             return Displacement * ValueNoise(x0, y0, z0, 0);
         }
-        
-        
-        const int X_NOISE_GEN = 1619;
-        const int Y_NOISE_GEN = 31337;
-        const int Z_NOISE_GEN = 6971;
-        const int SEED_NOISE_GEN = 1013;
 
-        static double ValueNoise(int x, int y, int z, int seed)
+
+        public const int X_NOISE_GEN = 1619;
+        public const int Y_NOISE_GEN = 31337;
+        public const int Z_NOISE_GEN = 6971;
+        public const int SEED_NOISE_GEN = 1013;
+
+        public static double ValueNoise(int x, int y, int z, int seed)
         {
             // All constants are primes and must remain prime in order for this noise
             // function to work correctly.

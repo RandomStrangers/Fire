@@ -76,8 +76,8 @@ namespace Flames
                 Logger.LogError("Downloading " + file +" failed, try again later", ex);
             }
         }
-        
-        internal static ConfigElement[] serverConfig, levelConfig, zoneConfig;
+
+        public static ConfigElement[] serverConfig, levelConfig, zoneConfig;
         public static void Start() {
             serverConfig = ConfigElement.GetAll(typeof(ServerConfig));
             levelConfig  = ConfigElement.GetAll(typeof(LevelConfig));
@@ -118,16 +118,16 @@ namespace Flames
                                    null, TimeSpan.FromMinutes(5));
 
         }
-    static void ForceEnableTLS() {
+        public static void ForceEnableTLS() {
             // Force enable TLS 1.1/1.2, otherwise checking for updates on Github doesn't work
             try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0x300; } catch { }
             try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0xC00; } catch { }
         }
-        static void EnsureDirectoryDoesntExist(string dir, bool persist)
+        public static void EnsureDirectoryDoesntExist(string dir, bool persist)
         {
             if (Directory.Exists(dir)) Directory.Delete(dir, persist);
         }
-        static void EnsureFilesExist() {
+        public static void EnsureFilesExist() {
             EnsureDirectoryExists("properties");
             EnsureDirectoryExists("properties/games");
             EnsureDirectoryExists("levels");
@@ -153,9 +153,9 @@ namespace Flames
         }
  
         public static void LoadAllSettings() { LoadAllSettings(false); }
-        
+
         // TODO rethink this
-        static void LoadAllSettings(bool commands) {
+        public static void LoadAllSettings(bool commands) {
             Colors.Load();
             Alias.LoadCustom();
             BlockDefinition.LoadGlobal();
@@ -187,8 +187,8 @@ namespace Flames
         }
 
 
-        static readonly object stopLock = new object();
-        static volatile Thread stopThread;
+        public static readonly object stopLock = new object();
+        public static volatile Thread stopThread;
         public static Thread Stop(bool restart, string msg) {
             if (Config.SayBye)
             {
@@ -203,8 +203,8 @@ namespace Flames
                 return stopThread;
             }
         }
-        
-        static void ShutdownThread(bool restarting, string msg) {
+
+        public static void ShutdownThread(bool restarting, string msg) {
             try {
                 Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);
             } catch { }
@@ -297,13 +297,13 @@ namespace Flames
             if (OnURLChange != null) OnURLChange(url);
         }
 
-        static void RandomMessage(SchedulerTask task) {
+        public static void RandomMessage(SchedulerTask task) {
             if (PlayerInfo.Online.Count > 0 && announcements.Length > 0) {
                 Chat.MessageGlobal(announcements[new Random().Next(0, announcements.Length)]);
             }
         }
 
-        internal static void SettingsUpdate() {
+        public static void SettingsUpdate() {
             if (OnSettingsUpdate != null) OnSettingsUpdate();
         }
         
@@ -349,7 +349,7 @@ namespace Flames
         }
 
         // only want ASCII alphanumerical characters for salt
-        static bool AcceptableSaltChar(char c) {
+        public static bool AcceptableSaltChar(char c) {
             return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') 
                 || (c >= '0' && c <= '9');
         }
@@ -368,10 +368,10 @@ namespace Flames
             }
             return new string(str);
         }
-        
-        static System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
-        static MD5CryptoServiceProvider md5  = new MD5CryptoServiceProvider();
-        static object md5Lock = new object();
+
+        public static System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
+        public static MD5CryptoServiceProvider md5  = new MD5CryptoServiceProvider();
+        public static object md5Lock = new object();
         
         /// <summary> Calculates mppass (verification token) for the given username. </summary>
         public static string CalcMppass(string name, string salt) {

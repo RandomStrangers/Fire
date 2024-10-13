@@ -18,7 +18,7 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    sealed class CmdAka : Command2 
+    public sealed class CmdAka : Command2 
     {
         public override string name { get { return "AKA"; } }
         public override string type { get { return CommandTypes.Games; } }

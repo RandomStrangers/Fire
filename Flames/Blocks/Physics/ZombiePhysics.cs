@@ -108,8 +108,8 @@ namespace Flames.Blocks.Physics {
                 C.Data.Type1 = PhysicsArgs.Revert; C.Data.Value1 = Block.Air;
             }
         }
-        
-        static bool MoveZombie(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
+
+        public static bool MoveZombie(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
             int index;
             
             // Move zombie up or down blocks

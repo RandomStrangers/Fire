@@ -22,8 +22,8 @@ namespace Flames.Commands.Building {
     public sealed class CmdOutline : DrawCmd {
         public override string name { get { return "Outline"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        
-        protected override DrawOp GetDrawOp(DrawArgs dArgs) {
+
+        public override DrawOp GetDrawOp(DrawArgs dArgs) {
             Player p = dArgs.Player;
             if (dArgs.Message.Length == 0) {
                 p.Message("Block name is required."); return null;
@@ -43,9 +43,9 @@ namespace Flames.Commands.Building {
             op.Target = target;
             return op;
         }
-        
-                
-        protected override DrawMode GetMode(string[] parts) {
+
+
+        public override DrawMode GetMode(string[] parts) {
             if (parts.Length == 1) return DrawMode.normal;
             
             string type = parts[1];
@@ -55,8 +55,8 @@ namespace Flames.Commands.Building {
             if (type == "all")   return DrawMode.solid;
             return DrawMode.normal;
         }
-        
-        protected override void GetBrush(DrawArgs dArgs) {
+
+        public override void GetBrush(DrawArgs dArgs) {
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount + 1, 0);
         }
 

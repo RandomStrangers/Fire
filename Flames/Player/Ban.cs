@@ -24,9 +24,9 @@ namespace Flames
     /// <summary> Retrieves or updates a user's ban/unban information. </summary>
     /// <remarks> This is NOT the list of banned players (ranks/banned.txt) </remarks>
     public static class Ban 
-    {        
-        static PlayerMetaList bans = new PlayerMetaList("text/bans.txt");
-        static PlayerMetaList unbans = new PlayerMetaList("text/unbans.txt");
+    {
+        public static PlayerMetaList bans = new PlayerMetaList("text/bans.txt");
+        public static PlayerMetaList unbans = new PlayerMetaList("text/unbans.txt");
         
         public static void EnsureExists() {
             bans.EnsureExists();
@@ -69,14 +69,14 @@ namespace Flames
             
             AddUnbanEntry(unbanner.name, target.ToLower(), reason);
         }
-        
-        static void AddBanEntry(string pl, string target, string reason, bool stealth, string oldrank) {
+
+        public static void AddBanEntry(string pl, string target, string reason, bool stealth, string oldrank) {
             string time = DateTime.UtcNow.ToUnixTime().ToString();
             string data = pl + " " + target + " " + reason + " " + stealth + " " + time + " " + oldrank;
             bans.Append(data);
         }
-        
-        static void AddUnbanEntry(string pl, string target, string reason) {
+
+        public static void AddUnbanEntry(string pl, string target, string reason) {
             string time = DateTime.UtcNow.ToUnixTime().ToString();
             string data = pl + " " + target + " " + reason + " " + time;
             unbans.Append(data);
@@ -120,8 +120,8 @@ namespace Flames
             }
             unbanner = null; reason = null; time = DateTime.MinValue;
         }
-        
-        static DateTime GetDate(string raw) {
+
+        public static DateTime GetDate(string raw) {
             raw = raw.Replace("%20", " ").Replace(",", "");
             long timestap;
             if (long.TryParse(raw, out timestap)) return timestap.FromUnixTime();
@@ -141,8 +141,8 @@ namespace Flames
 
         public static bool DeleteBan(string name) { return DeleteInfo(name, bans); }
         public static bool DeleteUnban(string name) { return DeleteInfo(name, unbans); }
-        
-        static bool DeleteInfo(string name, PlayerMetaList list) {
+
+        public static bool DeleteInfo(string name, PlayerMetaList list) {
             name = name.ToLower();
             bool found = false;
             StringBuilder sb = new StringBuilder();
@@ -167,8 +167,8 @@ namespace Flames
         public static bool ChangeUnbanReason(string who, string reason) {
             return ChangeReason(who, reason, unbans);
         }
-        
-        static bool ChangeReason(string who, string reason, PlayerMetaList list) {
+
+        public static bool ChangeReason(string who, string reason, PlayerMetaList list) {
             who = who.ToLower();
             reason = reason.Replace(" ", "%20");
             bool found = false;

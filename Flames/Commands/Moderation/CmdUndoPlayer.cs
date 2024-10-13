@@ -64,17 +64,17 @@ namespace Flames.Commands.Moderation {
                 p.MakeSelection(2, "Selecting region for &SUndo player", args, DoUndoArea);
             }
         }
-        
-        bool DoUndoArea(Player p, Vec3S32[] marks, object state, BlockID block) {
+
+        public bool DoUndoArea(Player p, Vec3S32[] marks, object state, BlockID block) {
             UndoAreaArgs args = (UndoAreaArgs)state;
             UndoPlayer(p, args.delta, args.names, args.ids, marks);
             return false;
         }
 
-        struct UndoAreaArgs { public string[] names; public int[] ids; public TimeSpan delta; }
-        
+        public struct UndoAreaArgs { public string[] names; public int[] ids; public TimeSpan delta; }
 
-        static void UndoPlayer(Player p, TimeSpan delta, string[] names, int[] ids, Vec3S32[] marks) {
+
+        public static void UndoPlayer(Player p, TimeSpan delta, string[] names, int[] ids, Vec3S32[] marks) {
             UndoDrawOp op = new UndoDrawOp
             {
                 Start = DateTime.UtcNow.Subtract(delta),
@@ -104,8 +104,8 @@ namespace Flames.Commands.Moderation {
                 p.Message("No changes found by {1} &Sin the past &b{0}", delta.Shorten(true), namesStr);
             }
         }
-        
-        int[] GetIds(Player p, string[] parts, CommandData data, out string[] names) {
+
+        public int[] GetIds(Player p, string[] parts, CommandData data, out string[] names) {
             int count = Math.Max(1, parts.Length - 1);
             List<int> ids = new List<int>();
             names = new string[count];

@@ -54,15 +54,15 @@ namespace Flames.DB
             Logger.Log(LogType.SystemActivity, "&aUpgrade finished!");
             Upgrading = false;
         }
-        
-        static void ConnectingHandler(Player p, string mppass) {
+
+        public static void ConnectingHandler(Player p, string mppass) {
             p.Leave("Upgrading BlockDB (" + Progress + "). Check back later!");
             p.cancelconnecting = true;
         }
-        
-        
-        internal static int current, count;
-        internal static string Progress { get { return current + " / " + count; } }
+
+
+        public static int current, count;
+        public static string Progress { get { return current + " / " + count; } }
         
         public static void Upgrade() {
             List<string> tables = Database.Backend.AllTables();

@@ -59,9 +59,9 @@ namespace Flames.Commands.Eco
             Output(p, ecos.Salary, "receipt");
             Output(p, ecos.Fine, "fine");
         }
-        
-        const string dateFormat = "MM'/'dd'/'yyyy HH:mm:ss";
-        static void Output(Player p, string value, string type) {
+
+        public const string dateFormat = "MM'/'dd'/'yyyy HH:mm:ss";
+        public static void Output(Player p, string value, string type) {
             if (value == null) return;
             
             if (!AdjustRelative(ref value, " on %f")) {
@@ -69,8 +69,8 @@ namespace Flames.Commands.Eco
             }
             p.Message(" Last {0}: {1}", type, value);
         }
-        
-        static bool AdjustRelative(ref string value, string dateStart) {
+
+        public static bool AdjustRelative(ref string value, string dateStart) {
             int index = value.IndexOf(dateStart);
             if (index == -1) return false;
             

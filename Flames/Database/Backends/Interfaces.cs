@@ -100,7 +100,7 @@ namespace Flames.SQL
             return IsDBNull(col) ? 0 : GetInt64(col);
         }
 
-        protected static string Quote(string value) {
+        public static string Quote(string value) {
             if (value.IndexOf('\'') >= 0) // escape '
                 value = value.Replace("'", "''");
             return "'" + value + "'";

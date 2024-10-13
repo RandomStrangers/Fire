@@ -31,7 +31,7 @@ namespace Flames.Modules.Games.TW
     public sealed class TWConfig : RoundsGameConfig 
     {
         public override bool AllowAutoload { get { return false; } }
-        protected override string GameName { get { return "TNT Wars"; } }
+        public override string GameName { get { return "TNT Wars"; } }
         
         [ConfigEnum("Mode", "Defaults", TWGameMode.TDM, typeof(TWGameMode))]
         public TWGameMode Mode = TWGameMode.TDM;
@@ -74,9 +74,9 @@ namespace Flames.Modules.Games.TW
         
         [ConfigVec3("red-spawn", null)]  public Vec3U16 RedSpawn;
         [ConfigVec3("blue-spawn", null)] public Vec3U16 BlueSpawn;
-        
-        const string propsDir = "properties/tntwars/";
-        static ConfigElement[] cfg;        
+
+        public const string propsDir = "properties/tntwars/";
+        public static ConfigElement[] cfg;        
         public override void Load(string map) {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(TWMapConfig));
             LoadFrom(cfg, propsDir, map);

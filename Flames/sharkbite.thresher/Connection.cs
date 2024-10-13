@@ -35,11 +35,11 @@ namespace Sharkbite.Irc
 	/// </summary>
 	public sealed class Connection
 	{
-		TcpClient client;
-		StreamReader reader;
-		StreamWriter writer;
-		Encoding encoding;
-		Random rnd = new Random();
+        public TcpClient client;
+        public StreamReader reader;
+        public StreamWriter writer;
+        public Encoding encoding;
+        public Random rnd = new Random();
 
 		/// <summary>
 		/// Prepare a connection to an IRC server but do not open it.
@@ -74,14 +74,14 @@ namespace Sharkbite.Irc
 		/// <summary> Whether a TCP/IP connection has been established with the IRC server. </summary>
 		public bool Connected;
 
-		/// <summary> Respond to IRC keep-alives. </summary>
-		/// <param name="message">The message that should be echoed back</param>
-		void KeepAlive(string message)
+        /// <summary> Respond to IRC keep-alives. </summary>
+        /// <param name="message">The message that should be echoed back</param>
+        public void KeepAlive(string message)
 		{
-			SendPong( message );
+			SendPong(message);
 		}
 
-		void MyNickChanged(string user, string newNick)
+        public void MyNickChanged(string user, string newNick)
 		{
 			string nick = ExtractNick(user);
 			if ( Nick == nick )
@@ -89,14 +89,14 @@ namespace Sharkbite.Irc
 				Nick = newNick;
 			}
 		}
-		
-		void HandleRegistered()
+
+        public void HandleRegistered()
 		{
 			Registered = true;
 			OnRegistered -= HandleRegistered;
 		}
-		
-		string GetNewNick()
+
+        public string GetNewNick()
         {
             // prefer just adding _ to end of real nick
             if (Nick.Length < MAX_NICKNAME_LEN) return Nick + "_";
@@ -106,19 +106,19 @@ namespace Sharkbite.Irc
 			char val = (char)('A' + rnd.Next(26));
 			return Nick.Substring(0, idx) + val + Nick.Substring(idx + 1);
 		}
-		
-		
-		void HandleNickError( string badNick, string reason )
+
+
+        public void HandleNickError(string badNick, string reason)
 		{
-			if( Registered ) return;
+			if(Registered) return;
 			
 			// If this is our initial connection attempt
 			Nick = GetNewNick();
 			SendNick(Nick);
 			SendUser();
 		}
-		
-		void RegisterDelegates()
+
+        public void RegisterDelegates()
 		{
 			OnPing += KeepAlive;
 			OnNick += MyNickChanged;
@@ -135,12 +135,12 @@ namespace Sharkbite.Irc
 			string line;
 			try
 			{
-				while ( (line = reader.ReadLine() ) != null )
+				while ((line = reader.ReadLine()) != null)
 				{
-					if( IsDccRequest( line ) ) continue;
-					if( IsCtcpMessage( line) ) continue;
+					if( IsDccRequest(line)) continue;
+					if( IsCtcpMessage(line)) continue;
 
-					Parse( line );
+					Parse(line);
 				}
 			}
 			finally
@@ -152,29 +152,29 @@ namespace Sharkbite.Irc
 				Connected  = false;
 			}
 		}
-		
-		Stream MakeDataStream() 
+
+        public Stream MakeDataStream() 
 		{
 			Stream raw = client.GetStream();
 			if (!UseSSL) return raw;
-			return Flames.Network.HttpUtil.WrapSSLStream( raw, Hostname );
+			return Flames.Network.HttpUtil.WrapSSLStream(raw, Hostname);
 		}
 		
 		/// <summary> Connect to the IRC server and start listening for messages on a new thread. </summary>
 		/// <exception cref="SocketException">If a connection cannot be established with the IRC server</exception>
 		public void Connect()
 		{
-			lock ( this )
+			lock (this)
 			{
-				if( Connected ) throw new InvalidOperationException("Connection with IRC server already opened.");
+				if(Connected) throw new InvalidOperationException("Connection with IRC server already opened.");
 				client = new TcpClient();
-				client.Connect( Hostname, Port );
+				client.Connect(Hostname, Port);
 				Stream s  = MakeDataStream();
 				Connected = true;
 				
-				writer = new StreamWriter( s, encoding );
+				writer = new StreamWriter(s, encoding);
 				writer.AutoFlush = true;
-				reader = new StreamReader( s, encoding );
+				reader = new StreamReader(s, encoding);
 				
 				SendPass(ServerPassword);
 				// NOTE: The following two commands may fail if
@@ -184,62 +184,62 @@ namespace Sharkbite.Irc
 			}
 		}
 
-		public void Disconnect( string reason )
+		public void Disconnect(string reason)
 		{
-			lock ( this )
+			lock (this)
 			{
-				SendQuit( reason );
+				SendQuit(reason);
 				client.Close();
 			}
 		}
-		
 
-		const string ctcpTypes = "(FINGER|USERINFO|VERSION|SOURCE|CLIENTINFO|ERRMSG|PING|TIME)";
-		static Regex ctcpRegex = new Regex(":([^ ]+) [A-Z]+ [^:]+:\u0001" + ctcpTypes + "([^\u0001]*)\u0001", RegexOptions.Compiled | RegexOptions.Singleline );
-		/// <summary> Test if the message contains CTCP commands. </summary>
-		/// <param name="message">The raw message from the IRC server</param>
-		/// <returns>True if this is a Ctcp request or reply.</returns>
-		static bool IsCtcpMessage( string message ) {
+
+        public const string ctcpTypes = "(FINGER|USERINFO|VERSION|SOURCE|CLIENTINFO|ERRMSG|PING|TIME)";
+        public static Regex ctcpRegex = new Regex(":([^ ]+) [A-Z]+ [^:]+:\u0001" + ctcpTypes + "([^\u0001]*)\u0001", RegexOptions.Compiled | RegexOptions.Singleline );
+        /// <summary> Test if the message contains CTCP commands. </summary>
+        /// <param name="message">The raw message from the IRC server</param>
+        /// <returns>True if this is a Ctcp request or reply.</returns>
+        public static bool IsCtcpMessage( string message ) {
 			return ctcpRegex.IsMatch( message );
 		}
-		
-		static Regex dccMatchRegex = new Regex(":([^ ]+) PRIVMSG [^:]+:\u0001DCC (CHAT|SEND|GET|RESUME|ACCEPT)[^\u0001]*\u0001", RegexOptions.Compiled | RegexOptions.Singleline );
-		/// <summary> Test if the message contains a DCC request. </summary>
-		/// <param name="message">The raw message from the IRC server</param>
-		/// <returns>True if this is a DCC request.</returns>
-		static bool IsDccRequest( string message ) {
+
+        public static Regex dccMatchRegex = new Regex(":([^ ]+) PRIVMSG [^:]+:\u0001DCC (CHAT|SEND|GET|RESUME|ACCEPT)[^\u0001]*\u0001", RegexOptions.Compiled | RegexOptions.Singleline );
+        /// <summary> Test if the message contains a DCC request. </summary>
+        /// <param name="message">The raw message from the IRC server</param>
+        /// <returns>True if this is a DCC request.</returns>
+        public static bool IsDccRequest( string message ) {
 			return dccMatchRegex.IsMatch( message );
 		}
 
 
-		#region Sending
-		const int MAX_COMMAND_SIZE = 512;
-		const int MAX_HOSTNAME_LEN = 63;
-		const int MAX_NICKNAME_LEN = 30;
-		readonly object sendLock = new object();
-				
-		/// <summary> Send a message to the IRC server. </summary>
-		void SendCommand(string command)
+        #region Sending
+        public const int MAX_COMMAND_SIZE = 512;
+        public const int MAX_HOSTNAME_LEN = 63;
+        public const int MAX_NICKNAME_LEN = 30;
+        public readonly object sendLock = new object();
+
+        /// <summary> Send a message to the IRC server. </summary>
+        public void SendCommand(string command)
 		{
 			try
 			{
-				lock (sendLock) { writer.WriteLine( command ); }
+				lock (sendLock) { writer.WriteLine(command); }
 			}
 			catch
 			{
 			}
 		}
-		
-		/// <summary>
-		/// Break up a large message into smaller peices that will fit within the IRC
-		/// max message size.
-		/// </summary>
-		/// <param name="message">The text to be broken up</param>
-		/// <param name="maxSize">The largest size a piece can be</param>
-		/// <returns>A string array holding the correctly sized messages.</returns>
-		string[] BreakUpMessage(string message, int maxSize) 
+
+        /// <summary>
+        /// Break up a large message into smaller peices that will fit within the IRC
+        /// max message size.
+        /// </summary>
+        /// <param name="message">The text to be broken up</param>
+        /// <param name="maxSize">The largest size a piece can be</param>
+        /// <returns>A string array holding the correctly sized messages.</returns>
+        public string[] BreakUpMessage(string message, int maxSize) 
 		{
-			int pieces = (int) Math.Ceiling( (float)message.Length / (float)maxSize );
+			int pieces = (int) Math.Ceiling(message.Length / (float)maxSize );
 			string[] parts = new string[ pieces ];
 			for( int i = 0; i < pieces; i++ ) 
 			{
@@ -256,33 +256,33 @@ namespace Sharkbite.Irc
 			return parts;
 		}
 
-		void SendUser() 
+        public void SendUser() 
 		{
 			// 4 = IRC mode mask (invisible and not receive wallops)
 			SendCommand("USER " + UserName + " 4 * :" + RealName );
 		}
 
-		void SendQuit(string reason) 
+        public void SendQuit(string reason) 
 		{
-			if ( IsEmpty( reason ) ) 
+			if (IsEmpty(reason)) 
 				throw new ArgumentException("Quit reason cannot be null or empty.");
 			
 			SendCommand("QUIT :" + reason);
 		}
 
-		void SendPong(string message) 
+        public void SendPong(string message) 
 		{
 			SendCommand("PONG " + message);
 		}
 
-		void SendPass(string password) 
+        public void SendPass(string password) 
 		{
 			SendCommand("PASS " + password);
 		}
 
 		public void SendJoin(string channel) 
 		{
-			if ( IsEmpty( channel ) )
+			if (IsEmpty(channel))
 				throw new ArgumentException(channel + " is not a valid channel name.");
 			
 			SendCommand("JOIN " + channel);
@@ -290,9 +290,9 @@ namespace Sharkbite.Irc
 
 		public void SendJoin(string channel, string password) 
 		{
-			if ( IsEmpty( password ) ) 
+			if (IsEmpty(password)) 
 				throw new ArgumentException("Password cannot be empty or null.");
-			if ( IsEmpty( channel ) )
+			if (IsEmpty(channel))
 				throw new ArgumentException("Channel name cannot be empty or null.");
 				
 			SendCommand("JOIN " + channel + " " + password);
@@ -300,7 +300,7 @@ namespace Sharkbite.Irc
 
 		public void SendNick(string nick) 
 		{
-			if ( !IsValidNick( nick ) )
+			if (!IsValidNick(nick))
 				throw new ArgumentException(nick + " is not a valid nickname.");
 				
 			SendCommand("NICK " + nick);
@@ -308,7 +308,7 @@ namespace Sharkbite.Irc
 
 		public void SendNames(string channel) 
 		{
-			if ( IsEmpty( channel ) ) 
+			if (IsEmpty(channel)) 
 				throw new ArgumentException("Channel name cannot be null or empty.");
 			
 			SendCommand("NAMES " + channel);
@@ -317,9 +317,9 @@ namespace Sharkbite.Irc
 		public void SendMessage(string target, string message) 
 		{
 			// target is either a channel name or user nickname
-			if ( IsEmpty( message ) ) 
+			if (IsEmpty(message)) 
 				throw new ArgumentException("Public message cannot be null or empty.");
-			if ( IsEmpty( target ) )
+			if (IsEmpty(target))
 				throw new ArgumentException("Channel/Nick name cannot be null or empty.");
 
 			lock (sendLock)
@@ -343,12 +343,12 @@ namespace Sharkbite.Irc
 
 		public void SendRaw(string message) 
 		{
-			if ( IsEmpty( message ) )
+			if (IsEmpty(message))
 				throw new ArgumentException("Message cannot be null or empty.");			
-			if ( message.Length > MAX_COMMAND_SIZE ) 
-				message = message.Substring( 0, MAX_COMMAND_SIZE );
+			if (message.Length > MAX_COMMAND_SIZE) 
+				message = message.Substring(0, MAX_COMMAND_SIZE);
 
-			SendCommand( message );
+			SendCommand(message);
 		}
 		#endregion
 
@@ -434,52 +434,52 @@ namespace Sharkbite.Irc
 		/// A User has been disconnected via a Kill message.
 		/// </summary>
 		public event KillEventHandler OnKill;
-		#endregion
+        #endregion
 
 
-		#region Parsing
-		private const string ACTION = "\u0001ACTION";
-		private readonly char[] Separator = new char[] { ' ' };
-		private readonly Regex replyRegex = new Regex("^:([^\\s]*) ([\\d]{3}) ([^\\s]*) (.*)", RegexOptions.Compiled | RegexOptions.Singleline);
+        #region Parsing
+        public const string ACTION = "\u0001ACTION";
+        public readonly char[] Separator = new char[] { ' ' };
+        public readonly Regex replyRegex = new Regex("^:([^\\s]*) ([\\d]{3}) ([^\\s]*) (.*)", RegexOptions.Compiled | RegexOptions.Singleline);
 
-		void Parse(string message ) 
+        public void Parse(string message) 
 		{
-			string[] tokens = message.Split( Separator );
-			if( tokens[0] == "PING" ) 
+			string[] tokens = message.Split(Separator);
+			if(tokens[0] == "PING") 
 			{
-				OnPing( GetSuffix( tokens, 1 ) );
+				OnPing(GetSuffix(tokens, 1));
 			}
-			else if( tokens[0] == "NOTICE" ) 
+			else if(tokens[0] == "NOTICE") 
 			{
-				OnPrivateNotice( "", GetSuffix( tokens, 2 ) );
+				OnPrivateNotice("", GetSuffix(tokens, 2));
 			}
-			else if ( tokens[0] == "ERROR" ) 
+			else if (tokens[0] == "ERROR") 
 			{
-				OnError( ReplyCode.IrcServerError, GetSuffix( tokens, 1 ) );
+				OnError( ReplyCode.IrcServerError, GetSuffix(tokens, 1));
 			}
-			else if( replyRegex.IsMatch( message ) )
+			else if(replyRegex.IsMatch(message))
 			{
-				ParseReply( tokens );
+				ParseReply(tokens);
 			}
 			else 
 			{
-				ParseCommand( tokens );
+				ParseCommand(tokens);
 			}
 		}
 
-		/// <summary>
-		/// Parse the message and call the callback methods on the listeners.
-		/// </summary>
-		/// <param name="tokens">The text received from the IRC server</param>
-		void ParseCommand(string[] tokens ) 
+        /// <summary>
+        /// Parse the message and call the callback methods on the listeners.
+        /// </summary>
+        /// <param name="tokens">The text received from the IRC server</param>
+        public void ParseCommand(string[] tokens) 
 		{	
 			// Remove leading colon from user info
-			string user = RemoveLeadingColon( tokens[0] );
+			string user = RemoveLeadingColon(tokens[0]);
 
-			switch( tokens[1] ) 
+			switch(tokens[1]) 
 			{
 				case "NOTICE":
-					if( IsValidChannelName( tokens[2] ) )
+					if(IsValidChannelName(tokens[2]))
 					{			
 						OnPublicNotice( user, tokens[2], GetSuffix( tokens, 3 ) );
 					}
@@ -549,8 +549,8 @@ namespace Sharkbite.Irc
 					break;
 			}
 		}
-		
-		void ParseReply( string[] tokens ) 
+
+        public void ParseReply( string[] tokens ) 
 		{
 			ReplyCode code = (ReplyCode) int.Parse( tokens[1], CultureInfo.InvariantCulture );
 			tokens[3] = RemoveLeadingColon( tokens[3] );
@@ -586,7 +586,7 @@ namespace Sharkbite.Irc
 			}
 		}
 
-		void HandleDefaultReply( ReplyCode code, string[] tokens ) 
+        public void HandleDefaultReply( ReplyCode code, string[] tokens ) 
 		{
 			if (code >= ReplyCode.ERR_NOSUCHNICK && code <= ReplyCode.ERR_USERSDONTMATCH) 
 			{
@@ -597,11 +597,11 @@ namespace Sharkbite.Irc
 				OnReply(code, GetSuffix( tokens, 3 ) );
 			}
 		}
-		
-		/// <summary>
-		/// Turn an array of strings back into a single string.
-		/// </summary>
-		static string CondenseStrings( string[] strings, int start ) 
+
+        /// <summary>
+        /// Turn an array of strings back into a single string.
+        /// </summary>
+        public static string CondenseStrings( string[] strings, int start ) 
 		{
 			if( strings.Length == start + 1 ) 
 			{
@@ -612,8 +612,8 @@ namespace Sharkbite.Irc
 				return string.Join(" ", strings, start, (strings.Length - start) );
 			}
 		}
-		
-		static string RemoveLeadingColon( string text ) 
+
+        public static string RemoveLeadingColon( string text ) 
 		{
 			if( text[0] == ':' )
 			{
@@ -622,33 +622,33 @@ namespace Sharkbite.Irc
 			return text;
 		}
 
-		static string GetSuffix( string[] strings, int start ) 
+        public static string GetSuffix( string[] strings, int start ) 
 		{
 			if( start >= strings.Length ) return "";
 
 			return RemoveLeadingColon( CondenseStrings( strings, start ) );
 		}
-		
-		/// <summary>
-		/// Strip off the trailing CTCP quote.
-		/// </summary>
-		static string RemoveTrailingQuote( string text ) 
+
+        /// <summary>
+        /// Strip off the trailing CTCP quote.
+        /// </summary>
+        public static string RemoveTrailingQuote( string text ) 
 		{
 			return text.Substring(0, text.Length -1 );		
 		}
-		#endregion
+        #endregion
 
 
-		#region Utilities
-		// Odd chars that IRC allows in nicknames 
-		const string Special = "\\[\\]\\`_\\^\\{\\|\\}";
-		const string NickChars = "[" + Special + "a-zA-Z][\\w\\-" + Special + "]{0,8}";
+        #region Utilities
+        // Odd chars that IRC allows in nicknames 
+        public const string Special = "\\[\\]\\`_\\^\\{\\|\\}";
+        public const string NickChars = "[" + Special + "a-zA-Z][\\w\\-" + Special + "]{0,8}";
 
-		// Regex that matches a legal IRC nick 
-		static readonly Regex nickRegex = new Regex( NickChars ); 
-		//Regex to create a UserInfo from a string
-		static readonly Regex nameSplitterRegex = new Regex("[!@]",RegexOptions.Compiled | RegexOptions.Singleline );
-		const string ChannelPrefix = "#!+&";
+        // Regex that matches a legal IRC nick 
+        public static readonly Regex nickRegex = new Regex( NickChars );
+        //Regex to create a UserInfo from a string
+        public static readonly Regex nameSplitterRegex = new Regex("[!@]",RegexOptions.Compiled | RegexOptions.Singleline );
+        public const string ChannelPrefix = "#!+&";
 
 		public static string ExtractNick( string fullUserName ) 
 		{
@@ -663,7 +663,7 @@ namespace Sharkbite.Irc
 			return fullUserName;
 		}
 
-		static bool IsValidChannelName( string channel ) 
+        public static bool IsValidChannelName( string channel ) 
 		{
 			if( IsEmpty(  channel ) ) return false;
 			if( HasSpace( channel ) ) return false;
@@ -672,7 +672,7 @@ namespace Sharkbite.Irc
 			return channel.Length > 1 && ChannelPrefix.IndexOf(channel[0]) >= 0;
 		}
 
-		static bool IsValidNick( string nick ) 
+        public static bool IsValidNick( string nick ) 
 		{
 			if( IsEmpty(  nick ) ) return false;
 			if( HasSpace( nick ) ) return false;
@@ -680,12 +680,12 @@ namespace Sharkbite.Irc
 			return nickRegex.IsMatch( nick );
 		}
 
-		static bool IsEmpty( string str ) 
+        public static bool IsEmpty( string str ) 
 		{
 			return str == null || str.Trim().Length == 0;
 		}
 
-		static bool HasSpace( string str ) 
+        public static bool HasSpace( string str ) 
 		{
 			return str.IndexOf( ' ' ) != -1;
 		}

@@ -25,7 +25,7 @@ namespace Flames
     /// <summary> Utility methods for backing up and restoring a server. </summary>
     public static class Backup 
     {
-        const string zipPath = "Flames.zip", sqlPath = "SQL.sql";
+        public const string zipPath = "Flames.zip", sqlPath = "SQL.sql";
         
         public static void Perform(Player p, bool files, bool db, bool lite, bool compress) {
             if (db) {
@@ -55,8 +55,8 @@ namespace Flames
             p.Message("Backup of (" + (files ? "everything" + (db ? "" : " but database") : "database") + ") complete!");
             Logger.Log(LogType.SystemActivity, "Server backed up!");
         }
-        
-        static List<string> GetAllFiles(bool lite) {
+
+        public static List<string> GetAllFiles(bool lite) {
             string[] all = Directory.GetFiles("./", "*", SearchOption.AllDirectories);
             List<string> paths = new List<string>();
             
@@ -80,8 +80,8 @@ namespace Flames
             }
             return paths;
         }
-        
-        static void SaveFiles(ZipWriter writer, List<string> paths, bool compress) {
+
+        public static void SaveFiles(ZipWriter writer, List<string> paths, bool compress) {
             Logger.Log(LogType.SystemActivity, "Compressing {0} files...", paths.Count);
             for (int i = 0; i < paths.Count; i++) {
                 string path = paths[i];
@@ -100,8 +100,8 @@ namespace Flames
                 Logger.Log(LogType.SystemActivity, "Backed up {0}/{1} files", i, paths.Count);
             }
         }
-        
-        static void SaveDatabase(ZipWriter writer, bool compress) {
+
+        public static void SaveDatabase(ZipWriter writer, bool compress) {
             Logger.Log(LogType.SystemActivity, "Compressing Database...");
             using (Stream src = File.OpenRead(sqlPath)) {
                 writer.WriteEntry(src, sqlPath, compress);
@@ -136,8 +136,8 @@ namespace Flames
             p.Message("Server restored" + (errors > 0 ? " with errors. May be a partial restore" : ""));
             p.Message("It is recommended that you restart the server, although this is not required.");
         }
-        
-        static void Extract(Stream src, string path) {
+
+        public static void Extract(Stream src, string path) {
             byte[] buf = new byte[4096];
             int read = 0;
             
@@ -146,8 +146,8 @@ namespace Flames
                     dst.Write(buf, 0, read);
             }
         }
-        
-        static string ExtractItem(ZipReader reader, int i, ref int errors) {
+
+        public static string ExtractItem(ZipReader reader, int i, ref int errors) {
             string path;
             using (Stream part = reader.GetEntry(i, out path)) {
                 // old server backup used to URI encode files
@@ -169,9 +169,9 @@ namespace Flames
                 }
             }
         }
-        
-        
-        static void BackupDatabase(StreamWriter sql) {
+
+
+        public static void BackupDatabase(StreamWriter sql) {
             // NOTE: This does NOT account for foreign keys, BLOBs etc. It only works for what we actually put in the DB.
             sql.WriteLine("-- {0} SQL database dump", Server.SoftwareNameVersioned);
             sql.WriteLine("-- Host: {0}", Server.Config.MySQLHost);
@@ -196,8 +196,8 @@ namespace Flames
             dumper.DumpTable(sql, tableName);
             dumper.sql = null;
         }
-        
-        static void ReplaceDatabase(Stream sql) {
+
+        public static void ReplaceDatabase(Stream sql) {
             using (Stream backup = File.Create("backup.sql"))
                 BackupDatabase(new StreamWriter(backup));
 
@@ -207,15 +207,15 @@ namespace Flames
             }
             ImportSql(sql);
         }
-        
-        internal static void ImportSql(Stream sql) {
+
+        public static void ImportSql(Stream sql) {
             // Import data (we only have CREATE TABLE and INSERT INTO statements)
             using (StreamReader reader = new StreamReader(sql)) {
                 ImportBulk(reader);
             }
         }
-        
-        static void ImportBulk(StreamReader reader) {
+
+        public static void ImportBulk(StreamReader reader) {
             SqlTransaction bulk = null;
             List<string> buffer = new List<string>();
             
@@ -246,8 +246,8 @@ namespace Flames
                 if (bulk != null) bulk.Dispose();
             }
         }
-        
-        static string NextStatement(StreamReader r, List<string> buffer) {
+
+        public static string NextStatement(StreamReader r, List<string> buffer) {
             buffer.Clear();
             string line = null;
             

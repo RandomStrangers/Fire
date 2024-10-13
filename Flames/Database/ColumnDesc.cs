@@ -49,8 +49,8 @@ namespace Flames.SQL
             if (Type == ColumnType.VarChar) return "VARCHAR(" + MaxLength + ")";
             return colTypes[(int)Type];
         }
-        
-        static string[] colTypes = new string[] {
+
+        public static string[] colTypes = new string[] {
             "TINYINT UNSIGNED", "SMALLINT UNSIGNED", "MEDIUMINT UNSIGNED", 
             "INT UNSIGNED", "BIGINT UNSIGNED", "TINYINT", "SMALLINT", 
             "MEDIUMINT", "INT", "BIGINT", "INTEGER", "DATETIME",

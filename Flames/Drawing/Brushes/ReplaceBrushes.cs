@@ -23,8 +23,8 @@ namespace Flames.Drawing.Brushes
 {
     public sealed class ReplaceBrush : Brush 
     {
-        readonly BlockID[] include;
-        readonly BlockID target;
+        public readonly BlockID[] include;
+        public readonly BlockID target;
         
         public ReplaceBrush(BlockID[] include, BlockID target) {
             this.include = include; this.target = target;
@@ -49,8 +49,8 @@ namespace Flames.Drawing.Brushes
     
     public sealed class ReplaceNotBrush : Brush 
     {
-        readonly BlockID[] exclude;
-        readonly BlockID target;
+        public readonly BlockID[] exclude;
+        public readonly BlockID target;
         
         public ReplaceNotBrush(BlockID[] exclude, BlockID target) {
             this.exclude = exclude; this.target = target;

@@ -50,8 +50,8 @@ namespace Flames.Modules.Relay.Discord
     /// <summary> Message for sending text to a channel </summary>
     public class ChannelSendMessage : DiscordApiMessage
     {
-        static JsonArray default_allowed = new JsonArray() { "users", "roles" };
-        StringBuilder content;
+        public static JsonArray default_allowed = new JsonArray() { "users", "roles" };
+        public StringBuilder content;
         public JsonArray Allowed;
         
         public ChannelSendMessage(string channelID, string message) {
@@ -96,8 +96,8 @@ namespace Flames.Modules.Relay.Discord
         public ChannelSendEmbed(string channelID) {
             Path = "/channels/" + channelID + "/messages";
         }
-        
-        JsonArray GetFields() {
+
+        public JsonArray GetFields() {
             JsonArray arr = new JsonArray();
             foreach (var raw in Fields) 
             { 

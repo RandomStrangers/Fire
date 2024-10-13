@@ -38,8 +38,8 @@ namespace Flames.Commands.Info
                 Output(e, p, Server.Config.ListEmptyRanks);
             }
         }
-        
-        static void ListOfRank(Player p, string name, List<OnlineListEntry> all) {
+
+        public static void ListOfRank(Player p, string name, List<OnlineListEntry> all) {
             Group grp = Matcher.FindRanks(p, name);
             if (grp == null) return;
             OnlineListEntry rank = all.Find(e => e.group == grp);
@@ -52,8 +52,8 @@ namespace Flames.Commands.Info
             }
             return;
         }
-        
-        static void Append(Player target, StringBuilder data, Player p, Group group) {
+
+        public static void Append(Player target, StringBuilder data, Player p, Group group) {
             data.Append(' ');
             if (p.voice) { data.Append("&f+").Append(group.Color); }
             data.Append(Colors.StripUsed(target.FormatNick(p)));
@@ -62,8 +62,8 @@ namespace Flames.Commands.Info
             string lvl = Colors.Strip(p.level.name); // for museums
             data.Append(" (").Append(lvl).Append("),");
         }
-        
-        static void Output(OnlineListEntry e, Player p, bool showWhenEmpty) {            
+
+        public static void Output(OnlineListEntry e, Player p, bool showWhenEmpty) {            
             if (e.players.Count == 0 && !showWhenEmpty) return;
             StringBuilder data = new StringBuilder();
             

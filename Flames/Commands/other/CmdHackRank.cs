@@ -40,13 +40,13 @@ namespace Flames.Commands.Misc {
             DoFakeRank(p, grp);
         }
 
-        void DoFakeRank(Player p, Group newRank) {
+        public void DoFakeRank(Player p, Group newRank) {
             p.hackrank = true;
             CmdFakeRank.DoFakerank(p, p, newRank);
             DoKick(p, newRank);
         }
 
-        void DoKick(Player p, Group newRank) {
+        public void DoKick(Player p, Group newRank) {
             if (!Server.Config.HackrankKicks) return;
             HackRankArgs args = new HackRankArgs
             {
@@ -57,8 +57,8 @@ namespace Flames.Commands.Misc {
             Server.MainScheduler.QueueOnce(HackRankCallback, args, 
                                            Server.Config.HackrankKickDelay);
         }
-        
-        void HackRankCallback(SchedulerTask task) {
+
+        public void HackRankCallback(SchedulerTask task) {
             HackRankArgs args = (HackRankArgs)task.State;
             Player who = PlayerInfo.FindExact(args.name);
             if (who == null) return;
@@ -66,8 +66,8 @@ namespace Flames.Commands.Misc {
             string msg = "for hacking the rank " + args.newRank.ColoredName;
             who.Leave("kicked (" + msg + "&S)", "Kicked " + msg);
         }
-        
-        class HackRankArgs { public string name; public Group newRank; }
+
+        public class HackRankArgs { public string name; public Group newRank; }
         
         public override void Help(Player p) {
             p.Message("&T/HackRank [rank] &H- Hacks a rank");

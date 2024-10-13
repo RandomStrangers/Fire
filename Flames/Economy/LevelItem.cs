@@ -109,8 +109,8 @@ namespace Flames.Eco
             }
             Economy.MakePurchase(p, preset.price, "%3Map: %f" + preset.name);
         }
-        
-        protected internal override void OnSetup(Player p, string[] args) {
+
+        public override void OnSetup(Player p, string[] args) {
             LevelPreset preset = FindPreset(args[2]);
             string cmd = args[1];
             
@@ -124,8 +124,8 @@ namespace Flames.Eco
                 OnSetupHelp(p);
             }
         }
-        
-        void AddPreset(Player p, string[] args, LevelPreset preset) {
+
+        public void AddPreset(Player p, string[] args, LevelPreset preset) {
             if (preset != null) { p.Message("&WThat preset level already exists"); return; }
             
             preset = new LevelPreset();
@@ -148,14 +148,14 @@ namespace Flames.Eco
             p.Message("Map Type: &f" + preset.type);
             p.Message("Map Price: &f" + preset.price + " &3" + Server.Config.Currency);
         }
-        
-        void RemovePreset(Player p, string[] args, LevelPreset preset) {
+
+        public void RemovePreset(Player p, string[] args, LevelPreset preset) {
             if (preset == null) { p.Message("&WThat preset level doesn't exist"); return; }
             Presets.Remove(preset);
             p.Message("&aSuccessfully removed preset: &f" + preset.name);
         }
 
-        void EditPreset(Player p, string[] args, LevelPreset preset) {
+        public void EditPreset(Player p, string[] args, LevelPreset preset) {
             if (preset == null) { p.Message("&WThat preset level doesn't exist"); return; }
             
             if (args[3] == "name" || args[3] == "title") {
@@ -187,20 +187,20 @@ namespace Flames.Eco
                 p.Message("Supported properties to edit: name, title, x, y, z, type, price");
             }
         }
-        
-        protected internal override void OnSetupHelp(Player p) {
+
+        public override void OnSetupHelp(Player p) {
             base.OnSetupHelp(p);
             p.Message("&T/Eco level add [name] [x] [y] [z] [theme] [price]");
             p.Message("&T/Eco level remove [name]");
             p.Message("&T/Eco level edit [name] [name/x/y/z/type/price] [value]");
             p.Message("&HAdds, removes, or edits a level preset.");
         }
-        
-        protected internal override void OnStoreOverview(Player p) {
+
+        public override void OnStoreOverview(Player p) {
             p.Message("&6Maps &S- see &T/Store maps");
         }
-        
-        protected internal override void OnStoreCommand(Player p) {
+
+        public override void OnStoreCommand(Player p) {
             p.Message("&aAvailable maps to buy:");
             if (Presets.Count == 0) {
                 p.Message("&6-None-"); return;
