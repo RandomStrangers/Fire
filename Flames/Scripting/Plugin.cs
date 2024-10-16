@@ -17,8 +17,8 @@
 */
 using System;
 using System.Collections.Generic;
-using System.Net;
 using Flames.Core;
+using Flames.Modules.Compiling;
 using Flames.Modules.Games.Countdown;
 using Flames.Modules.Games.CTF;
 using Flames.Modules.Games.LS;
@@ -28,28 +28,28 @@ using Flames.Modules.Moderation.Notes;
 using Flames.Modules.Relay.Discord;
 using Flames.Modules.Relay.IRC;
 using Flames.Modules.Security;
-using Flames.Network;
 using Flames.Scripting;
 
-namespace Flames 
+namespace Flames
 {
     /// <summary> This class provides for more advanced modification to Flames </summary>
-    public abstract class Plugin 
+    public abstract class Plugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
         /// <param name="auto"> True if plugin is being automatically loaded (e.g. on server startup), false if manually. </param>
         public abstract void Load(bool auto);
-        
+
         /// <summary> Unhooks from events and disposes of state/resources etc </summary>
         /// <param name="auto"> True if plugin is being auto unloaded (e.g. on server shutdown), false if manually. </param>
         public abstract void Unload(bool auto);
-        
+
         /// <summary> Called when a player does /Help on the plugin. Typically tells the player what this plugin is about. </summary>
         /// <param name="p"> Player who is doing /Help. </param>
-        public virtual void Help(Player p) {
+        public virtual void Help(Player p)
+        {
             p.Message("No help is available for this plugin.");
         }
-        
+
         /// <summary> Name of the plugin. </summary>
         public abstract string name { get; }
         /// <summary> The oldest version of Flames this plugin is compatible with. </summary>
@@ -74,22 +74,24 @@ namespace Flames
         public virtual string creator { get { return ""; } }
         /// <summary> Whether or not to auto load this plugin on server startup. </summary>
         public virtual bool LoadAtStartup { get { return true; } }
-        
-        
+
+
         /// <summary> List of plugins/modules included in the server software </summary>
-        public static List<Plugin> core   = new List<Plugin>();
+        public static List<Plugin> core = new List<Plugin>();
         public static List<Plugin> custom = new List<Plugin>();
-        
-        public static Plugin FindCustom(string name) {
-            foreach (Plugin pl in custom) 
+
+
+        public static Plugin FindCustom(string name)
+        {
+            foreach (Plugin pl in custom)
             {
                 if (pl.name.CaselessEq(name)) return pl;
             }
             return null;
         }
-        
-        
-        public static void Load(Plugin pl, bool auto) {
+
+        public static void Load(Plugin pl, bool auto)
+        {
             string ver = pl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for plugins
@@ -97,65 +99,77 @@ namespace Flames
 
             if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                    string msg = string.Format("Plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
-                    throw new InvalidOperationException(msg);
+                string msg = string.Format("Plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version)) {
+            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            {
                 string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
-            
-            try {
+
+            try
+            {
                 custom.Add(pl);
-                
-                if (pl.LoadAtStartup || !auto) {
+
+                if (pl.LoadAtStartup || !auto)
+                {
                     pl.Load(auto);
                     Logger.Log(LogType.SystemActivity, "Plugin {0} loaded...build: {1}", pl.name, pl.build);
-                } else {
+                }
+                else
+                {
                     Logger.Log(LogType.SystemActivity, "Plugin {0} was not loaded, you can load it with /pload", pl.name);
                 }
-                
+
                 if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
-            } catch {           
+            }
+            catch
+            {
                 if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
                 throw;
             }
         }
 
-        public static bool Unload(Plugin pl) {
+        public static bool Unload(Plugin pl)
+        {
             bool success = UnloadPlugin(pl, false);
-            
+
             // TODO only remove if successful?
             custom.Remove(pl);
             core.Remove(pl);
             return success;
         }
-
-        public static bool UnloadPlugin(Plugin pl, bool auto) {
-            try {
+        public static bool UnloadPlugin(Plugin pl, bool auto)
+        {
+            try
+            {
                 pl.Unload(auto);
                 return true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error unloading plugin " + pl.name, ex);
                 return false;
             }
         }
 
-        
-        public static void UnloadAll() {
-            for (int i = 0; i < custom.Count; i++) 
+        public static void UnloadAll()
+        {
+            for (int i = 0; i < custom.Count; i++)
             {
                 UnloadPlugin(custom[i], true);
             }
             custom.Clear();
-            
-            for (int i = 0; i < core.Count; i++) 
+
+            for (int i = 0; i < core.Count; i++)
             {
                 UnloadPlugin(core[i], true);
             }
         }
 
-        public static void LoadAll() {
+        public static void LoadAll()
+        {
             LoadCorePlugin(new CorePlugin());
             LoadCorePlugin(new NotesPlugin());
             LoadCorePlugin(new DiscordPlugin());
@@ -167,13 +181,16 @@ namespace Flames
             LoadCorePlugin(new LSPlugin());
             LoadCorePlugin(new TWPlugin());
             LoadCorePlugin(new ZSPlugin());
+#if !F_STANDALONE
+            LoadCorePlugin(new CompilerPlugin());
+#endif
             IScripting.AutoloadPlugins();
         }
-
-        public static void LoadCorePlugin(Plugin plugin) {
+        public static void LoadCorePlugin(Plugin plugin)
+        {
             List<string> disabled = Server.Config.DisabledModules;
             if (disabled.CaselessContains(plugin.name)) return;
-            
+
             plugin.Load(true);
             core.Add(plugin);
         }

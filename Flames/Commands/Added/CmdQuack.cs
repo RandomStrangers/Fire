@@ -22,7 +22,7 @@ namespace Flames
         }
         public override void Help(Player p)
         {
-            p.Message("*T/Quack &H- Quack like a duck.");
+            p.Message("&T/Quack &H- Quack like a duck.");
         }
     }
 }

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using Flames.Config;
 using Flames.Events.PlayerEvents;
 using Flames.Maths;
-using Flames.Network;
 
 namespace Flames {
     
@@ -36,7 +35,7 @@ namespace Flames {
     
     /// <summary> Encapuslates build access permissions for a zone. </summary>
     public sealed class ZoneAccessController : AccessController {
-        public readonly ZoneConfig cfg;
+        public ZoneConfig cfg;
         
         public ZoneAccessController(ZoneConfig cfg) {
             this.cfg = cfg;
@@ -95,42 +94,43 @@ namespace Flames {
         }
         
         public bool Shows { get { return Config.ShowAlpha != 0 && Config.ShowColor.Length > 0; } }
-        public void Show(Player p) {
-            if (!p.Supports(CpeExt.SelectionCuboid) || !Shows) return;
-            
-            ColorDesc col; Colors.TryParseHex(Config.ShowColor, out col);
+        public void Show(Player p)
+        {
+            if (!Shows) return;
+
+            ColorDesc color;
+            Colors.TryParseHex(Config.ShowColor, out color);
+            color.A = (byte)Config.ShowAlpha;
+
             Vec3U16 min = new Vec3U16(MinX, MinY, MinZ);
             Vec3U16 max = new Vec3U16((ushort)(MaxX + 1), (ushort)(MaxY + 1), (ushort)(MaxZ + 1));
-            p.Send(Packet.MakeSelection(ID, Config.Name, min, max,
-                col.R, col.G, col.B, (byte)Config.ShowAlpha, p.hasCP437));
+            p.AddVisibleSelection(Config.Name, min, max, color, this);
         }
-        
+
         public void ShowAll(Level lvl) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) {
                 if (p.level == lvl) Show(p);
             }
         }
-        
-        public void Unshow(Player p) {
-            if (!p.Supports(CpeExt.SelectionCuboid) || !Shows) return;
-            p.Send(Packet.DeleteSelection(ID));
+
+        public void Unshow(Player p)
+        {
+            if (Shows) p.RemoveVisibleSelection(this);
         }
-        
+
         public void UnshowAll(Level lvl) {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players) {
                 if (p.level == lvl) Unshow(p);
             }
         }
-        
-        public void AddTo(Level level) {
-            lock (level.Zones.locker) {
-                ID = NextFreeZoneId(level);
-                level.Zones.Add(this);
-            }
+
+        public void AddTo(Level level)
+        {
+            level.Zones.Add(this);
         }
-        
+
         public void RemoveFrom(Level level) {
             lock (level.Zones.locker) {
                 UnshowAll(level);

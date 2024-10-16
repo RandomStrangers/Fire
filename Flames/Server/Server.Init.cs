@@ -79,6 +79,8 @@ namespace Flames
             bannedIP  = PlayerExtList.Load("ranks/banned-ip.txt");
             muted     = PlayerExtList.Load("ranks/muted.txt");
             frozen    = PlayerExtList.Load("ranks/frozen.txt");
+            jailed    = PlayerExtList.Load("ranks/jailed.txt");
+
             tempRanks = PlayerExtList.Load(Paths.TempRanksFile);
             tempBans  = PlayerExtList.Load(Paths.TempBansFile);
             whiteList = PlayerList.Load("ranks/whitelist.txt");

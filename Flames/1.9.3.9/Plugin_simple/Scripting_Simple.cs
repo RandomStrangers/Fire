@@ -22,16 +22,15 @@ using System.CodeDom.Compiler;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
-using System.Security.Policy;
 using System.Text;
 
 namespace Flames.Scripting
 {
-    /// <summary> Utility methods for loading assemblies, commands, and plugins </summary>
+    /// <summary> Utility methods for loading assemblies, and simple plugins </summary>
     public static class IScripting_Simple
     {
 
-        /// <summary> Returns the default .dll path for the plugin with the given name </summary>
+        /// <summary> Returns the default .dll path for the simple plugin with the given name </summary>
 
         public static string SimplePluginPath(string name) { return "" + name + ".dll"; }
 
@@ -52,12 +51,12 @@ namespace Flames.Scripting
         {
             if (Server.RunningOnMono())
             {
-                // Cmdtest.dll -> Cmdtest.dll.mdb
+                // test.dll -> test.dll.mdb
                 path += ".mdb";
             }
             else
             {
-                // Cmdtest.dll -> Cmdtest.pdb
+                // test.dll -> test.pdb
                 path = Path.ChangeExtension(path, ".pdb");
             }
 
@@ -135,7 +134,7 @@ namespace Flames.Scripting
             }
         }
 
-        /// <summary> Loads all plugins from the given .dll path. </summary>
+        /// <summary> Loads all simple plugins from the given .dll path. </summary>
         public static bool LoadSimplePlugin(string path, bool auto)
         {
             try
@@ -249,8 +248,11 @@ namespace Flames.Scripting
         {
             string type = err.IsWarning ? "Warning" : "Error";
             string file = Path.GetFileName(err.FileName);
-            // TODO line 0 shouldn't appear
-
+            if (err.Line <= 0)
+            {
+                return string.Format("{0}{1} in reference assemblies{2}", type, text,
+                                     srcs.Length > 1 ? " in " + file : "");
+            }
             // Include filename if compiling multiple source code files
             return string.Format("{0}{1} on line {2}{3}", type, text, err.Line,
                                  srcs.Length > 1 ? " in " + file : "");

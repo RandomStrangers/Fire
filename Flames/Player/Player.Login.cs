@@ -244,6 +244,11 @@ namespace Flames
                 frozen = true;
                 Chat.MessageFrom(this, "λNICK &Wis still frozen from previously.");
             }
+            if (Server.jailed.Contains(name))
+            {
+                jailed = true;
+                Chat.MessageFrom(this, "λNICK &Wis still jailed from previously.");
+            }
         }
 
         public static void ShowAltsTask(SchedulerTask task) {

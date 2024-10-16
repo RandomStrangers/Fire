@@ -15,6 +15,7 @@ permissions and limitations under the Licenses.
 using System;
 using System.Collections.Generic;
 using Flames.Events.PlayerEvents;
+using Flames.Maths;
 using Flames.Network;
 using BlockID = System.UInt16;
 
@@ -87,7 +88,7 @@ namespace Flames
             Session.SendMotd(motd);
         }
 
-        public readonly object joinLock = new object();
+        public object joinLock = new object();
         public bool SendRawMap(Level oldLevel, Level level) {
             lock (joinLock)
                 return SendRawMapCore(oldLevel, level);
@@ -137,8 +138,10 @@ namespace Flames
             }
             // when frozen, position updates from the client are ignored
             if (frozen) Pos = pos;
+            if (jailed) Pos = pos;
+
         }
-        
+
         public void SendBlockchange(ushort x, ushort y, ushort z, BlockID block) {
             //if (x < 0 || y < 0 || z < 0) return;
             if (x >= level.Width || y >= level.Height || z >= level.Length) return;
@@ -218,6 +221,65 @@ namespace Flames
                 Packet.WriteBlockPermission((BlockID)i, place, delete, extBlocks, bulk, i * size);
             }
             Send(bulk);
+        }
+        public class VisibleSelection 
+        { 
+            public object data; 
+            public byte ID; 
+        }
+       public VolatileArray<VisibleSelection> selections = new VolatileArray<VisibleSelection>();
+
+        public bool AddVisibleSelection(string label, Vec3U16 min, Vec3U16 max, ColorDesc color, object instance)
+        {
+            lock (selections.locker)
+            {
+                byte id = FindOrAddSelection(selections.Items, instance);
+                return Session.SendAddSelection(id, label, min, max, color);
+            }
+        }
+
+        public bool RemoveVisibleSelection(object instance)
+        {
+            lock (selections.locker)
+            {
+                VisibleSelection[] items = selections.Items;
+                for (int i = 0; i < items.Length; i++)
+                {
+                    if (items[i].data != instance) continue;
+
+                    selections.Remove(items[i]);
+                    return Session.SendRemoveSelection(items[i].ID);
+                }
+            }
+
+            return false;
+        }
+        public unsafe byte FindOrAddSelection(VisibleSelection[] items, object instance)
+        {
+            byte* used = stackalloc byte[256];
+            for (int i = 0; i < 256; i++) used[i] = 0;
+            byte id;
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                id = items[i].ID;
+                if (instance == items[i].data) return id;
+
+                used[id] = 1;
+            }
+
+            // find unused ID, or 255 if none unused
+            for (id = 0; id < 255; id++)
+            {
+                if (used[id] == 0) break;
+            }
+
+            VisibleSelection sel = new VisibleSelection();
+            sel.data = instance;
+            sel.ID = id;
+
+            selections.Add(sel);
+            return id;
         }
     }
 }

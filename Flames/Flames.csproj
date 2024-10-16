@@ -107,6 +107,7 @@
     <Compile Include="Commands\Added\CmdCCBeat.cs" />
     <Compile Include="Commands\Added\CmdDisconnect.cs" />
     <Compile Include="Commands\Added\CmdDiscordSay.cs" />
+    <Compile Include="Commands\Added\CmdJail.cs" />
     <Compile Include="Commands\Added\CmdLogo.cs" />
     <Compile Include="Commands\Added\CmdQuack.cs" />
     <Compile Include="Commands\Added\CmdShutdownTrue.cs" />
@@ -561,6 +562,19 @@
     <Compile Include="Modules\Compiling\Compiler.cs" />
     <Compile Include="Modules\Compiling\CompilerOperations.cs" />
     <Compile Include="Modules\Compiling\CompilerBackends.cs" />
+    <Compile Include="Modules\Compiling\CompilerPlugin.cs" />
+    <Compile Include="Modules\Compiling\New\CmdNewPluginCreate.cs" />
+    <Compile Include="Modules\Compiling\New\CmdNewCompile.cs" />
+    <Compile Include="Modules\Compiling\New\CmdNewCompload.cs" />
+    <Compile Include="Modules\Compiling\New\CmdNewPlugin.cs" />
+    <Compile Include="Modules\Compiling\New\NewCompiler.cs" />
+    <Compile Include="Modules\Compiling\New\NewCompilerBackends.cs" />
+    <Compile Include="Modules\Compiling\New\NewCompilerFrontends.cs" />
+    <Compile Include="Modules\Compiling\New\NewCompilerOperations.cs" />
+    <Compile Include="Modules\Compiling\New\NewCompilerPlugin.cs" />
+    <Compile Include="Modules\Compiling\New\NewPlugin.cs" />
+    <Compile Include="Modules\Compiling\New\NewScripting.cs" />
+    <Compile Include="Modules\Compiling\New\NewScriptingOperations.cs" />
     <Compile Include="Modules\Games\Countdown\CountdownConfig.cs" />
     <Compile Include="Modules\Games\Countdown\CountdownPlugin.cs" />
     <Compile Include="Modules\Games\Countdown\CmdCountdown.cs" />
@@ -644,6 +658,7 @@
     <Compile Include="Network\Utils\LevelChunkStream.cs" />
     <Compile Include="Network\Utils\NetUtils.cs" />
     <Compile Include="Network\Utils\PingList.cs" />
+    <Compile Include="Player\CinematicGUI.cs" />
     <Compile Include="Player\Group.cs" />
     <Compile Include="Player\List\PlayerExtList.cs" />
     <Compile Include="Player\List\PlayerList.cs" />
@@ -705,7 +720,6 @@
     <Compile Include="util\Math\AABB.cs" />
     <Compile Include="util\Math\DirUtils.cs" />
     <Compile Include="util\Math\Vectors.cs" />
-    <Compile Include="util\NET_20.cs" />
     <Compile Include="util\SparseBitSet.cs" />
     <Compile Include="util\Threading\IReaderWriterLock.cs" />
     <Compile Include="util\Threading\AsyncWorker.cs" />
@@ -719,13 +733,13 @@
     <Compile Include="util\ExtrasCollection.cs" />
     <Compile Include="properties\AssemblyInfo.cs" />
     <Compile Include="Database\PlayerDB.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Backends_Simple.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Plugin_Simple.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\SamplePlugin_Simple.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\ScriptingOperations_Simple.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting\CmdCompload.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting\CmdSimplePlugin.cs" />
-    <Compile Include="1.9.3.9\Scripting\Plugin_simple\Scripting_Simple.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\Backends_Simple.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\Plugin_Simple.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\SamplePlugin_Simple.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\ScriptingOperations_Simple.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\Commands\CmdCompload.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\Commands\CmdSimplePlugin.cs" />
+    <Compile Include="1.9.3.9\Plugin_simple\Scripting_Simple.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\sqlite3_x32.dll">

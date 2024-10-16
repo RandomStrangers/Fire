@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -142,7 +142,7 @@ namespace Flames.Network
             byte[] buffer = new byte[67];
             buffer[0] = Opcode.CpeExtInfo;
             NetUtils.Write(Server.SoftwareNameVersioned, buffer, 1, false);
-            NetUtils.WriteI16((short)extsCount, buffer, 65);
+            NetUtils.WriteI16(extsCount, buffer, 65);
             return buffer;
         }
 
@@ -736,6 +736,33 @@ namespace Flames.Network
             buffer[4 + offset] = rot.HeadX;
             return buffer;
         }
+
+        public enum LightingMode { None, Classic, Fancy }
+        public static byte[] SetLightingMode(LightingMode mode, bool locked)
+        {
+            byte[] buffer = new byte[3];
+            buffer[0] = Opcode.CpeLightingMode;
+            buffer[1] = (byte)mode;
+            buffer[2] = (byte)(locked ? 1 : 0);
+            return buffer;
+        }
+
+        public static byte[] SetCinematicGui(bool hideCrosshair, bool hideHand, bool hideHotbar, byte r, byte g, byte b, byte opacity, ushort barSize)
+        {
+            byte[] buffer = new byte[10];
+            buffer[0] = Opcode.CpeCinematicGui;
+            buffer[1] = (byte)(hideCrosshair ? 1 : 0);
+            buffer[2] = (byte)(hideHand ? 1 : 0);
+            buffer[3] = (byte)(hideHotbar ? 1 : 0);
+
+            buffer[4] = r;
+            buffer[5] = g;
+            buffer[6] = b;
+            buffer[7] = opacity;
+
+            NetUtils.WriteU16(barSize, buffer, 8);
+            return buffer;
+        }
         #endregion
 
 
@@ -813,7 +840,21 @@ namespace Flames.Network
 
             buffer[i++] = (byte)(def.BlocksLight ? 0 : 1);
             buffer[i++] = def.WalkSound;
-            buffer[i++] = (byte)(def.FullBright ? 1 : 0);
+
+            // Less than zero shouldn't happen, but just in case
+            if (def.Brightness <= 0)
+            {
+                buffer[i++] = 0;
+            }
+            else
+            {
+                // 0b_US--_LLLL where U = uses modern brightness, S = uses lamplight color, and L = brightness */
+                byte brightness = (byte)Math.Max(0, Math.Min(def.Brightness, 15));
+                brightness |= 1 << 7; // Insert "use modern brightness" flag (otherwise client will interpret it as either 0 or 15 lava brightness)
+                if (def.UseLampBrightness) brightness |= 1 << 6; // Insert "use lamplight color" flag
+
+                buffer[i++] = brightness;
+            }
         }
 
         public static void MakeDefineBlockEnd(BlockDefinition def, ref int i, byte[] buffer)

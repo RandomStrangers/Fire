@@ -33,6 +33,7 @@ namespace Flames {
         public static string lastMSG = "";
         public PersistentMessages persistentMessages = new PersistentMessages();
         public Zone ZoneIn;
+        public CinematicGui CinematicGui = new CinematicGui();
 
         //TpA
         public bool Request;

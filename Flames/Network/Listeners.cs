@@ -126,12 +126,7 @@ namespace Flames.Network
                     // intentionally non-clean connection close
                     try { raw.Close(); } catch { }
                 } else {
-                    #if NET_20
-                    // TODO better non-hardcoded detection? move to OperatingSystem?
-                    s = Environment.OSVersion.Platform == PlatformID.Win32Windows ? (INetSocket)(new TcpLegacySocket(raw)) : (INetSocket)(new TcpSocket(raw));
-                    #else
                     s = new TcpSocket(raw);
-                    #endif
                     
                     if (announce) Logger.Log(LogType.UserActivity, s.IP + " connected to the server.");
                     s.Init();

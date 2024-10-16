@@ -15,6 +15,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+using Flames.Maths;
 using System;
 using BlockID = System.UInt16;
 
@@ -109,7 +110,10 @@ namespace Flames.Network
         public abstract bool SendDefineBlock(BlockDefinition def);
         /// <summary> Sends an undefine custom block packet to the client </summary>
         public abstract bool SendUndefineBlock(BlockDefinition def);
-
+        public abstract bool SendAddSelection(byte id, string label, Vec3U16 p1, Vec3U16 p2, ColorDesc color);
+        public abstract bool SendRemoveSelection(byte id);
+        /// <summary> Sends a cinematic gui definition to the client </summary>
+        public abstract bool SendCinematicGui(CinematicGui gui);
         /// <summary> Sends a level to the client </summary>
         public abstract void SendLevel(Level prev, Level level);
         /// <summary> Sends a block change/update packet to the client </summary>

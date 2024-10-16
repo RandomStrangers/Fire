@@ -20,16 +20,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Flames.Scripting;
+using Flames.NewScripting;
 
-namespace Flames.Modules.Compiling 
+namespace Flames.Modules.NewCompiling
 {
     /// <summary> Compiles source code files for a particular programming language into a .dll </summary>
     public abstract class ICompiler 
     {   
-        public const string COMMANDS_SOURCE_DIR = "extra/commands/source/";
-        public const string PLUGINS_SOURCE_DIR  = "plugins/";
-        public const string ERROR_LOG_PATH      = "logs/errors/compiler.log";
+        public const string NEW_PLUGINS_SOURCE_DIR  = "newplugins/";
+        public const string ERROR_LOG_PATH      = "logs/errors/compiler_new.log";
         
         /// <summary> Default file extension used for source code files </summary>
         /// <example> .cs, .vb </example>
@@ -40,16 +39,13 @@ namespace Flames.Modules.Compiling
         /// <summary> The full name of this programming language </summary>
         /// <example> CSharp, Visual Basic </example>
         public abstract string FullName { get; }
-        /// <summary> Returns source code for an example Command </summary>
-        public abstract string CommandSkeleton { get; }
-        /// <summary> Returns source code for an example Plugin </summary>
-        public abstract string PluginSkeleton { get; }
+        /// <summary> Returns source code for an example new plugin </summary>
+        public abstract string NewPluginSkeleton { get; }
         
-        public string CommandPath(string name) { return COMMANDS_SOURCE_DIR + "Cmd" + name + FileExtension; }
-        public string PluginPath(string name)  { return PLUGINS_SOURCE_DIR  + name + FileExtension; }
-
-        public static List<ICompiler> Compilers = new List<ICompiler>() {
-            new CSCompiler(), new VBCompiler()
+        public string NewPluginPath(string name)  { return NEW_PLUGINS_SOURCE_DIR  + name + FileExtension; }
+        
+        public static List<ICompiler> Compilers = new List<ICompiler>() { 
+            new CSCompiler()
         };
 
 
@@ -60,17 +56,10 @@ namespace Flames.Modules.Compiling
             return string.Format(source, args);
         }
         
-        /// <summary> Generates source code for an example command, 
-        /// preformatted with the given command name </summary>
-        public string GenExampleCommand(string cmdName) {
-            cmdName = cmdName.ToLower().Capitalize();
-            return FormatSource(CommandSkeleton, cmdName);
-        }
-        
-        /// <summary> Generates source code for an example plugin, 
+        /// <summary> Generates source code for an example new plugin, 
         /// preformatted with the given name and creator </summary>
-        public string GenExamplePlugin(string plugin, string creator) {
-            return FormatSource(PluginSkeleton, plugin, creator, Server.Version);
+        public string GenExampleNewPlugin(string newplugin, string creator) {
+            return FormatSource(NewPluginSkeleton, newplugin, creator, Server.Version);
         }
 
 
@@ -124,7 +113,7 @@ namespace Flames.Modules.Compiling
 
         /// <summary> Converts source file paths to full paths, 
         /// then returns list of parsed referenced assemblies </summary>
-        public static List<string> ProcessInput(string[] srcPaths, string commentPrefix) {
+        public List<string> ProcessInput(string[] srcPaths, string commentPrefix) {
             List<string> referenced = new List<string>();
             
             for (int i = 0; i < srcPaths.Length; i++) 
@@ -140,11 +129,12 @@ namespace Flames.Modules.Compiling
             return referenced;
         }
 
-        public static void AddReferences(string path, string commentPrefix, List<string> referenced) {
+        public void AddReferences(string path, string commentPrefix, List<string> referenced) {
             // Allow referencing other assemblies using '//reference [assembly name]' at top of the file
-            using (StreamReader r = new StreamReader(path)) {               
+            using (StreamReader r = new StreamReader(path)) {
                 string refPrefix = commentPrefix + "reference ";
                 string plgPrefix = commentPrefix + "pluginref ";
+                string newplgPrefix = commentPrefix + "newpluginref ";
                 string line;
                 
                 while ((line = r.ReadLine()) != null) 
@@ -152,14 +142,19 @@ namespace Flames.Modules.Compiling
                     if (line.CaselessStarts(refPrefix)) {
                         referenced.Add(GetDLL(line));
                     } else if (line.CaselessStarts(plgPrefix)) {
-                        path = Path.Combine(IScripting.PLUGINS_DLL_DIR, GetDLL(line));
+                        path = Path.Combine(IScripting.NEW_PLUGINS_DLL_DIR, GetDLL(line));
+                        referenced.Add(Path.GetFullPath(path));
+                    } else if (line.CaselessStarts(newplgPrefix)) {
+                        path = Path.Combine(IScripting.NEW_PLUGINS_DLL_DIR, GetDLL(line));
                         referenced.Add(Path.GetFullPath(path));
                     } else {
-                        continue;
+                        ProcessInputLine(line, referenced);
                     }
                 }
             }
         }
+
+        public virtual void ProcessInputLine(string line, List<string> referenced) { }
 
         public static string GetDLL(string line) {
             int index = line.IndexOf(' ') + 1;
@@ -186,8 +181,8 @@ namespace Flames.Modules.Compiling
 
     public class SourceMap 
     {
-        public readonly string[] files;
-        public readonly List<string>[] sources;
+        public string[] files;
+        public List<string>[] sources;
         
         public SourceMap(string[] paths) {
             files   = paths;

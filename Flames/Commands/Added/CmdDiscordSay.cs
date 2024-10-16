@@ -11,7 +11,11 @@ namespace Flames.Commands.Chatting
             new CommandAlias("dsay"), new CommandAlias("discordann") }; } }
         public override void Use(Player p, string message)
         {
-            if (message.Length == 0) { Help(p); return; }
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
 
             message = Colors.Escape(message);
             DiscordPlugin.Bot.SendPublicMessage(message);

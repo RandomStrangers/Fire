@@ -202,6 +202,7 @@ namespace Flames
             if (p.Game.Referee) flags += "-ref";
             if (p.IsAfk)        flags += "-afk";
             if (p.Unverified)   flags += "-unverified";
+            if (p.jailed)       flags += "-jailed";
             return flags;
         }
     }

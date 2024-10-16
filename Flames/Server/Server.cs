@@ -33,7 +33,6 @@ using Flames.Events.ServerEvents;
 using Flames.Games;
 using Flames.Network;
 using Flames.Platform;
-using Flames.Scripting;
 using Flames.SQL;
 using Flames.Tasks;
 using Flames.Util;
@@ -91,13 +90,10 @@ namespace Flames
             ForceEnableTLS();
 
             SQLiteBackend.Instance.LoadDependencies();
-#if !F_STANDALONE
             MySQLBackend.Instance.LoadDependencies();
-#endif
-
             EnsureFilesExist();
-            IScripting.Init();
-
+            Scripting.IScripting.Init();
+            NewScripting.IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
             Economy.LoadDatabase();
@@ -108,7 +104,6 @@ namespace Flames
             Background.QueueOnce(UpgradeTasks.UpgradeOldTempranks);
             Background.QueueOnce(UpgradeTasks.UpgradeDBTimeSpent);
             Background.QueueOnce(InitPlayerLists);
-            
             Background.QueueOnce(SetupSocket);
             Background.QueueOnce(InitTimers);
             Background.QueueOnce(InitRest);
@@ -143,9 +138,6 @@ namespace Flames
             EnsureDirectoryExists("extra/bots");
             EnsureDirectoryExists(Paths.ImportsDir);
             EnsureDirectoryExists("blockdefs");
-#if !F_STANDALONE
-            EnsureDirectoryExists(Modules.Compiling.ICompiler.COMMANDS_SOURCE_DIR); // TODO move to compiling module
-#endif
         }
         
        public static void EnsureDirectoryExists(string dir) {
@@ -224,6 +216,7 @@ namespace Flames
 
             OnShuttingDownEvent.Call(restarting, msg);
             Plugin.UnloadAll();
+            Plugin_Simple.UnloadAll();
 
             try {
                 string autoload = SaveAllLevels();
@@ -269,18 +262,7 @@ namespace Flames
         }
 
         public static string GetRestartPath() {
-#if !NETSTANDARD
             return RestartPath;
-#else
-            // NET core/5/6 executables tend to use the following structure:
-            //   FlamesCLI_core --> FlamesCLI_core.dll
-            // in this case, 'RestartPath' will include '.dll' since this file
-            //  is actually the managed assembly, but we need to remove '.dll'
-            //   as the actual executable which must be started is the non .dll file
-            string path = RestartPath;
-            if (path.CaselessEnds(".dll")) path = path.Substring(0, path.Length - 4);
-            return path;
-#endif
         }
 
         public static bool checkedOnMono, runningOnMono;

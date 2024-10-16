@@ -18,7 +18,6 @@
 using System;
 using System.Threading;
 
-#if !NET_20
 namespace Flames.Util {
 
     public sealed class IReaderWriterLock {
@@ -59,4 +58,3 @@ namespace Flames.Util {
         }
     }
 }
-#endif

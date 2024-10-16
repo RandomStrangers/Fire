@@ -56,7 +56,11 @@ namespace Flames.Commands.Scripting {
                                       "Simple plugins", "simple plugins", modifier, false);
                 return;
             }
-            if (args.Length == 1) { Help(p); return; }
+            if (args.Length == 1) 
+            { 
+                Help(p); 
+                return; 
+            }
             
             string cmd = args[0], name = args[1];
             if (!Formatter.ValidFilename(p, name)) return;
@@ -91,8 +95,10 @@ namespace Flames.Commands.Scripting {
         
         static void LoadSimplePlugin(Player p, string name) {
             string path = IScripting_Simple.SimplePluginPath(name);
-            if (!File.Exists(path)) {
-                p.Message("File &9{0} &Snot found.", path); return;
+            if (!File.Exists(path)) 
+            {
+                p.Message("File &9{0} &Snot found.", path); 
+                return;
             }
             
             if (IScripting_Simple.LoadSimplePlugin(path, false)) {
@@ -130,7 +136,7 @@ namespace Flames.Commands.Scripting {
             string path = engine.SimplePluginPath(name);
             p.Message("Creating a simple plugin example source");
             
-            string creator = p.IsSuper ? Server.Config.Name : p.truename;
+            string creator = p.IsSuper ? Colors.Strip(Server.Config.Name) : p.truename;
             string source  = engine.GenExamplePlugin(name, creator);
             File.WriteAllText(path, source);
         }

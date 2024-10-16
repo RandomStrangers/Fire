@@ -19,7 +19,7 @@
  */
 using System.IO;
 
-namespace Flames.Modules.Compiling 
+namespace Flames.Modules.NewCompiling
 {    
     public static class CompilerOperations 
     {   
@@ -37,20 +37,12 @@ namespace Flames.Modules.Compiling
             return null;
         }
         
-        
-        public static bool CreateCommand(Player p, string name, ICompiler compiler) {
-            string path   = compiler.CommandPath(name);
-            string source = compiler.GenExampleCommand(name);
+        public static bool CreateNewPlugin(Player p, string name, ICompiler compiler) {
+            string path    = compiler.NewPluginPath(name);
+            string creator = p.IsSuper ? Colors.Strip(Server.Config.Name) : p.truename;
+            string source  = compiler.GenExampleNewPlugin(name, creator);
             
-            return CreateFile(p, name, path, "command &fCmd", source);
-        }
-    	
-    	public static bool CreatePlugin(Player p, string name, ICompiler compiler) {
-            string path    = compiler.PluginPath(name);
-            string creator = p.IsSuper ? Server.Config.Name : p.truename;
-            string source  = compiler.GenExamplePlugin(name, creator);
-            
-            return CreateFile(p, name, path, "plugin &f", source);
+            return CreateFile(p, name, path, "newplugin &f", source);
         }
 
         public static bool CreateFile(Player p, string name, string path, string type, string source) {
@@ -58,7 +50,7 @@ namespace Flames.Modules.Compiling
                 p.Message("File {0} already exists. Choose another name.", path); 
                 return false;
             }
-    		
+            
             File.WriteAllText(path, source);
             p.Message("Successfully saved example {2}{0} &Sto {1}", name, path, type);
             return true;
@@ -67,7 +59,7 @@ namespace Flames.Modules.Compiling
         
         /// <summary> Attempts to compile the given source code files into a .dll </summary>
         /// <param name="p"> Player to send messages to </param>
-        /// <param name="type"> Type of files being compiled (e.g. Plugin, Command) </param>
+        /// <param name="type"> Type of files being compiled (e.g. New plugin) </param>
         /// <param name="srcs"> Path of the source code files </param>
         /// <param name="dst"> Path to the destination .dll </param>
         /// <returns> Whether compilation succeeded </returns>

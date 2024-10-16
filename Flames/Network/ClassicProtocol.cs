@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Flames.Events.PlayerEvents;
 using Flames.Events.ServerEvents;
+using Flames.Maths;
 using BlockID = System.UInt16;
 
 namespace Flames.Network
@@ -589,6 +590,34 @@ namespace Flames.Network
             if (!hasBlockDefs || def.RawID > MaxRawBlock) return false;
 
             Send(Packet.UndefineBlock(def, hasExtBlocks));
+            return true;
+        }
+        public override bool SendAddSelection(byte id, string label, Vec3U16 p1, Vec3U16 p2, ColorDesc color)
+        {
+            if (!Supports(CpeExt.SelectionCuboid)) return false;
+
+            Send(Packet.MakeSelection(id, label, p1, p2,
+                                      color.R, color.G, color.B, color.A, player.hasCP437));
+            return true;
+        }
+
+        public override bool SendRemoveSelection(byte id)
+        {
+            if (!Supports(CpeExt.SelectionCuboid)) return false;
+
+            Send(Packet.DeleteSelection(id));
+            return true;
+        }
+
+        public override bool SendCinematicGui(CinematicGui gui)
+        {
+            if (!Supports(CpeExt.CinematicGui)) return false;
+            float barSize = gui.barSize;
+            barSize = Math.Max(0, Math.Min(1, barSize));
+            Send(Packet.SetCinematicGui(
+                gui.hideCrosshair, gui.hideHand, gui.hideHotbar,
+                gui.barColor.R, gui.barColor.G, gui.barColor.B, gui.barColor.A,
+                (ushort)(barSize * ushort.MaxValue)));
             return true;
         }
         #endregion

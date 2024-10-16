@@ -444,9 +444,6 @@ namespace Flames
             }
 
             text = Regex.Replace(text, "  +", " ");
-            if (text.IndexOf('&') >= 0) {
-                Leave("Illegal character in chat message!", true); return true;
-            }
             return text.Length == 0;
         }
 
@@ -635,6 +632,10 @@ namespace Flames
             }
             if (frozen && !command.UseableWhenFrozen) {
                 Message("Cannot use &T/{0} &Swhile frozen.", command.name); return null;
+            }
+            if (jailed && !command.UseableWhenJailed)
+            {
+                Message("Cannot use &T/{0} &Swhile jailed.", command.name); return null;
             }
             return command;
         }

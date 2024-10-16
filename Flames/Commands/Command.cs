@@ -57,7 +57,10 @@ namespace Flames
         /// <summary> Whether this command can be used when a player is frozen </summary>
         /// <remarks> Only informational commands should override this to return true </remarks>
         public virtual bool UseableWhenFrozen { get { return false; } }
-        
+        /// <summary> Whether this command can be used when a player is jailed </summary>
+        /// <remarks> Only informational commands should override this to return true </remarks>
+        public virtual bool UseableWhenJailed { get { return UseableWhenFrozen; } }
+
         /// <summary> Whether using this command is logged to server logs </summary>
         /// <remarks> return false to prevent this command showing in logs (e.g. /pass) </remarks>
         public virtual bool LogUsage { get { return true; } }
@@ -110,7 +113,10 @@ namespace Flames
             }           
             Alias.RegisterDefaults(cmd);
         }
-
+        public static void Register(params Command[] commands)
+        {
+            foreach (Command cmd in commands) Register(cmd);
+        }
         public static void TryRegister(bool announce, params Command[] commands)
         {
             foreach (Command cmd in commands)

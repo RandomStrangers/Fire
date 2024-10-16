@@ -37,7 +37,7 @@ namespace Flames.DB
         
         public static void WriteHeader(Stream s, Vec3U16 dims) {
             byte[] header = new byte[EntrySize * HeaderEntries * 4];
-            NetUtils.Write("CBDB_MCG", header, 0, false);
+            NetUtils.Write("CBDB_F", header, 0, false);
             WriteU16(Version, header, 8);
             WriteU16(dims.X, header, 10);
             WriteU16(dims.Y, header, 12);

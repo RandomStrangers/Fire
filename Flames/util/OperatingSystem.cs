@@ -174,11 +174,9 @@ namespace Flames.Platform
             execvp(exe, new string[] { exe, Server.RestartPath, null });
             Console.WriteLine("execvp {0} failed: {1}", exe, Marshal.GetLastWin32Error());
 
-#if !NETSTANDARD
             // .. and fallback to mono if that doesn't work for some reason
             execvp("mono", new string[] { "mono", Server.RestartPath, null });
             Console.WriteLine("execvp mono failed: {0}", Marshal.GetLastWin32Error());
-#endif
         }
 
         [DllImport("libc", SetLastError = true)]
@@ -203,26 +201,6 @@ namespace Flames.Platform
 
         public override void Init() {
             base.Init();
-#if F_STANDALONE
-            if (!Directory.Exists("certs")) return;
-
-            // by default mono looks in these directories for SSL/TLS certificates:
-            //  - ~/.config/.mono/new-certs/Trust
-            //  - /usr/share/.mono/new-certs/Trust
-            // but that won't work when distributed in a standalone build - so in this case, have to
-            //  modify internal runtime state to make it look elsewhere for certifcates on Linux
-            try {
-                Type settingsType  = Type.GetType("Mono.Security.Interface.MonoTlsSettings, Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756");
-                PropertyInfo defSettingsProp = settingsType.GetProperty("DefaultSettings", BindingFlags.Static | BindingFlags.Public);
-                object defSettings = defSettingsProp.GetValue(null, null);
-
-                Type settingsObjType   = defSettings.GetType();
-                PropertyInfo pathsProp = settingsObjType.GetProperty("CertificateSearchPaths", BindingFlags.Instance | BindingFlags.NonPublic);
-                pathsProp.SetValue(defSettings, new string[] { "@pem:certs", "@trusted" }, null);
-            } catch (Exception ex) {
-                Logger.LogError("Changing SSL/TLS certificates folder", ex);
-            }
-#endif
         }
 
 

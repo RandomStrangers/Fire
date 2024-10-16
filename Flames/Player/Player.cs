@@ -112,7 +112,7 @@ namespace Flames {
         public static int sessionCounter;
         public static Player Flame = new FlamePlayer();
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public static Player Console = Flame;
+        public static Player Console = new FlamePlayer();
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Player Sparks = new GoldenPlayer();

@@ -18,15 +18,7 @@
         }
         public override void Help(Player p)
         {
-            if (p == null || p.IsSuper || p.IsFire)
-            {
-                p.Message("&T/Bye [message] &H- Makes ALL players leave the server with an optional message");
-                return;
-            }
-            else
-            {
-                p.Leave("");
-            }
+            p.Message("&T/Bye [message] &H- Makes ALL players leave the server with an optional message");
         }
     }
 }

@@ -38,6 +38,8 @@ namespace Flames.Core {
                     case ModActionType.UnbanIP: DoUnbanIP(action); break;
                     case ModActionType.Warned: DoWarn(action); break;
                     case ModActionType.Rank: DoRank(action); break;
+                    case ModActionType.Jailed: DoJail(action); break;
+                    case ModActionType.Unjailed: DoUnjail(action); break;
             }
         }
 
@@ -83,8 +85,26 @@ namespace Flames.Core {
             ModerationTasks.FreezeCalcNextRun();
             Server.frozen.Save();
         }
+        public static void DoJail(ModAction e)
+        {
+            Player who = PlayerInfo.FindExact(e.Target);
+            if (who != null) who.jailed = true;
+            LogAction(e, who, "&7jailed");
 
+            Server.jailed.Update(e.Target, FormatModTaskData(e));
+            ModerationTasks.JailCalcNextRun();
+            Server.jailed.Save();
+        }
+        public static void DoUnjail(ModAction e)
+        {
+            Player who = PlayerInfo.FindExact(e.Target);
+            if (who != null) who.jailed = false;
+            LogAction(e, who, "&aunjailed");
 
+            Server.jailed.Remove(e.Target);
+            ModerationTasks.JailCalcNextRun();
+            Server.jailed.Save();
+        }
         public static void DoMute(ModAction e) {
             Player who = PlayerInfo.FindExact(e.Target);
             if (who != null) who.muted = true;

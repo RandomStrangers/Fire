@@ -23,9 +23,23 @@ using BlockID = System.UInt16;
 
 namespace Flames.Core {
     public static class MiscHandlers {
-
+        public static bool CanMove(Player p)
+        {
+            if (p.jailed)
+            {
+                return false;
+            }
+            if (p.frozen)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
         public static void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
-            if (!p.frozen) return;
+            if (!CanMove(p)) return;
             
             bool movedX = Math.Abs(next.X - p.Pos.X) > 4;  // moved more than 0.125 blocks horizontally
             bool movedY = Math.Abs(next.Y - p.Pos.Y) > 40; // moved more than 1.25 blocks vertically

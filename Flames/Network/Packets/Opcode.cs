@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
         
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -16,11 +16,13 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Network {
+namespace Flames.Network
+{
 
     /// <summary> List of packet opcode bytes. (Packet identifiers) </summary>
-    public static class Opcode {
-        
+    public static class Opcode
+    {
+
         public const byte Handshake = 0;
         public const byte Ping = 1;
         public const byte LevelInitialise = 2;
@@ -77,5 +79,7 @@ namespace Flames.Network {
         public const byte CpeUndefineModel = 52;
         public const byte CpePluginMessage = 53;
         public const byte CpeEntityTeleportExt = 54;
+        public const byte CpeLightingMode = 55;
+        public const byte CpeCinematicGui = 56;
     }
 }

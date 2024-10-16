@@ -23,12 +23,14 @@ using Flames.Events;
 namespace Flames.Tasks {
     public static class ModerationTasks {
 
-        public static SchedulerTask temprankTask, freezeTask, muteTask;
+        public static SchedulerTask temprankTask, freezeTask, muteTask, jailTask;
         public static void QueueTasks() {
             temprankTask = Server.MainScheduler.QueueRepeat(
                 TemprankCheckTask, null, NextRun(Server.tempRanks));
             freezeTask = Server.MainScheduler.QueueRepeat(
                 FreezeCheckTask, null, NextRun(Server.frozen));
+            jailTask = Server.MainScheduler.QueueRepeat(
+                JailCheckTask, null, NextRun(Server.jailed));
             muteTask = Server.MainScheduler.QueueRepeat(
                 MuteCheckTask, null, NextRun(Server.muted));
         }
@@ -59,7 +61,16 @@ namespace Flames.Tasks {
             ModAction action = new ModAction(args[0], Player.Flame, ModActionType.Unfrozen, "auto unfreeze");
             OnModActionEvent.Call(action);
         }
-
+        public static void JailCheckTask(SchedulerTask task)
+        {
+            DoTask(task, Server.jailed, JailCallback);
+        }
+        public static void JailCalcNextRun() { CalcNextRun(jailTask, Server.jailed); }
+        public static void JailCallback(string[] args)
+        {
+            ModAction action = new ModAction(args[0], Player.Flame, ModActionType.Unjailed, "auto unjail");
+            OnModActionEvent.Call(action);
+        }
 
         public static void MuteCheckTask(SchedulerTask task) {
             DoTask(task, Server.muted, MuteCallback);
