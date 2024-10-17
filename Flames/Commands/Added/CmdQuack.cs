@@ -1,7 +1,4 @@
-﻿
-using Flames.Commands.Chatting;
-
-namespace Flames
+﻿namespace Flames.Commands.Chatting
 {
     public class CmdQuack : MessageCmd
     {
@@ -16,9 +13,7 @@ namespace Flames
             {
                 return;
             }
-            {
-                Chat.MessageChat(ChatScope.Global, p, $"{p.color}{p.DisplayName}" + " &6QUACKED &elike a duck!", null, null);
-            }
+            Chat.MessageChat(ChatScope.Global, p, $"{p.color}{p.DisplayName}" + " &6QUACKED &elike a duck!", null, null);
         }
         public override void Help(Player p)
         {

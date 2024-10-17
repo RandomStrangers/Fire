@@ -20,58 +20,75 @@ using System.IO;
 
 namespace Flames.Modules.Awards
 {
-    public class Award { public string Name, Description; }
-    
+    public class Award 
+    { 
+        public string Name, Description; 
+    }
+
     /// <summary> Manages the awards the server has </summary>
     public static class AwardsList
-    {  
+    {
         /// <summary> List of currently defined awards </summary>
         public static List<Award> Awards = new List<Award>();
-        
-        
-        public static bool Add(string name, string desc) {
+
+
+        public static bool Add(string name, string desc)
+        {
             if (Exists(name)) return false;
 
-            Award award = new Award();
-            award.Name  = name;
-            award.Description = desc;
+            Award award = new Award
+            {
+                Name = name,
+                Description = desc
+            };
             Awards.Add(award);
             return true;
         }
 
-        public static bool Remove(string name) {
+        public static bool Remove(string name)
+        {
             Award award = FindExact(name);
             if (award == null) return false;
-            
+
             Awards.Remove(award);
             return true;
         }
 
-        public static bool Exists(string name) { return FindExact(name) != null; }
-        
-        public static Award FindExact(string name) {
-            foreach (Award award in Awards) {
+        public static bool Exists(string name) 
+        { 
+            return FindExact(name) != null; 
+        }
+
+        public static Award FindExact(string name)
+        {
+            foreach (Award award in Awards)
+            {
                 if (award.Name.CaselessEq(name)) return award;
             }
             return null;
         }
 
 
-        public static readonly object saveLock = new object();
-        public static void Save() {
+        public static object saveLock = new object();
+        public static void Save()
+        {
             lock (saveLock)
                 using (StreamWriter w = new StreamWriter("text/awardsList.txt"))
-            {
-                WriteHeader(w);
-                foreach (Award a in Awards) {
-                    w.WriteLine(a.Name + " : " + a.Description);
+                {
+                    WriteHeader(w);
+                    foreach (Award a in Awards)
+                    {
+                        w.WriteLine(a.Name + " : " + a.Description);
+                    }
                 }
-            }
         }
-        
-        public static void Load() {
-            if (!File.Exists("text/awardsList.txt")) {
-                using (StreamWriter w = new StreamWriter("text/awardsList.txt")) {
+
+        public static void Load()
+        {
+            if (!File.Exists("text/awardsList.txt"))
+            {
+                using (StreamWriter w = new StreamWriter("text/awardsList.txt"))
+                {
                     WriteHeader(w);
                     w.WriteLine("Gotta start somewhere : Built your first house");
                     w.WriteLine("Climbing the ladder : Earned a rank advancement");
@@ -83,12 +100,14 @@ namespace Flames.Modules.Awards
             PropertiesFile.Read("text/awardsList.txt", ProcessLine, ':');
         }
 
-        public static void ProcessLine(string award, string desc) {
+        public static void ProcessLine(string award, string desc)
+        {
             if (desc.Length == 0) return;
             Add(award, desc);
         }
 
-        public static void WriteHeader(StreamWriter w) {
+        public static void WriteHeader(StreamWriter w)
+        {
             w.WriteLine("#This is a full list of awards. The server will load these and they can be awarded as you please");
             w.WriteLine("#Format is:");
             w.WriteLine("# AwardName : Description of award goes after the colon");

@@ -17,30 +17,38 @@
  */
 using System;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class FireworkPhysics {
-        
-        public static void Do(Level lvl, ref PhysInfo C) {
-            Random rand = lvl.physRandom;            
+namespace Flames.Blocks.Physics
+{
+
+    public static class FireworkPhysics
+    {
+
+        public static void Do(Level lvl, ref PhysInfo C)
+        {
+            Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
-            
+
             if (lvl.GetBlock(x, (ushort)(y - 1), z) != Block.StillLava)
                 return;
-            
-            if (lvl.IsAirAt(x, (ushort)(y + 1), z)) {
+
+            if (lvl.IsAirAt(x, (ushort)(y + 1), z))
+            {
                 bool keepGoing = true;
                 if ((lvl.Height * 80 / 100) < y)
                     keepGoing = rand.Next(1, 20) > 1;
 
-                if (keepGoing) {
+                if (keepGoing)
+                {
                     int bAbove = lvl.PosToInt(x, (ushort)(y + 1), z);
                     bool unblocked = bAbove < 0 || !lvl.listUpdateExists.Get(x, y + 1, z);
-                    if (unblocked) {
+                    if (unblocked)
+                    {
                         PhysicsArgs args = default;
-                        args.Type1 = PhysicsArgs.Wait; args.Value1 = 1;
-                        args.Type2 = PhysicsArgs.Dissipate; args.Value2 = 100;
-                        
+                        args.Type1 = PhysicsArgs.Wait;
+                        args.Value1 = 1;
+                        args.Type2 = PhysicsArgs.Dissipate;
+                        args.Value2 = 100;
+
                         lvl.AddUpdate(bAbove, Block.Fireworks, default(PhysicsArgs));
                         lvl.AddUpdate(C.Index, Block.StillLava, args);
                         args.Data = C.Data.Data;
@@ -52,7 +60,8 @@ namespace Flames.Blocks.Physics {
             Firework(ref C, 4, lvl, rand);
         }
 
-        public static void Firework(ref PhysInfo C, int size, Level lvl, Random rand) {
+        public static void Firework(ref PhysInfo C, int size, Level lvl, Random rand)
+        {
             int rand1 = rand.Next(Block.Red, Block.White);
             int rand2 = rand.Next(Block.Red, Block.White);
             int min = Math.Min(rand1, rand2), max = Math.Max(rand1, rand2);
@@ -64,14 +73,17 @@ namespace Flames.Blocks.Physics {
             for (int yy = y - (size + 1); yy <= y + (size + 1); ++yy)
                 for (int zz = z - (size + 1); zz <= z + (size + 1); ++zz)
                     for (int xx = x - (size + 1); xx <= x + (size + 1); ++xx)
-            {               
-                if (lvl.IsAirAt((ushort)xx, (ushort)yy, (ushort)zz, out int index) && rand.Next(1, 40) < 2) {
-                    PhysicsArgs args = default;
-                    args.Type1 = PhysicsArgs.Drop; args.Value1 = 100;
-                    args.Type2 = PhysicsArgs.Dissipate; args.Value2 = 25;
-                    lvl.AddUpdate(index, (byte)rand.Next(min, max), args);
-                }
-            }
+                    {
+                        if (lvl.IsAirAt((ushort)xx, (ushort)yy, (ushort)zz, out int index) && rand.Next(1, 40) < 2)
+                        {
+                            PhysicsArgs args = default;
+                            args.Type1 = PhysicsArgs.Drop;
+                            args.Value1 = 100;
+                            args.Type2 = PhysicsArgs.Dissipate;
+                            args.Value2 = 25;
+                            lvl.AddUpdate(index, (byte)rand.Next(min, max), args);
+                        }
+                    }
         }
     }
 }

@@ -19,36 +19,41 @@ using System.Collections.Generic;
 using System.IO;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing 
-{ 
+namespace Flames.Drawing
+{
     /// <summary> Represents a mapping of block ids to RGB colors. </summary>
-    public sealed class ImagePalette 
+    public sealed class ImagePalette
     {
         public string Name;
         public string FileName { get { return "extra/palettes/" + Name + ".pal"; } }
         public PaletteEntry[] Entries;
-        
-        public ImagePalette(string name, PaletteEntry[] entries) {
-            Name = name; Entries = entries;
+
+        public ImagePalette(string name, PaletteEntry[] entries)
+        {
+            Name = name; 
+            Entries = entries;
         }
-        
+
         public static List<ImagePalette> Palettes = new List<ImagePalette>();
-        
-        public static ImagePalette Find(string name) {
-            foreach (ImagePalette entry in Palettes) {
+
+        public static ImagePalette Find(string name)
+        {
+            foreach (ImagePalette entry in Palettes)
+            {
                 if (entry.Name.CaselessEq(name)) return entry;
             }
             return null;
         }
-        
-        
-        public static void Load() {
+
+
+        public static void Load()
+        {
             Palettes.Clear();
             Palettes.Add(new ImagePalette("Color", Color));
             Palettes.Add(new ImagePalette("Grayscale", Grayscale));
             Palettes.Add(new ImagePalette("BlackWhite", BlackWhite));
             Palettes.Add(new ImagePalette("SimpleGrayscale", GrayscaleSimple));
-            
+
             if (!Directory.Exists("extra/palettes"))
                 Directory.CreateDirectory("extra/palettes");
             string[] files = Directory.GetFiles("extra/palettes");
@@ -56,7 +61,8 @@ namespace Flames.Drawing
                 LoadPalette(file);
         }
 
-        public static void LoadPalette(string file) {
+        public static void LoadPalette(string file)
+        {
             string name = Path.GetFileNameWithoutExtension(file);
             ImagePalette palette = Find(name);
             if (palette != null) Palettes.Remove(palette);
@@ -64,10 +70,11 @@ namespace Flames.Drawing
             string[] lines = File.ReadAllLines(file);
             List<PaletteEntry> entries = new List<PaletteEntry>();
             string[] parts = new string[5];
-            
-            foreach (string line in lines) {
+
+            foreach (string line in lines)
+            {
                 if (line.StartsWith("#") || line.Length == 0) continue;
-                
+
                 line.FixedSplit(parts, ':');
                 if (parts[3] == null || parts[4] != null) continue; // not a proper line
                 entries.Add(ParseEntry(parts));
@@ -77,34 +84,41 @@ namespace Flames.Drawing
             Palettes.Add(palette);
         }
 
-        public static PaletteEntry ParseEntry(string[] parts) {
+        public static PaletteEntry ParseEntry(string[] parts)
+        {
             BlockID block = BlockID.Parse(parts[0]);
             block = Block.MapOldRaw(block);
-            
+
             byte r = byte.Parse(parts[1]);
             byte g = byte.Parse(parts[2]);
-            byte b = byte.Parse(parts[3]);            
+            byte b = byte.Parse(parts[3]);
             return new PaletteEntry(r, g, b, block);
         }
-        
-        
-        public void Save() {
-            using (StreamWriter w = new StreamWriter(FileName)) {
+
+
+        public void Save()
+        {
+            using (StreamWriter w = new StreamWriter(FileName))
+            {
                 w.WriteLine("#Line layout - block:red:green:blue");
-                
+
                 if (Entries == null) return;
                 foreach (PaletteEntry e in Entries)
                     w.WriteLine(e.Block + ":" + e.R + ":" + e.G + ":" + e.B);
             }
         }
-        
-        public static void Add(string name) {
+
+        public static void Add(string name)
+        {
             ImagePalette palette = new ImagePalette(name, null);
             Palettes.Add(palette);
-            using (File.Create(palette.FileName)) { }
+            using (File.Create(palette.FileName)) 
+            { 
+            }
         }
-        
-        public static void Remove(ImagePalette palette) {
+
+        public static void Remove(ImagePalette palette)
+        {
             Palettes.Remove(palette);
             if (!File.Exists(palette.FileName)) return;
             File.Delete(palette.FileName);
@@ -154,13 +168,18 @@ namespace Flames.Drawing
             new PaletteEntry(0,     0,   0, Block.Obsidian),
         };
     }
-    
-    public struct PaletteEntry  {
+
+    public struct PaletteEntry
+    {
         public byte R, G, B;
         public BlockID Block;
-        
-        public PaletteEntry(byte r, byte g, byte b, BlockID block) {
-            R = r; G = g; B = b; Block = block;
+
+        public PaletteEntry(byte r, byte g, byte b, BlockID block)
+        {
+            R = r; 
+            G = g; 
+            B = b; 
+            Block = block;
         }
     }
 }

@@ -17,45 +17,59 @@
  */
 using System.Collections.Generic;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class C4Physics {
-        
-        public static void BlowUp(int index, Level lvl) {
-            try {
-                foreach (C4Data c4 in lvl.C4list) {
+namespace Flames.Blocks.Physics
+{
+
+    public static class C4Physics
+    {
+
+        public static void BlowUp(int index, Level lvl)
+        {
+            try
+            {
+                foreach (C4Data c4 in lvl.C4list)
+                {
                     if (c4.detIndex != index) continue;
-                    
-                    foreach (int explodeIndex in c4.list) {
+
+                    foreach (int explodeIndex in c4.list)
+                    {
                         lvl.IntToPos(explodeIndex, out ushort x, out ushort y, out ushort z);
                         lvl.MakeExplosion(x, y, z, 0);
                     }
                     lvl.C4list.Remove(c4);
                 }
-            } catch { }
+            }
+            catch 
+            { 
+            }
         }
-        
-        public static sbyte NextCircuit(Level lvl) {
+
+        public static sbyte NextCircuit(Level lvl)
+        {
             sbyte number = 1;
             foreach (C4Data c4 in lvl.C4list)
                 number++;
             return number;
         }
-        
-        public static C4Data Find(Level lvl, sbyte circuitId) {
-            foreach (C4Data c4 in lvl.C4list) {
+
+        public static C4Data Find(Level lvl, sbyte circuitId)
+        {
+            foreach (C4Data c4 in lvl.C4list)
+            {
                 if (c4.CircuitID == circuitId) return c4;
             }
             return null;
         }
     }
-    
-    public class C4Data {
+
+    public class C4Data
+    {
         public sbyte CircuitID;
         public int detIndex = -1;
         public List<int> list = new List<int>();
 
-        public C4Data(sbyte num) {
+        public C4Data(sbyte num)
+        {
             CircuitID = num;
         }
     }

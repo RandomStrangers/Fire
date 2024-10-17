@@ -18,8 +18,10 @@
 using Flames.Drawing.Ops;
 using Flames.Generator.Foliage;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdTree : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdTree : DrawCmd
+    {
         public override string name { get { return "Tree"; } }
         public override string type { get { return CommandTypes.Building; } }
 
@@ -27,40 +29,53 @@ namespace Flames.Commands.Building {
         public override string SelectionType { get { return "location"; } }
         public override string PlaceMessage { get { return "Select where you wish your tree to grow"; } }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) {
-            string[] args = dArgs.Message.SplitSpaces(3);            
+        public override DrawOp GetDrawOp(DrawArgs dArgs)
+        {
+            string[] args = dArgs.Message.SplitSpaces(3);
             Tree tree = Tree.Find(args[0]);
             if (tree == null) tree = new NormalTree();
-            
-            int size;            
-            if (args.Length > 1 && int.TryParse(args[1], out size)) {
+
+            int size;
+            if (args.Length > 1 && int.TryParse(args[1], out size))
+            {
                 Player p = dArgs.Player;
-                string opt = args[0] + " tree size";                
+                string opt = args[0] + " tree size";
                 if (!CommandParser.GetInt(p, args[1], opt, ref size, tree.MinSize, tree.MaxSize)) return null;
-            } else {
+            }
+            else
+            {
                 size = -1;
             }
 
-            TreeDrawOp op = new TreeDrawOp();
-            op.Tree = tree; op.Size = size;
+            TreeDrawOp op = new TreeDrawOp
+            {
+                Tree = tree,
+                Size = size
+            };
             return op;
         }
 
-        public override void GetBrush(DrawArgs dArgs) {
+        public override void GetBrush(DrawArgs dArgs)
+        {
             TreeDrawOp op = (TreeDrawOp)dArgs.Op;
-            if (op.Size != -1) {
+            if (op.Size != -1)
+            {
                 dArgs.BrushArgs = dArgs.Message.Splice(2, 0); // type, value/height, brush args
-            } else {
+            }
+            else
+            {
                 dArgs.BrushArgs = dArgs.Message.Splice(1, 0); // type, brush args
             }
-            
+
             // use leaf blocks by default
-            if (dArgs.BrushName.CaselessEq("Normal") && dArgs.BrushArgs.Length == 0) {
+            if (dArgs.BrushName.CaselessEq("Normal") && dArgs.BrushArgs.Length == 0)
+            {
                 dArgs.BrushArgs = Block.Leaves.ToString();
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Tree [type] <brush args> &H- Draws a tree.");
             p.Message("&T/Tree [type] [size/height] <brush args>");
             p.Message("&H  Types: &f{0}", Tree.TreeTypes.Join(t => t.Key));

@@ -20,7 +20,7 @@ using Flames.Events.PlayerEvents;
 
 namespace Flames.Commands.Chatting
 {
-    public sealed class CmdAfk : Command2 
+    public sealed class CmdAfk : Command2
     {
         public override string name { get { return "AFK"; } }
         public override string type { get { return CommandTypes.Information; } }
@@ -28,29 +28,42 @@ namespace Flames.Commands.Chatting
         public override bool MessageBlockRestricted { get { return true; } }
         public override bool UseableWhenFrozen { get { return true; } }
 
-        public override void Use(Player p, string message, CommandData data) { ToggleAfk(p, message); }
-        public static void ToggleAfk(Player p, string message) {
+        public override void Use(Player p, string message, CommandData data) 
+        { 
+            ToggleAfk(p, message); 
+        }
+        public static void ToggleAfk(Player p, string message)
+        {
             if (p.joker) message = "";
             p.AutoAfk = false;
-            p.IsAfk   = !p.IsAfk;
+            p.IsAfk = !p.IsAfk;
             p.afkMessage = p.IsAfk ? message : null;
             TabList.Update(p, true);
             p.LastAction = DateTime.UtcNow;
 
             bool cantSend = !p.CanSpeak();
-            if (p.IsAfk) {
-                if (cantSend) {
+            if (p.IsAfk)
+            {
+                if (cantSend)
+                {
                     p.Message("You are now marked as being AFK.");
-                } else {
+                }
+                else
+                {
                     ShowMessage(p, "-λNICK&S- is AFK " + message);
                     p.CheckForMessageSpam();
                 }
                 p.AFKCooldown = DateTime.UtcNow.AddSeconds(2);
                 OnPlayerActionEvent.Call(p, PlayerAction.AFK, null, cantSend);
-            } else {
-                if (cantSend) {
+            }
+            else
+            {
+                if (cantSend)
+                {
                     p.Message("You are no longer marked as being AFK.");
-                } else {
+                }
+                else
+                {
                     ShowMessage(p, "-λNICK&S- is no longer AFK");
                     p.CheckForMessageSpam();
                 }
@@ -58,12 +71,14 @@ namespace Flames.Commands.Chatting
             }
         }
 
-        public static void ShowMessage(Player p, string message) {
+        public static void ShowMessage(Player p, string message)
+        {
             bool announce = !p.hidden && Server.Config.IRCShowAFK;
             Chat.MessageFrom(p, message, Chat.FilterVisible(p), announce);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/AFK <reason>");
             p.Message("&HMarks yourself as AFK. Use again to mark yourself as back");
         }

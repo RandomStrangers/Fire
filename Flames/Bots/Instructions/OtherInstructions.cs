@@ -17,105 +17,137 @@
  */
 using System.IO;
 
-namespace Flames.Bots 
-{    
+namespace Flames.Bots
+{
     /// <summary> Causes the bot to reset to the and execute first instruction. </summary>
-    public sealed class ResetInstruction : BotInstruction 
+    public sealed class ResetInstruction : BotInstruction
     {
-        public ResetInstruction() { Name = "reset"; }
-
-        public override bool Execute(PlayerBot bot, InstructionData data) {
-            bot.cur = 0; return false;
+        public ResetInstruction()
+        {
+            Name = "reset";
         }
-        
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
+            bot.cur = 0;
+            return false;
+        }
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] reset",
             "&HCauses the bot to go back to the first instruction",
         };
     }
-    
-    /// <summary> Causes the bot to be removed from the world. </summary>
-    public sealed class RemoveInstruction : BotInstruction 
-    {
-        public RemoveInstruction() { Name = "remove"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
-            PlayerBot.Remove(bot); return true;
+    /// <summary> Causes the bot to be removed from the world. </summary>
+    public sealed class RemoveInstruction : BotInstruction
+    {
+        public RemoveInstruction()
+        {
+            Name = "remove";
         }
-        
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
+            PlayerBot.Remove(bot);
+            return true;
+        }
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] remove",
             "&HCauses the bot to be removed from the world",
         };
     }
-    
-    /// <summary> Causes the bot to switch to a different AI. </summary>
-    public sealed class LinkScriptInstruction : BotInstruction 
-    {
-        public LinkScriptInstruction() { Name = "linkscript"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+    /// <summary> Causes the bot to switch to a different AI. </summary>
+    public sealed class LinkScriptInstruction : BotInstruction
+    {
+        public LinkScriptInstruction()
+        {
+            Name = "linkscript";
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             string ai = (string)data.Metadata;
-            if (File.Exists("bots/" + ai)) {
+            if (File.Exists("bots/" + ai))
+            {
                 ScriptFile.Parse(Player.Flame, bot, ai);
                 return true;
             }
-            bot.NextInstruction(); return true;
+            bot.NextInstruction();
+            return true;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             InstructionData data = default(InstructionData);
             data.Metadata = args[1];
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
             string script = args.Length > 3 ? args[3] : "";
-            if (script.Length == 0) {
+            if (script.Length == 0)
+            {
                 p.Message("LinkScript requires a script name as a parameter");
-            } else if (Formatter.ValidFilename(p, script)) {
+            }
+            else if (Formatter.ValidFilename(p, script))
+            {
                 w.WriteLine(Name + " " + script);
             }
         }
-        
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] linkscript [ai name]",
             "&HCauses the bot to switch to the given AI, and execute that AI's instructions instead.",
         };
     }
-    
-    /// <summary> Causes the bot to wait/do nothing for a certain interval. </summary>
-    public sealed class WaitInstruction : BotInstruction 
-    {
-        public WaitInstruction() { Name = "wait"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
-            if (bot.countdown == 0) {
+    /// <summary> Causes the bot to wait/do nothing for a certain interval. </summary>
+    public sealed class WaitInstruction : BotInstruction
+    {
+        public WaitInstruction()
+        {
+            Name = "wait";
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
+            if (bot.countdown == 0)
+            {
                 bot.countdown = (short)data.Metadata;
                 return true;
             }
-            
+
             bot.countdown--;
-            if (bot.countdown == 0) { bot.NextInstruction(); return false; }
+            if (bot.countdown == 0)
+            {
+                bot.NextInstruction();
+                return false;
+            }
             return true;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             InstructionData data = default;
             data.Metadata = short.Parse(args[1]);
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
             string time = args.Length > 3 ? args[3] : "10";
             w.WriteLine(Name + " " + short.Parse(time));
         }
-        
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] wait <interval>",
             "&HCauses the bot to stay still for a period of time.",
             "&H  <interval> is in tenths of a second, so an interval of 20 means " +

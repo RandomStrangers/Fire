@@ -16,29 +16,38 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.World {
-    public sealed class CmdDeleteLvl : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdDeleteLvl : Command2
+    {
         public override string name { get { return "DeleteLvl"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("WDelete"), new CommandAlias("WorldDelete"), new CommandAlias("WRemove") }; }
         }
         public override bool MessageBlockRestricted { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0 || message.SplitSpaces().Length > 1) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0 || message.SplitSpaces().Length > 1) 
+            { 
+                Help(p); 
+                return; 
+            }
             string map = Matcher.FindMaps(p, message);
             LevelConfig cfg;
-            
-            if (map == null) return;            
-            if (!LevelInfo.Check(p, data.Rank, map, "delete this map",out cfg)) return;
+
+            if (map == null) return;
+            if (!LevelInfo.Check(p, data.Rank, map, "delete this map", out cfg)) return;
 
             if (!LevelActions.Delete(p, map)) return;
             Chat.MessageGlobal("Level {0} &Swas deleted", cfg.Color + map);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/DeleteLvl [level]");
             p.Message("&HCompletely deletes [level] (portals, MBs, everything)");
             p.Message("&HA backup of the level is made in the levels/deleted folder");

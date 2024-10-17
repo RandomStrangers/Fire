@@ -18,27 +18,32 @@
 using System;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class HunterPhysics {
+namespace Flames.Blocks.Physics
+{
+
+    public static class HunterPhysics
+    {
 
         // dir is  1 for hunting animals (they go towards the closest player)
         // dir is -1 for fleeing animals (they go away from the closest player)
-        public static void Do(Level lvl, ref PhysInfo C, BlockID target, int dir) {
+        public static void Do(Level lvl, ref PhysInfo C, BlockID target, int dir)
+        {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
             Player closest = ClosestPlayer(lvl, x, y, z);
-            
-            if (closest != null && rand.Next(1, 20) < 19) {
+
+            if (closest != null && rand.Next(1, 20) < 19)
+            {
                 int dirsVisited = 0;
 
-                switch (rand.Next(1, 10)) {
+                switch (rand.Next(1, 10))
+                {
                     case 1:
                     case 2:
                     case 3:
                         ushort xx = (ushort)(x + Math.Sign(closest.Pos.BlockX - x) * dir);
                         if (xx != x && MoveTo(lvl, ref C, target, xx, y, z)) return;
-                        
+
                         dirsVisited++;
                         if (dirsVisited >= 3) break;
                         goto case 4;
@@ -47,7 +52,7 @@ namespace Flames.Blocks.Physics {
                     case 6:
                         ushort yy = (ushort)(y + Math.Sign(closest.Pos.BlockY - y) * dir);
                         if (yy != y && MoveTo(lvl, ref C, target, x, yy, z)) return;
-                        
+
                         dirsVisited++;
                         if (dirsVisited >= 3) break;
                         goto case 7;
@@ -56,14 +61,15 @@ namespace Flames.Blocks.Physics {
                     case 9:
                         ushort zz = (ushort)(z + Math.Sign(closest.Pos.BlockZ - z) * dir);
                         if (zz != z && MoveTo(lvl, ref C, target, x, y, zz)) return;
-                        
+
                         dirsVisited++;
                         if (dirsVisited >= 3) break;
                         goto case 1;
                 }
             }
-            
-            switch (rand.Next(1, 15)) {
+
+            switch (rand.Next(1, 15))
+            {
                 case 1:
                     if (MoveTo(lvl, ref C, target, x, (ushort)(y - 1), z)) return;
                     goto case 3;
@@ -93,27 +99,32 @@ namespace Flames.Blocks.Physics {
             }
         }
 
-        public static bool MoveTo(Level lvl, ref PhysInfo C, BlockID target, ushort x, ushort y, ushort z) {
+        public static bool MoveTo(Level lvl, ref PhysInfo C, BlockID target, ushort x, ushort y, ushort z)
+        {
             int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);            
-            if (block == target && lvl.AddUpdate(index, C.Block)) {
+            BlockID block = lvl.GetBlock(x, y, z, out index);
+            if (block == target && lvl.AddUpdate(index, C.Block))
+            {
                 lvl.AddUpdate(C.Index, target);
                 return true;
             }
             return false;
         }
-        
-        public static Player ClosestPlayer(Level lvl, ushort x, ushort y, ushort z) {
+
+        public static Player ClosestPlayer(Level lvl, ushort x, ushort y, ushort z)
+        {
             if (!lvl.Config.AnimalHuntAI) return null;
             int closestDist = 75;
             Player closetPlayer = null;
             Player[] players = PlayerInfo.Online.Items;
-            
-            foreach (Player p in players) {
+
+            foreach (Player p in players)
+            {
                 if (p.level != lvl || p.invincible) continue;
                 Position pos = p.Pos;
                 int curDist = Math.Abs(pos.BlockX - x) + Math.Abs(pos.BlockY - y) + Math.Abs(pos.BlockZ - z);
-                if (curDist < closestDist) {
+                if (curDist < closestDist)
+                {
                     closestDist = curDist;
                     closetPlayer = p;
                 }

@@ -15,19 +15,23 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-namespace Flames.Commands.Building {   
-    public sealed class CmdStatic : Command2 {      
+namespace Flames.Commands.Building
+{
+    public sealed class CmdStatic : Command2
+    {
         public override string name { get { return "Static"; } }
         public override string shortcut { get { return "t"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("zz", "cuboid") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.staticCommands = !p.staticCommands;
             p.ClearBlockchange();
 
@@ -39,8 +43,9 @@ namespace Flames.Commands.Building {
             string cmd = parts[0], args = parts.Length > 1 ? parts[1] : "";
             p.HandleCommand(cmd, args, data);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Static [command]");
             p.Message("&HMakes every command a toggle.");
             p.Message("&HIf [command] is given, then that command is used");

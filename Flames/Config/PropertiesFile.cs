@@ -18,36 +18,48 @@
 using System;
 using System.IO;
 
-namespace Flames {
-    
+namespace Flames
+{
+
     public delegate void LineProcessor<T>(string key, string value, ref T state);
     public delegate void SimpleLineProcessor(string key, string value);
-    
+
     /// <summary> Handles text files that have multiple key-value lines in the format 'key=value'. </summary>
     /// <remarks> Also supports # for commented lines. </remarks>
-    public static class PropertiesFile {
-        
+    public static class PropertiesFile
+    {
+
         public static bool Read(string path, SimpleLineProcessor processor,
-                                char separator = '=', bool trimValue = true) {
+                                char separator = '=', bool trimValue = true)
+        {
             object obj = null;
-            LineProcessor<object> del = (string key, string value, ref object state) => { processor(key, value); };
+            LineProcessor<object> del = (string key, string value, ref object state) => 
+            { 
+                processor(key, value); 
+            };
             return Read(path, ref obj, del, separator, trimValue);
         }
-        
+
         public static bool Read<T>(string path, ref T state, LineProcessor<T> processor,
-                                   char separator = '=', bool trimValue = true) {
+                                   char separator = '=', bool trimValue = true)
+        {
             if (!File.Exists(path)) return false;
-            
-            using (StreamReader r = new StreamReader(path)) {
+
+            using (StreamReader r = new StreamReader(path))
+            {
                 string line, key, value;
-                while ((line = r.ReadLine()) != null) {
+                while ((line = r.ReadLine()) != null)
+                {
                     ParseLine(line, separator, out key, out value);
                     if (key == null) continue;
 
-                    try {
+                    try
+                    {
                         if (trimValue) value = value.Trim();
                         processor(key.Trim(), value, ref state);
-                    } catch (Exception ex) {
+                    }
+                    catch (Exception ex)
+                    {
                         Logger.LogError(ex);
                         Logger.Log(LogType.Warning, "Line \"{0}\" in {1} caused an error", line, path);
                     }
@@ -56,13 +68,15 @@ namespace Flames {
             return true;
         }
 
-        public static void ParseLine(string line, char separator, out string key, out string value) {
-            key = null; value = null;
+        public static void ParseLine(string line, char separator, out string key, out string value)
+        {
+            key = null;
+            value = null;
             if (line.IsCommentLine()) return;
-            
+
             int index = line.IndexOf(separator);
             if (index == -1) return;
-            
+
             key = line.Substring(0, index).Trim();
             value = line.Substring(index + 1);
         }

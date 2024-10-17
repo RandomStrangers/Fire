@@ -19,23 +19,25 @@ using System;
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
-{   
-    public sealed class RandomBrush : Brush 
+namespace Flames.Drawing.Brushes
+{
+    public sealed class RandomBrush : Brush
     {
-        public readonly BlockID[] blocks;
-        public readonly int seed;
-        
-        public RandomBrush(BlockID[] blocks) {
+        public BlockID[] blocks;
+        public int seed;
+
+        public RandomBrush(BlockID[] blocks)
+        {
             this.blocks = blocks;
             seed = new Random().Next();
         }
-        
+
         public override string Name { get { return "Random"; } }
 
         public int next;
         public const int mask = 0x7fffffff;
-        public override BlockID NextBlock(DrawOp op) {
+        public override BlockID NextBlock(DrawOp op)
+        {
             // Sourced from http://freespace.virgin.net/hugo.elias/models/m_perlin.htm
             int n = (op.Coords.X + 1217 * op.Coords.Y + 4751 * op.Coords.Z + 673 * seed) & mask;
             n = (n >> 13) ^ n;

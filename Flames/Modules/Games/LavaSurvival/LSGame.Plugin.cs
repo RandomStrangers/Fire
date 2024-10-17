@@ -25,9 +25,10 @@ using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS
 {
-    public partial class LSGame : RoundsGame 
+    public partial class LSGame : RoundsGame
     {
-        public override void HookEventHandlers() {
+        public override void HookEventHandlers()
+        {
             OnJoinedLevelEvent.Register(HandleJoinedLevel, Priority.High);
             OnPlayerDyingEvent.Register(HandlePlayerDying, Priority.High);
             OnPlayerDiedEvent.Register(HandlePlayerDied, Priority.High);
@@ -38,7 +39,8 @@ namespace Flames.Modules.Games.LS
             base.HookEventHandlers();
         }
 
-        public override void UnhookEventHandlers() {
+        public override void UnhookEventHandlers()
+        {
             OnJoinedLevelEvent.Unregister(HandleJoinedLevel);
             OnPlayerDyingEvent.Unregister(HandlePlayerDying);
             OnPlayerDiedEvent.Unregister(HandlePlayerDied);
@@ -49,65 +51,75 @@ namespace Flames.Modules.Games.LS
             base.UnhookEventHandlers();
         }
 
-        public void HandleMoneyChanged(Player p) {
+        public void HandleMoneyChanged(Player p)
+        {
             if (p.level != Map) return;
             UpdateStatus1(p);
         }
 
-        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+        public void HandleJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce)
+        {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
-            
+
             if (Map != level) return;
             ResetRoundState(p, Get(p)); // TODO: Check for /reload case?
             OutputMapSummary(p, Map.Config);
             if (RoundInProgress) OutputStatus(p);
         }
 
-        public void HandlePlayerDying(Player p, BlockID block, ref bool cancel) {
+        public void HandlePlayerDying(Player p, BlockID block, ref bool cancel)
+        {
             if (p.level == Map && IsPlayerDead(p)) cancel = true;
         }
 
-        public void HandlePlayerDied(Player p, BlockID block, ref TimeSpan cooldown) {
+        public void HandlePlayerDied(Player p, BlockID block, ref TimeSpan cooldown)
+        {
             if (p.level != Map || IsPlayerDead(p)) return;
-            
+
             cooldown = TimeSpan.FromSeconds(30);
             AddLives(p, -1, false);
         }
 
-        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        {
             if (p.level != Map || !(placing || p.painting)) return;
-            
-            if (Config.SpawnProtection && NearLavaSpawn(x, y, z)) {
+
+            if (Config.SpawnProtection && NearLavaSpawn(x, y, z))
+            {
                 p.Message("You can't place blocks so close to the {0} spawn", FloodBlockName());
                 p.RevertBlock(x, y, z);
                 cancel = true; return;
             }
         }
 
-        public bool NearLavaSpawn(ushort x, ushort y, ushort z) {
+        public bool NearLavaSpawn(ushort x, ushort y, ushort z)
+        {
             Vec3U16 pos = layerMode ? CurrentLayerPos() : cfg.FloodPos;
-            int dist    = Config.SpawnProtectionRadius;
-            
+            int dist = Config.SpawnProtectionRadius;
+
             int dx = Math.Abs(x - pos.X);
             int dy = Math.Abs(y - pos.Y);
             int dz = Math.Abs(z - pos.Z);
             return dx <= dist && dy <= dist && dz <= dist;
         }
 
-        public bool TryPlaceBlock(Player p, ref int blocksLeft, string type, 
-                           BlockID block, ushort x, ushort y, ushort z) {
-            if (!p.Game.Referee && blocksLeft <= 0) {
+        public bool TryPlaceBlock(Player p, ref int blocksLeft, string type,
+                           BlockID block, ushort x, ushort y, ushort z)
+        {
+            if (!p.Game.Referee && blocksLeft <= 0)
+            {
                 p.Message("You have no {0} left", type);
                 p.RevertBlock(x, y, z);
                 return false;
             }
 
             if (p.ChangeBlock(x, y, z, block) == ChangeResult.Unchanged)
-                return false;           
+                return false;
             if (p.Game.Referee) return true;
-            
+
             blocksLeft--;
-            if ((blocksLeft % 10) == 0 || blocksLeft <= 10) {
+            if ((blocksLeft % 10) == 0 || blocksLeft <= 10)
+            {
                 p.Message("{0} left: &4{1}", type, blocksLeft);
             }
             return true;

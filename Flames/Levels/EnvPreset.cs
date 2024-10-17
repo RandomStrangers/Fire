@@ -17,15 +17,22 @@
  */
 using System.Collections.Generic;
 
-namespace Flames {
-    public sealed class EnvPreset {
+namespace Flames
+{
+    public sealed class EnvPreset
+    {
         public string Fog, Sky, Clouds, Sun, Shadow;
-        
-        public EnvPreset(string raw) {
+
+        public EnvPreset(string raw)
+        {
             string[] args = raw.SplitSpaces();
-            Fog = args[0]; Sky = args[1]; Clouds = args[2]; Sun = args[3]; Shadow = args[4];
+            Fog = args[0]; 
+            Sky = args[1]; 
+            Clouds = args[2]; 
+            Sun = args[3]; 
+            Shadow = args[4];
         }
-            
+
         public static Dictionary<string, string> Presets = new Dictionary<string, string>() {
                         //   fog   sky   clouds   sun   shadow
             { "Cartoon",  "00FFFF 1E90FF 00BFFF F5DEB3 F4A460" },
@@ -39,9 +46,11 @@ namespace Flames {
             { "Midnight", "131947 070A23 1E223A 181828 0F0F19" },
             { "Normal",   "    " },
         };
-        
-        public static EnvPreset Find(string name) {
-            foreach (var kvp in Presets) {
+
+        public static EnvPreset Find(string name)
+        {
+            foreach (var kvp in Presets)
+            {
                 if (kvp.Key.CaselessEq(name)) return new EnvPreset(kvp.Value);
             }
             return null;

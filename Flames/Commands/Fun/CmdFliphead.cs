@@ -15,17 +15,21 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Fun {    
-    public sealed class CmdFlipHead : Command2 {    
+namespace Flames.Commands.Fun
+{
+    public sealed class CmdFlipHead : Command2
+    {
         public override string name { get { return "FlipHead"; } }
         public override string type { get { return CommandTypes.Other; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.flipHead = !p.flipHead;
             p.Message("Your head was {0}&S!", p.flipHead ? "&cbroken" : "&ahealed");
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/FlipHead");
             p.Message("&HMakes your head appear upside down to other players");
         }

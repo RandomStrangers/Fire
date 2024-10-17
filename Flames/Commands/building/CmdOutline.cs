@@ -18,49 +18,69 @@
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdOutline : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdOutline : DrawCmd
+    {
         public override string name { get { return "Outline"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs)
+        {
             Player p = dArgs.Player;
-            if (dArgs.Message.Length == 0) {
-                p.Message("Block name is required."); return null;
+            if (dArgs.Message.Length == 0)
+            {
+                p.Message("Block name is required.");
+                return null;
             }
-            
+
             BlockID target;
             string[] parts = dArgs.Message.SplitSpaces(2);
             // NOTE: Don't need to check if allowed to use block here
             // (OutlineDrawOp skips all blocks that are equal to target)
             if (!CommandParser.GetBlock(p, parts[0], out target)) return null;
-            
+
             OutlineDrawOp op = new OutlineDrawOp();
             // e.g. testing air 'above' grass - therefore op.Above needs to be false for 'up mode'
-            if (dArgs.Mode == DrawMode.up)    { op.Layer = false; op.Above = false; }
-            if (dArgs.Mode == DrawMode.down)  { op.Layer = false; op.Below = false; }
-            if (dArgs.Mode == DrawMode.layer) { op.Above = false; op.Below = false; }
+            if (dArgs.Mode == DrawMode.up)
+            {
+                op.Layer = false;
+                op.Above = false;
+            }
+            if (dArgs.Mode == DrawMode.down)
+            {
+                op.Layer = false;
+                op.Below = false;
+            }
+            if (dArgs.Mode == DrawMode.layer)
+            {
+                op.Above = false;
+                op.Below = false;
+            }
             op.Target = target;
             return op;
         }
 
 
-        public override DrawMode GetMode(string[] parts) {
+        public override DrawMode GetMode(string[] parts)
+        {
             if (parts.Length == 1) return DrawMode.normal;
-            
+
             string type = parts[1];
-            if (type == "down")  return DrawMode.down;
-            if (type == "up")    return DrawMode.up;
+            if (type == "down") return DrawMode.down;
+            if (type == "up") return DrawMode.up;
             if (type == "layer") return DrawMode.layer;
-            if (type == "all")   return DrawMode.solid;
+            if (type == "all") return DrawMode.solid;
             return DrawMode.normal;
         }
 
-        public override void GetBrush(DrawArgs dArgs) {
+        public override void GetBrush(DrawArgs dArgs)
+        {
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount + 1, 0);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Outline [block] <brush args>");
             p.Message("&HOutlines [block] with output of your current brush.");
             p.Message("&T/Outline [block] [mode] <brush args>");

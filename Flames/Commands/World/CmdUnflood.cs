@@ -17,38 +17,49 @@
  */
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.World {
-    public sealed class CmdUnflood : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdUnflood : Command2
+    {
         public override string name { get { return "Unflood"; } }
         public override string type { get { return CommandTypes.World; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override bool SuperUseable { get { return false; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             BlockID block;
             if (!message.CaselessEq("all") && !CommandParser.GetBlock(p, message, out block)) return;
-            
+
             Level lvl = p.level;
             if (!LevelInfo.Check(p, data.Rank, lvl, "unflood this level")) return;
             // TODO: Probably should look at lvl.physTickLock here
             bool paused = lvl.PhysicsPaused;
             lvl.PhysicsPaused = true;
-            
-            try {
+
+            try
+            {
                 Command cmd = Find("ReplaceAll");
                 string args = !message.CaselessEq("all") ? message :
                     "8 10 lavafall waterfall lava_fast active_hot_lava active_cold_water fast_hot_lava magma geyser";
                 cmd.Use(p, args + " air", data);
-            } finally {
+            }
+            finally
+            {
                 // always restore paused state, even some if ReplaceAll somehow fails
                 lvl.PhysicsPaused = paused;
             }
             lvl.Message("Unflooded!");
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Unflood [liquid]");
             p.Message("&HUnfloods the map you are currently in of [liquid].");
             p.Message("&H  If [liquid] is \"all\", unfloods the map of all liquids.");

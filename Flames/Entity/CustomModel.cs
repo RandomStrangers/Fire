@@ -1,26 +1,31 @@
 using Flames.Maths;
 
-namespace Flames {
+namespace Flames
+{
 
-    public class CustomModel {
+    public class CustomModel
+    {
         public string name;
         // humanoid defaults
         public float nameY = 32.5f / 16.0f;
         public float eyeY = 26.0f / 16.0f;
-        public Vec3F32 collisionBounds = new Vec3F32 {
-            X = (8.6f) / 16.0f,
-            Y = (28.1f) / 16.0f,
-            Z = (8.6f) / 16.0f
+        public Vec3F32 collisionBounds = new Vec3F32
+        {
+            X = 8.6f / 16.0f,
+            Y = 28.1f / 16.0f,
+            Z = 8.6f / 16.0f
         };
-        public Vec3F32 pickingBoundsMin = new Vec3F32 {
+        public Vec3F32 pickingBoundsMin = new Vec3F32
+        {
             X = (-8) / 16.0f,
-            Y = (0) / 16.0f,
+            Y = 0 / 16.0f,
             Z = (-4) / 16.0f
         };
-        public Vec3F32 pickingBoundsMax = new Vec3F32 {
-            X = (8) / 16.0f,
-            Y = (32) / 16.0f,
-            Z = (4) / 16.0f
+        public Vec3F32 pickingBoundsMax = new Vec3F32
+        {
+            X = 8 / 16.0f,
+            Y = 32 / 16.0f,
+            Z = 4 / 16.0f
         };
         public bool bobbing = true;
         public bool pushes = true;
@@ -32,7 +37,8 @@ namespace Flames {
         public byte partCount;
     }
 
-    public class CustomModelPart {
+    public class CustomModelPart
+    {
         /* min and max vec3 points */
         public Vec3F32 min;
         public Vec3F32 max;
@@ -45,7 +51,8 @@ namespace Flames {
         /* rotation origin point */
         public Vec3F32 rotationOrigin;
 
-        public Vec3F32 rotation = new Vec3F32 {
+        public Vec3F32 rotation = new Vec3F32
+        {
             X = 0.0f,
             Y = 0.0f,
             Z = 0.0f,
@@ -55,7 +62,8 @@ namespace Flames {
         public bool firstPersonArm = false;
     }
 
-    public class CustomModelAnim {
+    public class CustomModelAnim
+    {
         public CustomModelAnimType type = CustomModelAnimType.None;
         public CustomModelAnimAxis axis;
 
@@ -65,7 +73,8 @@ namespace Flames {
         public float d;
     }
 
-    public enum CustomModelAnimType {
+    public enum CustomModelAnimType
+    {
         None = 0,
         Head = 1,
         LeftLegX = 2,
@@ -90,7 +99,8 @@ namespace Flames {
         FlipSizeVelocity = 21
     }
 
-    public enum CustomModelAnimAxis {
+    public enum CustomModelAnimAxis
+    {
         X = 0,
         Y = 1,
         Z = 2,

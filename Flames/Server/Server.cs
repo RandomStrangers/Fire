@@ -38,52 +38,65 @@ using Flames.Tasks;
 using Flames.Util;
 using Flames.Modules.Awards;
 
-namespace Flames 
+namespace Flames
 {
-    public sealed partial class Server 
+    public sealed partial class Server
     {
-        public Server() { s = this; }
-        
+        public Server() 
+        { 
+            s = this; 
+        }
+
         //True = cancel event
         //Fale = don't cancel event
-        public static bool Check(string cmd, string message) {
-            if (FlameCommand != null) FlameCommand(cmd, message);
+        public static bool Check(string cmd, string message)
+        {
+            FlameCommand?.Invoke(cmd, message);
             return cancelcommand;
         }
-        
-        [Obsolete("Use Logger.Log(LogType, String)")]
-        public void Log(string message) { Logger.Log(LogType.SystemActivity, message); }
-        
-        [Obsolete("Use Logger.Log(LogType, String)")]
-        public void Log(string message, bool systemMsg = false) {
+
+        public void Log(string message) 
+        {
+            Logger.Log(LogType.SystemActivity, message); 
+        }
+
+        public void Log(string message, bool systemMsg = false)
+        {
             LogType type = systemMsg ? LogType.BackgroundActivity : LogType.SystemActivity;
             Logger.Log(type, message);
         }
-        
-        public static void CheckFile(string file) {
+
+        public static void CheckFile(string file)
+        {
             if (File.Exists(file)) return;
-            
+
             Logger.Log(LogType.SystemActivity, file + " doesn't exist, Downloading..");
-            try {
-                using (WebClient client = HttpUtil.CreateWebClient()) {
+            try
+            {
+                using (WebClient client = HttpUtil.CreateWebClient())
+                {
                     client.DownloadFile(Updater.BaseURL + file, file);
                 }
-                if (File.Exists(file)) {
+                if (File.Exists(file))
+                {
                     Logger.Log(LogType.SystemActivity, file + " download succesful!");
                 }
-            } catch (Exception ex) {
-                Logger.LogError("Downloading " + file +" failed, try again later", ex);
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Downloading " + file + " failed, try again later", ex);
             }
         }
 
         public static ConfigElement[] serverConfig, levelConfig, zoneConfig;
-        public static void Start() {
+        public static void Start()
+        {
             serverConfig = ConfigElement.GetAll(typeof(ServerConfig));
-            levelConfig  = ConfigElement.GetAll(typeof(LevelConfig));
-            zoneConfig   = ConfigElement.GetAll(typeof(ZoneConfig));
+            levelConfig = ConfigElement.GetAll(typeof(LevelConfig));
+            zoneConfig = ConfigElement.GetAll(typeof(ZoneConfig));
 
             IOperatingSystem.DetectOS().Init();
-            
+
             StartTime = DateTime.UtcNow;
             Logger.Log(LogType.SystemActivity, "Starting Server");
             ServicePointManager.Expect100Continue = false;
@@ -113,16 +126,26 @@ namespace Flames
                                    null, TimeSpan.FromMinutes(5));
 
         }
-        public static void ForceEnableTLS() {
-            // Force enable TLS 1.1/1.2, otherwise checking for updates on Github doesn't work
-            try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0x300; } catch { }
-            try { ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0xC00; } catch { }
-        }
-        public static void EnsureDirectoryDoesntExist(string dir, bool persist)
+        public static void ForceEnableTLS()
         {
-            if (Directory.Exists(dir)) Directory.Delete(dir, persist);
+            // Force enable TLS 1.1/1.2, otherwise checking for updates on Github doesn't work
+            try 
+            { 
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0x300; 
+            } 
+            catch 
+            { 
+            }
+            try 
+            { 
+                ServicePointManager.SecurityProtocol |= (SecurityProtocolType)0xC00; 
+            } 
+            catch 
+            { 
+            }
         }
-        public static void EnsureFilesExist() {
+        public static void EnsureFilesExist()
+        {
             EnsureDirectoryExists("properties");
             EnsureDirectoryExists("properties/games");
             EnsureDirectoryExists("levels");
@@ -139,15 +162,20 @@ namespace Flames
             EnsureDirectoryExists(Paths.ImportsDir);
             EnsureDirectoryExists("blockdefs");
         }
-        
-       public static void EnsureDirectoryExists(string dir) {
+
+        public static void EnsureDirectoryExists(string dir)
+        {
             if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
         }
- 
-        public static void LoadAllSettings() { LoadAllSettings(false); }
+
+        public static void LoadAllSettings() 
+        {
+            LoadAllSettings(false);
+        }
 
         // TODO rethink this
-        public static void LoadAllSettings(bool commands) {
+        public static void LoadAllSettings(bool commands)
+        {
             Colors.Load();
             Alias.LoadCustom();
             BlockDefinition.LoadGlobal();
@@ -174,21 +202,23 @@ namespace Flames
             TextFile announcementsFile = TextFile.Files["Announcements"];
             announcementsFile.EnsureExists();
             announcements = announcementsFile.GetText();
-            
+
             OnConfigUpdatedEvent.Call();
         }
 
 
-        public static readonly object stopLock = new object();
+        public static object stopLock = new object();
         public static volatile Thread stopThread;
-        public static Thread Stop(bool restart, string msg) {
+        public static Thread Stop(bool restart, string msg)
+        {
             if (Config.SayBye)
             {
                 Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
             }
-                Logger.Log(LogType.Warning, "&fServer is shutting down!");
+            Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
-            lock (stopLock) {
+            lock (stopLock)
+            {
                 if (stopThread != null) return stopThread;
                 stopThread = new Thread(() => ShutdownThread(restart, msg));
                 stopThread.Start();
@@ -196,55 +226,92 @@ namespace Flames
             }
         }
 
-        public static void ShutdownThread(bool restarting, string msg) {
-            try {
+        public static void ShutdownThread(bool restarting, string msg)
+        {
+            try
+            {
                 Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);
-            } catch { }
-            
+            }
+            catch { }
+
             // Stop accepting new connections and disconnect existing sessions
-            Listener.Close();            
-            try {
+            Listener.Close();
+            try
+            {
                 Player[] players = PlayerInfo.Online.Items;
-                foreach (Player p in players) { p.Leave(msg); }
-            } catch (Exception ex) { Logger.LogError(ex); }
-            
+                foreach (Player p in players) 
+                { 
+                    p.Leave(msg); 
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Logger.LogError(ex); 
+            }
+
             byte[] kick = Packet.Kick(msg, false);
-            try {
+            try
+            {
                 INetSocket[] pending = INetSocket.pending.Items;
-                foreach (INetSocket p in pending) { p.Send(kick, SendFlags.None); }
-            } catch (Exception ex) { Logger.LogError(ex); }
+                foreach (INetSocket p in pending) 
+                { 
+                    p.Send(kick, SendFlags.None); 
+                }
+            }
+            catch (Exception ex) 
+            { 
+                Logger.LogError(ex); 
+            }
 
             OnShuttingDownEvent.Call(restarting, msg);
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
 
-            try {
+            try
+            {
                 string autoload = SaveAllLevels();
-                if (SetupFinished && !Config.AutoLoadMaps) {
+                if (SetupFinished && !Config.AutoLoadMaps)
+                {
                     File.WriteAllText("text/autoload.txt", autoload);
                 }
-            } catch (Exception ex) { Logger.LogError(ex); }
-            
-            try {
+            }
+            catch (Exception ex) 
+            { 
+                Logger.LogError(ex); 
+            }
+
+            try
+            {
                 Logger.Log(LogType.SystemActivity, "Server shutdown completed");
-            } catch { }
-            
-            try { FileLogger.Flush(null); } catch { }
-            
-            if (restarting) {
+            }
+            catch 
+            { 
+            }
+
+            try 
+            { 
+                FileLogger.Flush(null); 
+            } catch 
+            { 
+            }
+
+            if (restarting)
+            {
                 IOperatingSystem.DetectOS().RestartProcess();
                 // TODO: FileLogger.Flush again maybe for if execvp fails?
             }
             Environment.Exit(0);
         }
 
-            public static string SaveAllLevels() {
+        public static string SaveAllLevels()
+        {
             string autoload = null;
-            Level[] loaded  = LevelInfo.Loaded.Items;
+            Level[] loaded = LevelInfo.Loaded.Items;
 
             foreach (Level lvl in loaded)
             {
-                if (!lvl.SaveChanges) {
+                if (!lvl.SaveChanges)
+                {
                     Logger.Log(LogType.SystemActivity, "Skipping save for level {0}", lvl.ColoredName);
                     continue;
                 }
@@ -257,17 +324,21 @@ namespace Flames
         }
 
 
-        public static string GetServerDLLPath() {
+        public static string GetServerDLLPath()
+        {
             return Assembly.GetExecutingAssembly().Location;
         }
 
-        public static string GetRestartPath() {
+        public static string GetRestartPath()
+        {
             return RestartPath;
         }
 
         public static bool checkedOnMono, runningOnMono;
-        public static bool RunningOnMono() {
-            if (!checkedOnMono) {
+        public static bool RunningOnMono()
+        {
+            if (!checkedOnMono)
+            {
                 runningOnMono = Type.GetType("Mono.Runtime") != null;
                 checkedOnMono = true;
             }
@@ -275,50 +346,57 @@ namespace Flames
         }
 
 
-        public static void UpdateUrl(string url) {
-            if (OnURLChange != null) OnURLChange(url);
+        public static void UpdateUrl(string url)
+        {
+            OnURLChange?.Invoke(url);
         }
 
-        public static void RandomMessage(SchedulerTask task) {
-            if (PlayerInfo.Online.Count > 0 && announcements.Length > 0) {
+        public static void RandomMessage(SchedulerTask task)
+        {
+            if (PlayerInfo.Online.Count > 0 && announcements.Length > 0)
+            {
                 Chat.MessageGlobal(announcements[new Random().Next(0, announcements.Length)]);
             }
         }
 
-        public static void SettingsUpdate() {
-            if (OnSettingsUpdate != null) OnSettingsUpdate();
+        public static void SettingsUpdate()
+        {
+            OnSettingsUpdate?.Invoke();
         }
-        
-        public static bool SetMainLevel(string map) {
+
+        public static bool SetMainLevel(string map)
+        {
             OnMainLevelChangingEvent.Call(ref map);
             string main = mainLevel != null ? mainLevel.name : Config.MainLevel;
             if (map.CaselessEq(main)) return false;
-            
+
             Level lvl = LevelInfo.FindExact(map);
             if (lvl == null)
                 lvl = LevelActions.Load(Player.Flame, map, false);
             if (lvl == null) return false;
-            
-            SetMainLevel(lvl); 
+
+            SetMainLevel(lvl);
             return true;
         }
-        
-        public static void SetMainLevel(Level lvl) {
-            Level oldMain = mainLevel;            
+
+        public static void SetMainLevel(Level lvl)
+        {
+            Level oldMain = mainLevel;
             mainLevel = lvl;
             oldMain.AutoUnload();
         }
-        
-        public static void DoGC() {
+
+        public static void DoGC()
+        {
             var sw = Stopwatch.StartNew();
             long start = GC.GetTotalMemory(false);
             GC.Collect();
             GC.WaitForPendingFinalizers();
-            
+
             long end = GC.GetTotalMemory(false);
             double deltaKB = (start - end) / 1024.0;
             if (deltaKB < 100.0) return;
-            
+
             Logger.Log(LogType.BackgroundActivity, "GC performed in {0:F2} ms (tracking {1:F2} KB, freed {2:F2} KB)",
                        sw.Elapsed.TotalMilliseconds, end / 1024.0, deltaKB);
         }
@@ -326,45 +404,56 @@ namespace Flames
         {
             thread = new Thread(threadFunc);
 
-            try { thread.Name = name; } catch { }
+            try 
+            { 
+                thread.Name = name; 
+            } 
+            catch 
+            { 
+            }
             thread.Start();
         }
 
         // only want ASCII alphanumerical characters for salt
-        public static bool AcceptableSaltChar(char c) {
-            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') 
+        public static bool AcceptableSaltChar(char c)
+        {
+            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z')
                 || (c >= '0' && c <= '9');
         }
-        
+
         /// <summary> Generates a random salt that is used for calculating mppasses. </summary>
-        public static string GenerateSalt() {
+        public static string GenerateSalt()
+        {
             RandomNumberGenerator rng = RandomNumberGenerator.Create();
             char[] str = new char[32];
             byte[] one = new byte[1];
-            
-            for (int i = 0; i < str.Length; ) {
+
+            for (int i = 0; i < str.Length;)
+            {
                 rng.GetBytes(one);
                 if (!AcceptableSaltChar((char)one[0])) continue;
-                
+
                 str[i] = (char)one[0]; i++;
             }
             return new string(str);
         }
 
         public static System.Text.ASCIIEncoding enc = new System.Text.ASCIIEncoding();
-        public static MD5CryptoServiceProvider md5  = new MD5CryptoServiceProvider();
+        public static MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
         public static object md5Lock = new object();
-        
+
         /// <summary> Calculates mppass (verification token) for the given username. </summary>
-        public static string CalcMppass(string name, string salt) {
+        public static string CalcMppass(string name, string salt)
+        {
             byte[] hash = null;
             lock (md5Lock) hash = md5.ComputeHash(enc.GetBytes(salt + name));
             return Utils.ToHexString(hash);
         }
-        
+
         /// <summary> Converts a formatted username into its original username </summary>
         /// <remarks> If ClassiCubeAccountPlus option is set, removes + </remarks>
-        public static string ToRawUsername(string name) {
+        public static string ToRawUsername(string name)
+        {
             if (Config.ClassicubeAccountPlus)
                 return name.Replace("+", "");
             return name;
@@ -372,7 +461,8 @@ namespace Flames
 
         /// <summary> Converts a username into its formatted username </summary>
         /// <remarks> If ClassiCubeAccountPlus option is set, adds trailing + </remarks>
-        public static string FromRawUsername(string name) {
+        public static string FromRawUsername(string name)
+        {
             if (!Config.ClassicubeAccountPlus) return name;
 
             // NOTE:

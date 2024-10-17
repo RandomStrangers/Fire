@@ -18,41 +18,50 @@
 using Flames.Bots;
 
 namespace Flames.Commands.Chatting
-{    
-    public class CmdColor : EntityPropertyCmd 
+{
+    public class CmdColor : EntityPropertyCmd
     {
         public override string name { get { return "Color"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
-            get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the color of others"),
-                    new CommandPerm(LevelPermission.AdvBuilder, "can change the color of bots") }; }
+        public override CommandPerm[] ExtraPerms
+        {
+            get
+            {
+                return new[] { new CommandPerm(LevelPermission.Operator, "can change the color of others"),
+                    new CommandPerm(LevelPermission.AdvBuilder, "can change the color of bots") };
+            }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("Colour"), new CommandAlias("XColor", "-own") }; }
-        }        
-        public override void Use(Player p, string message, CommandData data) { 
-            UseBotOrPlayer(p, data, message, "color"); 
+        }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            UseBotOrPlayer(p, data, message, "color");
         }
 
-        public override void SetBotData(Player p, PlayerBot bot, string colName) {
+        public override void SetBotData(Player p, PlayerBot bot, string colName)
+        {
             string color = colName.Length == 0 ? "&1" : Matcher.FindColor(p, colName);
             if (color == null) return;
-            
-            p.Message("You changed the color of bot " + bot.ColoredName + 
+
+            p.Message("You changed the color of bot " + bot.ColoredName +
                       " &Sto " + color + Colors.Name(color));
             bot.color = color;
-            
+
             bot.GlobalDespawn();
             bot.GlobalSpawn();
             BotsFile.Save(p.level);
         }
 
-        public override void SetPlayerData(Player p, string target, string colName) {
+        public override void SetPlayerData(Player p, string target, string colName)
+        {
             PlayerOperations.SetColor(p, target, colName);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Color [player] [color]");
             p.Message("&HSets the nick color of that player");
             p.Message("&H  If [color] is not given, reverts to player's rank color.");

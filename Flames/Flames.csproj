@@ -255,7 +255,7 @@
     <Compile Include="Commands\Information\CmdWhoNick.cs" />
     <Compile Include="Commands\Maintenance\CmdBlockDB.cs" />
     <Compile Include="Commands\Maintenance\CmdBlockSpeed.cs" />
-    <Compile Include="Commands\Maintenance\CmdEnd.cs" />
+    <Compile Include="Commands\Added\CmdEnd.cs" />
     <Compile Include="Commands\Maintenance\CmdInfoSwap.cs" />
     <Compile Include="Commands\Maintenance\CmdLimit.cs" />
     <Compile Include="Commands\Maintenance\CmdLowlag.cs" />

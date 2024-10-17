@@ -18,35 +18,47 @@
 using System;
 using Flames.Events;
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdTempBan : Command2 {       
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdTempBan : Command2
+    {
         public override string name { get { return "TempBan"; } }
         public override string shortcut { get { return "tb"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.SplitSpaces(3);
             string reason = args.Length > 2 ? args[2] : "";
-            
+
             string target = ModActionCmd.FindName(p, "temp ban", "TempBan",
                                                  args.Length == 1 ? "" : " " + args[1],
                                                  args[0], ref reason);
             if (target == null) return;
-            
+
             Group group = ModActionCmd.CheckTarget(p, data, "temp ban", target);
             if (group == null) return;
-            
-            if (Server.tempBans.Contains(target)) {
+
+            if (Server.tempBans.Contains(target))
+            {
                 p.Message("{0} &Sis already temp-banned.", p.FormatNick(target));
                 return;
             }
-            
+
             TimeSpan span = TimeSpan.FromHours(1);
             if (args.Length > 1 && !CommandParser.GetTimespan(p, args[1], ref span, "temp ban for", "m")) return;
-            if (span.TotalSeconds < 1) { p.Message("Cannot temp ban someone for less than a second."); return; }
-            
+            if (span.TotalSeconds < 1) 
+            { 
+                p.Message("Cannot temp ban someone for less than a second."); 
+                return; 
+            }
+
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;
 
@@ -56,8 +68,9 @@ namespace Flames.Commands.Moderation {
             };
             OnModActionEvent.Call(action);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/TempBan [name] [timespan] <reason>");
             p.Message("&HBans [name] for [timespan]. Default is 1 hour.");
             p.Message("&H e.g. to tempban for 90 minutes, [timespan] would be &S1h30m");

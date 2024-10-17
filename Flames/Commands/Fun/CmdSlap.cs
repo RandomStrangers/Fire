@@ -18,69 +18,86 @@
 using Flames.Blocks;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Fun {
-    public sealed class CmdSlap : Command2 {
+namespace Flames.Commands.Fun
+{
+    public sealed class CmdSlap : Command2
+    {
         public override string name { get { return "Slap"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             Player who = PlayerInfo.FindMatches(p, message, out int matches);
             if (matches > 1) return;
-            
-            if (who == null) {
+
+            if (who == null)
+            {
                 Level lvl = Matcher.FindLevels(p, message);
-                if (lvl == null) {
-                    p.Message("Could not find player or map specified"); return;
+                if (lvl == null)
+                {
+                    p.Message("Could not find player or map specified"); 
+                    return;
                 }
-                
+
                 Player[] players = PlayerInfo.Online.Items;
-                foreach (Player pl in players) {
+                foreach (Player pl in players)
+                {
                     if (pl.level == lvl && pl.Rank < data.Rank) DoSlap(p, pl);
                 }
                 return;
             }
-            
+
             if (!CheckRank(p, data, who, "slap", true)) return;
             DoSlap(p, who);
         }
 
-        public void DoSlap(Player p, Player who) {
+        public void DoSlap(Player p, Player who)
+        {
             int x = who.Pos.BlockX, y = who.Pos.BlockY, z = who.Pos.BlockZ;
-            if (y < 0) y = 0;            
+            if (y < 0) y = 0;
             Position pos = who.Pos;
-            
-            if (who.level.IsValidPos(x, y, z)) {
+
+            if (who.level.IsValidPos(x, y, z))
+            {
                 pos.Y = FindYAbove(who.level, (ushort)x, (ushort)y, (ushort)z);
-                if (pos.Y != -1) {
+                if (pos.Y != -1)
+                {
                     Chat.MessageFromLevel(who, "λNICK &Swas slapped into the roof by " + p.ColoredName);
                     who.SendPosition(pos, who.Rot);
                     return;
                 }
             }
-            
+
             pos.Y = 1000 * 32;
             Chat.MessageFromLevel(who, "λNICK &Swas slapped sky high by " + p.ColoredName);
             who.SendPosition(pos, who.Rot);
         }
 
-        public static int FindYAbove(Level lvl, ushort x, ushort y, ushort z) {
-            for (; y <= lvl.Height; y++) {
+        public static int FindYAbove(Level lvl, ushort x, ushort y, ushort z)
+        {
+            for (; y <= lvl.Height; y++)
+            {
                 BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
                 if (above == Block.Invalid) continue;
                 if (!CollideType.IsSolid(lvl.CollideType(above))) continue;
-                
+
                 int posY = (y + 1) * 32 - 6;
                 BlockDefinition def = lvl.GetBlockDef(above);
                 if (def != null) posY += def.MinZ * 2;
-                
+
                 return posY;
             }
             return -1;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Slap [name]");
             p.Message("&HSlaps [name], knocking them into the air");
             p.Message("&T/Slap [level]");

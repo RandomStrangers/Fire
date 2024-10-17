@@ -23,30 +23,34 @@ using Flames.Maths;
 using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
-{    
-    public sealed class CTFConfig : RoundsGameConfig 
+{
+    public sealed class CTFConfig : RoundsGameConfig
     {
         public override bool AllowAutoload { get { return false; } }
         public override string GameName { get { return "CTF"; } }
-        
+
         [ConfigFloat("tag-distance", "Collisions", 1f)]
         public float TagDistance = 1f;
         [ConfigInt("collisions-check-interval", "Collisions", 150, 20, 2000)]
         public int CollisionsCheckInterval = 150;
     }
-    
-    public sealed class CTFMapConfig : RoundsGameMapConfig 
+
+    public sealed class CTFMapConfig : RoundsGameMapConfig
     {
-        [ConfigVec3("red-spawn", null)] public Vec3U16 RedSpawn;
-        [ConfigVec3("red-pos", null)] public Vec3U16 RedFlagPos;
+        [ConfigVec3("red-spawn", null)] 
+        public Vec3U16 RedSpawn;
+        [ConfigVec3("red-pos", null)] 
+        public Vec3U16 RedFlagPos;
         [ConfigBlock("red-block", null, Block.Air)]
         public BlockID RedFlagBlock;
-        
-        [ConfigVec3("blue-spawn", null)] public Vec3U16 BlueSpawn;
-        [ConfigVec3("blue-pos", null)] public Vec3U16 BlueFlagPos;
+
+        [ConfigVec3("blue-spawn", null)] 
+        public Vec3U16 BlueSpawn;
+        [ConfigVec3("blue-pos", null)] 
+        public Vec3U16 BlueFlagPos;
         [ConfigBlock("blue-block", null, Block.Air)]
-        public BlockID BlueFlagBlock;        
-        
+        public BlockID BlueFlagBlock;
+
         [ConfigInt("map.line.z", null, 0)]
         public int ZDivider;
         [ConfigInt("game.maxpoints", null, 3)]
@@ -63,30 +67,33 @@ namespace Flames.Modules.Games.CTF
 
         public const string propsDir = "properties/CTF/";
         public static ConfigElement[] cfg;
-        public override void Load(string map) {
+        public override void Load(string map)
+        {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(CTFMapConfig));
             LoadFrom(cfg, propsDir, map);
         }
-        
-        public override void Save(string map) {
+
+        public override void Save(string map)
+        {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(CTFMapConfig));
             SaveTo(cfg, propsDir, map);
         }
-        
-        public override void SetDefaults(Level lvl) {
+
+        public override void SetDefaults(Level lvl)
+        {
             ZDivider = lvl.Length / 2;
-            RedFlagBlock  = Block.Red;
+            RedFlagBlock = Block.Red;
             BlueFlagBlock = Block.Blue;
 
             ushort midX = (ushort)(lvl.Width / 2);
             ushort midY = (ushort)(lvl.Height / 2);
             ushort topY = (ushort)(midY + 2);
             ushort maxZ = (ushort)(lvl.Length - 1);
-            
-            RedFlagPos  = new Vec3U16(midX, topY,    0);
-            RedSpawn    = new Vec3U16(midX, midY,    0);
+
+            RedFlagPos = new Vec3U16(midX, topY, 0);
+            RedSpawn = new Vec3U16(midX, midY, 0);
             BlueFlagPos = new Vec3U16(midX, topY, maxZ);
-            BlueSpawn   = new Vec3U16(midX, midY, maxZ);
+            BlueSpawn = new Vec3U16(midX, midY, maxZ);
         }
     }
 }

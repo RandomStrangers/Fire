@@ -17,57 +17,72 @@ using System.Collections.Generic;
 using System.Text;
 using Flames.Util;
 
-namespace Flames {
-    public sealed class ChatToken {
-        public readonly string Trigger;
-        public readonly string Description;
-        public readonly StringFormatter<Player> Formatter;
-        
-        public ChatToken(string trigger, string desc, StringFormatter<Player> formatter) {
-            Trigger = trigger; Description = desc; Formatter = formatter;
+namespace Flames
+{
+    public sealed class ChatToken
+    {
+        public string Trigger;
+        public string Description;
+        public StringFormatter<Player> Formatter;
+
+        public ChatToken(string trigger, string desc, StringFormatter<Player> formatter)
+        {
+            Trigger = trigger;
+            Description = desc;
+            Formatter = formatter;
         }
     }
-    
-    public static class ChatTokens {
-        
-        public static string Apply(string text, Player p) {
+
+    public static class ChatTokens
+    {
+
+        public static string Apply(string text, Player p)
+        {
             if (text.IndexOf('$') == -1) return text;
             StringBuilder sb = new StringBuilder(text);
             Apply(sb, p);
             return sb.ToString();
         }
-        
-        public static void Apply(StringBuilder sb, Player p) {
+
+        public static void Apply(StringBuilder sb, Player p)
+        {
             // only apply standard $tokens when necessary
-            for (int i = 0; i < sb.Length; i++) {
+            for (int i = 0; i < sb.Length; i++)
+            {
                 if (sb[i] != '$') continue;
-                ApplyStandard(sb, p); break;
+                ApplyStandard(sb, p);
+                break;
             }
             ApplyCustom(sb);
         }
-        
-        public static string ApplyCustom(string text) {
+
+        public static string ApplyCustom(string text)
+        {
             if (Custom.Count == 0) return text;
             StringBuilder sb = new StringBuilder(text);
             ApplyCustom(sb);
             return sb.ToString();
         }
 
-        public static void ApplyStandard(StringBuilder sb, Player p) {
-            foreach (ChatToken token in Standard) {
+        public static void ApplyStandard(StringBuilder sb, Player p)
+        {
+            foreach (ChatToken token in Standard)
+            {
                 if (Server.Config.DisabledChatTokens.Contains(token.Trigger)) continue;
                 string value = token.Formatter(p);
                 if (value != null) sb.Replace(token.Trigger, value);
             }
         }
 
-        public static void ApplyCustom(StringBuilder sb) {
-            foreach (ChatToken token in Custom) {
+        public static void ApplyCustom(StringBuilder sb)
+        {
+            foreach (ChatToken token in Custom)
+            {
                 sb.Replace(token.Trigger, token.Description);
             }
         }
-        
-        
+
+
         public static List<ChatToken> Standard = new List<ChatToken>() {
             new ChatToken("$date", "Current date (year-month-day)", TokenDate),
             new ChatToken("$time", "Current time of day (hour:minute:second)", TokenTime),
@@ -106,91 +121,193 @@ namespace Flames {
             new ChatToken("$softwarenameversioned", "Software name and its version", TokenSoftwareNameVersioned),
             new ChatToken("$softwarenameversion", "Software name and its version", TokenSoftwareNameVersioned),
         };
-        public static string TokenHost(Player p) { return Server.Config.FlameState; }
-        public static string TokenSoftware (Player p) { return Server.SoftwareName; }
-        public static string TokenVersion(Player p) { return Server.Version; }
-        public static string TokenSoftwareNameVersioned(Player p) { return Server.SoftwareName +
-                " " + Server.Version; }
-        public static string TokenClient(Player p) { return p.Session.ClientName(); }
-        public static string TokenDate(Player p) { return DateTime.Now.ToString("yyyy-MM-dd"); }
-        public static string TokenTime(Player p) { return DateTime.Now.ToString("hh:mm tt"); }
-        public static string TokenIRC(Player p)  { return Server.Config.IRCServer + " > " + Server.Config.IRCChannels; }
-        public static string TokenBanned(Player p) { return Group.BannedRank.Players.Count.ToString(); }
-        public static string TokenServerName(Player p) { return Server.Config.Name; }
-        public static string TokenServerMOTD(Player p) { return Server.Config.MOTD; }
-        public static string TokenLoaded(Player p) { return LevelInfo.Loaded.Count.ToString(); }
-        public static string TokenWorlds(Player p) { return LevelInfo.AllMapFiles().Length.ToString(); }
-        public static string TokenOnline(Player p) {
+        public static string TokenHost(Player p)
+        {
+            return Server.Config.FlameState;
+        }
+        public static string TokenSoftware(Player p)
+        {
+            return Server.SoftwareName;
+        }
+        public static string TokenVersion(Player p)
+        {
+            return Server.Version;
+        }
+        public static string TokenSoftwareNameVersioned(Player p)
+        {
+            return Server.SoftwareName +
+                " " + Server.Version;
+        }
+        public static string TokenClient(Player p)
+        {
+            return p.Session.ClientName();
+        }
+        public static string TokenDate(Player p)
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd");
+        }
+        public static string TokenTime(Player p)
+        {
+            return DateTime.Now.ToString("hh:mm tt");
+        }
+        public static string TokenIRC(Player p)
+        {
+            return Server.Config.IRCServer + " > " + Server.Config.IRCChannels;
+        }
+        public static string TokenBanned(Player p)
+        {
+            return Group.BannedRank.Players.Count.ToString();
+        }
+        public static string TokenServerName(Player p)
+        {
+            return Server.Config.Name;
+        }
+        public static string TokenServerMOTD(Player p)
+        {
+            return Server.Config.MOTD;
+        }
+        public static string TokenLoaded(Player p)
+        {
+            return LevelInfo.Loaded.Count.ToString();
+        }
+        public static string TokenWorlds(Player p)
+        {
+            return LevelInfo.AllMapFiles().Length.ToString();
+        }
+        public static string TokenOnline(Player p)
+        {
             Player[] players = PlayerInfo.Online.Items;
             int count = 0;
-            foreach (Player pl in players) {
+            foreach (Player pl in players)
+            {
                 if (p.CanSee(pl)) count++;
             }
             return count.ToString();
         }
 
-        public static string TokenName(Player p)    { return (Server.Config.DollarNames ? "$" : "") + Colors.StripUsed(p.DisplayName); }
-        public static string TokenTrueName(Player p){ return (Server.Config.DollarNames ? "$" : "") + p.truename; }
-        public static string TokenColor(Player p)   { return p.color; }
-        public static string TokenRank(Player p)    { return p.group.Name; }
-        public static string TokenDeaths(Player p)  { return p.TimesDied.ToString(); }
-        public static string TokenMoney(Player p)   { return p.money.ToString(); }
-        public static string TokenBlocks(Player p)  { return p.TotalModified.ToString(); }
-        public static string TokenPlaced(Player p)  { return p.TotalPlaced.ToString(); }
-        public static string TokenDeleted(Player p) { return p.TotalDeleted.ToString(); }
-        public static string TokenDrawn(Player p)   { return p.TotalDrawn.ToString(); }
-        public static string TokenPlaytime(Player p){ return p.TotalTime.Shorten(); }
-        public static string TokenFirst(Player p)   { return p.FirstLogin.ToString(); }
-        public static string TokenVisits(Player p)  { return p.TimesVisited.ToString(); }
-        public static string TokenKicked(Player p)  { return p.TimesBeenKicked.ToString(); }
-        public static string TokenModel(Player p)   { return p.Model; }
-        public static string TokenSkin(Player p)    { return p.SkinName; }
-        public static string TokenLevel(Player p)   { return p.level == null ? null : p.level.name; }
-        public static string TokenCurrency(Player p){ return Server.Config.Currency; }
+        public static string TokenName(Player p)
+        {
+            return (Server.Config.DollarNames ? "$" : "") + Colors.StripUsed(p.DisplayName);
+        }
+        public static string TokenTrueName(Player p)
+        {
+            return (Server.Config.DollarNames ? "$" : "") + p.truename;
+        }
+        public static string TokenColor(Player p)
+        {
+            return p.color;
+        }
+        public static string TokenRank(Player p)
+        {
+            return p.group.Name;
+        }
+        public static string TokenDeaths(Player p)
+        {
+            return p.TimesDied.ToString();
+        }
+        public static string TokenMoney(Player p)
+        {
+            return p.money.ToString();
+        }
+        public static string TokenBlocks(Player p)
+        {
+            return p.TotalModified.ToString();
+        }
+        public static string TokenPlaced(Player p)
+        {
+            return p.TotalPlaced.ToString();
+        }
+        public static string TokenDeleted(Player p)
+        {
+            return p.TotalDeleted.ToString();
+        }
+        public static string TokenDrawn(Player p)
+        {
+            return p.TotalDrawn.ToString();
+        }
+        public static string TokenPlaytime(Player p)
+        {
+            return p.TotalTime.Shorten();
+        }
+        public static string TokenFirst(Player p)
+        {
+            return p.FirstLogin.ToString();
+        }
+        public static string TokenVisits(Player p)
+        {
+            return p.TimesVisited.ToString();
+        }
+        public static string TokenKicked(Player p)
+        {
+            return p.TimesBeenKicked.ToString();
+        }
+        public static string TokenModel(Player p)
+        {
+            return p.Model;
+        }
+        public static string TokenSkin(Player p)
+        {
+            return p.SkinName;
+        }
+        public static string TokenLevel(Player p)
+        {
+            return p.level?.name;
+        }
+        public static string TokenCurrency(Player p)
+        {
+            return Server.Config.Currency;
+        }
 
         public static List<ChatToken> Custom = new List<ChatToken>();
         public static bool hookedCustom;
-        public static void LoadCustom() {            
+        public static void LoadCustom()
+        {
             TextFile tokensFile = TextFile.Files["Custom $s"];
             tokensFile.EnsureExists();
-            
-            if (!hookedCustom) {
+
+            if (!hookedCustom)
+            {
                 hookedCustom = true;
                 tokensFile.OnTextChanged += LoadCustom;
-            }           
+            }
             string[] lines = tokensFile.GetText();
-            
+
             Custom.Clear();
-            LoadTokens(lines, 
+            LoadTokens(lines,
                        (key, value) => Custom.Add(new ChatToken(key, value, null)));
         }
-        
+
         public delegate void TokenLineProcessor(string phrase, string replacement);
-        public static void LoadTokens(string[] lines, TokenLineProcessor addToken) {
-            foreach (string line in lines) {
+        public static void LoadTokens(string[] lines, TokenLineProcessor addToken)
+        {
+            foreach (string line in lines)
+            {
                 if (line.StartsWith("//") || line.Length == 0) continue;
                 // Need to handle special case of :discord: emotes
                 int offset = 0;
-                if (line[0] == ':') {
+                if (line[0] == ':')
+                {
                     int emoteEnd = line.IndexOf(':', 1);
                     if (emoteEnd == -1) continue;
                     offset = emoteEnd + 1;
                 }
-                
+
                 int separator = FindColon(line, offset);
                 if (separator == -1) continue; // not a proper line
-                
-                string key   = line.Substring(0, separator).Trim().Replace("\\:", ":");
+
+                string key = line.Substring(0, separator).Trim().Replace("\\:", ":");
                 string value = line.Substring(separator + 1).Trim();
                 if (key.Length == 0) continue;
                 addToken(key, value);
             }
         }
 
-        public static int FindColon(string s, int offset) {
-            for (int i = offset; i < s.Length; i++) {
+        public static int FindColon(string s, int offset)
+        {
+            for (int i = offset; i < s.Length; i++)
+            {
                 if (s[i] != ':') continue;
-                
+
                 // "\:" is used to specify 'this colon is not the separator'
                 if (i > 0 && s[i - 1] == '\\') continue;
                 return i;

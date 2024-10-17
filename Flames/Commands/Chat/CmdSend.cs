@@ -19,40 +19,47 @@ using System;
 using Flames.DB;
 using Flames.SQL;
 
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public sealed class CmdSend : Command2 
+    public sealed class CmdSend : Command2
     {
         public override string name { get { return "Send"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
         public override bool UseableWhenFrozen { get { return true; } }
         public override CommandParallelism Parallelism { get { return CommandParallelism.NoAndWarn; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] parts = message.SplitSpaces(2);
-            if (parts.Length <= 1) { Help(p); return; }
+            if (parts.Length <= 1) 
+            { 
+                Help(p);
+                return; 
+            }
             if (!MessageCmd.CanSpeak(p, "Send")) return;
 
             string name = PlayerDB.MatchNames(p, parts[0]);
             if (name == null) return;
             message = parts[1];
-            
-            if (message.Length >= 256 && Database.Backend.EnforcesTextLength) {
+
+            if (message.Length >= 256 && Database.Backend.EnforcesTextLength)
+            {
                 message = message.Substring(0, 255);
                 p.Message("&WMessage was too long. It has been trimmed to:");
                 p.Message(message);
             }
             Database.CreateTable("Inbox" + name, createInbox);
-            
+
             int pending = Database.CountRows("Inbox" + name, "WHERE PlayerFrom=@0", p.name);
-            if (pending >= 200) {
+            if (pending >= 200)
+            {
                 p.Message("{0} &calready has 200+ messages from you currently in their inbox. " +
                           "Try again later after they have deleted some of their inbox messages",
                           p.FormatNick(name));
                 return;
             }
-            
+
             Database.AddRow("Inbox" + name, "PlayerFrom, TimeSent, Contents",
                             p.name, DateTime.Now.ToString(Database.DateFormat), message);
             p.CheckForMessageSpam();
@@ -60,8 +67,9 @@ namespace Flames.Commands.Chatting
             Player target = PlayerInfo.FindExact(name);
             p.Message("Message sent to {0}&S.", p.FormatNick(name));
             if (target == null) return;
-            
-            if (!Chat.Ignoring(target, p)) {
+
+            if (!Chat.Ignoring(target, p))
+            {
                 target.Message("Message received from {0}&S. Check &T/Inbox", target.FormatNick(p));
             }
         }
@@ -71,8 +79,9 @@ namespace Flames.Commands.Chatting
             new ColumnDesc("TimeSent", ColumnType.DateTime),
             new ColumnDesc("Contents", ColumnType.VarChar, 255),
         };
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Send [name] [message]");
             p.Message("&HSends [message] to [name], which can be read with &T/Inbox");
         }

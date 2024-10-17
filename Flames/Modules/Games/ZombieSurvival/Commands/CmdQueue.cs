@@ -18,28 +18,39 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdQueue : Command2 
+    public sealed class CmdQueue : Command2
     {
         public override string name { get { return "Queue"; } }
         public override string shortcut { get { return "qz"; } }
         public override string type { get { return CommandTypes.Games; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces();
-            if (args.Length != 2) { Help(p); return; }
+            if (args.Length != 2) 
+            { 
+                Help(p); 
+                return; 
+            }
             string value = args[1];
-            
-            if (args[0].CaselessEq("zombie")) {
+
+            if (args[0].CaselessEq("zombie"))
+            {
                 ZSGame.Instance.SetQueuedZombie(p, value);
-            } else if (args[0].CaselessEq("level")) {
+            }
+            else if (args[0].CaselessEq("level"))
+            {
                 ZSGame.Instance.SetQueuedLevel(p, value);
-            } else {
+            }
+            else
+            {
                 Help(p);
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Queue zombie [name]");
             p.Message("&HNext round [name] will be infected/start zombie");
             p.Message("&T/Queue level [level]");

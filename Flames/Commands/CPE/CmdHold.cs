@@ -16,9 +16,9 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.CPE 
-{    
-    public sealed class CmdHold : Command2 
+namespace Flames.Commands.CPE
+{
+    public sealed class CmdHold : Command2
     {
         public override string name { get { return "Hold"; } }
         public override string shortcut { get { return "HoldThis"; } }
@@ -26,26 +26,37 @@ namespace Flames.Commands.CPE
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }      
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                Help(p);
+                return;
+            }
             string[] args = message.SplitSpaces(2);
 
             if (!CommandParser.GetBlock(p, args[0], out ushort block)) return;
             bool locked = false;
             if (args.Length > 1 && !CommandParser.GetBool(p, args[1], ref locked)) return;
-            
-            if (Block.IsPhysicsType(block)) {
-                p.Message("Cannot hold physics blocks"); return;
+
+            if (Block.IsPhysicsType(block))
+            {
+                p.Message("Cannot hold physics blocks");
+                return;
             }
-            
-            if (p.Session.SendHoldThis(block, locked)) {
+
+            if (p.Session.SendHoldThis(block, locked))
+            {
                 p.Message("Set your held block to {0}.", Block.GetName(p, block));
-            } else {
+            }
+            else
+            {
                 p.Message("Your client doesn't support changing your held block.");
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Hold [block] <locked>");
             p.Message("&HMakes you hold the given block in your hand");
             p.Message("&H  <locked> optionally prevents you from changing it");

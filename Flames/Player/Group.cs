@@ -82,7 +82,9 @@ namespace Flames
         public PlayerList Players;
         public bool[] Blocks = new bool[Block.SUPPORTED_COUNT];
 
-        public Group() { }
+        public Group() 
+        { 
+        }
         public Group(LevelPermission perm, int drawLimit, int undoMins, string name, string color, int volume, int realms)
         {
             int afkMins = perm <= LevelPermission.AdvBuilder ? 45 : 60;
@@ -101,12 +103,22 @@ namespace Flames
         /// <summary> Creates a copy of this group, except for members list and usable commands and blocks. </summary>
         public Group CopyConfig()
         {
-            Group copy = new Group();
-            copy.Name = Name; copy.Color = Color; copy.Permission = Permission;
-            copy.DrawLimit = DrawLimit; copy.MaxUndo = MaxUndo; copy.MOTD = MOTD;
-            copy.GenVolume = GenVolume; copy.OverseerMaps = OverseerMaps;
-            copy.AfkKicked = AfkKicked; copy.AfkKickTime = AfkKickTime;
-            copy.Prefix = Prefix; copy.CopySlots = CopySlots; copy.filename = filename;
+            Group copy = new Group
+            {
+                Name = Name,
+                Color = Color,
+                Permission = Permission,
+                DrawLimit = DrawLimit,
+                MaxUndo = MaxUndo,
+                MOTD = MOTD,
+                GenVolume = GenVolume,
+                OverseerMaps = OverseerMaps,
+                AfkKicked = AfkKicked,
+                AfkKickTime = AfkKickTime,
+                Prefix = Prefix,
+                CopySlots = CopySlots,
+                filename = filename
+            };
             return copy;
         }
 
@@ -186,7 +198,10 @@ namespace Flames
             return name;
         }
 
-        public string GetFormattedName() { return Color + GetPlural(Name); }
+        public string GetFormattedName() 
+        { 
+            return Color + GetPlural(Name); 
+        }
 
 
         public static void Add(LevelPermission perm, int drawLimit, int undoMins, string name, string color, int volume, int realms)
@@ -332,8 +347,10 @@ namespace Flames
             {
                 if (temp != null) AddGroup(temp);
 
-                temp = new Group();
-                temp.Name = value.Replace(" ", "");
+                temp = new Group
+                {
+                    Name = value.Replace(" ", "")
+                };
             }
             else
             {
@@ -376,7 +393,7 @@ namespace Flames
                 Logger.Log(LogType.Warning, "Cannot have 2 ranks set at permission level " + (int)temp.Permission);
             }
             else if (temp.Permission > LevelPermission.Null)
-            { // also handles LevelPermission.Null
+            {
                 Logger.Log(LogType.Warning, "Invalid permission level for rank {0}", temp.Name);
             }
             else

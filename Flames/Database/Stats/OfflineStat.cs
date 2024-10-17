@@ -17,12 +17,12 @@
  */
 using System.Collections.Generic;
 
-namespace Flames.DB 
+namespace Flames.DB
 {
     public delegate void OfflineStatPrinter(Player p, PlayerData who);
-    
+
     /// <summary> Prints stats for an offline player in /info. </summary>
-    public static class OfflineStat 
+    public static class OfflineStat
     {
         /// <summary> List of stats that can be output to /info. </summary>
         public static List<OfflineStatPrinter> Stats = new List<OfflineStatPrinter>() {
@@ -35,12 +35,13 @@ namespace Flames.DB
             (p, who) => OnlineStat.LoginsLine(p, who.Logins, who.Kicks),
             (p, who) => OnlineStat.BanLine(p, who.Name),
             (p, who) => OnlineStat.SpecialGroupLine(p, who.Name),
-            (p, who) => OnlineStat.IPLine(p, who.Name, who.IP),            
+            (p, who) => OnlineStat.IPLine(p, who.Name, who.IP),
         };
-        
-        public static void CoreLine(Player p, PlayerData data) {
-            Group group   = Group.GroupIn(data.Name);
-            string color  = data.Color.Length == 0 ? group.Color : data.Color;
+
+        public static void CoreLine(Player p, PlayerData data)
+        {
+            Group group = Group.GroupIn(data.Name);
+            string color = data.Color.Length == 0 ? group.Color : data.Color;
             string prefix = data.Title.Length == 0 ? "" : color + "[" + data.TitleColor + data.Title + color + "] ";
 
             string nick = PlayerDB.LoadNick(data.Name);
@@ -49,16 +50,19 @@ namespace Flames.DB
             string fullName = prefix + color + name;
             OnlineStat.CommonCoreLine(p, fullName, data.Name, group, data.Messages);
         }
-        
-        public static void BlocksModifiedLine(Player p, PlayerData who) {
+
+        public static void BlocksModifiedLine(Player p, PlayerData who)
+        {
             p.Message("  Modified &a{0} &Sblocks", who.TotalModified);
         }
-        
-        public static void TimeSpentLine(Player p, PlayerData who) {
+
+        public static void TimeSpentLine(Player p, PlayerData who)
+        {
             p.Message("  Spent &a{0} &Son the server", who.TotalTime.Shorten());
         }
-                
-        public static void LoginLine(Player p, PlayerData who) {
+
+        public static void LoginLine(Player p, PlayerData who)
+        {
             p.Message("  First login &a{0}&S, last login &a{1}",
                                  who.FirstLogin.ToString("yyyy-MM-dd"), who.LastLogin.ToString("yyyy-MM-dd"));
         }

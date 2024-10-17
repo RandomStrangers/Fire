@@ -17,26 +17,31 @@
  */
 using System;
 
-namespace Flames.Config 
-{    
-    public abstract class ConfigSignedIntegerAttribute : ConfigAttribute 
+namespace Flames.Config
+{
+    public abstract class ConfigSignedIntegerAttribute : ConfigAttribute
     {
-        public ConfigSignedIntegerAttribute(string name, string section) 
-            : base(name, section) { }
+        public ConfigSignedIntegerAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         // separate function to avoid boxing in derived classes
-        public long ParseLong(string raw, long def, long min, long max) {
+        public long ParseLong(string raw, long def, long min, long max)
+        {
             long value;
-            if (!long.TryParse(raw, out value)) {
+            if (!long.TryParse(raw, out value))
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid integer '{2}', using default of {1}", Name, def, raw);
                 value = def;
             }
-            
-            if (value < min) {
+
+            if (value < min)
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" is too small an integer, using {1}", Name, min);
                 value = min;
             }
-            if (value > max) {
+            if (value > max)
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" is too big an integer, using {1}", Name, max);
                 value = max;
             }
@@ -65,129 +70,167 @@ namespace Flames.Config
         }
     }
 
-    public sealed class ConfigIntAttribute : ConfigSignedIntegerAttribute 
+    public sealed class ConfigIntAttribute : ConfigSignedIntegerAttribute
     {
         public int defValue, minValue, maxValue;
-        
-        public ConfigIntAttribute()
-            : this(null, null, 0, int.MinValue, int.MaxValue) { }
+
+        public ConfigIntAttribute() : this(null, null, 0, int.MinValue, int.MaxValue) 
+        { 
+        }
         public ConfigIntAttribute(string name, string section, int def,
-                                  int min = int.MinValue, int max = int.MaxValue)
-            : base(name, section) { defValue = def; minValue = min; maxValue = max; }
-        
-        public override object Parse(string value) {
+                                  int min = int.MinValue, int max = int.MaxValue)  : base(name, section) 
+        { 
+            defValue = def; 
+            minValue = min; 
+            maxValue = max; 
+        }
+
+        public override object Parse(string value)
+        {
             return ParseInteger(value, defValue, minValue, maxValue);
         }
     }
-    public class ConfigByteAttribute : ConfigSignedIntegerAttribute
+    public class ConfigSByteAttribute : ConfigSignedIntegerAttribute
     {
-        public ConfigByteAttribute() : this(null, null) { }
-        public ConfigByteAttribute(string name, string section) : base(name, section) { }
+        public ConfigSByteAttribute() : this(null, null) 
+        { 
+        }
+        public ConfigSByteAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         public override object Parse(string raw)
         {
-            return (byte)ParseInteger(raw, 0, 0, byte.MaxValue);
+            return (sbyte)ParseInteger(raw, 0, 0, sbyte.MaxValue);
         }
     }
     public class ConfigShortAttribute : ConfigSignedIntegerAttribute
     {
-        public ConfigShortAttribute() : this(null, null) { }
-        public ConfigShortAttribute(string name, string section) : base(name, section) { }
+        public ConfigShortAttribute() : this(null, null) 
+        { 
+        }
+        public ConfigShortAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         public override object Parse(string raw)
         {
             return (short)ParseInteger(raw, 0, 0, short.MaxValue);
         }
     }
-    public abstract class ConfigRealAttribute : ConfigAttribute 
+    public abstract class ConfigRealAttribute : ConfigAttribute
     {
-        public ConfigRealAttribute(string name, string section) 
-            : base(name, section) { }
-        
-        protected double ParseReal(string raw, double def, double min, double max) {
+        public ConfigRealAttribute(string name, string section) : base(name, section) 
+        { 
+        }
+
+        protected double ParseReal(string raw, double def, double min, double max)
+        {
             double value;
-            if (!Utils.TryParseDouble(raw, out value)) {
+            if (!Utils.TryParseDouble(raw, out value))
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid number '{2}', using default of {1}", Name, def, raw);
                 value = def;
             }
-            
-            if (value < min) {
+
+            if (value < min)
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" is too small a number, using {1}", Name, min);
                 value = min;
             }
-            if (value > max) {
+            if (value > max)
+            {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" is too big a number, using {1}", Name, max);
                 value = max;
             }
             return value;
         }
 
-        public override string Serialise(object value) {
-            if (value is float)  return Utils.StringifyDouble((float)value);
+        public override string Serialise(object value)
+        {
+            if (value is float) return Utils.StringifyDouble((float)value);
             if (value is double) return Utils.StringifyDouble((double)value);
             return base.Serialise(value);
         }
     }
-    
-    public class ConfigFloatAttribute : ConfigRealAttribute 
+
+    public class ConfigFloatAttribute : ConfigRealAttribute
     {
         public float defValue, minValue, maxValue;
-        
-        public ConfigFloatAttribute()
-            : this(null, null, 0, float.NegativeInfinity, float.PositiveInfinity) { }
-        public ConfigFloatAttribute(string name, string section, float def,
-                                    float min = float.NegativeInfinity, float max = float.PositiveInfinity)
-            : base(name, section) { defValue = def; minValue = min; maxValue = max; }
-        
-        public override object Parse(string raw) {
+
+        public ConfigFloatAttribute() : this(null, null, 0, float.NegativeInfinity, float.PositiveInfinity) 
+        { 
+        }
+        public ConfigFloatAttribute(string name, string section, float def, 
+            float min = float.NegativeInfinity, float max = float.PositiveInfinity) : base(name, section) 
+        { 
+            defValue = def; 
+            minValue = min; 
+            maxValue = max; 
+        }
+
+        public override object Parse(string raw)
+        {
             return (float)ParseReal(raw, defValue, minValue, maxValue);
         }
     }
-    
-    public class ConfigTimespanAttribute : ConfigRealAttribute 
+
+    public class ConfigTimespanAttribute : ConfigRealAttribute
     {
-        public bool mins; 
+        public bool mins;
         public int def;
-        public ConfigTimespanAttribute(string name, string section, int def, bool mins)
-            : base(name, section) { this.def = def; this.mins = mins; }
-        
-        public override object Parse(string raw) {
+        public ConfigTimespanAttribute(string name, string section, int def, bool mins) : base(name, section) 
+        { 
+            this.def = def; 
+            this.mins = mins; 
+        }
+
+        public override object Parse(string raw)
+        {
             double value = ParseReal(raw, def, 0, int.MaxValue);
             return ParseInput(value);
         }
 
-        public TimeSpan ParseInput(double value) {
-            if (mins) {
+        public TimeSpan ParseInput(double value)
+        {
+            if (mins)
+            {
                 return TimeSpan.FromMinutes(value);
-            } else {
+            }
+            else
+            {
                 return TimeSpan.FromSeconds(value);
             }
         }
-        
-        public override string Serialise(object value) {
+
+        public override string Serialise(object value)
+        {
             TimeSpan span = (TimeSpan)value;
             double time = mins ? span.TotalMinutes : span.TotalSeconds;
             return time.ToString();
         }
     }
-    
-    public class ConfigOptTimespanAttribute : ConfigTimespanAttribute 
+
+    public class ConfigOptTimespanAttribute : ConfigTimespanAttribute
     {
-        public ConfigOptTimespanAttribute(string name, string section, bool mins)
-            : base(name, section, -1, mins) { }
-        
-        public override object Parse(string raw) {
+        public ConfigOptTimespanAttribute(string name, string section, bool mins) : base(name, section, -1, mins) 
+        { 
+        }
+
+        public override object Parse(string raw)
+        {
             if (string.IsNullOrEmpty(raw)) return null;
-        	
+
             double value = ParseReal(raw, -1, -1, int.MaxValue);
             if (value < 0) return null;
-            
+
             return ParseInput(value);
         }
-        
-        public override string Serialise(object value) {
+
+        public override string Serialise(object value)
+        {
             if (value == null) return "";
-            
+
             return base.Serialise(value);
         }
     }

@@ -29,63 +29,77 @@ namespace Flames.Commands.Building
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
                 OutputCopySlots(p);
-            } else if (message.CaselessEq("random")) {
+            }
+            else if (message.CaselessEq("random"))
+            {
                 SetRandomCopySlot(p);
-            } else {
+            }
+            else
+            {
                 int i = 0;
                 if (!CommandParser.GetInt(p, message, "Slot number", ref i, 1, p.group.CopySlots)) return;
-                
+
                 SetCopySlot(p, i);
             }
         }
 
-        public static void OutputCopySlots(Player p) {
+        public static void OutputCopySlots(Player p)
+        {
             List<CopyState> copySlots = p.CopySlots;
             int used = 0;
-            
+
             for (int i = 0; i < copySlots.Count; i++)
             {
                 if (copySlots[i] == null) continue;
                 p.Message("  #{0}: {1}", i + 1, copySlots[i].Summary);
                 used++;
             }
-            
+
             p.Message("Using {0} of {1} slots, with slot #{2} selected.",
                       used, p.group.CopySlots, p.CurrentCopySlot + 1);
         }
 
-        public static void SetRandomCopySlot(Player p) {
+        public static void SetRandomCopySlot(Player p)
+        {
             List<CopyState> copySlots = p.CopySlots;
             List<int> slots = new List<int>();
-            
+
             for (int i = 0; i < copySlots.Count; i++)
             {
                 if (copySlots[i] == null) continue;
                 slots.Add(i);
             }
-            
-            if (slots.Count == 0) {
+
+            if (slots.Count == 0)
+            {
                 p.Message("&WCannot randomly select when all copy slots are unused/empty");
                 return;
             }
-            
+
             int idx = new Random().Next(slots.Count);
             SetCopySlot(p, slots[idx] + 1);
         }
 
-        public static void SetCopySlot(Player p, int i) {
+        public static void SetCopySlot(Player p, int i)
+        {
             p.CurrentCopySlot = i - 1;
-            if (p.CurrentCopy == null) {
+            if (p.CurrentCopy == null)
+            {
                 p.Message("Selected copy slot {0} (unused)", i);
-            } else {
+            }
+            else
+            {
                 p.Message("Selected copy slot {0}: {1}", i, p.CurrentCopy.Summary);
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/CopySlot random");
             p.Message("&HSelects a random slot to &T/copy &Hand &T/paste &Hfrom");
             p.Message("&T/CopySlot [number]");

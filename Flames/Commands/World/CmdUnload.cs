@@ -15,41 +15,53 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.World {
-    public sealed class CmdUnload : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdUnload : Command2
+    {
         public override string name { get { return "Unload"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             if (CheckSuper(p, message, "level name")) return;
-            
-            if (message.Length == 0) {
-                if (!p.level.Unload()) {
+
+            if (message.Length == 0)
+            {
+                if (!p.level.Unload())
+                {
                     p.Message("You cannot unload this level.");
                 }
-            } else if (message.CaselessEq("empty")) {
+            }
+            else if (message.CaselessEq("empty"))
+            {
                 Level[] loaded = LevelInfo.Loaded.Items;
-                for (int i = 0; i < loaded.Length; i++) {
+                for (int i = 0; i < loaded.Length; i++)
+                {
                     Level lvl = loaded[i];
                     if (lvl.HasPlayers()) continue;
                     lvl.Unload(true);
                 }
-            } else {
+            }
+            else
+            {
                 Level level = Matcher.FindLevels(p, message);
                 if (level == null) return;
-                
-                if (!level.Unload()) {
+
+                if (!level.Unload())
+                {
                     p.Message("You cannot unload this level.");
                 }
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Unload [map name]");
             p.Message("&HUnloads the given map.");
             p.Message("&H  If map name is \"empty\", unloads all maps with no players in them.");
-            p.Message("&H  If no map name is given, unloads the current map."); 
+            p.Message("&H  If no map name is given, unloads the current map.");
         }
     }
 }

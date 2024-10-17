@@ -16,25 +16,35 @@
     permissions and limitations under the Licenses.
 */
 
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public sealed class CmdMe : Command2 
+    public sealed class CmdMe : Command2
     {
         public override string name { get { return "Me"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { p.Message("You"); return; }
-            if (p.joker) { p.Message("Cannot use /me while jokered."); return; }         
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                p.Message("You"); 
+                return; 
+            }
+            if (p.joker) 
+            { 
+                p.Message("Cannot use /me while jokered."); 
+                return; 
+            }
             if (!MessageCmd.CanSpeak(p, "Me")) return;
-            
+
             string msg = p.color + "*" + Colors.StripUsed(p.DisplayName) + " " + message;
             Chat.MessageChat(p, msg, null, true);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("What do you need help with, m'boy?! Are you stuck down a well?!");
         }
     }

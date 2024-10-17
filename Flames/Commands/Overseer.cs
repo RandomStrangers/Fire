@@ -19,43 +19,52 @@ using System.Collections.Generic;
 using Flames.Commands.CPE;
 using Flames.Generator;
 
-namespace Flames.Commands.World {
+namespace Flames.Commands.World
+{
 
     /// <summary>
     /// Implements and manages behavior that can be called from CmdOverseer
     /// </summary>
-    public static class Overseer {
+    public static class Overseer
+    {
 
-        public static readonly string commandShortcut = "os";
-        public static void RegisterSubCommand(SubCommand subCmd) {
+        public static string commandShortcut = "os";
+        public static void RegisterSubCommand(SubCommand subCmd)
+        {
             subCommandGroup.Register(subCmd);
         }
 
-        public static void UnregisterSubCommand(SubCommand subCmd) {
+        public static void UnregisterSubCommand(SubCommand subCmd)
+        {
             subCommandGroup.Unregister(subCmd);
         }
 
-        public static void UseCommand(Player p, string cmd, string args) {
+        public static void UseCommand(Player p, string cmd, string args)
+        {
             CommandData data = default;
             data.Rank = LevelPermission.Owner;
             Command.Find(cmd).Use(p, args, data);
         }
 
-        public static string GetLevelName(Player p, int i) {
+        public static string GetLevelName(Player p, int i)
+        {
             string name = p.name.ToLower();
             return i == 1 ? name : name + i;
         }
 
-        public static string NextLevel(Player p) {
+        public static string NextLevel(Player p)
+        {
             int realms = p.group.OverseerMaps;
 
-            for (int i = 1; realms > 0; i++) {
+            for (int i = 1; realms > 0; i++)
+            {
                 string map = GetLevelName(p, i);
                 if (!LevelInfo.MapExists(map)) return map;
 
                 if (LevelInfo.IsRealmOwner(p.name, map)) realms--;
             }
-            p.Message("You have reached the limit for your overseer maps."); return null;
+            p.Message("You have reached the limit for your overseer maps."); 
+            return null;
         }
 
         #region Help messages
@@ -152,23 +161,32 @@ namespace Flames.Commands.World {
                 new SubCommand("Zones",      2, HandleZones,      zonesHelp), }
             );
 
-        public static void HandleBlockProps(Player p, string message) {
-            if (message.Length == 0) { p.MessageLines(blockPropsHelp); return; }
+        public static void HandleBlockProps(Player p, string message)
+        {
+            if (message.Length == 0) 
+            { 
+                p.MessageLines(blockPropsHelp); 
+                return; 
+            }
             UseCommand(p, "BlockProperties", "level " + message);
         }
 
-        public static void HandleEnv(Player p, string[] args) {
+        public static void HandleEnv(Player p, string[] args)
+        {
             Level lvl = p.level;
             if (CmdEnvironment.Handle(p, lvl, args[0], args[1], lvl.Config, lvl.ColoredName)) return;
             p.MessageLines(envHelp);
         }
 
-        public static void HandleGoto(Player p, string map) {
+        public static void HandleGoto(Player p, string map)
+        {
             byte mapNum = 0;
             if (map.Length == 0) map = "1";
 
-            if (!byte.TryParse(map, out mapNum)) {
-                p.MessageLines(gotoHelp); return;
+            if (!byte.TryParse(map, out mapNum))
+            {
+                p.MessageLines(gotoHelp); 
+                return;
             }
             map = GetLevelName(p, mapNum);
 
@@ -178,61 +196,81 @@ namespace Flames.Commands.World {
                 PlayerActions.ChangeMap(p, map);
         }
 
-        public static void HandleKick(Player p, string name) {
-            if (name.Length == 0) { p.Message("You must specify a player to kick."); return; }
+        public static void HandleKick(Player p, string name)
+        {
+            if (name.Length == 0) 
+            { 
+                p.Message("You must specify a player to kick."); 
+                return; 
+            }
             Player pl = PlayerInfo.FindMatches(p, name);
             if (pl == null) return;
 
-            if (pl.level == p.level) {
+            if (pl.level == p.level)
+            {
                 PlayerActions.ChangeMap(pl, Server.mainLevel);
-            } else {
+            }
+            else
+            {
                 p.Message("Player is not on your level!");
             }
         }
 
-        public static void HandleKickAll(Player p, string unused) {
+        public static void HandleKickAll(Player p, string unused)
+        {
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player pl in players) {
+            foreach (Player pl in players)
+            {
                 if (pl.level == p.level && pl != p)
                     PlayerActions.ChangeMap(pl, Server.mainLevel);
             }
         }
 
-        public static void HandleLevelBlock(Player p, string lbArgs) {
+        public static void HandleLevelBlock(Player p, string lbArgs)
+        {
             CustomBlockCommand.Execute(p, lbArgs, p.DefaultCmdData, false, "/os lb");
         }
 
-        public static void HandleMap(Player p, string[] args) {
+        public static void HandleMap(Player p, string[] args)
+        {
             string cmd = args[0];
             string value = args[1];
             string message = (cmd + " " + value).Trim();
 
-            if (message.Length == 0) {
+            if (message.Length == 0)
+            {
                 p.MessageLines(mapHelp);
                 return;
             }
 
             SubCommandGroup.UsageResult result = mapSubCommandGroup.Use(p, message, false);
-            if (result != SubCommandGroup.UsageResult.NoneFound) { return; }
+            if (result != SubCommandGroup.UsageResult.NoneFound) 
+            { 
+                return; 
+            }
 
             LevelOption opt = LevelOptions.Find(cmd);
-            if (opt == null) {
+            if (opt == null)
+            {
                 p.Message("Could not find map command or map option \"{0}\".", cmd);
                 p.Message("See &T/help {0} map &Sto display every command.", commandShortcut);
                 return;
             }
-            if (DisallowedMapOption(opt.Name)) {
+            if (DisallowedMapOption(opt.Name))
+            {
                 p.Message("&WYou cannot change the {0} map option via /{1} map.", opt.Name, commandShortcut);
                 return;
             }
-            if (!LevelInfo.IsRealmOwner(p.level, p.name)) {
+            if (!LevelInfo.IsRealmOwner(p.level, p.name))
+            {
                 p.Message("You may only use &T/{0} map {1}&S after you join your map.", commandShortcut, opt.Name);
                 return;
             }
             opt.SetFunc(p, p.level, value);
             p.level.SaveSettings();
         }
-        public static bool DisallowedMapOption(string opt) {
+        public static bool DisallowedMapOption(string opt)
+        {
             return
                 opt == LevelOptions.Speed || opt == LevelOptions.Overload || opt == LevelOptions.RealmOwner ||
                 opt == LevelOptions.Goto || opt == LevelOptions.Unload;
@@ -251,15 +289,21 @@ namespace Flames.Commands.World {
                 new SubCommand("Texture",  HandleMapTexture,  null, true, new string[] { "texturezip", "texturepack" } ), }
             );
 
-        public static void HandleMapPhysics(Player p, string message) {
-            if (message == "0" || message == "1" || message == "2" || message == "3" || message == "4" || message == "5") {
+        public static void HandleMapPhysics(Player p, string message)
+        {
+            if (message == "0" || message == "1" || message == "2" || message == "3" || message == "4" || message == "5")
+            {
                 CmdPhysics.SetPhysics(p.level, int.Parse(message));
-            } else {
+            }
+            else
+            {
                 p.Message("Accepted numbers are: 0, 1, 2, 3, 4 or 5");
             }
         }
-        public static void HandleMapAdd(Player p, string message) {
-            if (p.group.OverseerMaps == 0) {
+        public static void HandleMapAdd(Player p, string message)
+        {
+            if (p.group.OverseerMaps == 0)
+            {
                 p.Message("Your rank is not allowed to create any /{0} maps.", commandShortcut); return;
             }
 
@@ -278,24 +322,31 @@ namespace Flames.Commands.World {
             MapGen.SetRealmPerms(p, lvl);
             p.Message("Use &T/{0} zone add [name] &Sto allow other players to build in the map.", commandShortcut);
 
-            try {
+            try
+            {
                 lvl.Save(true);
-            } finally {
+            }
+            finally
+            {
                 lvl.Dispose();
                 Server.DoGC();
             }
         }
-        public static void HandleMapDelete(Player p, string message) {
-            if (message.Length > 0) {
+        public static void HandleMapDelete(Player p, string message)
+        {
+            if (message.Length > 0)
+            {
                 p.Message("To delete your current map, type &T/{0} map delete", commandShortcut);
                 return;
             }
             UseCommand(p, "DeleteLvl", p.level.name);
         }
-        public static void HandleMapResize(Player p, string message) {
+        public static void HandleMapResize(Player p, string message)
+        {
             message = p.level.name + " " + message;
             string[] args = message.SplitSpaces();
-            if (args.Length < 4) {
+            if (args.Length < 4)
+            {
                 p.Message("Not enough args provided! Usage:");
                 p.Message("&T/{0} map resize [width] [height] [length]", commandShortcut);
                 return;
@@ -308,71 +359,103 @@ namespace Flames.Commands.World {
             p.Message("Type &T/{0} map resize {1} {2} {3} confirm &Sif you're sure.",
                       commandShortcut, args[1], args[2], args[3]);
         }
-        public static void HandleMapPerVisit(Player p, string message) {
+        public static void HandleMapPerVisit(Player p, string message)
+        {
             // Older realm maps didn't put you on visit whitelist, so make sure we put the owner here
             AccessController access = p.level.VisitAccess;
-            if (!access.Whitelisted.CaselessContains(p.name)) {
+            if (!access.Whitelisted.CaselessContains(p.name))
+            {
                 access.Whitelist(Player.Flame, LevelPermission.Flames, p.level, p.name);
             }
-            if (message.Length == 0) {
+            if (message.Length == 0)
+            {
                 p.Message("See &T/help pervisit &Sfor how to use this command, but don't include [level].");
                 return;
             }
             message = p.level.name + " " + message;
             UseCommand(p, "PerVisit", message);
         }
-        public static void HandleMapPerBuild(Player p, string message) {
-            if (message.Length == 0) {
+        public static void HandleMapPerBuild(Player p, string message)
+        {
+            if (message.Length == 0)
+            {
                 p.Message("See &T/help perbuild &Sfor how to use this command, but don't include [level].");
                 return;
             }
             message = p.level.name + " " + message;
             UseCommand(p, "PerBuild", message);
         }
-        public static void HandleMapTexture(Player p, string message) {
-            if (message.Length == 0) { message = "normal"; }
+        public static void HandleMapTexture(Player p, string message)
+        {
+            if (message.Length == 0) 
+            { 
+                message = "normal"; 
+            }
             UseCommand(p, "Texture", "levelzip " + message);
         }
 
-        public static void HandlePreset(Player p, string preset) {
+        public static void HandlePreset(Player p, string preset)
+        {
             HandleEnv(p, new string[] { "preset", preset });
         }
 
-        public static void HandleSpawn(Player p, string unused) {
+        public static void HandleSpawn(Player p, string unused)
+        {
             UseCommand(p, "SetSpawn", "");
         }
 
-        public static void HandleZone(Player p, string[] args) {
+        public static void HandleZone(Player p, string[] args)
+        {
             string cmd = args[0];
             string name = args[1];
 
             cmd = cmd.ToUpper();
-            if (cmd == "LIST") {
+            if (cmd == "LIST")
+            {
                 UseCommand(p, "ZoneList", "");
-            } else if (cmd == "ADD") {
+            }
+            else if (cmd == "ADD")
+            {
                 UseCommand(p, "PerBuild", "+" + name);
-            } else if (Command.IsDeleteCommand(cmd)) {
+            }
+            else if (Command.IsDeleteCommand(cmd))
+            {
                 UseCommand(p, "PerBuild", "-" + name);
-            } else if (cmd == "BLOCK") {
+            }
+            else if (cmd == "BLOCK")
+            {
                 UseCommand(p, "PerVisit", "-" + name);
-            } else if (cmd == "UNBLOCK") {
+            }
+            else if (cmd == "UNBLOCK")
+            {
                 UseCommand(p, "PerVisit", "+" + name);
-            } else if (cmd == "BLACKLIST") {
+            }
+            else if (cmd == "BLACKLIST")
+            {
                 List<string> blacklist = p.level.VisitAccess.Blacklisted;
-                if (blacklist.Count > 0) {
+                if (blacklist.Count > 0)
+                {
                     p.Message("Blacklisted players: " + blacklist.Join());
-                } else {
+                }
+                else
+                {
                     p.Message("No players are blacklisted from visiting this map.");
                 }
-            } else {
+            }
+            else
+            {
                 p.MessageLines(zoneHelp);
             }
         }
 
-        public static void HandleZones(Player p, string[] args) {
-            if (args[1].Length == 0) {
+        public static void HandleZones(Player p, string[] args)
+        {
+            if (args[1].Length == 0)
+            {
                 p.Message("Arguments required. See &T/Help zone");
-            } else {
+            }
+            else
+            {
                 UseCommand(p, "Zone", args[0] + " " + args[1]);
             }
         }

@@ -21,36 +21,44 @@ using Flames.Drawing.Brushes;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class RedoSelfDrawOp : DrawOp 
+    public class RedoSelfDrawOp : DrawOp
     {
         public override string Name { get { return "RedoSelf"; } }
-        
+
         /// <summary> Point in time that the /undo should go backwards up to. </summary>
         public DateTime Start = DateTime.MinValue;
-        
+
         /// <summary> Point in time that the /undo should start updating blocks. </summary>
         public DateTime End = DateTime.MaxValue;
-        
-        public RedoSelfDrawOp() {
+
+        public RedoSelfDrawOp()
+        {
             Flags = BlockDBFlags.RedoSelf;
             AffectedByTransform = false;
         }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) { return -1; }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks) 
+        { 
+            return -1; 
+        }
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
             int[] ids = NameConverter.FindIds(Player.name);
             if (ids.Length == 0) return;
-            
+
             this.output = output;
             // can't use "using" as it creates a local var, and read lock reference may be changed by DrawOpPerformer class
-            try {
+            try
+            {
                 BlockDBReadLock = Level.BlockDB.Locker.AccquireRead();
                 if (Level.BlockDB.FindChangesBy(ids, Start, End, out dims, RedoBlock)) return;
-            } finally {
-                if (BlockDBReadLock != null) BlockDBReadLock.Dispose();
+            }
+            finally
+            {
+                BlockDBReadLock?.Dispose();
             }
             this.output = null;
         }
@@ -58,11 +66,12 @@ namespace Flames.Drawing.Ops
         public DrawOpOutput output;
         public Vec3U16 dims;
 
-        public void RedoBlock(BlockDBEntry e) {
+        public void RedoBlock(BlockDBEntry e)
+        {
             BlockID block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             if ((e.Flags & BlockDBFlags.UndoSelf) == 0) return; // not an undo
-            
+
             int x = e.Index % dims.X;
             int y = e.Index / dims.X / dims.Z;
             int z = e.Index / dims.X % dims.Z;

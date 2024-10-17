@@ -31,11 +31,11 @@ namespace Flames.Platform
         public ulong KernelTime;
         /// <summary> Total time spent executing code in User mode </summary>
         public ulong UserTime;
-        
+
         /// <summary> Total time spent executing code </summary>
         public ulong ProcessorTime { get { return KernelTime + UserTime; } }
     }
-    
+
     /// <summary> Summarises resource usage of current process </summary>
     public struct ProcInfo
     {
@@ -49,40 +49,47 @@ namespace Flames.Platform
         /// <summary> Whether the operating system currently being run on is Windows </summary>
         public abstract bool IsWindows { get; }
         public virtual string StandaloneName { get { return "UNSUPPORTED"; } }
-        
-        public virtual void Init() { }
-        
+
+        public virtual void Init() 
+        { 
+        }
+
         /// <summary> Attempts to restart the current process </summary>
         /// <remarks> Does not return if the restart is performed in-place
         /// (since the current process image is replaced) </remarks>
-        public virtual void RestartProcess() { 
-            Process.Start(Server.GetRestartPath()); 
+        public virtual void RestartProcess()
+        {
+            Process.Start(Server.GetRestartPath());
         }
-        
-        
+
+
         /// <summary> Measures CPU use by all processes in the system </summary>
         public abstract CPUTime MeasureAllCPUTime();
-        
+
         /// <summary> Measures resource usage by the current process </summary>
-        public virtual ProcInfo MeasureResourceUsage(Process proc, bool all) {
+        public virtual ProcInfo MeasureResourceUsage(Process proc, bool all)
+        {
             ProcInfo info = default;
-            
+
             info.ProcessorTime = proc.TotalProcessorTime;
-            if (all) {
+            if (all)
+            {
                 info.PrivateMemorySize = proc.PrivateMemorySize64;
-                info.NumThreads        = proc.Threads.Count;
+                info.NumThreads = proc.Threads.Count;
             }
             return info;
         }
 
 
         public static IOperatingSystem detectedOS;
-        public static IOperatingSystem DetectOS() {
+        public static IOperatingSystem DetectOS()
+        {
             detectedOS = detectedOS ?? DoDetectOS();
             return detectedOS;
         }
 
-        public unsafe static IOperatingSystem DoDetectOS() {
+        public unsafe static IOperatingSystem DoDetectOS()
+        {
             PlatformID platform = Environment.OSVersion.Platform;
             if (platform == PlatformID.Win32NT || platform == PlatformID.Win32Windows)
                 return new WindowsOS();
@@ -92,13 +99,13 @@ namespace Flames.Platform
             // 8 kb should be more than enough to store the struct uname outputs
             sbyte* utsname = stackalloc sbyte[8192];
             uname(utsname);
-            string kernel  = new string(utsname);
+            string kernel = new string(utsname);
 
             if (kernel == "Darwin") return new macOS();
-            if (kernel == "Linux")  return new LinuxOS();
+            if (kernel == "Linux") return new LinuxOS();
 
             if (kernel == "FreeBSD") return new FreeBSD_OS();
-            if (kernel == "NetBSD")  return new NetBSD_OS();
+            if (kernel == "NetBSD") return new NetBSD_OS();
 
             return new UnixOS();
         }
@@ -110,9 +117,10 @@ namespace Flames.Platform
     public class WindowsOS : IOperatingSystem
     {
         public override bool IsWindows { get { return true; } }
-        
-        
-        public override CPUTime MeasureAllCPUTime() {
+
+
+        public override CPUTime MeasureAllCPUTime()
+        {
             CPUTime all = default;
             GetSystemTimes(out all.IdleTime, out all.KernelTime, out all.UserTime);
 
@@ -129,9 +137,14 @@ namespace Flames.Platform
     public class UnixOS : IOperatingSystem
     {
         public override bool IsWindows { get { return false; } }
-        
-        public override void RestartProcess() {
-            if (!Server.CLIMode) { base.RestartProcess(); return; }
+
+        public override void RestartProcess()
+        {
+            if (!Server.CLIMode) 
+            { 
+                base.RestartProcess(); 
+                return; 
+            }
 
             RestartInPlace();
             // If restarting in place fails, it's better to let the server die
@@ -139,7 +152,8 @@ namespace Flames.Platform
             //  be spammed with constant errors
         }
 
-        public virtual void RestartInPlace() {
+        public virtual void RestartInPlace()
+        {
             // With using normal Process.Start with mono, after Environment.Exit
             //  is called, all FDs (including standard input) are also closed.
             // Unfortunately, this causes the new server process to constantly error with
@@ -182,12 +196,16 @@ namespace Flames.Platform
         [DllImport("libc", SetLastError = true)]
         public static extern int execvp(string path, string[] argv);
 
-        public static string GetProcessExePath() {
+        public static string GetProcessExePath()
+        {
             return Process.GetCurrentProcess().MainModule.FileName;
         }
 
 
-        public override CPUTime MeasureAllCPUTime() { return default; }
+        public override CPUTime MeasureAllCPUTime() 
+        { 
+            return default; 
+        }
 
         [DllImport("libc", SetLastError = true)]
         public unsafe static extern int sysctlbyname(string name, void* oldp, IntPtr* oldlenp, IntPtr newp, IntPtr newlen);
@@ -195,17 +213,20 @@ namespace Flames.Platform
 
     public class LinuxOS : UnixOS
     {
-        public override string StandaloneName {
+        public override string StandaloneName
+        {
             get { return IntPtr.Size == 8 ? "nix64" : "nix32"; }
         }
 
-        public override void Init() {
+        public override void Init()
+        {
             base.Init();
         }
 
 
         // https://stackoverflow.com/questions/15145241/is-there-an-equivalent-to-the-windows-getsystemtimes-function-in-linux
-        public override CPUTime MeasureAllCPUTime() {
+        public override CPUTime MeasureAllCPUTime()
+        {
             using (StreamReader r = new StreamReader("/proc/stat"))
             {
                 string line = r.ReadLine();
@@ -215,7 +236,8 @@ namespace Flames.Platform
             return default;
         }
 
-        public static CPUTime ParseCpuLine(string line) {
+        public static CPUTime ParseCpuLine(string line)
+        {
             // "cpu  [USER TIME] [NICE TIME] [SYSTEM TIME] [IDLE TIME] [I/O WAIT TIME] [IRQ TIME] [SW IRQ TIME]"
             line = line.Replace("  ", " ");
             string[] bits = line.SplitSpaces();
@@ -227,28 +249,33 @@ namespace Flames.Platform
             // TODO interrupt time too?
 
             CPUTime all;
-            all.UserTime   = user + nice;
+            all.UserTime = user + nice;
             all.KernelTime = kern;
-            all.IdleTime   = idle;
+            all.IdleTime = idle;
             return all;
         }
 
 
-        public override void RestartInPlace() {
-            try {
+        public override void RestartInPlace()
+        {
+            try
+            {
                 // try to restart using process's original command line arguments so that they are preserved
                 // e.g. for "mono --debug FlamesCLI.exe"
-                string exe    = GetProcessExePath();
+                string exe = GetProcessExePath();
                 string[] args = GetProcessCommandLineArgs();
                 execvp(exe, args);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Restarting process", ex);
             }
- 
+
             base.RestartInPlace();
         }
 
-        public static string[] GetProcessCommandLineArgs() {
+        public static string[] GetProcessCommandLineArgs()
+        {
             // /proc/self/cmdline returns the command line arguments
             //   of the process separated by NUL characters
             using (StreamReader r = new StreamReader("/proc/self/cmdline"))
@@ -264,17 +291,18 @@ namespace Flames.Platform
     public class FreeBSD_OS : UnixOS
     {
         // https://stackoverflow.com/questions/5329149/using-system-calls-from-c-how-do-i-get-the-utilization-of-the-cpus
-        public unsafe override CPUTime MeasureAllCPUTime() {
+        public unsafe override CPUTime MeasureAllCPUTime()
+        {
             const int CPUSTATES = 5;
 
             UIntPtr* states = stackalloc UIntPtr[CPUSTATES];
-            IntPtr size     = (IntPtr)(CPUSTATES * IntPtr.Size);
+            IntPtr size = (IntPtr)(CPUSTATES * IntPtr.Size);
             sysctlbyname("kern.cp_time", states, &size, IntPtr.Zero, IntPtr.Zero);
 
             CPUTime all;
-            all.UserTime   = states[0].ToUInt64() + states[1].ToUInt64(); // CP_USER + CP_NICE
+            all.UserTime = states[0].ToUInt64() + states[1].ToUInt64(); // CP_USER + CP_NICE
             all.KernelTime = states[2].ToUInt64(); // CP_SYS
-            all.IdleTime   = states[4].ToUInt64(); // CP_IDLE
+            all.IdleTime = states[4].ToUInt64(); // CP_IDLE
             // TODO interrupt time too?
             return all;
         }
@@ -283,17 +311,18 @@ namespace Flames.Platform
     public class NetBSD_OS : UnixOS
     {
         // https://man.netbsd.org/sysctl.7
-        public unsafe override CPUTime MeasureAllCPUTime() {
+        public unsafe override CPUTime MeasureAllCPUTime()
+        {
             const int CPUSTATES = 5;
 
             ulong* states = stackalloc ulong[CPUSTATES];
-            IntPtr size   = (IntPtr)(CPUSTATES * sizeof(ulong));
+            IntPtr size = (IntPtr)(CPUSTATES * sizeof(ulong));
             sysctlbyname("kern.cp_time", states, &size, IntPtr.Zero, IntPtr.Zero);
 
             CPUTime all;
-            all.UserTime   = states[0] + states[1]; // CP_USER + CP_NICE
+            all.UserTime = states[0] + states[1]; // CP_USER + CP_NICE
             all.KernelTime = states[2]; // CP_SYS
-            all.IdleTime   = states[4]; // CP_IDLE
+            all.IdleTime = states[4]; // CP_IDLE
             // TODO interrupt time too?
             return all;
         }
@@ -301,22 +330,24 @@ namespace Flames.Platform
 
     public class macOS : UnixOS
     {
-        public override string StandaloneName { 
-            get { return IntPtr.Size == 8 ? "mac64" : "mac32"; } 
+        public override string StandaloneName
+        {
+            get { return IntPtr.Size == 8 ? "mac64" : "mac32"; }
         }
 
-        
+
         // https://stackoverflow.com/questions/20471920/how-to-get-total-cpu-idle-time-in-objective-c-c-on-os-x
         // /usr/include/mach/host_info.h, /usr/include/mach/machine.h, /usr/include/mach/mach_host.h
-        public override CPUTime MeasureAllCPUTime() {
+        public override CPUTime MeasureAllCPUTime()
+        {
             uint[] info = new uint[4]; // CPU_STATE_MAX
-            uint count  = 4; // HOST_CPU_LOAD_INFO_COUNT 
-            int flavor  = 3; // HOST_CPU_LOAD_INFO
+            uint count = 4; // HOST_CPU_LOAD_INFO_COUNT 
+            int flavor = 3; // HOST_CPU_LOAD_INFO
             host_statistics(mach_host_self(), flavor, info, ref count);
 
             CPUTime all;
-            all.IdleTime   = info[2]; // CPU_STATE_IDLE
-            all.UserTime   = info[0] + info[3]; // CPU_STATE_USER + CPU_STATE_NICE
+            all.IdleTime = info[2]; // CPU_STATE_IDLE
+            all.UserTime = info[0] + info[3]; // CPU_STATE_USER + CPU_STATE_NICE
             all.KernelTime = info[1]; // CPU_STATE_SYSTEM
             return all;
         }

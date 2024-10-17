@@ -18,13 +18,20 @@
 using Flames.Blocks;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdBlockSet : ItemPermsCmd {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdBlockSet : ItemPermsCmd
+    {
         public override string name { get { return "BlockSet"; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces(2);
-            if (args.Length < 2) { Help(p); return; }
+            if (args.Length < 2) 
+            { 
+                Help(p); 
+                return; 
+            }
 
             if (!CommandParser.GetBlockIfAllowed(p, args[0], "change permissions of", out ushort block)) return;
 
@@ -32,20 +39,23 @@ namespace Flames.Commands.Moderation {
             SetPerms(p, args, data, perms, "block");
         }
 
-        public override void UpdatePerms(ItemPerms perms, Player p, string msg) {
+        public override void UpdatePerms(ItemPerms perms, Player p, string msg)
+        {
             BlockPerms.Save();
             BlockPerms.ApplyChanges();
-            
+
             BlockID block = ((BlockPerms)perms).ID;
-            if (!Block.IsPhysicsType(block)) {
+            if (!Block.IsPhysicsType(block))
+            {
                 BlockPerms.ResendAllBlockPermissions();
             }
-            
+
             string name = Block.GetName(p, block);
             Announce(p, name + msg);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/BlockSet [block] [rank]");
             p.Message("&HSets lowest rank that can modify/use [block] to [rank]");
             p.Message("&T/BlockSet [block] +[rank]");

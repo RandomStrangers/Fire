@@ -21,65 +21,79 @@ using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
 
-namespace Flames.Generator.Foliage {
-    public sealed class AshTree : Tree {
+namespace Flames.Generator.Foliage
+{
+    public sealed class AshTree : Tree
+    {
 
         public int branchBaseHeight, branchAmount;
         public const int maxExtent = 5, maxBranchHeight = 10, maxCluster = 3;
         public List<Vec3S32> branch = new List<Vec3S32>();
-        
-        public override long EstimateBlocksAffected() { return (long)height * height * height; }
-                
-        public override int DefaultSize(Random rnd) { return rnd.Next(5, 10); }
-        
-        public override void SetData(Random rnd, int value) {
-            this.rnd = rnd;           
+
+        public override long EstimateBlocksAffected() 
+        { 
+            return (long)height * height * height; 
+        }
+
+        public override int DefaultSize(Random rnd) 
+        { 
+            return rnd.Next(5, 10); 
+        }
+
+        public override void SetData(Random rnd, int value)
+        {
+            this.rnd = rnd;
             height = value;
             size = maxExtent + maxCluster;
-            
+
             branchBaseHeight = height / 4;
             branchAmount = rnd.Next(10, 25);
         }
-        
-        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output) {
+
+        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output)
+        {
             // Generate base trunk
             Vec3S32 p1 = new Vec3S32(x, y, z);
             Vec3S32 p2 = new Vec3S32(x, y + height, z);
             Line(p1, p2, output);
-            
-            for (int i = 0; i < branchAmount; i++) {
+
+            for (int i = 0; i < branchAmount; i++)
+            {
                 DoBranch(x, y, z, output);
             }
         }
 
 
-        public void DoBranch(int x, int y, int z, TreeOutput output) {
+        public void DoBranch(int x, int y, int z, TreeOutput output)
+        {
             int dx = rnd.Next(-maxExtent, maxExtent);
             int dz = rnd.Next(-maxExtent, maxExtent);
-            
+
             int clusterSize = rnd.Next(1, maxCluster);
             int branchStart = rnd.Next(branchBaseHeight, height);
-            int branchMax   = branchStart + rnd.Next(3, maxBranchHeight);
-            
-            Vec3S32 p1 = new Vec3S32(x,      y + branchStart, z     );
-            Vec3S32 p2 = new Vec3S32(x + dx, y + branchMax,   z + dz);
+            int branchMax = branchStart + rnd.Next(3, maxBranchHeight);
+
+            Vec3S32 p1 = new Vec3S32(x, y + branchStart, z);
+            Vec3S32 p2 = new Vec3S32(x + dx, y + branchMax, z + dz);
             Line(p1, p2, output);
-            
+
             int R = clusterSize;
-            Vec3S32[] marks = new Vec3S32[] { 
-                new Vec3S32(x + dx - R, y + branchMax - R, z + dz - R), 
+            Vec3S32[] marks = new Vec3S32[] {
+                new Vec3S32(x + dx - R, y + branchMax - R, z + dz - R),
                 new Vec3S32(x + dx + R, y + branchMax + R, z + dz + R) };
-            
+
             DrawOp op = new EllipsoidDrawOp();
             Brush brush = new SolidBrush(Block.Leaves);
             op.SetMarks(marks);
             op.Perform(marks, brush, b => output(b.X, b.Y, b.Z, b.Block));
         }
 
-        public void Line(Vec3S32 p1, Vec3S32 p2, TreeOutput output) {
+        public void Line(Vec3S32 p1, Vec3S32 p2, TreeOutput output)
+        {
             LineDrawOp.DrawLine(p1.X, p1.Y, p1.Z, 10000, p2.X, p2.Y, p2.Z, branch);
-            
-            foreach (Vec3S32 P in branch) {
+
+            foreach (Vec3S32 P in branch)
+            {
                 output((ushort)P.X, (ushort)P.Y, (ushort)P.Z, Block.Log);
             }
             branch.Clear();

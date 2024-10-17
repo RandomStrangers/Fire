@@ -28,32 +28,32 @@ using Flames.Maths;
 
 namespace Flames.Modules.Games.TW
 {
-    public sealed class TWConfig : RoundsGameConfig 
+    public sealed class TWConfig : RoundsGameConfig
     {
         public override bool AllowAutoload { get { return false; } }
         public override string GameName { get { return "TNT Wars"; } }
-        
+
         [ConfigEnum("Mode", "Defaults", TWGameMode.TDM, typeof(TWGameMode))]
         public TWGameMode Mode = TWGameMode.TDM;
         [ConfigEnum("Difficulty", "Defaults", TWDifficulty.Normal, typeof(TWDifficulty))]
         public TWDifficulty Difficulty = TWDifficulty.Normal;
     }
-    
-    public sealed class TWMapConfig : RoundsGameMapConfig 
-    {    
+
+    public sealed class TWMapConfig : RoundsGameMapConfig
+    {
         [ConfigBool("grace-period", null, true)]
         public bool GracePeriod = true;
         [ConfigTimespan("grace-time", null, 30, false)]
         public TimeSpan GracePeriodTime = TimeSpan.FromSeconds(30);
-        
+
         [ConfigInt("max-active-tnt", null, 1)]
         public int MaxActiveTnt = 1;
-        
+
         [ConfigBool("team-balance", null, true)]
         public bool BalanceTeams = true;
         [ConfigBool("team-kill", null, false)]
         public bool TeamKills;
-        
+
         [ConfigInt("score-needed", null, 150)]
         public int ScoreRequired = 150;
         [ConfigInt("scores-per-kill", null, 10)]
@@ -62,7 +62,7 @@ namespace Flames.Modules.Games.TW
         public int AssistScore = 5;
         [ConfigInt("score-multi-kill-bonus", null, 5)]
         public int MultiKillBonus = 5; // Amount of extra points per player killed (if more than one) per TNT
-        
+
         [ConfigBool("streaks", null, true)]
         public bool Streaks = true;
         public int StreakOneAmount = 3;
@@ -71,28 +71,33 @@ namespace Flames.Modules.Games.TW
         public float StreakTwoMultiplier = 1.5f;
         public int StreakThreeAmount = 7;
         public float StreakThreeMultiplier = 2f;
-        
-        [ConfigVec3("red-spawn", null)]  public Vec3U16 RedSpawn;
-        [ConfigVec3("blue-spawn", null)] public Vec3U16 BlueSpawn;
+
+        [ConfigVec3("red-spawn", null)] 
+        public Vec3U16 RedSpawn;
+        [ConfigVec3("blue-spawn", null)] 
+        public Vec3U16 BlueSpawn;
 
         public const string propsDir = "properties/tntwars/";
-        public static ConfigElement[] cfg;        
-        public override void Load(string map) {
+        public static ConfigElement[] cfg;
+        public override void Load(string map)
+        {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(TWMapConfig));
             LoadFrom(cfg, propsDir, map);
         }
-        
-        public override void Save(string map) {
+
+        public override void Save(string map)
+        {
             if (cfg == null) cfg = ConfigElement.GetAll(typeof(TWMapConfig));
             SaveTo(cfg, propsDir, map);
         }
-        
-        public override void SetDefaults(Level lvl) {
+
+        public override void SetDefaults(Level lvl)
+        {
             ushort midX = (ushort)(lvl.Width / 2);
             ushort midY = (ushort)(lvl.Height / 2 + 1);
             ushort maxZ = (ushort)(lvl.Length - 1);
-            
-            RedSpawn  = new Vec3U16(midX, midY, 0);
+
+            RedSpawn = new Vec3U16(midX, midY, 0);
             BlueSpawn = new Vec3U16(midX, midY, maxZ);
         }
     }

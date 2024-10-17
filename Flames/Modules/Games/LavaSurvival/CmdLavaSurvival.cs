@@ -23,84 +23,104 @@ using Flames.Games;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Modules.Games.LS 
+namespace Flames.Modules.Games.LS
 {
-    public sealed class CmdLavaSurvival : RoundsGameCmd 
+    public sealed class CmdLavaSurvival : RoundsGameCmd
     {
         public override string name { get { return "LavaSurvival"; } }
         public override string shortcut { get { return "LS"; } }
         public override RoundsGame Game { get { return LSGame.Instance; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage lava survival") }; }
         }
 
-        public override void HandleSet(Player p, RoundsGame game, string[] args) {
+        public override void HandleSet(Player p, RoundsGame game, string[] args)
+        {
             string prop = args[1];
             LSMapConfig cfg = new LSMapConfig();
             LoadMapConfig(p, cfg);
-            
-            if (prop.CaselessEq("spawn")) {
+
+            if (prop.CaselessEq("spawn"))
+            {
                 HandleSetSpawn(p, args, cfg);
-            } else if (prop.CaselessEq("block")) {
+            }
+            else if (prop.CaselessEq("block"))
+            {
                 HandleSetBlock(p, args, cfg);
-            } else if (prop.CaselessEq("other")) {
-                HandleSetOther(p, args, cfg, 
+            }
+            else if (prop.CaselessEq("other"))
+            {
+                HandleSetOther(p, args, cfg,
                                (LSConfig)game.GetConfig());
-            } else if (prop.CaselessEq("layer")) {
-                HandleSetLayer(p, args, cfg, 
+            }
+            else if (prop.CaselessEq("layer"))
+            {
+                HandleSetLayer(p, args, cfg,
                                (LSConfig)game.GetConfig());
-            } else {
+            }
+            else
+            {
                 Help(p, "set");
             }
         }
 
-        public static bool ParseChance(Player p, string arg, string[] args, ref int value) {
+        public static bool ParseChance(Player p, string arg, string[] args, ref int value)
+        {
             if (!CommandParser.GetInt(p, args[3], "Chance", ref value, 0, 100)) return false;
             p.Message("Set {0} chance to &b{1}%", arg, value);
             return true;
         }
 
-        public static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan? span) {
+        public static bool ParseTimespan(Player p, string arg, string[] args, ref TimeSpan? span)
+        {
             TimeSpan value = default;
             if (!CommandParser.GetTimespan(p, args[3], ref value, "set " + arg + " to", "m")) return false;
-            
+
             span = value;
             p.Message("Set {0} to &b{1}", arg, value.Shorten(true));
             return true;
         }
 
 
-        public void HandleSetSpawn(Player p, string[] args, LSMapConfig cfg) {
-            if (args.Length < 3) {
+        public void HandleSetSpawn(Player p, string[] args, LSMapConfig cfg)
+        {
+            if (args.Length < 3)
+            {
                 p.Message("Flood position: &b" + cfg.FloodPos);
                 p.Message("Safe zone: &b({0}) ({1})", cfg.SafeZoneMin, cfg.SafeZoneMax);
                 return;
             }
-            
+
             string prop = args[2];
-            if (prop.CaselessEq("flood")) {
+            if (prop.CaselessEq("flood"))
+            {
                 p.Message("Place or destroy the block you want to be the flood block spawn point.");
                 p.MakeSelection(1, cfg, SetFloodPos);
                 return;
-            } else if (prop.CaselessEq("safe")) {
+            }
+            else if (prop.CaselessEq("safe"))
+            {
                 p.Message("Place or break two blocks to determine the edges.");
                 p.MakeSelection(2, cfg, SetSafeZone);
                 return;
             }
-            
+
             Help(p, "spawn");
         }
 
-        public bool SetFloodPos(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool SetFloodPos(Player p, Vec3S32[] m, object state, BlockID block)
+        {
             LSMapConfig cfg = (LSMapConfig)state;
-            cfg.FloodPos    = (Vec3U16)m[0];
+            cfg.FloodPos = (Vec3U16)m[0];
             SaveMapConfig(p, cfg);
 
             p.Message("Flood position set to &b({0})", m[0]);
             return false;
         }
 
-        public bool SetSafeZone(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool SetSafeZone(Player p, Vec3S32[] m, object state, BlockID block)
+        {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.SafeZoneMin = (Vec3U16)Vec3S32.Min(m[0], m[1]);
             cfg.SafeZoneMax = (Vec3U16)Vec3S32.Max(m[0], m[1]);
@@ -110,56 +130,82 @@ namespace Flames.Modules.Games.LS
             return false;
         }
 
-        public void HandleSetBlock(Player p, string[] args, LSMapConfig cfg) {
-            if (args.Length < 3) {
+        public void HandleSetBlock(Player p, string[] args, LSMapConfig cfg)
+        {
+            if (args.Length < 3)
+            {
                 p.Message("Fast lava chance: &b" + cfg.FastChance + "%");
                 p.Message("Water flood chance: &b" + cfg.WaterChance + "%");
                 p.Message("Flood upwards chance: &b" + cfg.FloodUpChance + "%");
                 return;
             }
-            
+
             string prop = args[2];
-            if (args.Length < 4) { Help(p, "block"); return; }
+            if (args.Length < 4) 
+            { 
+                Help(p, "block"); 
+                return; 
+            }
             bool ok = false;
-            
-            if (prop.CaselessEq("fast")) {
+
+            if (prop.CaselessEq("fast"))
+            {
                 ok = ParseChance(p, "fast lava", args, ref cfg.FastChance);
-            } else if (prop.CaselessEq("water")) {
+            }
+            else if (prop.CaselessEq("water"))
+            {
                 ok = ParseChance(p, "water flood", args, ref cfg.WaterChance);
-            } else if (prop.CaselessEq("upwards")) {
+            }
+            else if (prop.CaselessEq("upwards"))
+            {
                 ok = ParseChance(p, "flood upwards", args, ref cfg.FloodUpChance);
-            } else {
+            }
+            else
+            {
                 Help(p, "block");
             }
-            
+
             if (ok) SaveMapConfig(p, cfg);
         }
 
-        public void HandleSetOther(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
-            if (args.Length < 3) {
+        public void HandleSetOther(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg)
+        {
+            if (args.Length < 3)
+            {
                 p.Message("Round time: &b" + gameCfg.GetRoundTime(cfg).Shorten(true));
                 p.Message("Flood time: &b" + gameCfg.GetFloodTime(cfg).Shorten(true));
                 return;
             }
-            
+
             string prop = args[2];
-            if (args.Length < 4) { Help(p, "other"); return; }
+            if (args.Length < 4) 
+            { 
+                Help(p, "other"); 
+                return; 
+            }
             bool ok = false;
-            
-            if (prop.CaselessEq("round")) {
+
+            if (prop.CaselessEq("round"))
+            {
                 ok = ParseTimespan(p, "round time", args, ref cfg._RoundTime);
-            } else if (prop.CaselessEq("flood")) {
+            }
+            else if (prop.CaselessEq("flood"))
+            {
                 ok = ParseTimespan(p, "flood time", args, ref cfg._FloodTime);
-            } else {
+            }
+            else
+            {
                 Help(p, "other");
             }
-            
+
             if (ok) SaveMapConfig(p, cfg);
         }
 
 
-        public void HandleSetLayer(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg) {
-            if (args.Length < 3) {
+        public void HandleSetLayer(Player p, string[] args, LSMapConfig cfg, LSConfig gameCfg)
+        {
+            if (args.Length < 3)
+            {
                 p.Message("Layer flood chance: &b" + cfg.LayerChance + "%");
                 p.Message("Layer time: &b" + gameCfg.GetLayerInterval(cfg).Shorten(true));
                 p.Message("Layer position: &b" + cfg.LayerPos);
@@ -167,67 +213,92 @@ namespace Flames.Modules.Games.LS
                           cfg.LayerCount, cfg.LayerHeight);
                 return;
             }
-            
+
             string prop = args[2];
-            if (prop.CaselessEq("spawn")) {
+            if (prop.CaselessEq("spawn"))
+            {
                 p.Message("Place or destroy the block you want to be the layer flood base spawn point.");
                 p.MakeSelection(1, cfg, SetLayerPos);
                 return;
             }
-            
-            if (args.Length < 4) { Help(p, "layer"); return; }
+
+            if (args.Length < 4) 
+            { 
+                Help(p, "layer"); 
+                return; 
+            }
             bool ok = false;
-            
-            if (prop.CaselessEq("time")) {
+
+            if (prop.CaselessEq("time"))
+            {
                 ok = ParseTimespan(p, "layer time", args, ref cfg._LayerInterval);
-            } else if (prop.CaselessEq("height")) {
+            }
+            else if (prop.CaselessEq("height"))
+            {
                 ok = CommandParser.GetInt(p, args[3], "Height", ref cfg.LayerHeight);
                 if (ok) p.Message("Set layer height to &b" + cfg.LayerHeight + " blocks");
-            } else if (prop.CaselessEq("count")) {
+            }
+            else if (prop.CaselessEq("count"))
+            {
                 ok = CommandParser.GetInt(p, args[3], "Count", ref cfg.LayerCount, 0);
                 if (ok) p.Message("Set layer count to &b" + cfg.LayerCount);
-            } else if (prop.CaselessEq("chance")) {
+            }
+            else if (prop.CaselessEq("chance"))
+            {
                 ok = ParseChance(p, "layer flood", args, ref cfg.LayerChance);
-            } else {
+            }
+            else
+            {
                 Help(p, "layer");
             }
-            
+
             if (ok) SaveMapConfig(p, cfg);
         }
 
-        public bool SetLayerPos(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool SetLayerPos(Player p, Vec3S32[] m, object state, BlockID block)
+        {
             LSMapConfig cfg = (LSMapConfig)state;
-            cfg.LayerPos    = (Vec3U16)m[0];
+            cfg.LayerPos = (Vec3U16)m[0];
             SaveMapConfig(p, cfg);
 
             p.Message("Layers start position set to &b({0})", m[0]);
             return false;
         }
-        
-        public override void Help(Player p, string message) {
-            if (message.CaselessEq("set")) {
+
+        public override void Help(Player p, string message)
+        {
+            if (message.CaselessEq("set"))
+            {
                 p.Message("&T/Help LS spawn &H- Views help for lava spawn settings");
                 p.Message("&T/Help LS block &H- Views help for lava block settings");
                 p.Message("&T/Help LS other &H- Views help for other settings");
                 p.Message("&T/Help LS layer &H- Views help for layered flood settings");
-            } else if (message.CaselessEq("spawn")) {
+            }
+            else if (message.CaselessEq("spawn"))
+            {
                 p.Message("&T/LS set spawn &H- View lava spawns and safe zone location");
                 p.Message("&T/LS set spawn flood &H- Set position lava floods from");
                 p.Message("&T/LS set spawn safe &H- Sets safe area that can't be flooded");
-            } else if (message.CaselessEq("block")) {
+            }
+            else if (message.CaselessEq("block"))
+            {
                 p.Message("&T/LS set block &H- View lava block type settings");
                 p.Message("&T/LS set block fast [chance] &H- Sets chance of fast lava");
                 p.Message("&T/LS set block water [chance]");
                 p.Message("&HSets chance of water instead of lava flood");
                 p.Message("&T/LS set block upwards [chance]");
                 p.Message("&HSets chance of lava/water flooding upwards");
-            } else if (message.CaselessEq("other")) {
+            }
+            else if (message.CaselessEq("other"))
+            {
                 p.Message("&T/LS set other &H- View times and safe zone location");
                 p.Message("&T/LS set other flood [timespan]");
                 p.Message("&HSet how long until the map is flooded");
                 p.Message("&T/LS set other round [timespan]");
                 p.Message("&HSets how long until the round ends");
-            } else if (message.CaselessEq("layer")) {
+            }
+            else if (message.CaselessEq("layer"))
+            {
                 p.Message("&T/LS set layer &H- View layer flooding info");
                 p.Message("&T/LS set layer spawn &H- Set start position layers flood from");
                 p.Message("&T/LS set layer height [height] &H- Sets height of each layer");
@@ -236,12 +307,15 @@ namespace Flames.Modules.Games.LS
                 p.Message("&HSets chance of layer flooding occurring instead");
                 p.Message("&T/LS set layer time [timespan]");
                 p.Message("&HSets interval between layer floods");
-            } else {
+            }
+            else
+            {
                 base.Help(p, message);
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/LS start <map> &H- Starts Lava Survival");
             p.Message("&T/LS stop &H- Stops Lava Survival");
             p.Message("&T/LS end &H- Ends current round of Lava Survival");

@@ -41,7 +41,7 @@ namespace Flames.Core
                 Server.Background.QueueOnce(SayHello, null, TimeSpan.FromSeconds(10));
             }
         }
-       public static void SayHello(SchedulerTask task)
+        public static void SayHello(SchedulerTask task)
         {
             Command.Find("say").Use(Player.Flame, Server.SoftwareNameVersioned + " &Sonline!");
             Logger.Log(LogType.SystemActivity, "Hello World!");

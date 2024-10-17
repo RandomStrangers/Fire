@@ -29,8 +29,11 @@ namespace Flames
     {
         public int minValue, maxValue;
 
-        public ConfigEnvIntAttribute(string name, int min, int max)
-            : base(name, "Env") { minValue = min; maxValue = max; }
+        public ConfigEnvIntAttribute(string name, int min, int max) : base(name, "Env") 
+        { 
+            minValue = min;
+            maxValue = max; 
+        }
 
         public override object Parse(string value)
         {
@@ -58,7 +61,9 @@ namespace Flames
     // Hacky workaround for old ExponentialFog attribute which was a bool
     public class ConfigExpFogAttribute : ConfigEnvIntAttribute
     {
-        public ConfigExpFogAttribute(string name) : base(name, -1, 1) { }
+        public ConfigExpFogAttribute(string name) : base(name, -1, 1) 
+        { 
+        }
 
         public override object Parse(string raw)
         {

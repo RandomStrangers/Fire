@@ -18,54 +18,71 @@
 using Flames.Events;
 using System;
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdFreeze : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdFreeze : Command2
+    {
         public override string name { get { return "Freeze"; } }
         public override string shortcut { get { return "fz"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.SplitSpaces(2);
-            
+
             string target = PlayerInfo.FindMatchesPreferOnline(p, args[0]);
             if (target == null) return;
-            
+
             Group group = ModActionCmd.CheckTarget(p, data, "freeze", target);
             if (group == null) return;
-            
-            if (Server.frozen.Contains(target)) {
+
+            if (Server.frozen.Contains(target))
+            {
                 DoUnfreeze(p, target, args);
-            } else {
+            }
+            else
+            {
                 // unfreeze has second argument as reason, freeze has third argument instead
                 DoFreeze(p, target, message.SplitSpaces(3));
             }
         }
 
-        public void DoFreeze(Player p, string target, string[] args) {
-            if (args.Length < 2) { Help(p); return; }
+        public void DoFreeze(Player p, string target, string[] args)
+        {
+            if (args.Length < 2) 
+            { 
+                Help(p); 
+                return; 
+            }
             TimeSpan duration = TimeSpan.Zero;
             if (!CommandParser.GetTimespan(p, args[1], ref duration, "freeze for", "m")) return;
-            
+
             string reason = args.Length > 2 ? args[2] : "";
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;
-            
+
             ModAction action = new ModAction(target, p, ModActionType.Frozen, reason, duration);
             OnModActionEvent.Call(action);
         }
 
-        public void DoUnfreeze(Player p, string target, string[] args) {
+        public void DoUnfreeze(Player p, string target, string[] args)
+        {
             string reason = args.Length > 1 ? args[1] : "";
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;
-            
+
             ModAction action = new ModAction(target, p, ModActionType.Unfrozen, reason);
             OnModActionEvent.Call(action);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Freeze [name] [timespan] <reason>");
             p.Message("&HPrevents [name] from moving for [timespan], or until manually unfrozen.");
             p.Message("&HFor <reason>, @number can be used as a shortcut for that rule.");

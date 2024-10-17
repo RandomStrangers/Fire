@@ -19,42 +19,46 @@ using System;
 using BlockID = System.UInt16;
 using BlockRaw = System.Byte;
 
-namespace Flames.Blocks.Physics 
+namespace Flames.Blocks.Physics
 {
-    public static class TrainPhysics 
+    public static class TrainPhysics
     {
-        public static void Do(Level lvl, ref PhysInfo C) {
+        public static void Do(Level lvl, ref PhysInfo C)
+        {
             Random rand = lvl.physRandom;
-            int dirX = rand.Next(1, 100+1) <= 50 ? 1 : -1;
-            int dirY = rand.Next(1, 100+1) <= 50 ? 1 : -1;
-            int dirZ = rand.Next(1, 100+1) <= 50 ? 1 : -1;
+            int dirX = rand.Next(1, 100 + 1) <= 50 ? 1 : -1;
+            int dirY = rand.Next(1, 100 + 1) <= 50 ? 1 : -1;
+            int dirZ = rand.Next(1, 100 + 1) <= 50 ? 1 : -1;
             ushort x = C.X, y = C.Y, z = C.Z;
 
             for (int dx = -dirX; dx != 2 * dirX; dx += dirX)
                 for (int dy = -dirY; dy != 2 * dirY; dy += dirY)
                     for (int dz = -dirZ; dz != 2 * dirZ; dz += dirZ)
-            {
-                int index;
-                BlockID below = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy - 1), (ushort)(z + dz));
-                BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy),     (ushort)(z + dz), out index);
-                bool isRails = lvl.Props[below].IsRails;
-                
-                if (isRails && (block == Block.Air || block == Block.Water) && !lvl.listUpdateExists.Get(x + dx, y + dy, z + dz)) {
-                    lvl.AddUpdate(index, Block.Train, default(PhysicsArgs));
-                    lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));                    
-                    BlockID newBlock = below == Block.Op_Air ? Block.Glass : Block.Obsidian;
-                    
-                    int belowIndex;
-                    below = lvl.GetBlock(x, (ushort)(y - 1), z, out belowIndex);
-                    PhysicsArgs args = default;
-                    args.Type1 = PhysicsArgs.Wait; args.Value1 = 5;
-                    args.Type2 = PhysicsArgs.Revert; args.Value2 = (BlockRaw)below;
-                    args.ExtBlock = (byte)(below >> Block.ExtendedShift);
-                    
-                    lvl.AddUpdate(belowIndex, newBlock, args, true);
-                    return;
-                }
-            }
+                    {
+                        int index;
+                        BlockID below = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy - 1), (ushort)(z + dz));
+                        BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz), out index);
+                        bool isRails = lvl.Props[below].IsRails;
+
+                        if (isRails && (block == Block.Air || block == Block.Water) && !lvl.listUpdateExists.Get(x + dx, y + dy, z + dz))
+                        {
+                            lvl.AddUpdate(index, Block.Train, default(PhysicsArgs));
+                            lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
+                            BlockID newBlock = below == Block.Op_Air ? Block.Glass : Block.Obsidian;
+
+                            int belowIndex;
+                            below = lvl.GetBlock(x, (ushort)(y - 1), z, out belowIndex);
+                            PhysicsArgs args = default;
+                            args.Type1 = PhysicsArgs.Wait; 
+                            args.Value1 = 5;
+                            args.Type2 = PhysicsArgs.Revert; 
+                            args.Value2 = (BlockRaw)below;
+                            args.ExtBlock = (byte)(below >> Block.ExtendedShift);
+
+                            lvl.AddUpdate(belowIndex, newBlock, args, true);
+                            return;
+                        }
+                    }
         }
     }
 }

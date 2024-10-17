@@ -19,22 +19,28 @@ using System.Collections.Generic;
 
 namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdInfected : Command2 
+    public sealed class CmdInfected : Command2
     {
         public override string name { get { return "Infected"; } }
         public override string shortcut { get { return "dead"; } }
         public override string type { get { return CommandTypes.Games; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             List<Player> infected = PlayerInfo.OnlyCanSee(p, data.Rank,
                                                           ZSGame.Instance.Infected.Items);
-            if (infected.Count == 0) { p.Message("No one is infected"); return; }
-            
+            if (infected.Count == 0) 
+            { 
+                p.Message("No one is infected"); 
+                return; 
+            }
+
             p.Message("Players who are &cinfected &Sare:");
             p.Message(infected.Join(pl => "&c" + pl.DisplayName + "&S"));
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Infected");
             p.Message("&HShows who is infected/a zombie");
         }

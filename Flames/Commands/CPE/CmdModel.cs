@@ -17,74 +17,94 @@
  */
 using Flames.Bots;
 
-namespace Flames.Commands.CPE 
+namespace Flames.Commands.CPE
 {
-    public class CmdModel : EntityPropertyCmd 
+    public class CmdModel : EntityPropertyCmd
     {
         public override string name { get { return "Model"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
-            get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the model of others"),
-                    new CommandPerm(LevelPermission.Operator, "can change the model of bots") }; }
+        public override CommandPerm[] ExtraPerms
+        {
+            get
+            {
+                return new[] { new CommandPerm(LevelPermission.Operator, "can change the model of others"),
+                    new CommandPerm(LevelPermission.Operator, "can change the model of bots") };
+            }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("XModel", "-own") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.IndexOf(' ') == -1) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.IndexOf(' ') == -1)
+            {
                 message = "-own " + message;
                 message = message.TrimEnd();
             }
             UseBotOrOnline(p, data, message, "model");
         }
 
-        public override void SetBotData(Player p, PlayerBot bot, string model) {
+        public override void SetBotData(Player p, PlayerBot bot, string model)
+        {
             model = ParseModel(p, bot, model);
             if (model == null) return;
             bot.UpdateModel(model);
-            
+
             p.Message("You changed the model of bot {0} &Sto a &c{1}", bot.ColoredName, model);
             BotsFile.Save(p.level);
         }
 
-        public override void SetOnlineData(Player p, Player who, string model) {
+        public override void SetOnlineData(Player p, Player who, string model)
+        {
             string orig = model;
             model = ParseModel(p, who, model);
             if (model == null) return;
             who.UpdateModel(model);
-            
-            if (p != who) {
+
+            if (p != who)
+            {
                 Chat.MessageFrom(who, "λNICK &Shad their model changed to a &c" + model);
-            } else {
+            }
+            else
+            {
                 who.Message("Changed your own model to a &c" + model);
             }
-            
-            if (!model.CaselessEq("humanoid")) {
+
+            if (!model.CaselessEq("humanoid"))
+            {
                 Server.models.Update(who.name, model);
-            } else {
+            }
+            else
+            {
                 Server.models.Remove(who.name);
             }
             Server.models.Save();
-            
+
             // Remove model scale too when resetting model
             if (orig.Length == 0) CmdModelScale.UpdateSavedScale(who);
         }
 
-        public static string ParseModel(Player dst, Entity e, string model) {
+        public static string ParseModel(Player dst, Entity e, string model)
+        {
             // Reset entity's model
-            if (model.Length == 0) {
-                e.ScaleX = 0; e.ScaleY = 0; e.ScaleZ = 0;
+            if (model.Length == 0)
+            {
+                e.ScaleX = 0; 
+                e.ScaleY = 0; 
+                e.ScaleZ = 0;
                 return "humanoid";
             }
-            
+
             model = model.ToLower();
             model = model.Replace(':', '|'); // since users assume : is for scale instead of |.
-            
+
             float max = ModelInfo.MaxScale(e, model);
             // restrict player model scale, but bots can have unlimited model scale
-            if (ModelInfo.GetRawScale(model) > max) {
+            if (ModelInfo.GetRawScale(model) > max)
+            {
                 dst.Message("&WScale must be {0} or less for {1} model",
                             max, ModelInfo.GetRawModel(model));
                 return null;
@@ -92,22 +112,29 @@ namespace Flames.Commands.CPE
             return model;
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Model [name] [model] &H- Sets the model of that player.");
             p.Message("&T/Model bot [name] [model] &H- Sets the model of that bot.");
             p.Message("&HUse &T/Help Model models &Hfor a list of models.");
             p.Message("&HUse &T/Help Model scale &Hfor how to scale a model.");
         }
-        
-        public override void Help(Player p, string message) {
-            if (message.CaselessEq("models")) {
+
+        public override void Help(Player p, string message)
+        {
+            if (message.CaselessEq("models"))
+            {
                 p.Message("&HAvailable models: &SChibi, Chicken, Creeper, Giant, Humanoid, Pig, Sheep, Spider, Skeleton, Zombie, Head, Sit, Corpse");
                 p.Message("&HTo set a block model, use a block ID for the model name.");
                 p.Message("&HUse &T/Help Model scale &Hfor how to scale a model.");
-            } else if (message.CaselessEq("scale")) {
+            }
+            else if (message.CaselessEq("scale"))
+            {
                 p.Message("&HFor a scaled model, put \"|[scale]\" after the model name.");
                 p.Message("&H  e.g. pig|0.5, chibi|3");
-            } else {
+            }
+            else
+            {
                 Help(p);
             }
         }

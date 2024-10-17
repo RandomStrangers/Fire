@@ -18,40 +18,49 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Flames {
-    
+namespace Flames
+{
+
     /// <summary> Represents a list of metadata about players. (such as rank info, ban info, notes). </summary>
     /// <remarks> Unlike other player lists, this list is NOT kept in memory. </remarks>
-    public sealed class PlayerMetaList {
-        
-        public readonly string file;
-        public readonly object locker;
-        
-        public PlayerMetaList(string file) {
+    public sealed class PlayerMetaList
+    {
+
+        public string file;
+        public object locker;
+
+        public PlayerMetaList(string file)
+        {
             this.file = file;
             locker = new object();
         }
-        
-        public void EnsureExists() {
+
+        public void EnsureExists()
+        {
             if (!File.Exists(file))
                 File.Create(file).Dispose();
         }
 
-        public void Append(string data) {
-            lock (locker) {
+        public void Append(string data)
+        {
+            lock (locker)
+            {
                 using (StreamWriter w = new StreamWriter(file, true))
                     w.WriteLine(data);
             }
         }
-        
-        public List<string> FindAllExact(string name) {
+
+        public List<string> FindAllExact(string name)
+        {
             List<string> entries = new List<string>();
             if (!File.Exists(file)) return entries;
             name += " ";
-            
-            using (StreamReader r = new StreamReader(file)) {
+
+            using (StreamReader r = new StreamReader(file))
+            {
                 string line;
-                while ((line = r.ReadLine()) != null) {
+                while ((line = r.ReadLine()) != null)
+                {
                     if (line.CaselessStarts(name)) entries.Add(line);
                 }
             }

@@ -17,16 +17,17 @@
 */
 using Flames.Drawing.Transforms;
 
-namespace Flames.Commands.Building 
+namespace Flames.Commands.Building
 {
-    public sealed class CmdAbort : Command2 
+    public sealed class CmdAbort : Command2
     {
         public override string name { get { return "Abort"; } }
         public override string shortcut { get { return "a"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.ClearBlockchange();
             p.painting = false;
             p.checkingBotInfo = false;
@@ -34,17 +35,18 @@ namespace Flames.Commands.Building
             p.staticCommands = false;
             p.deleteMode = false;
             p.ModeBlock = Block.Invalid;
-            p.onTrain   = false;
-            p.isFlying  = false;
+            p.onTrain = false;
+            p.isFlying = false;
             p.BrushName = "normal";
             p.DefaultBrushArgs = "";
             p.Transform = NoTransform.Instance;
-            
-            if (p.weapon != null) p.weapon.Disable();
+
+            p.weapon?.Disable();
             p.Message("Every toggle or action was aborted.");
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Abort");
             p.Message("&HCancels an action.");
         }

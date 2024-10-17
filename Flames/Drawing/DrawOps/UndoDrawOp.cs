@@ -22,63 +22,74 @@ using Flames.Drawing.Brushes;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class UndoSelfDrawOp : UndoDrawOp 
-    {       
-        public UndoSelfDrawOp() {
+    public class UndoSelfDrawOp : UndoDrawOp
+    {
+        public UndoSelfDrawOp()
+        {
             Flags = BlockDBFlags.UndoSelf;
         }
-        
+
         public override string Name { get { return "UndoSelf"; } }
     }
-    
-    public class UndoDrawOp : DrawOp 
+
+    public class UndoDrawOp : DrawOp
     {
         public override string Name { get { return "Undo"; } }
-        
+
         /// <summary> Point in time that the /undo should go backwards up to. </summary>
         public DateTime Start = DateTime.MinValue;
-        
+
         /// <summary> Point in time that the /undo should start updating blocks. </summary>
         public DateTime End = DateTime.MaxValue;
 
         public string who;
         public int[] ids;
         public bool found = false;
-        
-        public UndoDrawOp() {
+
+        public UndoDrawOp()
+        {
             Flags = BlockDBFlags.UndoOther;
             AffectedByTransform = false;
         }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) { return -1; }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks) 
+        {
+            return -1; 
+        }
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
             this.output = output;
             PerformUndo();
             this.output = null;
         }
 
-        public void PerformUndo() {
+        public void PerformUndo()
+        {
             if (ids.Length == 0) return;
-            
+
             // can't use "using" as it creates a local var, and read lock reference may be changed by DrawOpPerformer class
-            try {
+            try
+            {
                 BlockDBReadLock = Level.BlockDB.Locker.AccquireRead();
                 Level.BlockDB.FindChangesBy(ids, Start, End, out dims, UndoBlock);
-            } finally {
-                if (BlockDBReadLock != null) BlockDBReadLock.Dispose();
+            }
+            finally
+            {
+                BlockDBReadLock?.Dispose();
                 BlockDBReadLock = null;
             }
-            
+
             if (oldest == null) return;
-            foreach (var kvp in oldest) {
+            foreach (var kvp in oldest)
+            {
                 int index = kvp.Key;
-                
+
                 int x = index % dims.X;
-                int y = (index / dims.X) / dims.Z;
-                int z = (index / dims.X) % dims.Z;
+                int y = index / dims.X / dims.Z;
+                int z = index / dims.X % dims.Z;
 
                 output(Place((ushort)x, (ushort)y, (ushort)z, kvp.Value));
             }
@@ -89,34 +100,39 @@ namespace Flames.Drawing.Ops
         public bool conservative;
         public Dictionary<int, BlockID> oldest;
 
-        public void UndoBlock(BlockDBEntry e) {
+        public void UndoBlock(BlockDBEntry e)
+        {
             BlockID block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
-            
+
             int x = e.Index % dims.X;
-            int y = (e.Index / dims.X) / dims.Z;
-            int z = (e.Index / dims.X) % dims.Z;
-            
+            int y = e.Index / dims.X / dims.Z;
+            int z = e.Index / dims.X % dims.Z;
+
             if (x < Min.X || y < Min.Y || z < Min.Z) return;
             if (x > Max.X || y > Max.Y || z > Max.Z) return;
-            
-            if (conservative) {
+
+            if (conservative)
+            {
                 oldest[e.Index] = block;
                 return;
             }
-            
+
             const int flags = BlockDBFlags.UndoOther | BlockDBFlags.UndoSelf;
-            if ((e.Flags & flags) != 0) {
+            if ((e.Flags & flags) != 0)
+            {
                 Player.Message("&WThis undo overlaps with previous undos, " +
                                "so undoing may take longer..");
-                oldest = new Dictionary<int, BlockID>();
-                oldest[e.Index] = block;
-                
+                oldest = new Dictionary<int, BlockID>
+                {
+                    [e.Index] = block
+                };
+
                 conservative = true;
-                found        = true;
+                found = true;
                 return;
             }
-            
+
             output(Place((ushort)x, (ushort)y, (ushort)z, block));
             found = true;
         }

@@ -41,35 +41,46 @@ namespace Flames.Network
 
         public PingList Ping = new PingList();
 
-        public int ProcessReceived(byte[] buffer, int bufferLen) {
+        public int ProcessReceived(byte[] buffer, int bufferLen)
+        {
             int read = 0;
-            try {
-                while (read < bufferLen) {
+            try
+            {
+                while (read < bufferLen)
+                {
                     int packetLen = HandlePacket(buffer, read, bufferLen - read);
                     // Partial packet received
                     if (packetLen == 0) break;
-                    
+
                     // Packet processed, onto next
                     read += packetLen;
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
             }
             return read;
         }
-        
-        public void Disconnect() { player.Disconnect(); }
-        
-        
+
+        public void Disconnect() 
+        { 
+            player.Disconnect(); 
+        }
+
+
         /// <summary> Sends raw data to the client </summary>
-        public void Send(byte[] data) { socket.Send(data, SendFlags.None); }
+        public void Send(byte[] data) 
+        { 
+            socket.Send(data, SendFlags.None); 
+        }
         /// <summary> Whether the client supports the given CPE extension </summary>
         public abstract bool Supports(string extName, int version);
         /// <summary> Attempts to process the next packet received from the client </summary>
         /// <returns> 0 if insufficient data left to fully process the next packet,
         /// otherwise returns the number of bytes processed </returns>
         public abstract int HandlePacket(byte[] buffer, int offset, int left);
-        
+
         /// <summary> Sends a ping packet to the client </summary>
         public abstract void SendPing();
         public abstract void SendMotd(string motd);
@@ -81,18 +92,21 @@ namespace Flames.Network
         /// <summary> Sends a kick/disconnect packet with the given reason </summary>
         public abstract void SendKick(string reason, bool sync);
         public abstract bool SendSetUserType(byte type);
-        
+
         /// <summary> Sends an entity teleport (absolute location update) packet to the client </summary>
         public abstract void SendTeleport(byte id, Position pos, Orientation rot);
         /// <summary> Sends an ext entity teleport with more control over behavior </summary>
         public virtual bool SendTeleport(byte id, Position pos, Orientation rot,
-                                         Packet.TeleportMoveMode moveMode, bool usePos = true, bool interpolateOri = false, bool useOri = true) { return false; }
+                                         Packet.TeleportMoveMode moveMode, bool usePos = true, bool interpolateOri = false, bool useOri = true)
+        { 
+            return false; 
+        }
         /// <summary> Sends a spawn/add entity packet to the client </summary>
         public abstract void SendSpawnEntity(byte id, string name, string skin, Position pos, Orientation rot);
         /// <summary> Sends a despawn/remove entity to the client </summary>
         public abstract void SendRemoveEntity(byte id);
         public abstract void SendSetSpawnpoint(Position pos, Orientation rot);
-        
+
         public abstract void SendAddTabEntry(byte id, string name, string nick, string group, byte groupRank);
         public abstract void SendRemoveTabEntry(byte id);
         /// <summary> Sends a set reach/click distance packet to the client </summary>
@@ -118,34 +132,39 @@ namespace Flames.Network
         public abstract void SendLevel(Level prev, Level level);
         /// <summary> Sends a block change/update packet to the client </summary>
         public abstract void SendBlockchange(ushort x, ushort y, ushort z, BlockID block);
-        
+
         public abstract byte[] MakeBulkBlockchange(BufferedBlockSender buffer);
         /// <summary> Gets the name of the software the client is using </summary>
         /// <example> ClassiCube, Classic 0.0.16, etc </example>
         public abstract string ClientName();
         public abstract void UpdatePlayerPositions();
-        
+
         /// <summary> Converts the given block ID into a raw block ID that the client supports </summary>
-        public virtual BlockID ConvertBlock(BlockID block) {
+        public virtual BlockID ConvertBlock(BlockID block)
+        {
             BlockID raw;
             Player p = player;
 
-            if (block >= Block.Extended) {
+            if (block >= Block.Extended)
+            {
                 raw = Block.ToRaw(block);
-            } else {
+            }
+            else
+            {
                 raw = Block.Convert(block);
                 // show invalid physics blocks as Orange
                 if (raw >= Block.CPE_COUNT) raw = Block.Orange;
             }
             if (raw > MaxRawBlock) raw = p.level.GetFallback(block);
-            
+
             // Check if a custom block replaced a core block
             //  If so, assume fallback is the better block to display
-            if (!hasBlockDefs && raw < Block.CPE_COUNT) {
+            if (!hasBlockDefs && raw < Block.CPE_COUNT)
+            {
                 BlockDefinition def = p.level.CustomBlockDefs[raw];
                 if (def != null) raw = def.FallBack;
             }
-            
+
             if (!hasCustomBlocks) raw = fallback[(byte)raw];
             return raw;
         }

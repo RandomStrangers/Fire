@@ -16,15 +16,16 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdLoaded : Command2 
+    public sealed class CmdLoaded : Command2
     {
         public override string name { get { return "Loaded"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             Level[] loaded = LevelInfo.Loaded.Items;
             p.Message("Loaded levels [physics level] (&c[no] &Sif not visitable): ");
             Paginator.Output(p, loaded, (lvl) => FormatMap(p, lvl),
@@ -32,14 +33,16 @@ namespace Flames.Commands.Info
             p.Message("Use &T/Levels &Sfor all levels.");
         }
 
-        public static string FormatMap(Player p, Level lvl) {            
+        public static string FormatMap(Player p, Level lvl)
+        {
             bool canVisit = p.IsSuper || lvl.VisitAccess.CheckAllowed(p);
-            string physics = " [" +  lvl.physics + "]";
+            string physics = " [" + lvl.physics + "]";
             string visit = canVisit ? "" : " &c[no]";
             return lvl.ColoredName + physics + visit;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Loaded");
             p.Message("&HLists loaded levels and their physics levels.");
         }

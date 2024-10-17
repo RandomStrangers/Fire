@@ -18,42 +18,51 @@
 
 namespace Flames.Commands.Chatting
 {
-    public sealed class CmdClear : Command2 
+    public sealed class CmdClear : Command2
     {
         public override string name { get { return "Clear"; } }
         public override string shortcut { get { return "cls"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("PlayerCLS"), new CommandAlias("GlobalCLS", "global"), new CommandAlias("gcls", "global") }; }
         }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Admin, "can clear chat for everyone") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {        
-            if (!message.CaselessEq("global")) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (!message.CaselessEq("global"))
+            {
                 ClearChat(p);
                 p.Message("&4Chat cleared.");
-            } else {
+            }
+            else
+            {
                 if (!CheckExtraPerm(p, data, 1)) return;
-                
+
                 Player[] players = PlayerInfo.Online.Items;
-                foreach (Player pl in players) {
+                foreach (Player pl in players)
+                {
                     ClearChat(pl);
                 }
                 Chat.MessageAll("&4Global Chat cleared.");
             }
         }
 
-        public static void ClearChat(Player p) {
-            for (int i = 0; i < 30; i++) 
+        public static void ClearChat(Player p)
+        {
+            for (int i = 0; i < 30; i++)
             {
                 p.Session.SendMessage(CpeMessageType.Normal, "");
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Clear &H- Clears your chat.");
             p.Message("&T/Clear global &H- Clears chat of all users.");
         }

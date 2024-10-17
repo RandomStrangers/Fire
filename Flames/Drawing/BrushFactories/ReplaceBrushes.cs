@@ -19,11 +19,11 @@ using System.Collections.Generic;
 using Flames.Commands;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
+namespace Flames.Drawing.Brushes
 {
-    public sealed class ReplaceBrushFactory : BrushFactory 
+    public sealed class ReplaceBrushFactory : BrushFactory
     {
-        public override string Name { get { return "Replace"; } }       
+        public override string Name { get { return "Replace"; } }
         public override string[] Help { get { return HelpString; } }
 
         public static string[] HelpString = new string[] {
@@ -31,35 +31,42 @@ namespace Flames.Drawing.Brushes
             "&HDraws by replacing existing blocks that are in the given [blocks] with [new]",
             "&H  If only [block] is given, replaces with your held block.",
         };
-        
-        public override Brush Construct(BrushArgs args) { return ProcessReplace(args, false); }
 
-        public static Brush ProcessReplace(BrushArgs args, bool not) {
+        public override Brush Construct(BrushArgs args) 
+        { 
+            return ProcessReplace(args, false); 
+        }
+
+        public static Brush ProcessReplace(BrushArgs args, bool not)
+        {
             string[] parts = args.Message.SplitSpaces();
-            if (args.Message.Length == 0) {
-                args.Player.Message("You need at least one block to replace."); return null;
+            if (args.Message.Length == 0)
+            {
+                args.Player.Message("You need at least one block to replace."); 
+                return null;
             }
-            
+
             int count = parts.Length == 1 ? 1 : parts.Length - 1;
             BlockID[] toAffect = GetBlocks(args.Player, 0, count, parts);
             if (toAffect == null) return null;
-            
+
             BlockID target;
             if (!GetTargetBlock(args, parts, out target)) return null;
-            
+
             if (not) return new ReplaceNotBrush(toAffect, target);
             return new ReplaceBrush(toAffect, target);
         }
 
-        public static BlockID[] GetBlocks(Player p, int start, int max, string[] parts) {
+        public static BlockID[] GetBlocks(Player p, int start, int max, string[] parts)
+        {
             List<BlockID> blocks = new List<BlockID>(max - start);
-            
-            for (int i = 0; start < max; start++, i++) 
+
+            for (int i = 0; start < max; start++, i++)
             {
                 int count = CommandParser.GetBlocks(p, parts[start], blocks, false);
                 if (count == 0) return null;
             }
-            
+
             foreach (BlockID b in blocks)
             {
                 if (b == Block.Invalid) continue; // "Skip" block
@@ -68,22 +75,25 @@ namespace Flames.Drawing.Brushes
             return blocks.ToArray();
         }
 
-        public static bool GetTargetBlock(BrushArgs args, string[] parts, out BlockID target) {
+        public static bool GetTargetBlock(BrushArgs args, string[] parts, out BlockID target)
+        {
             Player p = args.Player;
             target = 0;
-            
-            if (parts.Length == 1) {
+
+            if (parts.Length == 1)
+            {
                 if (!CommandParser.IsBlockAllowed(p, "draw with", args.Block)) return false;
-                
-                target = args.Block; return true;
-            }            
+
+                target = args.Block; 
+                return true;
+            }
             return CommandParser.GetBlockIfAllowed(p, parts[parts.Length - 1], "draw with", out target);
         }
     }
-    
-    public sealed class ReplaceNotBrushFactory : BrushFactory 
+
+    public sealed class ReplaceNotBrushFactory : BrushFactory
     {
-        public override string Name { get { return "ReplaceNot"; } }        
+        public override string Name { get { return "ReplaceNot"; } }
         public override string[] Help { get { return HelpString; } }
 
         public static string[] HelpString = new string[] {
@@ -91,7 +101,10 @@ namespace Flames.Drawing.Brushes
             "&HDraws by replacing existing blocks that not are in the given [blocks] with [new]",
             "&H  If only [block] is given, replaces with your held block.",
         };
-        
-        public override Brush Construct(BrushArgs args) { return ReplaceBrushFactory.ProcessReplace(args, true); }
+
+        public override Brush Construct(BrushArgs args) 
+        { 
+            return ReplaceBrushFactory.ProcessReplace(args, true); 
+        }
     }
 }

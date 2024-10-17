@@ -19,20 +19,23 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Flames {
-    
+namespace Flames
+{
+
     /// <summary> Represents a list of player names. Case insensitive. Thread safe. </summary>
-    public class PlayerList {
+    public class PlayerList
+    {
         public string Path;
 
         public List<string> names = new List<string>();
-        public readonly object locker = new object();
-        public readonly object saveLocker = new object();
-        
+        public object locker = new object();
+        public object saveLocker = new object();
+
         public PlayerList() { }
-        
+
         /// <summary> Returns a copy of all names in the list. </summary>
-        public List<string> All() {
+        public List<string> All()
+        {
             lock (locker) return new List<string>(names);
         }
 
@@ -40,107 +43,138 @@ namespace Flames {
         public int Count { get { lock (locker) return names.Count; } }
 
         /// <summary> Returns whether the given name was actually added to this list. </summary>
-        public bool Add(string name) {
-            lock (locker) {
+        public bool Add(string name)
+        {
+            lock (locker)
+            {
                 int idx = names.CaselessIndexOf(name);
                 if (idx >= 0) return false;
-                
+
                 names.Add(name);
             }
             return true;
         }
 
         /// <summary> Returns whether the given name was removed from this list. </summary>
-        public bool Remove(string name) {
+        public bool Remove(string name)
+        {
             lock (locker) return names.CaselessRemove(name);
         }
-        
+
         /// <summary> Returns whether the given name is in this list. </summary>
-        public bool Contains(string name) {
+        public bool Contains(string name)
+        {
             lock (locker) return names.CaselessContains(name);
         }
-        
+
         /// <summary> Removes all names from this list. </summary>
-        public void Clear() {
+        public void Clear()
+        {
             lock (locker) names.Clear();
         }
 
 
-        public int IndexOf(string name) {
+        public int IndexOf(string name)
+        {
             lock (locker) return names.CaselessIndexOf(name);
         }
 
-        public string GetAt(int index) {
-            lock (locker) {
+        public string GetAt(int index)
+        {
+            lock (locker)
+            {
                 if (index < 0 || index >= names.Count) return null;
                 return names[index];
             }
         }
-        
-        
+
+
         /// <summary> Finds matches within this list for the given name. </summary>
-        public string FindMatches(Player p, string name, string type, out int matches) {
-            lock (locker) {
+        public string FindMatches(Player p, string name, string type, out int matches)
+        {
+            lock (locker)
+            {
                 return Matcher.Find(p, name, out matches, names,
                                     null, n => n, type, 20);
             }
         }
-        
+
         /// <summary> Outputs list of players using MultiPageOutput.Output. </summary>
         /// <remarks> Names are formatted using Player.FormatNick(). </remarks>
-        public void Output(Player p, string group, string listCmd, string modifier) {
+        public void Output(Player p, string group, string listCmd, string modifier)
+        {
             List<string> list = All();
-            if (list.Count == 0) {
+            if (list.Count == 0)
+            {
                 p.Message("There are no {0}.", group);
-            } else {
+            }
+            else
+            {
                 p.Message("{0}:", group.Capitalize());
                 Paginator.Output(p, list, (name) => p.FormatNick(name),
                                  listCmd, "players", modifier);
             }
         }
-        
+
         /// <summary> Outputs list of players using MultiPageOutput.Output. </summary>
         /// <remarks> Names are not formatted at all. </remarks>
-        public void OutputPlain(Player p, string group, string listCmd, string modifier) {
+        public void OutputPlain(Player p, string group, string listCmd, string modifier)
+        {
             List<string> list = All();
-            if (list.Count == 0) {
+            if (list.Count == 0)
+            {
                 p.Message("There are no {0}.", group);
-            } else {
+            }
+            else
+            {
                 p.Message("{0}:", group.Capitalize());
                 Paginator.Output(p, list, (name) => name,
                                  listCmd, "players", modifier);
             }
         }
-        
 
-        public void Save() { Save(true); }
-        public void Save(bool log) {
-            lock (saveLocker) {
+
+        public void Save() 
+        { 
+            Save(true); 
+        }
+        public void Save(bool log)
+        {
+            lock (saveLocker)
+            {
                 using (StreamWriter w = new StreamWriter(Path))
                     SaveEntries(w);
             }
             if (log) Logger.Log(LogType.BackgroundActivity, "SAVED: " + Path);
         }
 
-        public void SaveEntries(StreamWriter w) {
-            lock (locker) {
+        public void SaveEntries(StreamWriter w)
+        {
+            lock (locker)
+            {
                 foreach (string p in names) w.WriteLine(p);
             }
         }
-        
-        public static PlayerList Load(string path) {
-            PlayerList list = new PlayerList();
-            list.Path = path;
-            
-            if (!File.Exists(path)) {
+
+        public static PlayerList Load(string path)
+        {
+            PlayerList list = new PlayerList
+            {
+                Path = path
+            };
+
+            if (!File.Exists(path))
+            {
                 File.Create(path).Close();
                 Logger.Log(LogType.SystemActivity, "CREATED NEW: " + path);
                 return list;
             }
-            
-            using (StreamReader r = new StreamReader(path, Encoding.UTF8)) {
+
+            using (StreamReader r = new StreamReader(path, Encoding.UTF8))
+            {
                 string line = null;
-                while ((line = r.ReadLine()) != null) {
+                while ((line = r.ReadLine()) != null)
+                {
                     list.names.Add(line);
                 }
             }

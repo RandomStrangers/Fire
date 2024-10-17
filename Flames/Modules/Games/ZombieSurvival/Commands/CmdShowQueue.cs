@@ -18,25 +18,28 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdShowQueue : Command2 
+    public sealed class CmdShowQueue : Command2
     {
         public override string name { get { return "ShowQueue"; } }
         public override string shortcut { get { return "sq"; } }
         public override string type { get { return CommandTypes.Games; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             ShowQueued(p, ZSGame.Instance.Picker.QueuedMap, "level");
             ShowQueued(p, ZSGame.Instance.QueuedZombie, "zombie");
         }
 
-        public void ShowQueued(Player p, string queued, string type) {
+        public void ShowQueued(Player p, string queued, string type)
+        {
             if (string.IsNullOrEmpty(queued))
                 p.Message("There is no " + type + " queued.");
             else
                 p.Message("\"" + queued + "\" is queued as the next " + type + ".");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/ShowQueue");
             p.Message("&HLists the currently queued level and zombie.");
         }

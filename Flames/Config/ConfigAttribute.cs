@@ -17,16 +17,20 @@
  */
 using System;
 
-namespace Flames.Config {
+namespace Flames.Config
+{
 
-    public abstract class ConfigAttribute : Attribute {       
+    public abstract class ConfigAttribute : Attribute
+    {
         public string Name, Section;
-        
+
         public abstract object Parse(string value);
         public virtual string Serialise(object value) { return value == null ? "" : value.ToString(); }
-        
-        public ConfigAttribute(string name, string section) {
-            Name = name; Section = section;
+
+        public ConfigAttribute(string name, string section)
+        {
+            Name = name; 
+            Section = section;
         }
     }
 }

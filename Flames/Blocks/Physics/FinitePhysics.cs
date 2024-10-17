@@ -18,55 +18,73 @@
 using System;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class FinitePhysics {
-        
-        public unsafe static void DoWaterOrLava(Level lvl, ref PhysInfo C) {
-            Random rand = lvl.physRandom;            
+namespace Flames.Blocks.Physics
+{
+
+    public static class FinitePhysics
+    {
+
+        public unsafe static void DoWaterOrLava(Level lvl, ref PhysInfo C)
+        {
+            Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
             int index;
             BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
-            
-            if (below == Block.Air) {
+
+            if (below == Block.Air)
+            {
                 lvl.AddUpdate(index, C.Block, C.Data);
                 lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                 C.Data.ResetTypes();
-            } else if (below == Block.StillWater || below == Block.StillLava) {
+            }
+            else if (below == Block.StillWater || below == Block.StillLava)
+            {
                 lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                 C.Data.ResetTypes();
-            } else {
+            }
+            else
+            {
                 const int count = 25;
                 int* indices = stackalloc int[count];
                 for (int i = 0; i < count; ++i)
                     indices[i] = i;
 
-                for (int k = count - 1; k > 1; --k) {
+                for (int k = count - 1; k > 1; --k)
+                {
                     int randIndx = rand.Next(k);
                     int temp = indices[k];
                     indices[k] = indices[randIndx]; // move random num to end of list.
                     indices[randIndx] = temp;
                 }
 
-                for (int j = 0; j < count; j++) {
+                for (int j = 0; j < count; j++)
+                {
                     int i = indices[j];
                     ushort posX = (ushort)(x + (i / 5) - 2);
                     ushort posZ = (ushort)(z + (i % 5) - 2);
-                    
-                    if (lvl.IsAirAt(posX, (ushort)(y - 1), posZ) && lvl.IsAirAt(posX, y, posZ)) {
-                        if (posX < x) {
+
+                    if (lvl.IsAirAt(posX, (ushort)(y - 1), posZ) && lvl.IsAirAt(posX, y, posZ))
+                    {
+                        if (posX < x)
+                        {
                             posX = (ushort)((posX + x) / 2);
-                        } else {
+                        }
+                        else
+                        {
                             posX = (ushort)((posX + x + 1) / 2); // ceiling division
                         }
-                        
-                        if (posZ < z) {
+
+                        if (posZ < z)
+                        {
                             posZ = (ushort)((posZ + z) / 2);
-                        } else {
+                        }
+                        else
+                        {
                             posZ = (ushort)((posZ + z + 1) / 2);
                         }
 
-                        if (lvl.IsAirAt(posX, y, posZ, out index) && lvl.AddUpdate(index, C.Block, C.Data)) {
+                        if (lvl.IsAirAt(posX, y, posZ, out index) && lvl.AddUpdate(index, C.Block, C.Data))
+                        {
                             lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                             C.Data.ResetTypes();
                             return;
@@ -76,30 +94,35 @@ namespace Flames.Blocks.Physics {
             }
         }
 
-        public static bool Expand(Level lvl, ushort x, ushort y, ushort z) {
+        public static bool Expand(Level lvl, ushort x, ushort y, ushort z)
+        {
             int index;
             return lvl.IsAirAt(x, y, z, out index) && lvl.AddUpdate(index, Block.FiniteWater, default(PhysicsArgs));
         }
-        
-        public unsafe static void DoFaucet(Level lvl, ref PhysInfo C) {
-            Random rand = lvl.physRandom;            
+
+        public unsafe static void DoFaucet(Level lvl, ref PhysInfo C)
+        {
+            Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
-            
+
             const int count = 6;
             int* indices = stackalloc int[count];
             for (int i = 0; i < count; ++i)
                 indices[i] = i;
 
-            for (int k = count - 1; k > 1; --k) {
+            for (int k = count - 1; k > 1; --k)
+            {
                 int randIndx = rand.Next(k);
                 int temp = indices[k];
                 indices[k] = indices[randIndx]; // move random num to end of list.
                 indices[randIndx] = temp;
             }
 
-            for (int j = 0; j < count; j++) {
+            for (int j = 0; j < count; j++)
+            {
                 int i = indices[j];
-                switch (i) {
+                switch (i)
+                {
                     case 0:
                         if (Expand(lvl, (ushort)(x - 1), y, z)) return;
                         break;

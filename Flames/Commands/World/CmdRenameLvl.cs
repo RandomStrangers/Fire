@@ -16,33 +16,42 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.World {
-    public sealed class CmdRenameLvl : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdRenameLvl : Command2
+    {
         public override string name { get { return "RenameLvl"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("WRename"), new CommandAlias("WorldRename") }; }
         }
         public override bool MessageBlockRestricted { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces();
-            if (args.Length != 2) { Help(p); return; }
+            if (args.Length != 2) 
+            { 
+                Help(p); 
+                return; 
+            }
             LevelConfig cfg;
-                       
+
             string src = Matcher.FindMaps(p, args[0]);
             if (src == null) return;
             if (!LevelInfo.Check(p, data.Rank, src, "rename this map", out cfg)) return;
-            
+
             string dst = args[1].ToLower();
             if (!Formatter.ValidMapName(p, dst)) return;
 
             if (!LevelActions.Rename(p, src, dst)) return;
             Chat.MessageGlobal("Level {0} &Swas renamed to {1}", cfg.Color + src, cfg.Color + dst);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/RenameLvl [level] [new name]");
             p.Message("&HRenames [level] to [new name]");
         }

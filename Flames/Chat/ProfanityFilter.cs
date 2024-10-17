@@ -20,57 +20,69 @@
 using System.Collections.Generic;
 using Flames.Util;
 
-namespace Flames {
-    public static class ProfanityFilter {
+namespace Flames
+{
+    public static class ProfanityFilter
+    {
         public static string[] reduceKeys, reduceValues;
         public static List<string> filters;
         public static bool hookedFilter;
-        
-        public static void Init() {
+
+        public static void Init()
+        {
             InitReduceTable();
             LoadBadWords();
         }
 
         // Replace any words containing a bad word inside it (including partial bad word matches)
-        public static string Parse(string text) {
-            string[] words   = text.SplitSpaces();
+        public static string Parse(string text)
+        {
+            string[] words = text.SplitSpaces();
             string[] reduced = Reduce(text).SplitSpaces();
 
             // Loop through each reduced word, looking for a bad word
-            for (int i = 0; i < reduced.Length; i++) {
+            for (int i = 0; i < reduced.Length; i++)
+            {
                 bool isFiltered = false;
-                foreach (string filter in filters) {
-                    if (reduced[i].Contains(filter)) {
-                        isFiltered = true; break;   
+                foreach (string filter in filters)
+                {
+                    if (reduced[i].Contains(filter))
+                    {
+                        isFiltered = true;
+                        break;
                     }
                 }
                 if (!isFiltered) continue;
 
                 // If a bad word is found anywhere in the word, replace the word            
                 words[i] = Replace(words[i]);
-            }            
+            }
             return string.Join(" ", words);
         }
 
-        public static string Replace(string word) {
+        public static string Replace(string word)
+        {
             string replacement = Server.Config.ProfanityReplacement;
             // for * repeat to ****
             return replacement.Length == 1 ? new string(replacement[0], word.Length) : replacement;
         }
 
-        public static void InitReduceTable() {
+        public static void InitReduceTable()
+        {
             if (reduceKeys != null) return;
             // Because some letters are similar (Like i and l), they are reduced to the same form.
             // For example, the word "@t3$5t ll" is reduced to "atesst ii";
             reduceKeys = "@|i3|l3|(|3|ph|6|#|l|!|1|0|9|$|5|vv|2".Split('|');
-            reduceValues= "a|b|b|c|e|f|g|h|i|i|i|o|q|s|s|w|z".Split('|');
+            reduceValues = "a|b|b|c|e|f|g|h|i|i|i|o|q|s|s|w|z".Split('|');
         }
 
-        public static void LoadBadWords() {
+        public static void LoadBadWords()
+        {
             TextFile filterFile = TextFile.Files["Profanity filter"];
             filterFile.EnsureExists();
-            
-            if (!hookedFilter) {
+
+            if (!hookedFilter)
+            {
                 hookedFilter = true;
                 filterFile.OnTextChanged += LoadBadWords;
             }
@@ -78,18 +90,20 @@ namespace Flames {
             string[] lines = filterFile.GetText();
             filters = new List<string>();
             // Run the badwords through the reducer to ensure things like Ls become Is and everything is lowercase
-            foreach (string line in lines) {
+            foreach (string line in lines)
+            {
                 if (line.StartsWith("#") || line.Trim().Length == 0) continue;
-                
+
                 string word = Reduce(line);
                 filters.Add(word);
             }
         }
 
-        public static string Reduce(string text) {
+        public static string Reduce(string text)
+        {
             text = text.ToLower();
             text = Colors.Strip(text);
-            
+
             for (int i = 0; i < reduceKeys.Length; i++)
                 text = text.Replace(reduceKeys[i], reduceValues[i]);
             return text;

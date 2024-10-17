@@ -17,23 +17,25 @@
  */
 using Flames.Util;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdNews : Command2 
+    public sealed class CmdNews : Command2
     {
         public override string name { get { return "News"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             TextFile newsText = TextFile.Files["News"];
             newsText.EnsureExists();
-            
+
             string[] lines = newsText.GetText();
             p.MessageLines(lines);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/News");
             p.Message("&HShows server news.");
         }

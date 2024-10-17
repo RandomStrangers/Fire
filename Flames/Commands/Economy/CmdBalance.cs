@@ -18,19 +18,20 @@
 using System;
 using Flames.Eco;
 
-namespace Flames.Commands.Eco 
+namespace Flames.Commands.Eco
 {
-    public sealed class CmdBalance : Command2 
+    public sealed class CmdBalance : Command2
     {
         public override string name { get { return "Balance"; } }
         public override string shortcut { get { return "Money"; } }
         public override string type { get { return CommandTypes.Economy; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             if (CheckSuper(p, message, "player name")) return;
             if (message.Length == 0) message = p.name;
             if (!Formatter.ValidPlayerName(p, message)) return;
-            
+
             if (!Economy.CheckIsEnabled(p, this)) return;
 
             Player who = PlayerInfo.FindMatches(p, message, out int matches);
@@ -45,13 +46,14 @@ namespace Flames.Commands.Eco
             }
             else
             {
-                target = who.name; money = who.money;
+                target = who.name; 
+                money = who.money;
             }
 
             string targetName = p.FormatNick(target);
             p.Message("Economy stats for {0}&S:", targetName);
             p.Message(" Current balance: &f{0} &3{1}", money, Server.Config.Currency);
-            
+
             Economy.EcoStats ecos = Economy.RetrieveStats(target);
             p.Message(" Total spent: &f" + ecos.TotalSpent + " &3" + Server.Config.Currency);
             Output(p, ecos.Purchase, "purchase");
@@ -61,22 +63,25 @@ namespace Flames.Commands.Eco
         }
 
         public const string dateFormat = "MM'/'dd'/'yyyy HH:mm:ss";
-        public static void Output(Player p, string value, string type) {
+        public static void Output(Player p, string value, string type)
+        {
             if (value == null) return;
-            
-            if (!AdjustRelative(ref value, " on %f")) {
+
+            if (!AdjustRelative(ref value, " on %f"))
+            {
                 AdjustRelative(ref value, " - Date: %f"); // old date format for purchases
             }
             p.Message(" Last {0}: {1}", type, value);
         }
 
-        public static bool AdjustRelative(ref string value, string dateStart) {
+        public static bool AdjustRelative(ref string value, string dateStart)
+        {
             int index = value.IndexOf(dateStart);
             if (index == -1) return false;
-            
+
             string prefix = value.Substring(0, index);
             index += dateStart.Length; // skip over the date start bit
-            
+
             const int dateLength = 19;
             string date = value.Substring(index, dateLength);
 
@@ -92,7 +97,8 @@ namespace Flames.Commands.Eco
             return true;
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Balance [player]");
             p.Message("&HShows how much &3" + Server.Config.Currency + " &H[player] has, " +
                            "plus their most recent transactions.");

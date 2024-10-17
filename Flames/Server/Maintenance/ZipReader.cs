@@ -21,47 +21,67 @@ using System.IO;
 using System.IO.Compression;
 using System.Text;
 
-namespace Flames 
+namespace Flames
 {
-    public sealed class ZipReaderStream : Stream 
+    public sealed class ZipReaderStream : Stream
     {
         public long CompressedLen;
         public Stream stream;
-        
-        public ZipReaderStream(Stream stream) { this.stream = stream; }
-        public override bool CanRead  { get { return true;  } }
-        public override bool CanSeek  { get { return false; } }
+
+        public ZipReaderStream(Stream stream) 
+        { 
+            this.stream = stream; 
+        }
+        public override bool CanRead { get { return true; } }
+        public override bool CanSeek { get { return false; } }
         public override bool CanWrite { get { return false; } }
 
         public static Exception ex = new NotSupportedException();
         public override void Flush() { stream.Flush(); }
         public override long Length { get { throw ex; } }
         public override long Position { get { throw ex; } set { throw ex; } }
-        public override long Seek(long offset, SeekOrigin origin) { throw ex; }
-        public override void SetLength(long length) { throw ex; }
-        public override void Write(byte[] buffer, int offset, int count) { throw ex; }
-        public override void WriteByte(byte value) { throw ex; }
-        
-        public override int Read(byte[] buffer, int offset, int count) {
+        public override long Seek(long offset, SeekOrigin origin) 
+        { 
+            throw ex; 
+        }
+        public override void SetLength(long length) 
+        { 
+            throw ex; 
+        }
+        public override void Write(byte[] buffer, int offset, int count) 
+        { 
+            throw ex; 
+        }
+        public override void WriteByte(byte value) 
+        { 
+            throw ex; 
+        }
+
+        public override int Read(byte[] buffer, int offset, int count)
+        {
             if (CompressedLen <= 0) return 0;
             if (count >= CompressedLen) count = (int)CompressedLen;
-            
+
             count = stream.Read(buffer, offset, count);
             CompressedLen -= count;
             return count;
         }
-        
-        public override int ReadByte() {
+
+        public override int ReadByte()
+        {
             if (CompressedLen <= 0) return -1;
             CompressedLen--;
             return stream.ReadByte();
         }
-        
-        public override void Close() { stream = null; }
+
+        public override void Close() 
+        { 
+            stream = null;
+        }
     }
 
     /// <summary> Reads entries from a ZIP archive. </summary>
-    public sealed class ZipReader 
+    public sealed class ZipReader
     {
         public BinaryReader reader;
         public Stream stream;
@@ -69,88 +89,105 @@ namespace Flames
         public List<ZipEntry> entries = new List<ZipEntry>();
         public int numEntries;
         public long centralDirOffset, zip64EndOffset;
-        
-        public ZipReader(Stream stream) {
+
+        public ZipReader(Stream stream)
+        {
             this.stream = stream;
             reader = new BinaryReader(stream);
         }
-        
-        public Stream GetEntry(int i, out string file) {
+
+        public Stream GetEntry(int i, out string file)
+        {
             ZipEntry entry = entries[i];
             stream.Seek(entry.LocalHeaderOffset, SeekOrigin.Begin);
             file = null;
-            
+
             uint sig = reader.ReadUInt32();
-            if (sig != ZipEntry.SIG_LOCAL) {
-                Logger.Log(LogType.Warning, "&WFailed to find local file entry {0}", i); return null;
+            if (sig != ZipEntry.SIG_LOCAL)
+            {
+                Logger.Log(LogType.Warning, "&WFailed to find local file entry {0}", i);
+                return null;
             }
-            
+
             entry = ReadLocalFileRecord();
-            file  = Encoding.UTF8.GetString(entry.Filename);
-            
-            ZipReaderStream part = new ZipReaderStream(stream);
-            part.CompressedLen = entry.CompressedSize;
-            
+            file = Encoding.UTF8.GetString(entry.Filename);
+
+            ZipReaderStream part = new ZipReaderStream(stream)
+            {
+                CompressedLen = entry.CompressedSize
+            };
+
             if (entry.CompressionMethod == 0) return part;
             return new DeflateStream(part, CompressionMode.Decompress);
         }
-        
-        public int FindEntries() {
+
+        public int FindEntries()
+        {
             stream.Seek(centralDirOffset, SeekOrigin.Begin);
-            for (int i = 0; i < numEntries; i++) 
+            for (int i = 0; i < numEntries; i++)
             {
                 uint sig = reader.ReadUInt32();
-                if (sig != ZipEntry.SIG_CENTRAL) {
-                    Logger.Log(LogType.Warning, "&WFailed to find central dir entry {0}", i); return i;
+                if (sig != ZipEntry.SIG_CENTRAL)
+                {
+                    Logger.Log(LogType.Warning, "&WFailed to find central dir entry {0}", i); 
+                    return i;
                 }
-                
+
                 ZipEntry entry = ReadCentralDirectoryRecord();
                 entries.Add(entry);
             }
             return numEntries;
         }
-        
-        public void FindFooter() {
+
+        public void FindFooter()
+        {
             BinaryReader r = reader;
             uint sig = 0;
-            
+
             // At -22 for nearly all zips, but try a bit further back in case of comment
             int i, len = Math.Min(257, (int)stream.Length);
-            for (i = 22; i < len; i++) 
+            for (i = 22; i < len; i++)
             {
                 stream.Seek(-i, SeekOrigin.End);
                 sig = r.ReadUInt32();
                 if (sig == ZipEntry.SIG_END) break;
             }
-            
-            if (sig != ZipEntry.SIG_END) {
-                Logger.Log(LogType.Warning, "&WFailed to find end of central directory"); return;
+
+            if (sig != ZipEntry.SIG_END)
+            {
+                Logger.Log(LogType.Warning, "&WFailed to find end of central directory"); 
+                return;
             }
             ReadEndOfCentralDirectoryRecord();
-            
+
             if (centralDirOffset != uint.MaxValue) return;
             Logger.Log(LogType.SystemActivity, "Backup .zip is using ZIP64 format");
-            
+
             stream.Seek(-i - 20, SeekOrigin.End);
             sig = r.ReadUInt32();
-            if (sig != ZipEntry.SIG_ZIP64_LOC) {
-                Logger.Log(LogType.Warning, "&WFailed to find ZIP64 locator"); return;
+            if (sig != ZipEntry.SIG_ZIP64_LOC)
+            {
+                Logger.Log(LogType.Warning, "&WFailed to find ZIP64 locator"); 
+                return;
             }
             ReadZip64EndOfCentralDirectoryLocator();
-            
+
             stream.Seek(zip64EndOffset, SeekOrigin.Begin);
             sig = r.ReadUInt32();
-            if (sig != ZipEntry.SIG_ZIP64_END) {
-                Logger.Log(LogType.Warning, "&WFailed to find ZIP64 end"); return;
+            if (sig != ZipEntry.SIG_ZIP64_END)
+            {
+                Logger.Log(LogType.Warning, "&WFailed to find ZIP64 end"); 
+                return;
             }
             ReadZip64EndOfCentralDirectoryRecord();
         }
 
 
-        public ZipEntry ReadLocalFileRecord() {
+        public ZipEntry ReadLocalFileRecord()
+        {
             BinaryReader r = reader;
             ZipEntry entry = default;
-            
+
             r.ReadUInt16(); // version
             r.ReadUInt16(); // bitflags
             entry.CompressionMethod = r.ReadUInt16();
@@ -160,28 +197,30 @@ namespace Flames
             entry.UncompressedSize = r.ReadUInt32();
             int filenameLen = r.ReadUInt16();
             int extraLen = r.ReadUInt16();
-            
+
             entry.Filename = r.ReadBytes(filenameLen);
             if (extraLen == 0) return entry;
             long extraEnd = stream.Position + extraLen;
-            
+
             // zip 64 mapping ID
-            if (r.ReadUInt16() == 1) {
+            if (r.ReadUInt16() == 1)
+            {
                 r.ReadUInt16(); // data len
                 if (entry.UncompressedSize == uint.MaxValue)
                     entry.UncompressedSize = r.ReadInt64();
-                if (entry.CompressedSize   == uint.MaxValue)
-                    entry.CompressedSize   = r.ReadInt64();
+                if (entry.CompressedSize == uint.MaxValue)
+                    entry.CompressedSize = r.ReadInt64();
             }
 
             stream.Seek(extraEnd, SeekOrigin.Begin);
             return entry;
         }
 
-        public ZipEntry ReadCentralDirectoryRecord() {
+        public ZipEntry ReadCentralDirectoryRecord()
+        {
             BinaryReader r = reader;
             ZipEntry entry = default;
-            
+
             r.ReadUInt16(); // version
             r.ReadUInt16(); // version
             r.ReadUInt16(); // bit flags
@@ -197,18 +236,19 @@ namespace Flames
             r.ReadUInt16(); // internal attributes
             r.ReadUInt32(); // external attributes
             entry.LocalHeaderOffset = r.ReadUInt32();
-            
+
             entry.Filename = r.ReadBytes(filenameLen);
             if (extraLen == 0) return entry;
             long extraEnd = stream.Position + extraLen;
-            
+
             // zip 64 mapping ID
-            if (r.ReadUInt16() == 1) {
+            if (r.ReadUInt16() == 1)
+            {
                 r.ReadUInt16(); // data len
-                if (entry.UncompressedSize  == uint.MaxValue)
-                    entry.UncompressedSize  = r.ReadInt64();
-                if (entry.CompressedSize    == uint.MaxValue)
-                    entry.CompressedSize    = r.ReadInt64();
+                if (entry.UncompressedSize == uint.MaxValue)
+                    entry.UncompressedSize = r.ReadInt64();
+                if (entry.CompressedSize == uint.MaxValue)
+                    entry.CompressedSize = r.ReadInt64();
                 if (entry.LocalHeaderOffset == uint.MaxValue)
                     entry.LocalHeaderOffset = r.ReadInt64();
             }
@@ -217,7 +257,8 @@ namespace Flames
             return entry;
         }
 
-        public void ReadZip64EndOfCentralDirectoryRecord() {
+        public void ReadZip64EndOfCentralDirectoryRecord()
+        {
             BinaryReader r = reader;
             r.ReadInt64(); // zip64 end of central dir size
             r.ReadUInt16(); // version
@@ -230,14 +271,16 @@ namespace Flames
             centralDirOffset = r.ReadInt64();
         }
 
-        public void ReadZip64EndOfCentralDirectoryLocator() {
+        public void ReadZip64EndOfCentralDirectoryLocator()
+        {
             BinaryReader r = reader;
             r.ReadUInt32(); // disc number of zip64 end of central directory
             zip64EndOffset = reader.ReadInt64();
             r.ReadUInt32(); // total number of discs
         }
 
-        public void ReadEndOfCentralDirectoryRecord() {
+        public void ReadEndOfCentralDirectoryRecord()
+        {
             BinaryReader r = reader;
             r.ReadUInt16(); // disc number
             r.ReadUInt16(); // disc number of start

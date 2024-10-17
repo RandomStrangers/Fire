@@ -20,57 +20,71 @@ using System.Collections.Generic;
 using System.IO;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks 
+namespace Flames.Blocks
 {
     /// <summary> Represents which ranks are allowed (and which are disallowed) to use a block. </summary>
-    public sealed class BlockPerms : ItemPerms 
+    public sealed class BlockPerms : ItemPerms
     {
         public BlockID ID;
         public override string ItemName { get { return ID.ToString(); } }
 
         public static BlockPerms[] List = new BlockPerms[Block.SUPPORTED_COUNT];
-        
-        
-        public BlockPerms(BlockID id, LevelPermission min) : base(min) {
+
+
+        public BlockPerms(BlockID id, LevelPermission min) : base(min)
+        {
             ID = id;
         }
-        
-        public BlockPerms Copy() {
+
+        public BlockPerms Copy()
+        {
             BlockPerms copy = new BlockPerms(ID, 0);
-            CopyPermissionsTo(copy); return copy;
-        }        
-       
+            CopyPermissionsTo(copy); 
+            return copy;
+        }
+
 
         /// <summary> Find the permissions for the given block. </summary>
-        public static BlockPerms Find(BlockID b) { return List[b]; }
+        public static BlockPerms Find(BlockID b) 
+        { 
+            return List[b]; 
+        }
 
-        
-        public static void ResendAllBlockPermissions() {
+
+        public static void ResendAllBlockPermissions()
+        {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players) { pl.SendCurrentBlockPermissions(); }
         }
-        
-        public void MessageCannotUse(Player p, string action) {
+
+        public void MessageCannotUse(Player p, string action)
+        {
             p.Message("Only {0} can {1} {2}",
                       Describe(), action, Block.GetName(p, ID));
         }
 
 
-        public static readonly object ioLock = new object();
+        public static object ioLock = new object();
         /// <summary> Saves list of block permissions to disc. </summary>
-        public static void Save() {
-            try {
+        public static void Save()
+        {
+            try
+            {
                 lock (ioLock) SaveCore();
-            } catch (Exception ex) { 
-                Logger.LogError("Error saving block perms", ex); 
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError("Error saving block perms", ex);
             }
         }
 
-        public static void SaveCore() {
-            using (StreamWriter w = new StreamWriter(Paths.BlockPermsFile)) {
+        public static void SaveCore()
+        {
+            using (StreamWriter w = new StreamWriter(Paths.BlockPermsFile))
+            {
                 WriteHeader(w, "block", "each block", "Block ID", "lava");
 
-                foreach (BlockPerms perms in List) 
+                foreach (BlockPerms perms in List)
                 {
                     if (Block.Undefined(perms.ID)) continue;
                     w.WriteLine(perms.Serialise());
@@ -78,61 +92,76 @@ namespace Flames.Blocks
             }
         }
 
-        
+
         /// <summary> Applies new block permissions to server state. </summary>
-        public static void ApplyChanges() {
-            foreach (Group grp in Group.AllRanks) 
+        public static void ApplyChanges()
+        {
+            foreach (Group grp in Group.AllRanks)
             {
                 SetUsable(grp);
             }
         }
-        
-        public static void SetUsable(Group grp) {
-            foreach (BlockPerms perms in List) 
+
+        public static void SetUsable(Group grp)
+        {
+            foreach (BlockPerms perms in List)
             {
                 grp.Blocks[perms.ID] = perms.UsableBy(grp.Permission);
             }
         }
-        
+
 
         /// <summary> Loads list of block permissions from disc. </summary>
-        public static void Load() {
+        public static void Load()
+        {
             lock (ioLock) LoadCore();
             ApplyChanges();
         }
 
-        public static void LoadCore() {
+        public static void LoadCore()
+        {
             SetDefaultPerms();
-            if (!File.Exists(Paths.BlockPermsFile)) { Save(); return; }
-            
-            using (StreamReader r = new StreamReader(Paths.BlockPermsFile)) {
+            if (!File.Exists(Paths.BlockPermsFile)) 
+            { 
+                Save(); 
+                return; 
+            }
+
+            using (StreamReader r = new StreamReader(Paths.BlockPermsFile))
+            {
                 ProcessLines(r);
             }
         }
 
-        public static void ProcessLines(StreamReader r) {
+        public static void ProcessLines(StreamReader r)
+        {
             string[] args = new string[4];
             string line;
-            
-            while ((line = r.ReadLine()) != null) {
+
+            while ((line = r.ReadLine()) != null)
+            {
                 if (line.IsCommentLine()) continue;
                 // Format - ID : Lowest : Disallow : Allow
                 line.Replace(" ", "").FixedSplit(args, ':');
-                
+
                 BlockID block;
-                if (!BlockID.TryParse(args[0], out block)) {
+                if (!BlockID.TryParse(args[0], out block))
+                {
                     // Old format - Name : Lowest : Disallow : Allow
                     block = Block.Parse(Player.Flame, args[0]);
                 }
                 if (block == Block.Invalid) continue;
 
-                try {
+                try
+                {
                     LevelPermission min;
                     List<LevelPermission> allowed, disallowed;
-                    
+
                     Deserialise(args, 1, out min, out allowed, out disallowed);
                     Set(block, min, allowed, disallowed);
-                } catch {
+                }
+                catch
+                {
                     Logger.Log(LogType.Warning, "Hit an error on the block " + line);
                     continue;
                 }
@@ -140,39 +169,54 @@ namespace Flames.Blocks
         }
 
         public static void Set(BlockID b, LevelPermission min,
-                        List<LevelPermission> allowed, List<LevelPermission> disallowed) {
+                        List<LevelPermission> allowed, List<LevelPermission> disallowed)
+        {
             BlockPerms perms = List[b];
-            if (perms == null) {
-                perms   = new BlockPerms(b, min);
+            if (perms == null)
+            {
+                perms = new BlockPerms(b, min);
                 List[b] = perms;
             }
             perms.Init(min, allowed, disallowed);
         }
 
 
-        public static void SetDefaultPerms() {
-            for (BlockID block = 0; block < Block.SUPPORTED_COUNT; block++) {
+        public static void SetDefaultPerms()
+        {
+            for (BlockID block = 0; block < Block.SUPPORTED_COUNT; block++)
+            {
                 BlockProps props = Block.Props[block];
                 LevelPermission min;
-                
-                if (block == Block.Invalid) {
+
+                if (block == Block.Invalid)
+                {
                     min = LevelPermission.Admin;
-                } else if (props.OPBlock) {
+                }
+                else if (props.OPBlock)
+                {
                     min = LevelPermission.Operator;
-                } else if (props.IsDoor || props.IsTDoor || props.oDoorBlock != Block.Invalid) {
+                }
+                else if (props.IsDoor || props.IsTDoor || props.oDoorBlock != Block.Invalid)
+                {
                     min = LevelPermission.Builder;
-                } else if (props.IsPortal || props.IsMessageBlock) {
+                }
+                else if (props.IsPortal || props.IsMessageBlock)
+                {
                     min = LevelPermission.AdvBuilder;
-                } else {
+                }
+                else
+                {
                     min = DefaultPerm(block);
                 }
-                
+
                 Set(block, min, null, null);
             }
         }
 
-        public static LevelPermission DefaultPerm(BlockID block) {
-            switch (block) {
+        public static LevelPermission DefaultPerm(BlockID block)
+        {
+            switch (block)
+            {
                 case Block.Bedrock:
                 case Block.Air_Flood:
                 case Block.Air_FloodDown:

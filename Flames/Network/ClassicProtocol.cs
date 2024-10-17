@@ -42,16 +42,26 @@ namespace Flames.Network
         {
             switch (buffer[offset])
             {
-                case Opcode.Ping: return 1;
-                case Opcode.Handshake: return HandleLogin(buffer, offset, left);
-                case Opcode.SetBlockClient: return HandleBlockchange(buffer, offset, left);
-                case Opcode.EntityTeleport: return HandleMovement(buffer, offset, left);
-                case Opcode.Message: return HandleChat(buffer, offset, left);
-                case Opcode.CpeExtInfo: return HandleExtInfo(buffer, offset, left);
-                case Opcode.CpeExtEntry: return HandleExtEntry(buffer, offset, left);
-                case Opcode.CpePlayerClick: return HandlePlayerClicked(buffer, offset, left);
-                case Opcode.CpeTwoWayPing: return HandleTwoWayPing(buffer, offset, left);
-                case Opcode.CpePluginMessage: return HandlePluginMessage(buffer, offset, left);
+                case Opcode.Ping: 
+                    return 1;
+                case Opcode.Handshake:
+                    return HandleLogin(buffer, offset, left);
+                case Opcode.SetBlockClient: 
+                    return HandleBlockchange(buffer, offset, left);
+                case Opcode.EntityTeleport: 
+                    return HandleMovement(buffer, offset, left);
+                case Opcode.Message: 
+                    return HandleChat(buffer, offset, left);
+                case Opcode.CpeExtInfo: 
+                    return HandleExtInfo(buffer, offset, left);
+                case Opcode.CpeExtEntry: 
+                    return HandleExtEntry(buffer, offset, left);
+                case Opcode.CpePlayerClick: 
+                    return HandlePlayerClicked(buffer, offset, left);
+                case Opcode.CpeTwoWayPing: 
+                    return HandleTwoWayPing(buffer, offset, left);
+                case Opcode.CpePluginMessage: 
+                    return HandlePluginMessage(buffer, offset, left);
 
                 case Opcode.CpeCustomBlockSupportLevel:
                     return left < 2 ? 0 : 2; // only ever one level anyways
@@ -109,8 +119,14 @@ namespace Flames.Network
             if (!player.ProcessLogin(name, mppass)) return left;
 
             UpdateFallbackTable();
-            if (hasCpe) { SendCpeExtensions(); }
-            else { player.CompleteLoginProcess(); }
+            if (hasCpe) 
+            { 
+                SendCpeExtensions(); 
+            }
+            else 
+            { 
+                player.CompleteLoginProcess(); 
+            }
             return size;
         }
 
@@ -127,7 +143,8 @@ namespace Flames.Network
             byte action = buffer[offset + 7];
             if (action > 1)
             {
-                player.Leave("Unknown block action!", true); return left;
+                player.Leave("Unknown block action!", true);
+                return left;
             }
 
             BlockID held = ReadBlock(buffer, offset + 8);
@@ -419,11 +436,16 @@ namespace Flames.Network
         public override bool SendTeleport(byte id, Position pos, Orientation rot,
                                           Packet.TeleportMoveMode moveMode, bool usePos = true, bool interpolateOri = false, bool useOri = true)
         {
-            if (!Supports(CpeExt.ExtEntityTeleport)) { return false; }
+            if (!Supports(CpeExt.ExtEntityTeleport)) 
+            {
+                return false; 
+            }
 
             // NOTE: Classic clients require offseting own entity by 22 units vertically when using absolute location updates
             if ((moveMode == Packet.TeleportMoveMode.AbsoluteInstant || moveMode == Packet.TeleportMoveMode.AbsoluteSmooth) && id == Entities.SelfID)
-            { pos.Y -= 22; }
+            { 
+                pos.Y -= 22; 
+            }
 
             Send(Packet.TeleportExt(id, usePos, moveMode, useOri, interpolateOri, pos, rot, player.hasExtPositions));
             return true;
@@ -802,7 +824,8 @@ namespace Flames.Network
             {
                 if (dst == p || dst.level != p.level || !dst.CanSeeEntity(p)) continue;
 
-                Orientation rot = p.Rot; byte pitch = rot.HeadX;
+                Orientation rot = p.Rot; 
+                byte pitch = rot.HeadX;
                 if (Server.flipHead || p.flipHead) pitch = FlippedPitch(pitch);
 
                 // flip head when infected in ZS, but doesn't support model
@@ -818,7 +841,10 @@ namespace Flames.Network
             if (count == 0) return;
 
             byte[] packet = new byte[count];
-            for (int i = 0; i < packet.Length; i++) { packet[i] = src[i]; }
+            for (int i = 0; i < packet.Length; i++) 
+            { 
+                packet[i] = src[i]; 
+            }
             dst.Send(packet);
         }
 

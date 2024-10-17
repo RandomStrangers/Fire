@@ -22,38 +22,52 @@ using Flames.Maths;
 using Flames.Util;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdMessageBlock : Command2 {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdMessageBlock : Command2
+    {
         public override string name { get { return "MB"; } }
         public override string shortcut { get { return "MessageBlock"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Admin, "can use moderation commands in MBs") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                Help(p);
+                return;
+            }
 
             bool allMessage = false;
             MBArgs mbArgs = new MBArgs();
             string[] args = message.SplitSpaces(2);
             string block = args[0].ToLower();
-            
+
             mbArgs.Block = GetBlock(p, block, ref allMessage);
             if (mbArgs.Block == Block.Invalid) return;
             if (!CommandParser.IsBlockAllowed(p, "place a message block of", mbArgs.Block)) return;
-            
-            if (allMessage) {
+
+            if (allMessage)
+            {
                 mbArgs.Message = message;
-            } else if (args.Length == 1) {
-                p.Message("You need to provide text to put in the messageblock."); return;
-            } else {
+            }
+            else if (args.Length == 1)
+            {
+                p.Message("You need to provide text to put in the messageblock.");
+                return;
+            }
+            else
+            {
                 mbArgs.Message = args[1];
             }
-            
+
             bool allCmds = HasExtraPerm(p, data.Rank, 1);
             if (!MessageBlock.Validate(p, mbArgs.Message, allCmds)) return;
 
@@ -61,93 +75,118 @@ namespace Flames.Commands.Building {
             p.MakeSelection(1, mbArgs, PlacedMark);
         }
 
-        public BlockID GetBlock(Player p, string name, ref bool allMessage) {
-            if (name == "show") { ShowMessageBlocks(p); return Block.Invalid; }
+        public BlockID GetBlock(Player p, string name, ref bool allMessage)
+        {
+            if (name == "show")
+            {
+                ShowMessageBlocks(p);
+                return Block.Invalid;
+            }
             BlockID block = Block.Parse(p, name);
             if (block != Block.Invalid && p.level.Props[block].IsMessageBlock)
                 return block;
-            
+
             // Hardcoded aliases for backwards compatibility
             block = Block.MB_White;
             if (name == "white") block = Block.MB_White;
             if (name == "black") block = Block.MB_Black;
-            if (name == "air")   block = Block.MB_Air;
+            if (name == "air") block = Block.MB_Air;
             if (name == "water") block = Block.MB_Water;
-            if (name == "lava")  block = Block.MB_Lava;
-            
+            if (name == "lava") block = Block.MB_Lava;
+
             allMessage = block == Block.MB_White && name != "white";
             if (p.level.Props[block].IsMessageBlock) return block;
-            
-            Help(p); return Block.Invalid;
+
+            Help(p);
+            return Block.Invalid;
         }
 
-        public bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block) {
+        public bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block)
+        {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             MBArgs args = (MBArgs)state;
-            
+
             BlockID old = p.level.GetBlock(x, y, z);
-            if (p.level.CheckAffect(p, x, y, z, old, args.Block)) {
+            if (p.level.CheckAffect(p, x, y, z, old, args.Block))
+            {
                 p.level.UpdateBlock(p, x, y, z, args.Block);
                 UpdateDatabase(p, args, x, y, z);
                 p.Message("Message block created.");
-            } else {
+            }
+            else
+            {
                 p.Message("Failed to create a message block.");
             }
             return true;
         }
 
-        public void UpdateDatabase(Player p, MBArgs args, ushort x, ushort y, ushort z) {
+        public void UpdateDatabase(Player p, MBArgs args, ushort x, ushort y, ushort z)
+        {
             string map = p.level.name;
             object locker = ThreadSafeCache.DBCache.GetLocker(map);
-            
-            lock (locker) {
+
+            lock (locker)
+            {
                 MessageBlock.Set(map, x, y, z, args.Message);
             }
         }
 
-        public class MBArgs { public string Message; public BlockID Block; }
+        public class MBArgs
+        {
+            public string Message;
+            public BlockID Block;
+        }
 
 
-        public void ShowMessageBlocks(Player p) {
+        public void ShowMessageBlocks(Player p)
+        {
             p.showMBs = !p.showMBs;
             List<Vec3U16> coords = MessageBlock.GetAllCoords(p.level.MapName);
-            
-            foreach (Vec3U16 pos in coords) {
-                if (p.showMBs) {
+
+            foreach (Vec3U16 pos in coords)
+            {
+                if (p.showMBs)
+                {
                     p.SendBlockchange(pos.X, pos.Y, pos.Z, Block.Green);
-                } else {
+                }
+                else
+                {
                     p.RevertBlock(pos.X, pos.Y, pos.Z);
                 }
             }
 
-            p.Message("Now {0} &SMBs.", 
+            p.Message("Now {0} &SMBs.",
                            p.showMBs ? "showing &a" + coords.Count : "hiding");
         }
 
-        public static string Format(BlockID block, Player p, BlockProps[] props) {
+        public static string Format(BlockID block, Player p, BlockProps[] props)
+        {
             if (!props[block].IsMessageBlock) return null;
-            
+
             // We want to use the simple aliases if possible
             if (block == Block.MB_Black) return "black";
             if (block == Block.MB_White) return "white";
-            if (block == Block.MB_Air)   return "air";
-            if (block == Block.MB_Lava)  return "lava";
-            if (block == Block.MB_Water) return "water";            
+            if (block == Block.MB_Air) return "air";
+            if (block == Block.MB_Lava) return "lava";
+            if (block == Block.MB_Water) return "water";
             return Block.GetName(p, block);
         }
 
-        public static List<string> SupportedBlocks(Player p) {
+        public static List<string> SupportedBlocks(Player p)
+        {
             List<string> names = new List<string>();
             BlockProps[] props = p.IsSuper ? Block.Props : p.level.Props;
-            
-            for (int i = 0; i < props.Length; i++) {
+
+            for (int i = 0; i < props.Length; i++)
+            {
                 string name = Format((BlockID)i, p, props);
                 if (name != null) names.Add(name);
             }
             return names;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/MB [block] [message]");
             p.Message("&HPlaces a message in your next block.");
             List<string> names = SupportedBlocks(p);

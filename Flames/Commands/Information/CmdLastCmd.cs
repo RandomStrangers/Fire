@@ -17,9 +17,9 @@
 */
 using System;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdLastCmd : Command2 
+    public sealed class CmdLastCmd : Command2
     {
         public override string name { get { return "LastCmd"; } }
         public override string shortcut { get { return "Last"; } }
@@ -27,31 +27,40 @@ namespace Flames.Commands.Info
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override bool UpdatesLastCmd { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
                 Player[] players = PlayerInfo.Online.Items;
-                foreach (Player pl in players) 
+                foreach (Player pl in players)
                 {
                     if (p.CanSee(pl, data.Rank)) ShowLastCommand(p, pl);
                 }
-            } else {
+            }
+            else
+            {
                 Player who = PlayerInfo.FindMatches(p, message);
                 if (who != null) ShowLastCommand(p, who);
             }
         }
 
-        public static void ShowLastCommand(Player p, Player target) {
-            if (target.lastCMD.Length == 0) {
-                p.Message("{0} &Shas not used any commands yet.", 
+        public static void ShowLastCommand(Player p, Player target)
+        {
+            if (target.lastCMD.Length == 0)
+            {
+                p.Message("{0} &Shas not used any commands yet.",
                           p.FormatNick(target));
-            } else {
+            }
+            else
+            {
                 TimeSpan delta = DateTime.UtcNow - target.lastCmdTime;
-                p.Message("{0} &Slast used \"{1}\" {2} ago", 
+                p.Message("{0} &Slast used \"{1}\" {2} ago",
                           p.FormatNick(target), target.lastCMD, delta.Shorten(true));
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Last [user]");
             p.Message("&H Shows last command used by [user]");
             p.Message("&T/Last");

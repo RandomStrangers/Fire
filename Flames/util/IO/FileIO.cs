@@ -17,41 +17,53 @@
  */
 using System.IO;
 
-namespace Flames 
-{   
+namespace Flames
+{
     /// <summary> Provides utility methods for atomic File I/O operations. </summary>
-    public static class AtomicIO 
-    {        
+    public static class AtomicIO
+    {
         /// <summary> Attempts to delete a file from disc, if it exists </summary>
         /// <returns> true if file was successfully deleted, false if file did not exist to begin with </returns>
         /// <remarks> See File.Delete for exceptions that can be thrown </remarks>
-        public static bool TryDelete(string path) {
-            try {
+        public static bool TryDelete(string path)
+        {
+            try
+            {
                 File.Delete(path);
                 return true;
-            } catch (FileNotFoundException) {
+            }
+            catch (FileNotFoundException)
+            {
                 return false;
             }
         }
-        
+
         /// <summary> Attempts to move a file on disc, if it exists </summary>
         /// <returns> true if file was successfully moved, false if file did not exist to begin with </returns>
         /// <remarks> See File.Move for exceptions that can be thrown </remarks>
-        public static bool TryMove(string curPath, string newPath) {
-            try {
+        public static bool TryMove(string curPath, string newPath)
+        {
+            try
+            {
                 File.Move(curPath, newPath);
                 return true;
-            } catch (FileNotFoundException) {
+            }
+            catch (FileNotFoundException)
+            {
                 return false;
             }
         }
-        
+
         /// <summary> Attempts to retrieve list of files from a directory, if it exists </summary>
         /// <returns> An array of matching files, null if the directory did not exist to begin with </returns>
-        public static string[] TryGetFiles(string directory, string searchPattern) {
-            try {
+        public static string[] TryGetFiles(string directory, string searchPattern)
+        {
+            try
+            {
                 return Directory.GetFiles(directory, searchPattern);
-            } catch (DirectoryNotFoundException) {
+            }
+            catch (DirectoryNotFoundException)
+            {
                 return null;
             }
         }

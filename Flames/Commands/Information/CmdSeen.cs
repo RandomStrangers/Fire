@@ -18,24 +18,31 @@
 using System;
 using Flames.DB;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdSeen : Command2 
+    public sealed class CmdSeen : Command2
     {
         public override string name { get { return "Seen"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
-                if (p.IsSuper) { SuperRequiresArgs(p, "player name"); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                if (p.IsSuper) 
+                { 
+                    SuperRequiresArgs(p, "player name"); 
+                    return; 
+                }
                 message = p.name;
             }
             if (!Formatter.ValidPlayerName(p, message)) return;
 
             Player pl = PlayerInfo.FindMatches(p, message, out int matches);
             if (matches > 1) return;
-            if (matches == 1) {
+            if (matches == 1)
+            {
                 Show(p, pl.ColoredName, pl.FirstLogin, pl.LastLogin);
                 p.Message("{0} &Sis currently online.", p.FormatNick(pl));
                 return;
@@ -47,16 +54,18 @@ namespace Flames.Commands.Info
             Show(p, target.Name, target.FirstLogin, target.LastLogin);
         }
 
-        public static void Show(Player p, string name, DateTime first, DateTime last) {
+        public static void Show(Player p, string name, DateTime first, DateTime last)
+        {
             TimeSpan firstDelta = DateTime.Now - first;
-            TimeSpan lastDelta  = DateTime.Now - last;
-            
+            TimeSpan lastDelta = DateTime.Now - last;
+
             name = p.FormatNick(name);
             p.Message("{0} &Swas first seen at {1:H:mm} on {1:yyyy-MM-dd} ({2} ago)", name, first, firstDelta.Shorten());
-            p.Message("{0} &Swas last seen at {1:H:mm} on {1:yyyy-MM-dd} ({2} ago)",  name, last,  lastDelta.Shorten());
+            p.Message("{0} &Swas last seen at {1:H:mm} on {1:yyyy-MM-dd} ({2} ago)", name, last, lastDelta.Shorten());
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Seen [player]");
             p.Message("&HSays when a player was first and last seen on the server");
         }

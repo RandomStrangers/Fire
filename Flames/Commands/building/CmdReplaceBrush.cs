@@ -17,22 +17,25 @@
  */
 using Flames.Drawing.Ops;
 
-namespace Flames.Commands.Building 
+namespace Flames.Commands.Building
 {
-    public class CmdReplaceBrush : DrawCmd 
+    public class CmdReplaceBrush : DrawCmd
     {
         public override string name { get { return "ReplaceBrush"; } }
         public override string shortcut { get { return "rb"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public virtual bool ReplaceNot { get { return false; } }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs)
+        {
             Player p = dArgs.Player;
-            
+
             string replaceCmd = ReplaceNot ? "ReplaceNot" : "Replace";
-            if (!p.CanUse(replaceCmd) || !p.CanUse("Brush")) {
-                p.Message("You cannot use &T/Brush &Sand/or &T/" + replaceCmd + 
-                          "&S, so therefore cannot use this command."); return null;
+            if (!p.CanUse(replaceCmd) || !p.CanUse("Brush"))
+            {
+                p.Message("You cannot use &T/Brush &Sand/or &T/" + replaceCmd +
+                          "&S, so therefore cannot use this command."); 
+                return null;
             }
 
             DrawOp op = new CuboidDrawOp
@@ -42,26 +45,29 @@ namespace Flames.Commands.Building
             return op;
         }
 
-        public override void GetBrush(DrawArgs dArgs) {
-        	dArgs.BrushName = ReplaceNot ? "ReplaceNotBrush" : "ReplaceBrush";
+        public override void GetBrush(DrawArgs dArgs)
+        {
+            dArgs.BrushName = ReplaceNot ? "ReplaceNotBrush" : "ReplaceBrush";
             dArgs.BrushArgs = dArgs.Message;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/ReplaceBrush [block] [brush name] <brush args>");
             p.Message("&HReplaces all blocks of the given type, " +
                       "in the specified area with the output of the given brush.");
             p.Message(BrushHelpLine);
         }
     }
-    
-    public class CmdReplaceNotBrush : CmdReplaceBrush 
+
+    public class CmdReplaceNotBrush : CmdReplaceBrush
     {
         public override string name { get { return "ReplaceNotBrush"; } }
         public override string shortcut { get { return "rnb"; } }
         public override bool ReplaceNot { get { return true; } }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/ReplaceNotBrush [block] [brush name] <brush args>");
             p.Message("&HReplaces all blocks (except for the given block), " +
                       "in the specified area with the output of the given brush.");

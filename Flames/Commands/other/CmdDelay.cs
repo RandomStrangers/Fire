@@ -18,26 +18,34 @@
 using System;
 using System.Threading;
 
-namespace Flames.Commands.Misc {
-    public sealed class CmdDelay : Command2 {
+namespace Flames.Commands.Misc
+{
+    public sealed class CmdDelay : Command2
+    {
         public override string name { get { return "Delay"; } }
         public override string type { get { return CommandTypes.Other; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             TimeSpan duration = TimeSpan.Zero;
             if (!CommandParser.GetTimespan(p, message, ref duration, "wait for", "ms")) return;
-            
-            if (duration.TotalSeconds > 60) {
-                p.Message("&WCan only wait for a minute at most."); return;
+
+            if (duration.TotalSeconds > 60)
+            {
+                p.Message("&WCan only wait for a minute at most."); 
+                return;
             }
 
-            if (data.Context != CommandContext.MessageBlock) {
-                p.Message("&WThis command can only be used in message blocks."); return;
+            if (data.Context != CommandContext.MessageBlock)
+            {
+                p.Message("&WThis command can only be used in message blocks."); 
+                return;
             }
             Thread.Sleep((int)duration.TotalMilliseconds);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Delay [timespan]");
             p.Message("&HWaits for a certain amount of time.");
             p.Message("&HUse to run a command after a certain delay in a &T/MB");

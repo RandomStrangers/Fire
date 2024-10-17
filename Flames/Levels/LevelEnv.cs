@@ -29,7 +29,9 @@ namespace Flames
 
         public EnvOption(string name, EnvOptions.OptionSetter func, string help)
         {
-            Name = name; SetFunc = func; Help = help;
+            Name = name; 
+            SetFunc = func; 
+            Help = help;
         }
     }
 
@@ -218,7 +220,8 @@ namespace Flames
 
                 if (weather < 0 || weather > 2)
                 {
-                    p.Message("Weather can be either sun, rain, or snow."); return;
+                    p.Message("Weather can be either sun, rain, or snow."); 
+                    return;
                 }
                 string type = weather == 0 ? "&SSun" : (weather == 1 ? "&1Rain" : "&fSnow");
                 p.Message("Set weather for {0} &Sto {1} ({2}&S)", area, weather, type);
@@ -256,7 +259,8 @@ namespace Flames
                 if (!CommandParser.GetBlock(p, input, out block)) return;
                 if (Block.IsPhysicsType(block))
                 {
-                    p.Message("&WCannot use physics block ids for &T/env"); return;
+                    p.Message("&WCannot use physics block ids for &T/env"); 
+                    return;
                 }
 
                 string name = Block.GetName(p, block);

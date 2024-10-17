@@ -25,9 +25,11 @@ using Flames.Tasks;
 using Flames.Undo;
 using BlockID = System.UInt16;
 
-namespace Flames {
-    
-    public partial class Player : IDisposable {
+namespace Flames
+{
+
+    public partial class Player : IDisposable
+    {
 
         public PlayerIgnores Ignores = new PlayerIgnores();
         public static string lastMSG = "";
@@ -46,7 +48,7 @@ namespace Flames {
         /// <summary> The underlying socket for sending/receiving raw data </summary>
         public INetSocket Socket;
         public IGameSession Session;
-        
+
         public DateTime LastAction, AFKCooldown;
         public bool IsAfk, AutoAfk;
         public bool cmdTimer;
@@ -98,7 +100,7 @@ namespace Flames {
         public bool IsRandom { get { return this == Random; } }
 #endif
         public virtual bool IsNull { get { return this == null; } }
-        public virtual string FullName { get { return color + prefix + DisplayName; } }  
+        public virtual string FullName { get { return color + prefix + DisplayName; } }
         public string ColoredName { get { return color + DisplayName; } }
         public string GroupPrefix { get { return group.Prefix.Length == 0 ? "" : "&f" + group.Prefix; } }
 
@@ -122,7 +124,7 @@ namespace Flames {
         // Only used for possession.
         //Using for anything else can cause unintended effects!
         public bool possessed;
-        
+
         /// <summary> Whether this player has permission to build in the current level. </summary>
         public bool AllowBuild = true;
 
@@ -135,7 +137,8 @@ namespace Flames {
         public long SessionModified { get { return TotalModified - startModified; } }
 
         public DateTime startTime;
-        public TimeSpan TotalTime {
+        public TimeSpan TotalTime
+        {
             get { return DateTime.UtcNow - startTime; }
             set { startTime = DateTime.UtcNow.Subtract(value); }
         }
@@ -155,9 +158,11 @@ namespace Flames {
         public bool Unverified, verifiedPass;
         /// <summary> Whether this player can speak even while chat moderation is on </summary>
         public bool voice;
-        
-        public CommandData DefaultCmdData {
-            get { 
+
+        public CommandData DefaultCmdData
+        {
+            get
+            {
                 CommandData data = default;
                 data.Rank = Rank; return data;
             }
@@ -169,16 +174,21 @@ namespace Flames {
         public byte checkpointRotX, checkpointRotY;
         public bool voted;
         public bool flipHead, infected;
-        public GameProps Game = new GameProps();     
+        public GameProps Game = new GameProps();
         /// <summary> Persistent ID of this user in the Players table. </summary>
         public int DatabaseID;
 
         public List<CopyState> CopySlots = new List<CopyState>();
         public int CurrentCopySlot;
-        public CopyState CurrentCopy { 
+        public CopyState CurrentCopy
+        {
             get { return CurrentCopySlot >= CopySlots.Count ? null : CopySlots[CurrentCopySlot]; }
-            set {
-                while (CurrentCopySlot >= CopySlots.Count) { CopySlots.Add(null); }
+            set
+            {
+                while (CurrentCopySlot >= CopySlots.Count) 
+                { 
+                    CopySlots.Add(null); 
+                }
                 CopySlots[CurrentCopySlot] = value;
             }
         }
@@ -189,7 +199,7 @@ namespace Flames {
 
         //Undo
         public VolatileArray<UndoDrawOpEntry> DrawOps = new VolatileArray<UndoDrawOpEntry>();
-        public readonly object pendingDrawOpsLock = new object();
+        public object pendingDrawOpsLock = new object();
         public List<PendingDrawOp> PendingDrawOps = new List<PendingDrawOp>();
 
         public bool showPortals, showMBs;
@@ -207,7 +217,7 @@ namespace Flames {
         public BlockID ClientHeldBlock = Block.Stone;
         public BlockID[] BlockBindings = new BlockID[Block.SUPPORTED_COUNT];
         public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        
+
         public string lastCMD = "";
         public DateTime lastCmdTime;
         public sbyte c4circuitNumber = -1;
@@ -216,11 +226,11 @@ namespace Flames {
         public bool Loading = true; //True if player is loading a map.
         public int UsingGoto = 0, GeneratingMap = 0, LoadingMuseum = 0;
         public Vec3U16 lastClick = Vec3U16.Zero;
-        
+
         public Position PreTeleportPos;
         public Orientation PreTeleportRot;
         public string PreTeleportMap;
-        
+
         public string summonedMap;
         public Position _tempPos;
 
@@ -242,31 +252,34 @@ namespace Flames {
         /// <example> http://www.classicube.net/heartbeat.jsp </example>
         public string VerifiedVia;
         public bool gotSQLData;
-        
-        
+
+
         public bool cancelcommand, cancelchat;
         public bool cancellogin, cancelconnecting;
 
         public Queue<SerialCommand> serialCmds = new Queue<SerialCommand>();
         public object serialCmdsLock = new object();
-        public struct SerialCommand 
-        { 
-            public Command cmd; 
-            public string args; 
-            public CommandData data; 
+        public struct SerialCommand
+        {
+            public Command cmd;
+            public string args;
+            public CommandData data;
         }
-      
+
         /// <summary> Called when a player removes or places a block.
         /// NOTE: Currently this prevents the OnBlockChange event from being called. </summary>
         public event SelectionBlockChange Blockchange;
-        
-        public void ClearBlockchange() { ClearSelection(); }
+
+        public void ClearBlockchange() 
+        { 
+            ClearSelection(); 
+        }
         public object blockchangeObject;
-        
+
         /// <summary> Called when the player has finished providing all the marks for a selection. </summary>
         /// <returns> Whether to repeat this selection, if /static mode is enabled. </returns>
         public delegate bool SelectionHandler(Player p, Vec3S32[] marks, object state, BlockID block);
-        
+
         /// <summary> Called when the player has provided a mark for a selection. </summary>
         /// <remarks> i is the index of the mark, so the 'first' mark has 0 for i. </remarks>
         public delegate void SelectionMarkHandler(Player p, Vec3S32[] marks, int i, object state, BlockID block);

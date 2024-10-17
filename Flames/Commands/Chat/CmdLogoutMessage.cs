@@ -16,27 +16,31 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public sealed class CmdLogoutMessage : EntityPropertyCmd 
+    public sealed class CmdLogoutMessage : EntityPropertyCmd
     {
         public override string name { get { return "LogoutMessage"; } }
         public override string shortcut { get { return "LogoutMsg"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the logout message of others") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             UsePlayer(p, data, message, "logout message");
         }
 
-        public override void SetPlayerData(Player p, string target, string msg) {
+        public override void SetPlayerData(Player p, string target, string msg)
+        {
             PlayerOperations.SetLogoutMessage(p, target, msg);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/LogoutMessage [player] [message]");
             p.Message("&HSets the logout message shown for that player.");
         }

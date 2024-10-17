@@ -15,32 +15,42 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Moderation {   
-    public sealed class CmdXban : Command2 {       
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdXban : Command2
+    {
         public override string name { get { return "XBan"; } }
         public override string shortcut { get { return "BanX"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override CommandAlias[] Aliases {
-            get { return new [] { new CommandAlias("UBan", "-noip") }; }
+        public override CommandAlias[] Aliases
+        {
+            get { return new[] { new CommandAlias("UBan", "-noip") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             bool banIP = true;
-            if (message.CaselessStarts("-noip ")) {
+            if (message.CaselessStarts("-noip "))
+            {
                 message = message.Substring("-noip ".Length);
                 banIP = false;
-            }            
-            if (message.Length == 0) { Help(p); return; }
+            }
+            if (message.Length == 0) 
+            {
+                Help(p); 
+                return; 
+            }
 
             string name = message.SplitSpaces()[0];
             Find("UndoPlayer").Use(p, name + " all", data);
             if (banIP) Find("BanIP").Use(p, "@" + name, data);
-            Find("Ban").Use(p, message, data);    
+            Find("Ban").Use(p, message, data);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/XBan [player] <reason>");
             p.Message("&HBans, IP bans, undoes, and kicks the given player.");
             p.Message("&T/UBan [player] <reason>");

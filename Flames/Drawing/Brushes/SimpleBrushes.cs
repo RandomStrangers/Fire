@@ -18,62 +18,76 @@
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
+namespace Flames.Drawing.Brushes
 {
-    public sealed class SolidBrush : Brush 
+    public sealed class SolidBrush : Brush
     {
-        public readonly BlockID block;
-        
-        public SolidBrush(BlockID block) {
+        public BlockID block;
+
+        public SolidBrush(BlockID block)
+        {
             this.block = block;
         }
-        
+
         public override string Name { get { return "Normal"; } }
-        
-        public override BlockID NextBlock(DrawOp op) { return block; }
-    }
-    
-    // CheckeredPaletteBrush of { b1, b1, b2, b2 }
-    public sealed class StripedBrush : Brush 
-    {
-        public readonly BlockID b1, b2;
-        
-        public StripedBrush(BlockID block1, BlockID block2) {
-           b1 = block1; b2 = block2;
+
+        public override BlockID NextBlock(DrawOp op) 
+        { 
+            return block; 
         }
-        
+    }
+
+    // CheckeredPaletteBrush of { b1, b1, b2, b2 }
+    public sealed class StripedBrush : Brush
+    {
+        public BlockID b1, b2;
+
+        public StripedBrush(BlockID block1, BlockID block2)
+        {
+            b1 = block1; 
+            b2 = block2;
+        }
+
         public override string Name { get { return "Striped"; } }
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             return ((op.Coords.X + op.Coords.Y + op.Coords.Z) & 3) <= 1 ? b1 : b2;
         }
     }
-    
+
     // CheckeredPaletteBrush of { b1, b2 }
-    public sealed class CheckeredBrush : Brush 
+    public sealed class CheckeredBrush : Brush
     {
-        public readonly BlockID b1, b2;
-        
-        public CheckeredBrush(BlockID block1, BlockID block2) {
-            b1 = block1; b2 = block2;
+        public BlockID b1, b2;
+
+        public CheckeredBrush(BlockID block1, BlockID block2)
+        {
+            b1 = block1; 
+            b2 = block2;
         }
-        
+
         public override string Name { get { return "Checkered"; } }
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             return ((op.Coords.X + op.Coords.Y + op.Coords.Z) & 1) == 0 ? b1 : b2;
         }
     }
-    
-    public class CheckeredPaletteBrush : Brush 
+
+    public class CheckeredPaletteBrush : Brush
     {
-        public readonly BlockID[] blocks;
-        
-        public CheckeredPaletteBrush(BlockID[] blocks) { this.blocks = blocks; }
-        
+        public BlockID[] blocks;
+
+        public CheckeredPaletteBrush(BlockID[] blocks) 
+        { 
+            this.blocks = blocks; 
+        }
+
         public override string Name { get { return "Checkered"; } }
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             int i = (op.Coords.X + op.Coords.Y + op.Coords.Z) % blocks.Length;
             if (i < 0) i += blocks.Length;
             return blocks[i];

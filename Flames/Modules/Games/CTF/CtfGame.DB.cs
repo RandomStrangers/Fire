@@ -22,9 +22,12 @@ using Flames.SQL;
 
 namespace Flames.Modules.Games.CTF
 {
-    public partial class CTFGame : RoundsGame 
+    public partial class CTFGame : RoundsGame
     {
-        public struct CtfStats { public int Points, Captures, Tags; }
+        public struct CtfStats 
+        { 
+            public int Points, Captures, Tags; 
+        }
 
         public static ColumnDesc[] ctfTable = new ColumnDesc[] {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
@@ -34,15 +37,17 @@ namespace Flames.Modules.Games.CTF
             new ColumnDesc("tags", ColumnType.UInt24),
         };
 
-        public static CtfStats ParseStats(ISqlRecord record) {
+        public static CtfStats ParseStats(ISqlRecord record)
+        {
             CtfStats stats;
-            stats.Points   = record.GetInt("Points");
+            stats.Points = record.GetInt("Points");
             stats.Captures = record.GetInt("Captures");
-            stats.Tags     = record.GetInt("Tags");
+            stats.Tags = record.GetInt("Tags");
             return stats;
         }
 
-        public static CtfStats LoadStats(string name) {
+        public static CtfStats LoadStats(string name)
+        {
             CtfStats stats = default;
             Database.ReadRows("CTF", "*",
                                 record => stats = ParseStats(record),
@@ -50,18 +55,20 @@ namespace Flames.Modules.Games.CTF
             return stats;
         }
 
-        public override void SaveStats(Player p) {
+        public override void SaveStats(Player p)
+        {
             CtfData data = TryGet(p);
             if (data == null || data.Points == 0 && data.Captures == 0 && data.Tags == 0) return;
-            
+
             object[] args = new object[] {
-            	 data.Points, data.Captures, data.Tags, 
-            	 p.name
+                 data.Points, data.Captures, data.Tags,
+                 p.name
             };
-            
-            int changed = Database.UpdateRows("CTF", "Points=@0, Captures=@1, tags=@2", 
+
+            int changed = Database.UpdateRows("CTF", "Points=@0, Captures=@1, tags=@2",
                                               "WHERE Name=@3", args);
-            if (changed == 0) {
+            if (changed == 0)
+            {
                 Database.AddRow("CTF", "Points, Captures, tags, Name", args);
             }
         }

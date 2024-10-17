@@ -18,77 +18,96 @@
 using Flames.Blocks;
 using BlockID = System.UInt16;
 
-namespace Flames 
+namespace Flames
 {
-    public static partial class Block 
+    public static partial class Block
     {
-        static string[] coreNames = new string[CORE_COUNT];
-        public static bool Undefined(BlockID block) { return IsPhysicsType(block) && coreNames[block].CaselessEq("unknown"); }
-        
-        public static bool ExistsGlobal(BlockID b) { return ExistsFor(Player.Flame, b); }
-        
-        public static bool ExistsFor(Player p, BlockID b) {
+        public static string[] coreNames = new string[CORE_COUNT];
+        public static bool Undefined(BlockID block) 
+        { 
+            return IsPhysicsType(block) && coreNames[block].CaselessEq("unknown"); 
+        }
+
+        public static bool ExistsGlobal(BlockID b) 
+        { 
+            return ExistsFor(Player.Flame, b); 
+        }
+
+        public static bool ExistsFor(Player p, BlockID b)
+        {
             if (b < CORE_COUNT) return !Undefined(b);
-            
+
             if (!p.IsSuper) return p.level.GetBlockDef(b) != null;
             return BlockDefinition.GlobalDefs[b] != null;
         }
-        
+
         /// <summary> Gets the name for the block with the given block ID </summary>
         /// <remarks> Block names can differ depending on the player's level </remarks>
-        public static string GetName(Player p, BlockID block) {
+        public static string GetName(Player p, BlockID block)
+        {
             if (IsPhysicsType(block)) return coreNames[block];
-            
+
             BlockDefinition def;
-            if (!p.IsSuper) {
+            if (!p.IsSuper)
+            {
                 def = p.level.GetBlockDef(block);
-            } else {
+            }
+            else
+            {
                 def = BlockDefinition.GlobalDefs[block];
             }
             if (def != null) return def.Name.Replace(" ", "");
-            
+
             return block < CPE_COUNT ? coreNames[block] : ToRaw(block).ToString();
         }
 
-        public static BlockID Parse(Player p, string input) {
+        public static BlockID Parse(Player p, string input)
+        {
             BlockDefinition[] defs = p.IsSuper ? BlockDefinition.GlobalDefs : p.level.CustomBlockDefs;
             BlockID block;
             // raw ID is treated specially, before names
-            if (BlockID.TryParse(input, out block)) {
-                if (block < CPE_COUNT || (block <= MaxRaw && defs[FromRaw(block)] != null)) {
+            if (BlockID.TryParse(input, out block))
+            {
+                if (block < CPE_COUNT || (block <= MaxRaw && defs[FromRaw(block)] != null))
+                {
                     return FromRaw(block);
                 } // TODO redo to use ExistsFor?
             }
-            
+
             BlockDefinition def = BlockDefinition.ParseName(input, defs);
             if (def != null) return def.GetBlock();
-            
+
             byte coreID;
             bool success = Aliases.TryGetValue(input.ToLower(), out coreID);
             return success ? coreID : Invalid;
         }
-        
-        public static string GetColoredName(Player p, BlockID block) {
+
+        public static string GetColoredName(Player p, BlockID block)
+        {
             BlockPerms perms = BlockPerms.Find(block);
             return Group.GetColor(perms.MinRank) + GetName(p, block);
         }
-        
-        
+
+
         /// <summary> Converts a block &lt;= CPE_MAX_BLOCK into a suitable
         /// block compatible for the given classic protocol version </summary>
-        public static byte ConvertClassic(byte block, byte protocolVersion) {
+        public static byte ConvertClassic(byte block, byte protocolVersion)
+        {
             // protocol version 7 only supports up to Obsidian block
-            if (protocolVersion >= Server.VERSION_0030) {
+            if (protocolVersion >= Server.VERSION_0030)
+            {
                 return block <= Obsidian ? block : v7_fallback[block - CobblestoneSlab];
             }
-            
+
             // protocol version 6 only supports up to Gold block
-            if (protocolVersion >= Server.VERSION_0020) {
+            if (protocolVersion >= Server.VERSION_0020)
+            {
                 return block <= Gold ? block : v6_fallback[block - Iron];
             }
-            
+
             // protocol version 5 only supports up to Glass block
-            if (protocolVersion >= Server.VERSION_0019) {
+            if (protocolVersion >= Server.VERSION_0019)
+            {
                 return block <= Glass ? block : v5_fallback[block - Red];
             }
 
@@ -142,141 +161,253 @@ namespace Flames
             // DeepBlue Turquoise Ice     CeramicTile Magma        Pillar Crate StoneBrick
                Sand,    Sand,     Leaves, Stone,      Cobblestone, Stone, Wood, Stone
         };
-        
-        
+
+
         /// <summary> Converts physics block IDs to their visual block IDs </summary>
         /// <remarks> If block ID is not converted, returns input block ID </remarks>
         /// <example> Op_Glass becomes Glass, Door_Log becomes Log </example>
-        public static BlockID Convert(BlockID block) {
-            switch (block) {
-                case FlagBase: return Mushroom;
-                case Op_Glass: return Glass;
-                case Op_Obsidian: return Obsidian;
-                case Op_Brick: return Brick;
-                case Op_Stone: return Stone;
-                case Op_Cobblestone: return Cobblestone;
-                case Op_Air: return Air; //Must be cuboided / replaced
-                case Op_Water: return StillWater;
-                case Op_Lava: return StillLava;
+        public static BlockID Convert(BlockID block)
+        {
+            switch (block)
+            {
+                case FlagBase: 
+                    return Mushroom;
+                case Op_Glass: 
+                    return Glass;
+                case Op_Obsidian: 
+                    return Obsidian;
+                case Op_Brick: 
+                    return Brick;
+                case Op_Stone: 
+                    return Stone;
+                case Op_Cobblestone: 
+                    return Cobblestone;
+                case Op_Air: 
+                    return Air; //Must be cuboided / replaced
+                case Op_Water: 
+                    return StillWater;
+                case Op_Lava: 
+                    return StillLava;
 
-                case 108: return Cobblestone;
-                case LavaSponge: return Sponge;
+                case 108: 
+                    return Cobblestone;
+                case LavaSponge: 
+                    return Sponge;
 
-                case FloatWood: return Wood;
-                case FastLava: return Lava;
+                case FloatWood: 
+                    return Wood;
+                case FastLava: 
+                    return Lava;
                 case 71:
                 case 72:
                     return White;
-                case Door_Log: return Log;
-                case Door_Obsidian: return Obsidian;
-                case Door_Glass: return Glass;
-                case Door_Stone: return Stone;
-                case Door_Leaves: return Leaves;
-                case Door_Sand: return Sand;
-                case Door_Wood: return Wood;
-                case Door_Green: return Green;
-                case Door_TNT: return TNT;
-                case Door_Slab: return Slab;
-                case Door_Iron: return Iron;
-                case Door_Dirt: return Dirt;
-                case Door_Grass: return Grass;
-                case Door_Blue: return Blue;
-                case Door_Bookshelf: return Bookshelf;
-                case Door_Gold: return Gold;
-                case Door_Cobblestone: return Cobblestone;
-                case Door_Red: return Red;
+                case Door_Log: 
+                    return Log;
+                case Door_Obsidian: 
+                    return Obsidian;
+                case Door_Glass: 
+                    return Glass;
+                case Door_Stone: 
+                    return Stone;
+                case Door_Leaves: 
+                    return Leaves;
+                case Door_Sand: 
+                    return Sand;
+                case Door_Wood: 
+                    return Wood;
+                case Door_Green: 
+                    return Green;
+                case Door_TNT: 
+                    return TNT;
+                case Door_Slab: 
+                    return Slab;
+                case Door_Iron: 
+                    return Iron;
+                case Door_Dirt: 
+                    return Dirt;
+                case Door_Grass: 
+                    return Grass;
+                case Door_Blue: 
+                    return Blue;
+                case Door_Bookshelf: 
+                    return Bookshelf;
+                case Door_Gold: 
+                    return Gold;
+                case Door_Cobblestone: 
+                    return Cobblestone;
+                case Door_Red: 
+                    return Red;
 
-                case Door_Orange: return Orange;
-                case Door_Yellow: return Yellow;
-                case Door_Lime: return Lime;
-                case Door_Teal: return Teal;
-                case Door_Aqua: return Aqua;
-                case Door_Cyan: return Cyan;
-                case Door_Indigo: return Indigo;
-                case Door_Purple: return Violet;
-                case Door_Magenta: return Magenta;
-                case Door_Pink: return Pink;
-                case Door_Black: return Black;
-                case Door_Gray: return Gray;
-                case Door_White: return White;
+                case Door_Orange: 
+                    return Orange;
+                case Door_Yellow: 
+                    return Yellow;
+                case Door_Lime: 
+                    return Lime;
+                case Door_Teal: 
+                    return Teal;
+                case Door_Aqua: 
+                    return Aqua;
+                case Door_Cyan:
+                    return Cyan;
+                case Door_Indigo: 
+                    return Indigo;
+                case Door_Purple: 
+                    return Violet;
+                case Door_Magenta: 
+                    return Magenta;
+                case Door_Pink: 
+                    return Pink;
+                case Door_Black: 
+                    return Black;
+                case Door_Gray: 
+                    return Gray;
+                case Door_White: 
+                    return White;
 
-                case tDoor_Log: return Log;
-                case tDoor_Obsidian: return Obsidian;
-                case tDoor_Glass: return Glass;
-                case tDoor_Stone: return Stone;
-                case tDoor_Leaves: return Leaves;
-                case tDoor_Sand: return Sand;
-                case tDoor_Wood: return Wood;
-                case tDoor_Green: return Green;
-                case tDoor_TNT: return TNT;
-                case tDoor_Slab: return Slab;
-                case tDoor_Air: return Air;
-                case tDoor_Water: return StillWater;
-                case tDoor_Lava: return StillLava;
+                case tDoor_Log: 
+                    return Log;
+                case tDoor_Obsidian: 
+                    return Obsidian;
+                case tDoor_Glass: 
+                    return Glass;
+                case tDoor_Stone: 
+                    return Stone;
+                case tDoor_Leaves: 
+                    return Leaves;
+                case tDoor_Sand: 
+                    return Sand;
+                case tDoor_Wood: 
+                    return Wood;
+                case tDoor_Green: 
+                    return Green;
+                case tDoor_TNT: 
+                    return TNT;
+                case tDoor_Slab: 
+                    return Slab;
+                case tDoor_Air: 
+                    return Air;
+                case tDoor_Water: 
+                    return StillWater;
+                case tDoor_Lava: 
+                    return StillLava;
 
-                case oDoor_Log: return Log;
-                case oDoor_Obsidian: return Obsidian;
-                case oDoor_Glass: return Glass;
-                case oDoor_Stone: return Stone;
-                case oDoor_Leaves: return Leaves;
-                case oDoor_Sand: return Sand;
-                case oDoor_Wood: return Wood;
-                case oDoor_Green: return Green;
-                case oDoor_TNT: return TNT;
-                case oDoor_Slab: return Slab;
-                case oDoor_Lava: return StillLava;
-                case oDoor_Water: return StillWater;
+                case oDoor_Log: 
+                    return Log;
+                case oDoor_Obsidian: 
+                    return Obsidian;
+                case oDoor_Glass: 
+                    return Glass;
+                case oDoor_Stone: 
+                    return Stone;
+                case oDoor_Leaves: 
+                    return Leaves;
+                case oDoor_Sand: 
+                    return Sand;
+                case oDoor_Wood: 
+                    return Wood;
+                case oDoor_Green: 
+                    return Green;
+                case oDoor_TNT: 
+                    return TNT;
+                case oDoor_Slab: 
+                    return Slab;
+                case oDoor_Lava: 
+                    return StillLava;
+                case oDoor_Water: 
+                    return StillWater;
 
-                case MB_White: return White;
-                case MB_Black: return Black;
-                case MB_Air: return Air;
-                case MB_Water: return StillWater;
-                case MB_Lava: return StillLava;
+                case MB_White: 
+                    return White;
+                case MB_Black: 
+                    return Black;
+                case MB_Air: 
+                    return Air;
+                case MB_Water: 
+                    return StillWater;
+                case MB_Lava: 
+                    return StillLava;
 
-                case WaterDown: return Water;
-                case LavaDown: return Lava;
-                case WaterFaucet: return Aqua;
-                case LavaFaucet: return Orange;
+                case WaterDown: 
+                    return Water;
+                case LavaDown: 
+                    return Lava;
+                case WaterFaucet: 
+                    return Aqua;
+                case LavaFaucet: 
+                    return Orange;
 
-                case FiniteWater: return Water;
-                case FiniteLava: return Lava;
-                case FiniteFaucet: return Cyan;
+                case FiniteWater: 
+                    
+                    return Water;
+                case FiniteLava: 
+                    return Lava;
+                case FiniteFaucet: 
+                    return Cyan;
 
-                case Portal_Air: return Air;
-                case Portal_Water: return StillWater;
-                case Portal_Lava: return StillLava;
+                case Portal_Air: 
+                    return Air;
+                case Portal_Water: 
+                    return StillWater;
+                case Portal_Lava: 
+                    return StillLava;
 
-                case Door_Air: return Air;
-                case Door_AirActivatable: return Air;
-                case Door_Water: return StillWater;
-                case Door_Lava: return StillLava;
+                case Door_Air: 
+                    return Air;
+                case Door_AirActivatable: 
+                    return Air;
+                case Door_Water: 
+                    return StillWater;
+                case Door_Lava: 
+                    return StillLava;
 
-                case Portal_Blue: return Cyan;
-                case Portal_Orange: return Orange;
+                case Portal_Blue: 
+                    return Cyan;
+                case Portal_Orange: 
+                    return Orange;
 
-                case C4: return TNT;
-                case C4Detonator: return Red;
-                case TNT_Small: return TNT;
-                case TNT_Big: return TNT;
-                case TNT_Explosion: return Lava;
+                case C4: 
+                    return TNT;
+                case C4Detonator: 
+                    return Red;
+                case TNT_Small: 
+                    return TNT;
+                case TNT_Big: 
+                    return TNT;
+                case TNT_Explosion: 
+                    return Lava;
 
-                case LavaFire: return Lava;
-                case TNT_Nuke: return TNT;
+                case LavaFire: 
+                    return Lava;
+                case TNT_Nuke: 
+                    return TNT;
 
-                case RocketStart: return Glass;
-                case RocketHead: return Gold;
-                case Fireworks: return Iron;
+                case RocketStart: 
+                    return Glass;
+                case RocketHead:
+                    return Gold;
+                case Fireworks: 
+                    return Iron;
 
-                case Deadly_Water: return StillWater;
-                case Deadly_Lava: return StillLava;
-                case Deadly_Air: return Air;
-                case Deadly_ActiveWater: return Water;
-                case Deadly_ActiveLava: return Lava;
-                case Deadly_FastLava: return Lava;
+                case Deadly_Water: 
+                    return StillWater;
+                case Deadly_Lava: 
+                    return StillLava;
+                case Deadly_Air: 
+                    return Air;
+                case Deadly_ActiveWater: 
+                    return Water;
+                case Deadly_ActiveLava: 
+                    return Lava;
+                case Deadly_FastLava: 
+                    return Lava;
 
-                case Magma: return Lava;
-                case Geyser: return Water;
-                case Checkpoint: return Air;
+                case Magma: 
+                    return Lava;
+                case Geyser: 
+                    return Water;
+                case Checkpoint: 
+                    return Air;
 
                 case Air_Flood:
                 case Door_Log_air:
@@ -307,8 +438,10 @@ namespace Flames
                 case 68:
                 case 69:
                     return Air;
-                case Door_Green_air: return Red;
-                case Door_TNT_air: return Lava;
+                case Door_Green_air: 
+                    return Red;
+                case Door_TNT_air: 
+                    return Lava;
 
                 case oDoor_Log_air:
                 case oDoor_Obsidian_air:
@@ -321,32 +454,53 @@ namespace Flames
                 case oDoor_Lava_air:
                 case oDoor_Water_air:
                     return Air;
-                case oDoor_Green_air: return Red;
-                case oDoor_TNT_air: return StillLava;
+                case oDoor_Green_air: 
+                    return Red;
+                case oDoor_TNT_air: 
+                    return StillLava;
 
-                case Train: return Aqua;
+                case Train: 
+                    return Aqua;
 
-                case Snake: return Black;
-                case SnakeTail: return CoalOre;
+                case Snake: 
+                    return Black;
+                case SnakeTail: 
+                    return CoalOre;
 
-                case Creeper: return TNT;
-                case ZombieBody: return MossyRocks;
-                case ZombieHead: return Lime;
+                case Creeper: 
+                    return TNT;
+                case ZombieBody: 
+                    return MossyRocks;
+                case ZombieHead: 
+                    return Lime;
 
-                case Bird_White: return White;
-                case Bird_Black: return Black;
-                case Bird_Lava: return Lava;
-                case Bird_Red: return Red;
-                case Bird_Water: return Water;
-                case Bird_Blue: return Blue;
-                case Bird_Killer: return Lava;
+                case Bird_White: 
+                    return White;
+                case Bird_Black: 
+                    return Black;
+                case Bird_Lava: 
+                    return Lava;
+                case Bird_Red: 
+                    return Red;
+                case Bird_Water: 
+                    return Water;
+                case Bird_Blue: 
+                    return Blue;
+                case Bird_Killer: 
+                    return Lava;
 
-                case Fish_Betta: return Blue;
-                case Fish_Gold: return Gold;
-                case Fish_Salmon: return Red;
-                case Fish_Shark: return Gray;
-                case Fish_Sponge: return Sponge;
-                case Fish_LavaShark: return Obsidian;
+                case Fish_Betta: 
+                    return Blue;
+                case Fish_Gold: 
+                    return Gold;
+                case Fish_Salmon: 
+                    return Red;
+                case Fish_Shark: 
+                    return Gray;
+                case Fish_Sponge: 
+                    return Sponge;
+                case Fish_LavaShark: 
+                    return Obsidian;
             }
             return block;
         }

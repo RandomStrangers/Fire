@@ -18,26 +18,30 @@
 using System.Collections.Generic;
 
 
-namespace Flames.Drawing.Transforms {
-    public abstract class TransformFactory {
-        
+namespace Flames.Drawing.Transforms
+{
+    public abstract class TransformFactory
+    {
+
         /// <summary> Human friendly name of this transform. </summary>
         public abstract string Name { get; }
-        
+
         /// <summary> Description of the transform, in addition to its syntax. </summary>
         public abstract string[] Help { get; }
-        
+
         /// <summary> Creates a transform from the given arguments, 
         /// returning null if invalid arguments are specified. </summary>
         public abstract Transform Construct(Player p, string message);
-        
+
         public static List<TransformFactory> Transforms = new List<TransformFactory>() {
             new NoTransformFactory(), new ScaleTransformFactory(),
             new RotateTransformFactory(),
         };
-        
-        public static TransformFactory Find(string name) {
-            foreach (TransformFactory entry in Transforms) {
+
+        public static TransformFactory Find(string name)
+        {
+            foreach (TransformFactory entry in Transforms)
+            {
                 if (entry.Name.CaselessEq(name)) return entry;
             }
             return null;

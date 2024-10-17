@@ -22,27 +22,31 @@ using System.Net.Cache;
 using System.Text;
 using Flames.Tasks;
 
-namespace Flames.Network 
+namespace Flames.Network
 {
     /// <summary> Repeatedly sends a heartbeat request every certain interval to a web server. </summary>
-    public abstract class Heartbeat 
+    public abstract class Heartbeat
     {
         /// <summary> The max number of retries attempted for a request </summary>
         public const int MAX_RETRIES = 3;
-        
+
         /// <summary> List of all heartbeats to pump </summary>
         public static List<Heartbeat> Heartbeats = new List<Heartbeat>();
-        
-        
+
+
         /// <summary> The URL this heartbeat is sent to </summary
         public string URL;
         /// <summary> Salt used for verifying player names </summary>
         public string Salt = "";
 
-        public string GetHost() {
-            try {
+        public string GetHost()
+        {
+            try
+            {
                 return new Uri(URL).Host;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Getting host of " + URL, ex);
                 return URL;
             }
@@ -56,49 +60,55 @@ namespace Flames.Network
         public abstract void OnResponse(WebResponse response);
         /// <summary> Called when a failure HTTP response is received from the web server </summary>
         public abstract void OnFailure(string response);
-        
+
 
         /// <summary> Sends a heartbeat to the web server and then reads the response </summary>
-        public void Pump() {
+        public void Pump()
+        {
             byte[] data = Encoding.ASCII.GetBytes(GetHeartbeatData());
             Exception lastEx = null;
-            string lastResp  = null;
+            string lastResp = null;
 
-            for (int i = 0; i < MAX_RETRIES; i++) 
+            for (int i = 0; i < MAX_RETRIES; i++)
             {
-                try {
+                try
+                {
                     HttpWebRequest req = HttpUtil.CreateRequest(URL);
-                    req.Method      = "POST";
+                    req.Method = "POST";
                     req.ContentType = "application/x-www-form-urlencoded";
                     req.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
-                    req.Timeout     = 10000;
-                    
+                    req.Timeout = 10000;
+
                     OnRequest(req);
                     HttpUtil.SetRequestData(req, data);
                     WebResponse res = req.GetResponse();
                     OnResponse(res);
                     return;
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     lastResp = HttpUtil.GetErrorResponse(ex);
                     HttpUtil.DisposeErrorResponse(ex);
-                    lastEx   = ex;
+                    lastEx = ex;
                     continue;
                 }
             }
-            
+
             OnFailure(lastResp);
             Logger.Log(LogType.Warning, "Failed to send heartbeat to {0} ({1})", GetHost(), lastEx.Message);
         }
-        
-        
+
+
         /// <summary> Adds the given heartbeat to the list of automatically pumped heartbeats </summary>
-        public static void Register(Heartbeat beat) {
+        public static void Register(Heartbeat beat)
+        {
             beat.Salt = Server.GenerateSalt();
             Heartbeats.Add(beat);
         }
-        
+
         /// <summary> Starts pumping heartbeats </summary>
-        public static void Start() {
+        public static void Start()
+        {
             string hosts = Heartbeats.Join(hb => hb.GetHost().Replace("www.", ""));
             Server.UpdateUrl("Finding " + hosts + " url..");
 
@@ -106,11 +116,15 @@ namespace Flames.Network
             Server.Heartbeats.QueueRepeat(OnBeat, null, TimeSpan.FromSeconds(30));
         }
 
-        public static void OnBeat(SchedulerTask task) {
+        public static void OnBeat(SchedulerTask task)
+        {
             // no point if can't accept connections anyways
             if (!Server.Listener.Listening) return;
-            
-            foreach (Heartbeat beat in Heartbeats) { beat.Pump(); }
+
+            foreach (Heartbeat beat in Heartbeats) 
+            { 
+                beat.Pump(); 
+            }
         }
     }
 }

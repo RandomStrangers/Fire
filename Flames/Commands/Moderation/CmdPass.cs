@@ -19,90 +19,132 @@
  */
 using Flames.Authentication;
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdPass : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdPass : Command2
+    {
         public override string name { get { return "Pass"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override bool LogUsage { get { return false; } }
         public override bool UpdatesLastCmd { get { return false; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Owner, "can reset passwords") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("SetPass", "set"), new CommandAlias("ResetPass", "reset") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (data.Rank < Server.Config.VerifyAdminsRank) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (data.Rank < Server.Config.VerifyAdminsRank)
+            {
                 Formatter.MessageNeedMinPerm(p, "+ can verify or set a password", Server.Config.VerifyAdminsRank); return;
             }
-            
+
             if (!Server.Config.verifyadmins) { p.Message("Password verification is not currently enabled."); return; }
-            if (message.Length == 0) { Help(p); return; }
-            
+            if (message.Length == 0) 
+            {
+                Help(p); 
+                return; 
+            }
+
             string[] args = message.SplitSpaces(2);
-            if (args.Length == 2 && args[0].CaselessEq("set")) {
+            if (args.Length == 2 && args[0].CaselessEq("set"))
+            {
                 SetPassword(p, args[1]);
-            } else if (args.Length == 2 && args[0].CaselessEq("reset")) {
+            }
+            else if (args.Length == 2 && args[0].CaselessEq("reset"))
+            {
                 ResetPassword(p, args[1], data);
-            } else {
+            }
+            else
+            {
                 VerifyPassword(p, message);
             }
         }
 
-        public static void VerifyPassword(Player p, string password) {
-            if (!p.Unverified) { p.Message("&WYou are already verified."); return; }
-            if (p.passtries >= 3) { p.Kick("Did you really think you could keep on guessing?"); return; }
-            if (password.IndexOf(' ') >= 0) { p.Message("Your password must be &Wone &Sword!"); return; }
+        public static void VerifyPassword(Player p, string password)
+        {
+            if (!p.Unverified) 
+            { 
+                p.Message("&WYou are already verified."); 
+                return; 
+            }
+            if (p.passtries >= 3) 
+            { 
+                p.Kick("Did you really think you could keep on guessing?"); 
+                return; 
+            }
+            if (password.IndexOf(' ') >= 0) 
+            {
+                p.Message("Your password must be &Wone &Sword!"); 
+                return; 
+            }
 
-            if (!PassAuthenticator.Current.HasPassword(p.name)) {
+            if (!PassAuthenticator.Current.HasPassword(p.name))
+            {
                 p.Message("You have not &Wset a password, &Suse &T/SetPass [Password] &Wto set one!");
                 return;
-            } 
-            
+            }
+
             if (PassAuthenticator.VerifyPassword(p, password)) return;
-            
-             p.passtries++;
-             p.Message("&WWrong Password. &SRemember your password is &Wcase sensitive.");
-             p.Message("Forgot your password? Contact &W{0} &Sto &Wreset it.", Server.Config.OwnerName);
+
+            p.passtries++;
+            p.Message("&WWrong Password. &SRemember your password is &Wcase sensitive.");
+            p.Message("Forgot your password? Contact &W{0} &Sto &Wreset it.", Server.Config.OwnerName);
         }
 
-        public static void SetPassword(Player p, string password) {
-            if (p.Unverified && PassAuthenticator.Current.HasPassword(p.name)) {
+        public static void SetPassword(Player p, string password)
+        {
+            if (p.Unverified && PassAuthenticator.Current.HasPassword(p.name))
+            {
                 PassAuthenticator.Current.RequiresVerification(p, "can change your password");
                 p.Message("Forgot your password? Contact &W{0} &Sto &Wreset it.", Server.Config.OwnerName);
                 return;
             }
-            
-            if (password.IndexOf(' ') >= 0) { p.Message("&WPassword must be one word."); return; }
+
+            if (password.IndexOf(' ') >= 0) 
+            { 
+                p.Message("&WPassword must be one word."); 
+                return; 
+            }
             PassAuthenticator.Current.StorePassword(p.name, password);
             p.Message("Your password was &aset to: &c" + password);
         }
 
-        public void ResetPassword(Player p, string name, CommandData data) {
+        public void ResetPassword(Player p, string name, CommandData data)
+        {
             string target = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (target == null) return;
-            
-            if (p.Unverified) {
+
+            if (p.Unverified)
+            {
                 PassAuthenticator.Current.RequiresVerification(p, "can reset passwords");
                 return;
             }
             if (!CheckResetPerms(p, data)) return;
-            
-            if (PassAuthenticator.Current.ResetPassword(target)) {
+
+            if (PassAuthenticator.Current.ResetPassword(target))
+            {
                 p.Message("Reset password for {0}", p.FormatNick(target));
-            } else {
+            }
+            else
+            {
                 p.Message("{0} &Sdoes not have a password.", p.FormatNick(target));
             }
         }
 
-        public bool CheckResetPerms(Player p, CommandData data) {
+        public bool CheckResetPerms(Player p, CommandData data)
+        {
             // check server owner name for permissions backwards compatibility
             return Server.Config.OwnerName.CaselessEq(p.name) || CheckExtraPerm(p, data, 1);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Pass reset [player] &H- Resets the password for that player");
             p.Message("&T/Pass set [password] &H- Sets your password to [password]");
             p.Message("&H Note: &WDo NOT set this as your account password!");

@@ -1,5 +1,4 @@
-﻿using Flames;
-namespace Botnick
+﻿namespace Flames.Commands
 {
     public sealed class CmdBotnick : Command
     {

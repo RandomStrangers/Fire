@@ -21,55 +21,67 @@ using Flames.Events.EconomyEvents;
 using Flames.Eco;
 using Flames.SQL;
 
-namespace Flames.Core {
-    public static class EcoHandlers {
+namespace Flames.Core
+{
+    public static class EcoHandlers
+    {
 
-        public static void HandleEcoTransaction(EcoTransaction transaction) {
-            switch (transaction.Type) {
+        public static void HandleEcoTransaction(EcoTransaction transaction)
+        {
+            switch (transaction.Type)
+            {
                 case EcoTransactionType.Purchase:
-                    HandlePurchase(transaction); break;
+                    HandlePurchase(transaction); 
+                    break;
                 case EcoTransactionType.Take:
-                    HandleTake(transaction); break;
+                    HandleTake(transaction); 
+                    break;
                 case EcoTransactionType.Give:
-                    HandleGive(transaction); break;
+                    HandleGive(transaction); 
+                    break;
                 case EcoTransactionType.Payment:
-                    HandlePayment(transaction); break;
+                    HandlePayment(transaction); 
+                    break;
             }
         }
 
-        public static void HandlePurchase(EcoTransaction data) {
+        public static void HandlePurchase(EcoTransaction data)
+        {
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.TotalSpent += data.Amount;
             stats.Purchase = data.ItemDescription + " &3for &f" + data.Amount + " &3$currency"
                 + " on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
-            
+
             Player p = PlayerInfo.FindExact(data.TargetName);
-            if (p != null) p.Message("Your balance is now &f{0} &3{1}", p.money, Server.Config.Currency);
+            p?.Message("Your balance is now &f{0} &3{1}", p.money, Server.Config.Currency);
             Economy.UpdateStats(stats);
         }
 
-        public static void HandleTake(EcoTransaction data) {
+        public static void HandleTake(EcoTransaction data)
+        {
             MessageAll("{0} &Stook &f{2} &3{3} &Sfrom {1}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Fine = Format(" by " + data.Source.name, data);
             Economy.UpdateStats(stats);
         }
 
-        public static void HandleGive(EcoTransaction data) {
+        public static void HandleGive(EcoTransaction data)
+        {
             MessageAll("{0} &Sgave {1} &f{2} &3{3}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Salary = Format(" by " + data.Source.name, data);
             Economy.UpdateStats(stats);
         }
 
-        public static void HandlePayment(EcoTransaction data) {
+        public static void HandlePayment(EcoTransaction data)
+        {
             MessageAll("{0} &Spaid {1} &f{2} &3{3}{4}", data);
             Economy.EcoStats stats = Economy.RetrieveStats(data.TargetName);
             stats.Salary = Format(" by " + data.Source.name, data);
             Economy.UpdateStats(stats);
-            
+
             if (data.Source.IsSuper) return;
-            
+
             stats = Economy.RetrieveStats(data.Source.name);
             stats.Payment = Format(" to " + data.TargetName, data);
             Economy.UpdateStats(stats);
@@ -77,24 +89,27 @@ namespace Flames.Core {
         }
 
 
-        public static void MessageAll(string format, EcoTransaction data) {
+        public static void MessageAll(string format, EcoTransaction data)
+        {
             string reason = data.Reason == null ? "" : " &S(" + data.Reason + "&S)";
             string msg = string.Format(format, data.Source.ColoredName, data.TargetFormatted,
                                        data.Amount, Server.Config.Currency, reason);
             Chat.MessageGlobal(msg);
         }
 
-        public static string Format(string action, EcoTransaction data) {
+        public static string Format(string action, EcoTransaction data)
+        {
             string entry = "&f" + data.Amount + " &3$currency" + action
                 + "&3 on %f" + DateTime.Now.ToString(CultureInfo.InvariantCulture);
             string reason = data.Reason;
-            
+
             if (reason == null) return entry;
             if (!Database.Backend.EnforcesTextLength)
                 return entry + " (" + reason + ")";
-            
+
             int totalLen = entry.Length + 3 + reason.Length;
-            if (totalLen >= 256) {
+            if (totalLen >= 256)
+            {
                 int truncatedLen = reason.Length - (totalLen - 255);
                 reason = reason.Substring(0, truncatedLen);
                 data.Source.Message("Reason too long, truncating to: {0}", reason);

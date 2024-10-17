@@ -19,22 +19,24 @@ using System.Collections.Generic;
 using System.IO;
 using Flames.Maths;
 
-namespace Flames.Levels.IO 
-{    
+namespace Flames.Levels.IO
+{
     /// <summary> Reads/Loads block data (and potentially metadata) encoded in a particular format. </summary>
-    public abstract class IMapImporter 
+    public abstract class IMapImporter
     {
-        public abstract string Extension   { get; }
+        public abstract string Extension { get; }
         public abstract string Description { get; }
-        
-        public virtual Level Read(string path, string name, bool metadata) {
+
+        public virtual Level Read(string path, string name, bool metadata)
+        {
             using (FileStream fs = File.OpenRead(path))
                 return Read(fs, name, metadata);
         }
-        
+
         public abstract Level Read(Stream src, string name, bool metadata);
 
-        public virtual Vec3U16 ReadDimensions(string path) {
+        public virtual Vec3U16 ReadDimensions(string path)
+        {
             using (FileStream fs = File.OpenRead(path))
                 return ReadDimensions(fs);
         }
@@ -42,13 +44,15 @@ namespace Flames.Levels.IO
         public abstract Vec3U16 ReadDimensions(Stream src);
 
 
-        public static void ConvertCustom(Level lvl) {
+        public static void ConvertCustom(Level lvl)
+        {
             ushort x, y, z;
             byte[] blocks = lvl.blocks; // local var to avoid JIT bounds check
-            for (int i = 0; i < blocks.Length; i++) {
+            for (int i = 0; i < blocks.Length; i++)
+            {
                 byte raw = blocks[i];
                 if (raw <= Block.CPE_MAX_BLOCK) continue;
-                
+
                 blocks[i] = Block.custom_block;
                 lvl.IntToPos(i, out x, out y, out z);
                 lvl.FastSetExtTile(x, y, z, raw);
@@ -57,54 +61,61 @@ namespace Flames.Levels.IO
 
         /// <summary> Reads the given number of bytes from the given stream </summary>
         /// <remarks> Throws EndOfStreamException if unable to read sufficient bytes </remarks>
-        public static void ReadFully(Stream s, byte[] data, int count) {
+        public static void ReadFully(Stream s, byte[] data, int count)
+        {
             int offset = 0;
-            while (count > 0) {
+            while (count > 0)
+            {
                 int read = s.Read(data, offset, count);
-                
+
                 if (read == 0) throw new EndOfStreamException("End of stream reading data");
-                offset += read; count -= read;
+                offset += read; 
+                count -= read;
             }
         }
-         
-        
+
+
         /// <summary> List of all level format importers </summary>
         public static List<IMapImporter> Formats = new List<IMapImporter>() {
-            new LvlImporter(), new CwImporter(), new FcmImporter(), new McfImporter(), 
+            new LvlImporter(), new CwImporter(), new FcmImporter(), new McfImporter(),
             new DatImporter(), new McLevelImporter(),
         };
-        
+
         /// <summary> Returns an IMapImporter capable of decoding the given level file </summary>
         /// <remarks> Determines importer suitability by comparing file extensions </remarks>
         /// <remarks> A suitable IMapImporter, or null if no suitable importer is found </remarks>
-        public static IMapImporter GetFor(string path) {
-            foreach (IMapImporter imp in Formats) 
+        public static IMapImporter GetFor(string path)
+        {
+            foreach (IMapImporter imp in Formats)
             {
                 if (path.CaselessEnds(imp.Extension)) return imp;
             }
             return null;
         }
-        
+
         /// <summary> Decodes the given level file into a Level instance </summary>
-        public static Level Decode(string path, string name, bool metadata) {
+        public static Level Decode(string path, string name, bool metadata)
+        {
             IMapImporter imp = GetFor(path) ?? Formats[0];
             return imp.Read(path, name, metadata);
         }
     }
 
     /// <summary> Writes/Saves block data (and potentially metadata) encoded in a particular format. </summary>
-    public abstract class IMapExporter 
+    public abstract class IMapExporter
     {
         public abstract string Extension { get; }
-        
-        public void Write(string path, Level lvl) {
-            using (FileStream fs = File.Create(path)) {
+
+        public void Write(string path, Level lvl)
+        {
+            using (FileStream fs = File.Create(path))
+            {
                 Write(fs, lvl);
             }
         }
-        
+
         public abstract void Write(Stream dst, Level lvl);
-        
+
         public static List<IMapExporter> Formats = new List<IMapExporter>() {
             new LvlExporter()
         };

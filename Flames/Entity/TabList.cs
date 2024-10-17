@@ -17,53 +17,61 @@
  */
 using Flames.Events.EntityEvents;
 
-namespace Flames 
+namespace Flames
 {
     /// <summary> Contains methods related to the management of tab list of player names. </summary>
-    public static class TabList 
+    public static class TabList
     {
         // Want higher ranks at top of tab list, banned at bottom of tab list
         public const LevelPermission offset = LevelPermission.Flames;
-        
+
         /// <summary> Adds the given player to that player's tab list (if their client supports it). </summary>
-        public static void Add(Player dst, Player p, byte id) {
+        public static void Add(Player dst, Player p, byte id)
+        {
             if (!dst.hasExtList) return;
             byte grpPerm = (byte)(offset - p.Rank);
             if (!Server.Config.TablistRankSorted) grpPerm = 1;
-            
+
             string name, group;
             GetEntry(p, dst, out name, out group);
-            
+
             name = Colors.Escape(name); // for nicks
             dst.Session.SendAddTabEntry(id, p.truename, name, group, grpPerm);
         }
 
-        public static void GetEntry(Player p, Player dst, out string name, out string group) {
+        public static void GetEntry(Player p, Player dst, out string name, out string group)
+        {
             string map = p.level.name;
             if (!p.level.SeesServerWideChat) map += " &S<Local chat>";
-            
+
             group = Server.Config.TablistGlobal ? "On " + map : "&fPlayers";
-            name  = dst.Ignores.Nicks ? p.color + p.truename : p.ColoredName;
+            name = dst.Ignores.Nicks ? p.color + p.truename : p.ColoredName;
             OnTabListEntryAddedEvent.Call(p, ref name, ref group, dst);
 
-            if (p.hidden && p.IsAfk) { name += " &f(Hid, &7AFK)"; return; }
+            if (p.hidden && p.IsAfk) 
+            { 
+                name += " &f(Hid, &7AFK)"; 
+                return; 
+            }
             if (p.hidden) name += " &f(Hid)";
             if (p.IsAfk) name += " &7(AFK)";
         }
-        
+
         /// <summary> Adds the given bot to that player's tab list (if their client support it). </summary>
-        public static void Add(Player dst, PlayerBot b) {
+        public static void Add(Player dst, PlayerBot b)
+        {
             if (!dst.hasExtList) return;
-            
+
             string name = b.color + b.name, group = "Bots";
             OnTabListEntryAddedEvent.Call(b, ref name, ref group, dst);
             dst.Session.SendAddTabEntry(b.id, b.name, name, group, 0);
         }
-        
+
         /// <summary> Removes the given player from player's tab list (if their client supports it). </summary>
-        public static void Remove(Player dst, Entity entity) {
+        public static void Remove(Player dst, Entity entity)
+        {
             if (!dst.hasExtList) return;
-            
+
             OnTabListEntryRemovedEvent.Call(entity, dst);
             byte id = dst == entity ? Entities.SelfID : entity.EntityID;
             dst.Session.SendRemoveTabEntry(id);
@@ -72,15 +80,18 @@ namespace Flames
 
         /// <summary> Updates the tab list entry for this player to all other players 
         /// (whose clients support it) who can see the player in the tab list. </summary>
-        public static void Update(Player p, bool self) {
+        public static void Update(Player p, bool self)
+        {
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player other in players) {
-                if (p == other) {
+            foreach (Player other in players)
+            {
+                if (p == other)
+                {
                     if (self) Add(other, p, Entities.SelfID);
                     continue;
                 }
                 if (!Server.Config.TablistGlobal && p.level != other.level) continue;
-                
+
                 if (other.CanSee(p)) Add(other, p, p.id);
                 if (p.CanSee(other)) Add(p, other, other.id);
             }
@@ -88,19 +99,22 @@ namespace Flames
 
         /// <summary> Removes this tab list entry for this player to all other players 
         /// (whose clients support it) in the server. </summary>
-        public static void RemoveAll(Player p, bool self, bool toVisible) {
+        public static void RemoveAll(Player p, bool self, bool toVisible)
+        {
             if (!Server.Config.TablistGlobal) return;
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player other in players) {               
-                if (p == other) {
-                    if (self) Remove(other, p); 
+            foreach (Player other in players)
+            {
+                if (p == other)
+                {
+                    if (self) Remove(other, p);
                     continue;
                 }
-                
+
                 bool despawn = other.CanSee(p);
                 if (!toVisible) despawn = !despawn;
                 if (despawn) Remove(other, p);
-                
+
                 despawn = p.CanSee(other);
                 if (!toVisible) despawn = !despawn;
                 if (despawn) Remove(p, other);

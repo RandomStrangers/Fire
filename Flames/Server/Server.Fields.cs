@@ -40,16 +40,17 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.2.5";
+        public const string InternalVersion = "1.0.2.6";
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = FlamesVersion;
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 #endif
-        public const string FlamesVersion = "9.0.4.9";
+        public const string FlamesVersion = "9.0.5.0";
         public static string Version { get { return InternalVersion; } }
         public static string fullName;
+
         public static string SoftwareNameVersioned
         {
             get { return fullName ?? SoftwareName + " " + Version; }
@@ -59,12 +60,12 @@ namespace Flames
 
         //Other
         public static bool SetupFinished, CLIMode;
-        
+
         public static PlayerList whiteList, invalidIds;
         public static PlayerList ignored, hidden, agreed, vip, noEmotes, lockdown;
         public static PlayerExtList models, skins, reach, rotations, modelScales;
         public static PlayerExtList bannedIP, frozen, muted, tempBans, tempRanks, jailed;
-        
+
         public static readonly List<string> Devs = new List<string>() {
             "DarkBurningFlame", "BurningFlame", "SuperNova", "DeadNova",
             "HyperNova", "RandomStranger05", "GoldenSparks", "AurumStellae",
@@ -81,11 +82,11 @@ namespace Flames
 
         // Extra storage for custom commands
         public static ExtrasCollection Extras = new ExtrasCollection();
-        
+
         public static int YesVotes, NoVotes;
         public static bool voting;
         public const int MAX_PLAYERS = int.MaxValue;
-        
+
         public static Scheduler MainScheduler = new Scheduler("F_MainScheduler");
         public static Scheduler Background = new Scheduler("F_BackgroundScheduler");
         public static Scheduler Critical = new Scheduler("F_CriticalScheduler");

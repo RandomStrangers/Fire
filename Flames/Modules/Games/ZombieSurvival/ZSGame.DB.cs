@@ -22,69 +22,77 @@ using Flames.Games;
 using Flames.SQL;
 
 namespace Flames.Modules.Games.ZS
-{    
-    public partial class ZSGame : RoundsGame 
+{
+    public partial class ZSGame : RoundsGame
     {
-        public struct ZombieStats { public int TotalRounds, MaxRounds, TotalInfected, MaxInfected; }
+        public struct ZombieStats 
+        { 
+            public int TotalRounds, MaxRounds, TotalInfected, MaxInfected; 
+        }
 
         public static TopStat statMostInfected, statMaxInfected, statMostSurvived, statMaxSurvived;
         public static OfflineStatPrinter offlineZSStats;
         public static OnlineStatPrinter onlineZSStats;
         public static ChatToken infectedToken, survivedToken;
 
-        public static void HookStats() {
+        public static void HookStats()
+        {
             statMostInfected = new DBTopStat("Infected", "Most players infected",
-        	                                 "ZombieStats", "TotalInfected", TopStat.FormatInteger);
-            statMaxInfected  = new DBTopStat("Survived", "Most rounds survived",
-        	                                 "ZombieStats", "TotalRounds",   TopStat.FormatInteger);
+                                             "ZombieStats", "TotalInfected", TopStat.FormatInteger);
+            statMaxInfected = new DBTopStat("Survived", "Most rounds survived",
+                                             "ZombieStats", "TotalRounds", TopStat.FormatInteger);
             statMostSurvived = new DBTopStat("ConsecutiveInfected", "Most consecutive infections",
-        	                                 "ZombieStats", "MaxInfected",   TopStat.FormatInteger);
-            statMaxSurvived  = new DBTopStat("ConsecutiveSurvived", "Most consecutive rounds survived", 
-        	                                 "ZombieStats", "MaxRounds",     TopStat.FormatInteger);
-            
+                                             "ZombieStats", "MaxInfected", TopStat.FormatInteger);
+            statMaxSurvived = new DBTopStat("ConsecutiveSurvived", "Most consecutive rounds survived",
+                                             "ZombieStats", "MaxRounds", TopStat.FormatInteger);
+
             infectedToken = new ChatToken("$infected", "Total number of players infected",
                                           p => Get(p).TotalInfected.ToString());
             survivedToken = new ChatToken("$survived", "Total number of rounds survived",
                                           p => Get(p).TotalRoundsSurvived.ToString());
-            
+
             offlineZSStats = PrintOfflineZSStats;
             onlineZSStats = PrintOnlineZSStats;
             OfflineStat.Stats.Add(offlineZSStats);
             OnlineStat.Stats.Add(onlineZSStats);
             ChatTokens.Standard.Add(infectedToken);
             ChatTokens.Standard.Add(survivedToken);
-            
+
             TopStat.Register(statMostInfected);
             TopStat.Register(statMostSurvived);
             TopStat.Register(statMaxInfected);
             TopStat.Register(statMaxSurvived);
         }
 
-        public static void UnhookStats() {
+        public static void UnhookStats()
+        {
             OfflineStat.Stats.Remove(offlineZSStats);
             OnlineStat.Stats.Remove(onlineZSStats);
             ChatTokens.Standard.Remove(infectedToken);
             ChatTokens.Standard.Remove(survivedToken);
-            
+
             TopStat.Unregister(statMostInfected);
             TopStat.Unregister(statMostSurvived);
             TopStat.Unregister(statMaxInfected);
             TopStat.Unregister(statMaxSurvived);
         }
 
-        public static void PrintOnlineZSStats(Player p, Player who) {
+        public static void PrintOnlineZSStats(Player p, Player who)
+        {
             ZSData data = Get(who);
             PrintZSStats(p, data.TotalRoundsSurvived, data.TotalInfected,
                          data.MaxRoundsSurvived, data.MaxInfected);
         }
 
-        public static void PrintOfflineZSStats(Player p, PlayerData who) {
+        public static void PrintOfflineZSStats(Player p, PlayerData who)
+        {
             ZombieStats stats = LoadStats(who.Name);
             PrintZSStats(p, stats.TotalRounds, stats.TotalInfected,
                          stats.MaxRounds, stats.MaxInfected);
         }
 
-        public static void PrintZSStats(Player p, int rounds, int infected, int roundsMax, int infectedMax) {
+        public static void PrintZSStats(Player p, int rounds, int infected, int roundsMax, int infectedMax)
+        {
             p.Message("  Survived &a{0} &Srounds (max &e{1}&S)", rounds, roundsMax);
             p.Message("  Infected &a{0} &Splayers (max &e{1}&S)", infected, infectedMax);
         }
@@ -101,67 +109,74 @@ namespace Flames.Modules.Games.ZS
             new ColumnDesc("Additional1", ColumnType.Int32),
         };
 
-        public static ZombieStats ParseStats(ISqlRecord record) {
+        public static ZombieStats ParseStats(ISqlRecord record)
+        {
             ZombieStats stats;
-            stats.TotalRounds   = record.GetInt("TotalRounds");
-            stats.MaxRounds     = record.GetInt("MaxRounds");
+            stats.TotalRounds = record.GetInt("TotalRounds");
+            stats.MaxRounds = record.GetInt("MaxRounds");
             stats.TotalInfected = record.GetInt("TotalInfected");
-            stats.MaxInfected   = record.GetInt("MaxInfected");
+            stats.MaxInfected = record.GetInt("MaxInfected");
             return stats;
         }
 
-        public static ZombieStats LoadStats(string name) {
+        public static ZombieStats LoadStats(string name)
+        {
             ZombieStats stats = default;
-            Database.ReadRows("ZombieStats", "*", 
-                                record => stats = ParseStats(record), 
+            Database.ReadRows("ZombieStats", "*",
+                                record => stats = ParseStats(record),
                                 "WHERE Name=@0", name);
             return stats;
         }
 
-        public override void SaveStats(Player p) {
+        public override void SaveStats(Player p)
+        {
             ZSData data = TryGet(p);
             if (data == null || (data.TotalRoundsSurvived == 0 && data.TotalInfected == 0)) return;
-            
+
             object[] args = new object[] {
-                data.TotalRoundsSurvived, data.MaxRoundsSurvived, 
+                data.TotalRoundsSurvived, data.MaxRoundsSurvived,
                 data.TotalInfected, data.MaxInfected,
                 p.name
             };
-            
+
             int changed = Database.UpdateRows("ZombieStats", "TotalRounds=@0,MaxRounds=@1, TotalInfected=@2,MaxInfected=@3",
                                               "WHERE Name=@4", args);
-            if (changed == 0) {
+            if (changed == 0)
+            {
                 Database.AddRow("ZombieStats", "TotalRounds,MaxRounds, TotalInfected,MaxInfected, Name", args);
             }
         }
 
 
-        public static void HookCommands() {
+        public static void HookCommands()
+        {
             Command.TryRegister(true, cmdAka, cmdAlive, cmdBounties, cmdBounty,
                                 cmdDisinfect, cmdHuman, cmdInfect, cmdInfected,
                                 cmdLastLevels, cmdQueue, cmdShowQueue);
         }
 
-        public static void UnhookCommands() {
+        public static void UnhookCommands()
+        {
             Command.Unregister(cmdAka, cmdAlive, cmdBounties, cmdBounty,
                                cmdDisinfect, cmdHuman, cmdInfect, cmdInfected,
                                cmdLastLevels, cmdQueue, cmdShowQueue);
         }
 
-        public static Command cmdAka        = new CmdAka();
-        public static Command cmdAlive      = new CmdAlive();
-        public static Command cmdBounties   = new CmdBounties();
-        public static Command cmdBounty     = new CmdBounty();
-        public static Command cmdDisinfect  = new CmdDisInfect();
-        public static Command cmdHuman      = new CmdHuman();
-        public static Command cmdInfect     = new CmdInfect();
-        public static Command cmdInfected   = new CmdInfected();
+        public static Command cmdAka = new CmdAka();
+        public static Command cmdAlive = new CmdAlive();
+        public static Command cmdBounties = new CmdBounties();
+        public static Command cmdBounty = new CmdBounty();
+        public static Command cmdDisinfect = new CmdDisInfect();
+        public static Command cmdHuman = new CmdHuman();
+        public static Command cmdInfect = new CmdInfect();
+        public static Command cmdInfected = new CmdInfected();
         public static Command cmdLastLevels = new CmdLastLevels();
-        public static Command cmdQueue      = new CmdQueue();
-        public static Command cmdShowQueue  = new CmdShowQueue();
+        public static Command cmdQueue = new CmdQueue();
+        public static Command cmdShowQueue = new CmdShowQueue();
 
 
-        public static void HookItems() {
+        public static void HookItems()
+        {
             Economy.RegisterItem(itemQueue);
             Economy.RegisterItem(itemBlocks);
             Economy.RegisterItem(itemRevive);
@@ -169,7 +184,8 @@ namespace Flames.Modules.Games.ZS
             Economy.RegisterItem(itemInv);
         }
 
-        public static void UnhookItems() {
+        public static void UnhookItems()
+        {
             Economy.Items.Remove(itemQueue);
             Economy.Items.Remove(itemBlocks);
             Economy.Items.Remove(itemRevive);
@@ -177,10 +193,10 @@ namespace Flames.Modules.Games.ZS
             Economy.Items.Remove(itemInv);
         }
 
-        public static Item itemQueue     = new QueueLevelItem();
-        public static Item itemBlocks    = new BlocksItem();
-        public static Item itemRevive    = new ReviveItem();
+        public static Item itemQueue = new QueueLevelItem();
+        public static Item itemBlocks = new BlocksItem();
+        public static Item itemRevive = new ReviveItem();
         public static Item itemInfectMsg = new InfectMessageItem();
-        public static Item itemInv       = new InvisibilityItem();
+        public static Item itemInv = new InvisibilityItem();
     }
 }

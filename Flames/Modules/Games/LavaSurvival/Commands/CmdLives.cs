@@ -16,18 +16,20 @@
     permissions and limitations under the Licenses.
 */
 
-namespace Flames.Modules.Games.LS 
+namespace Flames.Modules.Games.LS
 {
-    public sealed class CmdLives : Command2 
+    public sealed class CmdLives : Command2
     {
         public override string name { get { return "Lives"; } }
         public override string type { get { return CommandTypes.Games; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.Message("You " + LSGame.Instance.DescribeLives(p));
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Alive");
             p.Message("&HShows how many lives you currently have");
         }

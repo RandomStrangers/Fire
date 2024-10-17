@@ -25,8 +25,10 @@ using Flames.Maths;
 using Flames.Network;
 using Flames.Util;
 
-namespace Flames {
-    public sealed partial class Level : IDisposable {
+namespace Flames
+{
+    public sealed partial class Level : IDisposable
+    {
 
         /// <summary>
         /// The name of the map file, sans extension.
@@ -39,24 +41,24 @@ namespace Flames {
 
         public string ColoredName { get { return Config.Color + name; } }
         public LevelConfig Config = new LevelConfig();
-        
+
         public byte rotx, roty;
         public ushort spawnx, spawny, spawnz;
         public Position SpawnPos { get { return new Position(16 + spawnx * 32, 32 + spawny * 32, 16 + spawnz * 32); } }
-            
+
         public BlockDefinition[] CustomBlockDefs = new BlockDefinition[Block.SUPPORTED_COUNT];
         public BlockProps[] Props = new BlockProps[Block.SUPPORTED_COUNT];
         public ExtrasCollection Extras = new ExtrasCollection();
         public VolatileArray<PlayerBot> Bots = new VolatileArray<PlayerBot>();
         public bool unloadedBots;
-        
+
         public HandleDelete[] DeleteHandlers = new HandleDelete[Block.SUPPORTED_COUNT];
         public HandlePlace[] PlaceHandlers = new HandlePlace[Block.SUPPORTED_COUNT];
         public HandleWalkthrough[] WalkthroughHandlers = new HandleWalkthrough[Block.SUPPORTED_COUNT];
         public HandlePhysics[] PhysicsHandlers = new HandlePhysics[Block.SUPPORTED_COUNT];
         public HandlePhysics[] physicsDoorsHandlers = new HandlePhysics[Block.SUPPORTED_COUNT];
         public AABB[] blockAABBs = new AABB[Block.SUPPORTED_COUNT];
-        
+
         /// <summary> The width of this level (Number of blocks across in X dimension) </summary>
         public ushort Width;
         /// <summary> The height of this level (Number of blocks tall in Y dimension) </summary>
@@ -66,26 +68,27 @@ namespace Flames {
         /// <summary> Whether this level should be treated as a readonly museum </summary>
         public bool IsMuseum;
 
-        public int ReloadThreshold {
+        public int ReloadThreshold
+        {
             get { return Math.Max(10000, (int)(Server.Config.DrawReloadThreshold * Width * Height * Length)); }
         }
-        
+
         /// <summary> Maximum valid X coordinate (Width - 1) </summary>
-        public int MaxX { get { return Width  - 1; } }
+        public int MaxX { get { return Width - 1; } }
         /// <summary> Maximum valid Y coordinate (Height - 1) </summary>
         public int MaxY { get { return Height - 1; } }
         /// <summary> Maximum valid Z coordinate (Length - 1) </summary>
         public int MaxZ { get { return Length - 1; } }
-        
+
         public bool Changed;
-         /// <summary> Whether block changes made on this level should be saved to the BlockDB and .lvl files. </summary>
+        /// <summary> Whether block changes made on this level should be saved to the BlockDB and .lvl files. </summary>
         public bool SaveChanges = true;
         public bool ChangedSinceBackup;
-        
+
         /// <summary> Whether players on this level sees server-wide chat. </summary>
         public bool SeesServerWideChat { get { return Config.ServerWideChat && Server.Config.ServerWideChat; } }
 
-        public readonly object saveLock = new object(), botsIOLock = new object();
+        public object saveLock = new object(), botsIOLock = new object();
         public BlockQueue blockqueue = new BlockQueue();
         public BufferedBlockSender bulkSender;
 
@@ -93,32 +96,33 @@ namespace Flames {
         public VolatileArray<Zone> Zones = new VolatileArray<Zone>();
         public BlockDB BlockDB;
         public LevelAccessController VisitAccess, BuildAccess;
-        
+
         // Physics fields and settings
         public int physics { get { return Physicsint; } }
         public int Physicsint;
         public int currentUndo;
-        
+
         public int lastCheck, lastUpdate;
         public FastList<Check> ListCheck = new FastList<Check>(); //A list of blocks that need to be updated
         public FastList<Update> ListUpdate = new FastList<Update>(); //A list of block to change after calculation
         public SparseBitSet listCheckExists, listUpdateExists;
-        
+
         public Random physRandom = new Random();
         public bool PhysicsPaused;
         public Thread physThread;
-        public readonly object physThreadLock = new object();
-        public readonly object physTickLock = new object();
+        public object physThreadLock = new object();
+        public object physTickLock = new object();
         public bool physThreadStarted = false;
         public DateTime lastBackup;
-        
+
         public List<C4Data> C4list = new List<C4Data>();
 
-        public bool CanPlace  { get { return Config.Buildable && Config.BuildType != BuildType.NoModify; } }
+        public bool CanPlace { get { return Config.Buildable && Config.BuildType != BuildType.NoModify; } }
         public bool CanDelete { get { return Config.Deletable && Config.BuildType != BuildType.NoModify; } }
 
-        public int WinChance {
-            get { return Config.RoundsPlayed == 0 ? 100 : (Config.RoundsHumanWon * 100) / Config.RoundsPlayed; }
+        public int WinChance
+        {
+            get { return Config.RoundsPlayed == 0 ? 100 : Config.RoundsHumanWon * 100 / Config.RoundsPlayed; }
         }
 
         public bool hasPortals, hasMessageBlocks;

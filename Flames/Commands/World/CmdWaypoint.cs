@@ -16,18 +16,22 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.World {
-    public sealed class CmdWaypoint : CmdWarp {
+namespace Flames.Commands.World
+{
+    public sealed class CmdWaypoint : CmdWarp
+    {
         public override string name { get { return "Waypoint"; } }
         public override string shortcut { get { return "wp"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
         public override CommandPerm[] ExtraPerms { get { return null; } }
-                
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             UseCore(p, message, data, p.Waypoints, "Waypoint");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&HWaypoints are warps only usable by you.");
             p.Message("&T/Waypoint create [name] &H- Create a new waypoint");
             p.Message("&T/Waypoint update [name] &H- Update a waypoint");

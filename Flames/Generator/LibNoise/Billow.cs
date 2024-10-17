@@ -32,7 +32,7 @@ namespace LibNoise
 
         public Billow()
         {
-            Lacunarity  = 2.0;
+            Lacunarity = 2.0;
             OctaveCount = 6;
             Persistence = 0.5;
         }

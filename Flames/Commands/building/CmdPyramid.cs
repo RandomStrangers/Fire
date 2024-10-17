@@ -17,28 +17,36 @@
  */
 using Flames.Drawing.Ops;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdPyramid : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdPyramid : DrawCmd
+    {
         public override string name { get { return "Pyramid"; } }
         public override string shortcut { get { return "pd"; } }
 
-        public override DrawMode GetMode(string[] parts) {
+        public override DrawMode GetMode(string[] parts)
+        {
             string mode = parts[0];
-            if (mode == "solid")   return DrawMode.solid;
-            if (mode == "hollow")  return DrawMode.hollow;
+            if (mode == "solid") return DrawMode.solid;
+            if (mode == "hollow") return DrawMode.hollow;
             if (mode == "reverse") return DrawMode.reverse;
             return DrawMode.normal;
         }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) {
-            switch (dArgs.Mode) {
-                case DrawMode.hollow: return new PyramidHollowDrawOp();
-                case DrawMode.reverse: return new PyramidReverseDrawOp();
+        public override DrawOp GetDrawOp(DrawArgs dArgs)
+        {
+            switch (dArgs.Mode)
+            {
+                case DrawMode.hollow: 
+                    return new PyramidHollowDrawOp();
+                case DrawMode.reverse: 
+                    return new PyramidReverseDrawOp();
             }
             return new PyramidSolidDrawOp();
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Pyramid <brush args>");
             p.Message("&HDraws a square pyramid, using two points for the base.");
             p.Message("&T/Pyramid [mode] <brush args>");

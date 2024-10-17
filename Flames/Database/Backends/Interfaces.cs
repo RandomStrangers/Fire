@@ -81,26 +81,31 @@ namespace Flames.SQL
         public abstract string DumpValue(int col);
 
 
-        public string GetText(int col) {
+        public string GetText(int col)
+        {
             return IsDBNull(col) ? "" : GetString(col);
         }
 
-        public string GetText(string name) {
+        public string GetText(string name)
+        {
             int col = GetOrdinal(name);
             return IsDBNull(col) ? "" : GetString(col);
         }
 
-        public int GetInt(string name) {
+        public int GetInt(string name)
+        {
             int col = GetOrdinal(name);
             return IsDBNull(col) ? 0 : GetInt32(col);
         }
 
-        public long GetLong(string name) {
+        public long GetLong(string name)
+        {
             int col = GetOrdinal(name);
             return IsDBNull(col) ? 0 : GetInt64(col);
         }
 
-        public static string Quote(string value) {
+        public static string Quote(string value)
+        {
             if (value.IndexOf('\'') >= 0) // escape '
                 value = value.Replace("'", "''");
             return "'" + value + "'";

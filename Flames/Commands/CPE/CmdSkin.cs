@@ -20,76 +20,94 @@ using Flames.Network;
 
 namespace Flames.Commands.CPE
 {
-    public class CmdSkin : EntityPropertyCmd 
+    public class CmdSkin : EntityPropertyCmd
     {
         public override string name { get { return "Skin"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override CommandPerm[] ExtraPerms {
-            get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the skin of others"),
-                    new CommandPerm(LevelPermission.Operator, "can change the skin of bots") }; }
+        public override CommandPerm[] ExtraPerms
+        {
+            get
+            {
+                return new[] { new CommandPerm(LevelPermission.Operator, "can change the skin of others"),
+                    new CommandPerm(LevelPermission.Operator, "can change the skin of bots") };
+            }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.IndexOf(' ') == -1) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.IndexOf(' ') == -1)
+            {
                 message = "-own " + message;
                 message = message.TrimEnd();
             }
             UseBotOrPlayer(p, data, message, "skin");
         }
 
-        public override void SetBotData(Player p, PlayerBot bot, string skin) {
+        public override void SetBotData(Player p, PlayerBot bot, string skin)
+        {
             skin = ParseSkin(p, skin, bot.name);
             if (skin == null) return;
-            
+
             bot.SkinName = skin;
             p.Message("You changed the skin of bot " + bot.ColoredName + " &Sto &c" + skin);
-            
+
             bot.GlobalDespawn();
             bot.GlobalSpawn();
             BotsFile.Save(p.level);
         }
 
-        public override void SetPlayerData(Player p, string target, string skin) {
+        public override void SetPlayerData(Player p, string target, string skin)
+        {
             string rawName = target.RemoveLastPlus();
-            skin = ParseSkin(p, skin, rawName);    
+            skin = ParseSkin(p, skin, rawName);
             if (skin == null) return;
-            
+
             Player who = PlayerInfo.FindExact(target);
-            if (p == who) {
+            if (p == who)
+            {
                 p.Message("Changed your own skin to &c" + skin);
-            } else {
+            }
+            else
+            {
                 PlayerOperations.MessageAction(p, target, who, "λACTOR &Schanged λTARGET skin to &c" + skin);
             }
-            
+
             if (who != null) who.SkinName = skin;
             if (who != null) Entities.GlobalRespawn(who);
-            
-            if (skin == rawName) {
+
+            if (skin == rawName)
+            {
                 Server.skins.Remove(target);
-            } else {
+            }
+            else
+            {
                 Server.skins.Update(target, skin);
             }
             Server.skins.Save();
         }
 
-        public static string ParseSkin(Player p, string skin, string defSkin) {
+        public static string ParseSkin(Player p, string skin, string defSkin)
+        {
             if (skin.Length == 0) skin = defSkin;
             if (skin[0] == '+')
                 skin = "https://minotar.net/skin/" + skin.Substring(1) + ".png";
-            
-            if (skin.CaselessStarts("http://") || skin.CaselessStarts("https")) {
+
+            if (skin.CaselessStarts("http://") || skin.CaselessStarts("https"))
+            {
                 HttpUtil.FilterURL(ref skin);
             }
-            
-            if (skin.Length > NetUtils.StringSize) {
-                p.Message("&WThe skin must be " + NetUtils.StringSize + " characters or less."); 
+
+            if (skin.Length > NetUtils.StringSize)
+            {
+                p.Message("&WThe skin must be " + NetUtils.StringSize + " characters or less.");
                 return null;
             }
             return skin;
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Skin [name] [skin] &H- Sets the skin of that player.");
             p.Message("&T/Skin bot [name] [skin] &H- Sets the skin of that bot.");
             p.Message("&H[skin] can be:");

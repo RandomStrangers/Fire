@@ -17,43 +17,54 @@
 */
 using Flames.Drawing.Ops;
 
-namespace Flames.Commands.Building {    
-    public sealed class CmdSpheroid : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdSpheroid : DrawCmd
+    {
         public override string name { get { return "Spheroid"; } }
         public override string shortcut { get { return "e"; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("eh", "hollow"), new CommandAlias("Cone", "cone"), new CommandAlias("Cylinder", "cylinder") }; }
         }
 
-        public override void GetBrush(DrawArgs dArgs) {
+        public override void GetBrush(DrawArgs dArgs)
+        {
             if (dArgs.Mode == DrawMode.solid) dArgs.BrushName = "Normal";
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, 0);
         }
 
-        public override DrawMode GetMode(string[] parts) {
+        public override DrawMode GetMode(string[] parts)
+        {
             string msg = parts[0];
-            if (msg == "solid")    return DrawMode.solid;
-            if (msg == "hollow")   return DrawMode.hollow;
+            if (msg == "solid") return DrawMode.solid;
+            if (msg == "hollow") return DrawMode.hollow;
             if (msg == "vertical") return DrawMode.vertical;
             if (msg == "cylinder") return DrawMode.vertical;
-            if (msg == "cone")     return DrawMode.cone;
+            if (msg == "cone") return DrawMode.cone;
             return DrawMode.normal;
         }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) {
-            switch (dArgs.Mode) {
-                case DrawMode.hollow:   return new EllipsoidHollowDrawOp();
-                case DrawMode.vertical: return new CylinderDrawOp();
-                case DrawMode.cone:     return new ConeDrawOp();
+        public override DrawOp GetDrawOp(DrawArgs dArgs)
+        {
+            switch (dArgs.Mode)
+            {
+                case DrawMode.hollow: 
+                    return new EllipsoidHollowDrawOp();
+                case DrawMode.vertical: 
+                    return new CylinderDrawOp();
+                case DrawMode.cone: 
+                    return new ConeDrawOp();
             }
             return new EllipsoidDrawOp();
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Spheroid <brush args>");
             p.Message("&HDraws a spheroid between two points.");
             p.Message("&T/Spheroid [mode] <brush args>");
-            p.Message("&HModes: &fsolid/hollow/cylinder/cone");    
+            p.Message("&HModes: &fsolid/hollow/cylinder/cone");
             p.Message(BrushHelpLine);
         }
     }

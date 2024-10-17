@@ -17,24 +17,34 @@
  */
 using Flames.Games;
 
-namespace Flames.Commands.World {
-    public sealed class CmdSpawn : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdSpawn : Command2
+    {
         public override string name { get { return "Spawn"; } }
         public override string type { get { return CommandTypes.World; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (!Hacks.CanUseRespawn(p)) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (!Hacks.CanUseRespawn(p))
+            {
                 p.Message("You cannot use &T/Spawn &Son this map.");
-                p.isFlying = false; return;
+                p.isFlying = false; 
+                return;
             }
             if (!IGame.CheckAllowed(p, "use &T/Spawn")) return;
-            
-            if (message.Length > 0) { Help(p); return; }
+
+            if (message.Length > 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             PlayerActions.RespawnAt(p, p.level.SpawnPos, p.level.rotx, p.level.roty);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Spawn");
             p.Message("&HTeleports you to the spawn location of the level.");
         }

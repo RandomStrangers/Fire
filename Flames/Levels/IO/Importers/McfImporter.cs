@@ -24,29 +24,38 @@ using System.IO;
 using System.IO.Compression;
 using Flames.Maths;
 
-namespace Flames.Levels.IO {
-    public sealed class McfImporter : IMapImporter {
+namespace Flames.Levels.IO
+{
+    public sealed class McfImporter : IMapImporter
+    {
 
         public override string Extension { get { return ".mcf"; } }
         public override string Description { get { return "MCForge redux map"; } }
 
-        public override Vec3U16 ReadDimensions(Stream src) {
-            using (Stream gs = new GZipStream(src, CompressionMode.Decompress, true)) {
+        public override Vec3U16 ReadDimensions(Stream src)
+        {
+            using (Stream gs = new GZipStream(src, CompressionMode.Decompress, true))
+            {
                 byte[] header = new byte[16];
                 return ReadHeader(header, gs);
             }
         }
-        
-        public override Level Read(Stream src, string name, bool metadata) {
-            using (Stream gs = new GZipStream(src, CompressionMode.Decompress)) {
+
+        public override Level Read(Stream src, string name, bool metadata)
+        {
+            using (Stream gs = new GZipStream(src, CompressionMode.Decompress))
+            {
                 byte[] header = new byte[16];
                 Vec3U16 dims = ReadHeader(header, gs);
 
-                Level lvl = new Level(name, dims.X, dims.Y, dims.Z);
-                lvl.spawnx = BitConverter.ToUInt16(header, 6);
-                lvl.spawnz = BitConverter.ToUInt16(header, 8);
-                lvl.spawny = BitConverter.ToUInt16(header, 10);
-                lvl.rotx = header[12]; lvl.roty = header[13];
+                Level lvl = new Level(name, dims.X, dims.Y, dims.Z)
+                {
+                    spawnx = BitConverter.ToUInt16(header, 6),
+                    spawnz = BitConverter.ToUInt16(header, 8),
+                    spawny = BitConverter.ToUInt16(header, 10),
+                    rotx = header[12],
+                    roty = header[13]
+                };
                 // 2 bytes for perbuild and pervisit
 
                 byte[] blocks = new byte[2 * lvl.blocks.Length];
@@ -57,11 +66,12 @@ namespace Flames.Levels.IO {
             }
         }
 
-        public static Vec3U16 ReadHeader(byte[] header, Stream gs) {
+        public static Vec3U16 ReadHeader(byte[] header, Stream gs)
+        {
             ReadFully(gs, header, 2);
             if (BitConverter.ToUInt16(header, 0) != 1874)
                 throw new InvalidDataException(".mcf files must have a version of 1874");
-            
+
             ReadFully(gs, header, 16);
             Vec3U16 dims;
             dims.X = BitConverter.ToUInt16(header, 0);

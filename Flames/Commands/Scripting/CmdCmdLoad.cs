@@ -17,22 +17,30 @@
 */
 using Flames.Scripting;
 
-namespace Flames.Commands.Scripting {
-    public sealed class CmdCmdLoad : Command2 {
+namespace Flames.Commands.Scripting
+{
+    public sealed class CmdCmdLoad : Command2
+    {
         public override string name { get { return "CmdLoad"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
-        
-        public override void Use(Player p, string cmdName, CommandData data) {
-            if (cmdName.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string cmdName, CommandData data)
+        {
+            if (cmdName.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             if (!Formatter.ValidFilename(p, cmdName)) return;
 
             string path = IScripting.CommandPath(cmdName);
             ScriptingOperations.LoadCommands(p, path);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/CmdLoad [command name]");
             p.Message("&HLoads a compiled command into the server for use.");
             p.Message("&H  Loads both C# and Visual Basic compiled commands.");

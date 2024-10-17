@@ -29,39 +29,42 @@ namespace Flames.Authentication
         public string SkinPrefix = "";
         public bool MojangAuth;
     }
-    
+
     public class AuthService
     {
         /// <summary> List of all authentication services </summary>
-        public static List<AuthService> Services = new List<AuthService>();        
-        
+        public static List<AuthService> Services = new List<AuthService>();
+
         public Heartbeat Beat;
         public AuthServiceConfig Config;
-        
-        public virtual void AcceptPlayer(Player p) {
+
+        public virtual void AcceptPlayer(Player p)
+        {
             AuthServiceConfig cfg = Config;
-            
-            p.VerifiedVia  = Config.URL;
+
+            p.VerifiedVia = Config.URL;
             p.verifiedName = true;
-            p.SkinName     = cfg.SkinPrefix + p.SkinName;
-            
-            p.name        += cfg.NameSuffix;
-            p.truename    += cfg.NameSuffix;
+            p.SkinName = cfg.SkinPrefix + p.SkinName;
+
+            p.name += cfg.NameSuffix;
+            p.truename += cfg.NameSuffix;
             p.DisplayName += cfg.NameSuffix;
         }
 
 
         public static string lastUrls;
         /// <summary> Reloads list of authentication services from server config </summary>
-        public static void ReloadDefault() {
+        public static void ReloadDefault()
+        {
             string urls = Server.Config.HeartbeatURL;
-            
+
             // don't reload services unless absolutely have to
-            if (urls != lastUrls) {
+            if (urls != lastUrls)
+            {
                 lastUrls = urls;
                 ReloadServices();
             }
-            
+
             LoadConfig();
             foreach (AuthService service in Services)
             {
@@ -69,19 +72,26 @@ namespace Flames.Authentication
             }
         }
 
-        public static void ReloadServices() {
+        public static void ReloadServices()
+        {
             // TODO only reload default auth services, don't clear all
-            foreach (AuthService service in Services) 
+            foreach (AuthService service in Services)
             {
                 Heartbeat.Heartbeats.Remove(service.Beat);
             }
             Services.Clear();
-            
+
             foreach (string url in lastUrls.SplitComma())
             {
-                Heartbeat   beat = new ClassiCubeBeat() { URL  = url  };
-                AuthService auth = new AuthService()    { Beat = beat };
-                
+                Heartbeat beat = new ClassiCubeBeat() 
+                { 
+                    URL = url 
+                };
+                AuthService auth = new AuthService() 
+                { 
+                    Beat = beat 
+                };
+
                 Services.Add(auth);
                 Heartbeat.Register(beat);
             }
@@ -95,45 +105,65 @@ namespace Flames.Authentication
             {
                 if (c.URL.CaselessEq(url)) return c;
             }
-            
-            AuthServiceConfig cfg = new AuthServiceConfig() { URL = url };
+
+            AuthServiceConfig cfg = new AuthServiceConfig() 
+            { 
+                URL = url 
+            };
             configs.Add(cfg);
-            
-            try {
+
+            try
+            {
                 SaveConfig();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error saving authservices.properties", ex);
             }
             return cfg;
         }
 
-        public static void LoadConfig() {
+        public static void LoadConfig()
+        {
             configs.Clear();
-            
+
             AuthServiceConfig cur = null;
             PropertiesFile.Read(Paths.AuthServicesFile, ref cur, ParseProperty, '=', true);
             if (cur != null) configs.Add(cur);
         }
 
-        public static void ParseProperty(string key, string value, ref AuthServiceConfig cur) {
-            if (key.CaselessEq("URL")) {
+        public static void ParseProperty(string key, string value, ref AuthServiceConfig cur)
+        {
+            if (key.CaselessEq("URL"))
+            {
                 if (cur != null) configs.Add(cur);
 
-                cur = new AuthServiceConfig() { URL = value };
-            } else if (key.CaselessEq("name-suffix")) {
+                cur = new AuthServiceConfig() 
+                { 
+                    URL = value 
+                };
+            }
+            else if (key.CaselessEq("name-suffix"))
+            {
                 if (cur == null) return;
                 cur.NameSuffix = value;
-            } else if (key.CaselessEq("skin-prefix")) {
+            }
+            else if (key.CaselessEq("skin-prefix"))
+            {
                 if (cur == null) return;
                 cur.SkinPrefix = value;
-            } else if (key.CaselessEq("mojang-auth")) {
+            }
+            else if (key.CaselessEq("mojang-auth"))
+            {
                 if (cur == null) return;
                 bool.TryParse(value, out cur.MojangAuth);
             }
         }
 
-        public static void SaveConfig() {
-            using (StreamWriter w = new StreamWriter(Paths.AuthServicesFile)) {
+        public static void SaveConfig()
+        {
+            using (StreamWriter w = new StreamWriter(Paths.AuthServicesFile))
+            {
                 w.WriteLine("# Authentication services configuration");
                 w.WriteLine("#   There is no reason to modify these configuration settings, unless the server has been configured");
                 w.WriteLine("#    to send heartbeats to multiple authentication services (e.g. both ClassiCube.net and BetaCraft.uk)");
@@ -152,8 +182,8 @@ namespace Flames.Authentication
                 w.WriteLine("#   Whether to try verifying users using Mojang's authentication servers if mppass verification fails");
                 w.WriteLine("#   NOTE: This should only be used for the Betacraft.uk authentication service");
                 w.WriteLine();
-                
-                foreach (AuthServiceConfig c in configs) 
+
+                foreach (AuthServiceConfig c in configs)
                 {
                     w.WriteLine("URL = " + c.URL);
                     w.WriteLine("name-suffix = " + c.NameSuffix);

@@ -21,52 +21,77 @@ using Flames.Drawing.Brushes;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class UndoPhysicsDrawOp : DrawOp 
+    public class UndoPhysicsDrawOp : DrawOp
     {
         public override string Name { get { return "UndoPhysics"; } }
         public DateTime Start;
 
-        public UndoPhysicsDrawOp() {
+        public UndoPhysicsDrawOp()
+        {
             AffectedByTransform = false;
         }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) { return -1; }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
-            if (Level.UndoBuffer.Count != Server.Config.PhysicsUndo) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks) 
+        {
+            return -1; 
+        }
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
+            if (Level.UndoBuffer.Count != Server.Config.PhysicsUndo)
+            {
                 int count = Level.currentUndo;
-                for (int i = count; i >= 0; i--) {
-                    try {
+                for (int i = count; i >= 0; i--)
+                {
+                    try
+                    {
                         if (!CheckBlockPhysics(Player, Level, i)) break;
-                    } catch { }
+                    }
+                    catch 
+                    {
+                    }
                 }
-            } else {
+            }
+            else
+            {
                 int count = Level.currentUndo;
-                for (int i = count; i >= 0; i--) {
-                    try {
+                for (int i = count; i >= 0; i--)
+                {
+                    try
+                    {
                         if (!CheckBlockPhysics(Player, Level, i)) break;
-                    } catch { }
+                    }
+                    catch 
+                    { 
+                    }
                 }
-                for (int i = Level.UndoBuffer.Count - 1; i > count; i--) {
-                    try {
+                for (int i = Level.UndoBuffer.Count - 1; i > count; i--)
+                {
+                    try
+                    {
                         if (!CheckBlockPhysics(Player, Level, i)) break;
-                    } catch { }
+                    }
+                    catch 
+                    { 
+                    }
                 }
             }
         }
 
-        public bool CheckBlockPhysics(Player p, Level lvl, int i) {
+        public bool CheckBlockPhysics(Player p, Level lvl, int i)
+        {
             Level.UndoPos undo = lvl.UndoBuffer[i];
             if (undo.Time < Start) return false;
-            
+
             ushort x, y, z;
             lvl.IntToPos(undo.Index, out x, out y, out z);
             BlockID cur = lvl.GetBlock(x, y, z);
-            
+
             BlockID newBlock = undo.NewBlock;
-            if (cur == newBlock || Block.Convert(cur) == Block.Water || Block.Convert(cur) == Block.Lava) {
+            if (cur == newBlock || Block.Convert(cur) == Block.Water || Block.Convert(cur) == Block.Lava)
+            {
                 lvl.Blockchange(x, y, z, undo.OldBlock, true, default(PhysicsArgs), false);
             }
             return true;

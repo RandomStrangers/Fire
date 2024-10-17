@@ -17,30 +17,39 @@
  */
 using Flames.Events;
 
-namespace Flames.Commands.Moderation {    
-    public sealed class CmdBan : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdBan : Command2
+    {
         public override string name { get { return "Ban"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new CommandAlias[] { new CommandAlias("KickBan"), new CommandAlias("kb") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            {
+                Help(p); 
+                return; 
+            }
 
             string[] args = message.SplitSpaces(2);
-            string reason = args.Length > 1 ? args[1] : "";            
+            string reason = args.Length > 1 ? args[1] : "";
             string target = ModActionCmd.FindName(p, "ban", "Ban", "", args[0], ref reason);
             if (target == null) return;
-            
+
             reason = ModActionCmd.ExpandReason(p, reason);
             if (reason == null) return;
-            
+
             Group group = ModActionCmd.CheckTarget(p, data, "ban", target);
             if (group == null) return;
-            
-            if (group.Permission == LevelPermission.Banned) {
+
+            if (group.Permission == LevelPermission.Banned)
+            {
                 p.Message("{0} &Sis already banned.", p.FormatNick(target));
                 return;
             }
@@ -51,8 +60,9 @@ namespace Flames.Commands.Moderation {
             };
             OnModActionEvent.Call(action);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Ban [player] <reason>");
             p.Message("&HBans a player (and kicks them if online).");
             p.Message("&HFor <reason>, @number can be used as a shortcut for that rule.");

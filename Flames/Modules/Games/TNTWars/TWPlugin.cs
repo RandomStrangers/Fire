@@ -19,26 +19,29 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.TW
 {
-    public sealed class TWPlugin : Plugin 
+    public sealed class TWPlugin : Plugin
     {
         public override string name { get { return "TW"; } }
         public static Command cmdTW = new CmdTntWars();
-        
-        public override void Load(bool startup) {
+
+        public override void Load(bool startup)
+        {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdTW);
-            
+
             TWGame.Instance.Config.Path = "properties/games/tntwars.properties";
             OnConfigUpdated();
             TWGame.Instance.AutoStart();
         }
-        
-        public override void Unload(bool shutdown) {
+
+        public override void Unload(bool shutdown)
+        {
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdTW);
         }
 
-        public void OnConfigUpdated() { 
+        public void OnConfigUpdated()
+        {
             TWGame.Instance.Config.Load();
         }
     }

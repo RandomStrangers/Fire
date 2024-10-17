@@ -17,47 +17,61 @@
  */
 using Flames.Games;
 
-namespace Flames.Commands.World {
-    public sealed class CmdMain : Command2 {      
+namespace Flames.Commands.World
+{
+    public sealed class CmdMain : Command2
+    {
         public override string name { get { return "Main"; } }
         public override string shortcut { get { return "h"; } }
         public override string type { get { return CommandTypes.World; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Admin, "can change the main level") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("WMain"), new CommandAlias("WorldMain") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
-                if (p.IsSuper) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                if (p.IsSuper)
+                {
                     p.Message("Main level is {0}", Server.mainLevel.ColoredName);
-                } else if (p.level == Server.mainLevel) {
+                }
+                else if (p.level == Server.mainLevel)
+                {
                     if (!IGame.CheckAllowed(p, "use &T/Main")) return;
                     PlayerActions.Respawn(p);
-                } else {
+                }
+                else
+                {
                     PlayerActions.ChangeMap(p, Server.mainLevel);
                 }
-            } else {
+            }
+            else
+            {
                 if (!CheckExtraPerm(p, data, 1)) return;
                 if (!Formatter.ValidMapName(p, message)) return;
                 if (!LevelInfo.Check(p, data.Rank, Server.mainLevel, "set main to another map")) return;
-                
+
                 string map = Matcher.FindMaps(p, message);
                 if (map == null) return;
                 if (!LevelInfo.Check(p, data.Rank, map, "set main to this map")) return;
-                
+
                 Server.SetMainLevel(map);
-                Server.Config.MainLevel = map; 
+                Server.Config.MainLevel = map;
                 SrvProperties.Save();
-                
-                p.Message("Set main level to {0}", 
+
+                p.Message("Set main level to {0}",
                           LevelInfo.GetConfig(map).Color + map);
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Main");
             p.Message("&HSends you to the main level.");
             p.Message("&T/Main [level]");

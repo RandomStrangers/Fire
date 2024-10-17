@@ -18,16 +18,20 @@
 using System;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class ZombiePhysics {
-        
-        public static void Do(Level lvl, ref PhysInfo C) {
+namespace Flames.Blocks.Physics
+{
+
+    public static class ZombiePhysics
+    {
+
+        public static void Do(Level lvl, ref PhysInfo C)
+        {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
-            
+
             // Make zombie fall down
-            if (lvl.IsAirAt(x, (ushort)(y - 1), z)) {
+            if (lvl.IsAirAt(x, (ushort)(y - 1), z))
+            {
                 lvl.AddUpdate(C.Index, Block.ZombieHead);
                 lvl.AddUpdate(lvl.IntOffset(C.Index, 0, -1, 0), C.Block);
                 lvl.AddUpdate(lvl.IntOffset(C.Index, 0, 1, 0), Block.Air);
@@ -36,25 +40,30 @@ namespace Flames.Blocks.Physics {
             bool checkTime = true;
             Player closest = HunterPhysics.ClosestPlayer(lvl, x, y, z);
 
-            if (closest != null && rand.Next(1, 20) < 18) {
+            if (closest != null && rand.Next(1, 20) < 18)
+            {
                 ushort xx, zz;
-                if (rand.Next(1, 7) <= 3) {
+                if (rand.Next(1, 7) <= 3)
+                {
                     xx = (ushort)(x + Math.Sign(closest.Pos.BlockX - x));
                     if (xx != x && MoveZombie(lvl, ref C, xx, y, z)) return;
-                    
+
                     zz = (ushort)(z + Math.Sign(closest.Pos.BlockZ - z));
                     if (zz != z && MoveZombie(lvl, ref C, x, y, zz)) return;
-                } else {
+                }
+                else
+                {
                     zz = (ushort)(z + Math.Sign(closest.Pos.BlockZ - z));
                     if (zz != z && MoveZombie(lvl, ref C, x, y, zz)) return;
-                    
+
                     xx = (ushort)(x + Math.Sign(closest.Pos.BlockX - x));
                     if (xx != x && MoveZombie(lvl, ref C, xx, y, z)) return;
                 }
                 checkTime = false;
             }
-            
-            if (checkTime && C.Data.Data < 3) {
+
+            if (checkTime && C.Data.Data < 3)
+            {
                 C.Data.Data++;
                 return;
             }
@@ -100,27 +109,39 @@ namespace Flames.Blocks.Physics {
             lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
             lvl.AddUpdate(lvl.IntOffset(C.Index, 0, 1, 0), Block.Air, default(PhysicsArgs));
         }
-        
-        public static void DoHead(Level lvl, ref PhysInfo C) {
+
+        public static void DoHead(Level lvl, ref PhysInfo C)
+        {
             BlockID below = lvl.GetBlock(C.X, (ushort)(C.Y - 1), C.Z);
-            
-            if (below != Block.ZombieBody && below != Block.Creeper) {
-                C.Data.Type1 = PhysicsArgs.Revert; C.Data.Value1 = Block.Air;
+
+            if (below != Block.ZombieBody && below != Block.Creeper)
+            {
+                C.Data.Type1 = PhysicsArgs.Revert; 
+                C.Data.Value1 = Block.Air;
             }
         }
 
-        public static bool MoveZombie(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z) {
+        public static bool MoveZombie(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z)
+        {
             int index;
-            
+
             // Move zombie up or down blocks
-            if (       lvl.IsAirAt(x, (ushort)(y - 1), z, out index) && lvl.IsAirAt(x, y,               z)) {
-            } else if (lvl.IsAirAt(x, y,               z, out index) && lvl.IsAirAt(x, (ushort)(y + 1), z)) {
-            } else if (lvl.IsAirAt(x, (ushort)(y + 1), z, out index) && lvl.IsAirAt(x, (ushort)(y + 2), z)) {
-            } else {
+            if (lvl.IsAirAt(x, (ushort)(y - 1), z, out index) && lvl.IsAirAt(x, y, z))
+            {
+            }
+            else if (lvl.IsAirAt(x, y, z, out index) && lvl.IsAirAt(x, (ushort)(y + 1), z))
+            {
+            }
+            else if (lvl.IsAirAt(x, (ushort)(y + 1), z, out index) && lvl.IsAirAt(x, (ushort)(y + 2), z))
+            {
+            }
+            else
+            {
                 return false;
             }
 
-            if (lvl.AddUpdate(index, C.Block)) {
+            if (lvl.AddUpdate(index, C.Block))
+            {
                 lvl.AddUpdate(lvl.IntOffset(index, 0, 1, 0), Block.ZombieHead, default(PhysicsArgs));
                 lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                 lvl.AddUpdate(lvl.IntOffset(C.Index, 0, 1, 0), Block.Air, default(PhysicsArgs));

@@ -20,10 +20,10 @@ using System.Collections.Generic;
 using Flames.Config;
 using Flames.Generator;
 using Flames.Modules.Relay.IRC;
-namespace Flames 
+namespace Flames
 {
 
-    public sealed class ServerConfig : EnvConfig 
+    public sealed class ServerConfig : EnvConfig
     {
 #if CORE
         public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
@@ -62,7 +62,7 @@ namespace Flames
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Flames.png";
 #endif
         [ConfigBool("autoload", "Level", true)]
-        public bool AutoLoadMaps = true;        
+        public bool AutoLoadMaps = true;
         /// <summary> true if maps sees server-wide chat, false if maps have level-only/isolated chat </summary>
         [ConfigBool("world-chat", "Level", true)]
         public bool ServerWideChat = true;
@@ -71,22 +71,22 @@ namespace Flames
         [ConfigString("default-texture-url", "Level", "", true)]
         public string DefaultTerrain = "";
         [ConfigString("default-texture-pack-url", "Level", "", true)]
-        public string DefaultTexture = "";          
+        public string DefaultTexture = "";
 
         [ConfigBool("use-whitelist", "Security", false)]
-        public bool WhitelistedOnly = false;        
+        public bool WhitelistedOnly = false;
         [ConfigBool("admin-verification", "Security", true)]
         public bool verifyadmins = true;
         [ConfigPerm("verify-admin-perm", "Security", LevelPermission.Operator)]
         public LevelPermission VerifyAdminsRank = LevelPermission.Operator;
-        
+
         [ConfigBool("support-web-client", "Webclient", true)]
         public bool WebClient = true;
         [ConfigBool("allow-ip-forwarding", "Webclient", true)]
         public bool AllowIPForwarding = true;
 
         [ConfigString("HeartbeatURL", "Other", "http://www.classicube.net/heartbeat.jsp", false, ":/.,")]
-        public string HeartbeatURL = "http://www.classicube.net/heartbeat.jsp";        
+        public string HeartbeatURL = "http://www.classicube.net/heartbeat.jsp";
         [ConfigBool("core-secret-commands", "Other", true)]
         public bool CoreSecretCommands = true;
         [ConfigBool("MCLawl-secret-commands", "Other", true)]
@@ -95,21 +95,21 @@ namespace Flames
         public bool restartOnError = true;
         [ConfigBool("software-staff-prefixes", "Other", true)]
         public bool SoftwareStaffPrefixes = true;
-        
-        [ConfigInt("position-interval", "Other", 100, 20, 2000)]
+
+        [ConfigInt("position-interval", "Other", 100, 0, 2000)]
         public int PositionUpdateInterval = 100;
         [ConfigBool("agree-to-rules-on-entry", "Other", false)]
         public bool AgreeToRulesOnEntry = false;
         [ConfigBool("admins-join-silent", "Other", false)]
         public bool AdminsJoinSilently = false;
-        
+
         [ConfigBool("check-updates", "Update", false)]
         public bool CheckForUpdates = true;
         [ConfigBool("enable-cpe", "Server", true)]
         public bool EnableCPE = true;
         [ConfigBool("checkpoints-respawn-clientside", "Other", true)]
         public bool CheckpointsRespawnClientside = true;
-        
+
         [ConfigInt("rplimit", "Other", 500, 0, 50000)]
         public int PhysicsRestartLimit = 500;
         [ConfigInt("rplimit-norm", "Other", 10000, 0, 50000)]
@@ -125,7 +125,7 @@ namespace Flames
         public TimeSpan BlockDBSaveInterval = TimeSpan.FromSeconds(60);
         [ConfigString("backup-location", "Backup", "")]
         public string BackupDirectory = "levels/backups";
-        
+
         [ConfigTimespan("afk-minutes", "Other", 10, true)]
         public TimeSpan AutoAfkTime = TimeSpan.FromMinutes(10);
 
@@ -139,7 +139,7 @@ namespace Flames
         public TimeSpan AnnouncementInterval = TimeSpan.FromMinutes(5);
         [ConfigString("money-name", "Other", "moneys")]
         public string Currency = "moneys";
-        
+
         [ConfigBool("guest-limit-notify", "Other", false)]
         public bool GuestLimitNotify = false;
         [ConfigBool("guest-join-notify", "Other", true)]
@@ -160,9 +160,9 @@ namespace Flames
         [ConfigFloat("draw-reload-threshold", "Other", 0.001f, 0, 1)]
         public float DrawReloadThreshold = 0.001f;
         [ConfigBool("allow-tp-to-higher-ranks", "Other", true)]
-        public bool HigherRankTP = true;        
+        public bool HigherRankTP = true;
         [ConfigPerm("os-perbuild-default", "Other", LevelPermission.Owner)]
-        public LevelPermission OSPerbuildDefault = LevelPermission.Owner; 
+        public LevelPermission OSPerbuildDefault = LevelPermission.Owner;
         [ConfigBool("protect-staff-ips", "Other", true)]
         public bool ProtectStaffIPs = true;
         [ConfigBool("classicube-account-plus", "Other", false)]
@@ -206,7 +206,7 @@ namespace Flames
         public bool IRCSSL = false;
         [ConfigString("irc-ignored-nicks", "IRC bot", "", true)]
         public string IRCIgnored = "";
-        
+
         [ConfigBool("UseMySQL", "Database", false)]
         public bool UseMySQL = false;
         [ConfigString("host", "Database", "127.0.0.1")]
@@ -234,7 +234,7 @@ namespace Flames
         public IRCControllerVerify IRCVerify = IRCControllerVerify.HalfOp;
         [ConfigPerm("irc-controller-rank", "IRC bot", LevelPermission.Admin)]
         public LevelPermission IRCControllerRank = LevelPermission.Admin;
-        
+
         [ConfigBool("tablist-rank-sorted", "Tablist", true)]
         public bool TablistRankSorted = true;
         [ConfigBool("tablist-global", "Tablist", false)]
@@ -243,7 +243,7 @@ namespace Flames
         public bool TablistBots = false;
 
         [ConfigBool("parse-emotes", "Chat", true)]
-        public bool ParseEmotes = true;        
+        public bool ParseEmotes = true;
         [ConfigBool("dollar-before-dollar", "Chat", true)]
         public bool DollarNames = true;
         [ConfigStringList("disabledstandardtokens", "Chat")]
@@ -268,7 +268,7 @@ namespace Flames
         public string WarningErrorColor = "&c";
 
         [ConfigBool("cheapmessage", "Messages", true)]
-        public bool ShowInvincibleMessage = true;        
+        public bool ShowInvincibleMessage = true;
         [ConfigString("cheap-message-given", "Messages", " is now invincible")]
         public string InvincibleMessage = " is now invincible";
         [ConfigString("custom-ban-message", "Messages", "You're banned!")]
@@ -293,8 +293,8 @@ namespace Flames
         [ConfigEnum("default-mapgen-biome", "Mapgen", MapGenBiomeName.Forest, typeof(MapGenBiomeName))]
         public MapGenBiomeName DefaultMapGenBiome = MapGenBiomeName.Forest;
 
-        public static readonly bool[] defLogLevels = new bool[] { 
-            true,true,true,true,true,true, true,true,true, 
+        public static bool[] defLogLevels = new bool[] {
+            true,true,true,true,true,true, true,true,true,
             true,true,true,true,true,true, true,true };
         [ConfigBool("log-notes", "Logging", true)]
         public bool LogNotes = true;
@@ -312,7 +312,7 @@ namespace Flames
         public TimeSpan ChatSpamMuteTime = TimeSpan.FromSeconds(60);
         [ConfigTimespan("spam-counter-reset-time", "Spam control", 5, false)]
         public TimeSpan ChatSpamInterval = TimeSpan.FromSeconds(5);
-        
+
         [ConfigBool("cmd-spam-check", "Spam control", true)]
         public bool CmdSpamCheck = true;
         [ConfigInt("cmd-spam-count", "Spam control", 25, 0, 10000)]
@@ -321,14 +321,14 @@ namespace Flames
         public TimeSpan CmdSpamBlockTime = TimeSpan.FromSeconds(30);
         [ConfigTimespan("cmd-spam-interval", "Spam control", 1, false)]
         public TimeSpan CmdSpamInterval = TimeSpan.FromSeconds(1);
-        
+
         [ConfigBool("block-spam-check", "Spam control", true)]
         public bool BlockSpamCheck = true;
         [ConfigInt("block-spam-count", "Spam control", 200, 0, 10000)]
         public int BlockSpamCount = 200;
         [ConfigTimespan("block-spam-interval", "Spam control", 5, false)]
         public TimeSpan BlockSpamInterval = TimeSpan.FromSeconds(5);
-        
+
         [ConfigBool("ip-spam-check", "Spam control", true)]
         public bool IPSpamCheck = true;
         [ConfigInt("ip-spam-count", "Spam control", 25, 0, 10000)]

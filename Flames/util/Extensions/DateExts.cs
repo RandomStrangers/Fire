@@ -18,30 +18,33 @@
 using System;
 using System.Collections.Generic;
 
-namespace Flames 
+namespace Flames
 {
     /// <summary> Extension methods relating to dates. </summary>
-    public static class DateExts 
+    public static class DateExts
     {
         /// <summary> Origin point in time for Unix time (Midnight January 1, 1970) </summary>
         public static DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-        
-        public static DateTime FromUnixTime(this long offset) {
+
+        public static DateTime FromUnixTime(this long offset)
+        {
             return UnixEpoch.AddTicks(offset * TimeSpan.TicksPerSecond);
         }
-        
+
         /// <summary> Converts the given DateTime instance to Unix time </summary>
         /// <remarks> Unix time is the number of seconds since Midnight January 1, 1970 </remarks>
-        public static long ToUnixTime(this DateTime time) {
+        public static long ToUnixTime(this DateTime time)
+        {
             return (long)(time.ToUniversalTime() - UnixEpoch).TotalSeconds;
         }
-        
-        public static bool AddSpamEntry(this List<DateTime> log, int maxEntries, TimeSpan checkInterval) {
+
+        public static bool AddSpamEntry(this List<DateTime> log, int maxEntries, TimeSpan checkInterval)
+        {
             DateTime now = DateTime.UtcNow;
             if (log.Count > 0 && log.Count >= maxEntries)
                 log.RemoveAt(0);
             log.Add(now);
-            
+
             if (log.Count < maxEntries) return true;
             TimeSpan oldestDelta = now - log[0];
             return oldestDelta > checkInterval;

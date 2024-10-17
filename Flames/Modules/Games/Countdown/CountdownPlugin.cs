@@ -19,26 +19,29 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.Countdown
 {
-    public sealed class CountdownPlugin : Plugin 
+    public sealed class CountdownPlugin : Plugin
     {
         public override string name { get { return "Countdown"; } }
         public static Command cmdCD = new CmdCountdown();
-        
-        public override void Load(bool startup) {
+
+        public override void Load(bool startup)
+        {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdCD);
-            
+
             CountdownGame.Instance.Config.Path = "properties/games/countdown.properties";
             OnConfigUpdated();
             CountdownGame.Instance.AutoStart();
         }
-        
-        public override void Unload(bool shutdown) {
+
+        public override void Unload(bool shutdown)
+        {
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdCD);
         }
 
-        public void OnConfigUpdated() { 
+        public void OnConfigUpdated()
+        {
             CountdownGame.Instance.Config.Load();
         }
     }

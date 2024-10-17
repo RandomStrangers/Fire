@@ -51,9 +51,21 @@ namespace Flames.Network
             return buffer;
         }
 
-        public static byte[] Ping() { return new byte[] { Opcode.Ping }; }
+        public static byte[] Ping() 
+        { 
+            return new byte[] 
+            { 
+                Opcode.Ping 
+            }; 
+        }
 
-        public static byte[] LevelInitalise() { return new byte[] { Opcode.LevelInitialise }; }
+        public static byte[] LevelInitalise() 
+        { 
+            return new byte[] 
+            { 
+                Opcode.LevelInitialise 
+            }; 
+        }
         public static byte[] LevelInitaliseExt(int volume)
         {
             byte[] buffer = new byte[5];
@@ -100,10 +112,16 @@ namespace Flames.Network
 
         public static byte[] RemoveEntity(byte entityID)
         {
-            return new byte[] { Opcode.RemoveEntity, entityID };
+            return new byte[] 
+            { 
+                Opcode.RemoveEntity, entityID 
+            };
         }
 
-        public static byte[] BlankMessage() { return Message("", 0, false); }
+        public static byte[] BlankMessage() 
+        { 
+            return Message("", 0, false); 
+        }
 
         public static byte[] Message(string message, CpeMessageType type, bool hasCp437)
         {
@@ -362,7 +380,10 @@ namespace Flames.Network
         {
             byte[] buffer = new byte[6];
             buffer[0] = Opcode.CpeSetTextColor;
-            buffer[1] = col.R; buffer[2] = col.G; buffer[3] = col.B; buffer[4] = col.A;
+            buffer[1] = col.R; 
+            buffer[2] = col.G; 
+            buffer[3] = col.B; 
+            buffer[4] = col.A;
             buffer[5] = col.Index;
             return buffer;
         }
@@ -716,15 +737,27 @@ namespace Flames.Network
             return buffer;
         }
 
-        public enum TeleportMoveMode { AbsoluteInstant, AbsoluteSmooth, RelativeSmooth, RelativeShift }
+        public enum TeleportMoveMode 
+        { 
+            AbsoluteInstant, AbsoluteSmooth, RelativeSmooth, RelativeShift 
+        }
         public static byte[] TeleportExt(byte entityID, bool usePos, TeleportMoveMode moveMode, bool useOri, bool interpolateOri,
                                          Position pos, Orientation rot, bool extPos)
         {
             byte flags = 0;
-            if (usePos) { flags |= 1; }
+            if (usePos) 
+            { 
+                flags |= 1; 
+            }
             flags |= (byte)((byte)moveMode << 1);
-            if (useOri) { flags |= 16; }
-            if (interpolateOri) { flags |= 32; }
+            if (useOri) 
+            { 
+                flags |= 16; 
+            }
+            if (interpolateOri) 
+            { 
+                flags |= 32; 
+            }
 
             byte[] buffer = new byte[11 + (extPos ? 6 : 0)];
             buffer[0] = Opcode.CpeEntityTeleportExt;
@@ -737,7 +770,10 @@ namespace Flames.Network
             return buffer;
         }
 
-        public enum LightingMode { None, Classic, Fancy }
+        public enum LightingMode 
+        { 
+            None, Classic, Fancy 
+        }
         public static byte[] SetLightingMode(LightingMode mode, bool locked)
         {
             byte[] buffer = new byte[3];
@@ -795,8 +831,12 @@ namespace Flames.Network
             int i = 0;
             buffer[i++] = Opcode.CpeDefineBlockExt;
             MakeDefineBlockStart(def, buffer, ref i, uniqueSideTexs, hasCP437, extBlocks, extTexs);
-            buffer[i++] = def.MinX; buffer[i++] = def.MinZ; buffer[i++] = def.MinY;
-            buffer[i++] = def.MaxX; buffer[i++] = def.MaxZ; buffer[i++] = def.MaxY;
+            buffer[i++] = def.MinX; 
+            buffer[i++] = def.MinZ; 
+            buffer[i++] = def.MinY;
+            buffer[i++] = def.MaxX; 
+            buffer[i++] = def.MaxZ; 
+            buffer[i++] = def.MaxY;
             MakeDefineBlockEnd(def, ref i, buffer);
             return buffer;
         }
@@ -805,7 +845,8 @@ namespace Flames.Network
         {
             if (extTexs)
             {
-                NetUtils.WriteU16(value, buffer, i); i += 2;
+                NetUtils.WriteU16(value, buffer, i); 
+                i += 2;
             }
             else
             {
@@ -861,7 +902,9 @@ namespace Flames.Network
         {
             buffer[i++] = def.BlockDraw;
             buffer[i++] = def.FogDensity;
-            buffer[i++] = def.FogR; buffer[i++] = def.FogG; buffer[i++] = def.FogB;
+            buffer[i++] = def.FogR; 
+            buffer[i++] = def.FogG; 
+            buffer[i++] = def.FogB;
         }
         #endregion
     }

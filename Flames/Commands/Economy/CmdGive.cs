@@ -18,47 +18,57 @@
 using Flames.Eco;
 using Flames.Events.EconomyEvents;
 
-namespace Flames.Commands.Eco {
-    public sealed class CmdGive : MoneyCmd {
+namespace Flames.Commands.Eco
+{
+    public sealed class CmdGive : MoneyCmd
+    {
         public override string name { get { return "Give"; } }
         public override string shortcut { get { return "Gib"; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             bool all = false;
             if (!ParseArgs(p, message, ref all, "give", out EcoTransaction trans)) return;
 
             Player who = PlayerInfo.FindMatches(p, trans.TargetName, out int matches);
             if (matches > 1) return;
             int money;
-            if (who == null) {
+            if (who == null)
+            {
                 trans.TargetName = Economy.FindMatches(p, trans.TargetName, out money);
                 if (trans.TargetName == null) return;
-                
+
                 if (ReachedMax(p, money, trans.Amount)) return;
                 money += trans.Amount;
                 Economy.UpdateMoney(trans.TargetName, money);
-            } else {
-                trans.TargetName = who.name; 
+            }
+            else
+            {
+                trans.TargetName = who.name;
                 money = who.money;
-                
+
                 if (ReachedMax(p, money, trans.Amount)) return;
                 who.SetMoney(who.money + trans.Amount);
             }
-            
+
             trans.TargetFormatted = p.FormatNick(trans.TargetName);
             trans.Type = EcoTransactionType.Give;
             OnEcoTransactionEvent.Call(trans);
         }
 
-        public static bool ReachedMax(Player p, int current, int amount) {
-            if (current + amount > int.MaxValue) {
-                p.Message("&WPlayers cannot have over &3" + int.MaxValue + " &3" + Server.Config.Currency); return true;
+        public static bool ReachedMax(Player p, int current, int amount)
+        {
+            if (current + amount > int.MaxValue)
+            {
+                p.Message("&WPlayers cannot have over &3" + int.MaxValue + " &3" + Server.Config.Currency); 
+                return true;
             }
             return false;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Give [player] [amount] <reason>");
             p.Message("&HGives [player] [amount] &3" + Server.Config.Currency);
         }

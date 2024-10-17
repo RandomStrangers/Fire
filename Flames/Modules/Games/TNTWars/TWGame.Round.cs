@@ -27,20 +27,21 @@ using Flames.Games;
 
 namespace Flames.Modules.Games.TW
 {
-    public partial class TWGame : RoundsGame 
+    public partial class TWGame : RoundsGame
     {
-        public override void DoRound() {
+        public override void DoRound()
+        {
             Player[] all = allPlayers.Items;
-            foreach (Player p in all) 
+            foreach (Player p in all)
             {
                 Get(p).Reset(Config.Difficulty);
                 PlayerActions.Respawn(p);
             }
-            
+
             Red.Score = 0; Blue.Score = 0;
             UpdateAllStatus1();
             UpdateAllStatus2();
-            
+
             //Announcing Etc.
             // TODO: tidy up
             string Gamemode = "Free For All";
@@ -72,7 +73,7 @@ namespace Flames.Modules.Games.TW
                     difficulty = "Extreme";
                     break;
             }
-            
+
             string teamkillling = "Disabled";
             if (cfg.TeamKills) teamkillling = "Enabled";
             Chat.MessageGlobal("&cTNT Wars &Son " + Map.ColoredName + " &Shas started &3" + Gamemode + " &Swith a difficulty of &3" +
@@ -80,104 +81,122 @@ namespace Flames.Modules.Games.TW
                                " &Sexplosion delay and with a &3" + explosionsize + " &Sexplosion size)" +
                                ", team killing is &3" + teamkillling + " &Sand you can place &3" + cfg.MaxActiveTnt
                                + " &STNT at a time and there is a score limit of &3" + cfg.ScoreRequired + "&S!!");
-            
-            if (Config.Mode == TWGameMode.TDM) {
+
+            if (Config.Mode == TWGameMode.TDM)
+            {
                 Map.Message("Start your message with ':' to send it to team only!");
             }
-            
+
             UpdateBlockHandlers(); // TODO: Move to after GracePeriod?
-            
+
             GracePeriod();
             RoundInProgress = true;
             MessageMap(CpeMessageType.Announcement, "&4TNT Wars has started!");
-            
-            while (Running && RoundInProgress && !HasSomeoneWon()) {
+
+            while (Running && RoundInProgress && !HasSomeoneWon())
+            {
                 Thread.Sleep(250);
             }
         }
 
-        public bool HasSomeoneWon() {
-            if (Config.Mode == TWGameMode.TDM) {
+        public bool HasSomeoneWon()
+        {
+            if (Config.Mode == TWGameMode.TDM)
+            {
                 return Red.Score >= cfg.ScoreRequired || Blue.Score >= cfg.ScoreRequired;
             }
-            
+
             Player[] all = allPlayers.Items;
-            foreach (Player p in all) {
+            foreach (Player p in all)
+            {
                 if (Get(p).Score >= cfg.ScoreRequired) return true;
             }
             return false;
         }
 
-        public void GracePeriod() {
+        public void GracePeriod()
+        {
             if (!cfg.GracePeriod) return;
             int duration = (int)cfg.GracePeriodTime.TotalSeconds;
-            
+
             Map.Message("Grace period of &a" + duration + " &Sseconds");
             Map.Message("Building is disabled during this time!");
             if (!Running) return;
-            
+
             Map.Config.Buildable = false;
             Map.Config.Deletable = false;
             Map.UpdateBlockPermissions();
             DoCountdown("&b{0} &Sseconds left", duration, 15);
-            
+
             if (!Running) return;
             Map.Message("Grace period is over!");
             Map.Message("You can now &aplace &cTNT!");
             RestoreBuildPerms();
         }
 
-        public override bool SetMap(string map) {
+        public override bool SetMap(string map)
+        {
             if (!base.SetMap(map)) return false;
-            
+
             // TODO: Move to DoRound
-            Map.Props[Block.TNT_Explosion].KillerBlock = false;            
+            Map.Props[Block.TNT_Explosion].KillerBlock = false;
             buildable = Map.Config.Buildable;
             deletable = Map.Config.Deletable;
             Map.SetPhysics(3);
             return true;
         }
-        
-        public override void EndRound() {
+
+        public override void EndRound()
+        {
             if (!RoundInProgress) return;
             RoundInProgress = false;
             RestoreBuildPerms();
-            
+
             Player[] all = allPlayers.Items;
-            foreach (Player p in all) {
+            foreach (Player p in all)
+            {
                 PlayerActions.Respawn(p);
             }
-            
-            if (Config.Mode == TWGameMode.TDM) {
-                if (Red.Score > Blue.Score) {
+
+            if (Config.Mode == TWGameMode.TDM)
+            {
+                if (Red.Score > Blue.Score)
+                {
                     int amount = Red.Score - Blue.Score;
                     Map.Message(Red.ColoredName + " &Swon &cTNT Wars &Sby &f" + amount + " &Spoints!");
-                } else if (Blue.Score > Red.Score) {
+                }
+                else if (Blue.Score > Red.Score)
+                {
                     int amount = Blue.Score - Red.Score;
                     Map.Message(Blue.ColoredName + " &Swon &cTNT Wars &Sby &f" + amount + " &Spoints!");
-                } else {
+                }
+                else
+                {
                     Map.Message("The round ended in a tie!");
                 }
             }
-            
+
             Map.Message("&aTop player scores:");
             PlayerAndScore[] top = SortedByScore();
             int count = Math.Min(top.Length, 3);
-            
-            for (int i = 0; i < count; i++) {
+
+            for (int i = 0; i < count; i++)
+            {
                 Map.Message(FormatTopScore(top, i));
             }
-            
-            foreach (Player p in all) {
+
+            foreach (Player p in all)
+            {
                 p.Message("TNT Wars: You scored &f" + Get(p).Score + " points");
             }
         }
 
         public bool buildable = true, deletable = true;
-        public void RestoreBuildPerms() {
+        public void RestoreBuildPerms()
+        {
             if (Map.Config.Buildable == buildable &&
                 Map.Config.Deletable == deletable) return;
-            
+
             Map.Config.Buildable = buildable;
             Map.Config.Deletable = deletable;
             Map.UpdateBlockPermissions();

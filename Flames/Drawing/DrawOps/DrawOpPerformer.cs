@@ -24,9 +24,9 @@ using Flames.Undo;
 using BlockID = System.UInt16;
 using BlockRaw = System.Byte;
 
-namespace Flames.Drawing 
+namespace Flames.Drawing
 {
-    public struct PendingDrawOp 
+    public struct PendingDrawOp
     {
         public DrawOp Op;
         public Brush Brush;
@@ -34,56 +34,71 @@ namespace Flames.Drawing
     }
 }
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public static class DrawOpPerformer 
+    public static class DrawOpPerformer
     {
-        public static bool CannotBuildIn(Player p, Level lvl) {
+        public static bool CannotBuildIn(Player p, Level lvl)
+        {
             Zone[] zones = lvl.Zones.Items;
-            for (int i = 0; i < zones.Length; i++) {
+            for (int i = 0; i < zones.Length; i++)
+            {
                 // player could potentially modify blocks in this particular zone
                 if (zones[i].Access.CheckAllowed(p)) return false;
             }
             return !lvl.BuildAccess.CheckDetailed(p);
         }
-        
+
         public static bool Do(DrawOp op, Brush brush, Player p,
-                              Vec3S32[] marks, bool checkLimit = true) {
+                              Vec3S32[] marks, bool checkLimit = true)
+        {
             Level lvl = p.level;
             op.Setup(p, lvl, marks);
-            
-            if (lvl != null && !lvl.Config.Drawing && !op.AlwaysUsable) {
+
+            if (lvl != null && !lvl.Config.Drawing && !op.AlwaysUsable)
+            {
                 p.Message("Drawing commands are turned off on this map.");
                 return false;
             }
             if (lvl != null && CannotBuildIn(p, lvl)) return false;
-            
+
             long affected = op.BlocksAffected(lvl, marks);
             if (op.AffectedByTransform)
                 p.Transform.GetBlocksAffected(ref affected);
             if (checkLimit && !op.CanDraw(marks, p, affected)) return false;
-            
-            if (brush != null && affected != -1) {
+
+            if (brush != null && affected != -1)
+            {
                 const string format = "{0}({1}): affecting up to {2} blocks";
-                if (!p.Ignores.DrawOutput) {
+                if (!p.Ignores.DrawOutput)
+                {
                     p.Message(format, op.Name, brush.Name, affected);
                 }
-            } else if (affected != -1) {
+            }
+            else if (affected != -1)
+            {
                 const string format = "{0}: affecting up to {1} blocks";
-                if (!p.Ignores.DrawOutput) {
+                if (!p.Ignores.DrawOutput)
+                {
                     p.Message(format, op.Name, affected);
                 }
             }
-            
+
             DoQueuedDrawOp(p, op, brush, marks);
             return true;
         }
 
-        public static void DoQueuedDrawOp(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
-            PendingDrawOp item = new PendingDrawOp();
-            item.Op = op; item.Brush = brush; item.Marks = marks;
+        public static void DoQueuedDrawOp(Player p, DrawOp op, Brush brush, Vec3S32[] marks)
+        {
+            PendingDrawOp item = new PendingDrawOp
+            {
+                Op = op,
+                Brush = brush,
+                Marks = marks
+            };
 
-            lock (p.pendingDrawOpsLock) {
+            lock (p.pendingDrawOpsLock)
+            {
                 p.PendingDrawOps.Add(item);
                 // Another thread is already processing draw ops.
                 if (p.PendingDrawOps.Count > 1) return;
@@ -91,17 +106,21 @@ namespace Flames.Drawing.Ops
             ProcessDrawOps(p);
         }
 
-        public static void ProcessDrawOps(Player p) {
-            while (true) {
+        public static void ProcessDrawOps(Player p)
+        {
+            while (true)
+            {
                 PendingDrawOp item;
-                lock (p.pendingDrawOpsLock) {
+                lock (p.pendingDrawOpsLock)
+                {
                     if (p.PendingDrawOps.Count == 0) return;
                     item = p.PendingDrawOps[0];
                     p.PendingDrawOps.RemoveAt(0);
-                    
+
                     // Flush any remaining draw ops if the player has left the server.
                     // (so as to not keep alive references)
-                    if (p.Socket != null && p.Socket.Disconnected) {
+                    if (p.Socket != null && p.Socket.Disconnected)
+                    {
                         p.PendingDrawOps.Clear();
                         return;
                     }
@@ -110,93 +129,114 @@ namespace Flames.Drawing.Ops
             }
         }
 
-        public static void Execute(Player p, DrawOp op, Brush brush, Vec3S32[] marks) {
+        public static void Execute(Player p, DrawOp op, Brush brush, Vec3S32[] marks)
+        {
             UndoDrawOpEntry entry = new UndoDrawOpEntry();
             entry.Init(op.Name, op.Level.name);
-            
-            if (brush != null) brush.Configure(op, p);
+
+            brush?.Configure(op, p);
             DrawOpOutputter outputter = new DrawOpOutputter(op);
-            
-            if (op.AffectedByTransform) {
+
+            if (op.AffectedByTransform)
+            {
                 p.Transform.Perform(marks, op, brush, outputter.Output);
-            } else {
+            }
+            else
+            {
                 op.Perform(marks, brush, outputter.Output);
             }
             bool needsReload = op.TotalModified >= outputter.reloadThreshold;
-            
+
             if (op.Undoable) entry.Finish(p);
             if (needsReload) DoReload(p, op.Level);
             op.TotalModified = 0; // reset total modified (as drawop instances are reused in static mode)
         }
 
-        public static void DoReload(Player p, Level lvl) {
+        public static void DoReload(Player p, Level lvl)
+        {
             LevelActions.ReloadAll(lvl, p, true);
             Server.DoGC();
         }
 
 
-        public class DrawOpOutputter {
-            public readonly DrawOp op;
-            public readonly int reloadThreshold;
-            
-            public DrawOpOutputter(DrawOp op) {
+        public class DrawOpOutputter
+        {
+            public DrawOp op;
+            public int reloadThreshold;
+
+            public DrawOpOutputter(DrawOp op)
+            {
                 this.op = op;
                 reloadThreshold = op.Level.ReloadThreshold;
             }
-            
-            public void Output(DrawOpBlock b) {
+
+            public void Output(DrawOpBlock b)
+            {
                 if (b.Block == Block.Invalid) return;
                 Level lvl = op.Level;
                 Player p = op.Player;
                 if (b.X >= lvl.Width || b.Y >= lvl.Height || b.Z >= lvl.Length) return;
-                
+
                 int index = b.X + lvl.Width * (b.Z + b.Y * lvl.Length);
                 BlockID old = lvl.blocks[index];
                 BlockID extended = Block.ExtendedBase[old];
                 if (extended > 0) old = (BlockID)(extended | lvl.FastGetExtTile(b.X, b.Y, b.Z));
 
-                
+
                 // Check to make sure the block is actually different and that can be used
                 if (old == b.Block || !p.group.Blocks[old] || !p.group.Blocks[b.Block]) return;
-                
+
                 // Check if player can affect block at coords in world
                 AccessController denier = lvl.CanAffect(p, b.X, b.Y, b.Z);
-                if (denier != null) {
-                    if (p.lastAccessStatus < DateTime.UtcNow) {
+                if (denier != null)
+                {
+                    if (p.lastAccessStatus < DateTime.UtcNow)
+                    {
                         denier.CheckDetailed(p);
                         p.lastAccessStatus = DateTime.UtcNow.AddSeconds(2);
                     }
                     return;
                 }
-                
+
                 // Set the block (inlined)
                 lvl.Changed = true;
-                if (b.Block >= Block.Extended) {
+                if (b.Block >= Block.Extended)
+                {
                     lvl.blocks[index] = Block.ExtendedClass[b.Block >> Block.ExtendedShift];
 
                     lvl.FastSetExtTile(b.X, b.Y, b.Z, (BlockRaw)b.Block);
-                } else {
+                }
+                else
+                {
                     lvl.blocks[index] = (BlockRaw)b.Block;
-                    if (old >= Block.Extended) {
+                    if (old >= Block.Extended)
+                    {
                         lvl.FastRevertExtTile(b.X, b.Y, b.Z);
                     }
                 }
-                
+
                 lvl.BlockDB.Cache.Add(p, b.X, b.Y, b.Z, op.Flags, old, b.Block);
-                p.TotalModified++; p.TotalDrawn++; // increment block stats inline
-                
+                p.TotalModified++; 
+                p.TotalDrawn++; // increment block stats inline
+
                 // Potentially buffer the block change
-                if (op.TotalModified == reloadThreshold) {
-                    if (!p.Ignores.DrawOutput) {
+                if (op.TotalModified == reloadThreshold)
+                {
+                    if (!p.Ignores.DrawOutput)
+                    {
                         p.Message("Changed over {0} blocks, preparing to reload map..", reloadThreshold);
                     }
                     lvl.blockqueue.ClearAll();
-                } else if (op.TotalModified < reloadThreshold) {
-                    if (!Block.VisuallyEquals(old, b.Block)) {
+                }
+                else if (op.TotalModified < reloadThreshold)
+                {
+                    if (!Block.VisuallyEquals(old, b.Block))
+                    {
                         lvl.blockqueue.Add(index, b.Block);
                     }
 
-                    if (lvl.physics > 0) {
+                    if (lvl.physics > 0)
+                    {
                         if (old == Block.Sponge && b.Block != Block.Sponge)
                             OtherPhysics.DoSpongeRemoved(lvl, index, false);
                         if (old == Block.LavaSponge && b.Block != Block.LavaSponge)
@@ -206,23 +246,25 @@ namespace Flames.Drawing.Ops
                     }
                 }
                 op.TotalModified++;
-                
-                
+
+
                 // Attempt to prevent BlockDB in-memory cache from growing too large (> 1,000,000 entries)
                 int count = lvl.BlockDB.Cache.Count;
                 if (count == 0 || (count % 1000000) != 0) return;
-                
+
                 // if drawop has a read lock on BlockDB (e.g. undo/redo), we must release it here
                 bool hasReadLock = false;
-                if (op.BlockDBReadLock != null) {
+                if (op.BlockDBReadLock != null)
+                {
                     op.BlockDBReadLock.Dispose();
                     hasReadLock = true;
                 }
-                
-                using (IDisposable wLock = lvl.BlockDB.Locker.AccquireWrite(100)) {
+
+                using (IDisposable wLock = lvl.BlockDB.Locker.AccquireWrite(100))
+                {
                     if (wLock != null) lvl.BlockDB.FlushCache();
                 }
-                
+
                 if (!hasReadLock) return;
                 op.BlockDBReadLock = lvl.BlockDB.Locker.AccquireRead();
             }

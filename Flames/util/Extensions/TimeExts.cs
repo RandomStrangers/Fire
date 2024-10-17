@@ -17,79 +17,87 @@
  */
 using System;
 
-namespace Flames 
+namespace Flames
 {
     /// <summary> Extension methods relating to timespans. </summary>
-    public static class TimeExts 
-    {       
-        public static string Shorten(this TimeSpan value, 
-                                     bool seconds = false, bool spaces = true) {
+    public static class TimeExts
+    {
+        public static string Shorten(this TimeSpan value,
+                                     bool seconds = false, bool spaces = true)
+        {
             string time = "";
             bool negate = value.TotalSeconds < 0;
             if (negate) value = -value;
-            
+
             Add(ref time, value.Days, 'd', spaces);
             Add(ref time, value.Hours, 'h', spaces);
             Add(ref time, value.Minutes, 'm', spaces);
             if (value.TotalMinutes <= 1 || (seconds && value.Days < 1))
                 Add(ref time, value.Seconds, 's', spaces);
-            
+
             if (time.Length == 0) time = seconds ? "0s" : "0m";
             return negate ? "-" + time : time;
         }
 
-        public static void Add(ref string time, int amount, char suffix, bool spaces) {
+        public static void Add(ref string time, int amount, char suffix, bool spaces)
+        {
             if (amount == 0) return;
-            
-            if (time.Length == 0) 
+
+            if (time.Length == 0)
                 time = "" + amount + suffix;
-            else 
+            else
                 time = time + (spaces ? " " : "") + amount + suffix;
         }
 
-        
-        public static TimeSpan ParseShort(this string value, string defaultUnit) {
+
+        public static TimeSpan ParseShort(this string value, string defaultUnit)
+        {
             int num = 0;
             long amount = 0, total = 0;
-            
-            for (int i = 0; i < value.Length; i++) {
+
+            for (int i = 0; i < value.Length; i++)
+            {
                 char c = value[i];
                 if (c == ' ') continue;
-                
-                if (c >= '0' && c <= '9') {
+
+                if (c >= '0' && c <= '9')
+                {
                     num = checked(num * 10); num += (c - '0');
                     continue;
                 }
-                
+
                 amount = GetTicks(num, GetUnit(value, i));
-                total  = checked(total + amount);
+                total = checked(total + amount);
                 num = 0;
             }
-            
+
             amount = GetTicks(num, defaultUnit);
-            total  = checked(total + amount);
+            total = checked(total + amount);
             return TimeSpan.FromTicks(total);
         }
 
-        public static long GetTicks(int num, string unit) {
+        public static long GetTicks(int num, string unit)
+        {
             if (unit.CaselessEq("s")) return num * TimeSpan.TicksPerSecond;
             if (unit.CaselessEq("m")) return num * TimeSpan.TicksPerMinute;
             if (unit.CaselessEq("h")) return num * TimeSpan.TicksPerHour;
             if (unit.CaselessEq("d")) return num * TimeSpan.TicksPerDay;
             if (unit.CaselessEq("w")) return num * TimeSpan.TicksPerDay * 7;
-            
+
             if (unit.CaselessEq("ms")) return num * TimeSpan.TicksPerMillisecond;
             throw new FormatException(unit);
         }
 
-        public static string GetUnit(string value, int i) {
+        public static string GetUnit(string value, int i)
+        {
             string unit = "";
             // Find all alphabetical chars
-            for (; i < value.Length; i++) {
+            for (; i < value.Length; i++)
+            {
                 char c = value[i];
                 if (c == ' ') continue;
-                
-                if (c >= '0' && c <= '9') break;                
+
+                if (c >= '0' && c <= '9') break;
                 unit += value[i];
             }
             return unit;

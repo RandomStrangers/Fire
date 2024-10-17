@@ -18,116 +18,142 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Flames.Games {
+namespace Flames.Games
+{
 
-    public sealed class Team {
-        
+    public sealed class Team
+    {
+
         public string Color, Name, Owner;
         public List<string> Members = new List<string>();
-        
-        public Team() { }
-        public Team(string name, string owner) {
+
+        public Team() 
+        { 
+        }
+        public Team(string name, string owner)
+        {
             Name = name;
             Owner = owner;
             Members.Add(owner);
         }
-        
-        public void Message(Player source, string message) {
+
+        public void Message(Player source, string message)
+        {
             message = "&9- to team - λNICK: &f" + message;
             if (!source.CheckCanSpeak("send teamchat")) return;
-            
+
             Chat.MessageChat(ChatScope.All, source, message, this,
                              (pl, arg) => pl.Game.Team == arg);
         }
-        
-        public void Action(Player source, string message) {
+
+        public void Action(Player source, string message)
+        {
             message = "Team - λNICK &S" + message;
             Chat.MessageFrom(ChatScope.All, source, message, this,
                              (pl, arg) => pl.Game.Team == arg);
         }
-        
-        public bool Remove(string name) {
+
+        public bool Remove(string name)
+        {
             return Members.CaselessRemove(name);
         }
-                
-        public void DeleteIfEmpty() {
+
+        public void DeleteIfEmpty()
+        {
             if (Members.Count > 0) return;
             Teams.Remove(this);
-        }        
-        
-        public void UpdatePrefix() {
-            foreach (string name in Members) {
+        }
+
+        public void UpdatePrefix()
+        {
+            foreach (string name in Members)
+            {
                 Player p = PlayerInfo.FindExact(name);
-                if (p != null) p.SetPrefix();
+                p?.SetPrefix();
             }
         }
-        
-        
+
+
         public static List<Team> Teams = new List<Team>();
-        public static readonly object ioLock = new object();
-        
-        public static Team TeamIn(Player p) {
-            foreach (Team team in Teams) {
+        public static object ioLock = new object();
+
+        public static Team TeamIn(Player p)
+        {
+            foreach (Team team in Teams)
+            {
                 List<string> members = team.Members;
                 if (members.CaselessContains(p.name)) return team;
             }
             return null;
         }
-        
-        public static Team Find(string name) {
+
+        public static Team Find(string name)
+        {
             name = Colors.Strip(name);
-            
-            foreach (Team team in Teams) {
+
+            foreach (Team team in Teams)
+            {
                 string teamName = Colors.Strip(team.Name);
                 if (name.CaselessEq(teamName)) return team;
             }
             return null;
         }
-        
-        public static void Add(Team team) {
+
+        public static void Add(Team team)
+        {
             Team old = Find(team.Name);
             if (old != null) Teams.Remove(old);
             Teams.Add(team);
         }
-        
-        public static void SaveList() {
+
+        public static void SaveList()
+        {
             lock (ioLock)
                 using (StreamWriter w = new StreamWriter("extra/teams.txt"))
                     foreach (Team team in Teams)
-            {
-                w.WriteLine("Name=" + team.Name);
-                w.WriteLine("Color=" + team.Color);
-                w.WriteLine("Owner=" + team.Owner);
-                string list = team.Members.Join(",");
-                w.WriteLine("Members=" + list);
-                w.WriteLine("");
-            }
+                    {
+                        w.WriteLine("Name=" + team.Name);
+                        w.WriteLine("Color=" + team.Color);
+                        w.WriteLine("Owner=" + team.Owner);
+                        string list = team.Members.Join(",");
+                        w.WriteLine("Members=" + list);
+                        w.WriteLine("");
+                    }
         }
-        
-        public static void LoadList() {
+
+        public static void LoadList()
+        {
             if (!File.Exists("extra/teams.txt")) return;
-            Team tmp = new Team();            
-            
-            lock (ioLock) {
+            Team tmp = new Team();
+
+            lock (ioLock)
+            {
                 Teams.Clear();
-                PropertiesFile.Read("extra/teams.txt", ref tmp, LineProcessor, '=');       
+                PropertiesFile.Read("extra/teams.txt", ref tmp, LineProcessor, '=');
                 if (tmp.Name != null) Add(tmp);
             }
         }
 
-        public static void LineProcessor(string key, string value, ref Team tmp) {
-            switch (key.ToLower()) {
+        public static void LineProcessor(string key, string value, ref Team tmp)
+        {
+            switch (key.ToLower())
+            {
                 case "name":
                     if (tmp.Name != null) Add(tmp);
-                    tmp = new Team();
-                    tmp.Name = value;
+                    tmp = new Team
+                    {
+                        Name = value
+                    };
                     break;
                 case "color":
-                    tmp.Color = value; break;
+                    tmp.Color = value; 
+                    break;
                 case "owner":
-                    tmp.Owner = value; break;
+                    tmp.Owner = value; 
+                    break;
                 case "members":
-                    tmp.Members = new List<string>(value.SplitComma()); break;
+                    tmp.Members = new List<string>(value.SplitComma()); 
+                    break;
             }
         }
     }

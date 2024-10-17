@@ -31,7 +31,7 @@ namespace LibNoise
 
         public Perlin()
         {
-            Lacunarity  = 2.0;
+            Lacunarity = 2.0;
             OctaveCount = 6;
             Persistence = 0.5;
         }
@@ -46,7 +46,7 @@ namespace LibNoise
             y *= Frequency;
             z *= Frequency;
 
-            for(int octave = 0; octave < OctaveCount; octave++)
+            for (int octave = 0; octave < OctaveCount; octave++)
             {
                 signal = GradientNoise.GradientCoherentNoise(x, y, z, Seed + octave);
                 //signal = cachedNoise3(x, y, z);

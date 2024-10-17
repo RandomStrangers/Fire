@@ -15,51 +15,65 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-namespace Flames.Commands.Chatting 
-{  
-    public abstract class MessageCmd : Command2 
+namespace Flames.Commands.Chatting
+{
+    public abstract class MessageCmd : Command2
     {
         public override string type { get { return CommandTypes.Chat; } }
         public override bool UseableWhenFrozen { get { return true; } }
 
-        public bool TryMessageAction(Player p, string name, string msg, bool messageWho) {
-            if (name.Length == 0) { Help(p); return false; }
+        public bool TryMessageAction(Player p, string name, string msg, bool messageWho)
+        {
+            if (name.Length == 0)
+            {
+                Help(p);
+                return false;
+            }
             Player target = PlayerInfo.FindMatches(p, name);
             if (target == null) return false;
 
             string reciever = p == target ? "themselves" : target.ColoredName;
             if (!TryMessage(p, msg.Replace("λTARGET", reciever))) return false;
 
-            if (messageWho && p != target && !Chat.Ignoring(target, p)) {
+            if (messageWho && p != target && !Chat.Ignoring(target, p))
+            {
                 msg = msg.Replace("λNICK", target.FormatNick(p));
                 target.Message(msg.Replace("λTARGET", "you"));
             }
             return true;
         }
 
-        public bool TryMessage(Player p, string msg) { return TryMessage(p, msg, false); }
+        public bool TryMessage(Player p, string msg)
+        {
+            return TryMessage(p, msg, false);
+        }
 
-        public bool TryMessage(Player p, string msg, bool relay) {
+        public bool TryMessage(Player p, string msg, bool relay)
+        {
             if (!CanSpeak(p, name)) return false;
             Chat.MessageFrom(p, msg, null, relay);
-            
+
             p.CheckForMessageSpam();
             return true;
         }
-        
-        public static bool CanSpeak(Player p, string cmd) {
+
+        public static bool CanSpeak(Player p, string cmd)
+        {
             return p.CheckCanSpeak("use &T/" + cmd);
         }
     }
-    
-    public sealed class CmdHigh5 : MessageCmd {
+
+    public sealed class CmdHigh5 : MessageCmd
+    {
         public override string name { get { return "High5"; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             TryMessageAction(p, message, "λNICK &Sjust highfived λTARGET", true);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/High5 [player]");
             p.Message("&HHigh five someone! :D");
         }

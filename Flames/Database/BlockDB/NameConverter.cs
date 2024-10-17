@@ -18,42 +18,45 @@
 using System.Collections.Generic;
 using Flames.SQL;
 
-namespace Flames.DB 
+namespace Flames.DB
 {
     /// <summary> Converts names to integer ids and back </summary>
-    public static class NameConverter 
-    {       
+    public static class NameConverter
+    {
         // NOTE: this restriction is due to BlockDBCacheEntry
         public const int MaxPlayerID = 0x00FFFFFF;
-        
+
         /// <summary> Returns the name associated with the given ID, or ID#[id] if not found </summary>
-        public static string FindName(int id) {
+        public static string FindName(int id)
+        {
             // Only returns non-null if id > MaxPlayerID - invalid.Count
             string name = Server.invalidIds.GetAt(MaxPlayerID - id);
             if (name != null) return name;
-            
+
             name = Database.ReadString("Players", "Name", "WHERE ID=@0", id);
             return name != null ? name : "ID#" + id;
         }
-        
+
         /// <summary> Finds all the IDs associated with the given name. </summary>
-        public static int[] FindIds(string name) {
+        public static int[] FindIds(string name)
+        {
             List<int> ids = new List<int>();
-            
+
             int i = Server.invalidIds.IndexOf(name);
             if (i >= 0) ids.Add(MaxPlayerID - i);
-            
-            Database.ReadRows("Players", "ID", 
-                                record => ids.Add(record.GetInt32(0)), 
+
+            Database.ReadRows("Players", "ID",
+                                record => ids.Add(record.GetInt32(0)),
                                 "WHERE Name=@0", name);
             return ids.ToArray();
         }
-        
+
         /// <summary> Returns a non-database ID for the given name </summary>
-        public static int InvalidNameID(string name) {
+        public static int InvalidNameID(string name)
+        {
             bool added = Server.invalidIds.Add(name);
             if (added) Server.invalidIds.Save();
-            
+
             int index = Server.invalidIds.IndexOf(name);
             return MaxPlayerID - index;
         }

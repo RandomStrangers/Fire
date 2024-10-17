@@ -17,28 +17,40 @@
  */
 using Flames.Util;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdRules : Command2 
+    public sealed class CmdRules : Command2
     {
         public override string name { get { return "Rules"; } }
         public override string type { get { return CommandTypes.Information; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Builder, "can send rules to others") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("Agree", "agree"), new CommandAlias("Disagree", "disagree") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             TextFile rulesFile = TextFile.Files["Rules"];
             rulesFile.EnsureExists();
-            
-            if (message.CaselessEq("agree")) { Agree(p); return; }
-            if (message.CaselessEq("disagree")) { Disagree(p, data); return; }
-            
+
+            if (message.CaselessEq("agree")) 
+            { 
+                Agree(p); 
+                return; 
+            }
+            if (message.CaselessEq("disagree")) 
+            { 
+                Disagree(p, data); 
+                return; 
+            }
+
             Player target = p;
-            if (message.Length > 0) {
+            if (message.Length > 0)
+            {
                 if (!CheckExtraPerm(p, data, 1)) return;
                 target = PlayerInfo.FindMatches(p, message);
                 if (target == null) return;
@@ -48,39 +60,69 @@ namespace Flames.Commands.Info
             string[] rules = rulesFile.GetText();
             target.Message("Server Rules:");
             target.MessageLines(rules);
-            
-            if (target != null && p != target) {
+
+            if (target != null && p != target)
+            {
                 p.Message("Sent the rules to {0}&S.", p.FormatNick(target));
                 target.Message("{0} &Ssent you the rules.", target.FormatNick(p));
             }
         }
 
-        public void Agree(Player p) {
-            if (p.IsSuper) { p.Message("Only in-game players can agree to the rules."); return; }
-            if (!Server.Config.AgreeToRulesOnEntry) { p.Message("agree-to-rules-on-entry is not enabled."); return; }
-            if (!p.hasreadrules) { p.Message("&9You must read &T/Rules &9before agreeing."); return; }
-            
-            if (!Server.agreed.Add(p.name)) {
+        public void Agree(Player p)
+        {
+            if (p.IsSuper) 
+            { 
+                p.Message("Only in-game players can agree to the rules."); 
+                return; 
+            }
+            if (!Server.Config.AgreeToRulesOnEntry) 
+            { 
+                p.Message("agree-to-rules-on-entry is not enabled."); 
+                return; 
+            }
+            if (!p.hasreadrules) 
+            {
+                p.Message("&9You must read &T/Rules &9before agreeing."); 
+                return; 
+            }
+
+            if (!Server.agreed.Add(p.name))
+            {
                 p.Message("You have already agreed to the rules.");
-            } else {                
+            }
+            else
+            {
                 p.agreed = true;
                 p.Message("Thank you for agreeing to follow the rules. You may now build and use commands!");
                 Server.agreed.Save(false);
             }
         }
 
-        public void Disagree(Player p, CommandData data) {
-            if (p.IsSuper) { p.Message("Only in-game players can disagree with the rules."); return; }
-            if (!Server.Config.AgreeToRulesOnEntry) { p.Message("agree-to-rules-on-entry is not enabled."); return; }
-            
-            if (data.Rank > LevelPermission.Guest) {
-                p.Message("Your awesomeness prevents you from using this command"); return;
+        public void Disagree(Player p, CommandData data)
+        {
+            if (p.IsSuper) 
+            { 
+                p.Message("Only in-game players can disagree with the rules."); 
+                return; 
+            }
+            if (!Server.Config.AgreeToRulesOnEntry) 
+            { 
+                p.Message("agree-to-rules-on-entry is not enabled."); 
+                return; 
+            }
+
+            if (data.Rank > LevelPermission.Guest)
+            {
+                p.Message("Your awesomeness prevents you from using this command");
+                return;
             }
             p.Leave("If you don't agree with the rules, consider playing elsewhere.");
         }
 
-        public override void Help(Player p) {
-            if (HasExtraPerm(p, p.Rank, 1)) {
+        public override void Help(Player p)
+        {
+            if (HasExtraPerm(p, p.Rank, 1))
+            {
                 p.Message("&T/Rules [player] &H- Displays server rules to [player]");
             }
             p.Message("&T/Rules &H- Displays the server rules to you");

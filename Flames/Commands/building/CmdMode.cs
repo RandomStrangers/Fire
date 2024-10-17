@@ -16,33 +16,47 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Building {
-    public sealed class CmdMode : Command2 {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdMode : Command2
+    {
         public override string name { get { return "Mode"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool SuperUseable { get { return false; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new CommandAlias[] { new CommandAlias("TNT", "tnt") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             // Special handling for the old TNT command
-            if (message.CaselessStarts("tnt ")) {
+            if (message.CaselessStarts("tnt "))
+            {
                 string[] parts = message.SplitSpaces(2);
-                if (parts[1].CaselessEq("small")) {
+                if (parts[1].CaselessEq("small"))
+                {
                     message = Block.GetName(p, Block.TNT_Small);
-                } else if (parts[1].CaselessEq("big")) {
+                }
+                else if (parts[1].CaselessEq("big"))
+                {
                     message = Block.GetName(p, Block.TNT_Big);
-                } else if (parts[1].CaselessEq("nuke")) {
+                }
+                else if (parts[1].CaselessEq("nuke"))
+                {
                     message = Block.GetName(p, Block.TNT_Nuke);
                 }
             }
-            
-            if (message.Length == 0) {
-                if (p.ModeBlock != Block.Invalid) {
+
+            if (message.Length == 0)
+            {
+                if (p.ModeBlock != Block.Invalid)
+                {
                     p.Message("&b{0} &Smode: &cOFF", Block.GetName(p, p.ModeBlock));
                     p.ModeBlock = Block.Invalid;
-                } else {
+                }
+                else
+                {
                     Help(p);
                 }
                 return;
@@ -50,16 +64,20 @@ namespace Flames.Commands.Building {
 
             if (!CommandParser.GetBlockIfAllowed(p, message, "place", out ushort block)) return;
 
-            if (p.ModeBlock == block) {
+            if (p.ModeBlock == block)
+            {
                 p.Message("&b{0} &Smode: &cOFF", Block.GetName(p, p.ModeBlock));
                 p.ModeBlock = Block.Invalid;
-            } else {
+            }
+            else
+            {
                 p.ModeBlock = block;
                 p.Message("&b{0} &Smode: &aON", Block.GetName(p, p.ModeBlock));
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Mode");
             p.Message("&HReverts the last &T/Mode [block].");
             p.Message("&T/Mode [block]");

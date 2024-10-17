@@ -15,9 +15,9 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public sealed class CmdWhisper : Command2 
+    public sealed class CmdWhisper : Command2
     {
         public override string name { get { return "Whisper"; } }
         public override string type { get { return CommandTypes.Chat; } }
@@ -25,22 +25,33 @@ namespace Flames.Commands.Chatting
         public override bool UseableWhenFrozen { get { return true; } }
         public override bool MessageBlockRestricted { get { return true; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
-                p.whisper = !p.whisper; p.whisperTo = "";
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                p.whisper = !p.whisper; 
+                p.whisperTo = "";
                 if (p.whisper) p.Message("All messages sent will now auto-whisper");
                 else p.Message("Whisper chat turned off");
-            } else {
+            }
+            else
+            {
                 Player target = PlayerInfo.FindMatches(p, message);
-                if (target == null) { p.whisperTo = ""; p.whisper = false; return; }
+                if (target == null) 
+                { 
+                    p.whisperTo = ""; 
+                    p.whisper = false; 
+                    return; 
+                }
 
-                p.whisper   = true;
+                p.whisper = true;
                 p.whisperTo = target.name;
                 p.Message("Auto-whisper enabled. All messages will now be sent to {0}.", p.FormatNick(target));
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Whisper [name]");
             p.Message("&HMakes all messages act like whispers");
         }

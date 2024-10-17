@@ -23,10 +23,10 @@ using Flames.Maths;
 using Flames.SQL;
 using Flames.Util;
 
-namespace Flames.DB 
+namespace Flames.DB
 {
     /// <summary> Exports a BlockDB table to the new binary format. </summary>
-    public sealed class BlockDBTableDumper 
+    public sealed class BlockDBTableDumper
     {
         public string mapName;
         public Dictionary<string, int> nameCache = new Dictionary<string, int>();
@@ -36,85 +36,100 @@ namespace Flames.DB
         public BlockDBEntry entry;
         public FastList<BlockDBEntry> buffer = new FastList<BlockDBEntry>(4096);
         public uint entriesWritten;
-        
-        public void DumpTable(string table) {
+
+        public void DumpTable(string table)
+        {
             buffer.Count = 0;
             entriesWritten = 0;
             errorOccurred = false;
             mapName = table.Substring("Block".Length);
-            
-            try {
+
+            try
+            {
                 Database.ReadRows(table, "*", DumpRow);
                 WriteBuffer(true);
                 AppendCbdbFile();
                 SaveCbdbFile();
-            } finally {
-                if (stream != null) stream.Close();
+            }
+            finally
+            {
+                stream?.Close();
                 stream = null;
             }
-            
+
             if (errorOccurred) return;
             Database.DeleteTable(table);
         }
 
-        public void DumpRow(ISqlRecord record) {
+        public void DumpRow(ISqlRecord record)
+        {
             if (errorOccurred) return;
-            
-            try {
-                if (stream == null) {
+
+            try
+            {
+                if (stream == null)
+                {
                     stream = File.Create(BlockDBFile.DumpPath(mapName));
                     string lvlPath = LevelInfo.MapPath(mapName);
                     dims = IMapImporter.Formats[0].ReadDimensions(lvlPath);
                     BlockDBFile.WriteHeader(stream, dims);
                 }
-                
+
                 // Only log maps which have a used BlockDB to avoid spam
                 entriesWritten++;
-                if (entriesWritten == 10) {
+                if (entriesWritten == 10)
+                {
                     string progress = " (" + DBUpgrader.Progress + ")";
                     Logger.Log(LogType.SystemActivity, "Dumping BlockDB for " + mapName + progress);
                 }
-                
+
                 UpdateBlock(record);
                 UpdateCoords(record);
                 UpdatePlayerID(record);
                 UpdateTimestamp(record);
-                
+
                 buffer.Add(entry);
                 WriteBuffer(false);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 errorOccurred = true;
             }
         }
 
-        public void WriteBuffer(bool force) {
+        public void WriteBuffer(bool force)
+        {
             if (buffer.Count == 0) return;
             if (!force && buffer.Count < 4096) return;
-            
+
             BlockDBFile.V1.WriteEntries(stream, buffer);
             buffer.Count = 0;
         }
 
-        public void AppendCbdbFile() {
+        public void AppendCbdbFile()
+        {
             string path = BlockDBFile.FilePath(mapName);
             if (!File.Exists(path) || stream == null) return;
-            
+
             byte[] bulk = new byte[4096];
-            using (Stream cbdb = File.OpenRead(path)) {
+            using (Stream cbdb = File.OpenRead(path))
+            {
                 cbdb.Read(bulk, 0, BlockDBFile.EntrySize); // header
                 int read = 0;
-                while ((read = cbdb.Read(bulk, 0, 4096)) > 0) {
+                while ((read = cbdb.Read(bulk, 0, 4096)) > 0)
+                {
                     stream.Write(bulk, 0, read);
                 }
             }
         }
 
-        public void SaveCbdbFile() {
+        public void SaveCbdbFile()
+        {
             if (stream == null) return;
             stream.Close();
             stream = null;
-            
+
             string dumpPath = BlockDBFile.DumpPath(mapName);
             string filePath = BlockDBFile.FilePath(mapName);
             if (File.Exists(filePath)) File.Delete(filePath);
@@ -122,43 +137,53 @@ namespace Flames.DB
         }
 
 
-        public void UpdateBlock(ISqlRecord record) {
-            entry.OldRaw    = Block.Invalid;
-            entry.NewRaw    = (byte)record.GetInt32(5);
+        public void UpdateBlock(ISqlRecord record)
+        {
+            entry.OldRaw = Block.Invalid;
+            entry.NewRaw = (byte)record.GetInt32(5);
             byte blockFlags = (byte)record.GetInt32(6);
             entry.Flags = BlockDBFlags.ManualPlace;
-            
-            if ((blockFlags & 1) != 0) { // deleted block
+
+            if ((blockFlags & 1) != 0)
+            { // deleted block
                 entry.NewRaw = Block.Air;
             }
-            if ((blockFlags & 2) != 0) { // new block is custom
+            if ((blockFlags & 2) != 0)
+            { // new block is custom
                 entry.Flags |= BlockDBFlags.NewExtended;
             }
         }
 
-        public void UpdateCoords(ISqlRecord record) {
+        public void UpdateCoords(ISqlRecord record)
+        {
             int x = record.GetInt32(2);
             int y = record.GetInt32(3);
             int z = record.GetInt32(4);
             entry.Index = x + dims.X * (z + dims.Z * y);
         }
 
-        public void UpdatePlayerID(ISqlRecord record) {
+        public void UpdatePlayerID(ISqlRecord record)
+        {
             int id;
             string user = record.GetString(0);
-            if (!nameCache.TryGetValue(user, out id)) {
+            if (!nameCache.TryGetValue(user, out id))
+            {
                 int[] ids = NameConverter.FindIds(user);
-                if (ids.Length > 0) {
+                if (ids.Length > 0)
+                {
                     nameCache[user] = ids[0];
-                } else {
+                }
+                else
+                {
                     nameCache[user] = NameConverter.InvalidNameID(user);
                 }
             }
             entry.PlayerID = id;
         }
 
-        public void UpdateTimestamp(ISqlRecord record) {
-            DateTime time   = record.GetDateTime(1).ToUniversalTime();
+        public void UpdateTimestamp(ISqlRecord record)
+        {
+            DateTime time = record.GetDateTime(1).ToUniversalTime();
             entry.TimeDelta = (int)time.Subtract(BlockDB.Epoch).TotalSeconds;
         }
     }

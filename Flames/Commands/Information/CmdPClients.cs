@@ -18,20 +18,21 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdPClients : Command2 
+    public sealed class CmdPClients : Command2
     {
         public override string name { get { return "PClients"; } }
         public override string shortcut { get { return "Clients"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             Dictionary<string, List<Player>> clients = new Dictionary<string, List<Player>>();
             Player[] online = PlayerInfo.Online.Items;
-            
-            foreach (Player pl in online) 
+
+            foreach (Player pl in online)
             {
                 if (!p.CanSee(pl, data.Rank)) continue;
                 string appName = pl.Session.ClientName();
@@ -43,14 +44,14 @@ namespace Flames.Commands.Info
                 }
                 usingClient.Add(pl);
             }
-            
+
             p.Message("Players using:");
-            foreach (var kvp in clients) 
+            foreach (var kvp in clients)
             {
                 StringBuilder builder = new StringBuilder();
-                List<Player> players  = kvp.Value;
-                
-                for (int i = 0; i < players.Count; i++) 
+                List<Player> players = kvp.Value;
+
+                for (int i = 0; i < players.Count; i++)
                 {
                     string nick = Colors.StripUsed(p.FormatNick(players[i]));
                     builder.Append(nick);
@@ -60,7 +61,8 @@ namespace Flames.Commands.Info
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/PClients");
             p.Message("&HLists the clients players are using, and who uses which client.");
         }

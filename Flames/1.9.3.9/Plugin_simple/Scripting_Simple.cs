@@ -32,7 +32,10 @@ namespace Flames.Scripting
 
         /// <summary> Returns the default .dll path for the simple plugin with the given name </summary>
 
-        public static string SimplePluginPath(string name) { return "" + name + ".dll"; }
+        public static string SimplePluginPath(string name)
+        {
+            return "" + name + ".dll";
+        }
 
         /// <summary> Constructs instances of all types which derive from T in the given assembly. </summary>
         /// <returns> The list of constructed instances. </returns>
@@ -122,7 +125,7 @@ namespace Flames.Scripting
                     {
                         LoadSimplePlugin(file, true);
                     }
-                    else 
+                    else
                     {
                         return;
                     }
@@ -170,10 +173,13 @@ namespace Flames.Scripting
         /// <summary> The full name of this programming language </summary>
         /// <example> CSharp, Visual Basic </example>
         public abstract string FullName { get; }
-        /// <summary> Returns source code for an example Plugin </summary>
+        /// <summary> Returns source code for an example simple plugin </summary>
         public abstract string SimplePluginSkeleton { get; }
 
-        public string SimplePluginPath(string name) { return "" + name + FileExtension; }
+        public string SimplePluginPath(string name)
+        {
+            return "" + name + FileExtension;
+        }
 
         /// <summary> C# compiler instance. </summary>
         public static ICompiler_Simple CS = new CSCompiler_Simple();
@@ -262,7 +268,7 @@ namespace Flames.Scripting
     /// <summary> Compiles source code files from a particular language into a .dll file, using a CodeDomProvider for the compiler. </summary>
     public abstract class ICodeDomCompiler_Simple : ICompiler_Simple
     {
-        public readonly object compilerLock = new object();
+        public object compilerLock = new object();
         public CodeDomProvider compiler;
 
         /// <summary> Creates a CodeDomProvider instance for this programming language </summary>
@@ -339,8 +345,8 @@ namespace Flames.Scripting
 
     public class SimpleSourceMap
     {
-        public readonly string[] files;
-        public readonly List<string>[] sources;
+        public string[] files;
+        public List<string>[] sources;
 
         public SimpleSourceMap(string[] paths)
         {

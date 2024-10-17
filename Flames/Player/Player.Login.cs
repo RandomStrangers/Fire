@@ -23,69 +23,92 @@ using Flames.SQL;
 using Flames.Tasks;
 using Flames.Util;
 
-namespace Flames 
+namespace Flames
 {
-    public partial class Player : IDisposable 
-    { 
-        public bool ProcessLogin(string user, string mppass) {
+    public partial class Player : IDisposable
+    {
+        public bool ProcessLogin(string user, string mppass)
+        {
             LastAction = DateTime.UtcNow;
-            name     = user; truename    = user;
-            SkinName = user; DisplayName = user;
+            name = user; 
+            truename = user;
+            SkinName = user; 
+            DisplayName = user;
 
             // TODO move to ClassicProtocol (SetRawName)
-            if (Session.ProtocolVersion > Server.VERSION_0030) {
-                Leave(null, "Unsupported protocol version " + Session.ProtocolVersion, true); return false;
+            if (Session.ProtocolVersion > Server.VERSION_0030)
+            {
+                Leave(null, "Unsupported protocol version " + Session.ProtocolVersion, true); 
+                return false;
             }
-            if (user.Length < 1 || user.Length > 16) {
-                Leave(null, "Usernames must be between 1 and 16 characters", true); return false;
+            if (user.Length < 1 || user.Length > 16)
+            {
+                Leave(null, "Usernames must be between 1 and 16 characters", true); 
+                return false;
             }
-            if (!user.ContainsAllIn(USERNAME_ALPHABET)) {
-                Leave(null, "Invalid player name", true); return false;
+            if (!user.ContainsAllIn(USERNAME_ALPHABET))
+            {
+                Leave(null, "Invalid player name", true); 
+                return false;
             }
-            
+
             if (Server.Config.ClassicubeAccountPlus) name += "+";
             OnPlayerStartConnectingEvent.Call(this, mppass);
-            if (cancelconnecting) { cancelconnecting = false; return false; }
-                
+            if (cancelconnecting) 
+            { 
+                cancelconnecting = false; 
+                return false; 
+            }
+
             // mppass can be used as /pass when it is not used for name authentication            
             if (!verifiedName && NeedsVerification() && PassAuthenticator.Current.HasPassword(name))
                 PassAuthenticator.VerifyPassword(this, mppass);
-            
-            level   = Server.mainLevel;
+
+            level = Server.mainLevel;
             Loading = true;
             // returns false if disconnected during login
             return !Socket.Disconnected;
         }
-        
-        public void CompleteLoginProcess() {
+
+        public void CompleteLoginProcess()
+        {
             Player clone = null;
             OnPlayerFinishConnectingEvent.Call(this);
-            if (cancelconnecting) { cancelconnecting = false; return; }
-            
+            if (cancelconnecting) 
+            { 
+                cancelconnecting = false; 
+                return; 
+            }
+
             SessionStartTime = DateTime.UtcNow;
             LastLogin = DateTime.Now;
             TotalTime = TimeSpan.FromSeconds(1);
-            
-            lock (PlayerInfo.Online.locker) {
+
+            lock (PlayerInfo.Online.locker)
+            {
                 // Check if any players online have same name
                 clone = FindClone(truename);
-                
+
                 // Remove clone from list (hold lock for as short time as possible)
                 //  NOTE: check 'Server.Config.VerifyNames' too for LAN/localhost IPs
-                if (clone != null && (verifiedName || Server.Config.VerifyNames)) 
+                if (clone != null && (verifiedName || Server.Config.VerifyNames))
                     PlayerInfo.Online.Remove(clone);
 
                 id = NextFreeId();
                 PlayerInfo.Online.Add(this);
             }
-            
-            if (clone != null && (verifiedName || Server.Config.VerifyNames)) {
+
+            if (clone != null && (verifiedName || Server.Config.VerifyNames))
+            {
                 string reason = ip == clone.ip ? "(Reconnecting)" : "(Reconnecting from a different IP)";
                 clone.Leave(reason);
-            } else if (clone != null) {
-                Leave(null, "Already logged in!", true); return;
             }
-            
+            else if (clone != null)
+            {
+                Leave(null, "Already logged in!", true); 
+                return;
+            }
+
             deathCooldown = DateTime.UtcNow.AddSeconds(2);
             LoadCpeData();
 
@@ -96,48 +119,57 @@ namespace Flames
             GetPlayerStats();
             ShowWelcome();
             CheckState();
-            
+
             string nick = PlayerDB.LoadNick(name);
             if (nick != null) DisplayName = nick;
-            Game.Team   = Team.TeamIn(this);
+            Game.Team = Team.TeamIn(this);
             SetPrefix();
 
             if (Server.noEmotes.Contains(name)) { parseEmotes = !Server.Config.ParseEmotes; }
 
             hideRank = Rank;
-            hidden   = CanUse("Hide") && Server.hidden.Contains(name);
+            hidden = CanUse("Hide") && Server.hidden.Contains(name);
             if (hidden) Message("&8Reminder: You are still hidden.");
-            
-            if (Chat.AdminchatPerms.UsableBy(this) && Server.Config.AdminsJoinSilently) {
-                hidden = true; adminchat = true;                
+
+            if (Chat.AdminchatPerms.UsableBy(this) && Server.Config.AdminsJoinSilently)
+            {
+                hidden = true; adminchat = true;
             }
 
             OnPlayerConnectEvent.Call(this);
-            if (cancellogin) { cancellogin = false; return; }
+            if (cancellogin) 
+            { 
+                cancellogin = false;
+                return; 
+            }
 
             //Server.Background.QueueOnce(ShowAltsTask, name, TimeSpan.Zero);
 
             string joinMsg = "&a+ λFULL &S" + PlayerInfo.GetLoginMessage(this);
             if (hidden) joinMsg = "&8(hidden)" + joinMsg;
-            
-            if (Server.Config.GuestJoinsNotify || Rank > LevelPermission.Guest) {
+
+            if (Server.Config.GuestJoinsNotify || Rank > LevelPermission.Guest)
+            {
                 Chat.MessageFrom(ChatScope.All, this, joinMsg, null, Chat.FilterVisible(this), !hidden);
             }
 
-            if (Server.Config.AgreeToRulesOnEntry && Rank == LevelPermission.Guest && !Server.agreed.Contains(name)) {
+            if (Server.Config.AgreeToRulesOnEntry && Rank == LevelPermission.Guest && !Server.agreed.Contains(name))
+            {
                 Message("&9You must read the &c/Rules &9and &c/Agree &9to them before you can build and use commands!");
                 agreed = false;
             }
-            
+
             CheckIsUnverified();
-            
-            if (CanUse("Inbox") && Database.TableExists("Inbox" + name)) {
+
+            if (CanUse("Inbox") && Database.TableExists("Inbox" + name))
+            {
                 int count = Database.CountRows("Inbox" + name);
-                if (count > 0) {
+                if (count > 0)
+                {
                     Message("You have &a" + count + " &Smessages in &T/Inbox");
                 }
             }
-            
+
             if (Server.Config.PositionUpdateInterval > 1000)
                 Message("Lowlag mode is currently &aON.");
 
@@ -146,7 +178,8 @@ namespace Flames
             Loading = false;
         }
 
-        public static Player FindClone(string name) {
+        public static Player FindClone(string name)
+        {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players)
             {
@@ -155,92 +188,112 @@ namespace Flames
             return null;
         }
 
-        public void ShowWelcome() {
+        public void ShowWelcome()
+        {
             LastAction = DateTime.UtcNow;
             TextFile welcomeFile = TextFile.Files["Welcome"];
-            
-            try {
+
+            try
+            {
                 welcomeFile.EnsureExists();
                 string[] welcome = welcomeFile.GetText();
                 MessageLines(welcome);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error loading welcome text", ex);
             }
         }
 
-        public unsafe static byte NextFreeId() {
+        public unsafe static byte NextFreeId()
+        {
             byte* used = stackalloc byte[256];
             for (int i = 0; i < 256; i++) used[i] = 0;
 
             Player[] players = PlayerInfo.Online.Items;
-            for (int i = 0; i < players.Length; i++) {
+            for (int i = 0; i < players.Length; i++)
+            {
                 byte id = players[i].id;
                 used[id] = 1;
             }
-            
-            for (byte i = 0; i < 255; i++ ) {
+
+            for (byte i = 0; i < 255; i++)
+            {
                 if (used[i] == 0) return i;
             }
             return 1;
         }
 
-        public void LoadCpeData() {
+        public void LoadCpeData()
+        {
             string skin = Server.skins.Get(name);
-            if (skin != null) SkinName = skin;           
+            if (skin != null) SkinName = skin;
             string model = Server.models.Get(name);
             if (model != null) Model = model;
 
             string modelScales = Server.modelScales.Get(name);
-            if (modelScales != null) {
+            if (modelScales != null)
+            {
                 string[] bits = modelScales.SplitSpaces(3);
                 Utils.TryParseSingle(bits[0], out ScaleX);
                 Utils.TryParseSingle(bits[1], out ScaleY);
                 Utils.TryParseSingle(bits[2], out ScaleZ);
-            }            
+            }
 
             string rotations = Server.rotations.Get(name);
-            if (rotations != null) {
+            if (rotations != null)
+            {
                 string[] bits = rotations.SplitSpaces(2);
                 Orientation rot = Rot;
                 byte.TryParse(bits[0], out rot.RotX);
                 byte.TryParse(bits[1], out rot.RotZ);
                 Rot = rot;
-            }            
+            }
             SetModel(Model);
         }
 
-        public void GetPlayerStats() {
+        public void GetPlayerStats()
+        {
             PlayerData data = null;
-            
-            if (verifiedName || Server.Config.VerifyNames) {
+
+            if (verifiedName || Server.Config.VerifyNames)
+            {
                 // Existing servers may have multiple records for the same name with differing case
                 // So for backwards compatibility, do a case sensitive name lookup
                 //   to avoid retrieving player stats from the wrong row
                 Database.ReadRows("Players", "*",
                                     record => data = PlayerData.Parse(record),
                                     "WHERE Name=@0", name);
-            } else {
+            }
+            else
+            {
                 data = PlayerDB.FindData(name);
             }
-            
-            if (data == null) {
+
+            if (data == null)
+            {
                 PlayerData.Create(this);
                 Chat.MessageFrom(this, "λNICK &Shas connected for the first time!");
                 Message("Welcome " + ColoredName + "&S! This is your first visit.");
-            } else {
+            }
+            else
+            {
                 data.ApplyTo(this);
                 Message("Welcome back " + FullName + "&S! You've been here " + TimesVisited + " times!");
             }
             gotSQLData = true;
         }
 
-        public void CheckState() {
-            if (Server.muted.Contains(name)) {
+        public void CheckState()
+        {
+            if (Server.muted.Contains(name))
+            {
                 muted = true;
                 Chat.MessageFrom(this, "λNICK &Wis still muted from previously.");
             }
-            
-            if (Server.frozen.Contains(name)) {
+
+            if (Server.frozen.Contains(name))
+            {
                 frozen = true;
                 Chat.MessageFrom(this, "λNICK &Wis still frozen from previously.");
             }
@@ -251,25 +304,26 @@ namespace Flames
             }
         }
 
-        public static void ShowAltsTask(SchedulerTask task) {
+        public static void ShowAltsTask(SchedulerTask task)
+        {
             string name = (string)task.State;
-            Player p    = PlayerInfo.FindExact(name);
+            Player p = PlayerInfo.FindExact(name);
             if (p == null || p.Socket.Disconnected) return;
-            
+
             // Server host is exempt from alt listing
             if (IPAddress.IsLoopback(p.IP)) return;
-            
+
             List<string> alts = PlayerInfo.FindAccounts(p.ip);
             // in older versions it was possible for your name to appear multiple times in DB
             while (alts.CaselessRemove(p.name)) { }
             if (alts.Count == 0) return;
-            
+
             ItemPerms opchat = Chat.OpchatPerms;
             string altsMsg = "λNICK &Sis lately known as: " + alts.Join();
 
             Chat.MessageFrom(p, altsMsg,
                              (pl, obj) => pl.CanSee(p) && opchat.UsableBy(pl));
-                         
+
             //IRCBot.Say(temp, true); //Tells people in op channel on IRC
             altsMsg = altsMsg.Replace("λNICK", name);
             Logger.Log(LogType.UserActivity, altsMsg);

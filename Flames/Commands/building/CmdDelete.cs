@@ -15,9 +15,9 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Building 
+namespace Flames.Commands.Building
 {
-    public sealed class CmdDelete : Command2 
+    public sealed class CmdDelete : Command2
     {
         public override string name { get { return "Delete"; } }
         public override string shortcut { get { return "d"; } }
@@ -25,14 +25,20 @@ namespace Flames.Commands.Building
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data)  {
-            if (message.Length > 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length > 0) 
+            { 
+                Help(p); 
+                return; 
+            }
 
             p.deleteMode = !p.deleteMode;
             p.Message("Delete mode: &a" + p.deleteMode);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Delete");
             p.Message("&HDeletes any block you click");
             p.Message("&H\"any block\" meaning Door_Air, Portals, MBs, etc");

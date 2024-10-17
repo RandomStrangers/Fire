@@ -18,22 +18,24 @@
 using System;
 using Flames.Games;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdTime : Command2 
+    public sealed class CmdTime : Command2
     {
         public override string name { get { return "Time"; } }
         public override string shortcut { get { return "ti"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.Message("Server time: {0:HH:mm:ss} on {0:yyyy-MM-dd}", DateTime.Now);
             IGame game = IGame.GameOn(p.level);
             game?.OutputTimeInfo(p);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Time");
             p.Message("&HShows the server time.");
             p.Message("&HIf a time limit round-based game is running on the level you are currently on, " +

@@ -22,8 +22,10 @@ using Flames.Maths;
 using BlockID = System.UInt16;
 using BlockRaw = System.Byte;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdRestartPhysics : Command2 {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdRestartPhysics : Command2
+    {
         public override string name { get { return "RestartPhysics"; } }
         public override string shortcut { get { return "rp"; } }
         public override string type { get { return CommandTypes.Building; } }
@@ -31,7 +33,8 @@ namespace Flames.Commands.Building {
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             PhysicsArgs extraInfo = default;
             message = message.ToLower();
             if (message.Length > 0 && !ParseArgs(p, message, ref extraInfo)) return;
@@ -40,33 +43,44 @@ namespace Flames.Commands.Building {
             p.MakeSelection(2, "Selecting region for &SRestart physics", extraInfo, DoRestart);
         }
 
-        public bool ParseArgs(Player p, string message, ref PhysicsArgs args) {
+        public bool ParseArgs(Player p, string message, ref PhysicsArgs args)
+        {
             string[] parts = message.SplitSpaces();
-            if (parts.Length % 2 == 1) {
+            if (parts.Length % 2 == 1)
+            {
                 p.Message("Number of parameters must be even");
-                Help(p); return false;
+                Help(p); 
+                return false;
             }
             byte type = 0, value = 0;
             byte extBits = 0;
-            
-            if (parts.Length >= 2) {
+
+            if (parts.Length >= 2)
+            {
                 if (!Parse(p, parts[0], parts[1], ref type, ref value, ref extBits)) return false;
-                args.Type1 = type; args.Value1 = value;
+                args.Type1 = type;
+                args.Value1 = value;
             }
-            if (parts.Length >= 4) {
+            if (parts.Length >= 4)
+            {
                 if (!Parse(p, parts[2], parts[3], ref type, ref value, ref extBits)) return false;
-                args.Type2 = type; args.Value2 = value;
+                args.Type2 = type;
+                args.Value2 = value;
             }
-            if (parts.Length >= 6) {
-                p.Message("You can only use up to two types of physics."); return false;
+            if (parts.Length >= 6)
+            {
+                p.Message("You can only use up to two types of physics."); 
+                return false;
             }
-            
+
             args.ExtBlock = extBits;
             return true;
         }
 
-        public bool Parse(Player p, string name, string arg, ref byte type, ref byte value, ref byte isExt) {
-            if (name == "revert") {
+        public bool Parse(Player p, string name, string arg, ref byte type, ref byte value, ref byte isExt)
+        {
+            if (name == "revert")
+            {
                 BlockID block;
                 if (!CommandParser.GetBlock(p, arg, out block)) return false;
 
@@ -74,54 +88,73 @@ namespace Flames.Commands.Building {
                 isExt = (byte)(block >> Block.ExtendedShift);
                 return true;
             }
-            
+
             if (!CommandParser.GetByte(p, arg, "Value", ref value)) return false;
-            
-            switch (name) {
-                case "drop": type = PhysicsArgs.Drop; return true;
-                case "explode": type = PhysicsArgs.Explode; return true;
-                case "dissipate": type = PhysicsArgs.Dissipate; return true;
-                case "wait": type = PhysicsArgs.Wait; return true;
-                case "rainbow": type = PhysicsArgs.Rainbow; return true;
+
+            switch (name)
+            {
+                case "drop":
+                    type = PhysicsArgs.Drop;
+                    return true;
+                case "explode":
+                    type = PhysicsArgs.Explode;
+                    return true;
+                case "dissipate":
+                    type = PhysicsArgs.Dissipate;
+                    return true;
+                case "wait":
+                    type = PhysicsArgs.Wait;
+                    return true;
+                case "rainbow":
+                    type = PhysicsArgs.Rainbow;
+                    return true;
             }
             p.Message(name + " type is not supported.");
             return false;
         }
 
-        public bool DoRestart(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool DoRestart(Player p, Vec3S32[] m, object state, BlockID block)
+        {
             PhysicsArgs args = (PhysicsArgs)state;
             List<int> buffer = new List<int>();
             int index;
-            
+
             for (int y = Math.Min(m[0].Y, m[1].Y); y <= Math.Max(m[0].Y, m[1].Y); y++)
                 for (int z = Math.Min(m[0].Z, m[1].Z); z <= Math.Max(m[0].Z, m[1].Z); z++)
                     for (int x = Math.Min(m[0].X, m[1].X); x <= Math.Max(m[0].X, m[1].X); x++)
-            {
-                if (!p.level.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index)) {
-                    buffer.Add(index);
-                }
-            }
+                    {
+                        if (!p.level.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index))
+                        {
+                            buffer.Add(index);
+                        }
+                    }
 
-            if (args.Raw == 0) {
-                if (buffer.Count > Server.Config.PhysicsRestartNormLimit) {
+            if (args.Raw == 0)
+            {
+                if (buffer.Count > Server.Config.PhysicsRestartNormLimit)
+                {
                     p.Message("Cannot restart more than " + Server.Config.PhysicsRestartNormLimit + " blocks.");
                     p.Message("Tried to restart " + buffer.Count + " blocks.");
                     return false;
                 }
-            } else if (buffer.Count > Server.Config.PhysicsRestartLimit) {
+            }
+            else if (buffer.Count > Server.Config.PhysicsRestartLimit)
+            {
                 p.Message("Tried to add physics to " + buffer.Count + " blocks.");
                 p.Message("Cannot add physics to more than " + Server.Config.PhysicsRestartLimit + " blocks.");
                 return false;
             }
 
-            foreach (int index1 in buffer) {
+            foreach (int index1 in buffer)
+            {
                 p.level.AddCheck(index1, true, args);
             }
             p.Message("Activated " + buffer.Count + " blocks.");
             return true;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/restartphysics ([type] [num]) ([type2] [num2]) &H- Restarts every physics block in an area");
             p.Message("&H[type] will set custom physics for selected blocks");
             p.Message("&HPossible [types]: drop, explode, dissipate, wait, rainbow, revert");

@@ -25,34 +25,43 @@ namespace Flames.NewScripting
 {
     public static class ScriptingOperations
     {
-        public static bool LoadNewPlugins(Player p, string path) {
-            if (!File.Exists(path)) {
+        public static bool LoadNewPlugins(Player p, string path)
+        {
+            if (!File.Exists(path))
+            {
                 p.Message("File &9{0} &Snot found.", path);
                 return false;
             }
-            
-            try {
+
+            try
+            {
                 List<NewPlugin> newplugins = IScripting.LoadNewPlugin(path, false);
-                
+
                 p.Message("New plugin {0} loaded successfully",
                           newplugins.Join(pl => pl.name));
                 return true;
-            } catch (AlreadyLoadedException ex) {
+            }
+            catch (AlreadyLoadedException ex)
+            {
                 p.Message(ex.Message);
                 return false;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 p.Message(IScripting.DescribeLoadError(path, ex));
                 Logger.LogError("Error loading new plugins from " + path, ex);
                 return false;
             }
         }
-        
-        public static bool UnloadNewPlugin(Player p, NewPlugin newplugin) {
-            if (!NewPlugin.Unload(newplugin)) {
+
+        public static bool UnloadNewPlugin(Player p, NewPlugin newplugin)
+        {
+            if (!NewPlugin.Unload(newplugin))
+            {
                 p.Message("&WError unloading new plugin. See error logs for more information.");
                 return false;
             }
-            
+
             p.Message("New plugin {0} &Sunloaded successfully", newplugin.name);
             return true;
         }

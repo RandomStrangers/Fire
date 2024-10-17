@@ -48,7 +48,7 @@ namespace Flames
         public static void WriteI16(short value, byte[] array, int index)
         {
             array[index++] = (byte)(value >> 8);
-            array[index++] = (byte)(value);
+            array[index++] = (byte)value;
         }
 
         public static void WriteU16(ushort value, byte[] array, int index)
@@ -62,7 +62,7 @@ namespace Flames
             array[index++] = (byte)(value >> 24);
             array[index++] = (byte)(value >> 16);
             array[index++] = (byte)(value >> 8);
-            array[index++] = (byte)(value);
+            array[index++] = (byte)value;
         }
 
         public unsafe static void WriteF32(float value, byte[] buffer, int i)
@@ -90,7 +90,10 @@ namespace Flames
 
         public static void WriteBlock(BlockID raw, byte[] array, int index, bool extBlocks)
         {
-            if (extBlocks) { array[index++] = (byte)(raw >> 8); }
+            if (extBlocks) 
+            { 
+                array[index++] = (byte)(raw >> 8); 
+            }
             array[index++] = (byte)raw;
         }
 
@@ -104,7 +107,10 @@ namespace Flames
                 byte code = data[i + offset];
                 if (code == 0) code = 0x20; // NULL to space
 
-                if (length == 0 && code != 0x20) { length = i + 1; }
+                if (length == 0 && code != 0x20) 
+                { 
+                    length = i + 1; 
+                }
                 characters[i] = ((char)code).Cp437ToUnicode();
             }
             return new string(characters, 0, length);

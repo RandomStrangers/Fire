@@ -19,45 +19,52 @@ using System;
 using System.Collections.Generic;
 using Flames.Tasks;
 
-namespace Flames.Util 
+namespace Flames.Util
 {
-    public sealed class ThreadSafeCache 
+    public sealed class ThreadSafeCache
     {
         public static ThreadSafeCache DBCache = new ThreadSafeCache();
 
-        public readonly object locker = new object();
-        public readonly Dictionary<string, object> items    = new Dictionary<string, object>();
-        public readonly Dictionary<string, DateTime> access = new Dictionary<string, DateTime>();
-        
-        public object GetLocker(string key) {
-            lock (locker) {
+        public object locker = new object();
+        public Dictionary<string, object> items = new Dictionary<string, object>();
+        public Dictionary<string, DateTime> access = new Dictionary<string, DateTime>();
+
+        public object GetLocker(string key)
+        {
+            lock (locker)
+            {
                 object value;
-                if (!items.TryGetValue(key, out value)) {
+                if (!items.TryGetValue(key, out value))
+                {
                     value = new object();
                     items[key] = value;
                 }
-                
+
                 access[key] = DateTime.UtcNow;
                 return value;
             }
         }
-        
-        
-        public void CleanupTask(SchedulerTask task) {
+
+
+        public void CleanupTask(SchedulerTask task)
+        {
             List<string> free = null;
             DateTime now = DateTime.UtcNow;
-            
-            lock (locker) {
-                foreach (var kvp in access) {
+
+            lock (locker)
+            {
+                foreach (var kvp in access)
+                {
                     // Has the cached item last been accessed in 5 minutes?
                     if ((now - kvp.Value).TotalMinutes <= 5) continue;
-                    
+
                     if (free == null) free = new List<string>();
                     free.Add(kvp.Key);
                 }
-                
+
                 if (free == null) return;
-                foreach (string key in free) {
+                foreach (string key in free)
+                {
                     items.Remove(key);
                     access.Remove(key);
                 }

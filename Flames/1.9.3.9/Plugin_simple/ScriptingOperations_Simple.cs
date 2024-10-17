@@ -44,7 +44,7 @@ namespace Flames.Scripting
 
         /// <summary> Attempts to compile the given source code files into a .dll </summary>
         /// <param name="p"> Player to send messages to </param>
-        /// <param name="type"> Type of files being compiled (e.g. SimplePlugin, Command) </param>
+        /// <param name="type"> Type of files being compiled (e.g. Simple plugin, Command) </param>
         /// <param name="srcs"> Path of the source code files </param>
         /// <param name="dst"> Path to the destination .dll </param>
         /// <returns> The compiler results, or null if compilation failed </returns>

@@ -19,21 +19,26 @@ using Flames.DB;
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
+namespace Flames.Drawing.Brushes
 {
-    public class SimplePasteBrush : Brush 
+    public class SimplePasteBrush : Brush
     {
-        public readonly CopyState state;
-        
-        public SimplePasteBrush(CopyState state) { this.state = state; }
-        
+        public CopyState state;
+
+        public SimplePasteBrush(CopyState state) 
+        { 
+            this.state = state; 
+        }
+
         public override string Name { get { return "Paste"; } }
 
-        public override void Configure(DrawOp op, Player p) {
+        public override void Configure(DrawOp op, Player p)
+        {
             op.Flags = BlockDBFlags.Pasted;
         }
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             // Figure out local coords for this block
             int x = (op.Coords.X - op.Min.X) % state.Width;
             if (x < 0) x += state.Width;
@@ -41,41 +46,43 @@ namespace Flames.Drawing.Brushes
             if (y < 0) y += state.Height;
             int z = (op.Coords.Z - op.Min.Z) % state.Length;
             if (z < 0) z += state.Length;
-            
+
             int index = (y * state.Length + z) * state.Width + x;
             return state.Get(index);
         }
     }
-    
-    public sealed class PasteBrush : SimplePasteBrush 
+
+    public sealed class PasteBrush : SimplePasteBrush
     {
         public BlockID[] Include;
-        
+
         public PasteBrush(CopyState state) : base(state) { }
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             BlockID block = base.NextBlock(op);
             BlockID[] include = Include; // local var to avoid JIT bounds check
-            
-            for (int i = 0; i < include.Length; i++) 
+
+            for (int i = 0; i < include.Length; i++)
             {
                 if (block == include[i]) return block;
             }
             return Block.Invalid;
         }
-    }  
-    
-    public sealed class PasteNotBrush : SimplePasteBrush 
+    }
+
+    public sealed class PasteNotBrush : SimplePasteBrush
     {
         public BlockID[] Exclude;
-        
+
         public PasteNotBrush(CopyState state) : base(state) { }
 
-        public override BlockID NextBlock(DrawOp op) {
+        public override BlockID NextBlock(DrawOp op)
+        {
             BlockID block = base.NextBlock(op);
             BlockID[] exclude = Exclude; // local var to avoid JIT bounds check
-            
-            for (int i = 0; i < exclude.Length; i++) 
+
+            for (int i = 0; i < exclude.Length; i++)
             {
                 if (block == exclude[i]) return Block.Invalid;
             }

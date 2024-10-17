@@ -27,7 +27,7 @@ namespace LibNoise
     {
         public double Frequency = 1.0;
         public int Seed;
-        
+
         public abstract double GetValue(double x, double y, double z);
     }
 }

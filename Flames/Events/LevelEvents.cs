@@ -18,147 +18,186 @@
 using System;
 using Flames.Blocks.Physics;
 using BlockID = System.UInt16;
-   
-namespace Flames.Events.LevelEvents {
-    
+
+namespace Flames.Events.LevelEvents
+{
+
     public delegate void OnLevelLoaded(Level lvl);
-    public sealed class OnLevelLoadedEvent : IEvent<OnLevelLoaded> 
+    public sealed class OnLevelLoadedEvent : IEvent<OnLevelLoaded>
     {
-        public static void Call(Level lvl) {
+        public static void Call(Level lvl)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl));
         }
     }
-    
+
     public delegate void OnLevelLoad(string name, string path, ref bool cancel);
-    public sealed class OnLevelLoadEvent : IEvent<OnLevelLoad> 
+    public sealed class OnLevelLoadEvent : IEvent<OnLevelLoad>
     {
-        public static void Call(string name, string path, ref bool cancel) {
+        public static void Call(string name, string path, ref bool cancel)
+        {
             IEvent<OnLevelLoad>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try { items[i].method(name, path, ref cancel); } 
-                catch (Exception ex) { LogHandlerException(ex, items[i]); }
+                try 
+                { 
+                    items[i].method(name, path, ref cancel); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]); 
+                }
             }
         }
     }
-    
+
     public delegate void OnLevelSave(Level lvl, ref bool cancel);
-    public sealed class OnLevelSaveEvent : IEvent<OnLevelSave> 
+    public sealed class OnLevelSaveEvent : IEvent<OnLevelSave>
     {
-        public static void Call(Level lvl, ref bool cancel) {
+        public static void Call(Level lvl, ref bool cancel)
+        {
             IEvent<OnLevelSave>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try { items[i].method(lvl, ref cancel); } 
-                catch (Exception ex) { LogHandlerException(ex, items[i]); }
+                try 
+                { 
+                    items[i].method(lvl, ref cancel); 
+                }
+                catch (Exception ex) 
+                {
+                    LogHandlerException(ex, items[i]); 
+                }
             }
         }
     }
-    
+
     public delegate void OnLevelUnload(Level lvl, ref bool cancel);
-    public sealed class OnLevelUnloadEvent : IEvent<OnLevelUnload> 
+    public sealed class OnLevelUnloadEvent : IEvent<OnLevelUnload>
     {
-        public static void Call(Level lvl, ref bool cancel) {
+        public static void Call(Level lvl, ref bool cancel)
+        {
             IEvent<OnLevelUnload>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try { items[i].method(lvl, ref cancel); } 
-                catch (Exception ex) { LogHandlerException(ex, items[i]); }
+                try 
+                { 
+                    items[i].method(lvl, ref cancel); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]); 
+                }
             }
         }
     }
-    
+
     public delegate void OnLevelAdded(Level lvl);
-    public sealed class OnLevelAddedEvent : IEvent<OnLevelAdded> 
-    {        
-        public static void Call(Level lvl) {
+    public sealed class OnLevelAddedEvent : IEvent<OnLevelAdded>
+    {
+        public static void Call(Level lvl)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl));
         }
     }
-    
+
     public delegate void OnLevelRemoved(Level lvl);
-    public sealed class OnLevelRemovedEvent : IEvent<OnLevelRemoved> 
-    {        
-        public static void Call(Level lvl) {
+    public sealed class OnLevelRemovedEvent : IEvent<OnLevelRemoved>
+    {
+        public static void Call(Level lvl)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl));
         }
     }
-    
+
     public delegate void OnPhysicsStateChanged(Level lvl, PhysicsState state);
-    public sealed class OnPhysicsStateChangedEvent : IEvent<OnPhysicsStateChanged> 
-    {        
-        public static void Call(Level lvl, PhysicsState state) {
+    public sealed class OnPhysicsStateChangedEvent : IEvent<OnPhysicsStateChanged>
+    {
+        public static void Call(Level lvl, PhysicsState state)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl, state));
         }
     }
-    
+
     public delegate void OnPhysicsLevelChanged(Level lvl, int level);
-    public sealed class OnPhysicsLevelChangedEvent : IEvent<OnPhysicsLevelChanged> 
+    public sealed class OnPhysicsLevelChangedEvent : IEvent<OnPhysicsLevelChanged>
     {
-        public static void Call(Level lvl, int level) {
+        public static void Call(Level lvl, int level)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl, level));
         }
     }
-    
+
     public delegate void OnPhysicsUpdate(ushort x, ushort y, ushort z, PhysicsArgs args, Level lvl);
-    public sealed class OnPhysicsUpdateEvent : IEvent<OnPhysicsUpdate> 
+    public sealed class OnPhysicsUpdateEvent : IEvent<OnPhysicsUpdate>
     {
-        public static void Call(ushort x, ushort y, ushort z, PhysicsArgs extraInfo, Level l) {            
+        public static void Call(ushort x, ushort y, ushort z, PhysicsArgs extraInfo, Level l)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(x, y, z, extraInfo, l));
         }
-    }    
-    
+    }
+
     public delegate void OnLevelRenamed(string srcMap, string dstMap);
-    public sealed class OnLevelRenamedEvent : IEvent<OnLevelRenamed> 
-    {       
-        public static void Call(string srcMap, string dstMap) {
+    public sealed class OnLevelRenamedEvent : IEvent<OnLevelRenamed>
+    {
+        public static void Call(string srcMap, string dstMap)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(srcMap, dstMap));
         }
-    }    
-    
+    }
+
     public delegate void OnLevelCopied(string srcMap, string dstMap);
-    public sealed class OnLevelCopiedEvent : IEvent<OnLevelCopied> 
-    {       
-        public static void Call(string srcMap, string dstMap) {
+    public sealed class OnLevelCopiedEvent : IEvent<OnLevelCopied>
+    {
+        public static void Call(string srcMap, string dstMap)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(srcMap, dstMap));
         }
-    }  
-        
+    }
+
     public delegate void OnLevelDeleted(string map);
-    public sealed class OnLevelDeletedEvent : IEvent<OnLevelDeleted> 
-    {        
-        public static void Call(string map) {
+    public sealed class OnLevelDeletedEvent : IEvent<OnLevelDeleted>
+    {
+        public static void Call(string map)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(map));
         }
     }
-        
+
     public delegate void OnBlockHandlersUpdated(Level lvl, BlockID block);
-    public sealed class OnBlockHandlersUpdatedEvent : IEvent<OnBlockHandlersUpdated> 
-    {        
-        public static void Call(Level lvl, BlockID block) {
+    public sealed class OnBlockHandlersUpdatedEvent : IEvent<OnBlockHandlersUpdated>
+    {
+        public static void Call(Level lvl, BlockID block)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl, block));
         }
     }
-        
+
     public delegate void OnMainLevelChanging(ref string map);
-    public sealed class OnMainLevelChangingEvent : IEvent<OnMainLevelChanging> 
-    {      
-        public static void Call(ref string map) {
+    public sealed class OnMainLevelChangingEvent : IEvent<OnMainLevelChanging>
+    {
+        public static void Call(ref string map)
+        {
             IEvent<OnMainLevelChanging>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try { items[i].method(ref map); } 
-                catch (Exception ex) { LogHandlerException(ex, items[i]); }
+                try 
+                { 
+                    items[i].method(ref map); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]); 
+                }
             }
         }
     }

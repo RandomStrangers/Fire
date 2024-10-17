@@ -22,39 +22,49 @@ using Flames.Maths;
 using Flames.Network;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdHighlight : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdHighlight : Command2
+    {
         public override string name { get { return "Highlight"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override bool SuperUseable { get { return false; } }        
-        public override CommandAlias[] Aliases {
+        public override bool SuperUseable { get { return false; } }
+        public override CommandAlias[] Aliases
+        {
             get { return new CommandAlias[] { new CommandAlias("HighlightArea", "area") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             TimeSpan delta = TimeSpan.Zero;
             bool area = message.CaselessStarts("area ");
             if (area) message = message.Substring("area ".Length);
-            
+
             if (message.Length == 0) message = p.name;
             string[] parts = message.SplitSpaces();
 
-            if (parts.Length >= 2) {
+            if (parts.Length >= 2)
+            {
                 if (!CommandParser.GetTimespan(p, parts[1], ref delta, "highlight the past", "s")) return;
-            } else {
+            }
+            else
+            {
                 delta = TimeSpan.FromMinutes(30);
             }
-            
+
             parts[0] = PlayerDB.MatchNames(p, parts[0]);
             if (parts[0] == null) return;
             int[] ids = NameConverter.FindIds(parts[0]);
-            
-            if (!area) {
+
+            if (!area)
+            {
                 Vec3S32[] marks = new Vec3S32[] { Vec3U16.MinVal, Vec3U16.MaxVal };
                 HighlightPlayer(p, delta, parts[0], ids, marks);
-            } else {
+            }
+            else
+            {
                 p.Message("Place or break two blocks to determine the edges.");
                 HighlightAreaArgs args = new HighlightAreaArgs
                 {
@@ -62,20 +72,27 @@ namespace Flames.Commands.Moderation {
                     who = parts[0],
                     delta = delta
                 };
-                p.MakeSelection(2,  "Selecting region for &SHighlight", args, DoHighlightArea);
+                p.MakeSelection(2, "Selecting region for &SHighlight", args, DoHighlightArea);
             }
         }
 
-        public bool DoHighlightArea(Player p, Vec3S32[] marks, object state, BlockID block) {
+        public bool DoHighlightArea(Player p, Vec3S32[] marks, object state, BlockID block)
+        {
             HighlightAreaArgs args = (HighlightAreaArgs)state;
             HighlightPlayer(p, args.delta, args.who, args.ids, marks);
             return false;
         }
 
-        public struct HighlightAreaArgs { public string who; public int[] ids; public TimeSpan delta; }
+        public struct HighlightAreaArgs 
+        { 
+            public string who; 
+            public int[] ids; 
+            public TimeSpan delta; 
+        }
 
 
-        public static void HighlightPlayer(Player p, TimeSpan delta, string who, int[] ids, Vec3S32[] marks) {
+        public static void HighlightPlayer(Player p, TimeSpan delta, string who, int[] ids, Vec3S32[] marks)
+        {
             HighlightDrawOp op = new HighlightDrawOp
             {
                 Start = DateTime.UtcNow.Subtract(delta),
@@ -83,7 +100,7 @@ namespace Flames.Commands.Moderation {
                 ids = ids
             };
             op.Setup(p, p.level, marks);
-            
+
             BufferedBlockSender buffer = new BufferedBlockSender(p);
             op.Perform(marks, null,
                        P => {
@@ -91,18 +108,22 @@ namespace Flames.Commands.Moderation {
                            buffer.Add(index, P.Block);
                        });
             buffer.Flush();
-            
-            if (op.totalChanges > 0) {
+
+            if (op.totalChanges > 0)
+            {
                 p.Message("Highlighting &T{0}&S changes by {1}&S in the past &b{2}",
                            op.totalChanges.ToString("N0"), p.FormatNick(who), delta.Shorten(true));
                 p.Message("&WUse /reload to un-highlight");
-            } else {
+            }
+            else
+            {
                 p.Message("No changes found by {1} &Sin the past &b{0}",
                            delta.Shorten(true), p.FormatNick(who));
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Highlight [player] <timespan>");
             p.Message("&HHighlights blocks changed by [player] in the past <timespan>");
             p.Message("&T/Highlight area [player] <timespan>");

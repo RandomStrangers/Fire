@@ -19,21 +19,25 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace Flames 
+namespace Flames
 {
     public static class LevelOperations
     {
-        public static void OutputBackups(Player p, Level lvl) {
+        public static void OutputBackups(Player p, Level lvl)
+        {
             OutputBackups(p, lvl.MapName, lvl.Config);
         }
-        
-        public static void OutputBackups(Player p, string map, LevelConfig cfg) {
+
+        public static void OutputBackups(Player p, string map, LevelConfig cfg)
+        {
             map = map.ToLower();
             string root = LevelInfo.BackupBasePath(map);
             string name = cfg.Color + map;
-            
-            if (!Directory.Exists(root)) {
-                p.Message(name + " &Shas no backups yet"); return;
+
+            if (!Directory.Exists(root))
+            {
+                p.Message(name + " &Shas no backups yet"); 
+                return;
             }
 
             string[] backups = Directory.GetDirectories(root);
@@ -41,7 +45,7 @@ namespace Flames
             int count = 0;
             StringBuilder custom = new StringBuilder();
 
-            foreach (string path in backups) 
+            foreach (string path in backups)
             {
                 string restore = LevelInfo.BackupNameFrom(path);
                 int num;
@@ -55,30 +59,36 @@ namespace Flames
             p.Message("&b" + count + " &Sof these are custom-named restores:");
             p.Message(custom.ToString(2, custom.Length - 2));
         }
-        
-        
-        public static bool Backup(Player p, Level lvl, string backup) {
+
+
+        public static bool Backup(Player p, Level lvl, string backup)
+        {
             string map = lvl.name;
-            bool auto  = backup.Length == 0;
+            bool auto = backup.Length == 0;
             if (auto) backup = LevelInfo.NextBackup(map);
-            
+
             TimeSpan delta = lvl.lastBackup - DateTime.UtcNow;
-            if (delta.TotalSeconds >= 0) {
+            if (delta.TotalSeconds >= 0)
+            {
                 p.Message("You must wait another {0} to backup {1} &Sagain",
                           delta.Shorten(true, true), lvl.ColoredName);
                 return false;
             }
             lvl.lastBackup = DateTime.UtcNow.AddSeconds(10);
-            
-            if (!LevelActions.Backup(map, backup)) {
+
+            if (!LevelActions.Backup(map, backup))
+            {
                 p.Message("&WFailed to backup {0}", lvl.ColoredName);
                 return false;
             }
-            
-            if (auto) {
+
+            if (auto)
+            {
                 Logger.Log(LogType.SystemActivity, "Backup {1} saved for {0}", map, backup);
                 lvl.Message("Backup " + backup + " saved for " + lvl.ColoredName);
-            } else {
+            }
+            else
+            {
                 Logger.Log(LogType.SystemActivity, "{0} had a backup created named &b{1}", map, backup);
                 lvl.Message(lvl.ColoredName + " &Shad a backup created named &b" + backup);
             }

@@ -18,55 +18,62 @@
 using Flames.Events.PlayerEvents;
 using Flames.Games;
 
-namespace Flames.Modules.Games.Countdown 
-{    
-    public partial class CountdownGame : RoundsGame 
+namespace Flames.Modules.Games.Countdown
+{
+    public partial class CountdownGame : RoundsGame
     {
-        public override void HookEventHandlers() {
+        public override void HookEventHandlers()
+        {
             OnPlayerMoveEvent.Register(HandlePlayerMove, Priority.High);
             OnPlayerSpawningEvent.Register(HandlePlayerSpawning, Priority.High);
             OnJoinedLevelEvent.Register(HandleOnJoinedLevel, Priority.High);
             OnGettingMotdEvent.Register(HandleGettingMotd, Priority.High);
-            
+
             base.HookEventHandlers();
         }
 
-        public override void UnhookEventHandlers() {
+        public override void UnhookEventHandlers()
+        {
             OnPlayerMoveEvent.Unregister(HandlePlayerMove);
             OnPlayerSpawningEvent.Unregister(HandlePlayerSpawning);
             OnJoinedLevelEvent.Unregister(HandleOnJoinedLevel);
             OnGettingMotdEvent.Unregister(HandleGettingMotd);
-            
+
             base.UnhookEventHandlers();
         }
 
-        public void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel) {
+        public void HandlePlayerMove(Player p, Position next, byte yaw, byte pitch, ref bool cancel)
+        {
             if (!RoundInProgress || !FreezeMode) return;
             if (!Remaining.Contains(p)) return;
-            
+
             int freezeX = p.Extras.GetInt("F_CD_X");
             int freezeZ = p.Extras.GetInt("F_CD_Z");
-            if (next.X != freezeX || next.Z != freezeZ) {
+            if (next.X != freezeX || next.Z != freezeZ)
+            {
                 next.X = freezeX; next.Z = freezeZ;
                 p.SendPosition(next, new Orientation(yaw, pitch));
             }
-            
+
             p.Pos = next;
             p.SetYawPitch(yaw, pitch);
             cancel = true;
         }
 
-        public void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning) {
+        public void HandlePlayerSpawning(Player p, ref Position pos, ref byte yaw, ref byte pitch, bool respawning)
+        {
             if (!respawning || !Remaining.Contains(p)) return;
             Map.Message(p.ColoredName + " &Sis out of countdown!");
             OnPlayerDied(p);
         }
 
-        public void HandleOnJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce) {
+        public void HandleOnJoinedLevel(Player p, Level prevLevel, Level level, ref bool announce)
+        {
             HandleJoinedCommon(p, prevLevel, level, ref announce);
         }
 
-        public void HandleGettingMotd(Player p, ref string motd) {
+        public void HandleGettingMotd(Player p, ref string motd)
+        {
             if (p.level != Map || !FreezeMode || !RoundInProgress) return;
             motd += " horspeed=0";
         }

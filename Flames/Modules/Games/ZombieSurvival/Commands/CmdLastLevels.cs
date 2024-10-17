@@ -17,25 +17,30 @@
 */
 using System.Collections.Generic;
 
-namespace Flames.Modules.Games.ZS 
+namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdLastLevels : Command2 
+    public sealed class CmdLastLevels : Command2
     {
         public override string name { get { return "LastLevels"; } }
         public override string shortcut { get { return "ll"; } }
         public override string type { get { return CommandTypes.Games; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             List<string> recent = ZSGame.Instance.Picker.RecentMaps;
-            if (recent.Count == 0) {
+            if (recent.Count == 0)
+            {
                 p.Message("No maps have been used yet.");
-            } else {
+            }
+            else
+            {
                 p.Message("Recent maps played (last map is most recent):");
                 p.Message("&f" + recent.Join());
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/LastLevels");
             p.Message("&HShows the maps most recently used for zombie survival rounds.");
         }

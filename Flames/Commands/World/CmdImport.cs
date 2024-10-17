@@ -20,44 +20,59 @@ using System.IO;
 using Flames.Levels.IO;
 using Flames.Network;
 
-namespace Flames.Commands.World {
-    public sealed class CmdImport : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdImport : Command2
+    {
         public override string name { get { return "Import"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
-            if (!Directory.Exists(Paths.ImportsDir)) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
+            if (!Directory.Exists(Paths.ImportsDir))
+            {
                 Directory.CreateDirectory(Paths.ImportsDir);
             }
-            
-            if (message.CaselessEq("all")) {
+
+            if (message.CaselessEq("all"))
+            {
                 string[] paths = Directory.GetFiles(Paths.ImportsDir);
                 ImportFiles(p, paths);
-            } else if (message.IndexOf('/') >= 0) {
+            }
+            else if (message.IndexOf('/') >= 0)
+            {
                 ImportWeb(p, message);
-            } else {
+            }
+            else
+            {
                 if (!Formatter.ValidMapName(p, message)) return;
                 ImportName(p, message);
             }
         }
 
-        public static void ImportWeb(Player p, string url) {
+        public static void ImportWeb(Player p, string url)
+        {
             HttpUtil.FilterURL(ref url);
             byte[] data = HttpUtil.DownloadData(url, p);
             if (data == null) return;
-            
+
             // if data is not NULL, URL must be valid
             string path = new Uri(url).AbsolutePath;
-            string map  = Path.GetFileNameWithoutExtension(path);
+            string map = Path.GetFileNameWithoutExtension(path);
             if (!Formatter.ValidMapName(p, map)) return;
-            
+
             using (Stream src = new MemoryStream(data))
                 ImportFrom(p, src, path);
         }
 
-        public static void ImportFiles(Player p, string[] paths) {
+        public static void ImportFiles(Player p, string[] paths)
+        {
             foreach (string path in paths)
             {
                 using (Stream src = File.OpenRead(path))
@@ -65,74 +80,93 @@ namespace Flames.Commands.World {
             }
         }
 
-        public static void ImportName(Player p, string map) {
+        public static void ImportName(Player p, string map)
+        {
             map = Path.GetFileNameWithoutExtension(map);
             string path = Paths.ImportsDir + map;
-            
+
             foreach (IMapImporter imp in IMapImporter.Formats)
             {
                 path = Path.ChangeExtension(path, imp.Extension);
                 if (!File.Exists(path)) continue;
-                
-                using (Stream src = File.OpenRead(path)) {
-                    Import(p, imp, src, map); return;
+
+                using (Stream src = File.OpenRead(path))
+                {
+                    Import(p, imp, src, map); 
+                    return;
                 }
             }
-            
+
             string formats = IMapImporter.Formats.Join(x => x.Extension);
             p.Message("&WNo {0} file with that name was found in /extra/import folder.", formats);
         }
 
 
-        public static void ImportFrom(Player p, Stream src, string path) {
+        public static void ImportFrom(Player p, Stream src, string path)
+        {
             IMapImporter imp = IMapImporter.GetFor(path);
-            if (imp == null) {
+            if (imp == null)
+            {
                 string formats = IMapImporter.Formats.Join(x => x.Extension);
                 p.Message("&WCannot import {0} as only {1} formats are supported.", path, formats);
                 return;
             }
-            
+
             string map = Path.GetFileNameWithoutExtension(path);
             Import(p, imp, src, map);
         }
 
-        public static void Import(Player p, IMapImporter importer, Stream src, string map) {
-            if (LevelInfo.MapExists(map)) {
+        public static void Import(Player p, IMapImporter importer, Stream src, string map)
+        {
+            if (LevelInfo.MapExists(map))
+            {
                 p.Message("&WMap {0} already exists. Rename the file to something else before importing", map);
                 return;
             }
-            
-            try {
+
+            try
+            {
                 Level lvl = importer.Read(src, map, true);
-                try {
+                try
+                {
                     lvl.Save(true);
-                } finally {
+                }
+                finally
+                {
                     lvl.Dispose();
                     Server.DoGC();
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error importing map " + map, ex);
                 p.Message("&WImporting map {0} failed. See error logs.", map);
                 return;
             }
             p.Message("Successfully imported map {0}!", map);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Import all");
             p.Message("&HImports every map in /extra/import/ folder");
             p.Message("&T/Import [url/filename]");
             p.Message("&HImports a map from a webpage or the /extra/import/ folder");
-            p.Message("&HSee &T/Help Import formats &Hfor supported formats"); 
+            p.Message("&HSee &T/Help Import formats &Hfor supported formats");
         }
-        
-        public override void Help(Player p, string message) {
-            if (message.CaselessEq("formats")) {
+
+        public override void Help(Player p, string message)
+        {
+            if (message.CaselessEq("formats"))
+            {
                 p.Message("&HSupported formats:");
-                foreach (IMapImporter format in IMapImporter.Formats) {
+                foreach (IMapImporter format in IMapImporter.Formats)
+                {
                     p.Message("  {0} ({1})", format.Extension, format.Description);
                 }
-            } else {
+            }
+            else
+            {
                 base.Help(p, message);
             }
         }

@@ -17,26 +17,32 @@
  */
 using System;
 
-namespace Flames.Blocks.Physics {
+namespace Flames.Blocks.Physics
+{
 
-    public unsafe static class LeafPhysics {
-        
-        public static void DoLeaf(Level lvl, ref PhysInfo C) {
-            if (!lvl.Config.LeafDecay) {
+    public unsafe static class LeafPhysics
+    {
+
+        public static void DoLeaf(Level lvl, ref PhysInfo C)
+        {
+            if (!lvl.Config.LeafDecay)
+            {
                 if (lvl.physics > 1) ActivateablePhysics.CheckNeighbours(lvl, C.X, C.Y, C.Z);
-                C.Data.Data = PhysicsArgs.RemoveFromChecks; 
+                C.Data.Data = PhysicsArgs.RemoveFromChecks;
                 return;
             }
-            
+
             // Delay checking for leaf decay for a random amount of time
-            if (C.Data.Data < 5) {
+            if (C.Data.Data < 5)
+            {
                 Random rand = lvl.physRandom;
                 if (rand.Next(10) == 0) C.Data.Data++;
                 return;
             }
-            
+
             // Perform actual leaf decay, then remove from physics list
-            if (DoLeafDecay(lvl, ref C)) {
+            if (DoLeafDecay(lvl, ref C))
+            {
                 lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                 if (lvl.physics > 1) ActivateablePhysics.CheckNeighbours(lvl, C.X, C.Y, C.Z);
             }
@@ -51,11 +57,12 @@ namespace Flames.Blocks.Physics {
         public const int oneY = blocksPerAxis; // index + oneY = (X, Y + 1, Z)
         public const int oneZ = blocksPerAxis * blocksPerAxis;
 
-        public static bool DoLeafDecay(Level lvl, ref PhysInfo C) {
+        public static bool DoLeafDecay(Level lvl, ref PhysInfo C)
+        {
             int* dists = stackalloc int[blocksPerAxis * blocksPerAxis * blocksPerAxis];
             ushort x = C.X, y = C.Y, z = C.Z;
-            int idx  = 0;
-            
+            int idx = 0;
+
             // The general overview of this algorithm is that it finds all log blocks
             //  from (x - range, y - range, z - range) to (x + range, y + range, z + range),
             //  and then tries to find a path from any of those logs to the block at (x, y, z).
@@ -64,63 +71,66 @@ namespace Flames.Blocks.Physics {
             for (int xx = -range; xx <= range; xx++)
                 for (int yy = -range; yy <= range; yy++)
                     for (int zz = -range; zz <= range; zz++, idx++)
-            {
-                int index = lvl.PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz));
-                byte type = index < 0 ? Block.Air : lvl.blocks[index];
-                
-                if (type == Block.Log)
-                    dists[idx] = 0;
-                else if (type == Block.Leaves)
-                    dists[idx] = -2;
-                else
-                    dists[idx] = -1;
-            }
+                    {
+                        int index = lvl.PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz));
+                        byte type = index < 0 ? Block.Air : lvl.blocks[index];
+
+                        if (type == Block.Log)
+                            dists[idx] = 0;
+                        else if (type == Block.Leaves)
+                            dists[idx] = -2;
+                        else
+                            dists[idx] = -1;
+                    }
 
             // TODO optimisable?
-            for (int dist = 1; dist <= range; dist++) {
+            for (int dist = 1; dist <= range; dist++)
+            {
                 idx = 0;
-                
+
                 for (int xx = -range; xx <= range; xx++)
                     for (int yy = -range; yy <= range; yy++)
                         for (int zz = -range; zz <= range; zz++, idx++)
-                {
-                    if (dists[idx] != dist - 1) continue;
-                    // if this block is X-1 dist away from a log, potentially update neighbours as X blocks away from a log
-                    
-                    if (xx > -range) PropagateDist(dists, dist, idx - oneX);
-                    if (xx <  range) PropagateDist(dists, dist, idx + oneX);
-                    
-                    if (yy > -range) PropagateDist(dists, dist, idx - oneY);
-                    if (yy <  range) PropagateDist(dists, dist, idx + oneY);
-                    
-                    if (zz > -range) PropagateDist(dists, dist, idx - oneZ);
-                    if (zz <  range) PropagateDist(dists, dist, idx + oneZ);
-                }
+                        {
+                            if (dists[idx] != dist - 1) continue;
+                            // if this block is X-1 dist away from a log, potentially update neighbours as X blocks away from a log
+
+                            if (xx > -range) PropagateDist(dists, dist, idx - oneX);
+                            if (xx < range) PropagateDist(dists, dist, idx + oneX);
+
+                            if (yy > -range) PropagateDist(dists, dist, idx - oneY);
+                            if (yy < range) PropagateDist(dists, dist, idx + oneY);
+
+                            if (zz > -range) PropagateDist(dists, dist, idx - oneZ);
+                            if (zz < range) PropagateDist(dists, dist, idx + oneZ);
+                        }
             }
-            
+
             // calculate index of (0, 0, 0)
             idx = range * oneX + range * oneY + range * oneZ;
             return dists[idx] < 0;
         }
 
-        public static void PropagateDist(int* dists, int dist, int index) {
+        public static void PropagateDist(int* dists, int dist, int index)
+        {
             // distances can only propagate through leaf blocks
             if (dists[index] == -2) dists[index] = dist;
         }
-        
-        
-        public static void DoLog(Level lvl, ref PhysInfo C) {
+
+
+        public static void DoLog(Level lvl, ref PhysInfo C)
+        {
             ushort x = C.X, y = C.Y, z = C.Z;
-            
+
             for (int xx = -range; xx <= range; xx++)
                 for (int yy = -range; yy <= range; yy++)
                     for (int zz = -range; zz <= range; zz++)
-            {
-                int index = lvl.PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz));              
-                if (index < 0 || lvl.blocks[index] != Block.Leaves) continue;
-                
-                lvl.AddCheck(index);
-            }
+                    {
+                        int index = lvl.PosToInt((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz));
+                        if (index < 0 || lvl.blocks[index] != Block.Leaves) continue;
+
+                        lvl.AddCheck(index);
+                    }
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
     }

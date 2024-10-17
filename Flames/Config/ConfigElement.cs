@@ -21,87 +21,97 @@ using System.IO;
 using System.Reflection;
 using Flames.Config;
 
-namespace Flames 
-{    
-    public struct ConfigElement 
+namespace Flames
+{
+    public struct ConfigElement
     {
         public ConfigAttribute Attrib;
         public FieldInfo Field;
-        
-        public string Format(object instance) {
+
+        public string Format(object instance)
+        {
             object value = Field.GetValue(instance);
             return Attrib.Name + " = " + Attrib.Serialise(value);
         }
 
         public const BindingFlags flags = BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic;
-        
-        public static ConfigElement[] GetAll(Type type) {
+
+        public static ConfigElement[] GetAll(Type type)
+        {
             List<ConfigElement> elems = new List<ConfigElement>();
             FieldInfo[] fields = type.GetFields(flags);
-            
-            for (int i = 0; i < fields.Length; i++) 
+
+            for (int i = 0; i < fields.Length; i++)
             {
                 FieldInfo field = fields[i];
                 Attribute[] attributes = Attribute.GetCustomAttributes(field, typeof(ConfigAttribute));
                 if (attributes.Length == 0) continue;
-                
+
                 ConfigElement elem;
                 elem.Field = field;
                 elem.Attrib = (ConfigAttribute)attributes[0];
-                
+
                 if (elem.Attrib.Name == null) elem.Attrib.Name = field.Name;
                 elems.Add(elem);
             }
             return elems.ToArray();
         }
-        
-        public static bool ParseFile(ConfigElement[] elements, string path, object instance) {
+
+        public static bool ParseFile(ConfigElement[] elements, string path, object instance)
+        {
             return PropertiesFile.Read(path, (k, v) => Parse(elements, instance, k, v));
         }
-        
-        public static void Parse(ConfigElement[] elems, object instance, string k, string v) {
-            foreach (ConfigElement elem in elems) 
+
+        public static void Parse(ConfigElement[] elems, object instance, string k, string v)
+        {
+            foreach (ConfigElement elem in elems)
             {
                 if (!elem.Attrib.Name.CaselessEq(k)) continue;
-                
-                elem.Field.SetValue(instance, elem.Attrib.Parse(v)); return;
+
+                elem.Field.SetValue(instance, elem.Attrib.Parse(v)); 
+                return;
             }
         }
-        
-        public static void Serialise(ConfigElement[] elements, StreamWriter dst, object instance) {
+
+        public static void Serialise(ConfigElement[] elements, StreamWriter dst, object instance)
+        {
             Dictionary<string, List<ConfigElement>> sections = new Dictionary<string, List<ConfigElement>>();
-            
-            foreach (ConfigElement elem in elements) 
+
+            foreach (ConfigElement elem in elements)
             {
                 List<ConfigElement> members;
-                if (!sections.TryGetValue(elem.Attrib.Section, out members)) {
+                if (!sections.TryGetValue(elem.Attrib.Section, out members))
+                {
                     members = new List<ConfigElement>();
                     sections[elem.Attrib.Section] = members;
                 }
                 members.Add(elem);
             }
-            
+
             // group output by sections
-            foreach (var kvp in sections) 
+            foreach (var kvp in sections)
             {
                 dst.WriteLine("# " + kvp.Key + " settings");
-                foreach (ConfigElement elem in kvp.Value) 
+                foreach (ConfigElement elem in kvp.Value)
                 {
                     dst.WriteLine(elem.Format(instance));
                 }
                 dst.WriteLine();
             }
         }
-        
-        public static void SerialiseSimple(ConfigElement[] elements, string path, object instance) {
-            using (StreamWriter w = new StreamWriter(path)) {
+
+        public static void SerialiseSimple(ConfigElement[] elements, string path, object instance)
+        {
+            using (StreamWriter w = new StreamWriter(path))
+            {
                 w.WriteLine("#Settings file");
                 SerialiseElements(elements, w, instance);
             }
         }
-        
-        public static void SerialiseElements(ConfigElement[] elements, TextWriter w, object instance) {
-            foreach (ConfigElement elem in elements) 
+
+        public static void SerialiseElements(ConfigElement[] elements, TextWriter w, object instance)
+        {
+            foreach (ConfigElement elem in elements)
             {
                 w.WriteLine(elem.Format(instance));
             }

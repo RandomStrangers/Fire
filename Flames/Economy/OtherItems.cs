@@ -18,36 +18,40 @@
 using System;
 using Flames.Util;
 
-namespace Flames.Eco 
+namespace Flames.Eco
 {
-    public sealed class SnackItem : SimpleItem 
+    public sealed class SnackItem : SimpleItem
     {
-        public SnackItem() {
+        public SnackItem()
+        {
             Aliases = new string[] { "snack" };
             Price = 0;
         }
-        
+
         public override string Name { get { return "Snack"; } }
-        
-        public override void OnPurchase(Player p, string args) {
-            if (DateTime.UtcNow < p.NextEat) {
+
+        public override void OnPurchase(Player p, string args)
+        {
+            if (DateTime.UtcNow < p.NextEat)
+            {
                 p.Message("You're still full - you need to wait at least " +
-                          "10 seconds between snacks."); return;
-            }          
+                          "10 seconds between snacks."); 
+                return;
+            }
 
             if (!CheckPrice(p)) return;
             TextFile eatFile = TextFile.Files["Eat"];
             eatFile.EnsureExists();
-            
+
             string[] actions = eatFile.GetText();
             string action = "ate some food";
             if (actions.Length > 0)
                 action = actions[new Random().Next(actions.Length)];
-            
+
             if (!p.CheckCanSpeak("eat a snack")) return;
             Chat.MessageFrom(p, "λNICK &S" + action, null);
             p.CheckForMessageSpam();
-            
+
             p.NextEat = DateTime.UtcNow.AddSeconds(10);
             // intentionally not using Economy.MakePurchase here
             p.SetMoney(p.money - Price);

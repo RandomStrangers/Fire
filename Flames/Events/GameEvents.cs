@@ -17,23 +17,28 @@
  */
 using Flames.Games;
 
-namespace Flames.Events.GameEvents {
-    
+namespace Flames.Events.GameEvents
+{
+
     public delegate void OnStateChanged(IGame game);
     /// <summary> Raised when state of a game changed (started, stopped, round). </summary>
-    public sealed class OnStateChangedEvent : IEvent<OnStateChanged> {
-        
-        public static void Call(IGame game) {
+    public sealed class OnStateChangedEvent : IEvent<OnStateChanged>
+    {
+
+        public static void Call(IGame game)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(game));
         }
     }
-    
+
     public delegate void OnMapsChanged(RoundsGame game);
     /// <summary> Raised when maps list in a game changes. </summary>
-    public sealed class OnMapsChangedEvent : IEvent<OnMapsChanged> {
-        
-        public static void Call(RoundsGame game) {
+    public sealed class OnMapsChangedEvent : IEvent<OnMapsChanged>
+    {
+
+        public static void Call(RoundsGame game)
+        {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(game));
         }

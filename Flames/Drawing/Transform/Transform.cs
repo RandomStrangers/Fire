@@ -19,17 +19,21 @@ using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
 
-namespace Flames.Drawing.Transforms 
+namespace Flames.Drawing.Transforms
 {
-    public abstract class Transform 
+    public abstract class Transform
     {
         public abstract string Name { get; }
-        public virtual void Configure(DrawOp op, Player p) { }
-        
+        public virtual void Configure(DrawOp op, Player p) 
+        { 
+        }
+
         /// <summary> Estimates the total number of blocks that the drawing commands affects,
         /// after this transformation (e.g. scaling) has been applied to it. </summary>
-        public virtual void GetBlocksAffected(ref long affected) { }
-        
+        public virtual void GetBlocksAffected(ref long affected) 
+        { 
+        }
+
         public abstract void Perform(Vec3S32[] marks, DrawOp op, Brush brush, DrawOpOutput output);
     }
 }

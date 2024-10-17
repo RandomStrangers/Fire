@@ -18,31 +18,37 @@
     permissions and limitations under the Licenses.
 */
 
-namespace Flames.Commands.Chatting 
-{    
-    public sealed class CmdRankMsg : Command2 
-    {        
+namespace Flames.Commands.Chatting
+{
+    public sealed class CmdRankMsg : Command2
+    {
         public override string name { get { return "RankMsg"; } }
         public override string shortcut { get { return "rm"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            {
+                Help(p);
+                return; 
+            }
             if (!MessageCmd.CanSpeak(p, name)) return;
-            
+
             string[] args = message.SplitSpaces(2);
             string rank = args.Length == 1 ? p.group.Name : args[0];
-            string text = args[args.Length - 1];            
+            string text = args[args.Length - 1];
             Group grp = Matcher.FindRanks(p, rank);
             if (grp == null) return;
-            
+
             string msg = grp.Color + "<" + grp.Name + ">λNICK: &f" + text;
             Chat.MessageChat(ChatScope.Rank, p, msg, grp.Permission, null);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/RankMsg [Rank] [Message]");
             p.Message("&HSends a message to the specified rank.");
             p.Message("&HNote: If no [rank] is given, player's rank is taken.");

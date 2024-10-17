@@ -51,13 +51,17 @@ namespace Flames
             new ColumnDesc("Cmdmsg", ColumnType.VarChar, 40),
         };
 
-        public static void InitDatabase() {
+        public static void InitDatabase()
+        {
             if (!Directory.Exists("blockdb")) Directory.CreateDirectory("blockdb");
 
             Logger.Log(LogType.SystemActivity, "Using {0} for database backend", Database.Backend.EngineName);
-            try {
+            try
+            {
                 Database.Backend.CreateDatabase();
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Logger.LogError(e);
                 Logger.Log(LogType.Warning, "MySQL settings have not been set! Please Setup using the properties window.");
                 return;
@@ -65,10 +69,11 @@ namespace Flames
 
             Database.CreateTable("Opstats", opstatsTable);
             Database.CreateTable("Players", playersTable);
-            
+
             //since 5.5.11 we are cleaning up the table Playercmds
             //if Playercmds exists copy-filter to Opstats and remove Playercmds
-            if (Database.TableExists("Playercmds")) {
+            if (Database.TableExists("Playercmds"))
+            {
                 const string sql = "INSERT INTO Opstats (Time, Name, Cmd, Cmdmsg) SELECT Time, Name, Cmd, Cmdmsg FROM Playercmds WHERE {0};";
                 foreach (string cmd in Opstats)
                     Database.Execute(string.Format(sql, "cmd = '" + cmd + "'"));
@@ -78,20 +83,25 @@ namespace Flames
 
             List<string> columns = Database.Backend.ColumnNames("Players");
             if (columns.Count == 0) return;
-            
-            if (!columns.CaselessContains("Color")) {
+
+            if (!columns.CaselessContains("Color"))
+            {
                 Database.AddColumn("Players", new ColumnDesc("color", ColumnType.VarChar, 6), "totalKicked");
             }
-            if (!columns.CaselessContains("Title_Color")) {
+            if (!columns.CaselessContains("Title_Color"))
+            {
                 Database.AddColumn("Players", new ColumnDesc("title_color", ColumnType.VarChar, 6), "color");
             }
-            if (!columns.CaselessContains("TimeSpent")) {
+            if (!columns.CaselessContains("TimeSpent"))
+            {
                 Database.AddColumn("Players", new ColumnDesc("TimeSpent", ColumnType.VarChar, 20), "totalKicked");
             }
-            if (!columns.CaselessContains("TotalCuboided")) {
+            if (!columns.CaselessContains("TotalCuboided"))
+            {
                 Database.AddColumn("Players", new ColumnDesc("totalCuboided", ColumnType.Int64), "totalBlocks");
             }
-            if (!columns.CaselessContains("Messages")) {
+            if (!columns.CaselessContains("Messages"))
+            {
                 Database.AddColumn("Players", new ColumnDesc("Messages", ColumnType.UInt24), "title_color");
             }
         }

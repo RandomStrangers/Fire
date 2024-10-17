@@ -21,101 +21,114 @@ using Flames.Drawing.Ops;
 using Flames.Generator;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
+namespace Flames.Drawing.Brushes
 {
-    public sealed class CloudyBrush : Brush 
+    public sealed class CloudyBrush : Brush
     {
-        public readonly BlockID[] blocks;
-        public readonly int[] counts;
-        public readonly float[] thresholds;
-        public readonly ImprovedNoise noise;
-        
-        public CloudyBrush(List<BlockID> blocks, List<int> counts, NoiseArgs n) {
+        public BlockID[] blocks;
+        public int[] counts;
+        public float[] thresholds;
+        public ImprovedNoise noise;
+
+        public CloudyBrush(List<BlockID> blocks, List<int> counts, NoiseArgs n)
+        {
             this.blocks = blocks.ToArray();
             this.counts = counts.ToArray();
             thresholds = new float[counts.Count];
             Random r = n.Seed == int.MinValue ? new Random() : new Random(n.Seed);
-            noise = new ImprovedNoise(r);
-            
-            noise.Frequency   = n.Frequency;
-            noise.Amplitude   = n.Amplitude;
-            noise.Octaves     = n.Octaves;
-            noise.Lacunarity  = n.Lacunarity;
-            noise.Persistence = n.Persistence;
+            noise = new ImprovedNoise(r)
+            {
+                Frequency = n.Frequency,
+                Amplitude = n.Amplitude,
+                Octaves = n.Octaves,
+                Lacunarity = n.Lacunarity,
+                Persistence = n.Persistence
+            };
         }
-        
+
         public override string Name { get { return "Cloudy"; } }
-        
-        public unsafe override void Configure(DrawOp op, Player p) {
-            if (!p.Ignores.DrawOutput) {
+
+        public unsafe override void Configure(DrawOp op, Player p)
+        {
+            if (!p.Ignores.DrawOutput)
+            {
                 p.Message("Calculating noise distribution...");
             }
-            
+
             // Initalise our noise histogram
             const int accuracy = 10000;
             int* values = stackalloc int[accuracy];
             for (int i = 0; i < accuracy; i++)
                 values[i] = 0;
-            
+
             // Fill the histogram with the distribution of the noise
             for (int x = op.Min.X; x <= op.Max.X; x++)
                 for (int y = op.Min.Y; y <= op.Max.Y; y++)
                     for (int z = op.Min.Z; z <= op.Max.Z; z++)
-            {
-                float N = noise.NormalisedNoise(x, y, z);
-                N = (N + 1) * 0.5f; // rescale to [0, 1]
-                
-                int index = (int)(N * accuracy);
-                index = index < 0 ? 0 : index;
-                index = index >= accuracy ? accuracy - 1 : index;
-                values[index]++;
-            }
-            
+                    {
+                        float N = noise.NormalisedNoise(x, y, z);
+                        N = (N + 1) * 0.5f; // rescale to [0, 1]
+
+                        int index = (int)(N * accuracy);
+                        index = index < 0 ? 0 : index;
+                        index = index >= accuracy ? accuracy - 1 : index;
+                        values[index]++;
+                    }
+
             // Calculate the coverage of blocks
             float* coverage = stackalloc float[counts.Length];
             int totalBlocks = 0;
             for (int i = 0; i < counts.Length; i++)
                 totalBlocks += counts[i];
             float last = 0;
-            for (int i = 0; i < counts.Length; i++) {
+            for (int i = 0; i < counts.Length; i++)
+            {
                 coverage[i] = last + (counts[i] / (float)totalBlocks);
                 last = coverage[i];
             }
-            
+
             // Map noise distribution to block coverage
             int volume = op.SizeX * op.SizeY * op.SizeZ;
             float sum = 0;
-            for (int i = 0; i < accuracy; i++) {
+            for (int i = 0; i < accuracy; i++)
+            {
                 // Update the thresholds
                 // So for example if sum is 0.2 and coverage is [0.25, 0.5, 0.75, 1]
                 //   then the threshold for all blocks is set to this.
                 // If sum was say 0.8 instead, then only the threshold for the
                 //   very last block would be increased.
                 // TODO rewrite to be single pass (only need to update current instead of all counts)
-                for (int j = 0; j < counts.Length; j++) {
+                for (int j = 0; j < counts.Length; j++)
+                {
                     if (sum <= coverage[j])
                         thresholds[j] = i / (float)accuracy;
-                }              
+                }
                 sum += values[i] / (float)volume;
             }
             thresholds[blocks.Length - 1] = 1;
-            
-            if (!p.Ignores.DrawOutput) {
+
+            if (!p.Ignores.DrawOutput)
+            {
                 p.Message("Finished calculating, now drawing.");
             }
         }
 
         public int next;
-        public override BlockID NextBlock(DrawOp op) {
+        public override BlockID NextBlock(DrawOp op)
+        {
             float N = noise.NormalisedNoise(op.Coords.X, op.Coords.Y, op.Coords.Z);
             N = (N + 1) * 0.5f; // rescale to [0, 1];
             N = N < 0 ? 0 : N;
             N = N > 1 ? 1 : N;
-            
+
             next = blocks.Length - 1;
-            for (int i = 0; i < thresholds.Length; i++) 
+            for (int i = 0; i < thresholds.Length; i++)
             {
-                if (N <= thresholds[i]) { next = i; break; }
+                if (N <= thresholds[i])
+                {
+                    next = i;
+                    break;
+                }
             }
             return blocks[next];
         }

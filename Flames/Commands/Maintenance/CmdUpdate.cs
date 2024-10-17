@@ -32,7 +32,8 @@ namespace Flames.Commands.Maintenance
         {
             if (!CheckPerms(p))
             {
-                p.Message("Only the Flames or the Server Owner can update the server."); return;
+                p.Message("Only the Flames or the Server Owner can update the server."); 
+                return;
             }
             Updater.PerformUpdate();
         }

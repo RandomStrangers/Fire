@@ -16,29 +16,34 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Chatting 
-{    
-    public class CmdTitle : EntityPropertyCmd 
-    {        
+namespace Flames.Commands.Chatting
+{
+    public class CmdTitle : EntityPropertyCmd
+    {
         public override string name { get { return "Title"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Admin, "can change the title of others") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("XTitle", "-own") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             UsePlayer(p, data, message, "title");
         }
 
-        public override void SetPlayerData(Player p, string target, string title) {
+        public override void SetPlayerData(Player p, string target, string title)
+        {
             PlayerOperations.SetTitle(p, target, title);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Title [player] [title]");
             p.Message("&HSets the title of [player]");
             p.Message("&H  If [title] is not given, removes [player]'s title.");

@@ -19,39 +19,54 @@ using Flames.Drawing.Ops;
 using Flames.Undo;
 using Flames.Maths;
 
-namespace Flames.Commands.Building {   
-    public sealed class CmdRedo : Command2 {   
+namespace Flames.Commands.Building
+{
+    public sealed class CmdRedo : Command2
+    {
         public override string name { get { return "Redo"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length > 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length > 0)
+            {
+                Help(p);
+                return;
+            }
             PerformRedo(p);
         }
 
-        public static void PerformRedo(Player p) {
+        public static void PerformRedo(Player p)
+        {
             UndoDrawOpEntry[] entries = p.DrawOps.Items;
-            if (entries.Length == 0) {
-                p.Message("You have no &T/Undo &Sor &T/Undo [seconds] &Sto redo."); return;
+            if (entries.Length == 0)
+            {
+                p.Message("You have no &T/Undo &Sor &T/Undo [seconds] &Sto redo.");
+                return;
             }
-            
-            for (int i = entries.Length - 1; i >= 0; i--) {
+
+            for (int i = entries.Length - 1; i >= 0; i--)
+            {
                 UndoDrawOpEntry entry = entries[i];
                 if (entry.DrawOpName != "UndoSelf") continue;
                 p.DrawOps.Remove(entry);
-                
-                RedoSelfDrawOp op = new RedoSelfDrawOp();
-                op.Start = entry.Start; op.End = entry.End;
+
+                RedoSelfDrawOp op = new RedoSelfDrawOp
+                {
+                    Start = entry.Start,
+                    End = entry.End
+                };
                 DrawOpPerformer.Do(op, null, p, new Vec3S32[] { Vec3U16.MinVal, Vec3U16.MaxVal });
                 p.Message("Redo performed.");
                 return;
-            }          
+            }
             p.Message("No &T/Undo &Sor &T/Undo [timespan] &Scalls were " +
                                "found in the last 200 draw operations.");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Redo");
             p.Message("&HRedoes last &T/Undo &Hor &T/Undo [timespan] &Hyou performed");
         }

@@ -17,10 +17,13 @@
  */
 using Flames.Drawing.Ops;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdBezier : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdBezier : DrawCmd
+    {
         public override string name { get { return "Bezier"; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new CommandAlias[] { new CommandAlias("Curve") }; }
         }
 
@@ -28,9 +31,13 @@ namespace Flames.Commands.Building {
         public override string SelectionType { get { return "points"; } }
         public override string PlaceMessage { get { return "Place or break two blocks to determine the endpoints, then another for the control point"; } }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) { return new BezierDrawOp(); }
-        
-        public override void Help(Player p) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs) 
+        { 
+            return new BezierDrawOp(); 
+        }
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Bezier <brush args>");
             p.Message("&HDraws a quadratic bezier curve.");
             p.Message("&HFirst two points specify the endpoints, then another point specifies the control point.");

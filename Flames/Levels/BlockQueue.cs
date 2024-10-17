@@ -21,10 +21,12 @@ using Flames.Network;
 using Flames.Tasks;
 using BlockID = System.UInt16;
 
-namespace Flames {    
+namespace Flames
+{
     /// <summary> Manages a list of block updates to periodically broadcast to players. </summary>
-    public sealed class BlockQueue : List<ulong> {
-        
+    public sealed class BlockQueue : List<ulong>
+    {
+
         /// <summary> Time in milliseconds between ticks. </summary>
         public static int Interval = 100;
         /// <summary> Maximum number of block updates broadcasted in one tick. </summary>
@@ -32,53 +34,69 @@ namespace Flames {
         public static BufferedBlockSender bulkSender = new BufferedBlockSender();
 
         public const int posShift = 32;
-        public readonly object locker = new object();
+        public object locker = new object();
 
         /// <summary> Flushes the block updates queue for each loaded level. </summary>
-        public static void Loop(SchedulerTask task) {
+        public static void Loop(SchedulerTask task)
+        {
             Level[] loaded = LevelInfo.Loaded.Items;
-            foreach (Level lvl in loaded) {
-                lock (lvl.blockqueue.locker) {
+            foreach (Level lvl in loaded)
+            {
+                lock (lvl.blockqueue.locker)
+                {
                     lvl.blockqueue.Process(lvl);
                 }
             }
-            
+
             bulkSender.level = null;
             task.Delay = TimeSpan.FromMilliseconds(Interval);
         }
 
         /// <summary> Adds a block update to the end of the queue. </summary>
-        public void Add(int index, BlockID block) {
+        public void Add(int index, BlockID block)
+        {
             // Bit packing format
             // 32-63: index
             // 0-31 : block type
             ulong flags = (ulong)index << posShift;
             flags |= block;
-            
+
             lock (locker) Add(flags);
         }
-        
-        /// <summary> Removes all block updates from the queue. </summary>
-        public void ClearAll() { lock (locker) Clear(); }
 
-        public void Process(Level lvl) {
-            try {
+        /// <summary> Removes all block updates from the queue. </summary>
+        public void ClearAll() 
+        { 
+            lock (locker) Clear(); 
+        }
+
+        public void Process(Level lvl)
+        {
+            try
+            {
                 if (Count == 0) return;
-                if (!lvl.HasPlayers()) { Clear(); return; }
-                    
+                if (!lvl.HasPlayers()) 
+                { 
+                    Clear();
+                    return; 
+                }
+
                 bulkSender.level = lvl;
                 int count = Count;
                 if (count > UpdatesPerTick) count = UpdatesPerTick;
 
-                for (int i = 0; i < count; i++) {
-                    ulong flags   = this[i];
-                    int index     = (int)(flags >> posShift);
+                for (int i = 0; i < count; i++)
+                {
+                    ulong flags = this[i];
+                    int index = (int)(flags >> posShift);
                     BlockID block = (BlockID)flags;
                     bulkSender.Add(index, block);
                 }
                 bulkSender.Flush();
                 RemoveRange(0, count);
-            } catch (Exception e)  {
+            }
+            catch (Exception e)
+            {
                 Logger.LogError(e);
                 Logger.Log(LogType.Warning, "Failed to flush block queue on {0}. {1} lost.", lvl.name, Count);
                 Clear();

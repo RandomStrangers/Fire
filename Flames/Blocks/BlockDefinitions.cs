@@ -75,8 +75,14 @@ namespace Flames
         /// </summary>
         [ConfigBool] public bool UseLampBrightness;
 
-        public BlockID GetBlock() { return Block.FromRaw(RawID); }
-        public void SetBlock(BlockID b) { RawID = Block.ToRaw(b); }
+        public BlockID GetBlock()
+        {
+            return Block.FromRaw(RawID);
+        }
+        public void SetBlock(BlockID b)
+        {
+            RawID = Block.ToRaw(b);
+        }
 
         public const string GlobalPath = "blockdefs/global.json", GlobalBackupPath = "blockdefs/global.json.bak";
 
@@ -84,24 +90,41 @@ namespace Flames
 
         public BlockDefinition Copy()
         {
-            BlockDefinition def = new BlockDefinition();
-            def.RawID = RawID; def.Name = Name;
-            def.Speed = Speed; def.CollideType = CollideType;
-            def.TopTex = TopTex; def.BottomTex = BottomTex;
+            BlockDefinition def = new BlockDefinition
+            {
+                RawID = RawID,
+                Name = Name,
+                Speed = Speed,
+                CollideType = CollideType,
+                TopTex = TopTex,
+                BottomTex = BottomTex,
 
-            def.BlocksLight = BlocksLight; def.WalkSound = WalkSound;
-            def.FullBright = FullBright; def.Shape = Shape;
-            def.BlockDraw = BlockDraw; def.FallBack = FallBack;
+                BlocksLight = BlocksLight,
+                WalkSound = WalkSound,
+                FullBright = FullBright,
+                Shape = Shape,
+                BlockDraw = BlockDraw,
+                FallBack = FallBack,
 
-            def.FogDensity = FogDensity;
-            def.FogR = FogR; def.FogG = FogG; def.FogB = FogB;
-            def.MinX = MinX; def.MinY = MinY; def.MinZ = MinZ;
-            def.MaxX = MaxX; def.MaxY = MaxY; def.MaxZ = MaxZ;
+                FogDensity = FogDensity,
+                FogR = FogR,
+                FogG = FogG,
+                FogB = FogB,
+                MinX = MinX,
+                MinY = MinY,
+                MinZ = MinZ,
+                MaxX = MaxX,
+                MaxY = MaxY,
+                MaxZ = MaxZ,
 
-            def.LeftTex = LeftTex; def.RightTex = RightTex;
-            def.FrontTex = FrontTex; def.BackTex = BackTex;
-            def.InventoryOrder = InventoryOrder;
-            def.Brightness = Brightness; def.UseLampBrightness = UseLampBrightness;
+                LeftTex = LeftTex,
+                RightTex = RightTex,
+                FrontTex = FrontTex,
+                BackTex = BackTex,
+                InventoryOrder = InventoryOrder,
+                Brightness = Brightness,
+                UseLampBrightness = UseLampBrightness
+            };
             return def;
         }
 
@@ -116,10 +139,13 @@ namespace Flames
             {
                 string json = File.ReadAllText(path);
 
-                JsonReader reader = new JsonReader(json);
-                reader.OnMember = (obj, key, value) => {
-                    if (obj.Meta == null) obj.Meta = new BlockDefinition();
-                    ConfigElement.Parse(elems, obj.Meta, key, (string)value);
+                JsonReader reader = new JsonReader(json)
+                {
+                    OnMember = (obj, key, value) =>
+                    {
+                        if (obj.Meta == null) obj.Meta = new BlockDefinition();
+                        ConfigElement.Parse(elems, obj.Meta, key, (string)value);
+                    }
                 };
 
                 JsonArray array = (JsonArray)reader.Parse();
@@ -149,7 +175,14 @@ namespace Flames
                     // Sync Brightness setting it has not been set before
                     if (def.Brightness == -1)
                     {
-                        if (def.FullBright) { def.Brightness = 15; } else { def.Brightness = 0; }
+                        if (def.FullBright)
+                        {
+                            def.Brightness = 15;
+                        }
+                        else
+                        {
+                            def.Brightness = 0;
+                        }
                     }
                 }
             }
@@ -305,12 +338,16 @@ namespace Flames
         public void SetAllTex(ushort id)
         {
             SetSideTex(id);
-            TopTex = id; BottomTex = id;
+            TopTex = id;
+            BottomTex = id;
         }
 
         public void SetSideTex(ushort id)
         {
-            LeftTex = id; RightTex = id; FrontTex = id; BackTex = id;
+            LeftTex = id;
+            RightTex = id;
+            FrontTex = id;
+            BackTex = id;
         }
 
         public void SetFullBright(bool fullBright)
@@ -324,7 +361,14 @@ namespace Flames
         {
             Brightness = brightness;
             UseLampBrightness = lamp;
-            if (Brightness > 0) { FullBright = true; } else { FullBright = false; }
+            if (Brightness > 0)
+            {
+                FullBright = true;
+            }
+            else
+            {
+                FullBright = false;
+            }
         }
 
         public static void SendLevelCustomBlocks(Player pl)

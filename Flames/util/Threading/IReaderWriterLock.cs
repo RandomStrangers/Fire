@@ -18,39 +18,55 @@
 using System;
 using System.Threading;
 
-namespace Flames.Util {
+namespace Flames.Util
+{
 
-    public sealed class IReaderWriterLock {
+    public sealed class IReaderWriterLock
+    {
 
         public ReaderWriterLockSlim locker = new ReaderWriterLockSlim();
 
-        public IDisposable AccquireRead() { return AccquireRead(-1); }
-        public IDisposable AccquireWrite() { return AccquireWrite(-1); }
-        
-        public IDisposable AccquireRead(int msTimeout) {
+        public IDisposable AccquireRead() 
+        {
+            return AccquireRead(-1); 
+        }
+        public IDisposable AccquireWrite() 
+        { 
+            return AccquireWrite(-1); 
+        }
+
+        public IDisposable AccquireRead(int msTimeout)
+        {
             if (!locker.TryEnterReadLock(msTimeout)) return null;
             return new SlimLock(locker, false);
         }
 
-        public IDisposable AccquireWrite(int msTimeout) {
+        public IDisposable AccquireWrite(int msTimeout)
+        {
             if (!locker.TryEnterWriteLock(msTimeout)) return null;
             return new SlimLock(locker, true);
         }
 
 
-        public class SlimLock : IDisposable {
+        public class SlimLock : IDisposable
+        {
             public ReaderWriterLockSlim locker;
             public bool writeMode;
-            
-            public SlimLock(ReaderWriterLockSlim locker, bool writeMode) {
+
+            public SlimLock(ReaderWriterLockSlim locker, bool writeMode)
+            {
                 this.locker = locker;
                 this.writeMode = writeMode;
             }
-            
-            public void Dispose() {
-                if (writeMode) {
+
+            public void Dispose()
+            {
+                if (writeMode)
+                {
                     locker.ExitWriteLock();
-                } else {
+                }
+                else
+                {
                     locker.ExitReadLock();
                 }
                 locker = null;

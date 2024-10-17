@@ -15,8 +15,10 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Scripting {
-    public sealed class CmdCompLoad_Simple : Command2 {
+namespace Flames.Commands.Scripting
+{
+    public sealed class CmdCompLoad_Simple : Command2
+    {
         public override string name { get { return "SimpleCompLoad"; } }
         public override string shortcut { get { return "scml"; } }
         public override string type { get { return CommandTypes.Added; } }
@@ -33,23 +35,32 @@ namespace Flames.Commands.Scripting {
             }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces();
-            if (message.Length == 0) { Help(p); return; }
+            if (message.Length == 0)
+            {
+                Help(p);
+                return;
+            }
 
-            if (args.Length == 1 || args[1].CaselessEq("vb")) {
+            if (args.Length == 1 || args[1].CaselessEq("vb"))
+            {
                 Find("PSCompile").Use(p, message, data);
                 Find("PSLoad").Use(p, args[0], data);
-            } else { 
+            }
+            else
+            {
                 Help(p);
             }
         }
-        
-        public override void Help(Player p) {
-            p.Message("&T/CompLoad [plugin_simple]");
+
+        public override void Help(Player p)
+        {
+            p.Message("&T/SimpleCompLoad [plugin_simple]");
             p.Message("&HCompiles and loads a C# simple plugin into the server for use.");
-            p.Message("&T/CompLoad [plugin_simple] vb");
+            p.Message("&T/SimpleCompLoad [plugin_simple] vb");
             p.Message("&HCompiles and loads a Visual basic simple plugin into the server for use.");
-        }        
+        }
     }
 }

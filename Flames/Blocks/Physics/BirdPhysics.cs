@@ -18,24 +18,30 @@
 using System;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks.Physics {    
-    public static class BirdPhysics {
-        
-        public static void Do(Level lvl, ref PhysInfo C) {
+namespace Flames.Blocks.Physics
+{
+    public static class BirdPhysics
+    {
+
+        public static void Do(Level lvl, ref PhysInfo C)
+        {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
             BlockID block = lvl.GetBlock(x, y, z);
             int index;
 
-            switch (rand.Next(1, 15)) {
+            switch (rand.Next(1, 15))
+            {
                 case 1:
-                    if (lvl.IsAirAt(x, (ushort)(y - 1), z, out index)) {
+                    if (lvl.IsAirAt(x, (ushort)(y - 1), z, out index))
+                    {
                         lvl.AddUpdate(index, block);
                     }
                     else goto case 3;
                     break;
                 case 2:
-                    if (lvl.IsAirAt(x, (ushort)(y + 1), z, out index)) {
+                    if (lvl.IsAirAt(x, (ushort)(y + 1), z, out index))
+                    {
                         lvl.AddUpdate(index, block);
                     }
                     else goto case 6;
@@ -63,11 +69,13 @@ namespace Flames.Blocks.Physics {
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
 
-        public static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, BlockID block) {
+        public static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, BlockID block)
+        {
             BlockID neighbour = lvl.GetBlock(x, y, z, out int index);
             if (neighbour == Block.Invalid) return;
-            
-            switch (neighbour) {
+
+            switch (neighbour)
+            {
                 case Block.Air:
                     lvl.AddUpdate(index, block);
                     break;
@@ -76,7 +84,8 @@ namespace Flames.Blocks.Physics {
                 default:
                     // bird died by hitting a block
                     PhysicsArgs args = default;
-                    args.Type1 = PhysicsArgs.Dissipate; args.Value1 = 25;
+                    args.Type1 = PhysicsArgs.Dissipate; 
+                    args.Value1 = 25;
                     lvl.AddUpdate(C.Index, Block.Red, args);
                     break;
             }

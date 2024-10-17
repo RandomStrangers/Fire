@@ -19,18 +19,24 @@ using System.Collections.Generic;
 using Flames.Commands;
 using Flames.Generator.Foliage;
 
-namespace Flames {
-    
-    public sealed class LevelOption {
+namespace Flames
+{
+
+    public sealed class LevelOption
+    {
         public string Name, Help;
         public LevelOptions.OptionSetter SetFunc;
-        
-        public LevelOption(string name, LevelOptions.OptionSetter func, string help) {
-            Name = name; SetFunc = func; Help = help;
+
+        public LevelOption(string name, LevelOptions.OptionSetter func, string help)
+        {
+            Name = name;
+            SetFunc = func;
+            Help = help;
         }
     }
-    
-    public static class LevelOptions {        
+
+    public static class LevelOptions
+    {
         public delegate void OptionSetter(Player p, Level lvl, string value);
         public const string MOTD = "motd", RealmOwner = "RealmOwner", TreeType = "TreeType", Speed = "Speed";
         public const string Overload = "Overload", Fall = "Fall", Drown = "Drown", Finite = "Finite", AI = "AI";
@@ -38,7 +44,7 @@ namespace Flames {
         public const string Goto = "LoadOnGoto", Decay = "LeafDecay", Flow = "RandomFlow", Trees = "GrowTrees";
         public const string Chat = "Chat", Guns = "Guns", Buildable = "Buildable", Deletable = "Deletable";
         public const string LoadDelay = "LoadDelay", Drawing = "Drawing", Authors = "Authors";
-        
+
         public static List<LevelOption> Options = new List<LevelOption>() {
              new LevelOption(MOTD,       SetMotd,  "&HSets the motd for this map. (leave blank to use default motd)"),
              new LevelOption(RealmOwner, SetOwner, "&HSets the players allowed to use /realm on this map."),
@@ -70,153 +76,218 @@ namespace Flames {
              new LevelOption(Authors, SetAuthors, "&HSets authors of map. Only shown when running games"),
         };
 
-        public static LevelOption Find(string opt) {
-            if (opt.CaselessEq("ps"))   opt = Speed;
+        public static LevelOption Find(string opt)
+        {
+            if (opt.CaselessEq("ps")) opt = Speed;
             if (opt.CaselessEq("load")) opt = Goto;
             if (opt.CaselessEq("leaf")) opt = Decay;
             if (opt.CaselessEq("flow")) opt = Flow;
             if (opt.CaselessEq("tree")) opt = Trees;
-            
-            foreach (LevelOption option in Options) {
+
+            foreach (LevelOption option in Options)
+            {
                 if (option.Name.CaselessEq(opt)) return option;
             }
             return null;
         }
 
-        public static void SetMotd(Player p, Level lvl, string value) {
+        public static void SetMotd(Player p, Level lvl, string value)
+        {
             lvl.Config.MOTD = value.Length == 0 ? "ignore" : value;
             lvl.Message("Map's MOTD was changed to: &b" + lvl.Config.MOTD);
-            
+
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player pl in players) 
+            foreach (Player pl in players)
             {
                 // Some clients will freeze or crash if we send a MOTD packet, but don't follow it up by a new map.
                 // Hnece only send MOTD for clients supporting InstantMOTD CPE extension
-                if (pl.Supports(CpeExt.InstantMOTD)) {
+                if (pl.Supports(CpeExt.InstantMOTD))
+                {
                     pl.SendMapMotd();
-                } else {
+                }
+                else
+                {
                     PlayerActions.ReloadMap(pl);
                 }
             }
         }
 
-        public static void SetOwner(Player p, Level lvl, string value) {
+        public static void SetOwner(Player p, Level lvl, string value)
+        {
             lvl.Config.RealmOwner = value.Replace(", ", ",").Replace(" ", ",");
             if (value.Length == 0) p.Message("Removed realm owner for this level.");
             else p.Message("Set realm owner/owners of this level to {0}.", value);
         }
 
-        public static void SetTree(Player p, Level lvl, string value) {
-            if (value.Length == 0) {
+        public static void SetTree(Player p, Level lvl, string value)
+        {
+            if (value.Length == 0)
+            {
                 p.Message("Reset tree type to default.");
                 lvl.Config.TreeType = "fern";
                 return;
             }
-            
+
             Tree tree = Tree.Find(value);
-            if (tree == null) {
+            if (tree == null)
+            {
                 p.Message("Tree type {0} not found.", value);
                 p.Message("Tree types: {0}", Tree.TreeTypes.Join(t => t.Key));
                 return;
             }
-            
+
             lvl.Config.TreeType = value.ToLower();
             p.Message("Set tree type that saplings grow into to {0}.", value);
         }
 
-        public static void SetFinite(Player p, Level l, string v) { Toggle(p, l, ref l.Config.FiniteLiquids, "Finite mode"); }
-        public static void SetAI(Player p,     Level l, string v) { Toggle(p, l, ref l.Config.AnimalHuntAI, "Animal AI"); }
-        public static void SetEdge(Player p,   Level l, string v) { Toggle(p, l, ref l.Config.EdgeWater, "Edge water"); }
-        public static void SetGrass(Player p,  Level l, string v) { Toggle(p, l, ref l.Config.GrassGrow, "Growing grass"); }
-        public static void SetDeath(Player p,  Level l, string v) { Toggle(p, l, ref l.Config.SurvivalDeath, "Survival death"); }
-        public static void SetKiller(Player p, Level l, string v) { Toggle(p, l, ref l.Config.KillerBlocks, "Killer blocks"); }
-        public static void SetUnload(Player p, Level l, string v) { Toggle(p, l, ref l.Config.AutoUnload, "Auto unload"); }
-        public static void SetGoto(Player p,   Level l, string v) { Toggle(p, l, ref l.Config.LoadOnGoto, "Load on goto"); }
-        public static void SetDecay(Player p,  Level l, string v) { Toggle(p, l, ref l.Config.LeafDecay, "Leaf decay"); }
-        public static void SetFlow(Player p,   Level l, string v) { Toggle(p, l, ref l.Config.RandomFlow, "Random flow"); }
-        public static void SetTrees(Player p,  Level l, string v) { Toggle(p, l, ref l.Config.GrowTrees, "Tree growing"); }
-        public static void SetBuildable(Player p, Level l, string v) { TogglePerms(p, l, ref l.Config.Buildable, "Buildable"); }
-        public static void SetDeletable(Player p, Level l, string v) { TogglePerms(p, l, ref l.Config.Deletable, "Deletable"); }
+        public static void SetFinite(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.FiniteLiquids, "Finite mode"); 
+        }
+        public static void SetAI(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.AnimalHuntAI, "Animal AI"); 
+        }
+        public static void SetEdge(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.EdgeWater, "Edge water"); 
+        }
+        public static void SetGrass(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.GrassGrow, "Growing grass"); 
+        }
+        public static void SetDeath(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.SurvivalDeath, "Survival death"); 
+        }
+        public static void SetKiller(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.KillerBlocks, "Killer blocks"); 
+        }
+        public static void SetUnload(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.AutoUnload, "Auto unload"); 
+        }
+        public static void SetGoto(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.LoadOnGoto, "Load on goto"); 
+        }
+        public static void SetDecay(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.LeafDecay, "Leaf decay"); 
+        }
+        public static void SetFlow(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.RandomFlow, "Random flow"); 
+        }
+        public static void SetTrees(Player p, Level l, string v) 
+        { 
+            Toggle(p, l, ref l.Config.GrowTrees, "Tree growing"); 
+        }
+        public static void SetBuildable(Player p, Level l, string v) 
+        { 
+            TogglePerms(p, l, ref l.Config.Buildable, "Buildable"); 
+        }
+        public static void SetDeletable(Player p, Level l, string v) 
+        { 
+            TogglePerms(p, l, ref l.Config.Deletable, "Deletable"); 
+        }
 
-        public static void SetChat(Player p, Level l, string v) {
+        public static void SetChat(Player p, Level l, string v)
+        {
             Toggle(p, l, ref l.Config.ServerWideChat, "Local level only chat", true);
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player pl in players) {
+            foreach (Player pl in players)
+            {
                 if (pl.level == l) TabList.Update(pl, true);
             }
         }
 
-        public static void SetDrawing(Player p, Level l, string v) { 
-            Toggle(p, l, ref l.Config.Drawing, "Drawing commands"); 
+        public static void SetDrawing(Player p, Level l, string v)
+        {
+            Toggle(p, l, ref l.Config.Drawing, "Drawing commands");
         }
 
-        public static void SetLoadDelay(Player p, Level l, string value) {
+        public static void SetLoadDelay(Player p, Level l, string value)
+        {
             int raw = 0;
             if (!CommandParser.GetInt(p, value, "Load delay", ref raw, 0, 2000)) return;
             SetInt(l, raw, ref l.Config.LoadDelay, "Load delay");
         }
 
-        public static void SetSpeed(Player p, Level l, string value) {
+        public static void SetSpeed(Player p, Level l, string value)
+        {
             int raw = 0;
-            if (!CommandParser.GetInt(p, value, "Physics speed", ref raw, 10)) return;
+            if (!CommandParser.GetInt(p, value, "Physics speed", ref raw, 1)) return;
             SetInt(l, raw, ref l.Config.PhysicsSpeed, "Physics speed");
         }
 
-        public static void SetOverload(Player p, Level l, string value) {
+        public static void SetOverload(Player p, Level l, string value)
+        {
             int raw = 0;
             if (!CommandParser.GetInt(p, value, "Physics overload", ref raw, 500)) return;
-            
-            if (p.Rank < LevelPermission.Admin && raw > 2500) {
-                p.Message("Only SuperOPs may set physics overload higher than 2500"); return;
+
+            if (p.Rank < LevelPermission.Admin && raw > 2500)
+            {
+                p.Message("Only SuperOPs may set physics overload higher than 2500"); 
+                return;
             }
             SetInt(l, raw, ref l.Config.PhysicsOverload, "Physics overload");
         }
 
-        public static void SetFall(Player p, Level l, string value) {
+        public static void SetFall(Player p, Level l, string value)
+        {
             int raw = 0;
             if (!CommandParser.GetInt(p, value, "Fall distance", ref raw)) return;
             SetInt(l, raw, ref l.Config.FallHeight, "Fall distance");
         }
 
-        public static void SetDrown(Player p, Level l, string value) {
+        public static void SetDrown(Player p, Level l, string value)
+        {
             int raw = 0;
             if (!CommandParser.GetInt(p, value, "Drown time (in tenths of a second)", ref raw)) return;
             SetInt(l, raw, ref l.Config.DrownTime, "Drown time (in tenths of a second)");
         }
 
-        public static void SetInt(Level lvl, int raw, ref int target, string name) {
+        public static void SetInt(Level lvl, int raw, ref int target, string name)
+        {
             target = raw;
             lvl.Message(name + ": &b" + target);
         }
 
 
-        public static void SetGuns(Player p, Level lvl, string value) {
+        public static void SetGuns(Player p, Level lvl, string value)
+        {
             Toggle(p, lvl, ref lvl.Config.Guns, "Guns allowed");
             if (lvl.Config.Guns) return;
-            
+
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player pl in players) {
+            foreach (Player pl in players)
+            {
                 if (pl.level != lvl || pl.weapon == null) continue;
                 pl.weapon.Disable();
             }
         }
 
-        public static void SetAuthors(Player p, Level lvl, string value) {
+        public static void SetAuthors(Player p, Level lvl, string value)
+        {
             lvl.Config.Authors = value.Replace(", ", ",").Replace(" ", ",");
             p.Message("Map authors set to: &b" + lvl.Config.Authors);
         }
 
-        public static void TogglePerms(Player p, Level lvl, ref bool target, string name) {
+        public static void TogglePerms(Player p, Level lvl, ref bool target, string name)
+        {
             Toggle(p, lvl, ref target, name);
             lvl.UpdateBlockPermissions();
         }
 
-        public static void Toggle(Player p, Level lvl, ref bool target, string name, bool not = false) {
+        public static void Toggle(Player p, Level lvl, ref bool target, string name, bool not = false)
+        {
             target = !target;
             bool display = not ? !target : target;
             string targetStr = display ? "&aON" : "&cOFF";
-            
-            lvl.Message(name + ": " + targetStr);          
+
+            lvl.Message(name + ": " + targetStr);
             if (p.level != lvl) p.Message(name + ": " + targetStr);
         }
     }

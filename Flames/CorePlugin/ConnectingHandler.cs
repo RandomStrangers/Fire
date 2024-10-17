@@ -16,93 +16,115 @@ using System;
 using Flames.Authentication;
 using Flames.Network;
 
-namespace Flames.Core {
-    public static class ConnectingHandler {
+namespace Flames.Core
+{
+    public static class ConnectingHandler
+    {
 
-        public static void HandleConnecting(Player p, string mppass) {
+        public static void HandleConnecting(Player p, string mppass)
+        {
             if (p.cancelconnecting) return;
             bool success = HandleConnectingCore(p, mppass);
             if (!success) p.cancelconnecting = true;
         }
 
-        public static bool HandleConnectingCore(Player p, string mppass) {
-            if (!LoginAuthenticator.VerifyLogin(p, mppass)) {
-                p.Leave(null, "Login failed! Close the game and sign in again.", true); return false;
+        public static bool HandleConnectingCore(Player p, string mppass)
+        {
+            if (!LoginAuthenticator.VerifyLogin(p, mppass))
+            {
+                p.Leave(null, "Login failed! Close the game and sign in again.", true); 
+                return false;
             }
             if (!CheckTempban(p)) return false;
 
-            if (Server.Config.WhitelistedOnly && !Server.whiteList.Contains(p.name)) {
+            if (Server.Config.WhitelistedOnly && !Server.whiteList.Contains(p.name))
+            {
                 p.Leave(null, Server.Config.DefaultWhitelistMessage, true);
                 return false;
             }
-            
+
             p.group = Group.GroupIn(p.name);
             if (!CheckBanned(p)) return false;
             if (!CheckPlayersCount(p)) return false;
             return true;
         }
 
-        public static bool CheckTempban(Player p) {
-            try {
+        public static bool CheckTempban(Player p)
+        {
+            try
+            {
                 string data = Server.tempBans.Get(p.name);
                 if (data == null) return true;
-                
+
                 string banner, reason;
                 DateTime expiry;
                 Ban.UnpackTempBanData(data, out reason, out banner, out expiry);
-                
-                if (expiry < DateTime.UtcNow) {
+
+                if (expiry < DateTime.UtcNow)
+                {
                     Server.tempBans.Remove(p.name);
                     Server.tempBans.Save();
-                } else {
-                    reason = reason.Length == 0 ? "" :" (" + reason + ")";
+                }
+                else
+                {
+                    reason = reason.Length == 0 ? "" : " (" + reason + ")";
                     string delta = (expiry - DateTime.UtcNow).Shorten(true);
-                    
+
                     p.Kick(null, "Banned by " + banner + " for another " + delta + reason, true);
                     return false;
                 }
-            } catch { } // TODO log error
+            }
+            catch { } // TODO log error
             return true;
         }
 
-        public static bool CheckPlayersCount(Player p) {
+        public static bool CheckPlayersCount(Player p)
+        {
             if (Server.vip.Contains(p.name)) return true;
-            
+
             Player[] online = PlayerInfo.Online.Items;
-            if (online.Length >= Server.Config.MaxPlayers && !IPUtil.IsPrivate(p.IP)) {
-                p.Leave(null, "Server full!", true); return false;
+            if (online.Length >= Server.Config.MaxPlayers && !IPUtil.IsPrivate(p.IP))
+            {
+                p.Leave(null, "Server full!", true); 
+                return false;
             }
             if (p.Rank > LevelPermission.Guest) return true;
-            
+
             online = PlayerInfo.Online.Items;
             int guests = 0;
-            foreach (Player pl in online) {
+            foreach (Player pl in online)
+            {
                 if (pl.Rank <= LevelPermission.Guest) guests++;
             }
             if (guests < Server.Config.MaxGuests) return true;
-            
+
             if (Server.Config.GuestLimitNotify) Chat.MessageOps("Guest " + p.truename + " couldn't log in - too many guests.");
             Logger.Log(LogType.Warning, "Guest {0} couldn't log in - too many guests.", p.truename);
             p.Leave(null, "Server has reached max number of guests", true);
             return false;
         }
 
-        public static bool CheckBanned(Player p) {
+        public static bool CheckBanned(Player p)
+        {
             string ipban = Server.bannedIP.Get(p.ip);
-            if (ipban != null) {
+            if (ipban != null)
+            {
                 ipban = ipban.Length > 0 ? ipban : Server.Config.DefaultBanMessage;
                 p.Kick(null, ipban, true);
                 return false;
             }
             if (p.Rank != LevelPermission.Banned) return true;
-            
+
             string banner, reason, prevRank;
             DateTime time;
             Ban.GetBanData(p.name, out banner, out reason, out time, out prevRank);
-            
-            if (banner != null) {
+
+            if (banner != null)
+            {
                 p.Kick(null, "Banned by " + banner + ": " + reason, true);
-            } else {
+            }
+            else
+            {
                 p.Kick(null, Server.Config.DefaultBanMessage, true);
             }
             return false;

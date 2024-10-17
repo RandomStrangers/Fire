@@ -17,49 +17,57 @@
  */
 using Flames.Eco;
 
-namespace Flames.Modules.Games.LS 
+namespace Flames.Modules.Games.LS
 {
-    public sealed class LifeItem : SimpleItem 
-    {    
-        public LifeItem() {
+    public sealed class LifeItem : SimpleItem
+    {
+        public LifeItem()
+        {
             Aliases = new string[] { "life", "lifes", "live", "lives" };
             Enabled = true;
-            Price   = 20;
+            Price = 20;
         }
-        
+
         public override string Name { get { return "Life"; } }
 
-        public override void OnPurchase(Player p, string args) {
-            if (!LSGame.Instance.RoundInProgress) {
+        public override void OnPurchase(Player p, string args)
+        {
+            if (!LSGame.Instance.RoundInProgress)
+            {
                 p.Message("You can only buy a life " +
-                          "when a round of lava survival is in progress."); return;
+                          "when a round of lava survival is in progress."); 
+                return;
             }
-            
+
             // TODO: Don't allow buying when Config.MaxLives == 0        
             if (!CheckPrice(p)) return;
-            
+
             LSGame.Instance.AddLives(p, 1, false);
             Economy.MakePurchase(p, Price, "%3Life:");
         }
     }
 
-    public sealed class SpongesItem : SimpleItem 
+    public sealed class SpongesItem : SimpleItem
     {
-        public SpongesItem() {
+        public SpongesItem()
+        {
             Aliases = new string[] { "sponge", "sponges" };
             Enabled = true;
-            Price   = 2;
+            Price = 2;
         }
-        
+
         public override string Name { get { return "Sponges"; } }
 
-        public override void OnPurchase(Player p, string args) {
-            if (!LSGame.Instance.RoundInProgress) {
+        public override void OnPurchase(Player p, string args)
+        {
+            if (!LSGame.Instance.RoundInProgress)
+            {
                 p.Message("You can only buy sponges " +
-                          "when a round of lava survival is in progress."); return;
-            }   
+                          "when a round of lava survival is in progress."); 
+                return;
+            }
             if (!CheckPrice(p)) return;
-            
+
             // TODO avoid code duplication
             LSData data = LSGame.Get(p);
             data.SpongesLeft += 10;
@@ -68,23 +76,27 @@ namespace Flames.Modules.Games.LS
         }
     }
 
-    public sealed class WaterItem : SimpleItem 
+    public sealed class WaterItem : SimpleItem
     {
-        public WaterItem() {
+        public WaterItem()
+        {
             Aliases = new string[] { "water", "waters" };
             Enabled = true;
-            Price   = 2;
+            Price = 2;
         }
-        
+
         public override string Name { get { return "Water"; } }
 
-        public override void OnPurchase(Player p, string args) {
-            if (!LSGame.Instance.RoundInProgress) {
+        public override void OnPurchase(Player p, string args)
+        {
+            if (!LSGame.Instance.RoundInProgress)
+            {
                 p.Message("You can only buy water " +
-                          "when a round of lava survival is in progress."); return;
-            }   
+                          "when a round of lava survival is in progress."); 
+                return;
+            }
             if (!CheckPrice(p)) return;
-            
+
             // TODO avoid code duplication
             LSData data = LSGame.Get(p);
             data.WaterLeft += 10;
@@ -93,23 +105,27 @@ namespace Flames.Modules.Games.LS
         }
     }
 
-    public sealed class DoorsItem : SimpleItem 
+    public sealed class DoorsItem : SimpleItem
     {
-        public DoorsItem() {
+        public DoorsItem()
+        {
             Aliases = new string[] { "door", "doors" };
             Enabled = true;
-            Price   = 2;
+            Price = 2;
         }
-        
+
         public override string Name { get { return "Door"; } }
 
-        public override void OnPurchase(Player p, string args) {
-            if (!LSGame.Instance.RoundInProgress) {
+        public override void OnPurchase(Player p, string args)
+        {
+            if (!LSGame.Instance.RoundInProgress)
+            {
                 p.Message("You can only buy doors " +
-                          "when a round of lava survival is in progress."); return;
-            }   
+                          "when a round of lava survival is in progress."); 
+                return;
+            }
             if (!CheckPrice(p)) return;
-            
+
             // TODO avoid code duplication
             LSData data = LSGame.Get(p);
             data.DoorsLeft += 6;

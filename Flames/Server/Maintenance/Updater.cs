@@ -16,9 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using System.Threading;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using Flames.Network;
 using Flames.Tasks;

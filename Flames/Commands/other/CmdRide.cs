@@ -19,66 +19,74 @@ using System;
 using Flames.Maths;
 using Flames.Tasks;
 
-namespace Flames.Commands.Misc {
-    public sealed class CmdRide : Command2 {
+namespace Flames.Commands.Misc
+{
+    public sealed class CmdRide : Command2
+    {
         public override string name { get { return "Ride"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override bool museumUsable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.onTrain = !p.onTrain;
             if (!p.onTrain) return;
-            
+
             p.trainInvincible = true;
             p.Message("Stand near a train to mount it");
-            
+
             SchedulerTask task = new SchedulerTask(RideCallback, p, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
 
-        public static void RideCallback(SchedulerTask task) {
+        public static void RideCallback(SchedulerTask task)
+        {
             Player p = (Player)task.State;
-            if (!p.onTrain) {
+            if (!p.onTrain)
+            {
                 p.trainGrab = false;
                 p.Message("Dismounted");
-                
-                Server.MainScheduler.QueueOnce(TrainInvincibleCallback, p, 
+
+                Server.MainScheduler.QueueOnce(TrainInvincibleCallback, p,
                                                TimeSpan.FromSeconds(1));
                 task.Repeating = false;
                 return;
             }
-            
+
             Vec3S32 P = p.Pos.FeetBlockCoords;
             for (int dx = -1; dx <= 1; dx++)
                 for (int dy = -1; dy <= 1; dy++)
                     for (int dz = -1; dz <= 1; dz++)
-            {
-                ushort xx = (ushort)(P.X + dx), yy = (ushort)(P.Y + dy), zz = (ushort)(P.Z + dz);
-                if (p.level.GetBlock(xx, yy, zz) != Block.Train) continue;
-                p.trainGrab = true;
+                    {
+                        ushort xx = (ushort)(P.X + dx), yy = (ushort)(P.Y + dy), zz = (ushort)(P.Z + dz);
+                        if (p.level.GetBlock(xx, yy, zz) != Block.Train) continue;
+                        p.trainGrab = true;
 
                         Vec3F32 dir = new Vec3F32(dx, 0, dz);
                         DirUtils.GetYawPitch(dir, out byte yaw, out byte pitch);
-                
-                if (dy == 1) pitch = 240;
-                else if (dy == 0) pitch = 0;
-                else pitch = 8;
-                
-                if (dx != 0 || dy != 0 || dz != 0) {
-                    Position pos = Position.FromFeetBlockCoords(P.X + dx, P.Y + dy, P.Z + dz);
-                    p.SendPos(Entities.SelfID, pos, new Orientation(yaw, pitch));
-                }
-                return;
-            }
+
+                        if (dy == 1) pitch = 240;
+                        else if (dy == 0) pitch = 0;
+                        else pitch = 8;
+
+                        if (dx != 0 || dy != 0 || dz != 0)
+                        {
+                            Position pos = Position.FromFeetBlockCoords(P.X + dx, P.Y + dy, P.Z + dz);
+                            p.SendPos(Entities.SelfID, pos, new Orientation(yaw, pitch));
+                        }
+                        return;
+                    }
             p.trainGrab = false;
         }
 
-        public static void TrainInvincibleCallback(SchedulerTask task) {
+        public static void TrainInvincibleCallback(SchedulerTask task)
+        {
             Player p = (Player)task.State;
             p.trainInvincible = false;
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/Ride");
             p.Message("&HRides a nearby train.");
         }

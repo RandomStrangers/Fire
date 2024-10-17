@@ -17,58 +17,75 @@
  */
 using System;
 
-namespace Flames.SQL 
-{    
-    public sealed class SqlTransaction : IDisposable 
+namespace Flames.SQL
+{
+    public sealed class SqlTransaction : IDisposable
     {
         public ISqlConnection conn;
         public ISqlTransaction transaction;
-        
-        public SqlTransaction() {
+
+        public SqlTransaction()
+        {
             IDatabaseBackend db = Database.Backend;
             conn = db.CreateConnection();
             conn.Open();
-            
+
             if (db.MultipleSchema) conn.ChangeDatabase(Server.Config.MySQLDatabaseName);
             transaction = conn.BeginTransaction();
         }
 
-        public void Commit() {
-            try {
+        public void Commit()
+        {
+            try
+            {
                 transaction.Commit();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error committing SQL transaction", ex);
                 Rollback();
-            } finally {
+            }
+            finally
+            {
                 conn.Close();
             }
         }
-        
-        public bool Rollback() {
-            try {
+
+        public bool Rollback()
+        {
+            try
+            {
                 transaction.Rollback();
                 return true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error rolling back SQL transaction", ex);
                 return false;
             }
         }
-        
-        public void Dispose() {
+
+        public void Dispose()
+        {
             transaction.Dispose();
             conn.Dispose();
             transaction = null;
             conn = null;
         }
-        
-        public bool Execute(string sql, params object[] args) {
-            try {
-                using (ISqlCommand cmd = conn.CreateCommand(sql)) {
+
+        public bool Execute(string sql, params object[] args)
+        {
+            try
+            {
+                using (ISqlCommand cmd = conn.CreateCommand(sql))
+                {
                     IDatabaseBackend.FillParams(cmd, args);
                     cmd.ExecuteNonQuery();
                     return true;
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error executing SQL transaction: " + sql, ex);
                 return false;
             }

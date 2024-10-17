@@ -22,16 +22,23 @@ using Flames.Maths;
 using Flames.SQL;
 using BlockID = System.UInt16;
 
-namespace Flames 
+namespace Flames
 {
-    public static class LevelDB 
+    public static class LevelDB
     {
-        public static void SaveBlockDB(Level lvl) {
+        public static void SaveBlockDB(Level lvl)
+        {
             if (lvl.BlockDB.Cache.Head == null) return;
-            if (!lvl.Config.UseBlockDB) { lvl.BlockDB.Cache.Clear(); return; }
+            if (!lvl.Config.UseBlockDB) 
+            { 
+                lvl.BlockDB.Cache.Clear(); 
+                return; 
+            }
 
-            using (IDisposable wLock = lvl.BlockDB.Locker.AccquireWrite(60 * 1000)) {
-                if (wLock == null) {
+            using (IDisposable wLock = lvl.BlockDB.Locker.AccquireWrite(60 * 1000))
+            {
+                if (wLock == null)
+                {
                     Logger.Log(LogType.Warning, "&WCouldn't accquire BlockDB write lock on {0}, skipping save", lvl.name);
                     return;
                 }
@@ -40,88 +47,100 @@ namespace Flames
             Logger.Log(LogType.BackgroundActivity, "Saved BlockDB changes for: {0}", lvl.name);
         }
 
-        public static Zone ParseZone(ISqlRecord record) {
-            Zone z = new Zone();
-            z.MinX = (ushort)record.GetInt("SmallX");
-            z.MinY = (ushort)record.GetInt("SmallY");
-            z.MinZ = (ushort)record.GetInt("SmallZ");
-            
-            z.MaxX = (ushort)record.GetInt("BigX");
-            z.MaxY = (ushort)record.GetInt("BigY");
-            z.MaxZ = (ushort)record.GetInt("BigZ");
+        public static Zone ParseZone(ISqlRecord record)
+        {
+            Zone z = new Zone
+            {
+                MinX = (ushort)record.GetInt("SmallX"),
+                MinY = (ushort)record.GetInt("SmallY"),
+                MinZ = (ushort)record.GetInt("SmallZ"),
+
+                MaxX = (ushort)record.GetInt("BigX"),
+                MaxY = (ushort)record.GetInt("BigY"),
+                MaxZ = (ushort)record.GetInt("BigZ")
+            };
             z.Config.Name = record.GetText("Owner");
             return z;
         }
 
-        public static void LoadZones(Level level, string map) {
+        public static void LoadZones(Level level, string map)
+        {
             if (!Database.TableExists("Zone" + map)) return;
-            
+
             List<Zone> zones = new List<Zone>();
             Database.ReadRows("Zone" + map, "*",
                                 record => zones.Add(ParseZone(record)));
-            
+
             bool changedPerbuild = false;
-            for (int i = 0; i < zones.Count; i++) {
+            for (int i = 0; i < zones.Count; i++)
+            {
                 Zone z = zones[i];
                 string owner = z.Config.Name;
-                
-                if (owner.StartsWith("grp")) {
+
+                if (owner.StartsWith("grp"))
+                {
                     Group grp = Group.Find(owner.Substring(3));
                     if (grp != null) z.Access.Min = grp.Permission;
-                } else if (z.CoversMap(level)) {
+                }
+                else if (z.CoversMap(level))
+                {
                     level.BuildAccess.Whitelisted.Add(owner);
                     changedPerbuild = true;
                     continue;
-                } else {
+                }
+                else
+                {
                     z.Access.Whitelisted.Add(owner);
                     z.Access.Min = LevelPermission.Admin;
                 }
-                
+
                 z.Config.Name = "Zone" + i;
                 z.AddTo(level);
             }
-            
+
             if (changedPerbuild) level.SaveSettings();
             if (level.Zones.Count > 0 && !level.Save(true)) return;
-            
+
             Database.DeleteTable("Zone" + map);
             Logger.Log(LogType.SystemActivity, "Upgraded zones for map " + map);
         }
 
-        public static void LoadPortals(Level level, string map) {
+        public static void LoadPortals(Level level, string map)
+        {
             List<Vec3U16> coords = Portal.GetAllCoords(map);
-            level.hasPortals     = coords.Count > 0;
+            level.hasPortals = coords.Count > 0;
             if (!level.hasPortals) return;
-            
+
             int deleted = 0;
-            foreach (Vec3U16 p in coords) 
+            foreach (Vec3U16 p in coords)
             {
                 BlockID block = level.GetBlock(p.X, p.Y, p.Z);
                 if (level.Props[block].IsPortal) continue;
-                
+
                 Portal.Delete(map, p.X, p.Y, p.Z);
                 deleted++;
             }
-            
+
             if (deleted == 0) return;
             Logger.Log(LogType.BackgroundActivity, "Autodeleted {0} non-existent portals in {1}", deleted, level.name);
         }
 
-        public static void LoadMessages(Level level, string map) {
-            List<Vec3U16> coords   = MessageBlock.GetAllCoords(map);
+        public static void LoadMessages(Level level, string map)
+        {
+            List<Vec3U16> coords = MessageBlock.GetAllCoords(map);
             level.hasMessageBlocks = coords.Count > 0;
             if (!level.hasMessageBlocks) return;
-            
+
             int deleted = 0;
-            foreach (Vec3U16 p in coords) 
+            foreach (Vec3U16 p in coords)
             {
                 BlockID block = level.GetBlock(p.X, p.Y, p.Z);
                 if (level.Props[block].IsMessageBlock) continue;
-                
+
                 MessageBlock.Delete(map, p.X, p.Y, p.Z);
                 deleted++;
             }
-            
+
             if (deleted == 0) return;
             Logger.Log(LogType.BackgroundActivity, "Autodeleted {0} non-existent message blocks in {1}", deleted, level.name);
         }

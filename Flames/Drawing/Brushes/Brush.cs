@@ -18,13 +18,13 @@
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
+namespace Flames.Drawing.Brushes
 {
-    public abstract class Brush 
+    public abstract class Brush
     {
         public abstract string Name { get; }
         public virtual void Configure(DrawOp op, Player p) { }
-        
+
         /// <summary> Returns the next block that should be placed in the world, 
         /// based on the draw operation's current state. </summary>
         /// <remarks> Returns Block.Invalid if no block should be placed. </remarks>

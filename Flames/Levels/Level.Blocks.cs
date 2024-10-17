@@ -23,10 +23,11 @@ using Flames.Maths;
 using BlockID = System.UInt16;
 using BlockRaw = System.Byte;
 
-namespace Flames {
+namespace Flames
+{
 
     /// <summary> Result of attempting to change a block to another </summary>
-    public enum ChangeResult 
+    public enum ChangeResult
     {
         /// <summary> Block change was not performed </summary>
         Unchanged,
@@ -35,37 +36,41 @@ namespace Flames {
         /// <summary> Old block was different to new block visually </summary>
         Modified
     }
-    
-    public sealed partial class Level : IDisposable 
-    {        
+
+    public sealed partial class Level : IDisposable
+    {
         public byte[] blocks;
         /// <summary> Lazily allocated 16x16x16 chunks that store extended tile IDs </summary>
         /// <remarks> Access should be done through GetBlock or GetExtTile </remarks>
         public byte[][] CustomBlocks;
         /// <summary> Number of 16x16x16 chunks that this level consists of </summary>
         public int ChunksX, ChunksY, ChunksZ;
-        
+
         /// <summary> Makes a quick guess at whether this level might use custom blocks </summary>
-        public bool MightHaveCustomBlocks() {
+        public bool MightHaveCustomBlocks()
+        {
             byte[][] customBlocks = CustomBlocks;
             if (customBlocks == null) return false;
-                
-            for (int i = 0; i < customBlocks.Length; i++) {
+
+            for (int i = 0; i < customBlocks.Length; i++)
+            {
                 if (customBlocks[i] != null) return true;
             }
             return false;
         }
-        
+
         /// <summary> Converts the given coordinates to a position index </summary>
         /// <remarks> Returns -1 if coordinates outside this level's boundaries are given </remarks>
-        public int PosToInt(ushort x, ushort y, ushort z) {
+        public int PosToInt(ushort x, ushort y, ushort z)
+        {
             if (x >= Width || y >= Height || z >= Length) return -1;
             return x + Width * (z + y * Length);
         }
 
         /// <summary> Converts the given position index to coordinates </summary>
         /// <remarks> Undefined coordinates if given position index is invalid </remarks>
-        public void IntToPos(int pos, out ushort x, out ushort y, out ushort z) {
+        public void IntToPos(int pos, out ushort x, out ushort y, out ushort z)
+        {
             y = (ushort)(pos / Width / Length);
             pos -= y * Width * Length;
             z = (ushort)(pos / Width);
@@ -75,214 +80,251 @@ namespace Flames {
 
         /// <summary> Offsets the given position index by the given relative coordinates </summary>
         /// <example> index = lvl.IntOffset(index, 0, -1, 0); </example>
-        public int IntOffset(int pos, int x, int y, int z)  {
+        public int IntOffset(int pos, int x, int y, int z)
+        {
             return pos + x + z * Width + y * Width * Length;
         }
-        
+
         /// <summary> Returns whether the given coordinates lie within this level's boundaries </summary>
-        public bool IsValidPos(Vec3U16 pos) {
+        public bool IsValidPos(Vec3U16 pos)
+        {
             return pos.X < Width && pos.Y < Height && pos.Z < Length;
         }
-        
+
         /// <summary> Returns whether the given coordinates lie within this level's boundaries </summary>
-        public bool IsValidPos(int x, int y, int z) {
+        public bool IsValidPos(int x, int y, int z)
+        {
             return x >= 0 && y >= 0 && z >= 0 && x < Width && y < Height && z < Length;
         }
-        
-        
+
+
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
-        public BlockID FastGetBlock(int index) {
+        public BlockID FastGetBlock(int index)
+        {
             byte raw = blocks[index];
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | GetExtTile(index));
 
         }
-        
+
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
-        public BlockID FastGetBlock(ushort x, ushort y, ushort z) {
+        public BlockID FastGetBlock(ushort x, ushort y, ushort z)
+        {
             byte raw = blocks[x + Width * (z + y * Length)];
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
 
         }
-        
+
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Block.Invalid if coordinates outside level </returns>
-        public BlockID GetBlock(ushort x, ushort y, ushort z) {
+        public BlockID GetBlock(ushort x, ushort y, ushort z)
+        {
             if (x >= Width || y >= Height || z >= Length || blocks == null) return Block.Invalid;
             byte raw = blocks[x + Width * (z + y * Length)];
-            
+
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
         }
-        
+
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Block.Invalid if coordinates outside level </returns>
-        public BlockID GetBlock(ushort x, ushort y, ushort z, out int index) {
-            if (x >= Width || y >= Height || z >= Length || blocks == null) { index = -1; return Block.Invalid; }
+        public BlockID GetBlock(ushort x, ushort y, ushort z, out int index)
+        {
+            if (x >= Width || y >= Height || z >= Length || blocks == null) 
+            { 
+                index = -1; 
+                return Block.Invalid; 
+            }
             index = x + Width * (z + y * Length);
             byte raw = blocks[index];
-            
+
             BlockID extended = Block.ExtendedBase[raw];
             return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
 
         }
-        
+
         /// <summary> Gets whether the block at the given coordinates is air </summary>
-        public bool IsAirAt(ushort x, ushort y, ushort z) {
+        public bool IsAirAt(ushort x, ushort y, ushort z)
+        {
             if (x >= Width || y >= Height || z >= Length || blocks == null) return false;
             return blocks[x + Width * (z + y * Length)] == Block.Air;
         }
-        
+
         /// <summary> Gets whether the block at the given coordinates is air </summary>
-        public bool IsAirAt(ushort x, ushort y, ushort z, out int index) {
+        public bool IsAirAt(ushort x, ushort y, ushort z, out int index)
+        {
             if (x >= Width || y >= Height || z >= Length || blocks == null) { index = -1; return false; }
             index = x + Width * (z + y * Length);
             return blocks[index] == Block.Air;
         }
-        
+
         /// <summary> Gets the extended tile at the given position index </summary>
         /// <remarks> GetBlock / FastGetBlock is preferred over calling this method </remarks>
-        public byte GetExtTile(int index) {
+        public byte GetExtTile(int index)
+        {
             ushort x, y, z;
             IntToPos(index, out x, out y, out z);
-            
+
             int cx = x >> 4, cy = y >> 4, cz = z >> 4;
             byte[] chunk = CustomBlocks[(cy * ChunksZ + cz) * ChunksX + cx];
             return chunk == null ? Block.Air : chunk[(y & 0x0F) << 8 | (z & 0x0F) << 4 | (x & 0x0F)];
         }
-        
+
         /// <summary> Gets the extended tile at the given coordinates </summary>
         /// <remarks> GetBlock / FastGetBlock is preferred over calling this method </remarks>
         /// <returns> Undefined behaviour if coordinates are invalid. </returns>
-        public byte FastGetExtTile(ushort x, ushort y, ushort z) {
+        public byte FastGetExtTile(ushort x, ushort y, ushort z)
+        {
             int cx = x >> 4, cy = y >> 4, cz = z >> 4;
             byte[] chunk = CustomBlocks[(cy * ChunksZ + cz) * ChunksX + cx];
             return chunk == null ? Block.Air : chunk[(y & 0x0F) << 8 | (z & 0x0F) << 4 | (x & 0x0F)];
         }
-        
-        public void SetTile(ushort x, ushort y, ushort z, byte block) {
+
+        public void SetTile(ushort x, ushort y, ushort z, byte block)
+        {
             int index = PosToInt(x, y, z);
             if (blocks == null || index < 0) return;
             blocks[index] = block;
             Changed = true;
         }
-        
-        public void FastSetExtTile(ushort x, ushort y, ushort z, byte extBlock) {
+
+        public void FastSetExtTile(ushort x, ushort y, ushort z, byte extBlock)
+        {
             int cx = x >> 4, cy = y >> 4, cz = z >> 4;
             int cIndex = (cy * ChunksZ + cz) * ChunksX + cx;
             byte[] chunk = CustomBlocks[cIndex];
-            
-            if (chunk == null) {
+
+            if (chunk == null)
+            {
                 chunk = new byte[16 * 16 * 16];
                 CustomBlocks[cIndex] = chunk;
             }
             chunk[(y & 0x0F) << 8 | (z & 0x0F) << 4 | (x & 0x0F)] = extBlock;
         }
-        
-        public void FastRevertExtTile(ushort x, ushort y, ushort z) {
+
+        public void FastRevertExtTile(ushort x, ushort y, ushort z)
+        {
             int cx = x >> 4, cy = y >> 4, cz = z >> 4;
             int cIndex = (cy * ChunksZ + cz) * ChunksX + cx;
             byte[] chunk = CustomBlocks[cIndex];
-            
+
             if (chunk == null) return;
             chunk[(y & 0x0F) << 8 | (z & 0x0F) << 4 | (x & 0x0F)] = 0;
         }
-        
-        public void SetBlock(ushort x, ushort y, ushort z, BlockID block) {
+
+        public void SetBlock(ushort x, ushort y, ushort z, BlockID block)
+        {
             int index = PosToInt(x, y, z);
             if (blocks == null || index < 0) return;
             Changed = true;
-            
-            if (block >= Block.Extended) {
+
+            if (block >= Block.Extended)
+            {
                 blocks[index] = Block.ExtendedClass[block >> Block.ExtendedShift];
                 FastSetExtTile(x, y, z, (BlockRaw)block);
-            } else {
+            }
+            else
+            {
                 blocks[index] = (BlockRaw)block;
             }
         }
 
 
-        public bool BuildIn(BlockID block) {
+        public bool BuildIn(BlockID block)
+        {
             if (block == Block.Op_Water || block == Block.Op_Lava || Props[block].IsPortal || Props[block].IsMessageBlock) return false;
             block = Block.Convert(block);
             return block >= Block.Water && block <= Block.StillLava;
         }
-        
+
         /// <summary> Returns the AccessController denying the player from changing blocks at the given coordinates. </summary>
         /// <remarks> If no AccessController denies the player, returns null. </remarks>
-        public AccessController CanAffect(Player p, ushort x, ushort y, ushort z) {
+        public AccessController CanAffect(Player p, ushort x, ushort y, ushort z)
+        {
             Zone[] zones = Zones.Items;
             if (zones.Length == 0) goto checkRank; // TODO: avoid this
-            
+
             // Check zones specifically allowed in
-            for (int i = 0; i < zones.Length; i++) {
+            for (int i = 0; i < zones.Length; i++)
+            {
                 Zone zn = zones[i];
                 if (x < zn.MinX || x > zn.MaxX || y < zn.MinY || y > zn.MaxY || z < zn.MinZ || z > zn.MaxZ) continue;
-                
+
                 ZoneConfig cfg = zn.Config;
                 if (cfg.BuildBlacklist.Count > 0 && cfg.BuildBlacklist.CaselessContains(p.name)) break;
-                
+
                 if (p.group.Permission >= cfg.BuildMin) return null;
                 if (cfg.BuildWhitelist.Count > 0 && cfg.BuildWhitelist.CaselessContains(p.name)) return null;
             }
-            
+
             // Check zones denied from
-            for (int i = 0; i < zones.Length; i++) {
+            for (int i = 0; i < zones.Length; i++)
+            {
                 Zone zn = zones[i];
                 if (x < zn.MinX || x > zn.MaxX || y < zn.MinY || y > zn.MaxY || z < zn.MinZ || z > zn.MaxZ) continue;
                 AccessResult access = zn.Access.Check(p.name, p.Rank);
                 if (access == AccessResult.Allowed || access == AccessResult.Whitelisted) continue;
-                
+
                 return zn.Access;
             }
-            
+
         checkRank:
-            if (p.level == this) {
+            if (p.level == this)
+            {
                 return p.AllowBuild ? null : BuildAccess;
-            } else {
+            }
+            else
+            {
                 return BuildAccess.CheckAllowed(p) ? null : BuildAccess;
             }
         }
-        
-        public bool CheckAffect(Player p, ushort x, ushort y, ushort z, BlockID old, BlockID block) {
+
+        public bool CheckAffect(Player p, ushort x, ushort y, ushort z, BlockID old, BlockID block)
+        {
             if (!p.group.Blocks[old] || !p.group.Blocks[block]) return false;
             AccessController denier = CanAffect(p, x, y, z);
             if (denier == null) return true;
-            
-            if (p.lastAccessStatus < DateTime.UtcNow) {
+
+            if (p.lastAccessStatus < DateTime.UtcNow)
+            {
                 denier.CheckDetailed(p);
                 p.lastAccessStatus = DateTime.UtcNow.AddSeconds(2);
             }
             return false;
-        }        
-        
+        }
+
         /// <summary> Sends a block update packet to all players in this level. </summary>
-        public void BroadcastChange(ushort x, ushort y, ushort z, BlockID block) {
+        public void BroadcastChange(ushort x, ushort y, ushort z, BlockID block)
+        {
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player p in players) { 
+            foreach (Player p in players)
+            {
                 if (p.level == this) p.SendBlockchange(x, y, z, block);
             }
         }
-        
+
         /// <summary> Sends a block update packet to all players in this level. </summary>
         /// <remarks> The block sent is the current block at the given coordinates. </remarks>
-        public void BroadcastRevert(ushort x, ushort y, ushort z) {
+        public void BroadcastRevert(ushort x, ushort y, ushort z)
+        {
             BlockID block = GetBlock(x, y, z);
             if (block != Block.Invalid) BroadcastChange(x, y, z, block);
         }
-        
-        
-        public void Blockchange(Player p, ushort x, ushort y, ushort z, BlockID block) {
+
+
+        public void Blockchange(Player p, ushort x, ushort y, ushort z, BlockID block)
+        {
             if (TryChangeBlock(p, x, y, z, block) == ChangeResult.Modified) BroadcastChange(x, y, z, block);
         }
-        
+
         /// <summary> Performs a user like block change, but **DOES NOT** update the BlockDB. </summary>
         /// <remarks> The return code can be used to avoid sending redundant block changes. </remarks>
         /// <remarks> Does NOT send the changed block to any players - use BroadcastChange. </remarks>
-        public ChangeResult TryChangeBlock(Player p, ushort x, ushort y, ushort z, BlockID block, bool drawn = false) {
+        public ChangeResult TryChangeBlock(Player p, ushort x, ushort y, ushort z, BlockID block, bool drawn = false)
+        {
             string errorLocation = "start";
             try
             {
@@ -293,26 +335,32 @@ namespace Flames {
                 if (!CheckAffect(p, x, y, z, old, block)) return ChangeResult.Unchanged;
                 if (old == block) return ChangeResult.Unchanged;
 
-                if (old == Block.Sponge && physics > 0 && block != Block.Sponge) {
+                if (old == Block.Sponge && physics > 0 && block != Block.Sponge)
+                {
                     OtherPhysics.DoSpongeRemoved(this, PosToInt(x, y, z), false);
                 }
-                if (old == Block.LavaSponge && physics > 0 && block != Block.LavaSponge) {
+                if (old == Block.LavaSponge && physics > 0 && block != Block.LavaSponge)
+                {
                     OtherPhysics.DoSpongeRemoved(this, PosToInt(x, y, z), true);
                 }
 
-                p.TotalModified++;                
+                p.TotalModified++;
                 if (drawn) p.TotalDrawn++;
                 else if (block == Block.Air) p.TotalDeleted++;
                 else p.TotalPlaced++;
-                
+
                 errorLocation = "Setting tile";
-                if (block >= Block.Extended) {
+                if (block >= Block.Extended)
+                {
                     SetTile(x, y, z, Block.ExtendedClass[block >> Block.ExtendedShift]);
 
                     FastSetExtTile(x, y, z, (BlockRaw)block);
-                } else {
+                }
+                else
+                {
                     SetTile(x, y, z, (BlockRaw)block);
-                    if (old >= Block.Extended) {
+                    if (old >= Block.Extended)
+                    {
                         FastRevertExtTile(x, y, z);
                     }
                 }
@@ -320,11 +368,13 @@ namespace Flames {
                 errorLocation = "Adding physics";
                 if (physics > 0 && ActivatesPhysics(block)) AddCheck(PosToInt(x, y, z));
 
-                Changed            = true;
+                Changed = true;
                 ChangedSinceBackup = true;
-                
+
                 return Block.VisuallyEquals(old, block) ? ChangeResult.VisuallySame : ChangeResult.Modified;
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Logger.LogError(e);
                 Chat.MessageOps(p.name + " triggered a non-fatal error on " + ColoredName + ", &Sat location: " + errorLocation);
                 Logger.Log(LogType.Warning, "{0} triggered a non-fatal error on {1}, &Sat location: {2}",
@@ -332,139 +382,169 @@ namespace Flames {
                 return 0;
             }
         }
-        
+
         public void Blockchange(int b, BlockID block, bool overRide = false,
-                                PhysicsArgs data = default, bool addUndo = true) { //Block change made by physics
+                                PhysicsArgs data = default, bool addUndo = true)
+        { //Block change made by physics
             if (!DoPhysicsBlockchange(b, block, overRide, data, addUndo)) return;
-            
+
             ushort x, y, z;
             IntToPos(b, out x, out y, out z);
             BroadcastChange(x, y, z, block);
         }
-        
+
         public void Blockchange(ushort x, ushort y, ushort z, BlockID block, bool overRide = false,
-                                PhysicsArgs data = default, bool addUndo = true) {
+                                PhysicsArgs data = default, bool addUndo = true)
+        {
             Blockchange(PosToInt(x, y, z), block, overRide, data, addUndo); //Block change made by physics
         }
-        
-        public void Blockchange(ushort x, ushort y, ushort z, BlockID block) {
+
+        public void Blockchange(ushort x, ushort y, ushort z, BlockID block)
+        {
             Blockchange(PosToInt(x, y, z), block, false, default); //Block change made by physics
         }
-        
+
         public bool DoPhysicsBlockchange(int b, BlockID block, bool overRide = false,
-                                         PhysicsArgs data = default, bool addUndo = true) {
+                                         PhysicsArgs data = default, bool addUndo = true)
+        {
             if (blocks == null || b < 0 || b >= blocks.Length) return false;
             BlockID old = blocks[b];
             BlockID extended = Block.ExtendedBase[old];
             if (extended > 0) old = (BlockID)(extended | GetExtTile(b));
 
-            
+
             try
             {
-                if (!overRide) {
+                if (!overRide)
+                {
                     if (Props[old].OPBlock || (Props[block].OPBlock && data.Raw != 0)) return false;
                 }
 
-                if (old == Block.Sponge && physics > 0 && block != Block.Sponge) {
+                if (old == Block.Sponge && physics > 0 && block != Block.Sponge)
+                {
                     OtherPhysics.DoSpongeRemoved(this, b, false);
                 }
-                if (old == Block.LavaSponge && physics > 0 && block != Block.LavaSponge) {
+                if (old == Block.LavaSponge && physics > 0 && block != Block.LavaSponge)
+                {
                     OtherPhysics.DoSpongeRemoved(this, b, true);
                 }
 
-                if (addUndo) {
+                if (addUndo)
+                {
                     UndoPos uP = default;
                     uP.Index = b;
                     uP.SetData(old, block);
 
-                    if (UndoBuffer.Count < Server.Config.PhysicsUndo) {
+                    if (UndoBuffer.Count < Server.Config.PhysicsUndo)
+                    {
                         UndoBuffer.Add(uP);
-                    } else {
+                    }
+                    else
+                    {
                         if (currentUndo >= Server.Config.PhysicsUndo)
                             currentUndo = 0;
                         UndoBuffer[currentUndo] = uP;
                     }
                     currentUndo++;
                 }
-                
+
                 Changed = true;
-                if (block >= Block.Extended) {
+                if (block >= Block.Extended)
+                {
                     blocks[b] = Block.ExtendedClass[block >> Block.ExtendedShift];
 
                     ushort x, y, z;
                     IntToPos(b, out x, out y, out z);
                     FastSetExtTile(x, y, z, (BlockRaw)block);
-                } else {
+                }
+                else
+                {
                     blocks[b] = (BlockRaw)block;
-                    if (old >= Block.Extended) {
+                    if (old >= Block.Extended)
+                    {
                         ushort x, y, z;
                         IntToPos(b, out x, out y, out z);
                         FastRevertExtTile(x, y, z);
                     }
                 }
-                if (physics > 0 && (ActivatesPhysics(block) || data.Raw != 0)) {
+                if (physics > 0 && (ActivatesPhysics(block) || data.Raw != 0))
+                {
                     AddCheck(b, false, data);
                 }
-                
+
                 // Save bandwidth not sending identical looking blocks, like air/op_air changes.
                 return !Block.VisuallyEquals(old, block);
-            } catch {
+            }
+            catch
+            {
                 return false;
             }
         }
-        
+
         public void UpdateBlock(Player p, ushort x, ushort y, ushort z, BlockID block,
-                                ushort flags = BlockDBFlags.ManualPlace, bool buffered = false) {
+                                ushort flags = BlockDBFlags.ManualPlace, bool buffered = false)
+        {
             int index;
             BlockID old = GetBlock(x, y, z, out index);
             bool drawn = (flags & BlockDBFlags.ManualPlace) == 0;
-            
+
             ChangeResult result = TryChangeBlock(p, x, y, z, block, drawn);
             if (result == ChangeResult.Unchanged) return;
-            
+
             BlockDB.Cache.Add(p, x, y, z, flags, old, block);
             if (result == ChangeResult.VisuallySame) return;
-            
-            if (buffered) {
+
+            if (buffered)
+            {
                 p.level.blockqueue.Add(index, block);
-            } else {
+            }
+            else
+            {
                 BroadcastChange(x, y, z, block);
             }
         }
-        
-        
-        public Vec3S32 ClampPos(Vec3S32 P) {
-            P.X = Math.Max(0, Math.Min(P.X, Width  - 1));
+
+
+        public Vec3S32 ClampPos(Vec3S32 P)
+        {
+            P.X = Math.Max(0, Math.Min(P.X, Width - 1));
             P.Y = Math.Max(0, Math.Min(P.Y, Height - 1));
             P.Z = Math.Max(0, Math.Min(P.Z, Length - 1));
             return P;
         }
-        
-        public BlockDefinition GetBlockDef(BlockID block) {
+
+        public BlockDefinition GetBlockDef(BlockID block)
+        {
             if (block == Block.Air) return null;
-            if (Block.IsPhysicsType(block)) {
+            if (Block.IsPhysicsType(block))
+            {
                 return CustomBlockDefs[Block.Convert(block)];
-            } else {
+            }
+            else
+            {
                 return CustomBlockDefs[block];
             }
         }
-        
-        public byte CollideType(BlockID block) {
+
+        public byte CollideType(BlockID block)
+        {
             BlockDefinition def = GetBlockDef(block);
             byte collide = def != null ? def.CollideType : Flames.Blocks.CollideType.Solid;
-            
+
             if (def == null && block < Block.Extended)
                 return DefaultSet.Collide(Block.Convert(block));
             return collide;
         }
-        
-        public bool LightPasses(BlockID block) {
+
+        public bool LightPasses(BlockID block)
+        {
             BlockDefinition def = GetBlockDef(block);
             if (def != null) return !def.BlocksLight || def.BlockDraw == DrawType.TransparentThick || def.MinZ > 0;
             return Block.LightPass(block);
         }
-        
-        public byte GetFallback(BlockID b) {
+
+        public byte GetFallback(BlockID b)
+        {
             BlockDefinition def = CustomBlockDefs[b];
             if (def != null) return def.FallBack;
             return b < Block.CPE_COUNT ? (byte)b : Block.Air;

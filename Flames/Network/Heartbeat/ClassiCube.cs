@@ -31,18 +31,22 @@ namespace Flames.Network
         public string LastResponse;
         public bool checkedAddr;
 
-        public void CheckAddress() {
+        public void CheckAddress()
+        {
             string hostUrl = "";
-            checkedAddr    = true;
-            
-            try {
+            checkedAddr = true;
+
+            try
+            {
                 hostUrl = GetHost();
                 IPAddress[] addresses = Dns.GetHostAddresses(hostUrl);
                 EnsureIPv4Url(addresses);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error retrieving DNS information for " + hostUrl, ex);
             }
-            
+
             // Replace www, as otherwise the 'Finding www.classicube.net url..'
             //  message appears as a clickable link in the Logs textbox in GUI
             hostUrl = hostUrl.Replace("www.", "");
@@ -51,91 +55,104 @@ namespace Flames.Network
 
         // classicube.net only supports ipv4 servers, so we need to make
         // sure we are using its ipv4 address when POSTing heartbeats
-        public void EnsureIPv4Url(IPAddress[] addresses) {
+        public void EnsureIPv4Url(IPAddress[] addresses)
+        {
             bool hasIPv6 = false;
             IPAddress firstIPv4 = null;
-            
+
             // proxying doesn't work properly with https:// URLs
             if (URL.CaselessStarts("https://")) return;
-            
-            foreach (IPAddress ip in addresses) {
+
+            foreach (IPAddress ip in addresses)
+            {
                 AddressFamily family = ip.AddressFamily;
                 if (family == AddressFamily.InterNetworkV6)
                     hasIPv6 = true;
                 if (family == AddressFamily.InterNetwork && firstIPv4 == null)
                     firstIPv4 = ip;
             }
-            
+
             if (!hasIPv6 || firstIPv4 == null) return;
-            proxyUrl = "http://"  + firstIPv4 + ":80";
+            proxyUrl = "http://" + firstIPv4 + ":80";
         }
 
-        public override string GetHeartbeatData()  {
+        public override string GetHeartbeatData()
+        {
             string name = Server.Config.Name;
             OnSendingHeartbeatEvent.Call(this, ref name);
             name = Colors.StripUsed(name);
-            
+
             return
-                "&port="     + Server.Config.Port +
-                "&max="      + Server.Config.MaxPlayers +
-                "&name="     + Uri.EscapeDataString(name) +
-                "&public="   + Server.Config.Public +
+                "&port=" + Server.Config.Port +
+                "&max=" + Server.Config.MaxPlayers +
+                "&name=" + Uri.EscapeDataString(name) +
+                "&public=" + Server.Config.Public +
                 "&version=7" +
-                "&salt="     + Salt +
-                "&users="    + PlayerInfo.NonHiddenUniqueIPCount() +
+                "&salt=" + Salt +
+                "&users=" + PlayerInfo.NonHiddenUniqueIPCount() +
                 "&software=" + Uri.EscapeDataString(Server.SoftwareNameVersioned) +
-                "&web="      + Server.Config.WebClient;
+                "&web=" + Server.Config.WebClient;
         }
 
-        public override void OnRequest(HttpWebRequest request) {
+        public override void OnRequest(HttpWebRequest request)
+        {
             if (!checkedAddr) CheckAddress();
-            
+
             if (proxyUrl == null) return;
             request.Proxy = new WebProxy(proxyUrl);
         }
 
-        public override void OnResponse(WebResponse response) {
+        public override void OnResponse(WebResponse response)
+        {
             string text = HttpUtil.GetResponseText(response);
             if (!NeedsProcessing(text)) return;
-            
-            if (!text.Contains("\"errors\":")) {
+
+            if (!text.Contains("\"errors\":"))
+            {
                 OnSuccess(text);
-            } else {
+            }
+            else
+            {
                 string error = GetError(text);
                 if (error == null) error = "Error while finding URL. Is the port open?";
                 OnError(error);
             }
         }
 
-        public override void OnFailure(string response) {
+        public override void OnFailure(string response)
+        {
             if (NeedsProcessing(response)) OnError(response);
         }
 
 
-        public bool NeedsProcessing(string text) {
+        public bool NeedsProcessing(string text)
+        {
             if (string.IsNullOrEmpty(text)) return false;
-            if (text == LastResponse)       return false;
-            
+            if (text == LastResponse) return false;
+
             // only need to process responses that have changed
             LastResponse = text;
             return true;
         }
 
-        public static void OnSuccess(string text) {
+        public static void OnSuccess(string text)
+        {
             text = Truncate(text);
             Server.UpdateUrl(text);
             File.WriteAllText("text/externalurl.txt", text);
             Logger.Log(LogType.SystemActivity, "Server URL found: " + text);
         }
 
-        public static void OnError(string error) {
+        public static void OnError(string error)
+        {
             error = Truncate(error);
             Server.UpdateUrl(error);
             Logger.Log(LogType.Warning, error);
         }
 
 
-        public static string GetError(string json) {
+        public static string GetError(string json)
+        {
             JsonReader reader = new JsonReader(json);
             // silly design, but form of json is:
             // {
@@ -145,20 +162,22 @@ namespace Flames.Network
             // }
             JsonObject obj = reader.Parse() as JsonObject;
             if (obj == null || !obj.ContainsKey("errors")) return null;
-            
+
             JsonArray errors = obj["errors"] as JsonArray;
             if (errors == null) return null;
 
-            foreach (object raw in errors) {
+            foreach (object raw in errors)
+            {
                 JsonArray err = raw as JsonArray;
                 if (err != null && err.Count > 0) return (string)err[0];
             }
             return null;
         }
 
-        public static string Truncate(string text) {
+        public static string Truncate(string text)
+        {
             if (text.Length < 256) return text;
-            
+
             return text.Substring(0, 256) + "..";
         }
     }

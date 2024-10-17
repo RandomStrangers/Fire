@@ -18,35 +18,46 @@
     permissions and limitations under the Licenses.
 */
 
-namespace Flames.Commands.World {   
-    public class CmdCopyLVL : Command2 {        
+namespace Flames.Commands.World
+{
+    public class CmdCopyLVL : Command2
+    {
         public override string name { get { return "CopyLvl"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("WCopy"), new CommandAlias("WorldCopy") }; }
         }
         public override bool MessageBlockRestricted { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.ToLower().SplitSpaces();
-            if (args.Length < 2) {
-                p.Message("You did not specify the destination level name."); return;
+            if (args.Length < 2)
+            {
+                p.Message("You did not specify the destination level name."); 
+                return;
             }
 
             string src = Matcher.FindMaps(p, args[0]);
             if (src == null) return;
             if (!LevelInfo.Check(p, data.Rank, src, "copy this map", out LevelConfig cfg)) return;
-            
+
             string dst = args[1];
             if (!Formatter.ValidMapName(p, dst)) return;
 
             if (!LevelActions.Copy(p, src, dst)) return;
             Chat.MessageGlobal("Level {0} &Swas copied to {1}", cfg.Color + src, cfg.Color + dst);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/CopyLvl [level] [copied level]");
             p.Message("&HMakes a copy of [level] called [copied level].");
             p.Message("&HNote: The level's BlockDB is not copied.");

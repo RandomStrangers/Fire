@@ -17,23 +17,25 @@
  */
 using Flames.Eco;
 
-namespace Flames.Commands.Chatting 
-{  
-    public sealed class CmdEat : Command2 
+namespace Flames.Commands.Chatting
+{
+    public sealed class CmdEat : Command2
     {
         public override string name { get { return "Eat"; } }
         public override string type { get { return CommandTypes.Chat; } }
-        
+
         // Custom command, so can still be used even when economy is disabled
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             Item item = Economy.GetItem("Snack");
             item.OnPurchase(p, message);
         }
-     
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             SimpleItem item = (SimpleItem)Economy.GetItem("Snack");
             p.Message("&T/Eat &H- Eats a random snack.");
-            
+
             if (item.Price == 0) return;
             p.Message("&HCosts {0} &3{1} &Heach time", item.Price, Server.Config.Currency);
         }

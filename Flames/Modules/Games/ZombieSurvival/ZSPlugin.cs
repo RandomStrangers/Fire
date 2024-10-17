@@ -19,26 +19,29 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.ZS
 {
-    public sealed class ZSPlugin : Plugin 
+    public sealed class ZSPlugin : Plugin
     {
         public override string name { get { return "ZS"; } }
         public static Command cmdZS = new CmdZombieSurvival();
-        
-        public override void Load(bool startup) {
+
+        public override void Load(bool startup)
+        {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdZS);
-            
+
             ZSGame.Instance.Config.Path = "properties/games/zombiesurvival.properties";
             OnConfigUpdated();
             ZSGame.Instance.AutoStart();
         }
-        
-        public override void Unload(bool shutdown) {
+
+        public override void Unload(bool shutdown)
+        {
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdZS);
         }
 
-        public void OnConfigUpdated() { 
+        public void OnConfigUpdated()
+        {
             ZSGame.Instance.Config.Load();
             ZSGame.Instance.infectMessages = ZSConfig.LoadInfectMessages();
         }

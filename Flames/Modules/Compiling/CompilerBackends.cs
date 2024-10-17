@@ -37,12 +37,15 @@ namespace Flames.Modules.Compiling
 {
     /// <summary> Compiles source code files from a particular language, using a CodeDomProvider for the compiler </summary>
     public static class ICodeDomCompiler
-    {   
-        public static CompilerParameters PrepareInput(string[] srcPaths, string dstPath, string commentPrefix) {
-            CompilerParameters args = new CompilerParameters();
-            args.GenerateExecutable      = false;
-            args.IncludeDebugInformation = true;
-            args.OutputAssembly          = dstPath;
+    {
+        public static CompilerParameters PrepareInput(string[] srcPaths, string dstPath, string commentPrefix)
+        {
+            CompilerParameters args = new CompilerParameters
+            {
+                GenerateExecutable = false,
+                IncludeDebugInformation = true,
+                OutputAssembly = dstPath
+            };
 
             List<string> referenced = ICompiler.ProcessInput(srcPaths, commentPrefix);
             foreach (string assembly in referenced)
@@ -53,35 +56,39 @@ namespace Flames.Modules.Compiling
         }
 
         // Lazy init compiler when it's actually needed
-        public static void InitCompiler(ICompiler c, string language, ref CodeDomProvider compiler) {
+        public static void InitCompiler(ICompiler c, string language, ref CodeDomProvider compiler)
+        {
             if (compiler != null) return;
             compiler = CodeDomProvider.CreateProvider(language);
             if (compiler != null) return;
             Logger.Log(LogType.Warning,
                        "WARNING: {0} compiler is missing, you will be unable to compile {1} files.",
                        c.FullName, c.FileExtension);
-                // TODO: Should we log "You must have .net developer tools. (You need a visual studio)" ?
-                //Should only log this for Visual Basic.
-                if (c.FileExtension == "vb" && Server.runningOnMono == true)
-                {
-                    Logger.Log(LogType.Warning,
-                       "WARNING: Visual Basic compiler is missing, you will be unable to compile .vb files.");
-                }
+            // TODO: Should we log "You must have .net developer tools. (You need a visual studio)" ?
+            //Should only log this for Visual Basic.
+            if (c.FileExtension == "vb" && Server.runningOnMono == true)
+            {
+                Logger.Log(LogType.Warning,
+                   "WARNING: Visual Basic compiler is missing, you will be unable to compile .vb files.");
+            }
         }
 
-        public static ICompilerErrors Compile(CompilerParameters args, string[] srcPaths, CodeDomProvider compiler) {
+        public static ICompilerErrors Compile(CompilerParameters args, string[] srcPaths, CodeDomProvider compiler)
+        {
             CompilerResults results = compiler.CompileAssemblyFromFile(args, srcPaths);
-            ICompilerErrors errors  = new ICompilerErrors();
+            ICompilerErrors errors = new ICompilerErrors();
 
             foreach (CompilerError error in results.Errors)
             {
-                ICompilerError ce = new ICompilerError();
-                ce.Line        = error.Line;
-                ce.Column      = error.Column;
-                ce.ErrorNumber = error.ErrorNumber;
-                ce.ErrorText   = error.ErrorText;
-                ce.IsWarning   = error.IsWarning;
-                ce.FileName    = error.FileName;
+                ICompilerError ce = new ICompilerError
+                {
+                    Line = error.Line,
+                    Column = error.Column,
+                    ErrorNumber = error.ErrorNumber,
+                    ErrorText = error.ErrorText,
+                    IsWarning = error.IsWarning,
+                    FileName = error.FileName
+                };
 
                 errors.Add(ce);
             }

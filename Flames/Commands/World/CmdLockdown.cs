@@ -15,37 +15,49 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-namespace Flames.Commands.World {
-    
-    public sealed class CmdLockdown : Command2 {
+namespace Flames.Commands.World
+{
+
+    public sealed class CmdLockdown : Command2
+    {
         public override string name { get { return "Lockdown"; } }
         public override string shortcut { get { return "ld"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("WLock"), new CommandAlias("WUnlock") }; }
         }
-        
-        public override void Use(Player p, string map, CommandData data) {
-            if (map.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string map, CommandData data)
+        {
+            if (map.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             if (!Formatter.ValidMapName(p, map)) return;
-            
+
             map = Matcher.FindMaps(p, map);
             if (map == null) return;
 
-            if (Server.lockdown.Remove(map)) {
+            if (Server.lockdown.Remove(map))
+            {
                 Chat.MessageGlobal("Map " + map + " was unlocked");
                 Chat.MessageFromOps(p, "Map " + map + " unlocked by: λNICK");
-            } else {
+            }
+            else
+            {
                 Server.lockdown.Add(map);
                 Chat.MessageGlobal("Map " + map + " was locked");
                 Chat.MessageFromOps(p, "Map " + map + " locked by: λNICK");
             }
             Server.lockdown.Save();
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Lockdown [level]");
             p.Message("&HPrevents new players from joining that level.");
             p.Message("&HUsing /lockdown again will unlock that level");

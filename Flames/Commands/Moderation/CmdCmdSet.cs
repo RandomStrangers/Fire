@@ -15,55 +15,78 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-namespace Flames.Commands.Moderation {
-    public sealed class CmdCmdSet : ItemPermsCmd {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdCmdSet : ItemPermsCmd
+    {
         public override string name { get { return "CmdSet"; } }
         public override string shortcut { get { return "SetCmd"; } }
 
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces(3);
-            if (args.Length < 2) { Help(p); return; }
-            
+            if (args.Length < 2) 
+            { 
+                Help(p);
+                return; 
+            }
+
             string cmdName = args[0], cmdArgs = "";
             Search(ref cmdName, ref cmdArgs);
             Command cmd = Find(cmdName);
-            
-            if (cmd == null) { p.Message("Could not find command entered"); return; }
-            
-            if (!p.CanUse(cmd)) {
-                cmd.Permissions.MessageCannotUse(p);
-                p.Message("Therefore you cannot change the permissions of &T/{0}", cmd.name); return;
+
+            if (cmd == null) 
+            { 
+                p.Message("Could not find command entered"); 
+                return; 
             }
-            
-            if (args.Length == 2) {
+
+            if (!p.CanUse(cmd))
+            {
+                cmd.Permissions.MessageCannotUse(p);
+                p.Message("Therefore you cannot change the permissions of &T/{0}", cmd.name); 
+                return;
+            }
+
+            if (args.Length == 2)
+            {
                 SetPerms(p, args, data, cmd.Permissions, "command");
-            } else {
+            }
+            else
+            {
                 int num = 0;
                 if (!CommandParser.GetInt(p, args[2], "Extra permission number", ref num)) return;
-                
+
                 CommandExtraPerms perms = CommandExtraPerms.Find(cmd.name, num);
-                if (perms == null) {
-                    p.Message("This command has no extra permission by that number."); return;
+                if (perms == null)
+                {
+                    p.Message("This command has no extra permission by that number."); 
+                    return;
                 }
                 SetPerms(p, args, data, perms, "extra permission");
             }
         }
 
-        public override void UpdatePerms(ItemPerms perms, Player p, string msg) {
-            if (perms is CommandPerms) {
+        public override void UpdatePerms(ItemPerms perms, Player p, string msg)
+        {
+            if (perms is CommandPerms)
+            {
                 CommandPerms.Save();
                 CommandPerms.ApplyChanges();
                 Announce(p, perms.ItemName + msg);
-            } else {
+            }
+            else
+            {
                 CommandExtraPerms.Save();
                 CommandExtraPerms ex = (CommandExtraPerms)perms;
                 //Announce(p, cmd.name + "&S's extra permission " + idx + " was set to " + grp.ColoredName);
                 Announce(p, ex.CmdName + " extra permission #" + ex.Num + msg);
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/CmdSet [cmd] [rank]");
             p.Message("&HSets lowest rank that can use [cmd] to [rank]");
             p.Message("&T/CmdSet [cmd] +[rank]");

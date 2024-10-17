@@ -20,66 +20,82 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Threading;
 
-namespace Flames.Tasks {
+namespace Flames.Tasks
+{
     public delegate void SchedulerCallback(SchedulerTask task);
-    
-    public sealed class Scheduler {
 
-        public readonly List<SchedulerTask> tasks = new List<SchedulerTask>();
-        public readonly AutoResetEvent handle = new AutoResetEvent(false);
-        public readonly Thread thread;
-        public readonly object taskLock = new object();
+    public sealed class Scheduler
+    {
+
+        public List<SchedulerTask> tasks = new List<SchedulerTask>();
+        public AutoResetEvent handle = new AutoResetEvent(false);
+        public Thread thread;
+        public object taskLock = new object();
         public volatile SchedulerTask curTask; // for .ToString()
 
-        public Scheduler(string name) {
-            thread = new Thread(Loop);
-            thread.Name = name;
+        public Scheduler(string name)
+        {
+            thread = new Thread(Loop)
+            {
+                Name = name
+            };
             thread.Start();
         }
-        
+
 
         /// <summary> Queues an action that is asynchronously executed one time, as soon as possible. </summary>
-        public SchedulerTask QueueOnce(SchedulerCallback callback) {
+        public SchedulerTask QueueOnce(SchedulerCallback callback)
+        {
             return EnqueueTask(new SchedulerTask(callback, null, TimeSpan.Zero, false));
         }
 
         /// <summary> Queues an action that is asynchronously executed one time, after a certain delay. </summary>
-        public SchedulerTask QueueOnce(SchedulerCallback callback, object state, TimeSpan delay) {
+        public SchedulerTask QueueOnce(SchedulerCallback callback, object state, TimeSpan delay)
+        {
             return EnqueueTask(new SchedulerTask(callback, state, delay, false));
         }
-        
+
         /// <summary> Queues an action that is asynchronously executed repeatedly, after a certain delay. </summary>
-        public SchedulerTask QueueRepeat(SchedulerCallback callback, object state, TimeSpan delay) {
+        public SchedulerTask QueueRepeat(SchedulerCallback callback, object state, TimeSpan delay)
+        {
             return EnqueueTask(new SchedulerTask(callback, state, delay, true));
         }
-        
+
         /// <summary> Cancels a task if it is in the tasks list. </summary>
         /// <remarks> Does not cancel the task if it is currently executing. </remarks>
-        public bool Cancel(SchedulerTask task) {
-            lock (taskLock) {
+        public bool Cancel(SchedulerTask task)
+        {
+            lock (taskLock)
+            {
                 return tasks.Remove(task);
             }
         }
-        
+
         /// <summary> Recalculates the delay until there is a task to execute. </summary>
         /// <remarks> Useful for when external code changes the delay of a scheduled task. </remarks>
-        public void Recheck() {
-            lock (taskLock) {
+        public void Recheck()
+        {
+            lock (taskLock)
+            {
                 handle.Set();
             }
         }
 
 
-        public SchedulerTask EnqueueTask(SchedulerTask task) {
-            lock (taskLock) {
+        public SchedulerTask EnqueueTask(SchedulerTask task)
+        {
+            lock (taskLock)
+            {
                 tasks.Add(task);
                 handle.Set();
             }
             return task;
         }
 
-        public void Loop() {
-            while (true) {
+        public void Loop()
+        {
+            while (true)
+            {
                 SchedulerTask task = GetNextTask();
                 if (task != null) DoTask(task);
                 handle.WaitOne(GetWaitTime(), false);
@@ -87,45 +103,59 @@ namespace Flames.Tasks {
         }
 
 
-        public SchedulerTask GetNextTask() {
+        public SchedulerTask GetNextTask()
+        {
             DateTime minTime = DateTime.UtcNow.AddMilliseconds(1);
             SchedulerTask minTask = null;
-            
-            lock (taskLock) {
-                foreach (SchedulerTask task in tasks) {
+
+            lock (taskLock)
+            {
+                foreach (SchedulerTask task in tasks)
+                {
                     if (task.NextRun >= minTime) continue;
-                    minTime = task.NextRun; minTask = task;
+                    minTime = task.NextRun; 
+                    minTask = task;
                 }
             }
             return minTask;
         }
 
-        public void DoTask(SchedulerTask task) {
+        public void DoTask(SchedulerTask task)
+        {
             curTask = task;
-            try {
+            try
+            {
                 task.Callback(task);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
             }
             curTask = null;
-            
-            if (task.Repeating) {
+
+            if (task.Repeating)
+            {
                 task.NextRun = DateTime.UtcNow.Add(task.Delay);
-            } else {
+            }
+            else
+            {
                 lock (taskLock)
                     tasks.Remove(task);
             }
         }
 
-        public int GetWaitTime() {
+        public int GetWaitTime()
+        {
             long wait = int.MaxValue;
             DateTime now = DateTime.UtcNow;
-            
-            lock (taskLock) {
-                foreach (SchedulerTask task in tasks) {
+
+            lock (taskLock)
+            {
+                foreach (SchedulerTask task in tasks)
+                {
                     long remaining = (long)(task.NextRun - now).TotalMilliseconds;
                     if (remaining > int.MaxValue) remaining = int.MaxValue;
-                    
+
                     // minimum wait time is 1 millisecond
                     remaining = Math.Max(1, remaining);
                     wait = Math.Min(wait, remaining);
@@ -133,12 +163,14 @@ namespace Flames.Tasks {
             }
             return wait == int.MaxValue ? -1 : (int)wait;
         }
-        
-        public override string ToString() {
+
+        public override string ToString()
+        {
             SchedulerTask cur = curTask;
             string str = tasks.Count + " tasks";
-            
-            if (cur != null) {
+
+            if (cur != null)
+            {
                 MethodInfo method = cur.Callback.Method;
                 str += " (currently executing " + method.DeclaringType.FullName + "." + method.Name + ")";
             }
@@ -146,21 +178,23 @@ namespace Flames.Tasks {
         }
     }
 
-    public class SchedulerTask {
+    public class SchedulerTask
+    {
         public SchedulerCallback Callback;
         public object State;
-        
+
         /// <summary> Interval between executions of this task. </summary>
         public TimeSpan Delay;
-        
+
         /// <summary> Point in time this task should next be executed. </summary>
         public DateTime NextRun;
-        
+
         /// <summary> Whether this task should continue repeating. </summary>
         public bool Repeating;
-        
+
         public SchedulerTask(SchedulerCallback callback, object state,
-                             TimeSpan delay, bool repeating) {
+                             TimeSpan delay, bool repeating)
+        {
             Callback = callback;
             State = state;
             Delay = delay;

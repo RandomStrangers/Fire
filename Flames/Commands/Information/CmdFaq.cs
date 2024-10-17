@@ -17,23 +17,27 @@
  */
 using Flames.Util;
 
-namespace Flames.Commands.Info {
-    public sealed class CmdFaq : Command2 {        
+namespace Flames.Commands.Info
+{
+    public sealed class CmdFaq : Command2
+    {
         public override string name { get { return "FAQ"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             TextFile faqFile = TextFile.Files["FAQ"];
             faqFile.EnsureExists();
-            
+
             string[] faq = faqFile.GetText();
             p.Message("&cFAQ&f:");
             foreach (string line in faq)
                 p.Message("&f" + line);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/FAQ");
             p.Message("&HDisplays frequently asked questions");
         }

@@ -19,69 +19,91 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Flames 
+namespace Flames
 {
     /// <summary> Represents which ranks are allowed (and which are disallowed) to use an item. </summary>
-    public class ItemPerms 
+    public class ItemPerms
     {
         public virtual string ItemName { get { return ""; } }
         public LevelPermission MinRank;
         public List<LevelPermission> Allowed, Disallowed;
-        
-        public ItemPerms(LevelPermission min) { MinRank = min; }
+
+        public ItemPerms(LevelPermission min) 
+        { 
+            MinRank = min; 
+        }
 
         public void Init(LevelPermission min, List<LevelPermission> allowed,
-                            List<LevelPermission> disallowed) {
-            MinRank = min; Allowed = allowed; Disallowed = disallowed;
+                            List<LevelPermission> disallowed)
+        {
+            MinRank = min; 
+            Allowed = allowed; 
+            Disallowed = disallowed;
         }
-        
-        public void CopyPermissionsTo(ItemPerms dst) {
-            dst.MinRank    = MinRank;
-            dst.Allowed    = Allowed    == null ? null : new List<LevelPermission>(Allowed);
+
+        public void CopyPermissionsTo(ItemPerms dst)
+        {
+            dst.MinRank = MinRank;
+            dst.Allowed = Allowed == null ? null : new List<LevelPermission>(Allowed);
             dst.Disallowed = Disallowed == null ? null : new List<LevelPermission>(Disallowed);
         }
-        
-        public bool UsableBy(LevelPermission perm) {
+
+        public bool UsableBy(LevelPermission perm)
+        {
             return (perm >= MinRank || (Allowed != null && Allowed.Contains(perm)))
                 && (Disallowed == null || !Disallowed.Contains(perm));
         }
-        
-        public bool UsableBy(Player p) { return UsableBy(p.group.Permission); }
-        
-        
-        public void Allow(LevelPermission rank) {
-            if (Disallowed != null && Disallowed.Contains(rank)) {
+
+        public bool UsableBy(Player p) 
+        { 
+            return UsableBy(p.group.Permission); 
+        }
+
+
+        public void Allow(LevelPermission rank)
+        {
+            if (Disallowed != null && Disallowed.Contains(rank))
+            {
                 Disallowed.Remove(rank);
-            } else if (Allowed == null || !Allowed.Contains(rank)) {
+            }
+            else if (Allowed == null || !Allowed.Contains(rank))
+            {
                 if (Allowed == null) Allowed = new List<LevelPermission>();
                 Allowed.Add(rank);
             }
         }
-        
-        public void Disallow(LevelPermission rank) {
-            if (Allowed != null && Allowed.Contains(rank)) {
+
+        public void Disallow(LevelPermission rank)
+        {
+            if (Allowed != null && Allowed.Contains(rank))
+            {
                 Allowed.Remove(rank);
-            } else if (Disallowed == null || !Disallowed.Contains(rank)) {
+            }
+            else if (Disallowed == null || !Disallowed.Contains(rank))
+            {
                 if (Disallowed == null) Disallowed = new List<LevelPermission>();
                 Disallowed.Add(rank);
             }
         }
-        
-        
-        public void Describe(StringBuilder builder) {
+
+
+        public void Describe(StringBuilder builder)
+        {
             builder.Append(Group.GetColoredName(MinRank) + "&S+");
-            
-            if (Allowed != null && Allowed.Count > 0) {
-                foreach (LevelPermission perm in Allowed) 
+
+            if (Allowed != null && Allowed.Count > 0)
+            {
+                foreach (LevelPermission perm in Allowed)
                 {
                     builder.Append(", " + Group.GetColoredName(perm));
                 }
                 builder.Append("&S");
             }
-            
-            if (Disallowed != null && Disallowed.Count > 0) {
-                builder.Append( " (except ");
-                foreach (LevelPermission perm in Disallowed) 
+
+            if (Disallowed != null && Disallowed.Count > 0)
+            {
+                builder.Append(" (except ");
+                foreach (LevelPermission perm in Disallowed)
                 {
                     builder.Append(Group.GetColoredName(perm) + ", ");
                 }
@@ -89,16 +111,18 @@ namespace Flames
                 builder.Append("&S)");
             }
         }
-        
-        public string Describe() {
+
+        public string Describe()
+        {
             StringBuilder builder = new StringBuilder();
             Describe(builder);
             return builder.ToString();
         }
 
 
-        public static void WriteHeader(StreamWriter w, string itemName, string itemDesc, 
-                                          string headerName, string headerExample) {
+        public static void WriteHeader(StreamWriter w, string itemName, string itemDesc,
+                                          string headerName, string headerExample)
+        {
             w.WriteLine("#Version 2");
             w.WriteLine("#   This file contains the permissions to use {0}", itemDesc);
             w.WriteLine("#   How permissions work:");
@@ -114,29 +138,33 @@ namespace Flames
             w.WriteLine("");
         }
 
-        public string Serialise() {
+        public string Serialise()
+        {
             return ItemName + " : " + (int)MinRank + " : "
                 + JoinPerms(Disallowed) + " : " + JoinPerms(Allowed);
         }
 
-        public static string JoinPerms(List<LevelPermission> list) {
+        public static string JoinPerms(List<LevelPermission> list)
+        {
             if (list == null || list.Count == 0) return "";
             return list.Join(p => ((int)p).ToString(), ",");
         }
 
         public static void Deserialise(string[] args, int idx, out LevelPermission min,
-                                          out List<LevelPermission> allowed, 
-                                          out List<LevelPermission> disallowed) {
+                                          out List<LevelPermission> allowed,
+                                          out List<LevelPermission> disallowed)
+        {
             min = (LevelPermission)int.Parse(args[idx]);
             disallowed = ExpandPerms(args[idx + 1]);
             allowed = ExpandPerms(args[idx + 2]);
         }
 
-        public static List<LevelPermission> ExpandPerms(string input) {
+        public static List<LevelPermission> ExpandPerms(string input)
+        {
             if (input == null || input.Length == 0) return null;
-            
+
             List<LevelPermission> perms = new List<LevelPermission>();
-            foreach (string perm in input.SplitComma()) 
+            foreach (string perm in input.SplitComma())
             {
                 perms.Add((LevelPermission)int.Parse(perm));
             }

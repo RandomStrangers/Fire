@@ -19,42 +19,46 @@ using System;
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
-{ 
-    public sealed class RainbowBrush : CheckeredPaletteBrush 
+namespace Flames.Drawing.Brushes
+{
+    public sealed class RainbowBrush : CheckeredPaletteBrush
     {
         public override string Name { get { return "Rainbow"; } }
-        public RainbowBrush() : base(blocks) {}
+        public RainbowBrush() : base(blocks) { }
 
-        public static BlockID[] blocks = new BlockID[] { 
+        public static BlockID[] blocks = new BlockID[] {
             Block.Red,   Block.Orange,  Block.Yellow,
             Block.Lime,  Block.Green,   Block.Teal,
             Block.Aqua,  Block.Cyan,    Block.Blue,
             Block.Indigo, Block.Violet, Block.Magenta,
             Block.Pink };
     }
-    
-    public sealed class BWRainbowBrush : CheckeredPaletteBrush 
-    {        
-        public override string Name { get { return "BWRainbow"; } }
-        public BWRainbowBrush() : base(blocks) {}
 
-        public static BlockID[] blocks = new BlockID[] { 
+    public sealed class BWRainbowBrush : CheckeredPaletteBrush
+    {
+        public override string Name { get { return "BWRainbow"; } }
+        public BWRainbowBrush() : base(blocks) { }
+
+        public static BlockID[] blocks = new BlockID[] {
             Block.Iron,  Block.White,    Block.Gray,
-            Block.Black, Block.Obsidian, Block.Black, 
+            Block.Black, Block.Obsidian, Block.Black,
             Block.Gray,  Block.White };
     }
-    
-    public sealed class RandomRainbowBrush : Brush 
+
+    public sealed class RandomRainbowBrush : Brush
     {
-        public readonly Random rnd = new Random();
-        public readonly BlockID[] blocks;
+        public Random rnd = new Random();
+        public BlockID[] blocks;
 
         public override string Name { get { return "RandomRainbow"; } }
-        
-        public RandomRainbowBrush(BlockID[] list) { blocks = list; }      
-        
-        public override BlockID NextBlock(DrawOp op) {
+
+        public RandomRainbowBrush(BlockID[] list)
+        {
+            blocks = list;
+        }
+
+        public override BlockID NextBlock(DrawOp op)
+        {
             return blocks[rnd.Next(blocks.Length)];
         }
     }

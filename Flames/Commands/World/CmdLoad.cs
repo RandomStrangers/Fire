@@ -16,23 +16,36 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.World {
-    public sealed class CmdLoad : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdLoad : Command2
+    {
         public override string name { get { return "Load"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("MapLoad"), new CommandAlias("WLoad") }; }
         }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.SplitSpaces();
-            if (args.Length > 2) { Help(p); return; }
+            if (args.Length > 2) 
+            { 
+                Help(p); 
+                return; 
+            }
             LevelActions.Load(p, args[0], true);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Load [level]");
             p.Message("&HLoads a level.");
         }

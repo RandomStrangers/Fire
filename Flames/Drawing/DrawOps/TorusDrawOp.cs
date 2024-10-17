@@ -19,35 +19,39 @@ using System;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class TorusDrawOp : ShapedDrawOp 
+    public class TorusDrawOp : ShapedDrawOp
     {
         public override string Name { get { return "Torus"; } }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks)
+        {
             double rx = XRadius, ry = YRadius, rz = ZRadius;
             double rTube = ry, rCentre = Math.Min(rx, rz) - rTube;
             return (int)(2 * Math.PI * Math.PI * rTube * rTube * Math.Abs(rCentre));
         }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {          
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
             double cx = XCentre, cy = YCentre, cz = ZCentre;
             double rx = XRadius, ry = YRadius, rz = ZRadius;
             double rTube = ry, rCentre = Math.Min(rx, rz) - rTube;
             Vec3U16 p1 = Clamp(Min), p2 = Clamp(Max);
-            
+
             for (ushort yy = p1.Y; yy <= p2.Y; yy++)
                 for (ushort zz = p1.Z; zz <= p2.Z; zz++)
                     for (ushort xx = p1.X; xx <= p2.X; xx++)
-            {
-                double dx = xx - cx, dy = yy - cy, dz = zz - cz;
-                dx *= dx; dy *= dy; dz *= dz;
-                double dInner = rCentre - Math.Sqrt( dx + dz );
-                
-                if (dInner * dInner + dy <= rTube * rTube * 0.5 + 0.25)
-                    output(Place(xx, yy, zz, brush));
-            }
+                    {
+                        double dx = xx - cx, dy = yy - cy, dz = zz - cz;
+                        dx *= dx; 
+                        dy *= dy; 
+                        dz *= dz;
+                        double dInner = rCentre - Math.Sqrt(dx + dz);
+
+                        if (dInner * dInner + dy <= rTube * rTube * 0.5 + 0.25)
+                            output(Place(xx, yy, zz, brush));
+                    }
         }
     }
 }

@@ -18,13 +18,17 @@
 using System;
 using BlockID = System.UInt16;
 
-namespace Flames.Blocks.Physics {
-    
-    public static class FirePhysics {
+namespace Flames.Blocks.Physics
+{
 
-        public static bool ExpandToAir(Level lvl, int x, int y, int z) {
+    public static class FirePhysics
+    {
+
+        public static bool ExpandToAir(Level lvl, int x, int y, int z)
+        {
             int index;
-            if (lvl.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index)) {
+            if (lvl.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index))
+            {
                 lvl.AddUpdate(index, Block.Fire, default(PhysicsArgs));
                 return true;
             }
@@ -32,10 +36,11 @@ namespace Flames.Blocks.Physics {
         }
 
         public static void ExpandDiagonal(Level lvl, ushort x, ushort y, ushort z,
-                                   int dx, int dy, int dz) {
+                                   int dx, int dy, int dz)
+        {
             BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
             if (block == Block.Air || !lvl.Props[block].LavaKills) return;
-            
+
             if (dx != 0)
                 lvl.AddUpdate(lvl.PosToInt((ushort)(x + dx), y, z), Block.Fire, default(PhysicsArgs));
             if (dy != 0)
@@ -44,50 +49,71 @@ namespace Flames.Blocks.Physics {
                 lvl.AddUpdate(lvl.PosToInt(x, y, (ushort)(z + dz)), Block.Fire, default(PhysicsArgs));
         }
 
-        public static void ExpandAvanced(Level lvl, int x, int y, int z) {
+        public static void ExpandAvanced(Level lvl, int x, int y, int z)
+        {
             int index;
             BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
-            
-            if (block == Block.TNT) {
+
+            if (block == Block.TNT)
+            {
                 lvl.MakeExplosion((ushort)x, (ushort)y, (ushort)z, -1);
-            } else if (block != Block.Air && lvl.Props[block].LavaKills) {
+            }
+            else if (block != Block.Air && lvl.Props[block].LavaKills)
+            {
                 lvl.AddUpdate(index, Block.Fire, default(PhysicsArgs));
             }
         }
-        
-        public static void Do(Level lvl, ref PhysInfo C) {
-            if (C.Data.Data < 2) {
+
+        public static void Do(Level lvl, ref PhysInfo C)
+        {
+            if (C.Data.Data < 2)
+            {
                 C.Data.Data++;
                 return;
             }
 
             ushort x = C.X, y = C.Y, z = C.Z;
             Random rand = lvl.physRandom;
-            if (rand.Next(1, 20) == 1 && C.Data.Data % 2 == 0) {
+            if (rand.Next(1, 20) == 1 && C.Data.Data % 2 == 0)
+            {
                 int max = rand.Next(1, 18);
 
-                if (max <= 3 && ExpandToAir(lvl, x - 1, y, z)) {
-                } else if (max <= 6 && ExpandToAir(lvl, x + 1, y, z)) {
-                } else if (max <= 9 && ExpandToAir(lvl, x, y - 1, z)) {
-                } else if (max <= 12 && ExpandToAir(lvl, x, y + 1, z)) {
-                } else if (max <= 15 && ExpandToAir(lvl, x, y, z - 1)) {
-                } else if (max <= 18 && ExpandToAir(lvl, x, y, z + 1)) {
+                if (max <= 3 && ExpandToAir(lvl, x - 1, y, z))
+                {
+                }
+                else if (max <= 6 && ExpandToAir(lvl, x + 1, y, z))
+                {
+                }
+                else if (max <= 9 && ExpandToAir(lvl, x, y - 1, z))
+                {
+                }
+                else if (max <= 12 && ExpandToAir(lvl, x, y + 1, z))
+                {
+                }
+                else if (max <= 15 && ExpandToAir(lvl, x, y, z - 1))
+                {
+                }
+                else if (max <= 18 && ExpandToAir(lvl, x, y, z + 1))
+                {
                 }
             }
 
-            if (lvl.physics >= 2) {
-                for (int yy = -1; yy <= 1; yy++ ) {
+            if (lvl.physics >= 2)
+            {
+                for (int yy = -1; yy <= 1; yy++)
+                {
                     ExpandDiagonal(lvl, x, y, z, -1, yy, -1);
                     ExpandDiagonal(lvl, x, y, z, +1, yy, -1);
                     ExpandDiagonal(lvl, x, y, z, -1, yy, +1);
                     ExpandDiagonal(lvl, x, y, z, +1, yy, +1);
                 }
-                
-                if (C.Data.Data < 4) {
+
+                if (C.Data.Data < 4)
+                {
                     C.Data.Data++;
                     return;
                 }
-                
+
                 ExpandAvanced(lvl, x - 1, y, z);
                 ExpandAvanced(lvl, x + 1, y, z);
                 ExpandAvanced(lvl, x, y - 1, z);
@@ -97,19 +123,31 @@ namespace Flames.Blocks.Physics {
             }
 
             C.Data.Data++;
-            if (C.Data.Data > 5) {
+            if (C.Data.Data > 5)
+            {
                 int dropType = rand.Next(1, 10);
-                if (dropType <= 2) {
+                if (dropType <= 2)
+                {
                     lvl.AddUpdate(C.Index, Block.CoalOre, default(PhysicsArgs));
-                    C.Data.Type1 = PhysicsArgs.Drop; C.Data.Value1 = 63;
-                    C.Data.Type2 = PhysicsArgs.Dissipate; C.Data.Value2 = 10;
-                } else if (dropType <= 4) {
+                    C.Data.Type1 = PhysicsArgs.Drop; 
+                    C.Data.Value1 = 63;
+                    C.Data.Type2 = PhysicsArgs.Dissipate; 
+                    C.Data.Value2 = 10;
+                }
+                else if (dropType <= 4)
+                {
                     lvl.AddUpdate(C.Index, Block.Obsidian, default(PhysicsArgs));
-                    C.Data.Type1 = PhysicsArgs.Drop; C.Data.Value1 = 63;
-                    C.Data.Type2 = PhysicsArgs.Dissipate; C.Data.Value2 = 10;
-                } else if (dropType <= 8) {
+                    C.Data.Type1 = PhysicsArgs.Drop; 
+                    C.Data.Value1 = 63;
+                    C.Data.Type2 = PhysicsArgs.Dissipate; 
+                    C.Data.Value2 = 10;
+                }
+                else if (dropType <= 8)
+                {
                     lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
-                } else {
+                }
+                else
+                {
                     C.Data.Data = 3;
                 }
             }

@@ -16,29 +16,39 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.World {
-    public sealed partial class CmdOverseer : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed partial class CmdOverseer : Command2
+    {
         public override string name { get { return "Overseer"; } }
         public override string shortcut { get { return Overseer.commandShortcut; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Builder; } }
         public override bool SuperUseable { get { return false; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("Realm"), new CommandAlias("MyRealm") }; }
         }
         public override CommandParallelism Parallelism { get { return CommandParallelism.NoAndWarn; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             Overseer.subCommandGroup.Use(p, message);
         }
-        
-        public override void Help(Player p, string message) {
+
+        public override void Help(Player p, string message)
+        {
             message = message.SplitSpaces()[0]; // only first argument
             Overseer.subCommandGroup.DisplayHelpFor(p, message);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Overseer [command] [args]");
             p.Message("&HAllows you to modify and manage your personal realms.");
             Overseer.subCommandGroup.DisplayAvailable(p);

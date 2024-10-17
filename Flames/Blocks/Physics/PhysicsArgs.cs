@@ -17,59 +17,71 @@
  */
 using System.Runtime.InteropServices;
 
-namespace Flames.Blocks.Physics {
+namespace Flames.Blocks.Physics
+{
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct PhysicsArgs {
+    public struct PhysicsArgs
+    {
         public uint Raw;
-        
+
         public const uint TypeMask = 0x3F;
         public const uint TypeBitsMask = 0x07;
         public const uint ValueBitsMask = 0xFF;
         public const uint ExtBit = 1u << 30;
         public const uint ExtBits = (1u << 30) | (1u << 31);
-        
+
         /// <summary> Indicates that this physics entry should be removed from the list of 
         /// entries that are checked for physics, at the end of the current tick. </summary>
         public const byte RemoveFromChecks = 255;
-        
-        public byte Type1 {
+
+        public byte Type1
+        {
             get { return (byte)(Raw & TypeBitsMask); }
             set { Raw &= ~TypeBitsMask; Raw |= (uint)value << 0; }
         }
-        
-        public byte Type2 {
+
+        public byte Type2
+        {
             get { return (byte)((Raw >> 3) & TypeBitsMask); }
             set { Raw &= ~(TypeBitsMask << 3); Raw |= (uint)value << 3; }
         }
-        
-        public byte Value1 {
+
+        public byte Value1
+        {
             get { return (byte)(Raw >> 6); }
             set { Raw &= ~(ValueBitsMask << 6); Raw |= (uint)value << 6; }
         }
-        
-        public byte Value2 {
+
+        public byte Value2
+        {
             get { return (byte)(Raw >> 14); }
             set { Raw &= ~(ValueBitsMask << 14); Raw |= (uint)value << 14; }
         }
-        
-        public byte Data {
+
+        public byte Data
+        {
             get { return (byte)(Raw >> 22); }
             set { Raw &= ~(ValueBitsMask << 22); Raw |= (uint)value << 22; }
         }
-        
-        public byte ExtBlock {
+
+        public byte ExtBlock
+        {
             get { return (byte)(Raw >> 30); }
             set { Raw &= ~ExtBits; Raw |= (uint)value << 30; }
         }
-        
-        
-        public bool HasWait {
+
+
+        public bool HasWait
+        {
             get { return (Raw & TypeBitsMask) == Wait || ((Raw >> 3) & TypeBitsMask) == Wait; }
         }
-        
-        public void ResetTypes() { Raw &= ~TypeMask; }
-        
+
+        public void ResetTypes() 
+        { 
+            Raw &= ~TypeMask; 
+        }
+
         /// <summary> No special action is performed. </summary>
         public const byte None = 0;
         /// <summary> Another action will be executed after the given delay. </summary>

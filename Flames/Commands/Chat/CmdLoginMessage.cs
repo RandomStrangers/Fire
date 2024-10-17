@@ -16,7 +16,7 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
     public sealed class CmdLoginMessage : EntityPropertyCmd
     {
@@ -24,19 +24,23 @@ namespace Flames.Commands.Chatting
         public override string shortcut { get { return "LoginMsg"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the login message of others") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             UsePlayer(p, data, message, "login message");
         }
 
-        public override void SetPlayerData(Player p, string target, string msg) {
+        public override void SetPlayerData(Player p, string target, string msg)
+        {
             PlayerOperations.SetLoginMessage(p, target, msg);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/LoginMessage [player] [message]");
             p.Message("&HSets the login message shown for that player.");
         }

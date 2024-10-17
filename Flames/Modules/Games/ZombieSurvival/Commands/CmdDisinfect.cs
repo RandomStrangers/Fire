@@ -16,28 +16,33 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Modules.Games.ZS 
+namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdDisInfect : Command2 
+    public sealed class CmdDisInfect : Command2
     {
         public override string name { get { return "DisInfect"; } }
         public override string shortcut { get { return "di"; } }
         public override string type { get { return CommandTypes.Games; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             Player who = message.Length == 0 ? p : PlayerInfo.FindMatches(p, message);
             if (who == null) return;
-            
-            if (!ZSGame.Instance.RoundInProgress || !ZSGame.IsInfected(who)) {
+
+            if (!ZSGame.Instance.RoundInProgress || !ZSGame.IsInfected(who))
+            {
                 p.Message("Cannot disinfect player");
-            } else if (!who.Game.Referee) {
+            }
+            else if (!who.Game.Referee)
+            {
                 ZSGame.Instance.DisinfectPlayer(who);
                 Chat.MessageFrom(who, "λNICK &Swas disinfected.");
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/DisInfect [name]");
             p.Message("&HTurns [name] back into a human");
         }

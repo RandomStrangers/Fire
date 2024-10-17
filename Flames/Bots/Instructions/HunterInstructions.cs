@@ -19,155 +19,197 @@ using System;
 using System.IO;
 using Flames.Maths;
 
-namespace Flames.Bots 
+namespace Flames.Bots
 {
     /// <summary> Causes the bot to move towards the closest player, within a defined search radius. </summary>
-    public sealed class HuntInstruction : BotInstruction 
+    public sealed class HuntInstruction : BotInstruction
     {
-        public HuntInstruction() { Name = "hunt"; }
-        
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+        public HuntInstruction()
+        {
+            Name = "hunt";
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             int search = 75;
             if (data.Metadata != null) search = (ushort)data.Metadata;
             Player closest = ClosestPlayer(bot, search);
-            
-            if (closest == null) { bot.NextInstruction(); return false; }
+
+            if (closest == null) 
+            { 
+                bot.NextInstruction(); 
+                return false; 
+            }
             bool overlapsPlayer = MoveTowards(bot, closest);
-            if (overlapsPlayer) { bot.NextInstruction(); return false; }
+            if (overlapsPlayer) 
+            { 
+                bot.NextInstruction(); 
+                return false; 
+            }
             return true;
         }
 
-        public static Player ClosestPlayer(PlayerBot bot, int search) {
+        public static Player ClosestPlayer(PlayerBot bot, int search)
+        {
             int maxDist = search * 32;
             Player[] players = PlayerInfo.Online.Items;
             Player closest = null;
-            
-            foreach (Player p in players) {
+
+            foreach (Player p in players)
+            {
                 if (p.level != bot.level || p.invincible || p.hidden) continue;
-                
+
                 int dx = p.Pos.X - bot.Pos.X, dy = p.Pos.Y - bot.Pos.Y, dz = p.Pos.Z - bot.Pos.Z;
                 int playerDist = Math.Abs(dx) + Math.Abs(dy) + Math.Abs(dz);
                 if (playerDist >= maxDist) continue;
-                
+
                 closest = p;
                 maxDist = playerDist;
             }
             return closest;
         }
 
-        public static bool MoveTowards(PlayerBot bot, Player p) {
+        public static bool MoveTowards(PlayerBot bot, Player p)
+        {
             int dx = p.Pos.X - bot.Pos.X, dy = p.Pos.Y - bot.Pos.Y, dz = p.Pos.Z - bot.Pos.Z;
             bot.TargetPos = p.Pos;
             bot.movement = true;
-            
+
             Vec3F32 dir = new Vec3F32(dx, dy, dz);
             dir = Vec3F32.Normalise(dir);
             Orientation rot = bot.Rot;
             DirUtils.GetYawPitch(dir, out rot.RotY, out rot.HeadX);
-            
-            dx = Math.Abs(dx); dy = Math.Abs(dy); dz = Math.Abs(dz);
-            
+
+            dx = Math.Abs(dx); 
+            dy = Math.Abs(dy); 
+            dz = Math.Abs(dz);
+
             // If we are very close to a player, switch from trying to look
             // at them to just facing the opposite direction to them
-            if (dx < 4 && dz < 4) {
+            if (dx < 4 && dz < 4)
+            {
                 rot.RotY = (byte)(p.Rot.RotY + 128);
             }
             bot.Rot = rot;
-            
+
             return dx <= 8 && dy <= 16 && dz <= 8;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             InstructionData data = default;
             if (args.Length > 1)
                 data.Metadata = ushort.Parse(args[1]);
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
-            if (args.Length > 3) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
+            if (args.Length > 3)
+            {
                 w.WriteLine(Name + " " + ushort.Parse(args[3]));
-            } else {
+            }
+            else
+            {
                 w.WriteLine(Name);
             }
         }
-        
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] hunt <radius>",
             "&HCauses the bot to move towards the closest player in the search radius.",
             "&H  <radius> defaults to 75 blocks.",
         };
     }
-    
-    /// <summary> Causes the bot to kill nearby players. </summary>
-    public sealed class KillInstruction : BotInstruction {
-        public KillInstruction() { Name = "kill"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+    /// <summary> Causes the bot to kill nearby players. </summary>
+    public sealed class KillInstruction : BotInstruction
+    {
+        public KillInstruction() 
+        { 
+            Name = "kill"; 
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player p in players) {
+            foreach (Player p in players)
+            {
                 if (p.level != bot.level || p.invincible) continue;
-                
+
                 int dx = Math.Abs(bot.Pos.X - p.Pos.X);
                 int dy = Math.Abs(bot.Pos.Y - p.Pos.Y);
                 int dz = Math.Abs(bot.Pos.Z - p.Pos.Z);
-                
-                if (dx <= 8 && dy <= 16 && dz <= 8) {
+
+                if (dx <= 8 && dy <= 16 && dz <= 8)
+                {
                     string msg = bot.DeathMessage;
                     if (msg == null) msg = "@p &Swas &cterminated.";
                     p.HandleDeath(Block.Cobblestone, msg);
                 }
             }
-            bot.NextInstruction(); return true;
+            bot.NextInstruction(); 
+            return true;
         }
-        
+
         public override string[] Help { get { return help; } }
         public static string[] help = new string[] {
             "&T/BotAI add [name] kill",
             "&HCauses the bot to kill any players it is touching.",
         };
     }
-    
-    public sealed class StareInstruction : BotInstruction {
-        public StareInstruction() { Name = "stare"; }
-        
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+
+    public sealed class StareInstruction : BotInstruction
+    {
+        public StareInstruction() 
+        { 
+            Name = "stare"; 
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             int search = 20000;
             if (data.Metadata != null) search = (ushort)data.Metadata;
             Player closest = HuntInstruction.ClosestPlayer(bot, search);
-            
+
             if (closest == null) return true;
             FaceTowards(bot, closest);
             return true;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             InstructionData data = default;
             if (args.Length > 1)
                 data.Metadata = ushort.Parse(args[1]);
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
-            if (args.Length > 3) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
+            if (args.Length > 3)
+            {
                 w.WriteLine(Name + " " + ushort.Parse(args[3]));
-            } else {
+            }
+            else
+            {
                 w.WriteLine(Name);
             }
         }
 
-        public static void FaceTowards(PlayerBot bot, Player p) {
+        public static void FaceTowards(PlayerBot bot, Player p)
+        {
             Position srcPos = bot.Pos;
-            srcPos.Y += ModelInfo.CalcEyeHeight(p);            
+            srcPos.Y += ModelInfo.CalcEyeHeight(p);
             Position dstPos = p.Pos;
             dstPos.Y += ModelInfo.CalcEyeHeight(bot);
-            
+
             bot.FaceTowards(srcPos, dstPos);
         }
-        
+
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] { 
+        public static string[] help = new string[] {
             "&T/BotAI add [name] stare <radius>",
             "&HCauses the bot to stare at the closest player in the search radius.",
             "&H  <radius> defaults to 20000 blocks.",

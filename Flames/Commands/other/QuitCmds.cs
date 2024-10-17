@@ -19,9 +19,9 @@
 using System;
 using System.Threading;
 
-namespace Flames.Commands.Misc 
+namespace Flames.Commands.Misc
 {
-    public sealed class CmdRagequit : Command2 
+    public sealed class CmdRagequit : Command2
     {
         public override string name { get { return "RageQuit"; } }
         public override string shortcut { get { return ""; } }
@@ -29,38 +29,42 @@ namespace Flames.Commands.Misc
         public override bool MessageBlockRestricted { get { return true; } }
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             p.Leave("RAGEQUIT!!");
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/RageQuit");
             p.Message("&HMakes you ragequit");
         }
     }
-    
-    public sealed class CmdQuit : Command2 
+
+    public sealed class CmdQuit : Command2
     {
         public override string name { get { return "Quit"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             string msg = message.Length > 0 ? "Left the game: " + message : "Left the game.";
             if (p.muted) msg = "Left the game.";
             p.Leave(msg);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Quit <reason>");
             p.Message("&HLeave the server.");
         }
     }
-    
-    public sealed class CmdCrashServer : Command2 
+
+    public sealed class CmdCrashServer : Command2
     {
         public override string name { get { return "CrashServer"; } }
         public override string shortcut { get { return "Crash"; } }
@@ -69,20 +73,26 @@ namespace Flames.Commands.Misc
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length > 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length > 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             int code = new Random().Next(int.MinValue, int.MaxValue);
 
             p.Leave("Server crash! Error code 0x" + code.ToString("X8").TrimStart('0'));
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/CrashServer");
             p.Message("&HCrash the server with a generic error");
         }
     }
-    
-    public sealed class CmdHacks : Command2 
+
+    public sealed class CmdHacks : Command2
     {
         public override string name { get { return "Hacks"; } }
         public override string shortcut { get { return "Hax"; } }
@@ -91,17 +101,20 @@ namespace Flames.Commands.Misc
         public override bool SuperUseable { get { return false; } }
         public override bool UseableWhenFrozen { get { return true; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length > 0) {
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length > 0)
+            {
                 p.Message("&WIncorrect syntax. Abuse detected.");
                 Thread.Sleep(3000);
             }
-            
+
             const string msg = "Your IP has been backtraced + reported to FBI Cyber Crimes Unit.";
             p.Leave("kicked (" + msg + ")", msg, false);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Hacks");
             p.Message("&HPerforms various server hacks. OPERATORS ONLY!!!");
         }

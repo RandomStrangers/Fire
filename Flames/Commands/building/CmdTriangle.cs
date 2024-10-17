@@ -17,17 +17,23 @@
  */
 using Flames.Drawing.Ops;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdTriangle : DrawCmd {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdTriangle : DrawCmd
+    {
         public override string name { get { return "Triangle"; } }
         public override string shortcut { get { return "tri"; } }
 
         public override int MarksCount { get { return 3; } }
         public override string PlaceMessage { get { return "Place three blocks to determine the edges."; } }
 
-        public override DrawOp GetDrawOp(DrawArgs dArgs) { return new TriangleDrawOp(); }
-        
-        public override void Help(Player p) {
+        public override DrawOp GetDrawOp(DrawArgs dArgs) 
+        { 
+            return new TriangleDrawOp(); 
+        }
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Triangle <brush args>");
             p.Message("&HDraws a triangle between three points.");
             p.Message(BrushHelpLine);

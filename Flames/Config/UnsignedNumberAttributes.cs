@@ -5,8 +5,9 @@ namespace Flames.Config
 {
     public abstract class ConfigUnsignedIntegerAttribute : ConfigAttribute
     {
-        public ConfigUnsignedIntegerAttribute(string name, string section)
-            : base(name, section) { }
+        public ConfigUnsignedIntegerAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         // separate function to avoid boxing in derived classes
         // Use ulong instead of uint to allow larger inputs
@@ -53,23 +54,31 @@ namespace Flames.Config
             return value;
         }
     }
-    public class ConfigSByteAttribute : ConfigSignedIntegerAttribute
+    public class ConfigByteAttribute : ConfigSignedIntegerAttribute
     {
-        public ConfigSByteAttribute() : this(null, null) { }
-        public ConfigSByteAttribute(string name, string section) : base(name, section) { }
+        public ConfigByteAttribute() : this(null, null) 
+        { 
+        }
+        public ConfigByteAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         public override object Parse(string raw)
         {
-            return (sbyte)ParseInteger(raw, 0, 0, sbyte.MaxValue);
+            return (byte)ParseInteger(raw, 0, 0, byte.MaxValue);
         }
     }
 
     public sealed class ConfigBlockAttribute : ConfigUnsignedIntegerAttribute
     {
         public BlockID defBlock;
-        public ConfigBlockAttribute() : this(null, null, Block.Air) { }
-        public ConfigBlockAttribute(string name, string section, BlockID def)
-            : base(name, section) { defBlock = def; }
+        public ConfigBlockAttribute() : this(null, null, Block.Air) 
+        { 
+        }
+        public ConfigBlockAttribute(string name, string section, BlockID def) : base(name, section) 
+        { 
+            defBlock = def;
+        }
 
         public override object Parse(string raw)
         {
@@ -80,8 +89,12 @@ namespace Flames.Config
     }
     public class ConfigUShortAttribute : ConfigUnsignedIntegerAttribute
     {
-        public ConfigUShortAttribute() : this(null, null) { }
-        public ConfigUShortAttribute(string name, string section) : base(name, section) { }
+        public ConfigUShortAttribute() : this(null, null) 
+        { 
+        }
+        public ConfigUShortAttribute(string name, string section) : base(name, section) 
+        { 
+        }
 
         public override object Parse(string raw)
         {
@@ -92,11 +105,16 @@ namespace Flames.Config
     {
         public uint defValue, minValue, maxValue;
 
-        public ConfigUIntAttribute()
-            : this(null, null, 0, uint.MinValue, uint.MaxValue) { }
+        public ConfigUIntAttribute() : this(null, null, 0, uint.MinValue, uint.MaxValue) 
+        { 
+        }
         public ConfigUIntAttribute(string name, string section, uint def,
-                                  uint min = uint.MinValue, uint max = uint.MaxValue)
-            : base(name, section) { defValue = def; minValue = min; maxValue = max; }
+            uint min = uint.MinValue, uint max = uint.MaxValue) : base(name, section) 
+        { 
+            defValue = def; 
+            minValue = min; 
+            maxValue = max; 
+        }
 
         public override object Parse(string value)
         {

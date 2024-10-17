@@ -21,41 +21,49 @@ using Flames.Drawing.Ops;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Building {
-    public sealed class CmdPaste : Command2 {
+namespace Flames.Commands.Building
+{
+    public sealed class CmdPaste : Command2
+    {
         public override string name { get { return "Paste"; } }
         public override string shortcut { get { return "v"; } }
         public override string type { get { return CommandTypes.Building; } }
         public override bool museumUsable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("PasteNot", "not"), new CommandAlias("pn", "not") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             BrushArgs args = new BrushArgs(p, message, Block.Air);
             if (!BrushFactory.Find("Paste").Validate(args)) return;
-            
+
             p.Message("Place a block in the corner of where you want to paste.");
             p.MakeSelection(1, "Selecting location for &SPaste", args, DoPaste);
         }
 
-        public bool DoPaste(Player p, Vec3S32[] m, object state, BlockID block) {
+        public bool DoPaste(Player p, Vec3S32[] m, object state, BlockID block)
+        {
             BrushArgs args = (BrushArgs)state;
             Brush brush = BrushFactory.Find("Paste").Construct(args);
             if (brush == null) return false;
 
             CopyState cState = p.CurrentCopy;
-            PasteDrawOp op   = new PasteDrawOp();
-            op.CopyState     = cState;
+            PasteDrawOp op = new PasteDrawOp
+            {
+                CopyState = cState
+            };
 
             m[0] += cState.Offset;
             DrawOpPerformer.Do(op, brush, p, m);
             return true;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Paste &H- Pastes the stored copy.");
             p.Message("&T/Paste [block] [block2].. &H- Pastes only the specified blocks from the copy.");
             p.Message("&T/Paste not [block] [block2].. &H- Pastes all blocks from the copy, except for the specified blocks.");

@@ -40,17 +40,19 @@ namespace Flames.Modules.NewCompiling
     /// <summary> Compiles C# source files into a .dll by invoking a compiler executable directly </summary>
     public abstract class CommandLineCompiler
     {
-        public ICompilerErrors Compile(string[] srcPaths, string dstPath, List<string> referenced) {
+        public ICompilerErrors Compile(string[] srcPaths, string dstPath, List<string> referenced)
+        {
             string args = GetCommandLineArguments(srcPaths, dstPath, referenced);
-            string exe  = GetExecutable();
+            string exe = GetExecutable();
 
             ICompilerErrors errors = new ICompilerErrors();
-            List<string> output    = new List<string>();
+            List<string> output = new List<string>();
             int retValue = Compile(exe, GetCompilerArgs(exe, args), output);
 
             // Only look for errors/warnings if the compile failed
             // TODO still log warnings anyways error when success?
-            if (retValue != 0) {
+            if (retValue != 0)
+            {
                 foreach (string line in output)
                 {
                     ProcessCompilerOutputLine(errors, line);
@@ -61,12 +63,13 @@ namespace Flames.Modules.NewCompiling
 
 
         public virtual string GetCommandLineArguments(string[] srcPaths, string dstPath,
-                                                         List<string> referencedAssemblies) {
+                                                         List<string> referencedAssemblies)
+        {
             StringBuilder sb = new StringBuilder();
             sb.Append("/t:library ");
 
             sb.Append("/utf8output /noconfig /fullpaths ");
-            
+
             AddCoreAssembly(sb);
             AddReferencedAssemblies(sb, referencedAssemblies);
             sb.AppendFormat("/out:{0} ", Quote(dstPath));
@@ -81,10 +84,12 @@ namespace Flames.Modules.NewCompiling
             return sb.ToString();
         }
 
-        public virtual void AddCoreAssembly(StringBuilder sb) {
+        public virtual void AddCoreAssembly(StringBuilder sb)
+        {
             string coreAssemblyFileName = typeof(object).Assembly.Location;
 
-            if (!string.IsNullOrEmpty(coreAssemblyFileName)) {
+            if (!string.IsNullOrEmpty(coreAssemblyFileName))
+            {
                 sb.Append("/nostdlib+ ");
                 sb.AppendFormat("/R:{0} ", Quote(coreAssemblyFileName));
             }
@@ -92,20 +97,24 @@ namespace Flames.Modules.NewCompiling
 
         public abstract void AddReferencedAssemblies(StringBuilder sb, List<string> referenced);
 
-        public static string Quote(string value) { return "\"" + value.Trim() + "\""; }
+        public static string Quote(string value) 
+        { 
+            return "\"" + value.Trim() + "\""; 
+        }
 
         public abstract string GetExecutable();
         public abstract string GetCompilerArgs(string exe, string args);
 
 
-        public static int Compile(string path, string args, List<string> output) {
+        public static int Compile(string path, string args, List<string> output)
+        {
             // https://stackoverflow.com/questions/285760/how-to-spawn-a-process-and-capture-its-stdout-in-net
             ProcessStartInfo psi = CreateStartInfo(path, args);
 
             using (Process p = new Process())
             {
                 p.OutputDataReceived += (s, e) => { if (e.Data != null) output.Add(e.Data); };
-                p.ErrorDataReceived  += (s, e) => { }; // swallow stderr output
+                p.ErrorDataReceived += (s, e) => { }; // swallow stderr output
 
                 p.StartInfo = psi;
                 p.Start();
@@ -120,13 +129,16 @@ namespace Flames.Modules.NewCompiling
             }
         }
 
-        public static ProcessStartInfo CreateStartInfo(string path, string args) {
-            ProcessStartInfo psi = new ProcessStartInfo(path, args);
-            psi.WorkingDirectory       = Environment.CurrentDirectory;
-            psi.UseShellExecute        = false;
-            psi.CreateNoWindow         = true;
-            psi.RedirectStandardOutput = true;
-            psi.RedirectStandardError  = true;
+        public static ProcessStartInfo CreateStartInfo(string path, string args)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo(path, args)
+            {
+                WorkingDirectory = Environment.CurrentDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
             return psi;
         }
 
@@ -134,8 +146,10 @@ namespace Flames.Modules.NewCompiling
         public static Regex outputRegWithFileAndLine;
         public static Regex outputRegSimple;
 
-        public static void ProcessCompilerOutputLine(ICompilerErrors errors, string line) {
-            if (outputRegSimple == null) {
+        public static void ProcessCompilerOutputLine(ICompilerErrors errors, string line)
+        {
+            if (outputRegSimple == null)
+            {
                 outputRegWithFileAndLine =
                     new Regex(@"(^(.*)(\(([0-9]+),([0-9]+)\)): )(error|warning) ([A-Z]+[0-9]+) ?: (.*)");
                 outputRegSimple =
@@ -145,9 +159,12 @@ namespace Flames.Modules.NewCompiling
             //First look for full file info
             Match m = outputRegWithFileAndLine.Match(line);
             bool full;
-            if (m.Success) {
+            if (m.Success)
+            {
                 full = true;
-            } else {
+            }
+            else
+            {
                 m = outputRegSimple.Match(line);
                 full = false;
             }
@@ -155,31 +172,35 @@ namespace Flames.Modules.NewCompiling
             if (!m.Success) return;
             ICompilerError ce = new ICompilerError();
 
-            if (full) {
+            if (full)
+            {
                 ce.FileName = m.Groups[2].Value;
-                ce.Line     = NumberUtils.ParseInt32(m.Groups[4].Value);
-                ce.Column   = NumberUtils.ParseInt32(m.Groups[5].Value);
+                ce.Line = NumberUtils.ParseInt32(m.Groups[4].Value);
+                ce.Column = NumberUtils.ParseInt32(m.Groups[5].Value);
             }
 
-            ce.IsWarning   = m.Groups[full ? 6 : 1].Value.CaselessEq("warning");
+            ce.IsWarning = m.Groups[full ? 6 : 1].Value.CaselessEq("warning");
             ce.ErrorNumber = m.Groups[full ? 7 : 2].Value;
-            ce.ErrorText   = m.Groups[full ? 8 : 3].Value;
+            ce.ErrorText = m.Groups[full ? 8 : 3].Value;
             errors.Add(ce);
         }
     }
 
     public class ClassicCSharpCompiler : CommandLineCompiler
     {
-        public override void AddCoreAssembly(StringBuilder sb) {
+        public override void AddCoreAssembly(StringBuilder sb)
+        {
             string coreAssemblyFileName = typeof(object).Assembly.Location;
 
-            if (!string.IsNullOrEmpty(coreAssemblyFileName)) {
+            if (!string.IsNullOrEmpty(coreAssemblyFileName))
+            {
                 sb.Append("/nostdlib+ ");
                 sb.AppendFormat("/R:{0} ", Quote(coreAssemblyFileName));
             }
         }
 
-        public override void AddReferencedAssemblies(StringBuilder sb, List<string> referenced) {
+        public override void AddReferencedAssemblies(StringBuilder sb, List<string> referenced)
+        {
             foreach (string path in referenced)
             {
                 sb.AppendFormat("/R:{0} ", Quote(path));
@@ -187,18 +208,19 @@ namespace Flames.Modules.NewCompiling
         }
 
 
-        public override string GetExecutable() {
+        public override string GetExecutable()
+        {
             string root = RuntimeEnvironment.GetRuntimeDirectory();
-            
+
             string[] paths = new string[] {
                 // First try new C# compiler
                 Path.Combine(root, "csc.exe"),
                 // Then fallback to old Mono C# compiler
-                Path.Combine(root, @"../../../bin/mcs"), 
+                Path.Combine(root, @"../../../bin/mcs"),
                 Path.Combine(root, "mcs.exe"),
                 "/usr/bin/mcs",
             };
-            
+
             foreach (string path in paths)
             {
                 if (File.Exists(path)) return path;
@@ -206,7 +228,8 @@ namespace Flames.Modules.NewCompiling
             return paths[0];
         }
 
-        public override string GetCompilerArgs(string exe, string args) {
+        public override string GetCompilerArgs(string exe, string args)
+        {
             return args;
         }
     }

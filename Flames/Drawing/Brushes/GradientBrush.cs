@@ -18,36 +18,48 @@
 using Flames.Drawing.Ops;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Brushes 
-{   
-    public sealed class GradientBrush : Brush 
+namespace Flames.Drawing.Brushes
+{
+    public sealed class GradientBrush : Brush
     {
-        public readonly BlockID[] blocks;
+        public BlockID[] blocks;
         public CustomModelAnimAxis axis, _axis;
         public int xLen, yLen, zLen;
 
-        public GradientBrush(BlockID[] blocks, CustomModelAnimAxis axis) {
+        public GradientBrush(BlockID[] blocks, CustomModelAnimAxis axis)
+        {
             this.blocks = blocks;
-            this.axis   = axis;
+            this.axis = axis;
         }
-        
+
         public override string Name { get { return "Gradient"; } }
 
-        public override void Configure(DrawOp op, Player p) {
-            xLen = op.SizeX; yLen = op.SizeY; zLen = op.SizeZ;
+        public override void Configure(DrawOp op, Player p)
+        {
+            xLen = op.SizeX; 
+            yLen = op.SizeY; 
+            zLen = op.SizeZ;
 
-            if (axis <= CustomModelAnimAxis.Z) {
+            if (axis <= CustomModelAnimAxis.Z)
+            {
                 _axis = axis;
-            } else if (xLen >= yLen && xLen >= zLen) {
+            }
+            else if (xLen >= yLen && xLen >= zLen)
+            {
                 _axis = CustomModelAnimAxis.X;
-            } else if (yLen >= xLen && yLen >= zLen) {
+            }
+            else if (yLen >= xLen && yLen >= zLen)
+            {
                 _axis = CustomModelAnimAxis.Y;
-            } else {
+            }
+            else
+            {
                 _axis = CustomModelAnimAxis.Z;
             }
         }
 
-        public override BlockID NextBlock(DrawOp op) {
+        public override BlockID NextBlock(DrawOp op)
+        {
             int index = 0;
 
             switch (_axis)
@@ -57,12 +69,12 @@ namespace Flames.Drawing.Brushes
                     if (index < 0) index += xLen;
                     index = index * blocks.Length / xLen;
                     break;
-                case CustomModelAnimAxis.Y: 
+                case CustomModelAnimAxis.Y:
                     index = (op.Coords.Y - op.Min.Y) % yLen;
                     if (index < 0) index += yLen;
                     index = index * blocks.Length / yLen;
                     break;
-                case CustomModelAnimAxis.Z: 
+                case CustomModelAnimAxis.Z:
                     index = (op.Coords.Z - op.Min.Z) % zLen;
                     if (index < 0) index += zLen;
                     index = index * blocks.Length / zLen;

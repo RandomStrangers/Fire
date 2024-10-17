@@ -18,51 +18,63 @@
 using System;
 using Flames.Events;
 
-namespace Flames.Modules.Moderation.Notes 
+namespace Flames.Modules.Moderation.Notes
 {
-    public sealed class NotesPlugin : Plugin 
+    public sealed class NotesPlugin : Plugin
     {
         public override string name { get { return "Notes"; } }
 
-        public Command cmdNotes   = new CmdNotes();
+        public Command cmdNotes = new CmdNotes();
         public Command cmdMyNotes = new CmdMyNotes();
 
-        public override void Load(bool startup) {
+        public override void Load(bool startup)
+        {
             OnModActionEvent.Register(HandleModerationAction, Priority.Low);
             Command.Register(cmdNotes);
             Command.Register(cmdMyNotes);
         }
-        
-        public override void Unload(bool shutdown) {
+
+        public override void Unload(bool shutdown)
+        {
             OnModActionEvent.Unregister(HandleModerationAction);
             Command.Unregister(cmdNotes, cmdMyNotes);
         }
 
 
-        public static void HandleModerationAction(ModAction action) {
-            switch (action.Type) {
+        public static void HandleModerationAction(ModAction action)
+        {
+            switch (action.Type)
+            {
                 case ModActionType.Frozen:
-                    AddNote(action, "F"); break;
+                    AddNote(action, "F"); 
+                    break;
                 case ModActionType.Kicked:
-                    AddNote(action, "K"); break;
+                    AddNote(action, "K"); 
+                    break;
                 case ModActionType.Muted:
-                    AddNote(action, "M"); break; 
+                    AddNote(action, "M"); 
+                    break;
                 case ModActionType.Warned:
-                    AddNote(action, "W"); break;
+                    AddNote(action, "W"); 
+                    break;
+                case ModActionType.Jailed:
+                    AddNote(action, "J");
+                    break;
                 case ModActionType.Ban:
                     string banType = action.Duration.Ticks != 0 ? "T" : "B";
                     AddNote(action, banType); break;
             }
         }
 
-        public static void AddNote(ModAction e, string type) {
-             if (!Server.Config.LogNotes) return;
-             string src = e.Actor.name;
-             
-             string time = DateTime.UtcNow.ToString("dd/MM/yyyy");
-             string data = e.Target + " " + type + " " + src + " " + time + " " + 
-                           e.Reason.Replace(" ", "%20") + " " + e.Duration.Ticks;
-             Server.Notes.Append(data);
+        public static void AddNote(ModAction e, string type)
+        {
+            if (!Server.Config.LogNotes) return;
+            string src = e.Actor.name;
+
+            string time = DateTime.UtcNow.ToString("dd/MM/yyyy");
+            string data = e.Target + " " + type + " " + src + " " + time + " " +
+                          e.Reason.Replace(" ", "%20") + " " + e.Duration.Ticks;
+            Server.Notes.Append(data);
         }
     }
 }

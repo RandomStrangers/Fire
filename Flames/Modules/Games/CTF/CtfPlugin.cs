@@ -19,26 +19,29 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.CTF
 {
-    public sealed class CTFPlugin : Plugin 
+    public sealed class CTFPlugin : Plugin
     {
         public override string name { get { return "CTF"; } }
         public static Command cmdCTF = new CmdCTF();
-        
-        public override void Load(bool startup) {
+
+        public override void Load(bool startup)
+        {
             OnConfigUpdatedEvent.Register(OnConfigUpdated, Priority.Low);
             Command.Register(cmdCTF);
-            
+
             CTFGame.Instance.Config.Path = "properties/games/ctf.properties";
             OnConfigUpdated();
             CTFGame.Instance.AutoStart();
         }
-        
-        public override void Unload(bool shutdown) {
+
+        public override void Unload(bool shutdown)
+        {
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Command.Unregister(cmdCTF);
         }
 
-        public void OnConfigUpdated() { 
+        public void OnConfigUpdated()
+        {
             CTFGame.Instance.Config.Load();
         }
     }

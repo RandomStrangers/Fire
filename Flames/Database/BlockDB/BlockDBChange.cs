@@ -19,61 +19,68 @@ using System;
 using Flames.Blocks.Extended;
 using BlockID = System.UInt16;
 
-namespace Flames.DB 
-{  
+namespace Flames.DB
+{
     /// <summary> Outputs information about a block and its changes to the user. </summary>
-    public static class BlockDBChange 
+    public static class BlockDBChange
     {
-        public static void Output(Player p, string name, BlockDBEntry e) {
+        public static void Output(Player p, string name, BlockDBEntry e)
+        {
             BlockID oldBlock = e.OldBlock, newBlock = e.NewBlock;
             DateTime time = BlockDB.Epoch.AddSeconds(e.TimeDelta);
             TimeSpan delta = DateTime.UtcNow.Subtract(time);
             name = p.FormatNick(name);
-            
-            if (newBlock == Block.Air) {
+
+            if (newBlock == Block.Air)
+            {
                 p.Message("{0} ago {1} &4deleted &S{2}{3}",
                                delta.Shorten(true, false), name,
                                Block.GetName(p, oldBlock),
                                FormatReason(e.Flags));
-            } else {
+            }
+            else
+            {
                 p.Message("{0} ago {1} &3placed &S{2}{3}",
                                delta.Shorten(true, false), name,
                                Block.GetName(p, newBlock),
                                FormatReason(e.Flags));
             }
         }
-        
-        public static void OutputMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z) {
-            if (!p.level.Props[block].IsMessageBlock)      return;
+
+        public static void OutputMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z)
+        {
+            if (!p.level.Props[block].IsMessageBlock) return;
             if (!MessageBlock.ExistsInDB(p.level.MapName)) return;
             string message = MessageBlock.Get(p.level.MapName, x, y, z);
-            
+
             if (message == null) return;
             p.Message("Message Block contents: {0}", message);
         }
-        
-        public static void OutputPortal(Player p, BlockID block, ushort x, ushort y, ushort z) {
-            if (!p.level.Props[block].IsPortal)      return;
+
+        public static void OutputPortal(Player p, BlockID block, ushort x, ushort y, ushort z)
+        {
+            if (!p.level.Props[block].IsPortal) return;
             if (!Portal.ExistsInDB(p.level.MapName)) return;
             PortalExit exit = Portal.Get(p.level.MapName, x, y, z);
-            
+
             if (exit == null) return;
             p.Message("Portal destination: ({0}, {1}, {2}) in {3}",
                            exit.X, exit.Y, exit.Z, exit.Map);
         }
 
-        public static string FormatReason(ushort flags) {
-            if ((flags & BlockDBFlags.Painted) != 0)   return " (Painted)";
-            if ((flags & BlockDBFlags.Drawn) != 0)     return " (Drawn)";
-            if ((flags & BlockDBFlags.Replaced) != 0)  return " (Replaced)";
-            if ((flags & BlockDBFlags.Pasted) != 0)    return " (Pasted)";
-            if ((flags & BlockDBFlags.Cut) != 0)       return " (Cut)";
-            if ((flags & BlockDBFlags.Filled) != 0)    return " (Filled)";
-            if ((flags & BlockDBFlags.Restored) != 0)  return " (Restored)";
+        public static string FormatReason(ushort flags)
+        {
+            if ((flags & BlockDBFlags.Painted) != 0) return " (Painted)";
+            if ((flags & BlockDBFlags.Drawn) != 0) return " (Drawn)";
+            if ((flags & BlockDBFlags.Replaced) != 0) return " (Replaced)";
+            if ((flags & BlockDBFlags.Pasted) != 0) return " (Pasted)";
+            if ((flags & BlockDBFlags.Cut) != 0) return " (Cut)";
+            if ((flags & BlockDBFlags.Filled) != 0) return " (Filled)";
+            if ((flags & BlockDBFlags.Restored) != 0) return " (Restored)";
             if ((flags & BlockDBFlags.UndoOther) != 0) return " (UndoneOther)";
-            if ((flags & BlockDBFlags.UndoSelf) != 0)  return " (UndoneSelf)";
-            if ((flags & BlockDBFlags.RedoSelf) != 0)  return " (RedoneSelf)";
-            if ((flags & BlockDBFlags.FixGrass) != 0)  return " (FixGrass)";
+            if ((flags & BlockDBFlags.UndoSelf) != 0) return " (UndoneSelf)";
+            if ((flags & BlockDBFlags.RedoSelf) != 0) return " (RedoneSelf)";
+            if ((flags & BlockDBFlags.FixGrass) != 0) return " (FixGrass)";
             return "";
         }
     }

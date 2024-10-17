@@ -18,33 +18,38 @@
 using System;
 using Flames.Commands;
 
-namespace Flames.Core {
-    public static class ConnectHandler {
+namespace Flames.Core
+{
+    public static class ConnectHandler
+    {
 
-        public static void HandleConnect(Player p) {
+        public static void HandleConnect(Player p)
+        {
             CheckReviewList(p);
             if (p.CanUse("ReachDistance")) LoadReach(p);
-            
+
             LoadWaypoints(p);
             p.Ignores.Load(p);
         }
 
-        public static void CheckReviewList(Player p) {
+        public static void CheckReviewList(Player p)
+        {
             if (!p.CanUse("Review")) return;
             ItemPerms checkPerms = CommandExtraPerms.Find("Review", 1);
             if (!checkPerms.UsableBy(p)) return;
-            
+
             int count = Server.reviewlist.Count;
             if (count == 0) return;
-            
+
             string suffix = count == 1 ? " player is " : " players are ";
             p.Message(count + suffix + "waiting for a review. Type &T/Review view");
         }
 
-        public static void LoadReach(Player p) {
+        public static void LoadReach(Player p)
+        {
             string reach = Server.reach.Get(p.name);
             if (string.IsNullOrEmpty(reach)) return;
-            
+
             short reachDist;
             if (!short.TryParse(reach, out reachDist)) return;
 
@@ -52,11 +57,15 @@ namespace Flames.Core {
             p.Session.SendSetReach(p.ReachDistance);
         }
 
-        public static void LoadWaypoints(Player p) {
-            try {
+        public static void LoadWaypoints(Player p)
+        {
+            try
+            {
                 p.Waypoints.Filename = Paths.WaypointsDir + p.name + ".save";
                 p.Waypoints.Load();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error loading waypoints", ex);
             }
         }

@@ -18,9 +18,9 @@
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Commands.Building 
+namespace Flames.Commands.Building
 {
-    public sealed class CmdPlace : Command2 
+    public sealed class CmdPlace : Command2
     {
         public override string name { get { return "Place"; } }
         public override string shortcut { get { return "pl"; } }
@@ -28,14 +28,16 @@ namespace Flames.Commands.Building
         public override string type { get { return CommandTypes.Building; } }
         public override bool SuperUseable { get { return false; } }
         public override CommandParallelism Parallelism { get { return CommandParallelism.NoAndSilent; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             BlockID block = p.GetHeldBlock();
             Vec3S32 P = p.Pos.BlockCoords;
             P.Y = (p.Pos.Y - 32) / 32;
 
             string[] parts = message.SplitSpaces();
-            switch (parts.Length) {
+            switch (parts.Length)
+            {
                 case 1:
                     if (message.Length == 0) break;
                     if (!CommandParser.GetBlock(p, parts[0], out block)) return;
@@ -48,20 +50,23 @@ namespace Flames.Commands.Building
                     if (!CommandParser.GetCoords(p, parts, 1, ref P)) return;
                     break;
                 default:
-                    Help(p); return;
+                    Help(p); 
+                    return;
             }
 
-            if (!CommandParser.IsBlockAllowed(p, "place", block)) return;            
+            if (!CommandParser.IsBlockAllowed(p, "place", block)) return;
             P = p.level.ClampPos(P);
-            
+
             p.level.UpdateBlock(p, (ushort)P.X, (ushort)P.Y, (ushort)P.Z, block);
             string blockName = Block.GetName(p, block);
-            if (!p.Ignores.DrawOutput) {
+            if (!p.Ignores.DrawOutput)
+            {
                 p.Message("{1} block was placed at ({0}).", P, blockName);
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Place <block>");
             p.Message("&HPlaces block at your feet.");
             p.Message("&T/Place <block> [x y z]");

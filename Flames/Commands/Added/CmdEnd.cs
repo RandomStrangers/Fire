@@ -7,7 +7,7 @@ namespace Flames.Commands.Chatting
         public override string name { get { return "End"; } }
         public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Flames; } }
- 
+
         public override void Use(Player p, string message, CommandData data)
         {
             End(p);
@@ -16,9 +16,10 @@ namespace Flames.Commands.Chatting
         {
             if (!CheckPerms(p))
             {
-                p.Message("Only the Flames or the Server Owner can end the server."); return;
+                p.Message("Only the Flames or the Server Owner can end the server."); 
+                return;
             }
-            Environment.Exit(0);        
+            Environment.Exit(0);
         }
         public static bool CheckPerms(Player p)
         {

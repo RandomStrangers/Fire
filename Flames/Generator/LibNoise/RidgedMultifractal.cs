@@ -34,7 +34,7 @@ namespace LibNoise
 
         public RidgedMultifractal()
         {
-            Lacunarity  = 2.0;
+            Lacunarity = 2.0;
             OctaveCount = 6;
         }
 

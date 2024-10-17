@@ -18,76 +18,86 @@
 using System;
 using Flames.DB;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdBanInfo : Command2 
+    public sealed class CmdBanInfo : Command2
     {
         public override string name { get { return "BanInfo"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override bool UseableWhenFrozen { get { return true; } }
         public override bool MessageBlockRestricted { get { return false; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             if (CheckSuper(p, message, "player name")) return;
             if (message.Length == 0) message = p.name;
-            
+
             string target = PlayerInfo.FindMatchesPreferOnline(p, message);
             if (target == null) return;
             string nick = p.FormatNick(target);
-            
+
             string tempData = Server.tempBans.Get(target);
             string tempBanner = null, tempReason = null;
             DateTime tempExpiry = DateTime.MinValue;
-            if (tempData != null) {
+            if (tempData != null)
+            {
                 Ban.UnpackTempBanData(tempData, out tempReason, out tempBanner, out tempExpiry);
             }
-            
+
             bool permaBanned = Group.BannedRank.Players.Contains(target);
             bool isBanned = permaBanned || tempExpiry >= DateTime.UtcNow;
             string msg = nick;
-            string ip  = PlayerDB.FindIP(target);
+            string ip = PlayerDB.FindIP(target);
             bool ipBanned = ip != null && Server.bannedIP.Contains(ip);
-            
+
             if (!ipBanned && isBanned) msg += " &Sis &cBANNED";
             else if (!ipBanned && !isBanned) msg += " &Sis not banned";
             else if (ipBanned && isBanned) msg += " &Sand their IP are &cBANNED";
             else msg += " &Sis not banned, but their IP is &cBANNED";
 
             Ban.GetBanData(target, out string banner, out string reason, out DateTime time, out string prevRank);
-            if (banner != null && permaBanned) {
+            if (banner != null && permaBanned)
+            {
                 string grpName = Group.GetColoredName(prevRank);
                 msg += " &S(Former rank: " + grpName + "&S)";
             }
             p.Message(msg);
-            
-            if (tempExpiry >= DateTime.UtcNow) {
+
+            if (tempExpiry >= DateTime.UtcNow)
+            {
                 TimeSpan delta = tempExpiry - DateTime.UtcNow;
                 p.Message("Temp-banned &S by {1} &Sfor another {0}",
                           delta.Shorten(), p.FormatNick(tempBanner));
-                if (tempReason.Length > 0) {
-                    p.Message("Reason: {0}",tempReason);
+                if (tempReason.Length > 0)
+                {
+                    p.Message("Reason: {0}", tempReason);
                 }
             }
-            
-            if (banner != null) {
+
+            if (banner != null)
+            {
                 DisplayDetails(p, banner, reason, time, permaBanned ? "Banned" : "Last banned");
-            } else {
+            }
+            else
+            {
                 p.Message("No previous bans recorded for {0}&S.", nick);
-            }            
+            }
             Ban.GetUnbanData(target, out banner, out reason, out time);
             DisplayDetails(p, banner, reason, time, permaBanned ? "Last unbanned" : "Unbanned");
         }
 
-        public static void DisplayDetails(Player p, string banner, string reason, DateTime time, string type) {
+        public static void DisplayDetails(Player p, string banner, string reason, DateTime time, string type)
+        {
             if (banner == null) return;
-            
+
             TimeSpan delta = DateTime.UtcNow - time;
             p.Message("{0} {1} ago by {2}",
                           type, delta.Shorten(), p.FormatNick(banner));
             p.Message("Reason: {0}", reason);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/BanInfo [player]");
             p.Message("&HOutputs information about current and/or previous ban/unban for that player.");
         }

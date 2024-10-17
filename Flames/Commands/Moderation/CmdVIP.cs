@@ -16,68 +16,102 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands.Moderation {
-    public sealed class CmdVIP : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdVIP : Command2
+    {
         public override string name { get { return "VIP"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { List(p, ""); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                List(p, "");
+                return;
+            }
             string[] args = message.SplitSpaces();
             string cmd = args[0];
-            
-            if (IsCreateCommand(cmd)) {
-                if (args.Length < 2) { Help(p); return; }
+
+            if (IsCreateCommand(cmd))
+            {
+                if (args.Length < 2)
+                {
+                    Help(p);
+                    return;
+                }
                 Add(p, args[1]);
-            } else if (IsDeleteCommand(cmd)) {
-                if (args.Length < 2) { Help(p); return; }
+            }
+            else if (IsDeleteCommand(cmd))
+            {
+                if (args.Length < 2)
+                {
+                    Help(p);
+                    return;
+                }
                 Remove(p, args[1]);
-            } else if (IsListCommand(cmd)) {
+            }
+            else if (IsListCommand(cmd))
+            {
                 string modifier = args.Length > 1 ? args[1] : "";
                 List(p, modifier);
-            } else if (args.Length == 1) {
+            }
+            else if (args.Length == 1)
+            {
                 Add(p, args[0]);
-            } else {
+            }
+            else
+            {
                 Help(p);
             }
         }
 
-        public static void Add(Player p, string name) {
+        public static void Add(Player p, string name)
+        {
             name = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (name == null) return;
-            
-            if (!Server.vip.Add(name)) {
+
+            if (!Server.vip.Add(name))
+            {
                 p.Message("{0} &Sis already a VIP.", p.FormatNick(name));
-            } else {
+            }
+            else
+            {
                 Server.vip.Save();
                 p.Message("{0} &Sis now a VIP.", p.FormatNick(name));
-                
+
                 Player vip = PlayerInfo.FindExact(name);
                 vip?.Message("You are now a VIP!");
             }
         }
 
-        public static void Remove(Player p, string name) {
+        public static void Remove(Player p, string name)
+        {
             name = PlayerInfo.FindMatchesPreferOnline(p, name);
             if (name == null) return;
-            
-            if (!Server.vip.Remove(name)) {
+
+            if (!Server.vip.Remove(name))
+            {
                 p.Message("{0} &Sis not a VIP.", p.FormatNick(name));
-            } else {
+            }
+            else
+            {
                 Server.vip.Save();
                 p.Message("{0} &Sis no longer a VIP.", p.FormatNick(name));
-                
+
                 Player vip = PlayerInfo.FindExact(name);
                 vip?.Message("You are no longer a VIP!");
             }
         }
 
-        public static void List(Player p, string modifier) {
+        public static void List(Player p, string modifier)
+        {
             Server.vip.Output(p, "VIPs", "VIP list", modifier);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/VIP add/remove [player]");
             p.Message("&HAdds or removes [player] from the VIP list.");
             p.Message("&T/VIP list");

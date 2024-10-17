@@ -26,22 +26,31 @@ Ideas, concepts, and code were used from the following two sources:
  */
 using System;
 
-namespace Flames.Generator.Foliage 
+namespace Flames.Generator.Foliage
 {
-    public sealed class CactusTree : Tree 
+    public sealed class CactusTree : Tree
     {
-        public override long EstimateBlocksAffected() { return height + 3 * 2; }
-        
-        public override int DefaultSize(Random rnd) { return rnd.Next(3, 6); }
-                
-        public override void SetData(Random rnd, int value) {
+        public override long EstimateBlocksAffected() 
+        { 
+            return height + 3 * 2; 
+        }
+
+        public override int DefaultSize(Random rnd) 
+        { 
+            return rnd.Next(3, 6); 
+        }
+
+        public override void SetData(Random rnd, int value)
+        {
             height = value;
-            size   = 1;
+            size = 1;
             this.rnd = rnd;
         }
-        
-        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output) {
-            for (ushort dy = 0; dy <= height; dy++) {
+
+        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output)
+        {
+            for (ushort dy = 0; dy <= height; dy++)
+            {
                 output(x, (ushort)(y + dy), z, Block.Green);
             }
 
@@ -49,77 +58,100 @@ namespace Flames.Generator.Foliage
             int dx = value == 1 ? -1 : 0;
             int dz = value == 2 ? -1 : 0;
 
-            for (int dy = height; dy <= rnd.Next(height + 2, height + 5); dy++) {
+            for (int dy = height; dy <= rnd.Next(height + 2, height + 5); dy++)
+            {
                 output((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz), Block.Green);
             }
-            for (int dy = height; dy <= rnd.Next(height + 2, height + 5); dy++) {
+            for (int dy = height; dy <= rnd.Next(height + 2, height + 5); dy++)
+            {
                 output((ushort)(x - dx), (ushort)(y + dy), (ushort)(z - dz), Block.Green);
             }
         }
     }
 
-    public sealed class NormalTree : Tree 
+    public sealed class NormalTree : Tree
     {
-        public override long EstimateBlocksAffected() { return height + size * size * size; }
-                
-        public override int DefaultSize(Random rnd) { return rnd.Next(5, 8); }
-        
-        public override void SetData(Random rnd, int value) {
+        public override long EstimateBlocksAffected() 
+        { 
+            return height + size * size * size; 
+        }
+
+        public override int DefaultSize(Random rnd) 
+        { 
+            return rnd.Next(5, 8); 
+        }
+
+        public override void SetData(Random rnd, int value)
+        {
             height = value;
-            size   = height - rnd.Next(2, 4);
+            size = height - rnd.Next(2, 4);
             this.rnd = rnd;
         }
-        
-        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output) {
+
+        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output)
+        {
             for (ushort dy = 0; dy < height + size - 1; dy++)
                 output(x, (ushort)(y + dy), z, Block.Log);
-            
+
             for (int dy = -size; dy <= size; ++dy)
                 for (int dz = -size; dz <= size; ++dz)
                     for (int dx = -size; dx <= size; ++dx)
-            {
-                int dist = (int)(Math.Sqrt(dx * dx + dy * dy + dz * dz));
-                if ((dist < size + 1) && rnd.Next(dist) < 2) {
-                    ushort xx = (ushort)(x + dx), yy = (ushort)(y + dy + height), zz = (ushort)(z + dz);
+                    {
+                        int dist = (int)(Math.Sqrt(dx * dx + dy * dy + dz * dz));
+                        if ((dist < size + 1) && rnd.Next(dist) < 2)
+                        {
+                            ushort xx = (ushort)(x + dx), yy = (ushort)(y + dy + height), zz = (ushort)(z + dz);
 
-                    if (xx != x || zz != z || dy >= size - 1)
-                        output(xx, yy, zz, Block.Leaves);
-                }
-            }
+                            if (xx != x || zz != z || dy >= size - 1)
+                                output(xx, yy, zz, Block.Leaves);
+                        }
+                    }
         }
     }
 
-    public sealed class SwampTree : Tree 
-    {        
-        public override long EstimateBlocksAffected() { return height + 145; }
-                
-        public override int DefaultSize(Random rnd) { return rnd.Next(4, 8); }
+    public sealed class SwampTree : Tree
+    {
+        public override long EstimateBlocksAffected() 
+        { 
+            return height + 145; 
+        }
 
-        public override void SetData(Random rnd, int value) {
+        public override int DefaultSize(Random rnd) 
+        { 
+            return rnd.Next(4, 8); 
+        }
+
+        public override void SetData(Random rnd, int value)
+        {
             height = value;
-            size   = 3;
+            size = 3;
             this.rnd = rnd;
         }
-        
-        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output) {
+
+        public override void Generate(ushort x, ushort y, ushort z, TreeOutput output)
+        {
             for (int dy = 0; dy <= height; dy++)
                 output(x, (ushort)(y + dy), z, Block.Log);
 
-            for (int dy = height - 2; dy <= height + 1; dy++) {
+            for (int dy = height - 2; dy <= height + 1; dy++)
+            {
                 int extent = dy > height - 1 ? 2 : 3;
                 for (int dz = -extent; dz <= extent; dz++)
                     for (int dx = -extent; dx <= extent; dx++)
-                {
-                    ushort xx = (ushort)(x + dx), yy = (ushort)(y + dy), zz = (ushort)(z + dz);
-                    if (xx == x && zz == z && dy <= height) continue;
+                    {
+                        ushort xx = (ushort)(x + dx), yy = (ushort)(y + dy), zz = (ushort)(z + dz);
+                        if (xx == x && zz == z && dy <= height) continue;
 
-                    if (Math.Abs(dx) == extent && Math.Abs(dz) == extent) {
-                        if (dy > height) continue;
-                        if (rnd.Next(2) == 0) output(xx, yy, zz, Block.Leaves);
-                    } else {
-                        output(xx, yy, zz, Block.Leaves);
+                        if (Math.Abs(dx) == extent && Math.Abs(dz) == extent)
+                        {
+                            if (dy > height) continue;
+                            if (rnd.Next(2) == 0) output(xx, yy, zz, Block.Leaves);
+                        }
+                        else
+                        {
+                            output(xx, yy, zz, Block.Leaves);
+                        }
                     }
-                }
             }
         }
     }

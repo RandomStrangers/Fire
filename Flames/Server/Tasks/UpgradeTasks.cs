@@ -20,15 +20,19 @@ using System.Collections.Generic;
 using System.IO;
 using Flames.SQL;
 
-namespace Flames.Tasks {
-    public static class UpgradeTasks {
+namespace Flames.Tasks
+{
+    public static class UpgradeTasks
+    {
 
-        public static void UpgradeOldAgreed() {
+        public static void UpgradeOldAgreed()
+        {
             // agreed.txt format used to be names separated by spaces, we need to fix that up.
             if (!File.Exists("ranks/agreed.txt")) return;
-            
+
             string data = null;
-            using (FileStream fs = File.OpenRead("ranks/agreed.txt")) {
+            using (FileStream fs = File.OpenRead("ranks/agreed.txt"))
+            {
                 if (fs.ReadByte() != ' ') return;
                 data = new StreamReader(fs).ReadToEnd();
                 data = data.Replace(" ", Environment.NewLine);
@@ -36,11 +40,13 @@ namespace Flames.Tasks {
             File.WriteAllText("ranks/agreed.txt", data);
         }
 
-        public static void UpgradeOldTempranks(SchedulerTask task) {
+        public static void UpgradeOldTempranks(SchedulerTask task)
+        {
             if (!File.Exists(Paths.TempRanksFile)) return;
 
             // Check if empty, or not old form
-            using (StreamReader r = new StreamReader(Paths.TempRanksFile)) {
+            using (StreamReader r = new StreamReader(Paths.TempRanksFile))
+            {
                 string line = r.ReadLine();
                 if (line == null) return;
                 string[] parts = line.SplitSpaces();
@@ -48,7 +54,8 @@ namespace Flames.Tasks {
             }
 
             string[] lines = File.ReadAllLines(Paths.TempRanksFile);
-            for (int i = 0; i < lines.Length; i++) {
+            for (int i = 0; i < lines.Length; i++)
+            {
                 string[] args = lines[i].SplitSpaces();
                 if (args.Length < 9) continue;
 
@@ -56,10 +63,10 @@ namespace Flames.Tasks {
                 int day = int.Parse(args[6]), month = int.Parse(args[7]), year = int.Parse(args[8]);
                 int periodH = int.Parse(args[3]), periodM = 0;
                 if (args.Length > 10) periodM = int.Parse(args[10]);
-                
+
                 DateTime assigned = new DateTime(year, month, day, hour, min, 0);
                 DateTime expiry = assigned.AddHours(periodH).AddMinutes(periodM);
-                
+
                 // Line format: name assigner assigntime expiretime oldRank tempRank
                 lines[i] = args[0] + " " + args[9] + " " + assigned.ToUnixTime() +
                     " " + expiry.ToUnixTime() + " " + args[2] + " " + args[1];
@@ -68,11 +75,12 @@ namespace Flames.Tasks {
         }
 
 
-        public static void UpgradeDBTimeSpent(SchedulerTask task) {
+        public static void UpgradeDBTimeSpent(SchedulerTask task)
+        {
             string time = Database.ReadString("Players", "TimeSpent", "LIMIT 1");
             if (time == null) return; // no players at all in DB
             if (time.IndexOf(' ') == -1) return; // already upgraded
-            
+
             Logger.Log(LogType.SystemActivity, "Upgrading TimeSpent column in database to new format..");
             DumpPlayerTimeSpents();
             UpgradePlayerTimeSpents();
@@ -83,29 +91,37 @@ namespace Flames.Tasks {
         public static List<long> playerSeconds;
         public static int playerCount, playerFailed = 0;
 
-        public static void DumpPlayerTimeSpents() {
+        public static void DumpPlayerTimeSpents()
+        {
             playerIds = new List<int>();
             playerSeconds = new List<long>();
             Database.ReadRows("Players", "ID,TimeSpent", ReadTimeSpent);
         }
 
-        public static void ReadTimeSpent(ISqlRecord record) {
+        public static void ReadTimeSpent(ISqlRecord record)
+        {
             playerCount++;
-            try {
+            try
+            {
                 int id = record.GetInt32(0);
                 TimeSpan span = Database.ParseOldDBTimeSpent(record.GetString(1));
-                
+
                 playerIds.Add(id);
                 playerSeconds.Add((long)span.TotalSeconds);
-            } catch {
+            }
+            catch
+            {
                 playerFailed++;
             }
         }
 
-        public static void UpgradePlayerTimeSpents() {
-            using (SqlTransaction bulk = new SqlTransaction()) {
-                for (int i = 0; i < playerIds.Count; i++) {
-                    bulk.Execute("UPDATE Players SET TimeSpent=@1 WHERE ID=@0", 
+        public static void UpgradePlayerTimeSpents()
+        {
+            using (SqlTransaction bulk = new SqlTransaction())
+            {
+                for (int i = 0; i < playerIds.Count; i++)
+                {
+                    bulk.Execute("UPDATE Players SET TimeSpent=@1 WHERE ID=@0",
                                  playerIds[i], playerSeconds[i]);
                 }
                 bulk.Commit();

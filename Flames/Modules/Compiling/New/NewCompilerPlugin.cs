@@ -22,16 +22,18 @@ namespace Flames.Modules.NewCompiling
     {
         public override string name { get { return "NewCompiler"; } }
 
-        public Command NewCmdCreate   = new CmdNewPluginCreate();
-        public Command NewCmdCompile  = new CmdNewPluginCompile();
+        public Command NewCmdCreate = new CmdNewPluginCreate();
+        public Command NewCmdCompile = new CmdNewPluginCompile();
         public Command NewCmdCompLoad = new CmdNewPluginCompLoad();
 
-        public override void Load(bool startup) {
+        public override void Load(bool startup)
+        {
             Server.EnsureDirectoryExists(ICompiler.NEW_PLUGINS_SOURCE_DIR);
             Command.Register(NewCmdCreate, NewCmdCompile, NewCmdCompLoad);
         }
 
-        public override void Unload(bool shutdown) {
+        public override void Unload(bool shutdown)
+        {
             Command.Unregister(NewCmdCreate, NewCmdCompile, NewCmdCompLoad);
         }
     }

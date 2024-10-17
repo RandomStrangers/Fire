@@ -18,46 +18,59 @@
 using System.Collections.Generic;
 using Flames.DB;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdTop : Command2 
+    public sealed class CmdTop : Command2
     {
         public override string name { get { return "Top"; } }
         public override string shortcut { get { return "Most"; } }
         public override string type { get { return CommandTypes.Information; } }
-        public override CommandAlias[] Aliases {
-            get { return new [] { new CommandAlias("TopTen", "10"), new CommandAlias("TopFive", "5"),
-                    new CommandAlias("Top10", "10"), }; }
+        public override CommandAlias[] Aliases
+        {
+            get
+            {
+                return new[] { new CommandAlias("TopTen", "10"), new CommandAlias("TopFive", "5"),
+                    new CommandAlias("Top10", "10"), };
+            }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces();
-            if (args.Length < 2) { Help(p); return; }
-            
+            if (args.Length < 2) 
+            { 
+                Help(p);
+                return; 
+            }
+
             int maxResults = 0, offset = 0;
             if (!CommandParser.GetInt(p, args[0], "Max results", ref maxResults, 1, 15)) return;
 
             TopStat stat = TopStat.Find(args[1]);
-            if (stat == null) {
-                p.Message("&WNo stat found with name \"{0}\".", args[1]); return;
+            if (stat == null)
+            {
+                p.Message("&WNo stat found with name \"{0}\".", args[1]); 
+                return;
             }
-            
-            if (args.Length > 2) {
+
+            if (args.Length > 2)
+            {
                 if (!CommandParser.GetInt(p, args[2], "Offset", ref offset, 0)) return;
             }
-            
+
             List<TopResult> results = stat.GetResults(maxResults, offset);
             p.Message("&a{0}:", stat.Title);
-            
-            for (int i = 0; i < results.Count; i++) 
+
+            for (int i = 0; i < results.Count; i++)
             {
-                p.Message("{0}) {1} &S- {2}", offset + (i + 1), 
-                          stat.FormatName(p, results[i].Name), 
+                p.Message("{0}) {1} &S- {2}", offset + i + 1,
+                          stat.FormatName(p, results[i].Name),
                           stat.Formatter(results[i].Value));
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Top [max results] [stat] <offset>");
             p.Message("&HPrints a list of players who have the " +
                        "most/top of a particular stat. Available stats:");

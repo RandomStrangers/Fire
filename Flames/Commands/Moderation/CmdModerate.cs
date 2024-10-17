@@ -15,24 +15,35 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-namespace Flames.Commands.Moderation {
-    public sealed class CmdModerate : Command2 {
+namespace Flames.Commands.Moderation
+{
+    public sealed class CmdModerate : Command2
+    {
         public override string name { get { return "Moderate"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length > 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length > 0) 
+            { 
+                Help(p); 
+                return; 
+            }
 
-            if (Server.chatmod) {
+            if (Server.chatmod)
+            {
                 Chat.MessageAll("Chat moderation has been disabled. Everyone can now speak.");
-            } else {
+            }
+            else
+            {
                 Chat.MessageAll("Chat moderation engaged! Silence the plebians!");
             }
             Server.chatmod = !Server.chatmod;
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Moderate &H- Toggles chat moderation status.");
             p.Message("&HWhen enabled, only players with &T/Voice &Hmay speak.");
         }

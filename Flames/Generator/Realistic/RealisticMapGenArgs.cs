@@ -19,76 +19,82 @@
 namespace Flames.Generator.Realistic
 {
     public delegate ushort CalcLiquidLevel(ushort lvlHeight);
-    
+
     public sealed class RealisticMapGenArgs
     {
         public MapGenBiomeName Biome = MapGenBiomeName.Forest;
-        public float RangeLow  = 0.2f;
+        public float RangeLow = 0.2f;
         public float RangeHigh = 0.8f;
         public bool SimpleColumns = false, IslandColumns = false;
         public bool FalloffEdges = false;
         public bool UseLavaLiquid = false;
         public bool GenOverlay2 = true;
         public CalcLiquidLevel GetLiquidLevel = (lvlHeight) => (ushort)(lvlHeight / 2 + 2);
-        
+
         // Decoration parameters
         public float TreeDensity = 0.35f;
         public short TreeDistance = 3;
         public bool GenFlowers = true, GenTrees = true;
-        
+
         // Fault parameters
         public float StartHeight = 0.5f;
         public float DisplacementMax = 0.01f;
         public float DisplacementStep = -0.0025f;
 
-        public static RealisticMapGenArgs Hell = new RealisticMapGenArgs() {
-            RangeLow  = 0.3f,
+        public static RealisticMapGenArgs Hell = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.3f,
             RangeHigh = 1.3f,
             StartHeight = 0.04f,
             DisplacementMax = 0.02f,
-            GenFlowers      = false,
-            UseLavaLiquid   = true,
-            GetLiquidLevel  = (height) => 5,
+            GenFlowers = false,
+            UseLavaLiquid = true,
+            GetLiquidLevel = (height) => 5,
             Biome = MapGenBiomeName.Hell,
         };
 
-        public static RealisticMapGenArgs Island = new RealisticMapGenArgs() {
-            RangeLow  = 0.40f,
+        public static RealisticMapGenArgs Island = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.40f,
             RangeHigh = 0.75f,
-            FalloffEdges  = true,
+            FalloffEdges = true,
             IslandColumns = true
         };
 
-        public static RealisticMapGenArgs Forest = new RealisticMapGenArgs() {
-            RangeLow  = 0.45f,
+        public static RealisticMapGenArgs Forest = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.45f,
             RangeHigh = 0.80f,
-            TreeDensity  = 0.7f,
+            TreeDensity = 0.7f,
             TreeDistance = 2
         };
 
-        public static RealisticMapGenArgs Mountains = new RealisticMapGenArgs() {
-            RangeLow  = 0.3f,
+        public static RealisticMapGenArgs Mountains = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.3f,
             RangeHigh = 0.9f,
             TreeDistance = 4,
             StartHeight = 0.6f,
             DisplacementMax = 0.02f,
         };
 
-        public static RealisticMapGenArgs Ocean = new RealisticMapGenArgs() {
-            RangeLow  = 0.1f, 
+        public static RealisticMapGenArgs Ocean = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.1f,
             RangeHigh = 0.6f,
-            GenTrees  = false, 
+            GenTrees = false,
             GenOverlay2 = false,
             GetLiquidLevel = (height) => (ushort)(height * 0.85f)
         };
 
-        public static RealisticMapGenArgs Desert = new RealisticMapGenArgs() {
-            RangeLow  = 0.5f, 
+        public static RealisticMapGenArgs Desert = new RealisticMapGenArgs()
+        {
+            RangeLow = 0.5f,
             RangeHigh = 0.85f,
             TreeDistance = 24,
-            GenFlowers = false, 
+            GenFlowers = false,
             GenOverlay2 = false,
-            SimpleColumns  = true,
+            SimpleColumns = true,
             GetLiquidLevel = (height) => 0,
             Biome = MapGenBiomeName.Desert,
         };

@@ -20,81 +20,89 @@
 using System.IO;
 
 namespace Flames.Modules.NewCompiling
-{    
-    public static class CompilerOperations 
-    {   
-        public static ICompiler GetCompiler(Player p, string name) {
+{
+    public static class CompilerOperations
+    {
+        public static ICompiler GetCompiler(Player p, string name)
+        {
             if (name.Length == 0) return ICompiler.Compilers[0];
-            
-            foreach (ICompiler comp in ICompiler.Compilers) 
+
+            foreach (ICompiler comp in ICompiler.Compilers)
             {
                 if (comp.ShortName.CaselessEq(name)) return comp;
             }
-            
+
             p.Message("&WUnknown language \"{0}\"", name);
             p.Message("&HAvailable languages: &f{0}",
                       ICompiler.Compilers.Join(c => c.ShortName + " (" + c.FullName + ")"));
             return null;
         }
-        
-        public static bool CreateNewPlugin(Player p, string name, ICompiler compiler) {
-            string path    = compiler.NewPluginPath(name);
+
+        public static bool CreateNewPlugin(Player p, string name, ICompiler compiler)
+        {
+            string path = compiler.NewPluginPath(name);
             string creator = p.IsSuper ? Colors.Strip(Server.Config.Name) : p.truename;
-            string source  = compiler.GenExampleNewPlugin(name, creator);
-            
+            string source = compiler.GenExampleNewPlugin(name, creator);
+
             return CreateFile(p, name, path, "newplugin &f", source);
         }
 
-        public static bool CreateFile(Player p, string name, string path, string type, string source) {
-            if (File.Exists(path)) {
-                p.Message("File {0} already exists. Choose another name.", path); 
+        public static bool CreateFile(Player p, string name, string path, string type, string source)
+        {
+            if (File.Exists(path))
+            {
+                p.Message("File {0} already exists. Choose another name.", path);
                 return false;
             }
-            
+
             File.WriteAllText(path, source);
             p.Message("Successfully saved example {2}{0} &Sto {1}", name, path, type);
             return true;
         }
 
-        
+
         /// <summary> Attempts to compile the given source code files into a .dll </summary>
         /// <param name="p"> Player to send messages to </param>
         /// <param name="type"> Type of files being compiled (e.g. New plugin) </param>
         /// <param name="srcs"> Path of the source code files </param>
         /// <param name="dst"> Path to the destination .dll </param>
         /// <returns> Whether compilation succeeded </returns>
-        public static bool Compile(Player p, ICompiler compiler, string type, string[] srcs, string dst) {
-            foreach (string path in srcs) 
+        public static bool Compile(Player p, ICompiler compiler, string type, string[] srcs, string dst)
+        {
+            foreach (string path in srcs)
             {
                 if (File.Exists(path)) continue;
-                
+
                 p.Message("File &9{0} &Snot found.", path);
                 return false;
             }
-            
+
             ICompilerErrors errors = compiler.Compile(srcs, dst, true);
-            if (!errors.HasErrors) {
-                p.Message("{0} compiled successfully from {1}", 
+            if (!errors.HasErrors)
+            {
+                p.Message("{0} compiled successfully from {1}",
                         type, srcs.Join(file => Path.GetFileName(file)));
                 return true;
             }
-            
+
             SummariseErrors(errors, srcs, p);
             return false;
         }
 
         public const int MAX_LOG = 5;
-        public static void SummariseErrors(ICompilerErrors errors, string[] srcs, Player p) {
+        public static void SummariseErrors(ICompilerErrors errors, string[] srcs, Player p)
+        {
             int logged = 0;
-            foreach (ICompilerError err in errors) 
+            foreach (ICompilerError err in errors)
             {
                 p.Message("&W{1} - {0}", err.ErrorText,
                           ICompiler.DescribeError(err, srcs, " #" + err.ErrorNumber));
                 logged++;
                 if (logged >= MAX_LOG) break;
             }
-            
-            if (logged < errors.Count) {
+
+            if (logged < errors.Count)
+            {
                 p.Message(" &W.. and {0} more", errors.Count - logged);
             }
             p.Message("&WCompiling failed. See " + ICompiler.ERROR_LOG_PATH + " for more detail");

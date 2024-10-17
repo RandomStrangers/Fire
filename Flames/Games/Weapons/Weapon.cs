@@ -24,34 +24,39 @@ using Flames.Network;
 using Flames.Tasks;
 using BlockID = System.UInt16;
 
-namespace Flames.Games 
+namespace Flames.Games
 {
     /// <summary> Represents a weapon which can interact with blocks or players until it dies. </summary>
-    public abstract class Weapon 
+    public abstract class Weapon
     {
         public abstract string Name { get; }
         public static bool hookedEvents;
 
         public Player p;
         public AimBox aimer;
-        
+
         /// <summary> Applies this weapon to the given player, and sets up necessary state. </summary>
-        public virtual void Enable(Player p) {
-            if (!hookedEvents) {
+        public virtual void Enable(Player p)
+        {
+            if (!hookedEvents)
+            {
                 OnPlayerClickEvent.Register(PlayerClickCallback, Priority.Low);
                 OnBlockChangingEvent.Register(BlockChangingCallback, Priority.Low);
                 hookedEvents = true;
             }
-        	
-        	if (p.weaponBuffer == null) p.weaponBuffer = new BufferedBlockSender();
-            
-            this.p   = p;
+
+            if (p.weaponBuffer == null) p.weaponBuffer = new BufferedBlockSender();
+
+            this.p = p;
             p.ClearBlockchange();
             p.weapon = this;
-            
-            if (p.Supports(CpeExt.PlayerClick)) {
+
+            if (p.Supports(CpeExt.PlayerClick))
+            {
                 OnEnabled(p, true);
-            } else {                
+            }
+            else
+            {
                 OnEnabled(p, false);
                 p.aiming = true;
                 aimer = new AimBox();
@@ -59,20 +64,23 @@ namespace Flames.Games
             }
         }
 
-        public virtual void Disable() {
+        public virtual void Disable()
+        {
             p.aiming = false;
             OnDisabled(p);
             p.weapon = null;
         }
 
         /// <summary> Called when the given player engages/equips this weapon </summary>
-        public virtual void OnEnabled(Player p, bool clickToActivate) {
+        public virtual void OnEnabled(Player p, bool clickToActivate)
+        {
             p.Message("{0} engaged, {1}fire at will", Name, clickToActivate ? "click to " : "");
         }
 
         /// <summary> Called when given player disengages/releases this weapon </summary>
-        public virtual void OnDisabled(Player p) {
-            p.Message(Name + " disabled");    
+        public virtual void OnDisabled(Player p)
+        {
+            p.Message(Name + " disabled");
         }
 
 
@@ -81,18 +89,23 @@ namespace Flames.Games
         public abstract void OnActivated(Vec3F32 dir, BlockID block);
 
 
-        public static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel) {
+        public static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        {
             Weapon weapon = p.weapon;
             if (weapon == null) return;
-            
+
             // Revert block back since client assumes changes always succeeds
             p.RevertBlock(x, y, z);
             cancel = true;
-            
+
             // Defer to player click handler if PlayerClick supported
             if (weapon.aimer == null) return;
-            
-            if (!p.level.Config.Guns) { weapon.Disable(); return; }
+
+            if (!p.level.Config.Guns) 
+            { 
+                weapon.Disable(); 
+                return; 
+            }
             if (!CommandParser.IsBlockAllowed(p, "use", block)) return;
 
             Vec3F32 dir = DirUtils.GetDirVector(p.Rot.RotY, p.Rot.HeadX);
@@ -101,28 +114,34 @@ namespace Flames.Games
 
         public static void PlayerClickCallback(Player p, MouseButton btn, MouseAction action,
                                         ushort yaw, ushort pitch, byte entity,
-                                        ushort x, ushort y, ushort z, TargetBlockFace face) {
+                                        ushort x, ushort y, ushort z, TargetBlockFace face)
+        {
             Weapon weapon = p.weapon;
             if (weapon == null || action != MouseAction.Pressed) return;
-            
+
             if (!(btn == MouseButton.Left || btn == MouseButton.Right)) return;
-            if (!p.level.Config.Guns) { weapon.Disable(); return; }
-            
+            if (!p.level.Config.Guns) 
+            { 
+                weapon.Disable(); 
+                return; 
+            }
+
             BlockID held = p.ClientHeldBlock;
             if (!CommandParser.IsBlockAllowed(p, "use", held)) return;
-            
+
             Vec3F32 dir = DirUtils.GetDirVectorExt(yaw, pitch);
             weapon.OnActivated(dir, held);
         }
 
-        public static Player PlayerAt(Player p, Vec3U16 pos, bool skipSelf) {
+        public static Player PlayerAt(Player p, Vec3U16 pos, bool skipSelf)
+        {
             Player[] players = PlayerInfo.Online.Items;
-            foreach (Player pl in players) 
+            foreach (Player pl in players)
             {
                 if (pl.level != p.level) continue;
                 if (p == pl && skipSelf) continue;
-                
-                if (Math.Abs(pl.Pos.BlockX - pos.X)    <= 1
+
+                if (Math.Abs(pl.Pos.BlockX - pos.X) <= 1
                     && Math.Abs(pl.Pos.BlockY - pos.Y) <= 1
                     && Math.Abs(pl.Pos.BlockZ - pos.Z) <= 1)
                 {
@@ -131,77 +150,92 @@ namespace Flames.Games
             }
             return null;
         }
-        
-        public static WeaponType ParseType(string type) {
+
+        public static WeaponType ParseType(string type)
+        {
             if (type.Length == 0) return WeaponType.Normal;
-            
-            if (type.CaselessEq("destroy"))  return WeaponType.Destroy;
-            if (type.CaselessEq("tp"))       return WeaponType.Teleport;
+
+            if (type.CaselessEq("destroy")) return WeaponType.Destroy;
+            if (type.CaselessEq("tp")) return WeaponType.Teleport;
             if (type.CaselessEq("teleport")) return WeaponType.Teleport;
-            if (type.CaselessEq("explode"))  return WeaponType.Explode;
-            if (type.CaselessEq("laser"))    return WeaponType.Laser;
+            if (type.CaselessEq("explode")) return WeaponType.Explode;
+            if (type.CaselessEq("laser")) return WeaponType.Laser;
             return WeaponType.Invalid;
         }
     }
-    
-    public enum WeaponType { Invalid, Normal, Destroy, Teleport, Explode, Laser };
-    
-    public class AmmunitionData 
+
+    public enum WeaponType 
+    { 
+        Invalid, Normal, Destroy, Teleport, Explode, Laser 
+    };
+
+    public class AmmunitionData
     {
         public BlockID block;
         public Vec3U16 start;
         public Vec3F32 dir;
         public bool moving = true;
-        
+
         // positions of all currently visible "trailing" blocks
         public List<Vec3U16> visible = new List<Vec3U16>();
         // position of all blocks this ammunition has touched/gone through
         public List<Vec3U16> all = new List<Vec3U16>();
         public int iterations;
-        
-        public Vec3U16 PosAt(int i) {
+
+        public Vec3U16 PosAt(int i)
+        {
             Vec3U16 target;
             target.X = (ushort)Math.Round(start.X + (double)(dir.X * i));
             target.Y = (ushort)Math.Round(start.Y + (double)(dir.Y * i));
             target.Z = (ushort)Math.Round(start.Z + (double)(dir.Z * i));
             return target;
         }
-        
-        public void DoTeleport(Player p) {
+
+        public void DoTeleport(Player p)
+        {
             int i = visible.Count - 3;
-            if (i >= 0 && i < visible.Count) {
+            if (i >= 0 && i < visible.Count)
+            {
                 Vec3U16 coords = visible[i];
-                Position pos   = new Position(coords.X * 32, coords.Y * 32 + 32, coords.Z * 32);
+                Position pos = new Position(coords.X * 32, coords.Y * 32 + 32, coords.Z * 32);
                 p.SendPosition(pos, p.Rot);
             }
         }
     }
 
     /// <summary> Manages the glass box around the player. Adjusts based on where player is looking. </summary>
-    public sealed class AimBox 
+    public sealed class AimBox
     {
         public Player player;
         public List<Vec3U16> lastGlass = new List<Vec3U16>();
-        public List<Vec3U16> curGlass  = new List<Vec3U16>();
-        
-        public void Hook(Player p) {
+        public List<Vec3U16> curGlass = new List<Vec3U16>();
+
+        public void Hook(Player p)
+        {
             player = p;
             SchedulerTask task = new SchedulerTask(AimCallback, null, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
 
-        public void AimCallback(SchedulerTask task) {
+        public void AimCallback(SchedulerTask task)
+        {
             Player p = player;
-            if (p.aiming) { Update(); return; }
-            
-            foreach (Vec3U16 pos in lastGlass) {
+            if (p.aiming) 
+            {
+                Update(); 
+                return; 
+            }
+
+            foreach (Vec3U16 pos in lastGlass)
+            {
                 if (!p.level.IsValidPos(pos)) continue;
                 p.RevertBlock(pos.X, pos.Y, pos.Z);
             }
             task.Repeating = false;
         }
 
-        public void Update() {
+        public void Update()
+        {
             Player p = player;
             Vec3F32 dir = DirUtils.GetDirVector(p.Rot.RotY, p.Rot.HeadX);
             ushort x = (ushort)Math.Round(p.Pos.BlockX + dir.X * 3);
@@ -209,24 +243,25 @@ namespace Flames.Games
             ushort z = (ushort)Math.Round(p.Pos.BlockZ + dir.Z * 3);
 
             int dx = Math.Sign(dir.X) >= 0 ? 1 : -1, dz = Math.Sign(dir.Z) >= 0 ? 1 : -1;
-            Check(p.level, x,      y, z     );
-            Check(p.level, x + dx, y, z     );
-            Check(p.level, x,      y, z + dz);
+            Check(p.level, x, y, z);
+            Check(p.level, x + dx, y, z);
+            Check(p.level, x, y, z + dz);
             Check(p.level, x + dx, y, z + dz);
 
             // Revert all glass blocks now not in the ray from the player's direction
-            for (int i = 0; i < lastGlass.Count; i++) 
+            for (int i = 0; i < lastGlass.Count; i++)
             {
                 Vec3U16 pos = lastGlass[i];
                 if (curGlass.Contains(pos)) continue;
-                
+
                 if (p.level.IsValidPos(pos))
                     p.RevertBlock(pos.X, pos.Y, pos.Z);
-                lastGlass.RemoveAt(i); i--;
+                lastGlass.RemoveAt(i); 
+                i--;
             }
 
             // Place the new glass blocks that are in the ray from the player's direction
-            foreach (Vec3U16 pos in curGlass) 
+            foreach (Vec3U16 pos in curGlass)
             {
                 if (lastGlass.Contains(pos)) continue;
                 lastGlass.Add(pos);
@@ -235,10 +270,11 @@ namespace Flames.Games
             curGlass.Clear();
         }
 
-        public void Check(Level lvl, int x, int y, int z) {
+        public void Check(Level lvl, int x, int y, int z)
+        {
             Vec3U16 pos = new Vec3U16((ushort)x, (ushort)(y - 1), (ushort)z);
             if (lvl.IsAirAt(pos.X, pos.Y, pos.Z)) curGlass.Add(pos);
-            
+
             pos.Y++;
             if (lvl.IsAirAt(pos.X, pos.Y, pos.Z)) curGlass.Add(pos);
         }

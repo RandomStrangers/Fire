@@ -16,26 +16,29 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.SQL 
+namespace Flames.SQL
 {
     /// <summary> Describes a column for an SQL create statement. </summary>
-    public struct ColumnDesc 
+    public struct ColumnDesc
     {
-        public readonly string Column;
-        public readonly ColumnType Type;
-        public readonly ushort MaxLength;
-        
-        public readonly bool AutoIncrement;
-        public readonly bool PrimaryKey;
-        public readonly bool NotNull;
-        
-        public ColumnDesc(string col, ColumnType type)
-            : this(col, type, 0, false, false, false) { }        
-        public ColumnDesc(string col, ColumnType type, ushort maxLen)
-            : this(col, type, maxLen, false, false, false) { }
-        
+        public string Column;
+        public ColumnType Type;
+        public ushort MaxLength;
+
+        public bool AutoIncrement;
+        public bool PrimaryKey;
+        public bool NotNull;
+
+        public ColumnDesc(string col, ColumnType type) : this(col, type, 0, false, false, false) 
+        { 
+        }
+        public ColumnDesc(string col, ColumnType type, ushort maxLen) : this(col, type, maxLen, false, false, false) 
+        { 
+        }
+
         public ColumnDesc(string col, ColumnType type, ushort maxLen = 0,
-                            bool autoInc = false, bool priKey = false, bool notNull = false) {
+                            bool autoInc = false, bool priKey = false, bool notNull = false)
+        {
             Column = col;
             Type = type;
             MaxLength = maxLen;
@@ -43,21 +46,22 @@ namespace Flames.SQL
             PrimaryKey = priKey;
             NotNull = notNull;
         }
-        
-        public string FormatType() {
+
+        public string FormatType()
+        {
             if (Type == ColumnType.Char) return "CHAR(" + MaxLength + ")";
             if (Type == ColumnType.VarChar) return "VARCHAR(" + MaxLength + ")";
             return colTypes[(int)Type];
         }
 
         public static string[] colTypes = new string[] {
-            "TINYINT UNSIGNED", "SMALLINT UNSIGNED", "MEDIUMINT UNSIGNED", 
-            "INT UNSIGNED", "BIGINT UNSIGNED", "TINYINT", "SMALLINT", 
+            "TINYINT UNSIGNED", "SMALLINT UNSIGNED", "MEDIUMINT UNSIGNED",
+            "INT UNSIGNED", "BIGINT UNSIGNED", "TINYINT", "SMALLINT",
             "MEDIUMINT", "INT", "BIGINT", "INTEGER", "DATETIME",
         };
     }
-    
-    public enum ColumnType 
+
+    public enum ColumnType
     {
         UInt8, UInt16, UInt24, UInt32, UInt64,
         Int8, Int16, Int24, Int32, Int64,

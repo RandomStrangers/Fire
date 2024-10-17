@@ -17,47 +17,61 @@
  */
 using Flames.DB;
 
-namespace Flames.Commands.Info 
+namespace Flames.Commands.Info
 {
-    public sealed class CmdWhois : Command2 
+    public sealed class CmdWhois : Command2
     {
         public override string name { get { return "WhoIs"; } }
         public override string shortcut { get { return "WhoWas"; } }
         public override string type { get { return CommandTypes.Information; } }
         public override bool UseableWhenFrozen { get { return true; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Owner, "can see sensitive player information (e.g. IP)") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new CommandAlias[] { new CommandAlias("Info"), new CommandAlias("i") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) {
-                if (p.IsSuper) { SuperRequiresArgs(p, "player name"); return; }
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                if (p.IsSuper) 
+                { 
+                    SuperRequiresArgs(p, "player name"); 
+                    return; 
+                }
                 message = p.name;
             }
             if (!Formatter.ValidPlayerName(p, message)) return;
 
             Player who = PlayerInfo.FindMatches(p, message, out int matches);
             if (matches > 1) return;
-            
-            if (matches == 0) {
+
+            if (matches == 0)
+            {
                 p.Message("Searching database for the player..");
                 PlayerData target = PlayerDB.Match(p, message);
                 if (target == null) return;
-                
-                foreach (OfflineStatPrinter printer in OfflineStat.Stats) {
+
+                foreach (OfflineStatPrinter printer in OfflineStat.Stats)
+                {
                     printer(p, target);
                 }
-            } else {
-                foreach (OnlineStatPrinter printer in OnlineStat.Stats) {
+            }
+            else
+            {
+                foreach (OnlineStatPrinter printer in OnlineStat.Stats)
+                {
                     printer(p, who);
                 }
             }
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/WhoIs [player]");
             p.Message("&HDisplays information about that player.");
             p.Message("&HNote: Works for both online and offline players.");

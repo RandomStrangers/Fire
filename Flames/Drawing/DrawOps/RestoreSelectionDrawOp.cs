@@ -20,36 +20,39 @@ using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class RestoreSelectionDrawOp : DrawOp 
+    public class RestoreSelectionDrawOp : DrawOp
     {
         public override string Name { get { return "RestoreSelection"; } }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks)
+        {
             return SizeX * SizeY * SizeZ;
         }
-        
-        public RestoreSelectionDrawOp() {
+
+        public RestoreSelectionDrawOp()
+        {
             Flags = BlockDBFlags.Restored;
             AffectedByTransform = false;
         }
-        
+
         public Level Source;
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
-            Max.X = Math.Min(Max.X, Source.Width  - 1);
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
+            Max.X = Math.Min(Max.X, Source.Width - 1);
             Max.Y = Math.Min(Max.Y, Source.Height - 1);
             Max.Z = Math.Min(Max.Z, Source.Length - 1);
-            
-            Vec3U16 p1 = Clamp(Min), p2 = Clamp(Max);            
+
+            Vec3U16 p1 = Clamp(Min), p2 = Clamp(Max);
             for (ushort y = p1.Y; y <= p2.Y; y++)
                 for (ushort z = p1.Z; z <= p2.Z; z++)
                     for (ushort x = p1.X; x <= p2.X; x++)
-            {
-                output(Place(x, y, z, Source.FastGetBlock(x, y, z)));
-            }
-            
+                    {
+                        output(Place(x, y, z, Source.FastGetBlock(x, y, z)));
+                    }
+
             Source.Dispose();
         }
     }

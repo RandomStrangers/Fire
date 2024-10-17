@@ -181,9 +181,7 @@ namespace Flames
             LoadCorePlugin(new LSPlugin());
             LoadCorePlugin(new TWPlugin());
             LoadCorePlugin(new ZSPlugin());
-#if !F_STANDALONE
             LoadCorePlugin(new CompilerPlugin());
-#endif
             IScripting.AutoloadPlugins();
         }
         public static void LoadCorePlugin(Plugin plugin)

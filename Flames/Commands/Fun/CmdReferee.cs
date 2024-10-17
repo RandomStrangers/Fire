@@ -17,36 +17,46 @@
  */
 using Flames.Events.PlayerEvents;
 
-namespace Flames.Commands.Fun {
-    public sealed class CmdReferee : Command2 {
+namespace Flames.Commands.Fun
+{
+    public sealed class CmdReferee : Command2
+    {
         public override string name { get { return "Referee"; } }
         public override string shortcut { get { return "Ref"; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
         public override bool SuperUseable { get { return false; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (p.Game.Referee) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (p.Game.Referee)
+            {
                 Chat.MessageFrom(p, "λNICK &Sis no longer a referee", Chat.FilterVisible(p));
                 OnPlayerActionEvent.Call(p, PlayerAction.UnReferee);
                 p.Game.Referee = false;
-            } else {
+            }
+            else
+            {
                 Chat.MessageFrom(p, "λNICK &Sis now a referee", Chat.FilterVisible(p));
                 OnPlayerActionEvent.Call(p, PlayerAction.Referee);
                 p.Game.Referee = true;
             }
             p.SetPrefix();
-            
-            if (p.Supports(CpeExt.InstantMOTD)) {
+
+            if (p.Supports(CpeExt.InstantMOTD))
+            {
                 p.SendMapMotd();
-            } else if (p.Supports(CpeExt.HackControl)) {
+            }
+            else if (p.Supports(CpeExt.HackControl))
+            {
                 string motd = p.GetMotd();
                 if (p.Game.Referee) motd += " +hax";
                 p.Send(Hacks.MakeHackControl(p, motd));
             }
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Referee");
             p.Message("&HTurns referee mode on/off.");
             p.Message("&HReferee mode enables you to use hacks and TP in games");

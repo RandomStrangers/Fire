@@ -18,44 +18,51 @@
 using System;
 using System.IO;
 
-namespace Flames.Bots 
-{    
+namespace Flames.Bots
+{
     /// <summary> Causes the bot to instantly teleport to a position. </summary>
-    public class TeleportInstruction : BotInstruction 
+    public class TeleportInstruction : BotInstruction
     {
-        public TeleportInstruction() { Name = "teleport"; }
+        public TeleportInstruction()
+        {
+            Name = "teleport";
+        }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             Coords coords = (Coords)data.Metadata;
             bot.Pos = new Position(coords.X, coords.Y, coords.Z);
             bot.SetYawPitch(coords.RotX, coords.RotY);
-            
+
             bot.NextInstruction();
             return true;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             Coords coords;
             coords.X = int.Parse(args[1]);
             coords.Y = int.Parse(args[2]);
             coords.Z = int.Parse(args[3]);
             coords.RotX = byte.Parse(args[4]);
             coords.RotY = byte.Parse(args[5]);
-            
+
             InstructionData data = default;
             data.Metadata = coords;
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
             w.WriteLine(Name + " " + p.Pos.X + " " + p.Pos.Y + " " + p.Pos.Z + " " + p.Rot.RotY + " " + p.Rot.HeadX);
         }
 
-        public struct Coords {
+        public struct Coords
+        {
             public int X, Y, Z;
             public byte RotX, RotY;
         }
-        
+
         public override string[] Help { get { return help; } }
         public static string[] help = new string[] {
             "&T/BotAI add [name] teleport",
@@ -63,27 +70,33 @@ namespace Flames.Bots
             "&H  Note: The position saved to the AI is your current position.",
         };
     }
-    
-    /// <summary> Causes the bot to gradually move to to a position. </summary>
-    public sealed class WalkInstruction : TeleportInstruction 
-    {
-        public WalkInstruction() { Name = "walk"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+    /// <summary> Causes the bot to gradually move to to a position. </summary>
+    public sealed class WalkInstruction : TeleportInstruction
+    {
+        public WalkInstruction()
+        {
+            Name = "walk";
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             Coords target = (Coords)data.Metadata;
             bot.TargetPos = new Position(target.X, target.Y, target.Z);
-            bot.movement  = true;
+            bot.movement = true;
 
-            if (bot.Pos.BlockX == bot.TargetPos.BlockX && bot.Pos.BlockZ == bot.TargetPos.BlockZ) {
+            if (bot.Pos.BlockX == bot.TargetPos.BlockX && bot.Pos.BlockZ == bot.TargetPos.BlockZ)
+            {
                 bot.SetYawPitch(target.RotX, target.RotY); // TODO don't call
                 bot.movement = false;
-                bot.NextInstruction(); return false;
+                bot.NextInstruction();
+                return false;
             }
-            
+
             bot.FaceTowards(bot.Pos, bot.TargetPos);
             return true;
         }
-        
+
         public override string[] Help { get { return help; } }
         public static string[] help = new string[] {
             "&T/BotAI add [name] walk",
@@ -91,17 +104,22 @@ namespace Flames.Bots
             "&H  Note: The position saved to the AI is your current position.",
         };
     }
-    
-    /// <summary> Causes the bot to begin jumping. </summary>
-    public sealed class JumpInstruction : BotInstruction 
-    {
-        public JumpInstruction() { Name = "jump"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
-            if (bot.curJump <= 0) bot.curJump = 1;
-            bot.NextInstruction(); return false;
+    /// <summary> Causes the bot to begin jumping. </summary>
+    public sealed class JumpInstruction : BotInstruction
+    {
+        public JumpInstruction()
+        {
+            Name = "jump";
         }
-        
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
+            if (bot.curJump <= 0) bot.curJump = 1;
+            bot.NextInstruction();
+            return false;
+        }
+
         public override string[] Help { get { return help; } }
         public static string[] help = new string[] {
             "&T/BotAI add [name] jump",
@@ -110,29 +128,36 @@ namespace Flames.Bots
             "&H  (e.g. For a \"jump\" then a \"walk\" instruction, the bot will jump while also walking",
         };
     }
-    
-    /// <summary> Causes the bot to change how fast it moves. </summary>
-    public sealed class SpeedInstruction : BotInstruction 
-    {
-        public SpeedInstruction() { Name = "speed"; }
 
-        public override bool Execute(PlayerBot bot, InstructionData data) {
+    /// <summary> Causes the bot to change how fast it moves. </summary>
+    public sealed class SpeedInstruction : BotInstruction
+    {
+        public SpeedInstruction()
+        {
+            Name = "speed";
+        }
+
+        public override bool Execute(PlayerBot bot, InstructionData data)
+        {
             bot.movementSpeed = (int)Math.Round(3m * (short)data.Metadata / 100m);
             if (bot.movementSpeed == 0) bot.movementSpeed = 1;
-            bot.NextInstruction(); return false;
+            bot.NextInstruction();
+            return false;
         }
-        
-        public override InstructionData Parse(string[] args) {
+
+        public override InstructionData Parse(string[] args)
+        {
             InstructionData data = default;
             data.Metadata = short.Parse(args[1]);
             return data;
         }
-        
-        public override void Output(Player p, string[] args, TextWriter w) {
+
+        public override void Output(Player p, string[] args, TextWriter w)
+        {
             string time = args.Length > 3 ? args[3] : "10";
             w.WriteLine(Name + " " + short.Parse(time));
         }
-        
+
         public override string[] Help { get { return help; } }
         public static string[] help = new string[] {
             "&T/BotAI add [name] speed [percentage]",

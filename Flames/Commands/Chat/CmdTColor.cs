@@ -15,28 +15,33 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-namespace Flames.Commands.Chatting 
+namespace Flames.Commands.Chatting
 {
-    public class CmdTColor : EntityPropertyCmd 
+    public class CmdTColor : EntityPropertyCmd
     {
         public override string name { get { return "TColor"; } }
         public override string type { get { return CommandTypes.Chat; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can change the title color of others") }; }
         }
-        public override CommandAlias[] Aliases {
+        public override CommandAlias[] Aliases
+        {
             get { return new[] { new CommandAlias("TColour"), new CommandAlias("XTColor", "-own") }; }
         }
-        public override void Use(Player p, string message, CommandData data) { 
-            UsePlayer(p, data, message, "title color"); 
+        public override void Use(Player p, string message, CommandData data)
+        {
+            UsePlayer(p, data, message, "title color");
         }
 
-        public override void SetPlayerData(Player p, string target, string colName) {
+        public override void SetPlayerData(Player p, string target, string colName)
+        {
             PlayerOperations.SetTitleColor(p, target, colName);
         }
 
-        public override void Help(Player p) {
+        public override void Help(Player p)
+        {
             p.Message("&T/TColor [player] [color]");
             p.Message("&HSets the title color of [player]");
             p.Message("&H  If [color] is not given, title color is removed.");

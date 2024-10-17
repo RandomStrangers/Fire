@@ -21,22 +21,22 @@ using Flames.Drawing.Brushes;
 using Flames.Maths;
 using BlockID = System.UInt16;
 
-namespace Flames.Drawing.Ops 
-{    
-    public class HighlightDrawOp : DrawOp 
+namespace Flames.Drawing.Ops
+{
+    public class HighlightDrawOp : DrawOp
     {
         public override string Name { get { return "Highlight"; } }
-        
+
         // Some servers like to set custom default highlight blocks due to using custom blocks
-        public static BlockID DefaultPlaceHighlight  = Block.Green;
+        public static BlockID DefaultPlaceHighlight = Block.Green;
         public static BlockID DefaultDeleteHighlight = Block.Red;
-        
+
         /// <summary> Point in time that the /highlight should go backwards up to. </summary>
         public DateTime Start = DateTime.MinValue;
-        
+
         /// <summary> Block to highlight placements with. </summary>
         public BlockID PlaceHighlight = DefaultPlaceHighlight;
-        
+
         /// <summary> Block to highlight deletions with. </summary>
         public BlockID DeleteHighlight = DefaultDeleteHighlight;
 
@@ -44,50 +44,60 @@ namespace Flames.Drawing.Ops
         public string who;
         public int[] ids;
         public int totalChanges = 0;
-        
-        public HighlightDrawOp() {
+
+        public HighlightDrawOp()
+        {
             Flags = 0;
             Undoable = false;
             AffectedByTransform = false;
         }
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) { return -1; }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks) 
+        { 
+            return -1; 
+        }
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
             this.output = output;
             PerformHighlight();
             this.output = null;
         }
 
-        public void PerformHighlight() {
+        public void PerformHighlight()
+        {
             if (ids.Length == 0) return;
-                
+
             // can't use "using" as it creates a local var, and read lock reference may be changed by DrawOpPerformer class
-            try {
+            try
+            {
                 BlockDBReadLock = Level.BlockDB.Locker.AccquireRead();
                 if (Level.BlockDB.FindChangesBy(ids, Start, DateTime.MaxValue, out dims, HighlightBlock)) return;
-            } finally {
-                if (BlockDBReadLock != null) BlockDBReadLock.Dispose();
+            }
+            finally
+            {
+                BlockDBReadLock?.Dispose();
             }
         }
 
         public DrawOpOutput output;
         public Vec3U16 dims;
 
-        public void HighlightBlock(BlockDBEntry e) {
+        public void HighlightBlock(BlockDBEntry e)
+        {
             BlockID oldBlock = e.OldBlock;
             if (oldBlock == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             BlockID newBlock = e.NewBlock;
-            
+
             BlockID highlight = (newBlock == Block.Air
                                   || Block.Convert(oldBlock) == Block.Water || oldBlock == Block.StillWater
-                                  || Block.Convert(oldBlock) == Block.Lava  || oldBlock == Block.StillLava)
+                                  || Block.Convert(oldBlock) == Block.Lava || oldBlock == Block.StillLava)
                 ? DeleteHighlight : PlaceHighlight;
-            
+
             int x = e.Index % dims.X;
-            int y = (e.Index / dims.X) / dims.Z;
-            int z = (e.Index / dims.X) % dims.Z;
-            
+            int y = e.Index / dims.X / dims.Z;
+            int z = e.Index / dims.X % dims.Z;
+
             if (x < Min.X || y < Min.Y || z < Min.Z) return;
             if (x > Max.X || y > Max.Y || z > Max.Z) return;
             output(Place((ushort)x, (ushort)y, (ushort)z, highlight));

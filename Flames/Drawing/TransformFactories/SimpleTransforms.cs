@@ -18,9 +18,9 @@
 using System;
 using Flames.Commands;
 
-namespace Flames.Drawing.Transforms 
+namespace Flames.Drawing.Transforms
 {
-    public sealed class NoTransformFactory : TransformFactory 
+    public sealed class NoTransformFactory : TransformFactory
     {
         public override string Name { get { return "None"; } }
         public override string[] Help { get { return HelpString; } }
@@ -29,13 +29,14 @@ namespace Flames.Drawing.Transforms
             "&TArguments: none",
             "&HDoes not affect the output of draw operations.",
         };
-        
-        public override Transform Construct(Player p, string message) {
+
+        public override Transform Construct(Player p, string message)
+        {
             return NoTransform.Instance;
         }
     }
-    
-    public sealed class ScaleTransformFactory : TransformFactory 
+
+    public sealed class ScaleTransformFactory : TransformFactory
     {
         public override string Name { get { return "Scale"; } }
         public override string[] Help { get { return HelpString; } }
@@ -47,52 +48,79 @@ namespace Flames.Drawing.Transforms
             "&H[centre] if given, indicates to scale from the centre of a draw operation, " +
                 "instead of outwards from the first mark. Recommended for cuboid and cylinder.",
         };
-        
-        public override Transform Construct(Player p, string message) {
+
+        public override Transform Construct(Player p, string message)
+        {
             string[] args = message.SplitSpaces();
-            if (message.Length == 0 || args.Length > 4) { p.MessageLines(Help); return null; }
+            if (message.Length == 0 || args.Length > 4) 
+            {
+                p.MessageLines(Help);
+                return null; 
+            }
             int mul = 0, div = 0;
             ScaleTransform scaler = new ScaleTransform();
-            
-            if (args.Length <= 2) {
+
+            if (args.Length <= 2)
+            {
                 if (!ParseFraction(p, args[0], "Scale", out mul, out div)) return null;
-                scaler.XMul = mul; scaler.XDiv = div;
-                scaler.YMul = mul; scaler.YDiv = div;
-                scaler.ZMul = mul; scaler.ZDiv = div;
-            } else {
+                scaler.XMul = mul; 
+                scaler.XDiv = div;
+                scaler.YMul = mul; 
+                scaler.YDiv = div;
+                scaler.ZMul = mul; 
+                scaler.ZDiv = div;
+            }
+            else
+            {
                 if (!ParseFraction(p, args[0], "X scale", out mul, out div)) return null;
-                scaler.XMul = mul; scaler.XDiv = div;
+                scaler.XMul = mul; 
+                scaler.XDiv = div;
                 if (!ParseFraction(p, args[1], "Y scale", out mul, out div)) return null;
-                scaler.YMul = mul; scaler.YDiv = div;
+                scaler.YMul = mul; 
+                scaler.YDiv = div;
                 if (!ParseFraction(p, args[2], "Z scale", out mul, out div)) return null;
-                scaler.ZMul = mul; scaler.ZDiv = div;
+                scaler.ZMul = mul; 
+                scaler.ZDiv = div;
             }
 
-            scaler.CheckScales();            
+            scaler.CheckScales();
             if ((args.Length % 2) != 0) return scaler; // no centre argument
-            
-            if (!args[args.Length - 1].CaselessEq("centre")) {
-                p.Message("The mode must be either \"centre\", or not given."); return null;
+
+            if (!args[args.Length - 1].CaselessEq("centre"))
+            {
+                p.Message("The mode must be either \"centre\", or not given."); 
+                return null;
             }
             scaler.CentreOrigin = true;
             return scaler;
         }
 
-        public static bool ParseFraction(Player p, string input, string argName, out int mul, out int div) {
+        public static bool ParseFraction(Player p, string input, string argName, out int mul, out int div)
+        {
             int sep = input.IndexOf('/');
-            div = 1; mul = 1;
-            
-            if (sep == -1) { // single whole number
+            div = 1; 
+            mul = 1;
+
+            if (sep == -1)
+            { // single whole number
                 return CommandParser.GetInt(p, input, argName, ref mul, -32, 32);
             }
-            
+
             string top = input.Substring(0, sep), bottom = input.Substring(sep + 1);
-            if (!CommandParser.GetInt(p, top,    argName + " (numerator)",   ref mul, -32768, 32768)) return false;
+            if (!CommandParser.GetInt(p, top, argName + " (numerator)", ref mul, -32768, 32768)) return false;
             if (!CommandParser.GetInt(p, bottom, argName + " (denominator)", ref div, -32768, 32768)) return false;
-            
-            if (div == 0) { p.Message("&WCannot divide by 0."); return false; }
+
+            if (div == 0) 
+            { 
+                p.Message("&WCannot divide by 0."); 
+                return false; 
+            }
             float fract = mul / (float)div;
-            if (Math.Abs(fract) > 32) { p.Message(argName + " must be between -32 and 32."); return false; }
+            if (Math.Abs(fract) > 32) 
+            { 
+                p.Message(argName + " must be between -32 and 32."); 
+                return false; 
+            }
             return true;
         }
     }

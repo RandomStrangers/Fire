@@ -20,80 +20,95 @@ using System.Collections.Generic;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
 
-namespace Flames.Drawing.Ops 
+namespace Flames.Drawing.Ops
 {
-    public class MazeDrawOp : CuboidHollowsDrawOp 
+    public class MazeDrawOp : CuboidHollowsDrawOp
     {
         public override string Name { get { return "Maze"; } }
-        
+
         public Random rng;
         public bool[,] wall;
         public int width, length;
-        
-        public override long BlocksAffected(Level lvl, Vec3S32[] marks) {
+
+        public override long BlocksAffected(Level lvl, Vec3S32[] marks)
+        {
             int lenX = (Math.Abs(Max.X - Min.X) + 1) / 2;
             int lenZ = (Math.Abs(Max.Z - Min.Z) + 1) / 2;
             return lenX * lenZ * 3;
         }
-        
-        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output) {
+
+        public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
+        {
             width = Max.X - Min.X;
-            if (width % 2 != 0) { width++; Min.X--; }
+            if (width % 2 != 0) 
+            {
+                width++; 
+                Min.X--; 
+            }
             width -= 2;
             length = Max.Z - Min.Z;
-            if (length % 2 != 0) { length++; Min.Z--; }
+            if (length % 2 != 0) 
+            { 
+                length++; 
+                Min.Z--; 
+            }
             length -= 2;
-            
-            if (width <= 0 || length <= 0) {
-                Player.Message("The corners of the maze need to be further apart."); return;
-            }            
+
+            if (width <= 0 || length <= 0)
+            {
+                Player.Message("The corners of the maze need to be further apart."); 
+                return;
+            }
             Player.Message("Generating maze... this could take a while");
             GenerateMaze();
             Player.Message("Generated maze, now drawing.");
-            
+
             Vec3U16 min = Clamp(Min), max = Clamp(Max);
             ushort y = min.Y;
-            
+
             for (ushort x = 0; x <= width; x++)
                 for (ushort z = 0; z <= length; z++)
                     if (wall[x, z])
-            {
-                output(Place((ushort)(min.X + x + 1),               y, (ushort)(min.Z + z + 1), Block.DoubleSlab));
-                output(Place((ushort)(min.X + x + 1), (ushort)(y + 1), (ushort)(min.Z + z + 1), Block.Leaves));
-                output(Place((ushort)(min.X + x + 1), (ushort)(y + 2), (ushort)(min.Z + z + 1), Block.Leaves));
-            }
-            
+                    {
+                        output(Place((ushort)(min.X + x + 1), y, (ushort)(min.Z + z + 1), Block.DoubleSlab));
+                        output(Place((ushort)(min.X + x + 1), (ushort)(y + 1), (ushort)(min.Z + z + 1), Block.Leaves));
+                        output(Place((ushort)(min.X + x + 1), (ushort)(y + 2), (ushort)(min.Z + z + 1), Block.Leaves));
+                    }
+
             brush = new SolidBrush(Block.DoubleSlab);
             QuadX(min.X, y, min.Z, y, max.Z, brush, output);
             QuadX(max.X, y, min.Z, y, max.Z, brush, output);
             QuadZ(min.Z, y, min.X, y, max.X, brush, output);
             QuadZ(max.Z, y, min.X, y, max.X, brush, output);
-            
+
             brush = new SolidBrush(Block.Leaves);
             QuadX(min.X, (ushort)(y + 1), min.Z, (ushort)(y + 2), max.Z, brush, output);
             QuadX(max.X, (ushort)(y + 1), min.Z, (ushort)(y + 2), max.Z, brush, output);
             QuadZ(min.Z, (ushort)(y + 1), min.X, (ushort)(y + 2), max.X, brush, output);
             QuadZ(max.Z, (ushort)(y + 1), min.X, (ushort)(y + 2), max.X, brush, output);
-            
+
             Player.Message("Maze painted. Build the entrance and exit yourself");
         }
 
-        public void GenerateMaze() {
+        public void GenerateMaze()
+        {
             //subtract 2 cause we will just make the inner. the outer wall is made seperately
             wall = new bool[width + 1, length + 1]; // +1 cause we begin at 0 so we need one object more
             for (int w = 0; w <= width; w++)
                 for (int h = 0; h <= length; h++)
-            {
-                wall[w, h] = true;
-            }
-            
+                {
+                    wall[w, h] = true;
+                }
+
             Stack<GridNode> stack = new Stack<GridNode>(width * length);
             stack.Push(new GridNode(0, 0));
             wall[0, 0] = false;
-            
-            while (stack.Count > 0) { //if no nodes are free anymore end the generation
+
+            while (stack.Count > 0)
+            { //if no nodes are free anymore end the generation
                 GridNode P = stack.Peek();
-                if (TurnsPossible(P)) {
+                if (TurnsPossible(P))
+                {
                     GridNode P1, P2;
                     MoveRandomDir(P, out P1, out P2);
                     wall[P1.X, P1.Y] = false;
@@ -103,58 +118,78 @@ namespace Flames.Drawing.Ops
                     //the first is a middle node from which there shouldnt start a new corridor
                     //the second is added to the stack. next try will be with this node
                     //i hope this will work this time...
-                } else {
+                }
+                else
+                {
                     stack.Pop();//if this node is a dead and it will be removed
                 }
             }
         }
 
-        public void MoveRandomDir(GridNode P, out GridNode P1, out GridNode P2) {        
-            while (true) {
+        public void MoveRandomDir(GridNode P, out GridNode P1, out GridNode P2)
+        {
+            while (true)
+            {
                 int dir = rng.Next(4);
-        		
-                switch (dir) {
+
+                switch (dir)
+                {
                     case 0: //go up
-                        if (IsWall(P.X, P.Y + 2)) {
+                        if (IsWall(P.X, P.Y + 2))
+                        {
                             P1 = new GridNode(P.X, (ushort)(P.Y + 1));
                             P2 = new GridNode(P.X, (ushort)(P.Y + 2));
                             return;
-                        } break;
+                        }
+                        break;
                     case 1: //go down
-                        if (IsWall(P.X, P.Y - 2)) {
+                        if (IsWall(P.X, P.Y - 2))
+                        {
                             P1 = new GridNode(P.X, (ushort)(P.Y - 1));
                             P2 = new GridNode(P.X, (ushort)(P.Y - 2));
                             return;
-                        } break;
+                        }
+                        break;
                     case 2: //go right
-                        if (IsWall(P.X + 2, P.Y)) {
+                        if (IsWall(P.X + 2, P.Y))
+                        {
                             P1 = new GridNode((ushort)(P.X + 1), P.Y);
                             P2 = new GridNode((ushort)(P.X + 2), P.Y);
                             return;
-                        } break;
+                        }
+                        break;
                     case 3: //go left
-                        if (IsWall(P.X - 2, P.Y)) {
+                        if (IsWall(P.X - 2, P.Y))
+                        {
                             P1 = new GridNode((ushort)(P.X - 1), P.Y);
                             P2 = new GridNode((ushort)(P.X - 2), P.Y);
                             return;
-                        } break;
+                        }
+                        break;
                 }
             }
         }
 
-        public bool TurnsPossible(GridNode P) {
+        public bool TurnsPossible(GridNode P)
+        {
             return IsWall(P.X, P.Y + 2) || IsWall(P.X, P.Y - 2)
                 || IsWall(P.X + 2, P.Y) || IsWall(P.X - 2, P.Y);
         }
 
-        public bool IsWall(int x, int y) {
+        public bool IsWall(int x, int y)
+        {
             if (x < 0 || y < 0 || x > width || y > length) return false;
             return wall[x, y];
         }
 
-        public struct GridNode {
-            public ushort X, Y;         
-            public GridNode(ushort x, ushort y) { X = x; Y = y; }
+        public struct GridNode
+        {
+            public ushort X, Y;
+            public GridNode(ushort x, ushort y) 
+            { 
+                X = x; 
+                Y = y; 
+            }
         }
     }
 }

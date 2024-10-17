@@ -22,25 +22,28 @@ using System.CodeDom.Compiler;
 
 namespace Flames.Modules.Compiling
 {
-    public sealed class CSCompiler : ICompiler 
+    public sealed class CSCompiler : ICompiler
     {
         public override string FileExtension { get { return ".cs"; } }
-        public override string ShortName     { get { return "C#"; } }  
-        public override string FullName      { get { return "CSharp"; } }
+        public override string ShortName { get { return "C#"; } }
+        public override string FullName { get { return "CSharp"; } }
 
         CodeDomProvider compiler;
 
-        public override ICompilerErrors DoCompile(string[] srcPaths, string dstPath) {
+        public override ICompilerErrors DoCompile(string[] srcPaths, string dstPath)
+        {
             CompilerParameters args = ICodeDomCompiler.PrepareInput(srcPaths, dstPath, "//");
-            args.CompilerOptions   += " /unsafe";
+            args.CompilerOptions += " /unsafe";
             // NOTE: Make sure to keep CompilerOptions in sync with RoslynCSharpCompiler
 
             ICodeDomCompiler.InitCompiler(this, "CSharp", ref compiler);
             return ICodeDomCompiler.Compile(args, srcPaths, compiler);
         }
 
-        public override string CommandSkeleton {
-            get {
+        public override string CommandSkeleton
+        {
+            get
+            {
                 return @"//\tAuto-generated command skeleton class
 //\tUse this as a basis for custom Flames commands
 //\tNaming should be kept consistent (e.g. /update command should have a class name of 'CmdUpdate' and a filename of 'CmdUpdate.cs')
@@ -88,9 +91,11 @@ public class Cmd{0} : Command
 }}";
             }
         }
-        
-        public override string PluginSkeleton {
-            get {
+
+        public override string PluginSkeleton
+        {
+            get
+            {
                 return @"//\tAuto-generated plugin skeleton class
 //\tUse this as a basis for custom Flames plugins
 

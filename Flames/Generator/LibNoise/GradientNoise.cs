@@ -31,7 +31,7 @@ namespace LibNoise
         public const int SEED_NOISE = 1013;
         public const int SHIFT_NOISE_GEN = 8;
 
-        public static double[] RandomVectors = 
+        public static double[] RandomVectors =
         {
             -0.763874, -0.596439, -0.246489,
             0.396055, 0.904518, -0.158073,
@@ -294,11 +294,11 @@ namespace LibNoise
         public static double GradientCoherentNoise(double x, double y, double z, int seed)
         {
             // NOTE: Incorrect logic, should be >= 0.0 (kept for compatibility)
-            int x0 = (x > 0.0 ? (int)x : (int)x - 1);
+            int x0 = x > 0.0 ? (int)x : (int)x - 1;
             int x1 = x0 + 1;
-            int y0 = (y > 0.0 ? (int)y : (int)y - 1);
+            int y0 = y > 0.0 ? (int)y : (int)y - 1;
             int y1 = y0 + 1;
-            int z0 = (z > 0.0 ? (int)z : (int)z - 1);
+            int z0 = z > 0.0 ? (int)z : (int)z - 1;
             int z1 = z0 + 1;
 
             // case NoiseQuality.Standard:
@@ -328,23 +328,20 @@ namespace LibNoise
 
         public static double GradientRawNoise(double fx, double fy, double fz, int ix, int iy, int iz, int seed)
         {
-            int vectorIndex = (
-                  X_NOISE_GEN * ix
-                + Y_NOISE_GEN * iy
-                + Z_NOISE_GEN * iz
-                + SEED_NOISE * seed);
-            vectorIndex ^= (vectorIndex >> SHIFT_NOISE_GEN);
+            int vectorIndex = X_NOISE_GEN * ix + Y_NOISE_GEN * iy 
+                + Z_NOISE_GEN * iz + SEED_NOISE * seed;
+            vectorIndex ^= vectorIndex >> SHIFT_NOISE_GEN;
             vectorIndex &= 0xff;
 
-            double xvGradient = RandomVectors[(vectorIndex * 3)    ];
+            double xvGradient = RandomVectors[vectorIndex * 3];
             double yvGradient = RandomVectors[(vectorIndex * 3) + 1];
             double zvGradient = RandomVectors[(vectorIndex * 3) + 2];
 
-            double xvPoint = (fx - ix);
-            double yvPoint = (fy - iy);
-            double zvPoint = (fz - iz);
+            double xvPoint = fx - ix;
+            double yvPoint = fy - iy;
+            double zvPoint = fz - iz;
 
-            return 
+            return
                  ((xvGradient * xvPoint)
                 + (yvGradient * yvPoint)
                 + (zvGradient * zvPoint)) * 2.12;
@@ -364,7 +361,7 @@ namespace LibNoise
         /// </summary>
         public static double SCurve3(double a)
         {
-            return (a * a * (3.0 - 2.0 * a));
-        }      
+            return a * a * (3.0 - 2.0 * a);
+        }
     }
 }

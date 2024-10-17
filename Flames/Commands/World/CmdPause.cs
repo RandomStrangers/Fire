@@ -18,55 +18,68 @@
 using System;
 using Flames.Tasks;
 
-namespace Flames.Commands.World {
-    public sealed class CmdPause : Command2 {
+namespace Flames.Commands.World
+{
+    public sealed class CmdPause : Command2
+    {
         public override string name { get { return "Pause"; } }
         public override string type { get { return CommandTypes.World; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             int seconds = 30;
             Level lvl = p.IsSuper ? Server.mainLevel : p.level;
-            
-            if (message.Length > 0) {
+
+            if (message.Length > 0)
+            {
                 string[] parts = message.SplitSpaces();
-                if (parts.Length == 1) {
-                    if (!int.TryParse(parts[0], out seconds)) {
+                if (parts.Length == 1)
+                {
+                    if (!int.TryParse(parts[0], out seconds))
+                    {
                         seconds = 30;
                         lvl = Matcher.FindLevels(p, parts[0]);
                         if (lvl == null) return;
                     }
-                } else {
+                }
+                else
+                {
                     if (!CommandParser.GetInt(p, parts[0], "Pause time", ref seconds, 0)) return;
-                    
+
                     lvl = Matcher.FindLevels(p, parts[1]);
                     if (lvl == null) return;
                 }
             }
-            
+
             if (!LevelInfo.Check(p, data.Rank, lvl, "pause physics on this level")) return;
             bool enabled = lvl.PhysicsPaused;
             lvl.PhysicsPaused = !lvl.PhysicsPaused;
-            
-            if (enabled) {
+
+            if (enabled)
+            {
                 Chat.MessageGlobal("Physics on {0} &Swere re-enabled.", lvl.ColoredName);
-            } else {
+            }
+            else
+            {
                 Server.MainScheduler.QueueOnce(PauseCallback, lvl.name,
                                                TimeSpan.FromSeconds(seconds));
                 Chat.MessageGlobal("Physics on {0} &Swere temporarily disabled.", lvl.ColoredName);
             }
         }
 
-        public static void PauseCallback(SchedulerTask task) {
+        public static void PauseCallback(SchedulerTask task)
+        {
             string lvlName = (string)task.State;
             Level lvl = LevelInfo.FindExact(lvlName);
             if (lvl == null) return;
-            
+
             lvl.PhysicsPaused = false;
             Chat.MessageGlobal("Physics on {0} &Swere re-enabled.", lvl.ColoredName);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Pause [level] [seconds]");
             p.Message("&HPauses physics on the given level for the given number of seconds.");
             p.Message("&H  If [level] is not given, pauses physics on the current level.");

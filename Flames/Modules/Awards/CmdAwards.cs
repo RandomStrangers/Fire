@@ -19,44 +19,56 @@ using System.Collections.Generic;
 
 namespace Flames.Modules.Awards
 {
-    public sealed class CmdAwards : Command2 
+    public sealed class CmdAwards : Command2
     {
         public override string name { get { return "Awards"; } }
         public override string type { get { return CommandTypes.Economy; } }
 
-        public override void Use(Player p, string message, CommandData data) {
+        public override void Use(Player p, string message, CommandData data)
+        {
             string[] args = message.SplitSpaces();
-            if (args.Length > 2) { Help(p); return; }
-            int offset = 0;           
+            if (args.Length > 2) 
+            { 
+                Help(p); 
+                return; 
+            }
+            int offset = 0;
             string name = p.name;
 
-            if (args.Length == 2 || (message.Length > 0 && !IsListModifier(args[0]))) {
+            if (args.Length == 2 || (message.Length > 0 && !IsListModifier(args[0])))
+            {
                 offset = 1;
                 name = PlayerInfo.FindMatchesPreferOnline(p, args[0]);
                 if (name == null) return;
             }
 
             List<Award> awards = AwardsList.Awards;
-            if (awards.Count == 0) { p.Message("This server has no awards yet."); return; }
-            
+            if (awards.Count == 0) 
+            { 
+                p.Message("This server has no awards yet."); 
+                return; 
+            }
+
             List<string> playerAwards = PlayerAwards.Get(name);
             ItemPrinter<Award> printer = (p_, award) => PrintAward(p_, award, playerAwards);
-            
+
             string cmd = name.Length == 0 ? "awards" : "awards " + name;
             string modifier = args.Length > offset ? args[offset] : "";
-            
+
             p.Message("Awards {0} &Shas:", p.FormatNick(name));
             Paginator.Output(p, awards, printer,
                              cmd, "Awards", modifier);
         }
 
-        public static void PrintAward(Player p, Award award, List<string> awards) {
+        public static void PrintAward(Player p, Award award, List<string> awards)
+        {
             bool has = awards != null && awards.CaselessContains(award.Name);
-            p.Message("  {0}{1}: &7{2}",  
+            p.Message("  {0}{1}: &7{2}",
                       has ? "&a" : "&c", award.Name, award.Description);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Awards <player> &H- Lists awards");
             p.Message("&HAppears &agreen &Hif player has an award, &cred &Hif not");
         }

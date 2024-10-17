@@ -20,100 +20,136 @@ using System.Collections.Generic;
 using System.IO;
 using Flames.Config;
 
-namespace Flames.Bots {
+namespace Flames.Bots
+{
 
     /// <summary> Maintains persistent data for in-game bots. </summary>
-    public static class BotsFile {
+    public static class BotsFile
+    {
         public static ConfigElement[] elems;
-        
-        public static void Load(Level lvl) { lock (lvl.botsIOLock) { LoadCore(lvl); } }
-        public static void LoadCore(Level lvl) {
+
+        public static void Load(Level lvl)
+        {
+            lock (lvl.botsIOLock)
+            {
+                LoadCore(lvl);
+            }
+        }
+        public static void LoadCore(Level lvl)
+        {
             string path = Paths.BotsPath(lvl.MapName);
             if (!File.Exists(path)) return;
             List<BotProperties> props = null;
-            
-            try {
+
+            try
+            {
                 props = ReadAll(path);
-            } catch (Exception ex) {
-                Logger.LogError("Reading bots file", ex); return;
             }
-            
-            foreach (BotProperties data in props) {
+            catch (Exception ex)
+            {
+                Logger.LogError("Reading bots file", ex);
+                return;
+            }
+
+            foreach (BotProperties data in props)
+            {
                 PlayerBot bot = new PlayerBot(data.Name, lvl);
                 data.ApplyTo(bot);
-                
+
                 bot.SetModel(bot.Model);
                 LoadAi(data, bot);
                 PlayerBot.Add(bot, false);
             }
         }
 
-        public static List<BotProperties> ReadAll(string path) {
+        public static List<BotProperties> ReadAll(string path)
+        {
             List<BotProperties> props = new List<BotProperties>();
             if (elems == null) elems = ConfigElement.GetAll(typeof(BotProperties));
             string json = File.ReadAllText(path);
-            
-            JsonReader reader = new JsonReader(json);
-            reader.OnMember   = (obj, key, value) => {
-                if (obj.Meta == null) obj.Meta = new BotProperties();
-                ConfigElement.Parse(elems, obj.Meta, key, (string)value);
+
+            JsonReader reader = new JsonReader(json)
+            {
+                OnMember = (obj, key, value) =>
+                {
+                    if (obj.Meta == null) obj.Meta = new BotProperties();
+                    ConfigElement.Parse(elems, obj.Meta, key, (string)value);
+                }
             };
-            
+
             JsonArray array = (JsonArray)reader.Parse();
             if (array == null) return props;
-            
-            foreach (object raw in array) {
+
+            foreach (object raw in array)
+            {
                 JsonObject obj = (JsonObject)raw;
                 if (obj == null || obj.Meta == null) continue;
-                
+
                 BotProperties data = (BotProperties)obj.Meta;
                 if (string.IsNullOrEmpty(data.DisplayName)) data.DisplayName = data.Name;
                 props.Add(data);
             }
             return props;
         }
-        
-        public static void Save(Level lvl) { lock (lvl.botsIOLock) { SaveCore(lvl); } }
-        public static void SaveCore(Level lvl) {
+
+        public static void Save(Level lvl)
+        {
+            lock (lvl.botsIOLock)
+            {
+                SaveCore(lvl);
+            }
+        }
+        public static void SaveCore(Level lvl)
+        {
             PlayerBot[] bots = lvl.Bots.Items;
             string path = Paths.BotsPath(lvl.MapName);
             if (!File.Exists(path) && bots.Length == 0) return;
-            
+
             List<BotProperties> props = new List<BotProperties>(bots.Length);
-            for (int i = 0; i < bots.Length; i++) {
+            for (int i = 0; i < bots.Length; i++)
+            {
                 BotProperties data = new BotProperties();
                 data.FromBot(bots[i]);
                 props.Add(data);
             }
-            
-            try {
+
+            try
+            {
                 using (StreamWriter w = new StreamWriter(path)) { WriteAll(w, props); }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error saving bots to " + path, ex);
             }
         }
 
-        public static void WriteAll(TextWriter dst, List<BotProperties> props) {
+        public static void WriteAll(TextWriter dst, List<BotProperties> props)
+        {
             if (elems == null) elems = ConfigElement.GetAll(typeof(BotProperties));
 
             JsonConfigWriter w = new JsonConfigWriter(dst, elems);
             w.WriteArray(props);
         }
 
-        public static void LoadAi(BotProperties props, PlayerBot bot) {
+        public static void LoadAi(BotProperties props, PlayerBot bot)
+        {
             if (string.IsNullOrEmpty(props.AI)) return;
-            try {
+            try
+            {
                 ScriptFile.Parse(Player.Flame, bot, props.AI);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error loading bot AI " + props.AI, ex);
             }
-            
+
             bot.cur = props.CurInstruction;
             if (bot.cur >= bot.Instructions.Count) bot.cur = 0;
         }
     }
-    
-    public sealed class BotProperties {
+
+    public sealed class BotProperties
+    {
         [ConfigString] public string DisplayName;
         [ConfigString] public string Name;
         [ConfigString] public string Skin;
@@ -122,59 +158,82 @@ namespace Flames.Bots {
         [ConfigString] public string ClickedOnText;
         [ConfigString] public string DeathMessage;
         [ConfigString] public string Owner;
-        
+
         [ConfigString] public string AI;
         [ConfigBool] public bool Kill;
         [ConfigBool] public bool Hunt;
         [ConfigInt] public int CurInstruction;
         [ConfigInt] public int CurJump;
         [ConfigInt] public int CurSpeed;
-        
+
         [ConfigInt] public int X;
         [ConfigInt] public int Y;
         [ConfigInt] public int Z;
         [ConfigByte] public byte RotX;
         [ConfigByte] public byte RotY;
-        
+
         [ConfigByte] public byte BodyX;
         [ConfigByte] public byte BodyZ;
         [ConfigFloat] public float ScaleX;
         [ConfigFloat] public float ScaleY;
         [ConfigFloat] public float ScaleZ;
-        
-        public void FromBot(PlayerBot bot) {
+
+        public void FromBot(PlayerBot bot)
+        {
             Owner = bot.Owner;
             Name = bot.name;
-            Skin = bot.SkinName; AI = bot.AIName;
-            Model = bot.Model; Color = bot.color;
-            Kill = bot.kill; Hunt = bot.hunt;
+            Skin = bot.SkinName;
+            AI = bot.AIName;
+            Model = bot.Model;
+            Color = bot.color;
+            Kill = bot.kill;
+            Hunt = bot.hunt;
             DisplayName = bot.DisplayName;
-            CurInstruction = bot.cur; CurJump = bot.curJump; CurSpeed = bot.movementSpeed;
-            ClickedOnText = bot.ClickedOnText; DeathMessage = bot.DeathMessage;
-            
-            X = bot.Pos.X; Y = bot.Pos.Y; Z = bot.Pos.Z;
-            RotX = bot.Rot.RotY; RotY = bot.Rot.HeadX;
-            BodyX = bot.Rot.RotX; BodyZ = bot.Rot.RotZ;
-            ScaleX = bot.ScaleX; ScaleY = bot.ScaleY; ScaleZ = bot.ScaleZ;
+            CurInstruction = bot.cur;
+            CurJump = bot.curJump;
+            CurSpeed = bot.movementSpeed;
+            ClickedOnText = bot.ClickedOnText;
+            DeathMessage = bot.DeathMessage;
+
+            X = bot.Pos.X;
+            Y = bot.Pos.Y;
+            Z = bot.Pos.Z;
+            RotX = bot.Rot.RotY;
+            RotY = bot.Rot.HeadX;
+            BodyX = bot.Rot.RotX;
+            BodyZ = bot.Rot.RotZ;
+            ScaleX = bot.ScaleX;
+            ScaleY = bot.ScaleY;
+            ScaleZ = bot.ScaleZ;
         }
-        
-        public void ApplyTo(PlayerBot bot) {
+
+        public void ApplyTo(PlayerBot bot)
+        {
             bot.SetInitialPos(new Position(X, Y, Z));
             bot.SetYawPitch(RotX, RotY);
             Orientation rot = bot.Rot;
-            rot.RotX = BodyX; rot.RotZ = BodyZ;
+            rot.RotX = BodyX;
+            rot.RotZ = BodyZ;
             bot.Rot = rot;
-            
+
             bot.Owner = Owner;
-            bot.SkinName = Skin; bot.Model = Model; bot.color = Color;
-            bot.AIName = AI; bot.hunt = Hunt; bot.kill = Kill;
+            bot.SkinName = Skin;
+            bot.Model = Model;
+            bot.color = Color;
+            bot.AIName = AI;
+            bot.hunt = Hunt;
+            bot.kill = Kill;
             bot.DisplayName = DisplayName;
-            
-            bot.cur = CurInstruction; bot.curJump = CurJump;
+
+            bot.cur = CurInstruction;
+            bot.curJump = CurJump;
             // NOTE: This field wasn't in old json 
             if (CurSpeed != 0) bot.movementSpeed = CurSpeed;
-            bot.ClickedOnText = ClickedOnText; bot.DeathMessage = DeathMessage;
-            bot.ScaleX = ScaleX; bot.ScaleY = ScaleY; bot.ScaleZ = ScaleZ;
+            bot.ClickedOnText = ClickedOnText;
+            bot.DeathMessage = DeathMessage;
+            bot.ScaleX = ScaleX;
+            bot.ScaleY = ScaleY;
+            bot.ScaleZ = ScaleZ;
         }
     }
 }

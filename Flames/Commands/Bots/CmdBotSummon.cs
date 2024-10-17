@@ -17,8 +17,8 @@
 */
 using Flames.Bots;
 using Flames.Commands.Misc;
-    
-namespace Flames.Commands.Bots 
+
+namespace Flames.Commands.Bots
 {
     public sealed class CmdBotSummon : Command2
     {
@@ -28,30 +28,50 @@ namespace Flames.Commands.Bots
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
 
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.Length == 0) { Help(p); return; }
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.Length == 0)
+            {
+                Help(p);
+                return;
+            }
             if (!LevelInfo.Check(p, data.Rank, p.level, "summon that bot")) return;
-            
+
             string[] args = message.SplitSpaces(2);
             PlayerBot bot = Matcher.FindBots(p, args[0]);
             if (bot == null) return;
-            if (!bot.EditableBy(p, "summon")) { return; }
-            
-            Position pos; byte yaw, pitch;            
-            if (args.Length == 1) {
-                pos = p.Pos; yaw = p.Rot.RotY; pitch = p.Rot.HeadX;
-            } else {
+            if (!bot.EditableBy(p, "summon"))
+            {
+                return;
+            }
+
+            Position pos;
+            byte yaw, pitch;
+            if (args.Length == 1)
+            {
+                pos = p.Pos;
+                yaw = p.Rot.RotY;
+                pitch = p.Rot.HeadX;
+            }
+            else
+            {
                 args = args[1].SplitSpaces();
-                
-                if (args.Length < 3) { Help(p); return; }                
+
+                if (args.Length < 3)
+                {
+                    Help(p);
+                    return;
+                }
                 if (!CmdTp.GetTeleportCoords(p, bot, args, false, out pos, out yaw, out pitch)) return;
             }
-            
-            bot.Pos = pos; bot.SetYawPitch(yaw, pitch);
+
+            bot.Pos = pos;
+            bot.SetYawPitch(yaw, pitch);
             BotsFile.Save(p.level);
         }
-        
-        public override void Help(Player p) {   
+
+        public override void Help(Player p)
+        {
             p.Message("&T/BotSummon [name] [x y z] <yaw> <pitch>");
             p.Message("&HTeleports a bot to the given block coordinates.");
             p.Message("&HUse ~ before a coordinate to move relative to current position");

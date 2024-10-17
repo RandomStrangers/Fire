@@ -17,59 +17,73 @@
  */
 using Flames.DB;
 
-namespace Flames.Eco 
+namespace Flames.Eco
 {
-    public sealed class LoginMessageItem : SimpleItem 
+    public sealed class LoginMessageItem : SimpleItem
     {
-        public LoginMessageItem() {
+        public LoginMessageItem()
+        {
             Aliases = new string[] { "login", "loginmsg", "loginmessage" };
         }
-        
+
         public override string Name { get { return "LoginMessage"; } }
-        
-        public override void OnPurchase(Player p, string msg) {
-            if (msg.Length == 0) {
+
+        public override void OnPurchase(Player p, string msg)
+        {
+            if (msg.Length == 0)
+            {
                 PlayerDB.SetLoginMessage(p.name, "");
                 p.Message("&aYour login message was removed for free.");
                 return;
             }
-            
+
             if (!CheckPrice(p)) return;
-            if (msg == PlayerDB.GetLoginMessage(p.name)) {
-                p.Message("&WYou already have that login message."); return;
+            if (msg == PlayerDB.GetLoginMessage(p.name))
+            {
+                p.Message("&WYou already have that login message."); 
+                return;
             }
-            if (msg.Length > NetUtils.StringSize) {
-                p.Message("&WLogin message must be 64 characters or less."); return;
+            if (msg.Length > NetUtils.StringSize)
+            {
+                p.Message("&WLogin message must be 64 characters or less."); 
+                return;
             }
-            
+
             if (!PlayerOperations.SetLoginMessage(p, p.name, msg)) return;
             Economy.MakePurchase(p, Price, "%3LoginMessage: %f" + msg);
         }
     }
-    
-    public sealed class LogoutMessageItem : SimpleItem 
+
+    public sealed class LogoutMessageItem : SimpleItem
     {
-        public LogoutMessageItem() {
+        public LogoutMessageItem()
+        {
             Aliases = new string[] { "logout", "logoutmsg", "logoutmessage" };
         }
-        
+
         public override string Name { get { return "LogoutMessage"; } }
 
-        public override void OnPurchase(Player p, string msg) {
-            if (msg.Length == 0) {
+        public override void OnPurchase(Player p, string msg)
+        {
+            if (msg.Length == 0)
+            {
                 PlayerDB.SetLogoutMessage(p.name, "");
                 p.Message("&aYour logout message was removed for free.");
                 return;
             }
-            
+
             if (!CheckPrice(p)) return;
-            if (msg == PlayerDB.GetLogoutMessage(p.name)) {
-                p.Message("&WYou already have that logout message."); return;
+            if (msg == PlayerDB.GetLogoutMessage(p.name))
+            {
+                p.Message("&WYou already have that logout message."); 
+                return;
             }
-            if (msg.Length > NetUtils.StringSize) {
-                p.Message("&WLogin message must be 64 characters or less."); return;
+            if (msg.Length > NetUtils.StringSize)
+            {
+                p.Message("&WLogin message must be 64 characters or less."); 
+                return;
             }
-            
+
             if (!PlayerOperations.SetLogoutMessage(p, p.name, msg)) return;
             Economy.MakePurchase(p, Price, "%3LogoutMessage: %f" + msg);
         }

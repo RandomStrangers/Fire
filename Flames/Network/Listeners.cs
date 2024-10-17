@@ -17,10 +17,10 @@ using System.Net;
 using System.Net.Sockets;
 using Flames.Events.ServerEvents;
 
-namespace Flames.Network 
+namespace Flames.Network
 {
     /// <summary> Abstracts listening on network socket </summary>
-    public abstract class INetListen 
+    public abstract class INetListen
     {
         /// <summary> The IP address this network socket is listening on </summary>
         public IPAddress IP;
@@ -32,31 +32,36 @@ namespace Flames.Network
         /// <summary> Begins listening for connections on the given IP and port </summary>
         /// <remarks> Client connections are asynchronously accepted </remarks>
         public abstract void Listen(IPAddress ip, int port);
-        
+
         /// <summary> Closes this network listener </summary>
         public abstract void Close();
     }
-    
+
     /// <summary> Abstracts listening on a TCP socket </summary>
-    public sealed class TcpListen : INetListen 
+    public sealed class TcpListen : INetListen
     {
         public Socket socket;
 
-        public void DisableIPV6OnlyListener() {
+        public void DisableIPV6OnlyListener()
+        {
             if (socket.AddressFamily != AddressFamily.InterNetworkV6) return;
             // TODO: Make windows only?
 
             // NOTE: SocketOptionName.IPv6Only is not defined in Mono, but apparently
             //  macOS and Linux default to dual stack by default already
             const SocketOptionName ipv6Only = (SocketOptionName)27;
-            try {
+            try
+            {
                 socket.SetSocketOption(SocketOptionLevel.IPv6, ipv6Only, false);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Failed to disable IPv6 only listener setting", ex);
             }
         }
 
-        public void EnableAddressReuse() {
+        public void EnableAddressReuse()
+        {
             // This fixes when on certain environments, if the server is restarted while there are still some
             // sockets in the TIME_WAIT state, the listener in the new server process will fail with EADDRINUSE
             //   https://stackoverflow.com/questions/3229860/what-is-the-meaning-of-so-reuseaddr-setsockopt-option-linux
@@ -66,84 +71,116 @@ namespace Flames.Network
             //  (note that this code is required for WINE, therefore just check if running in mono)
             //  (see WS_SO_REUSEADDR case handling in WS_setsockopt in WINE/dlls/ws2_32/socket.c)
             if (!Server.RunningOnMono()) return;
-            
-            try {
+
+            try
+            {
                 socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, 1);
-            } catch {
+            }
+            catch
+            {
                 // not really a critical issue if this fails to work
             }
         }
-        
-        public override void Listen(IPAddress ip, int port) {
+
+        public override void Listen(IPAddress ip, int port)
+        {
             if (IP == ip && Port == port) return;
             Close();
-            IP = ip; Port = port;
-            
-            try {
+            IP = ip; 
+            Port = port;
+
+            try
+            {
                 socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 DisableIPV6OnlyListener();
                 EnableAddressReuse();
-                
+
                 socket.Bind(new IPEndPoint(ip, port));
                 socket.Listen((int)SocketOptionName.MaxConnections);
                 AcceptNextAsync();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 Logger.Log(LogType.Warning, "Failed to start listening on port {0} ({1})", port, ex.Message);
-                
+
                 string msg = string.Format("Failed to start listening. Is another server or instance of {0} already running on port {1}?",
                                            Server.SoftwareName, port);
                 Server.UpdateUrl(msg);
-                socket = null; return;
+                socket = null; 
+                return;
             }
             Listening = true;
             Logger.Log(LogType.SystemActivity, "Started listening on port {0}... ", port);
         }
 
-        public void AcceptNextAsync() {
+        public void AcceptNextAsync()
+        {
             // retry, because if we don't call BeginAccept, no one can connect anymore
-            for (int i = 0; i < 3; i++) {
-                try {
-                    socket.BeginAccept(acceptCallback, this); return;
-                } catch (Exception ex) {
+            for (int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    socket.BeginAccept(acceptCallback, this); 
+                    return;
+                }
+                catch (Exception ex)
+                {
                     Logger.LogError(ex);
                 }
             }
         }
 
         public static AsyncCallback acceptCallback = new AsyncCallback(AcceptCallback);
-        public static void AcceptCallback(IAsyncResult result) {
+        public static void AcceptCallback(IAsyncResult result)
+        {
             if (Server.shuttingDown) return;
             TcpListen listen = (TcpListen)result.AsyncState;
             INetSocket s = null;
-            
-            try {
-                Socket raw  = listen.socket.EndAccept(result);
+
+            try
+            {
+                Socket raw = listen.socket.EndAccept(result);
                 bool cancel = false, announce = true;
-                
+
                 OnConnectionReceivedEvent.Call(raw, ref cancel, ref announce);
-                if (cancel) {
+                if (cancel)
+                {
                     // intentionally non-clean connection close
-                    try { raw.Close(); } catch { }
-                } else {
+                    try 
+                    { 
+                        raw.Close(); 
+                    } 
+                    catch 
+                    { 
+                    }
+                }
+                else
+                {
                     s = new TcpSocket(raw);
-                    
+
                     if (announce) Logger.Log(LogType.UserActivity, s.IP + " connected to the server.");
                     s.Init();
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 if (!(ex is SocketException)) Logger.LogError(ex);
-                if (s != null) s.Close();
+                s?.Close();
             }
             listen.AcceptNextAsync();
         }
 
-        public override void Close() {
-            try {
+        public override void Close()
+        {
+            try
+            {
                 Listening = false;
-                if (socket != null) socket.Close();
-            } catch (Exception ex) { 
-                Logger.LogError(ex); 
+                socket?.Close();
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
         }
     }

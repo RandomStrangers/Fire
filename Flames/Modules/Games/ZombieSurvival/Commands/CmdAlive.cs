@@ -17,23 +17,29 @@
 */
 using System.Collections.Generic;
 
-namespace Flames.Modules.Games.ZS 
+namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdAlive : Command2 
+    public sealed class CmdAlive : Command2
     {
         public override string name { get { return "Alive"; } }
         public override string type { get { return CommandTypes.Games; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            List<Player> alive = PlayerInfo.OnlyCanSee(p, data.Rank, 
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            List<Player> alive = PlayerInfo.OnlyCanSee(p, data.Rank,
                                                        ZSGame.Instance.Alive.Items);
-            if (alive.Count == 0) { p.Message("No one is alive."); return; }
-            
+            if (alive.Count == 0) 
+            { 
+                p.Message("No one is alive.");
+                return; 
+            }
+
             p.Message("Players who are &2alive &Sare:");
             p.Message(alive.Join(pl => pl.ColoredName));
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Alive");
             p.Message("&HShows who is alive/a human");
         }

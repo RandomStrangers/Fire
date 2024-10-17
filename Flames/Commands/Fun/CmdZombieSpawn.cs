@@ -27,16 +27,9 @@ namespace Flames
         public override string shortcut { get { return "zspawn"; } }
         public override string type { get { return CommandTypes.Games; } }
         public override bool museumUsable { get { return false; } }
+        public override bool SuperUseable { get { return false; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Operator; } }
-
-        // This is where the magic happens, naturally.
-        //TOO MANY GLOBALS -_-
-        public int wavesNum;
-        public int wavesLength;
-        public int zombiesNum;
-        public int thex;
-        public int they;
-        public int thez;
+        public int wavesNum, wavesLength, zombiesNum, thex, they, thez;
         public bool isRandom;
 
         public void ZombieMob(object person)
@@ -82,7 +75,7 @@ namespace Flames
             for (int i = 0; i < zombiesNum; i++)
             {
                 x = randomCoord.Next(0, p.level.Width);
-                y = randomCoord.Next((p.level.Height / 2), p.level.Height);
+                y = randomCoord.Next(p.level.Height / 2, p.level.Height);
                 z = randomCoord.Next(0, p.level.Length);
 
                 p.level.Blockchange((ushort)x, (ushort)y, (ushort)z, Block.ZombieBody);
@@ -100,7 +93,7 @@ namespace Flames
             }
         }
 
-        public override void Use(Player theP, string message)
+        public override void Use(Player p, string message)
         {
             int number = message.SplitSpaces().Length;
             string[] param = message.SplitSpaces();
@@ -109,13 +102,17 @@ namespace Flames
             {
                 if (string.Compare(param[0], "x", true) == 0)
                 {
-                    Find("replaceall").Use(theP, "zombie air");
-                    theP.Message("&aAll zombies have been destroyed.");
+                    Find("replaceall").Use(p, "zombie air");
+                    p.Message("&aAll zombies have been destroyed.");
                     return;
                 }
             }
 
-            if (number != 4) { Help(theP); return; }
+            if (number != 4)
+            {
+                Help(p);
+                return;
+            }
 
             try
             {
@@ -129,7 +126,7 @@ namespace Flames
                 }
                 else
                 {
-                    theP.Message("Flag set must be 'r' or 'd'.");
+                    p.Message("Flag set must be 'r' or 'd'.");
                     return;
                 }
 
@@ -139,20 +136,20 @@ namespace Flames
 
                 if (!isRandom)
                 {
-                    theP.Message("Place a block for center of zombie spawn.");
-                    theP.ClearBlockchange();
-                    theP.Blockchange += Blockchange1;
+                    p.Message("Place a block for center of zombie spawn.");
+                    p.ClearBlockchange();
+                    p.Blockchange += Blockchange1;
                 }
                 else
                 {
                     Thread t = new Thread(ZombieMob);
-                    t.Start(theP);
+                    t.Start(p);
                 }
 
             }
             catch (FormatException)
             {
-                theP.Message("&4All parameters must be numbers!");
+                p.Message("&4All parameters must be numbers!");
             }
 
         }
@@ -162,20 +159,21 @@ namespace Flames
             p.ClearBlockchange();
             p.RevertBlock(x, y, z);
 
-            thex = x; they = y + 2; thez = z;
+            thex = x;
+            they = y + 2;
+            thez = z;
             Thread t = new Thread(ZombieMob);
             t.Start(p);
         }
 
-        // This one controls what happens when you use /help [commandname].
         public override void Help(Player p)
         {
-            p.Message("/zombiespawn <flag> <x> <y> <z> - Spawns waves of zombies.");
-            p.Message("<flag> - 'r' for random or 'd' for diameter");
-            p.Message("<x> - the number of waves");
-            p.Message("<y> - the length of the waves in seconds");
-            p.Message("<z> - the number of zombies spawned/diameter of spawn");
-            p.Message("/zombiespawn x - Destroys all zombies.");
+            p.Message("&T/zombiespawn <flag> <x> <y> <z> &H- Spawns waves of zombies.");
+            p.Message("&H<flag> - 'r' for random or 'd' for diameter");
+            p.Message("&H<x> - the number of waves");
+            p.Message("&H<y> - the length of the waves in seconds");
+            p.Message("&H<z> - the number of zombies spawned/diameter of spawn");
+            p.Message("&T/zombiespawn x &H- Destroys all zombies.");
         }
     }
 }

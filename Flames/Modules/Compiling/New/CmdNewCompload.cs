@@ -23,9 +23,17 @@ namespace Flames.Modules.NewCompiling
     public sealed class CmdNewPluginCompLoad : CmdNewPluginCompile 
     {
         public override string name { get { return "NewPluginCompLoad"; } }
-        public override string shortcut { get { return "NewPCompLoad"; } }
-        public override CommandAlias[] Aliases { get { return null; } }
-
+        public override string shortcut { get { return "newcml"; } }
+        public override CommandAlias[] Aliases
+        {
+            get
+            {
+                return new[] {
+                    new CommandAlias("newpcompload"),
+                    new CommandAlias("newpcml"),
+                };
+            }
+        }
         public override void CompileNewPlugin(Player p, string[] paths, ICompiler compiler) {
             string dst = IScripting.NewPluginPath(paths[0]);
             UnloadNewPlugin(p, paths[0]);

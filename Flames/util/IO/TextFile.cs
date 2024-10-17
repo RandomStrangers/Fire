@@ -18,48 +18,54 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Flames.Util 
+namespace Flames.Util
 {
     public delegate void TextFileChanged();
-    
+
     /// <summary> Represents a text file and associated data for it </summary>
-    public sealed class TextFile 
+    public sealed class TextFile
     {
-        public readonly string Filename;
-        public readonly string[] DefaultText;        
+        public string Filename;
+        public string[] DefaultText;
         public TextFileChanged OnTextChanged;
-        
-        public TextFile(string filename, params string[] defaultText) {
-            Filename    = filename;
+
+        public TextFile(string filename, params string[] defaultText)
+        {
+            Filename = filename;
             DefaultText = defaultText;
         }
-        
-        public void EnsureExists() {
+
+        public void EnsureExists()
+        {
             if (File.Exists(Filename)) return;
-            
+
             Logger.Log(LogType.SystemActivity, Filename + " does not exist, creating");
-            using (StreamWriter w = new StreamWriter(Filename)) {
+            using (StreamWriter w = new StreamWriter(Filename))
+            {
                 if (DefaultText == null) return;
 
-                for (int i = 0; i < DefaultText.Length; i++) {
+                for (int i = 0; i < DefaultText.Length; i++)
+                {
                     w.WriteLine(DefaultText[i]);
                 }
             }
         }
-        
-        public string[] GetText() {
+
+        public string[] GetText()
+        {
             return File.ReadAllLines(Filename);
         }
-        
-        public void SetText(string[] text) {
+
+        public void SetText(string[] text)
+        {
             File.WriteAllLines(Filename, text);
-            if (OnTextChanged != null) OnTextChanged();
+            OnTextChanged?.Invoke();
         }
-        
+
 
         public static Dictionary<string, TextFile> Files = new Dictionary<string, TextFile>() {
             { "News", new TextFile(Paths.NewsFile, "News have not been created. Put News in '" + Paths.NewsFile + "'.") },
-            { "FAQ", new TextFile(Paths.FaqFile, 
+            { "FAQ", new TextFile(Paths.FaqFile,
                                   "Example: What does this server run on? This server runs on &b" + Server.SoftwareName) },
             { "Rules", new TextFile(Paths.RulesFile, "No rules entered yet!") },
             { "OpRules", new TextFile(Paths.OprulesFile, "No oprules entered yet!") },
@@ -76,8 +82,8 @@ namespace Flames.Util
                                                "# Each word to remove must be on an individual line") },
             { "Announcements", new TextFile(Paths.AnnouncementsFile, null) },
             { "Joker", new TextFile(Paths.JokerFile, null) },
-            { "8ball", new TextFile(Paths.EightBallFile, 
-                                    "Not likely.", "Very likely.", "Impossible!", "No.", 
+            { "8ball", new TextFile(Paths.EightBallFile,
+                                    "Not likely.", "Very likely.", "Impossible!", "No.",
                                     "Yes.", "Definitely!", "Do some more thinking.") },
         };
     }

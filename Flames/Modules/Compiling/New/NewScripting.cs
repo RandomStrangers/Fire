@@ -28,9 +28,11 @@ namespace Flames.NewScripting
     /// that has the same name as an already loaded new plugin </summary>
     public sealed class AlreadyLoadedException : Exception
     {
-        public AlreadyLoadedException(string msg) : base(msg) { }
+        public AlreadyLoadedException(string msg) : base(msg)
+        {
+        }
     }
-    
+
     /// <summary> Utility methods for loading assemblies, and new plugins </summary>
     public static class IScripting
     {
@@ -44,23 +46,28 @@ namespace Flames.NewScripting
             return null;
         }
 
-        public const string NEW_PLUGINS_DLL_DIR  = "newplugins/";
-        
+        public const string NEW_PLUGINS_DLL_DIR = "newplugins/";
+
         /// <summary> Returns the default .dll path for the new plugin with the given name </summary>
-        public static string NewPluginPath(string name)  { return NEW_PLUGINS_DLL_DIR + name + ".dll"; }
-        
-        
-        public static void Init() {
+        public static string NewPluginPath(string name)
+        {
+            return NEW_PLUGINS_DLL_DIR + name + ".dll";
+        }
+
+
+        public static void Init()
+        {
             Directory.CreateDirectory(NEW_PLUGINS_DLL_DIR);
             AppDomain.CurrentDomain.AssemblyResolve += ResolveNewPluginAssembly;
         }
 
         // only used for resolving new plugin DLLs depending on other new plugin DLLs
-        static Assembly ResolveNewPluginAssembly(object sender, ResolveEventArgs args) {
+        public static Assembly ResolveNewPluginAssembly(object sender, ResolveEventArgs args)
+        {
             // This property only exists in .NET framework 4.0 and later
             Assembly requestingAssembly = args.RequestingAssembly;
-            
-            if (requestingAssembly == null)       return null;
+
+            if (requestingAssembly == null) return null;
             if (!IsNewPluginDLL(requestingAssembly)) return null;
 
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
@@ -79,20 +86,25 @@ namespace Flames.NewScripting
             return null;
         }
 
-        static bool IsNewPluginDLL(Assembly a) { return string.IsNullOrEmpty(a.Location); }
-        
-        
+        public static bool IsNewPluginDLL(Assembly a)
+        {
+            return string.IsNullOrEmpty(a.Location);
+        }
+
+
         /// <summary> Constructs instances of all types which derive from T in the given assembly. </summary>
         /// <returns> The list of constructed instances. </returns>
-        public static List<T> LoadTypes<T>(Assembly lib) {
+        public static List<T> LoadTypes<T>(Assembly lib)
+        {
             List<T> instances = new List<T>();
-            
+
             foreach (Type t in lib.GetTypes())
             {
                 if (t.IsAbstract || t.IsInterface || !t.IsSubclassOf(typeof(T))) continue;
                 object instance = Activator.CreateInstance(t);
-                
-                if (instance == null) {
+
+                if (instance == null)
+                {
                     Logger.Log(LogType.Warning, "{0} \"{1}\" could not be loaded", typeof(T).Name, t.Name);
                     throw new BadImageFormatException();
                 }
@@ -100,75 +112,92 @@ namespace Flames.NewScripting
             }
             return instances;
         }
-        
+
         /// <summary> Loads the given assembly from disc (and associated .pdb debug data) </summary>
-        public static Assembly LoadAssembly(string path) {
-            byte[] data  = File.ReadAllBytes(path);
+        public static Assembly LoadAssembly(string path)
+        {
+            byte[] data = File.ReadAllBytes(path);
             byte[] debug = GetDebugData(path);
             return Assembly.Load(data, debug);
         }
-        
-        static byte[] GetDebugData(string path) {
-            if (Server.RunningOnMono()) {
+
+        static byte[] GetDebugData(string path)
+        {
+            if (Server.RunningOnMono())
+            {
                 // test.dll -> test.dll.mdb
                 path += ".mdb";
-            } else {
+            }
+            else
+            {
                 // test.dll -> test.pdb
                 path = Path.ChangeExtension(path, ".pdb");
             }
-            
+
             if (!File.Exists(path)) return null;
-            try {
+            try
+            {
                 return File.ReadAllBytes(path);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error loading .pdb " + path, ex);
                 return null;
             }
         }
-       
-        
-        public static string DescribeLoadError(string path, Exception ex) {
+
+
+        public static string DescribeLoadError(string path, Exception ex)
+        {
             string file = Path.GetFileName(path);
-            
-            if (ex is BadImageFormatException) {
+
+            if (ex is BadImageFormatException)
+            {
                 return "&W" + file + " is not a valid assembly, or has an invalid dependency. Details in the error log.";
-            } else if (ex is FileLoadException) {
+            }
+            else if (ex is FileLoadException)
+            {
                 return "&W" + file + " or one of its dependencies could not be loaded. Details in the error log.";
             }
-            
+
             return "&WAn unknown error occured. Details in the error log.";
             // p.Message("&WError loading new plugin. See error logs for more information.");
         }
-        
-        
-        public static void AutoloadNewPlugins() {
+
+
+        public static void AutoloadNewPlugins()
+        {
             string[] files = AtomicIO.TryGetFiles(NEW_PLUGINS_DLL_DIR, "*.dll");
             if (files == null) return;
-            
+
             // Ensure that new plugin files are loaded in a consistent order,
             //  in case new plugins have a dependency on other new plugins
-            Array.Sort<string>(files);
-            
+            Array.Sort(files);
+
             foreach (string path in files)
             {
-                try {
+                try
+                {
                     LoadNewPlugin(path, true);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Logger.LogError("Error loading new plugins from " + path, ex);
                 }
             }
         }
-        
+
         /// <summary> Loads all new plugins from the given .dll path. </summary>
-        public static List<NewPlugin> LoadNewPlugin(string path, bool auto) {
+        public static List<NewPlugin> LoadNewPlugin(string path, bool auto)
+        {
             Assembly lib = LoadAssembly(path);
             List<NewPlugin> newplugins = LoadTypes<NewPlugin>(lib);
-            
+
             foreach (NewPlugin pl in newplugins)
             {
                 if (NewPlugin.FindNewCustom(pl.name) != null)
                     throw new AlreadyLoadedException("New plugin " + pl.name + " is already loaded");
-                
+
                 NewPlugin.Load(pl, auto);
             }
             return newplugins;

@@ -18,27 +18,30 @@
 
 namespace Flames.Modules.Games.ZS
 {
-    public sealed class CmdAka : Command2 
+    public sealed class CmdAka : Command2
     {
         public override string name { get { return "AKA"; } }
         public override string type { get { return CommandTypes.Games; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             ZSData data_ = ZSGame.Get(p);
             data_.AkaMode = !data_.AkaMode;
             Player[] players = PlayerInfo.Online.Items;
             p.Message("AKA mode is now: " + (data_.AkaMode ? "&aOn" : "&cOff"));
-            
-            foreach (Player other in players) {
+
+            foreach (Player other in players)
+            {
                 if (other.level != p.level || p == other || !p.CanSeeEntity(other)) continue;
-                
+
                 Entities.Despawn(p, other);
                 Entities.Spawn(p, other);
             }
             TabList.Add(p, p, Entities.SelfID);
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/AKA");
             p.Message("&HToggles whether infected players show their actual names.");
         }

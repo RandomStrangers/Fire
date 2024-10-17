@@ -24,71 +24,98 @@ using Flames.Generator;
 
 namespace Flames.Modules.Games.Countdown
 {
-    public sealed class CmdCountdown : RoundsGameCmd 
+    public sealed class CmdCountdown : RoundsGameCmd
     {
         public override string name { get { return "CountDown"; } }
         public override string shortcut { get { return "CD"; } }
         public override RoundsGame Game { get { return CountdownGame.Instance; } }
-        public override CommandPerm[] ExtraPerms {
+        public override CommandPerm[] ExtraPerms
+        {
             get { return new[] { new CommandPerm(LevelPermission.Operator, "can manage countdown") }; }
         }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (message.CaselessEq("join")) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (message.CaselessEq("join"))
+            {
                 HandleJoin(p, CountdownGame.Instance);
-            } else {
+            }
+            else
+            {
                 base.Use(p, message, data);
             }
         }
 
-        public void HandleJoin(Player p, CountdownGame game) {
-            if (!game.Running) {
+        public void HandleJoin(Player p, CountdownGame game)
+        {
+            if (!game.Running)
+            {
                 p.Message("Cannot join as countdown is not running.");
-            } else if (game.RoundInProgress) {
+            }
+            else if (game.RoundInProgress)
+            {
                 p.Message("Cannot join when a round is in progress. Wait until next round.");
-            } else {
+            }
+            else
+            {
                 game.PlayerJoinedGame(p);
             }
         }
 
-        public override void HandleSet(Player p, RoundsGame game_, string[] args) {
-            if (args.Length < 4) { Help(p); return; }
-            if (game_.Running) {
-                p.Message("You must stop Countdown before replacing the map."); return;
+        public override void HandleSet(Player p, RoundsGame game_, string[] args)
+        {
+            if (args.Length < 4) 
+            { 
+                Help(p);
+                return; 
             }
-            
+            if (game_.Running)
+            {
+                p.Message("You must stop Countdown before replacing the map."); 
+                return;
+            }
+
             ushort x = 0, y = 0, z = 0;
             if (!MapGen.GetDimensions(p, args, 1, ref x, ref y, ref z)) return;
-            
+
             CountdownGame game = (CountdownGame)game_;
             game.GenerateMap(p, x, y, z);
         }
 
-        public override void HandleStart(Player p, RoundsGame game_, string[] args) {
-            if (game_.Running) { p.Message("{0} is already running", game_.GameName); return; }
-            
-            CountdownGame game   = (CountdownGame)game_;
+        public override void HandleStart(Player p, RoundsGame game_, string[] args)
+        {
+            if (game_.Running) 
+            { 
+                p.Message("{0} is already running", game_.GameName);
+                return; 
+            }
+
+            CountdownGame game = (CountdownGame)game_;
             CountdownSpeed speed = game.Config.DefaultSpeed;
-            
-            if (args.Length > 1) {
+
+            if (args.Length > 1)
+            {
                 if (!CommandParser.GetEnum(p, args[1], "Speed", ref speed)) return;
-            } else {
+            }
+            else
+            {
                 p.Message("No speed specified, playing at '{0}' speed", speed);
             }
-            
+
             game.SetSpeed(speed);
             string mode = args.Length > 2 ? args[2] : "";
             game.FreezeMode = mode == "freeze" || mode == "frozen";
             game.Start(p, "countdown", int.MaxValue);
-        }       
-        
-        public override void Help(Player p) {
+        }
+
+        public override void Help(Player p)
+        {
             p.Message("&T/CD set [width] [height] [length]");
             p.Message("&HRe-generates the countdown map (default is 32x32x32)");
             p.Message("&T/CD start <speed> <mode> &H- Starts Countdown");
             p.Message("&H  speed can be: slow, normal, fast, extreme or ultimate");
             p.Message("&H  mode can be: normal or freeze");
-            p.Message("&T/CD stop &H- Stops Countdown"); 
+            p.Message("&T/CD stop &H- Stops Countdown");
             p.Message("&T/CD end &H- Ends current round of Countdown");
             p.Message("&T/CD join &H- joins the game");
             p.Message("&T/CD status &H- lists players currently playing");

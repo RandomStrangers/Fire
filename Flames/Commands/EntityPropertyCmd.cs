@@ -16,68 +16,98 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Commands {
-    public abstract class EntityPropertyCmd : Command2 {
+namespace Flames.Commands
+{
+    public abstract class EntityPropertyCmd : Command2
+    {
 
-        public void UseBotOrOnline(Player p, CommandData data, string message, string type) {
-            if (message.CaselessStarts("bot ")) {
-                UseBot(p,    data, message, type);
-            } else {
+        public void UseBotOrOnline(Player p, CommandData data, string message, string type)
+        {
+            if (message.CaselessStarts("bot "))
+            {
+                UseBot(p, data, message, type);
+            }
+            else
+            {
                 UseOnline(p, data, message, type);
             }
         }
 
-        public void UseBotOrPlayer(Player p, CommandData data, string message, string type) {
-            if (message.CaselessStarts("bot ")) {
-                UseBot(p,    data, message, type);
-            } else {
+        public void UseBotOrPlayer(Player p, CommandData data, string message, string type)
+        {
+            if (message.CaselessStarts("bot "))
+            {
+                UseBot(p, data, message, type);
+            }
+            else
+            {
                 UsePlayer(p, data, message, type);
             }
         }
 
-        public void UseBot(Player p, CommandData data, string message, string type) {
+        public void UseBot(Player p, CommandData data, string message, string type)
+        {
             string[] args = message.SplitSpaces(3);
             PlayerBot bot = Matcher.FindBots(p, args[1]);
-            
+
             if (bot == null) return;
             if (!CheckExtraPerm(p, data, 2)) return;
-            
+
             if (!LevelInfo.Check(p, data.Rank, p.level, "change the " + type + " of that bot")) return;
-            if (!bot.EditableBy(p, "change the " + type + " of")) { return; }
+            if (!bot.EditableBy(p, "change the " + type + " of")) 
+            { 
+                return; 
+            }
             SetBotData(p, bot, args.Length > 2 ? args[2] : "");
         }
 
-        public void UseOnline(Player p, CommandData data, string message, string type) {
-            if (message.Length == 0) { Help(p); return; }
+        public void UseOnline(Player p, CommandData data, string message, string type)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.SplitSpaces(2);
-            string name   = CheckOwn(p, args[0], "player name");
+            string name = CheckOwn(p, args[0], "player name");
             if (name == null) return;
-            
+
             Player who = PlayerInfo.FindMatches(p, name);
             if (who == null) return;
-            
+
             if (p != who && !CheckExtraPerm(p, data, 1)) return;
             if (!CheckRank(p, data, who, "change the " + type + " of", true)) return;
             SetOnlineData(p, who, args.Length > 1 ? args[1] : "");
         }
 
-        public void UsePlayer(Player p, CommandData data, string message, string type) {
-            if (message.Length == 0) { Help(p); return; }
+        public void UsePlayer(Player p, CommandData data, string message, string type)
+        {
+            if (message.Length == 0) 
+            { 
+                Help(p); 
+                return; 
+            }
             string[] args = message.SplitSpaces(2);
             string target = CheckOwn(p, args[0], "player name");
             if (target == null) return;
-            
+
             target = PlayerInfo.FindMatchesPreferOnline(p, target);
-            if (target == null) return;            
+            if (target == null) return;
             if (p.name != target && !CheckExtraPerm(p, data, 1)) return;
-            
+
             LevelPermission rank = Group.GroupIn(target).Permission;
             if (!CheckRank(p, data, target, rank, "change the " + type + " of", true)) return;
             SetPlayerData(p, target, args.Length > 1 ? args[1] : "");
         }
 
-        public virtual void SetBotData(Player p, PlayerBot bot,    string args) { }
-        public virtual void SetOnlineData(Player p, Player who,    string args) { }
-        public virtual void SetPlayerData(Player p, string target, string args) { }
+        public virtual void SetBotData(Player p, PlayerBot bot, string args) 
+        { 
+        }
+        public virtual void SetOnlineData(Player p, Player who, string args) 
+        { 
+        }
+        public virtual void SetPlayerData(Player p, string target, string args) 
+        { 
+        }
     }
 }

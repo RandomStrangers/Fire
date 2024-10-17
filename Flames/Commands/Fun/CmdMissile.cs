@@ -17,37 +17,50 @@
  */
 using Flames.Games;
 
-namespace Flames.Commands.Fun {
-    public sealed class CmdMissile : Command2 {
+namespace Flames.Commands.Fun
+{
+    public sealed class CmdMissile : Command2
+    {
         public override string name { get { return "Missile"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.AdvBuilder; } }
         public override bool SuperUseable { get { return false; } }
-        
-        public override void Use(Player p, string message, CommandData data) {
-            if (!p.level.Config.Guns) {
-                p.Message("Missiles cannot be used on this map!"); return;
+
+        public override void Use(Player p, string message, CommandData data)
+        {
+            if (!p.level.Config.Guns)
+            {
+                p.Message("Missiles cannot be used on this map!"); 
+                return;
             }
-            if (p.weapon != null && message.Length == 0) {
-                p.weapon.Disable(); return;
+            if (p.weapon != null && message.Length == 0)
+            {
+                p.weapon.Disable(); 
+                return;
             }
 
             WeaponType type = Weapon.ParseType(message);
-            if (type == WeaponType.Invalid) { Help(p); return; }
-            
+            if (type == WeaponType.Invalid) 
+            { 
+                Help(p); 
+                return; 
+            }
+
             Missile missile = GetMissile(type);
             missile.type = type;
             missile.Enable(p);
         }
 
-        public static Missile GetMissile(WeaponType type) {
-            if (type == WeaponType.Destroy)  return new PenetrativeMissile();
+        public static Missile GetMissile(WeaponType type)
+        {
+            if (type == WeaponType.Destroy) return new PenetrativeMissile();
             if (type == WeaponType.Teleport) return new TeleportMissile();
-            if (type == WeaponType.Explode)  return new ExplosiveMissile();
+            if (type == WeaponType.Explode) return new ExplosiveMissile();
             return new Missile();
         }
-        
-        public override void Help(Player p) {
+
+        public override void Help(Player p)
+        {
             p.Message("&T/Missile [at end]");
             p.Message("&HAllows you to fire missiles at people. Differs from &T/gun &Hin that the missile is guided.");
             p.Message("&HAvailable [at end] types: &Sexplode, destroy, tp");
