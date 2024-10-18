@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 using Flames.Util;
 
 namespace Flames.Drawing
@@ -24,8 +23,8 @@ namespace Flames.Drawing
     public interface IPaletteMatcher
     {
         void SetPalette(PaletteEntry[] front, PaletteEntry[] back);
-        BlockID BestMatch(ref Pixel P);
-        BlockID BestMatch(byte R, byte G, byte B, out bool backLayer);
+        ushort BestMatch(ref Pixel P);
+        ushort BestMatch(byte R, byte G, byte B, out bool backLayer);
     }
 
     public sealed class RgbPaletteMatcher : IPaletteMatcher
@@ -38,7 +37,7 @@ namespace Flames.Drawing
             this.back = back;
         }
 
-        public BlockID BestMatch(ref Pixel P)
+        public ushort BestMatch(ref Pixel P)
         {
             int pos;
             MinDist(P.R, P.G, P.B, front, out pos);
@@ -50,7 +49,7 @@ namespace Flames.Drawing
             return front[pos].Block;
         }
 
-        public BlockID BestMatch(byte R, byte G, byte B, out bool backLayer)
+        public ushort BestMatch(byte R, byte G, byte B, out bool backLayer)
         {
             int frontPos, backPos;
             int frontDist = MinDist(R, G, B, front, out frontPos);
@@ -101,7 +100,7 @@ namespace Flames.Drawing
             }
         }
 
-        public BlockID BestMatch(ref Pixel P)
+        public ushort BestMatch(ref Pixel P)
         {
             int pos;
             MinDist(P.R, P.G, P.B, palette, out pos);
@@ -113,7 +112,7 @@ namespace Flames.Drawing
             return front[pos].Block;
         }
 
-        public BlockID BestMatch(byte R, byte G, byte B, out bool backLayer)
+        public ushort BestMatch(byte R, byte G, byte B, out bool backLayer)
         {
             backLayer = false;
             int pos;

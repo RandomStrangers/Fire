@@ -19,7 +19,6 @@ using System;
 using Flames.Blocks.Extended;
 using Flames.Events.PlayerEvents;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Core
 {
@@ -106,7 +105,7 @@ namespace Flames.Core
 
             // if Deletable is enabled, handle MBs/Portals in SetBlock instead
             if (p.level.Config.Deletable || !p.level.IsValidPos(x, y, z)) return;
-            BlockID block = p.level.GetBlock(x, y, z);
+            ushort block = p.level.GetBlock(x, y, z);
             bool isMB = p.level.Props[block].IsMessageBlock;
             bool isPortal = p.level.Props[block].IsPortal;
 

@@ -19,7 +19,6 @@ using System;
 using Flames.Blocks.Physics;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -87,9 +86,9 @@ namespace Flames.Drawing.Ops
 
             ushort x, y, z;
             lvl.IntToPos(undo.Index, out x, out y, out z);
-            BlockID cur = lvl.GetBlock(x, y, z);
+            ushort cur = lvl.GetBlock(x, y, z);
 
-            BlockID newBlock = undo.NewBlock;
+            ushort newBlock = undo.NewBlock;
             if (cur == newBlock || Block.Convert(cur) == Block.Water || Block.Convert(cur) == Block.Lava)
             {
                 lvl.Blockchange(x, y, z, undo.OldBlock, true, default(PhysicsArgs), false);

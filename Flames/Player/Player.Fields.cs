@@ -23,7 +23,6 @@ using Flames.Maths;
 using Flames.Network;
 using Flames.Tasks;
 using Flames.Undo;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -211,11 +210,11 @@ namespace Flames
 
         public DateTime deathCooldown;
 
-        public BlockID ModeBlock = Block.Invalid;
+        public ushort ModeBlock = Block.Invalid;
         /// <summary> The block ID this player's client specifies it is currently holding in hand. </summary>
         /// <remarks> This ignores /bind and /mode. GetHeldBlock() is usually preferred. </remarks>
-        public BlockID ClientHeldBlock = Block.Stone;
-        public BlockID[] BlockBindings = new BlockID[Block.SUPPORTED_COUNT];
+        public ushort ClientHeldBlock = Block.Stone;
+        public ushort[] BlockBindings = new ushort[Block.SUPPORTED_COUNT];
         public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         public string lastCMD = "";
@@ -278,10 +277,10 @@ namespace Flames
 
         /// <summary> Called when the player has finished providing all the marks for a selection. </summary>
         /// <returns> Whether to repeat this selection, if /static mode is enabled. </returns>
-        public delegate bool SelectionHandler(Player p, Vec3S32[] marks, object state, BlockID block);
+        public delegate bool SelectionHandler(Player p, Vec3S32[] marks, object state, ushort block);
 
         /// <summary> Called when the player has provided a mark for a selection. </summary>
         /// <remarks> i is the index of the mark, so the 'first' mark has 0 for i. </remarks>
-        public delegate void SelectionMarkHandler(Player p, Vec3S32[] marks, int i, object state, BlockID block);
+        public delegate void SelectionMarkHandler(Player p, Vec3S32[] marks, int i, object state, ushort block);
     }
 }

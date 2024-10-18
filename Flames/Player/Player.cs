@@ -27,7 +27,6 @@ using Flames.Games;
 using Flames.Maths;
 using Flames.Network;
 using Flames.SQL;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -154,7 +153,7 @@ namespace Flames
 
             for (int b = 0; b < BlockBindings.Length; b++)
             {
-                BlockBindings[b] = (BlockID)b;
+                BlockBindings[b] = (ushort)b;
             }
         }
 
@@ -186,7 +185,7 @@ namespace Flames
             return canSee;
         }
 
-        public BlockID GetHeldBlock()
+        public ushort GetHeldBlock()
         {
             if (ModeBlock != Block.Invalid) return ModeBlock;
             return BlockBindings[ClientHeldBlock];
@@ -620,7 +619,7 @@ namespace Flames
             }
         }
 
-        public void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, BlockID block)
+        public void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, ushort block)
         {
             lock (selLock)
             {

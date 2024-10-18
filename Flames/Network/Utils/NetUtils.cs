@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -88,7 +87,7 @@ namespace Flames
             return extPos ? 12 : 6;
         }
 
-        public static void WriteBlock(BlockID raw, byte[] array, int index, bool extBlocks)
+        public static void WriteBlock(ushort raw, byte[] array, int index, bool extBlocks)
         {
             if (extBlocks) 
             { 

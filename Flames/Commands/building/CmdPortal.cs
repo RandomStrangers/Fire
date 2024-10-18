@@ -20,7 +20,6 @@ using Flames.Blocks;
 using Flames.Blocks.Extended;
 using Flames.Maths;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -63,14 +62,14 @@ namespace Flames.Commands.Building
             p.Blockchange += EntryChange;
         }
 
-        public BlockID GetBlock(Player p, string name)
+        public ushort GetBlock(Player p, string name)
         {
             if (name == "show")
             {
                 ShowPortals(p);
                 return Block.Invalid;
             }
-            BlockID block = Block.Parse(p, name);
+            ushort block = Block.Parse(p, name);
             if (block != Block.Invalid && p.level.Props[block].IsPortal) return block;
 
             // Hardcoded aliases for backwards compatibility
@@ -86,10 +85,10 @@ namespace Flames.Commands.Building
             Help(p); return Block.Invalid;
         }
 
-        public void EntryChange(Player p, ushort x, ushort y, ushort z, BlockID block)
+        public void EntryChange(Player p, ushort x, ushort y, ushort z, ushort block)
         {
             PortalArgs args = (PortalArgs)p.blockchangeObject;
-            BlockID old = p.level.GetBlock(x, y, z);
+            ushort old = p.level.GetBlock(x, y, z);
             if (!p.level.CheckAffect(p, x, y, z, old, args.Block))
             {
                 p.RevertBlock(x, y, z);
@@ -127,7 +126,7 @@ namespace Flames.Commands.Building
             }
         }
 
-        public void ExitChange(Player p, ushort x, ushort y, ushort z, BlockID block)
+        public void ExitChange(Player p, ushort x, ushort y, ushort z, ushort block)
         {
             p.ClearBlockchange();
             p.RevertBlock(x, y, z);
@@ -157,7 +156,7 @@ namespace Flames.Commands.Building
         public class PortalArgs
         {
             public List<PortalPos> Entries;
-            public BlockID Block;
+            public ushort Block;
             public bool Multi;
         }
         public struct PortalPos
@@ -204,7 +203,7 @@ namespace Flames.Commands.Building
         }
 
 
-        public static string Format(BlockID block, Player p, BlockProps[] props)
+        public static string Format(ushort block, Player p, BlockProps[] props)
         {
             if (!props[block].IsPortal) return null;
 
@@ -224,7 +223,7 @@ namespace Flames.Commands.Building
 
             for (int i = 0; i < props.Length; i++)
             {
-                string name = Format((BlockID)i, p, props);
+                string name = Format((ushort)i, p, props);
                 if (name != null) names.Add(name);
             }
             return names;

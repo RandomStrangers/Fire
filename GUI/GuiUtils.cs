@@ -20,66 +20,89 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Flames.Gui 
+namespace Flames.Gui
 {
     // NET 2.0 doesn't include the "Action delegate without parameters" type
     public delegate void UIAction();
-	
+
     /// <summary> Shortcuts for MessageBox.Show </summary>
-    public static class Popup 
+    public static class Popup
     {
-        public static void Message(string message, string title = "") {
+        public static void Message(string message, string title = "")
+        {
             MessageBox.Show(message, title);
         }
-        
-        public static void Error(string message) {
+
+        public static void Error(string message)
+        {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-        
-        public static void Warning(string message) {
+
+        public static void Warning(string message)
+        {
             MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-        
-        public static bool OKCancel(string message, string title) {
+
+        public static bool OKCancel(string message, string title)
+        {
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel,
                                   MessageBoxIcon.Warning) == DialogResult.OK;
         }
-        
-        public static bool YesNo(string message, string title) {
-            return MessageBox.Show(message, title, MessageBoxButtons.YesNo, 
+
+        public static bool YesNo(string message, string title)
+        {
+            return MessageBox.Show(message, title, MessageBoxButtons.YesNo,
                                    MessageBoxIcon.Question) == DialogResult.Yes;
         }
     }
-    
-    public static class GuiUtils 
-    {   
+
+    public static class GuiUtils
+    {
         /// <summary> Flames window icon (shared) </summary>
         public static Icon WinIcon;
-        
-        public static void SetIcon(Form form) {
-            try { form.Icon = WinIcon; } catch { }
+
+        public static void SetIcon(Form form)
+        {
+            try 
+            { 
+                form.Icon = WinIcon; 
+            } 
+            catch 
+            { 
+            }
         }
-        
+
         /// <summary> Opens the given url in the system's default web browser </summary>
         /// <remarks> Catches and logs any unhandled errors </remarks>
-        public static void OpenBrowser(string url) {
-            try { 
+        public static void OpenBrowser(string url)
+        {
+            try
+            {
                 Process.Start(url);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Opening url in browser", ex);
                 Popup.Error("Failed to open " + url);
             }
         }
     }
-    
+
     public static class ColorUtils
     {
-        public struct RGB { public double R, G, B; }
-        public struct HSV { public double H, S, V; }
-        
-        
+        public struct RGB 
+        { 
+            public double R, G, B; 
+        }
+        public struct HSV 
+        { 
+            public double H, S, V; 
+        }
+
+
         /// <summary> Returns black or white color depending on brightness of the given color </summary>
-        public static Color CalcBackgroundColor(Color color) {
+        public static Color CalcBackgroundColor(Color color)
+        {
             // https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
             RGB c = sRGBToLinear(color);
             double L = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;
@@ -88,7 +111,8 @@ namespace Flames.Gui
 
 
         /// <summary> Converts gamma corrected RGB to linear RGB </summary>
-        public static RGB sRGBToLinear(Color c) {
+        public static RGB sRGBToLinear(Color c)
+        {
             RGB rgb;
             rgb.R = Linear(c.R);
             rgb.G = Linear(c.G);
@@ -97,7 +121,8 @@ namespace Flames.Gui
         }
 
         /// <summary> Converts gamma corrected value to linear value </summary>
-        public static double Linear(double c) {
+        public static double Linear(double c)
+        {
             c /= 255.0;
             if (c <= 0.03928) return c / 12.92;
             return Math.Pow((c + 0.055) / 1.055, 2.4);

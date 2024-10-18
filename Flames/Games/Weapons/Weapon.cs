@@ -22,7 +22,6 @@ using Flames.Events.PlayerEvents;
 using Flames.Maths;
 using Flames.Network;
 using Flames.Tasks;
-using BlockID = System.UInt16;
 
 namespace Flames.Games
 {
@@ -86,10 +85,10 @@ namespace Flames.Games
 
         /// <summary> Called when the player fires this weapon. </summary>
         /// <remarks> Activated by clicking through either PlayerClick or on a glass box around the player. </remarks>
-        public abstract void OnActivated(Vec3F32 dir, BlockID block);
+        public abstract void OnActivated(Vec3F32 dir, ushort block);
 
 
-        public static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        public static void BlockChangingCallback(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel)
         {
             Weapon weapon = p.weapon;
             if (weapon == null) return;
@@ -126,7 +125,7 @@ namespace Flames.Games
                 return; 
             }
 
-            BlockID held = p.ClientHeldBlock;
+            ushort held = p.ClientHeldBlock;
             if (!CommandParser.IsBlockAllowed(p, "use", held)) return;
 
             Vec3F32 dir = DirUtils.GetDirVectorExt(yaw, pitch);
@@ -171,7 +170,7 @@ namespace Flames.Games
 
     public class AmmunitionData
     {
-        public BlockID block;
+        public ushort block;
         public Vec3U16 start;
         public Vec3F32 dir;
         public bool moving = true;

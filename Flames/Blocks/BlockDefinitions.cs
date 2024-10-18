@@ -19,7 +19,6 @@ using System;
 using System.IO;
 using Flames.Config;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -28,37 +27,62 @@ namespace Flames
 
         [ConfigUShort("BlockID", null)]
         public ushort RawID;
-        [ConfigString] public string Name;
-        [ConfigFloat] public float Speed;
-        [ConfigByte] public byte CollideType;
-        [ConfigUShort] public ushort TopTex;
-        [ConfigUShort] public ushort BottomTex;
+        [ConfigString] 
+        public string Name;
+        [ConfigFloat] 
+        public float Speed;
+        [ConfigByte] 
+        public byte CollideType;
+        [ConfigUShort] 
+        public ushort TopTex;
+        [ConfigUShort] 
+        public ushort BottomTex;
 
-        [ConfigBool] public bool BlocksLight;
-        [ConfigByte] public byte WalkSound;
-        [ConfigBool] public bool FullBright;
-        [ConfigByte] public byte Shape;
-        [ConfigByte] public byte BlockDraw;
-        [ConfigByte] public byte FallBack;
+        [ConfigBool] 
+        public bool BlocksLight;
+        [ConfigByte] 
+        public byte WalkSound;
+        [ConfigBool] 
+        public bool FullBright;
+        [ConfigByte] 
+        public byte Shape;
+        [ConfigByte] 
+        public byte BlockDraw;
+        [ConfigByte] 
+        public byte FallBack;
 
-        [ConfigByte] public byte FogDensity;
-        [ConfigByte] public byte FogR;
-        [ConfigByte] public byte FogG;
-        [ConfigByte] public byte FogB;
+        [ConfigByte] 
+        public byte FogDensity;
+        [ConfigByte] 
+        public byte FogR;
+        [ConfigByte]
+        public byte FogG;
+        [ConfigByte]
+        public byte FogB;
 
         // BlockDefinitionsExt fields
-        [ConfigByte] public byte MinX;
-        [ConfigByte] public byte MinY;
-        [ConfigByte] public byte MinZ;
-        [ConfigByte] public byte MaxX;
-        [ConfigByte] public byte MaxY;
-        [ConfigByte] public byte MaxZ;
+        [ConfigByte] 
+        public byte MinX;
+        [ConfigByte] 
+        public byte MinY;
+        [ConfigByte] 
+        public byte MinZ;
+        [ConfigByte] 
+        public byte MaxX;
+        [ConfigByte] 
+        public byte MaxY;
+        [ConfigByte] 
+        public byte MaxZ;
 
         // BlockDefinitionsExt version 2 fields
-        [ConfigUShort] public ushort LeftTex;
-        [ConfigUShort] public ushort RightTex;
-        [ConfigUShort] public ushort FrontTex;
-        [ConfigUShort] public ushort BackTex;
+        [ConfigUShort] 
+        public ushort LeftTex;
+        [ConfigUShort] 
+        public ushort RightTex;
+        [ConfigUShort] 
+        public ushort FrontTex;
+        [ConfigUShort] 
+        public ushort BackTex;
 
         [ConfigInt(null, null, -1, -1)]
         public int InventoryOrder = -1;
@@ -68,18 +92,20 @@ namespace Flames
         /// 0-15 value for how far this block casts light (for fancy lighting option).
         /// -1 means this property has not been set by the user before
         /// </summary>
-        [ConfigInt(null, null, -1, -1, 15)] public int Brightness = -1;
+        [ConfigInt(null, null, -1, -1, 15)] 
+        public int Brightness = -1;
         /// <summary>
         /// Does this block use the lamplight environment color for light casting? (for fancy lighting option)
         /// If false, uses the lavalight environment color
         /// </summary>
-        [ConfigBool] public bool UseLampBrightness;
+        [ConfigBool]
+        public bool UseLampBrightness;
 
-        public BlockID GetBlock()
+        public ushort GetBlock()
         {
             return Block.FromRaw(RawID);
         }
-        public void SetBlock(BlockID b)
+        public void SetBlock(ushort b)
         {
             RawID = Block.ToRaw(b);
         }
@@ -159,7 +185,7 @@ namespace Flames
                     BlockDefinition def = (BlockDefinition)obj.Meta;
                     if (string.IsNullOrEmpty(def.Name)) continue;
 
-                    BlockID block = def.GetBlock();
+                    ushort block = def.GetBlock();
                     if (block >= defs.Length)
                     {
                         Logger.Log(LogType.Warning, "Invalid block ID: " + def.RawID);
@@ -268,7 +294,7 @@ namespace Flames
                     {
                         lvl.Props[b] = Block.Props[b];
                     }
-                    lvl.UpdateCustomBlock((BlockID)b, GlobalDefs[b]);
+                    lvl.UpdateCustomBlock((ushort)b, GlobalDefs[b]);
                 }
             }
         }
@@ -276,7 +302,7 @@ namespace Flames
 
         public static void Add(BlockDefinition def, BlockDefinition[] defs, Level level)
         {
-            BlockID block = def.GetBlock();
+            ushort block = def.GetBlock();
             bool global = defs == GlobalDefs;
             if (global) UpdateGlobalCustom(block, def);
 
@@ -296,7 +322,7 @@ namespace Flames
 
         public static void Remove(BlockDefinition def, BlockDefinition[] defs, Level level)
         {
-            BlockID block = def.GetBlock();
+            ushort block = def.GetBlock();
             bool global = defs == GlobalDefs;
             if (global) UpdateGlobalCustom(block, null);
 
@@ -325,7 +351,7 @@ namespace Flames
             }
         }
 
-        public static void UpdateGlobalCustom(BlockID block, BlockDefinition def)
+        public static void UpdateGlobalCustom(ushort block, BlockDefinition def)
         {
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded)
@@ -450,16 +476,16 @@ namespace Flames
                 int order = block_to_orders[raw];
                 if (order == -1) order = 0;
 
-                BlockDefinition def = defs[Block.FromRaw((BlockID)raw)];
+                BlockDefinition def = defs[Block.FromRaw((ushort)raw)];
                 if (def == null && raw >= Block.CPE_COUNT) continue;
                 // Special case, don't want 255 getting hidden by default
                 if (raw == 255 && def.InventoryOrder == -1) continue;
 
-                pl.Send(Packet.SetInventoryOrder((BlockID)raw, (BlockID)order, pl.Session.hasExtBlocks));
+                pl.Send(Packet.SetInventoryOrder((ushort)raw, (ushort)order, pl.Session.hasExtBlocks));
             }
         }
 
-        public static void UpdateFallback(bool global, BlockID block, Level level)
+        public static void UpdateFallback(bool global, ushort block, Level level)
         {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player pl in players)

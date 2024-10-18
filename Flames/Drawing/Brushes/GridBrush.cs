@@ -17,16 +17,15 @@
  */
 using System.Collections.Generic;
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
     public class GridBrush : Brush
     {
-        public BlockID gridBlock, cellBlock, borderBlock;
+        public ushort gridBlock, cellBlock, borderBlock;
         public int gridSize, blocksCount;
 
-        public GridBrush(List<BlockID> blocks, List<int> counts)
+        public GridBrush(List<ushort> blocks, List<int> counts)
         {
             gridBlock = blocks[0];
             cellBlock = blocks[1];
@@ -38,7 +37,7 @@ namespace Flames.Drawing.Brushes
 
         public override string Name { get { return "Grid"; } }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             int dx = (op.Coords.X - op.Min.X) % blocksCount; 
             if (dx < 0) dx += blocksCount;

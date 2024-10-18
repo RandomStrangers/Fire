@@ -17,7 +17,6 @@
 */
 using System;
 using System.Threading;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -154,7 +153,7 @@ namespace Flames
 
         }
 
-        public void Blockchange1(Player p, ushort x, ushort y, ushort z, BlockID block)
+        public void Blockchange1(Player p, ushort x, ushort y, ushort z, ushort block)
         {
             p.ClearBlockchange();
             p.RevertBlock(x, y, z);

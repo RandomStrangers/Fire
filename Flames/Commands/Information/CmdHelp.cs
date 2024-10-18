@@ -15,7 +15,6 @@ permissions and limitations under the Licenses.
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Commands.CPE;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Info
 {
@@ -153,7 +152,7 @@ namespace Flames.Commands.Info
 
         public bool ParseBlock(Player p, string message)
         {
-            BlockID block = Block.Parse(p, message);
+            ushort block = Block.Parse(p, message);
             if (block == Block.Invalid) return false;
 
             p.Message("Block \"{0}\" appears as &b{1}",
@@ -164,7 +163,7 @@ namespace Flames.Commands.Info
             return true;
         }
 
-        public void DescribePhysics(Player p, string message, BlockID b)
+        public void DescribePhysics(Player p, string message, ushort b)
         {
             BlockProps props = p.IsSuper ? Block.Props[b] : p.level.Props[b];
 

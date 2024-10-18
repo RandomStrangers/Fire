@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -23,10 +22,9 @@ namespace Flames.Blocks.Physics
     public static class LiquidPhysics
     {
 
-        public static void PhysWater(Level lvl, ushort x, ushort y, ushort z, BlockID type)
+        public static void PhysWater(Level lvl, ushort x, ushort y, ushort z, ushort type)
         {
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
 
             switch (block)
             {
@@ -64,10 +62,9 @@ namespace Flames.Blocks.Physics
             }
         }
 
-        public static void PhysLava(Level lvl, ushort x, ushort y, ushort z, BlockID type)
+        public static void PhysLava(Level lvl, ushort x, ushort y, ushort z, ushort type)
         {
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
 
             switch (block)
             {

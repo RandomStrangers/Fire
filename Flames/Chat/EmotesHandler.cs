@@ -8,7 +8,8 @@ namespace Flames
     {
 
         /// <summary> Mapping of emote keywords to unicode characters </summary>
-        public static Dictionary<string, char> Keywords = new Dictionary<string, char> {
+        public static Dictionary<string, char> Keywords = new Dictionary<string, char> 
+        {
             { "darksmile", '☺' },
             { "smile", '☻' },
             { "heart", '♥' }, { "hearts", '♥' },
@@ -71,8 +72,7 @@ namespace Flames
                 }
 
                 string keyword = message.Substring(begIndex + 1, endIndex - begIndex - 1);
-                char substitute;
-                if (tokens.TryGetValue(keyword.ToLowerInvariant(), out substitute))
+                if (tokens.TryGetValue(keyword.ToLowerInvariant(), out char substitute))
                 {
                     if (escaped)
                     {

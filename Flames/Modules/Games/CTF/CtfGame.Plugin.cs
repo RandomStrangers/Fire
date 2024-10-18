@@ -22,7 +22,6 @@ using Flames.Events.EntityEvents;
 using Flames.Events.PlayerEvents;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
@@ -59,7 +58,7 @@ namespace Flames.Modules.Games.CTF
         }
 
 
-        public void HandlePlayerDied(Player p, BlockID deathblock, ref TimeSpan cooldown)
+        public void HandlePlayerDied(Player p, ushort deathblock, ref TimeSpan cooldown)
         {
             if (p.level != Map || !Get(p).HasFlag) return;
             CtfTeam team = TeamOf(p);
@@ -97,7 +96,7 @@ namespace Flames.Modules.Games.CTF
             p.cancelcommand = true;
         }
 
-        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel)
         {
             if (p.level != Map) return;
             CtfTeam team = TeamOf(p);

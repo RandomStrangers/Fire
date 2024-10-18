@@ -35,8 +35,7 @@ namespace Flames.Config
 
         public override object Parse(string raw)
         {
-            bool value;
-            if (!bool.TryParse(raw, out value))
+            if (!bool.TryParse(raw, out bool value))
             {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid boolean '{2}', using default of {1}", Name, defValue, raw);
                 return defValue;

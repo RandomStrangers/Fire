@@ -17,23 +17,26 @@ using System.Drawing;
 using System.Windows.Forms;
 using Flames.Gui.Popups;
 
-namespace Flames.Gui {
-    
-    public partial class PropertyWindow : Form {
+namespace Flames.Gui
+{
 
-        public void LoadChatProps() {
+    public partial class PropertyWindow : Form
+    {
+
+        public void LoadChatProps()
+        {
             chat_ParseColor(Server.Config.DefaultColor, chat_btnDefault);
             chat_ParseColor(Server.Config.IRCColor, chat_btnIRC);
             chat_ParseColor(Server.Config.HelpSyntaxColor, chat_btnSyntax);
             chat_ParseColor(Server.Config.HelpDescriptionColor, chat_btnDesc);
             chat_ParseColor(Server.Config.WarningErrorColor, chat_btnWarn);
-            
+
             chat_txtConsole.Text = Server.Config.FlameState;
             chat_chkFilter.Checked = Server.Config.ProfanityFiltering;
             chat_cbTabRank.Checked = Server.Config.TablistRankSorted;
             chat_cbTabLevel.Checked = !Server.Config.TablistGlobal;
             chat_cbTabBots.Checked = Server.Config.TablistBots;
-            
+
             chat_txtShutdown.Text = Server.Config.DefaultShutdownMessage;
             chat_chkCheap.Checked = Server.Config.ShowInvincibleMessage;
             chat_txtCheap.Enabled = chat_chkCheap.Checked;
@@ -45,19 +48,20 @@ namespace Flames.Gui {
             chat_txtLogout.Text = Server.Config.DefaultLogoutMessage;
         }
 
-        public void ApplyChatProps() {
+        public void ApplyChatProps()
+        {
             Server.Config.DefaultColor = Colors.Parse(chat_btnDefault.Text);
             Server.Config.IRCColor = Colors.Parse(chat_btnIRC.Text);
             Server.Config.HelpSyntaxColor = Colors.Parse(chat_btnSyntax.Text);
             Server.Config.HelpDescriptionColor = Colors.Parse(chat_btnDesc.Text);
             Server.Config.WarningErrorColor = Colors.Parse(chat_btnWarn.Text);
-            
+
             Server.Config.FlameState = chat_txtConsole.Text;
             Server.Config.ProfanityFiltering = chat_chkFilter.Checked;
             Server.Config.TablistRankSorted = chat_cbTabRank.Checked;
             Server.Config.TablistGlobal = !chat_cbTabLevel.Checked;
             Server.Config.TablistBots = chat_cbTabBots.Checked;
-            
+
             Server.Config.DefaultShutdownMessage = chat_txtShutdown.Text;
             Server.Config.ShowInvincibleMessage = chat_chkCheap.Checked;
             Server.Config.InvincibleMessage = chat_txtCheap.Text;
@@ -69,49 +73,58 @@ namespace Flames.Gui {
         }
 
 
-        public void chat_chkCheap_CheckedChanged(object sender, EventArgs e) {
+        public void chat_chkCheap_CheckedChanged(object sender, EventArgs e)
+        {
             chat_txtCheap.Enabled = chat_chkCheap.Checked;
         }
 
-        public void chat_cmbDefault_Click(object sender, EventArgs e) {
+        public void chat_cmbDefault_Click(object sender, EventArgs e)
+        {
             chat_ShowColorDialog(chat_btnDefault, "Default color");
         }
 
-        public void chat_btnIRC_Click(object sender, EventArgs e) {
+        public void chat_btnIRC_Click(object sender, EventArgs e)
+        {
             chat_ShowColorDialog(chat_btnIRC, "IRC text color");
         }
 
-        public void chat_btnSyntax_Click(object sender, EventArgs e) {
+        public void chat_btnSyntax_Click(object sender, EventArgs e)
+        {
             chat_ShowColorDialog(chat_btnSyntax, "Help syntax color");
         }
 
-        public void chat_btnDesc_Click(object sender, EventArgs e) {
+        public void chat_btnDesc_Click(object sender, EventArgs e)
+        {
             chat_ShowColorDialog(chat_btnDesc, "Help description color");
         }
 
-        public void chat_btnWarn_Click(object sender, EventArgs e) {
+        public void chat_btnWarn_Click(object sender, EventArgs e)
+        {
             chat_ShowColorDialog(chat_btnWarn, "Warning / error color");
         }
 
 
-        public void chat_ParseColor(string value, Button target) {
+        public void chat_ParseColor(string value, Button target)
+        {
             char code = value[1];
             target.Text = Colors.Name(value);
-            
+
             Color textCol;
             target.BackColor = ColorSelector.LookupColor(code, out textCol);
             target.ForeColor = textCol;
         }
 
-        public void chat_ShowColorDialog(Button target, string title) {
+        public void chat_ShowColorDialog(Button target, string title)
+        {
             string parsed = Colors.Parse(target.Text);
             char col = parsed.Length == 0 ? 'f' : parsed[1];
-            
-            using (ColorSelector sel = new ColorSelector(title, col)) {
+
+            using (ColorSelector sel = new ColorSelector(title, col))
+            {
                 DialogResult result = sel.ShowDialog();
                 if (result == DialogResult.Cancel) return;
-                
-                target.Text = Colors.Name(sel.ColorCode);     
+
+                target.Text = Colors.Name(sel.ColorCode);
                 Color textCol;
                 target.BackColor = ColorSelector.LookupColor(sel.ColorCode, out textCol);
                 target.ForeColor = textCol;

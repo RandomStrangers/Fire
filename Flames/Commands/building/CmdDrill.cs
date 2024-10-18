@@ -17,7 +17,6 @@
  */
 using Flames.DB;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -38,7 +37,7 @@ namespace Flames.Commands.Building
             p.MakeSelection(1, "Selecting location for &SDrill", dist, DoDrill);
         }
 
-        public bool DoDrill(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool DoDrill(Player p, Vec3S32[] marks, object state, ushort block)
         {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             block = p.level.GetBlock(x, y, z);
@@ -51,8 +50,8 @@ namespace Flames.Commands.Building
                 return false;
             }
 
-            int dx = 0, dz = 0;
-            DirUtils.FourYaw(p.Rot.RotY, out dx, out dz);
+
+            DirUtils.FourYaw(p.Rot.RotY, out int dx, out int dz);
             Level lvl = p.level;
 
             if (dx != 0)
@@ -86,9 +85,9 @@ namespace Flames.Commands.Building
             return true;
         }
 
-        public void DoBlock(Player p, Level lvl, BlockID block, ushort x, ushort y, ushort z)
+        public void DoBlock(Player p, Level lvl, ushort block, ushort x, ushort y, ushort z)
         {
-            BlockID cur = lvl.GetBlock(x, y, z);
+            ushort cur = lvl.GetBlock(x, y, z);
             if (cur == block)
             {
                 p.level.UpdateBlock(p, x, y, z, Block.Air, BlockDBFlags.Drawn, true);

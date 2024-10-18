@@ -19,7 +19,6 @@ using System;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -137,7 +136,7 @@ namespace Flames.Drawing.Ops
                         continue; 
                     }
 
-                    BlockID block;
+                    ushort block;
                     if (!DualLayer)
                     {
                         block = selector.BestMatch(ref P);
@@ -275,7 +274,7 @@ namespace Flames.Drawing.Ops
                     P.G = (byte)oldPixel.Y;
                     P.B = (byte)oldPixel.Z;
 
-                    BlockID block = selector.BestMatch(ref P);
+                    ushort block = selector.BestMatch(ref P);
                     output(Place(x, y, z, block));
 
                     Vec3F32 newPixel = new Vec3F32(P.R, P.G, P.B);

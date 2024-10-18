@@ -21,7 +21,6 @@ using Flames.Commands.CPE;
 using Flames.Commands.World;
 using Flames.Events.PlayerEvents;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -122,7 +121,7 @@ namespace Flames.Commands.Moderation
             p.MakeSelection(2, "Selecting region for &SNew zone", z, AddZone);
         }
 
-        public bool AddZone(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool AddZone(Player p, Vec3S32[] marks, object state, ushort block)
         {
             Zone zone = (Zone)state;
             zone.MinX = (ushort)Math.Min(marks[0].X, marks[1].X);
@@ -258,7 +257,7 @@ namespace Flames.Commands.Moderation
             p.MakeSelection(1, "Selecting point for &SZone check", data, TestZone);
         }
 
-        public bool TestZone(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool TestZone(Player p, Vec3S32[] marks, object state, ushort block)
         {
             Vec3S32 P = marks[0];
             Level lvl = p.level;

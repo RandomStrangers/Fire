@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Threading;
 using Flames.Games;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.Countdown
 {
@@ -133,14 +132,14 @@ namespace Flames.Modules.Games.Countdown
             bulk.Flush();
         }
 
-        public void SetBoardOpening(BlockID block)
+        public void SetBoardOpening(ushort block)
         {
             int midX = Map.Width / 2, midY = Map.Height / 2, midZ = Map.Length / 2;
             Cuboid(midX - 1, midY, midZ - 1, midX, midY, midZ, block);
             bulk.Flush();
         }
 
-        public void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, BlockID block)
+        public void Cuboid(int x1, int y1, int z1, int x2, int y2, int z2, ushort block)
         {
             if (!Running) return;
 
@@ -152,7 +151,7 @@ namespace Flames.Modules.Games.Countdown
                     }
         }
 
-        public void TryChangeBlock(int x, int y, int z, BlockID block)
+        public void TryChangeBlock(int x, int y, int z, ushort block)
         {
             int index = Map.PosToInt((ushort)x, (ushort)y, (ushort)z);
             if (!Map.DoPhysicsBlockchange(index, block)) return;

@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Network;
 using Flames.Tasks;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -53,7 +52,7 @@ namespace Flames
         }
 
         /// <summary> Adds a block update to the end of the queue. </summary>
-        public void Add(int index, BlockID block)
+        public void Add(int index, ushort block)
         {
             // Bit packing format
             // 32-63: index
@@ -89,7 +88,7 @@ namespace Flames
                 {
                     ulong flags = this[i];
                     int index = (int)(flags >> posShift);
-                    BlockID block = (BlockID)flags;
+                    ushort block = (ushort)flags;
                     bulkSender.Add(index, block);
                 }
                 bulkSender.Flush();

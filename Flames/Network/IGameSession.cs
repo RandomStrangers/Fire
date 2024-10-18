@@ -17,7 +17,6 @@
  */
 using Flames.Maths;
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Network
 {
@@ -28,7 +27,7 @@ namespace Flames.Network
     {
         public byte ProtocolVersion;
         public byte[] fallback = new byte[256]; // fallback for classic+CPE block IDs
-        public BlockID MaxRawBlock = Block.CLASSIC_MAX_BLOCK;
+        public ushort MaxRawBlock = Block.CLASSIC_MAX_BLOCK;
         public bool hasCpe;
         public string appName;
 
@@ -112,7 +111,7 @@ namespace Flames.Network
         /// <summary> Sends a set reach/click distance packet to the client </summary>
         public abstract bool SendSetReach(float reach);
         /// <summary> Sends a set held block packet to the client </summary>
-        public abstract bool SendHoldThis(BlockID block, bool locked);
+        public abstract bool SendHoldThis(ushort block, bool locked);
         /// <summary> Sends an update environment color packet to the client </summary>
         public abstract bool SendSetEnvColor(byte type, string hex);
         public abstract void SendChangeModel(byte id, string model);
@@ -131,7 +130,7 @@ namespace Flames.Network
         /// <summary> Sends a level to the client </summary>
         public abstract void SendLevel(Level prev, Level level);
         /// <summary> Sends a block change/update packet to the client </summary>
-        public abstract void SendBlockchange(ushort x, ushort y, ushort z, BlockID block);
+        public abstract void SendBlockchange(ushort x, ushort y, ushort z, ushort block);
 
         public abstract byte[] MakeBulkBlockchange(BufferedBlockSender buffer);
         /// <summary> Gets the name of the software the client is using </summary>
@@ -140,9 +139,9 @@ namespace Flames.Network
         public abstract void UpdatePlayerPositions();
 
         /// <summary> Converts the given block ID into a raw block ID that the client supports </summary>
-        public virtual BlockID ConvertBlock(BlockID block)
+        public virtual ushort ConvertBlock(ushort block)
         {
-            BlockID raw;
+            ushort raw;
             Player p = player;
 
             if (block >= Block.Extended)

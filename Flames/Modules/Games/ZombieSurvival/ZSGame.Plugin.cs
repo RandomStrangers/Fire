@@ -23,7 +23,6 @@ using Flames.Events.EconomyEvents;
 using Flames.Events.EntityEvents;
 using Flames.Events.PlayerEvents;
 using Flames.Games;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.ZS
 {
@@ -139,7 +138,7 @@ namespace Flames.Modules.Games.ZS
             if (reverted) cancel = true;
         }
 
-        public void HandlePlayerDied(Player p, BlockID cause, ref TimeSpan cooldown)
+        public void HandlePlayerDied(Player p, ushort cause, ref TimeSpan cooldown)
         {
             if (p.level != Map || !Config.InfectUponDeath) return;
 
@@ -218,10 +217,10 @@ namespace Flames.Modules.Games.ZS
         }
 
 
-        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel)
         {
             if (p.level != Map) return;
-            BlockID old = Map.GetBlock(x, y, z);
+            ushort old = Map.GetBlock(x, y, z);
             ZSData data = Get(p);
             bool nonReplacable = Map.Config.BuildType == BuildType.NoModify ||
                                  Map.Config.BuildType == BuildType.ModifyOnly && Map.Props[old].OPBlock;
@@ -278,7 +277,7 @@ namespace Flames.Modules.Games.ZS
             }
         }
 
-        public bool NotPillaring(BlockID b, BlockID old)
+        public bool NotPillaring(ushort b, ushort old)
         {
             byte collide = Map.CollideType(b);
             if (collide == CollideType.WalkThrough) return true;

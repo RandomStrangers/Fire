@@ -17,7 +17,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 using Flames.Maths;
 
 namespace Flames.Commands.Fun
@@ -76,7 +75,7 @@ namespace Flames.Commands.Fun
 
             pos = lvl.ClampPos(pos);
             ushort x = (ushort)pos.X, y = (ushort)pos.Y, z = (ushort)pos.Z;
-            BlockID old = lvl.GetBlock(x, y, z);
+            ushort old = lvl.GetBlock(x, y, z);
 
             if (!lvl.CheckAffect(p, x, y, z, old, Block.TNT)) return false;
             lvl.MakeExplosion(x, y, z, 1);

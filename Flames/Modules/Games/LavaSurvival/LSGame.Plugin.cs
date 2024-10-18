@@ -21,7 +21,6 @@ using Flames.Events.PlayerEvents;
 using Flames.Events.LevelEvents;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS
 {
@@ -67,12 +66,12 @@ namespace Flames.Modules.Games.LS
             if (RoundInProgress) OutputStatus(p);
         }
 
-        public void HandlePlayerDying(Player p, BlockID block, ref bool cancel)
+        public void HandlePlayerDying(Player p, ushort block, ref bool cancel)
         {
             if (p.level == Map && IsPlayerDead(p)) cancel = true;
         }
 
-        public void HandlePlayerDied(Player p, BlockID block, ref TimeSpan cooldown)
+        public void HandlePlayerDied(Player p, ushort block, ref TimeSpan cooldown)
         {
             if (p.level != Map || IsPlayerDead(p)) return;
 
@@ -80,7 +79,7 @@ namespace Flames.Modules.Games.LS
             AddLives(p, -1, false);
         }
 
-        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        public void HandleBlockChanging(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel)
         {
             if (p.level != Map || !(placing || p.painting)) return;
 
@@ -104,7 +103,7 @@ namespace Flames.Modules.Games.LS
         }
 
         public bool TryPlaceBlock(Player p, ref int blocksLeft, string type,
-                           BlockID block, ushort x, ushort y, ushort z)
+                           ushort block, ushort x, ushort y, ushort z)
         {
             if (!p.Game.Referee && blocksLeft <= 0)
             {

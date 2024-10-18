@@ -21,30 +21,38 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Flames.Gui 
+namespace Flames.Gui
 {
-    public static class Program 
-    {   
+    public static class Program
+    {
         [STAThread]
-        public static void Main(string[] args) {
+        public static void Main(string[] args)
+        {
             SetCurrentDirectory();
 
             // separate method, in case Flames_.dll is missing
-            try {
+            try
+            {
                 StartGUI();
-            } catch (FileNotFoundException) {
+            }
+            catch (FileNotFoundException)
+            {
                 // If Flames_.dll is missing, a FileNotFoundException will get thrown for Flames dll
                 Popup.Error("Cannot start server as Flames_.dll is missing from " + Environment.CurrentDirectory
                             + "\n\nDownload it from " + Updater.UploadsURL);
                 return;
-            }    
+            }
         }
 
-        public static void SetCurrentDirectory() {
+        public static void SetCurrentDirectory()
+        {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            try {
+            try
+            {
                 Environment.CurrentDirectory = path;
-            } catch {
+            }
+            catch
+            {
                 // assembly.Location usually gives full path of the .exe, but has issues with mkbundle
                 //   https://mono-devel-list.ximian.narkive.com/KfCAxY1F/mkbundle-assembly-getentryassembly
                 //   https://stackoverflow.com/questions/57648241/reliably-get-location-of-bundled-executable-on-linux
@@ -53,42 +61,51 @@ namespace Flames.Gui
             }
         }
 
-        public static void StartGUI() {
+        public static void StartGUI()
+        {
             FileLogger.Init();
             Server.RestartPath = Application.ExecutablePath;
             AppDomain.CurrentDomain.UnhandledException += GlobalExHandler;
             Application.ThreadException += ThreadExHandler;
             DetectBuggyCursors();
 
-            try {
+            try
+            {
                 Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault( false );
+                Application.SetCompatibleTextRenderingDefault(false);
                 Application.Run(new Window());
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 Logger.LogError(e);
             }
         }
 
-        public static void LogAndRestart(Exception ex) {
+        public static void LogAndRestart(Exception ex)
+        {
             Logger.LogError(ex);
             FileLogger.Flush(null);
-            
+
             Thread.Sleep(500);
-            if (Server.Config.restartOnError) {
+            if (Server.Config.restartOnError)
+            {
                 Thread stopThread = Server.Stop(true, "Server restart - unhandled error");
                 stopThread.Join();
             }
         }
 
-        public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e) {
+        public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e)
+        {
             LogAndRestart((Exception)e.ExceptionObject);
         }
 
-        public static void ThreadExHandler(object sender, ThreadExceptionEventArgs e) {
+        public static void ThreadExHandler(object sender, ThreadExceptionEventArgs e)
+        {
             LogAndRestart(e.Exception);
         }
 
-        public static void DetectBuggyCursors() {
+        public static void DetectBuggyCursors()
+        {
             // In very rare cases, trying to create SizeNWSE cursor on Mono on Linux will throw an ArgumentException
             // Message: A null reference or invalid value was found[GDI + status: InvalidParameter]
             //   ..
@@ -102,18 +119,30 @@ namespace Flames.Gui
             // However, some X11 video drivers will cause XQueryBestCursor to return width/height 0,
             //  which will then cause the subsequent 'new Bitmap(width, height)' in XplatUIX11.DefineCursor to fail
             // See https://github.com/ClassiCube/MCGalaxy/issues/658 for more details
-            try {
+            try
+            {
                 Cursor c = Cursors.SizeNWSE;
-            } catch (ArgumentException ex) {
+            }
+            catch (ArgumentException ex)
+            {
                 Logger.LogError("checking Cursors", ex);
                 Popup.Warning("Video driver appears to be returning buggy cursor sizes\n\nAttempting to workaround this issue (might not work)");
-                try { BypassCursorsHACK(); } catch { }
-            } catch (Exception ex) {
+                try 
+                { 
+                    BypassCursorsHACK(); 
+                } 
+                catch 
+                { 
+                }
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("checking Cursors", ex);
-            } 
+            }
         }
 
-        public static void BypassCursorsHACK() {
+        public static void BypassCursorsHACK()
+        {
             if (!Server.RunningOnMono()) return;
             Type stdCursorType = typeof(Cursor).Assembly.GetType("System.Windows.Forms.StdCursor");
 

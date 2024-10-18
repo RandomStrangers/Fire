@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -26,7 +25,7 @@ namespace Flames.Commands.Building
 
         public override DrawOp GetDrawOp(DrawArgs dArgs)
         {
-            BlockID skip = Block.Invalid;
+            ushort skip = Block.Invalid;
             if (dArgs.Message.Length > 0)
             {
                 if (!CommandParser.GetBlock(dArgs.Player, dArgs.Message, out skip)) return null;

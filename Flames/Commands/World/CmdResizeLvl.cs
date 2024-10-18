@@ -39,8 +39,7 @@ namespace Flames.Commands.World
                 return; 
             }
 
-            bool needConfirm;
-            if (DoResize(p, args, data, out needConfirm)) return;
+            if (DoResize(p, args, data, out bool needConfirm)) return;
 
             if (!needConfirm) return;
             p.Message("Type &T/ResizeLvl {0} {1} {2} {3} confirm &Sif you're sure.",

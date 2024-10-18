@@ -17,7 +17,6 @@ using System.Collections.Generic;
 using Flames.Events.PlayerEvents;
 using Flames.Maths;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -182,7 +181,7 @@ namespace Flames
 
         }
 
-        public void SendBlockchange(ushort x, ushort y, ushort z, BlockID block)
+        public void SendBlockchange(ushort x, ushort y, ushort z, ushort block)
         {
             //if (x < 0 || y < 0 || z < 0) return;
             if (x >= level.Width || y >= level.Height || z >= level.Length) return;
@@ -265,7 +264,7 @@ namespace Flames
 
             for (int i = 0; i < count; i++)
             {
-                BlockID block = Block.FromRaw((BlockID)i);
+                ushort block = Block.FromRaw((ushort)i);
                 bool place = group.Blocks[block] && level.CanPlace;
                 // NOTE: If you can't delete air, then you're no longer able to place blocks
                 // (see ClassiCube client #815)
@@ -274,7 +273,7 @@ namespace Flames
 
                 // Placing air is the same as deleting existing block at that position in the world
                 if (block == Block.Air) place &= delete;
-                Packet.WriteBlockPermission((BlockID)i, place, delete, extBlocks, bulk, i * size);
+                Packet.WriteBlockPermission((ushort)i, place, delete, extBlocks, bulk, i * size);
             }
             Send(bulk);
         }

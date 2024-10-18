@@ -15,8 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Blocks
 {
@@ -24,7 +22,7 @@ namespace Flames.Blocks
     public static class DefaultSet
     {
         /// <summary> Constructs a custom block, with the default properties of the given classic/CPE block </summary>
-        public static BlockDefinition MakeCustomBlock(BlockID b)
+        public static BlockDefinition MakeCustomBlock(ushort b)
         {
             BlockDefinition def = new BlockDefinition();
             def.SetBlock(b);
@@ -48,7 +46,7 @@ namespace Flames.Blocks
             def.FogR = fog.R;
             def.FogG = fog.G;
             def.FogB = fog.B;
-            def.FallBack = (BlockRaw)b;
+            def.FallBack = (byte)b;
 
             def.MaxX = 16;
             def.MaxZ = Height(b);
@@ -59,7 +57,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Gets the default height of a block. A value of 16 is full height. </summary>
-        public static byte Height(BlockID b)
+        public static byte Height(ushort b)
         {
             if (b == Block.Slab) return 8;
             if (b == Block.CobblestoneSlab) return 8;
@@ -68,14 +66,14 @@ namespace Flames.Blocks
         }
 
         /// <summary> Gets whether a block is full bright / light emitting by default. </summary>
-        public static bool FullBright(BlockID b)
+        public static bool FullBright(ushort b)
         {
             return b == Block.Lava || b == Block.StillLava
                 || b == Block.MagmaBlock || b == Block.Fire;
         }
 
         /// <summary> Gets the default fog density of a block, in packed form. </summary>
-        public static byte FogDensity(BlockID b)
+        public static byte FogDensity(ushort b)
         {
             if (b == Block.Water || b == Block.StillWater)
                 return 11; // (128 * 0.1f - 1);
@@ -85,7 +83,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Gets the default fog color of a block. </summary>
-        public static ColorDesc FogColor(BlockID b)
+        public static ColorDesc FogColor(ushort b)
         {
             if (b == Block.Water || b == Block.StillWater)
                 return new ColorDesc(5, 5, 51);
@@ -95,7 +93,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Gets the default collide type of a block, see CollideType class. </summary>
-        public static byte Collide(BlockID b)
+        public static byte Collide(ushort b)
         {
             if (b >= Block.Water && b <= Block.StillLava)
                 return CollideType.SwimThrough;
@@ -105,7 +103,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Gets whether a block blocks light (prevents light passing through) by default. </summary>
-        public static bool BlocksLight(BlockID b)
+        public static bool BlocksLight(ushort b)
         {
             return !(b == Block.Glass || b == Block.Leaves
                      || b == Block.Air || Draw(b) == DrawType.Sprite);
@@ -113,7 +111,7 @@ namespace Flames.Blocks
 
 
         /// <summary> Gets the default step sound of a block. </summary>
-        public static SoundType StepSound(BlockID b)
+        public static SoundType StepSound(ushort b)
         {
             if (b == Block.Glass) return SoundType.Glass;
             if (b == Block.Rope) return SoundType.Cloth;
@@ -152,7 +150,7 @@ namespace Flames.Blocks
 
 
         /// <summary> Gets the default draw type of a block, see DrawType class. </summary>        
-        public static byte Draw(BlockID b)
+        public static byte Draw(ushort b)
         {
             if (b == Block.Air || b == Block.Invalid) return DrawType.Gas;
             if (b == Block.Leaves) return DrawType.TransparentThick;
@@ -176,7 +174,7 @@ namespace Flames.Blocks
             "_Gold_Iron_Double slab_Slab_Brick_TNT_Bookshelf_Mossy rocks_Obsidian_Cobblestone slab_Rope_Sandstone" +
             "_Snow_Fire_Light pink_Forest green_Brown_Deep blue_Turquoise_Ice_Ceramic tile_Magma_Pillar_Crate_Stone brick";
 
-        public static string Name(BlockID block)
+        public static string Name(ushort block)
         {
             // Find start and end of this particular block name
             int start = 0;
@@ -190,18 +188,27 @@ namespace Flames.Blocks
         }
 
 
-        public static byte[] topTex = new byte[] { 0,  1,  0,  2, 16,  4, 15, 17, 14, 14,
+        public static byte[] topTex = new byte[] 
+        { 
+            0,  1,  0,  2, 16,  4, 15, 17, 14, 14,
             30, 30, 18, 19, 32, 33, 34, 21, 22, 48, 49, 64, 65, 66, 67, 68, 69, 70, 71,
             72, 73, 74, 75, 76, 77, 78, 79, 13, 12, 29, 28, 24, 23,  6,  6,  7,  9,  4,
-            36, 37, 16, 11, 25, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 26, 53, 52, };
-        public static byte[] sideTex = new byte[] { 0,  1,  3,  2, 16,  4, 15, 17, 14, 14,
+            36, 37, 16, 11, 25, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 26, 53, 52, 
+        };
+        public static byte[] sideTex = new byte[] 
+        { 
+            0,  1,  3,  2, 16,  4, 15, 17, 14, 14,
             30, 30, 18, 19, 32, 33, 34, 20, 22, 48, 49, 64, 65, 66, 67, 68, 69, 70, 71,
             72, 73, 74, 75, 76, 77, 78, 79, 13, 12, 29, 28, 40, 39,  5,  5,  7,  8, 35,
-            36, 37, 16, 11, 41, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 42, 53, 52, };
-        public static byte[] bottomTex = new byte[] { 0,  1,  2,  2, 16,  4, 15, 17, 14, 14,
+            36, 37, 16, 11, 41, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 42, 53, 52, 
+        };
+        public static byte[] bottomTex = new byte[] 
+        { 
+            0,  1,  2,  2, 16,  4, 15, 17, 14, 14,
             30, 30, 18, 19, 32, 33, 34, 21, 22, 48, 49, 64, 65, 66, 67, 68, 69, 70, 71,
             72, 73, 74, 75, 76, 77, 78, 79, 13, 12, 29, 28, 56, 55,  6,  6,  7, 10,  4,
-            36, 37, 16, 11, 57, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 58, 53, 52 };
+            36, 37, 16, 11, 57, 50, 38, 80, 81, 82, 83, 84, 51, 54, 86, 58, 53, 52 
+        };
     }
 
     public static class DrawType

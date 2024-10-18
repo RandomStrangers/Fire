@@ -16,22 +16,21 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Blocks.Physics;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks
 {
 
     /// <summary> Handles the player deleting a block at the given coordinates. </summary>
     /// <remarks> Use p.ChangeBlock to do a normal player block change (adds to BlockDB, updates dirt/grass beneath) </remarks>
-    public delegate ChangeResult HandleDelete(Player p, BlockID oldBlock, ushort x, ushort y, ushort z);
+    public delegate ChangeResult HandleDelete(Player p, ushort oldBlock, ushort x, ushort y, ushort z);
 
     /// <summary> Handles the player placing a block at the given coordinates. </summary>
     /// <remarks> Use p.ChangeBlock to do a normal player block change (adds to BlockDB, updates dirt/grass beneath) </remarks>
-    public delegate ChangeResult HandlePlace(Player p, BlockID newBlock, ushort x, ushort y, ushort z);
+    public delegate ChangeResult HandlePlace(Player p, ushort newBlock, ushort x, ushort y, ushort z);
 
     /// <summary> Returns whether this block handles the player walking through this block at the given coordinates. </summary>
     /// <remarks> If this returns false, continues trying other walkthrough blocks the player is touching. </remarks>
-    public delegate bool HandleWalkthrough(Player p, BlockID block, ushort x, ushort y, ushort z);
+    public delegate bool HandleWalkthrough(Player p, ushort block, ushort x, ushort y, ushort z);
 
     /// <summary> Called to handle the physics for this particular block. </summary>
     public delegate void HandlePhysics(Level lvl, ref PhysInfo C);
@@ -40,7 +39,7 @@ namespace Flames.Blocks
     {
 
         /// <summary> Retrieves the default place block handler for the given block. </summary>
-        public static HandlePlace GetPlaceHandler(BlockID block, BlockProps[] props)
+        public static HandlePlace GetPlaceHandler(ushort block, BlockProps[] props)
         {
             switch (block)
             {
@@ -57,7 +56,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Retrieves the default delete block handler for the given block. </summary>
-        public static HandleDelete GetDeleteHandler(BlockID block, BlockProps[] props)
+        public static HandleDelete GetDeleteHandler(ushort block, BlockProps[] props)
         {
             switch (block)
             {
@@ -85,7 +84,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Retrieves the default walkthrough block handler for the given block. </summary>
-        public static HandleWalkthrough GetWalkthroughHandler(BlockID block, BlockProps[] props, bool nonSolid)
+        public static HandleWalkthrough GetWalkthroughHandler(ushort block, BlockProps[] props, bool nonSolid)
         {
             switch (block)
             {
@@ -108,7 +107,7 @@ namespace Flames.Blocks
 
 
         /// <summary> Retrieves the default physics block handler for the given block. </summary>
-        public static HandlePhysics GetPhysicsHandler(BlockID block, BlockProps[] props)
+        public static HandlePhysics GetPhysicsHandler(ushort block, BlockProps[] props)
         {
             switch (block)
             {
@@ -237,7 +236,7 @@ namespace Flames.Blocks
         }
 
         /// <summary> Retrieves the default physics block handler for the given block. </summary>
-        public static HandlePhysics GetPhysicsDoorsHandler(BlockID block, BlockProps[] props)
+        public static HandlePhysics GetPhysicsDoorsHandler(ushort block, BlockProps[] props)
         {
             if (block == Block.Air) return DoorPhysics.Do;
             if (block == Block.Door_Log_air) return DoorPhysics.Do;

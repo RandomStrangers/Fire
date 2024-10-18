@@ -19,7 +19,6 @@ using System.IO;
 using Flames.Drawing.Ops;
 using Flames.Levels.IO;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -53,7 +52,7 @@ namespace Flames.Commands.Moderation
             }
         }
 
-        public bool DoRestore(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool DoRestore(Player p, Vec3S32[] marks, object state, ushort block)
         {
             string path = (string)state;
             Level source = IMapImporter.Decode(path, "templevel", false);

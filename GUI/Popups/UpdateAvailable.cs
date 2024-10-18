@@ -24,35 +24,44 @@ namespace Flames.Gui.Popups
     public sealed partial class UpdateAvailable : Form
     {
         public static volatile bool Active;
-        
-        public UpdateAvailable() {
+
+        public UpdateAvailable()
+        {
             Active = true;
             InitializeComponent();
-            Text   = "Update " + Colors.Strip(Server.SoftwareName) + "?";
+            Text = "Update " + Colors.Strip(Server.SoftwareName) + "?";
         }
-        
-        protected override void OnPaint(PaintEventArgs e) {
-            try {
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            try
+            {
                 e.Graphics.DrawIcon(SystemIcons.Question, 25, 26);
-            } catch {
+            }
+            catch
+            {
                 // not a critical error
             }
             base.OnPaint(e);
         }
 
-        public void UpdateCheck_Closed(object sender, EventArgs e) {
+        public void UpdateCheck_Closed(object sender, EventArgs e)
+        {
             Active = false;
         }
 
-        public void UpdateCheck_Load(object sender, EventArgs e) {
+        public void UpdateCheck_Load(object sender, EventArgs e)
+        {
             GuiUtils.SetIcon(this);
         }
 
-        public void BtnNo_Click(object sender, EventArgs e) {
+        public void BtnNo_Click(object sender, EventArgs e)
+        {
             Close();
         }
 
-        public void BtnUpdate_Click(object sender, EventArgs e) {
+        public void BtnUpdate_Click(object sender, EventArgs e)
+        {
             Updater.PerformUpdate();
             Close();
         }

@@ -19,7 +19,6 @@ using System;
 using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -28,17 +27,17 @@ namespace Flames.Drawing.Ops
         public override string Name { get { return "Highlight"; } }
 
         // Some servers like to set custom default highlight blocks due to using custom blocks
-        public static BlockID DefaultPlaceHighlight = Block.Green;
-        public static BlockID DefaultDeleteHighlight = Block.Red;
+        public static ushort DefaultPlaceHighlight = Block.Green;
+        public static ushort DefaultDeleteHighlight = Block.Red;
 
         /// <summary> Point in time that the /highlight should go backwards up to. </summary>
         public DateTime Start = DateTime.MinValue;
 
         /// <summary> Block to highlight placements with. </summary>
-        public BlockID PlaceHighlight = DefaultPlaceHighlight;
+        public ushort PlaceHighlight = DefaultPlaceHighlight;
 
         /// <summary> Block to highlight deletions with. </summary>
-        public BlockID DeleteHighlight = DefaultDeleteHighlight;
+        public ushort DeleteHighlight = DefaultDeleteHighlight;
 
 
         public string who;
@@ -85,11 +84,11 @@ namespace Flames.Drawing.Ops
 
         public void HighlightBlock(BlockDBEntry e)
         {
-            BlockID oldBlock = e.OldBlock;
+            ushort oldBlock = e.OldBlock;
             if (oldBlock == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
-            BlockID newBlock = e.NewBlock;
+            ushort newBlock = e.NewBlock;
 
-            BlockID highlight = (newBlock == Block.Air
+            ushort highlight = (newBlock == Block.Air
                                   || Block.Convert(oldBlock) == Block.Water || oldBlock == Block.StillWater
                                   || Block.Convert(oldBlock) == Block.Lava || oldBlock == Block.StillLava)
                 ? DeleteHighlight : PlaceHighlight;

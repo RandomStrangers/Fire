@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -26,7 +25,7 @@ namespace Flames.Blocks.Physics
 
         // dir is  1 for hunting animals (they go towards the closest player)
         // dir is -1 for fleeing animals (they go away from the closest player)
-        public static void Do(Level lvl, ref PhysInfo C, BlockID target, int dir)
+        public static void Do(Level lvl, ref PhysInfo C, ushort target, int dir)
         {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
@@ -99,10 +98,9 @@ namespace Flames.Blocks.Physics
             }
         }
 
-        public static bool MoveTo(Level lvl, ref PhysInfo C, BlockID target, ushort x, ushort y, ushort z)
+        public static bool MoveTo(Level lvl, ref PhysInfo C, ushort target, ushort x, ushort y, ushort z)
         {
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
             if (block == target && lvl.AddUpdate(index, C.Block))
             {
                 lvl.AddUpdate(C.Index, target);

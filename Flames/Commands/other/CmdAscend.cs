@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Misc
 {
@@ -59,13 +58,13 @@ namespace Flames.Commands.Misc
         {
             for (; y <= lvl.Height; y++)
             {
-                BlockID block = lvl.GetBlock(x, y, z);
+                ushort block = lvl.GetBlock(x, y, z);
                 if (block != Block.Invalid && CollideType.IsSolid(lvl.CollideType(block))) continue;
 
-                BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
+                ushort above = lvl.GetBlock(x, (ushort)(y + 1), z);
                 if (above != Block.Invalid && CollideType.IsSolid(lvl.CollideType(above))) continue;
 
-                BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z);
+                ushort below = lvl.GetBlock(x, (ushort)(y - 1), z);
                 if (below != Block.Invalid && CollideType.IsSolid(lvl.CollideType(below))) return y;
             }
             return -1;

@@ -105,8 +105,7 @@ namespace Flames.Blocks.Extended
 
         public static List<string> ParseSingle(string message, out string text)
         {
-            bool isCommand;
-            message = Chat.ParseInput(message, out isCommand);
+            message = Chat.ParseInput(message, out bool isCommand);
 
             if (isCommand)
             {

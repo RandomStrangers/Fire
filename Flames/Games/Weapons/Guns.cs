@@ -19,7 +19,6 @@ using System;
 using Flames.Maths;
 using Flames.Network;
 using Flames.Tasks;
-using BlockID = System.UInt16;
 
 namespace Flames.Games
 {
@@ -28,14 +27,14 @@ namespace Flames.Games
     {
         public override string Name { get { return "Gun"; } }
 
-        public override void OnActivated(Vec3F32 dir, BlockID block)
+        public override void OnActivated(Vec3F32 dir, ushort block)
         {
             AmmunitionData args = MakeArgs(dir, block);
             SchedulerTask task = new SchedulerTask(GunCallback, args, TimeSpan.Zero, true);
             p.CriticalTasks.Add(task);
         }
 
-        public AmmunitionData MakeArgs(Vec3F32 dir, BlockID block)
+        public AmmunitionData MakeArgs(Vec3F32 dir, ushort block)
         {
             AmmunitionData args = new AmmunitionData
             {
@@ -51,7 +50,7 @@ namespace Flames.Games
         public void BufferedRevert(Vec3U16 pos, BufferedBlockSender buffer)
         {
             int index;
-            BlockID block = p.level.GetBlock(pos.X, pos.Y, pos.Z, out index);
+            ushort block = p.level.GetBlock(pos.X, pos.Y, pos.Z, out index);
 
             if (index == -1) return;
             buffer.Add(index, block);
@@ -83,7 +82,7 @@ namespace Flames.Games
                 Vec3U16 pos = args.PosAt(args.iterations);
                 args.iterations++;
 
-                BlockID cur = p.level.GetBlock(pos.X, pos.Y, pos.Z);
+                ushort cur = p.level.GetBlock(pos.X, pos.Y, pos.Z);
                 if (cur == Block.Invalid) return false;
                 if (cur != Block.Air && !args.all.Contains(pos) && OnHitBlock(args, pos, cur))
                     return false;
@@ -129,7 +128,7 @@ namespace Flames.Games
 
         /// <summary> Called when a bullet has collided with a block. </summary>
         /// <returns> true if this block stops the bullet, false if it should continue moving. </returns>
-        public virtual bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block)
+        public virtual bool OnHitBlock(AmmunitionData args, Vec3U16 pos, ushort block)
         {
             return true;
         }
@@ -145,7 +144,7 @@ namespace Flames.Games
     {
         public override string Name { get { return "Penetrative gun"; } }
 
-        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, ushort block)
         {
             if (p.level.physics < 2) return true;
 
@@ -160,7 +159,7 @@ namespace Flames.Games
     {
         public override string Name { get { return "Explosive gun"; } }
 
-        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, ushort block)
         {
             if (p.level.physics >= 3) p.level.MakeExplosion(pos.X, pos.Y, pos.Z, 1);
             return true;
@@ -220,7 +219,7 @@ namespace Flames.Games
             args.DoTeleport(p);
         }
 
-        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(AmmunitionData args, Vec3U16 pos, ushort block)
         {
             args.DoTeleport(p);
             return true;

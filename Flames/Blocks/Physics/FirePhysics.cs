@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -26,8 +25,7 @@ namespace Flames.Blocks.Physics
 
         public static bool ExpandToAir(Level lvl, int x, int y, int z)
         {
-            int index;
-            if (lvl.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index))
+            if (lvl.IsAirAt((ushort)x, (ushort)y, (ushort)z, out int index))
             {
                 lvl.AddUpdate(index, Block.Fire, default(PhysicsArgs));
                 return true;
@@ -38,7 +36,7 @@ namespace Flames.Blocks.Physics
         public static void ExpandDiagonal(Level lvl, ushort x, ushort y, ushort z,
                                    int dx, int dy, int dz)
         {
-            BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
+            ushort block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
             if (block == Block.Air || !lvl.Props[block].LavaKills) return;
 
             if (dx != 0)
@@ -51,8 +49,7 @@ namespace Flames.Blocks.Physics
 
         public static void ExpandAvanced(Level lvl, int x, int y, int z)
         {
-            int index;
-            BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
+            ushort block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out int index);
 
             if (block == Block.TNT)
             {

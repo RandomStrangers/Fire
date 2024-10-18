@@ -34,16 +34,17 @@ namespace Flames.Commands.Building
                 return;
             }
 
-            double n1 = 0, n2 = 0, result = 0;
-            string r1 = args[0], op = args[1], r2 = null, format = null;
+            double result = 0;
+            string r1 = args[0], op = args[1], r2 = null;
 
-            if (!Utils.TryParseDouble(r1, out n1))
+            if (!Utils.TryParseDouble(r1, out double n1))
             {
                 p.Message("&W\"{0}\" is not a valid number.", r1);
                 return;
             }
 
             char sym = op[0];
+            string format;
             if (sym == '+' || sym == '-' || sym == '*' || sym == '/' || sym == '^')
             {
                 if (args.Length == 2 || op.Length > 1)
@@ -52,8 +53,7 @@ namespace Flames.Commands.Building
                     return;
                 }
                 r2 = args[2];
-
-                if (!Utils.TryParseDouble(r2, out n2))
+                if (!Utils.TryParseDouble(r2, out double n2))
                 {
                     p.Message("&W\"{0}\" is not a valid number.", r2);
                     return;

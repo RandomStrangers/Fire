@@ -16,17 +16,16 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
     public sealed class GradientBrush : Brush
     {
-        public BlockID[] blocks;
+        public ushort[] blocks;
         public CustomModelAnimAxis axis, _axis;
         public int xLen, yLen, zLen;
 
-        public GradientBrush(BlockID[] blocks, CustomModelAnimAxis axis)
+        public GradientBrush(ushort[] blocks, CustomModelAnimAxis axis)
         {
             this.blocks = blocks;
             this.axis = axis;
@@ -58,7 +57,7 @@ namespace Flames.Drawing.Brushes
             }
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             int index = 0;
 

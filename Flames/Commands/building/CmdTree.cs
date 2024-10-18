@@ -32,11 +32,8 @@ namespace Flames.Commands.Building
         public override DrawOp GetDrawOp(DrawArgs dArgs)
         {
             string[] args = dArgs.Message.SplitSpaces(3);
-            Tree tree = Tree.Find(args[0]);
-            if (tree == null) tree = new NormalTree();
-
-            int size;
-            if (args.Length > 1 && int.TryParse(args[1], out size))
+            Tree tree = Tree.Find(args[0]) ?? new NormalTree();
+            if (args.Length > 1 && int.TryParse(args[1], out int size))
             {
                 Player p = dArgs.Player;
                 string opt = args[0] + " tree size";

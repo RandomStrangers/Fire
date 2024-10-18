@@ -17,42 +17,40 @@
  */
 using Flames.Blocks.Extended;
 using Flames.Blocks.Physics;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks
 {
     public static class WalkthroughBehaviour
     {
 
-        public static bool Door(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static bool Door(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (p.level.physics == 0) return true;
 
-            BlockID physForm;
-            PhysicsArgs args = ActivateablePhysics.GetDoorArgs(block, out physForm);
+            PhysicsArgs args = ActivateablePhysics.GetDoorArgs(block, out ushort physForm);
             p.level.Blockchange(x, y, z, physForm, false, args);
             return true;
         }
 
-        public static bool Train(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static bool Train(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (!p.trainInvincible && p.level.Config.KillerBlocks) p.HandleDeath(Block.Train);
             return true;
         }
 
-        public static bool DoPortal(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static bool DoPortal(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (p.level.PosToInt(x, y, z) == p.lastWalkthrough) return true;
             return Portal.Handle(p, x, y, z);
         }
 
-        public static bool DoMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static bool DoMessageBlock(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (p.level.PosToInt(x, y, z) == p.lastWalkthrough) return true;
             return MessageBlock.Handle(p, x, y, z, false);
         }
 
-        public static bool Checkpoint(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static bool Checkpoint(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             p.useCheckpointSpawn = true;
             p.checkpointX = x;

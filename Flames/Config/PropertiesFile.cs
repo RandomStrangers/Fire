@@ -33,11 +33,10 @@ namespace Flames
                                 char separator = '=', bool trimValue = true)
         {
             object obj = null;
-            LineProcessor<object> del = (string key, string value, ref object state) => 
-            { 
-                processor(key, value); 
-            };
-            return Read(path, ref obj, del, separator, trimValue);
+            return Read(path, ref obj, (string key, string value, ref object state) =>
+            {
+                processor(key, value);
+            }, separator, trimValue);
         }
 
         public static bool Read<T>(string path, ref T state, LineProcessor<T> processor,
@@ -47,10 +46,10 @@ namespace Flames
 
             using (StreamReader r = new StreamReader(path))
             {
-                string line, key, value;
+                string line;
                 while ((line = r.ReadLine()) != null)
                 {
-                    ParseLine(line, separator, out key, out value);
+                    ParseLine(line, separator, out string key, out string value);
                     if (key == null) continue;
 
                     try

@@ -19,7 +19,6 @@
 using Flames.DB;
 using Flames.Maths;
 using Flames.Drawing.Brushes;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -53,7 +52,7 @@ namespace Flames.Drawing.Ops
             Level lvl = Level;
             int maxY = lvl.Height - 1, oneY = lvl.Width * lvl.Length;
             int index, width = lvl.Width, length = lvl.Length;
-            BlockID above, block;
+            ushort above, block;
 
             Vec3U16 p1 = Clamp(Min), p2 = Clamp(Max);
             for (ushort y = p1.Y; y <= p2.Y; y++)
@@ -66,14 +65,14 @@ namespace Flames.Drawing.Ops
                         if (fixGrass && lvl.Props[block].GrassBlock != Block.Invalid)
                         {
                             above = y == maxY ? Block.Air : lvl.FastGetBlock(index + oneY);
-                            BlockID grass = lvl.Props[block].GrassBlock;
+                            ushort grass = lvl.Props[block].GrassBlock;
 
                             if (lvl.LightPasses(above)) output(Place(x, y, z, grass));
                         }
                         else if (fixDirt && lvl.Props[block].DirtBlock != Block.Invalid)
                         {
                             above = y == maxY ? Block.Air : lvl.FastGetBlock(index + oneY);
-                            BlockID dirt = lvl.Props[block].DirtBlock;
+                            ushort dirt = lvl.Props[block].DirtBlock;
 
                             if (!lvl.LightPasses(above)) output(Place(x, y, z, dirt));
                         }
@@ -86,7 +85,7 @@ namespace Flames.Drawing.Ops
             Level lvl = Level;
             int oneY = lvl.Width * lvl.Length;
             int index, width = lvl.Width, length = lvl.Length;
-            BlockID above, block;
+            ushort above, block;
 
             Vec3U16 p1 = Clamp(Min), p2 = Clamp(Max);
             for (ushort y = p1.Y; y <= p2.Y; y++)
@@ -109,7 +108,7 @@ namespace Flames.Drawing.Ops
                                 }
                             }
 
-                            BlockID grass = lvl.Props[block].GrassBlock;
+                            ushort grass = lvl.Props[block].GrassBlock;
                             if (!inShadow) output(Place(x, y, z, grass));
                         }
                         else if (lvl.Props[block].DirtBlock != Block.Invalid)
@@ -124,7 +123,7 @@ namespace Flames.Drawing.Ops
                                 }
                             }
 
-                            BlockID dirt = lvl.Props[block].DirtBlock;
+                            ushort dirt = lvl.Props[block].DirtBlock;
                             if (inShadow) output(Place(x, y, z, dirt));
                         }
                         index++;

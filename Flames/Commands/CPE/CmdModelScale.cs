@@ -40,8 +40,7 @@ namespace Flames.Commands.CPE
 
         public override void SetBotData(Player p, PlayerBot bot, string args)
         {
-            string axis;
-            if (!ParseArgs(p, bot, args, out axis)) return;
+            if (!ParseArgs(p, bot, args, out string axis)) return;
             bot.UpdateModel(bot.Model);
 
             p.Message("You changed the {1} scale of bot {0}", bot.ColoredName, axis);
@@ -50,8 +49,7 @@ namespace Flames.Commands.CPE
 
         public override void SetOnlineData(Player p, Player who, string args)
         {
-            string axis;
-            if (!ParseArgs(p, who, args, out axis)) return;
+            if (!ParseArgs(p, who, args, out string axis)) return;
             who.UpdateModel(who.Model);
 
             if (p != who)

@@ -1,5 +1,4 @@
 ﻿
-using BlockID = System.UInt16;
 
 namespace Flames.Config
 {
@@ -13,8 +12,7 @@ namespace Flames.Config
         // Use ulong instead of uint to allow larger inputs
         public ulong ParseUnsignedLong(string raw, ulong def, ulong min, ulong max)
         {
-            ulong value;
-            if (!ulong.TryParse(raw, out value))
+            if (!ulong.TryParse(raw, out ulong value))
             {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid unsigned integer '{2}', using default of {1}", Name, def, raw);
                 value = def;
@@ -34,8 +32,7 @@ namespace Flames.Config
         }
         public uint ParseUnsignedInteger(string raw, uint def, uint min, uint max)
         {
-            uint value;
-            if (!uint.TryParse(raw, out value))
+            if (!uint.TryParse(raw, out uint value))
             {
                 Logger.Log(LogType.Warning, "Config key \"{0}\" has invalid unsigned integer '{2}', using default of {1}", Name, def, raw);
                 value = def;
@@ -54,7 +51,7 @@ namespace Flames.Config
             return value;
         }
     }
-    public class ConfigByteAttribute : ConfigSignedIntegerAttribute
+    public class ConfigByteAttribute : ConfigUnsignedIntegerAttribute
     {
         public ConfigByteAttribute() : this(null, null) 
         { 
@@ -65,24 +62,24 @@ namespace Flames.Config
 
         public override object Parse(string raw)
         {
-            return (byte)ParseInteger(raw, 0, 0, byte.MaxValue);
+            return (byte)ParseUnsignedInteger(raw, 0, 0, byte.MaxValue);
         }
     }
 
     public sealed class ConfigBlockAttribute : ConfigUnsignedIntegerAttribute
     {
-        public BlockID defBlock;
+        public ushort defBlock;
         public ConfigBlockAttribute() : this(null, null, Block.Air) 
         { 
         }
-        public ConfigBlockAttribute(string name, string section, BlockID def) : base(name, section) 
+        public ConfigBlockAttribute(string name, string section, ushort def) : base(name, section) 
         { 
             defBlock = def;
         }
 
         public override object Parse(string raw)
         {
-            BlockID block = (BlockID)ParseUnsignedInteger(raw, defBlock, 0, Block.SUPPORTED_COUNT - 1);
+            ushort block = (ushort)ParseUnsignedInteger(raw, defBlock, 0, Block.SUPPORTED_COUNT - 1);
             if (block == Block.Invalid) return Block.Invalid;
             return Block.MapOldRaw(block);
         }

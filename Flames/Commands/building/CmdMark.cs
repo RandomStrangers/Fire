@@ -17,7 +17,6 @@
  */
 using Flames.Blocks;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -62,7 +61,7 @@ namespace Flames.Commands.Building
 
             Vec3U16 mark = (Vec3U16)P;
             // We only want to activate blocks in the world
-            BlockID old = p.level.GetBlock(mark.X, mark.Y, mark.Z);
+            ushort old = p.level.GetBlock(mark.X, mark.Y, mark.Z);
             if (!p.CheckManualChange(old, true)) return;
 
             HandleDelete handler = p.level.DeleteHandlers[old];
@@ -126,7 +125,7 @@ namespace Flames.Commands.Building
                 p.Message("Mark placed at &b({0}, {1}, {2})", x, y, z);
             }
 
-            BlockID block = p.GetHeldBlock();
+            ushort block = p.GetHeldBlock();
             p.DoBlockchangeCallback((ushort)x, (ushort)y, (ushort)z, block);
             return true;
         }

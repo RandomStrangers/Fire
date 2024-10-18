@@ -16,104 +16,122 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using System.IO;
 using System.Windows.Forms;
 using Flames.Util;
 
-namespace Flames.Gui.Popups 
+namespace Flames.Gui.Popups
 {
-    public partial class EditText : Form 
+    public partial class EditText : Form
     {
         public TextFile curFile;
-        
-        public EditText() {
+
+        public EditText()
+        {
             InitializeComponent();
-            foreach (var kvp in TextFile.Files) {
+            foreach (var kvp in TextFile.Files)
+            {
                 cmbList.Items.Add(kvp.Key);
             }
             cmbList.Text = "Select file..";
         }
 
-        public void EditText_Load(object sender, EventArgs e) {
+        public void EditText_Load(object sender, EventArgs e)
+        {
             GuiUtils.SetIcon(this);
         }
 
-        public void cmbList_SelectedIndexChanged(object sender, EventArgs e) {
+        public void cmbList_SelectedIndexChanged(object sender, EventArgs e)
+        {
             if (cmbList.SelectedIndex == -1) return;
             TrySaveChanges();
-            
+
             string selectedName = cmbList.SelectedItem.ToString();
             curFile = TextFile.Files[selectedName];
-            
-            try {
+
+            try
+            {
                 curFile.EnsureExists();
                 txtEdit.Lines = curFile.GetText();
                 Text = "Editing " + curFile.Filename;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 Popup.Error("Failed to read text from " + curFile.Filename);
-                
+
                 curFile = null;
                 cmbList.Text = "";
                 Text = "Editing (none)";
             }
         }
 
-        public void SaveChanges(string[] lines) {
+        public void SaveChanges(string[] lines)
+        {
             curFile.SetText(lines);
             Popup.Message("Saved " + curFile.Filename);
         }
 
-        public void TrySaveChanges() {
+        public void TrySaveChanges()
+        {
             if (curFile == null) return;
             string[] lines = txtEdit.Lines;
             if (!HasChanged(lines)) return;
-            
-            if (Popup.YesNo("Save changes to " + curFile.Filename + "?", "Save changes")) {
+
+            if (Popup.YesNo("Save changes to " + curFile.Filename + "?", "Save changes"))
+            {
                 SaveChanges(lines);
             }
         }
 
-        public bool HasChanged(string[] lines) {
+        public bool HasChanged(string[] lines)
+        {
             string[] curLines = curFile.GetText();
             if (lines.Length != curLines.Length) return true;
-            
-            for (int i = 0; i < lines.Length; i++) {
+
+            for (int i = 0; i < lines.Length; i++)
+            {
                 if (lines[i] != curLines[i]) return true;
             }
             return false;
         }
 
 
-        public void btnColor_Click(object sender, EventArgs e) {
-            using (ColorSelector sel = new ColorSelector("Insert color", '\0')) {
+        public void btnColor_Click(object sender, EventArgs e)
+        {
+            using (ColorSelector sel = new ColorSelector("Insert color", '\0'))
+            {
                 DialogResult result = sel.ShowDialog();
                 if (result == DialogResult.Cancel) return;
                 InsertText("&" + sel.ColorCode);
             }
         }
 
-        public void btnToken_Click(object sender, EventArgs e) {
-            using (TokenSelector sel = new TokenSelector("Insert token")) {
+        public void btnToken_Click(object sender, EventArgs e)
+        {
+            using (TokenSelector sel = new TokenSelector("Insert token"))
+            {
                 DialogResult result = sel.ShowDialog();
                 if (result == DialogResult.Cancel || sel.Token == null) return;
                 InsertText(sel.Token);
             }
         }
 
-        public void InsertText(string text) {
-            int selStart = txtEdit.SelectionStart, selLength = txtEdit.SelectionLength;            
+        public void InsertText(string text)
+        {
+            int selStart = txtEdit.SelectionStart, selLength = txtEdit.SelectionLength;
             txtEdit.Paste(text);
             // re highlight now replaced text
             if (selLength > 0) txtEdit.Select(selStart, text.Length);
             txtEdit.Focus();
         }
 
-        public void EditTxt_Unload(object sender, EventArgs e) {
+        public void EditTxt_Unload(object sender, EventArgs e)
+        {
             TrySaveChanges();
         }
 
-        public void btnSave_Click(object sender, EventArgs e) {
+        public void btnSave_Click(object sender, EventArgs e)
+        {
             if (curFile == null) return;
             SaveChanges(txtEdit.Lines);
         }

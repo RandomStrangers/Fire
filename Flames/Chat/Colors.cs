@@ -398,8 +398,7 @@ namespace Flames
         /// <summary> Parses an #RRGGBB hex color string. </summary>
         public static ColorDesc ParseHex(string hex)
         {
-            ColorDesc c;
-            if (!TryParseHex(hex, out c)) throw new ArgumentException("invalid input");
+            if (!TryParseHex(hex, out ColorDesc c)) throw new ArgumentException("invalid input");
             return c;
         }
 

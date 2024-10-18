@@ -19,36 +19,44 @@ using System;
 using Flames.Config;
 using Flames.Events;
 
-namespace Flames.Modules.Relay.Discord 
+namespace Flames.Modules.Relay.Discord
 {
     public delegate void OnSendingWhoEmbed(DiscordBot bot, RelayUser user, ref ChannelSendEmbed embed);
     /// <summary> Called when sending an embed response to a .who message from Discord </summary>
-    public sealed class OnSendingWhoEmbedEvent : IEvent<OnSendingWhoEmbed> 
-    { 
-        public static void Call(DiscordBot bot, RelayUser user, ref ChannelSendEmbed embed) {
+    public sealed class OnSendingWhoEmbedEvent : IEvent<OnSendingWhoEmbed>
+    {
+        public static void Call(DiscordBot bot, RelayUser user, ref ChannelSendEmbed embed)
+        {
             IEvent<OnSendingWhoEmbed>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try {
+                try
+                {
                     items[i].method(bot, user, ref embed);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     LogHandlerException(ex, items[i]);
                 }
             }
         }
     }
-    
+
     public delegate void OnGatewayEventReceived(DiscordBot bot, string eventName, JsonObject data);
     /// <summary> Called when a gateway event has been received from Discord </summary>
-    public sealed class OnGatewayEventReceivedEvent : IEvent<OnGatewayEventReceived> 
-    { 
-        public static void Call(DiscordBot bot, string eventName, JsonObject data) {
+    public sealed class OnGatewayEventReceivedEvent : IEvent<OnGatewayEventReceived>
+    {
+        public static void Call(DiscordBot bot, string eventName, JsonObject data)
+        {
             IEvent<OnGatewayEventReceived>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try {
+                try
+                {
                     items[i].method(bot, eventName, data);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     LogHandlerException(ex, items[i]);
                 }
             }

@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -51,14 +50,14 @@ namespace Flames.Blocks.Physics
 
                 if (y < edgeLevel && y >= (edgeLevel + sidesOffset))
                 {
-                    BlockID horizon = lvl.Config.HorizonBlock;
+                    ushort horizon = lvl.Config.HorizonBlock;
                     lvl.AddUpdate(C.Index, horizon == Block.Invalid ? Block.Water : horizon);
                 }
             }
             if (!C.Data.HasWait) C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
 
-        public static void DoFlood(Level lvl, ref PhysInfo C, AirFlood mode, BlockID block)
+        public static void DoFlood(Level lvl, ref PhysInfo C, AirFlood mode, ushort block)
         {
             if (C.Data.Data >= 1)
             {
@@ -91,9 +90,9 @@ namespace Flames.Blocks.Physics
             C.Data.Data++;
         }
 
-        public static void FloodAir(Level lvl, ushort x, ushort y, ushort z, BlockID block)
+        public static void FloodAir(Level lvl, ushort x, ushort y, ushort z, ushort block)
         {
-            BlockID curBlock = Block.Convert(lvl.GetBlock(x, y, z, out int index));
+            ushort curBlock = Block.Convert(lvl.GetBlock(x, y, z, out int index));
             if (curBlock == Block.Water || curBlock == Block.Lava)
             {
                 lvl.AddUpdate(index, block);

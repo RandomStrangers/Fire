@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -98,11 +97,11 @@ namespace Flames.Drawing.Ops
         public DrawOpOutput output;
         public Vec3U16 dims;
         public bool conservative;
-        public Dictionary<int, BlockID> oldest;
+        public Dictionary<int, ushort> oldest;
 
         public void UndoBlock(BlockDBEntry e)
         {
-            BlockID block = e.OldBlock;
+            ushort block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
 
             int x = e.Index % dims.X;
@@ -123,7 +122,7 @@ namespace Flames.Drawing.Ops
             {
                 Player.Message("&WThis undo overlaps with previous undos, " +
                                "so undoing may take longer..");
-                oldest = new Dictionary<int, BlockID>
+                oldest = new Dictionary<int, ushort>
                 {
                     [e.Index] = block
                 };

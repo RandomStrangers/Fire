@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks
 {
@@ -38,9 +37,10 @@ namespace Flames.Blocks
 
     public static class BlockOptions
     {
-        public delegate void OptionSetter(Player p, BlockProps[] scope, BlockID b, string value);
+        public delegate void OptionSetter(Player p, BlockProps[] scope, ushort b, string value);
 
-        public static List<BlockOption> Options = new List<BlockOption>() {
+        public static List<BlockOption> Options = new List<BlockOption>() 
+        {
             new BlockOption("Portal",       SetPortal, "&HToggles whether the block is a &T/Portal"),
             new BlockOption("MessageBlock", SetMB,     "&HToggles whether the block is a &T/MessageBlock"),
             new BlockOption("Rails",        SetRails,  "&HToggles whether &Strain &Hblocks can run over this block"),
@@ -84,61 +84,61 @@ namespace Flames.Blocks
         }
 
 
-        public static void SetPortal(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetPortal(Player p, BlockProps[] s, ushort b, string v)
         {
             ToggleBehaviour(p, s, b, "a portal", ref s[b].IsPortal);
         }
-        public static void SetMB(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetMB(Player p, BlockProps[] s, ushort b, string v)
         {
             ToggleBehaviour(p, s, b, "a message block", ref s[b].IsMessageBlock);
         }
-        public static void SetRails(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetRails(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "train rails", ref s[b].IsRails);
         }
-        public static void SetWater(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetWater(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "killed by water", ref s[b].WaterKills);
         }
-        public static void SetLava(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetLava(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "killed by lava", ref s[b].LavaKills);
         }
-        public static void SetDoor(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetDoor(Player p, BlockProps[] s, ushort b, string v)
         {
             ToggleBehaviour(p, s, b, "a door", ref s[b].IsDoor);
         }
-        public static void SetTDoor(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetTDoor(Player p, BlockProps[] s, ushort b, string v)
         {
             ToggleBehaviour(p, s, b, "a tDoor", ref s[b].IsTDoor);
         }
-        public static void SetKiller(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetKiller(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "a killer block", ref s[b].KillerBlock);
         }
-        public static void SetOPBlock(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetOPBlock(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "an OP block", ref s[b].OPBlock);
         }
-        public static void SetDrown(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetDrown(Player p, BlockProps[] s, ushort b, string v)
         {
             Toggle(p, s, b, "drowns players", ref s[b].Drownable);
         }
-        public static void SetGrass(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetGrass(Player p, BlockProps[] s, ushort b, string v)
         {
             SetBlock(p, s, b, v, "Grass form", ref s[b].GrassBlock);
         }
-        public static void SetDirt(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetDirt(Player p, BlockProps[] s, ushort b, string v)
         {
             SetBlock(p, s, b, v, "Dirt form", ref s[b].DirtBlock);
         }
-        public static void SetODoor(Player p, BlockProps[] s, BlockID b, string v)
+        public static void SetODoor(Player p, BlockProps[] s, ushort b, string v)
         {
             SetBlock(p, s, b, v, "oDoor form", ref s[b].oDoorBlock);
         }
 
         // NOTE: Make sure to keep this in sync with BlockBehaviour.GetDeleteHandler
-        public static string CheckBehaviour(BlockProps[] props, BlockID block)
+        public static string CheckBehaviour(BlockProps[] props, ushort block)
         {
             if (props[block].IsMessageBlock) return "message block";
             if (props[block].IsPortal) return "portal";
@@ -148,7 +148,7 @@ namespace Flames.Blocks
             return null;
         }
 
-        public static void ToggleBehaviour(Player p, BlockProps[] scope, BlockID block, string type, ref bool on)
+        public static void ToggleBehaviour(Player p, BlockProps[] scope, ushort block, string type, ref bool on)
         {
             string behaviour;
             // Check if this would make a block both a door and a portal for instance
@@ -162,14 +162,14 @@ namespace Flames.Blocks
             Toggle(p, scope, block, type, ref on);
         }
 
-        public static void Toggle(Player p, BlockProps[] scope, BlockID block, string type, ref bool on)
+        public static void Toggle(Player p, BlockProps[] scope, ushort block, string type, ref bool on)
         {
             on = !on;
             string name = BlockProps.ScopedName(scope, p, block);
             p.Message("Block {0} is {1}: {2}", name, type, on ? "&aYes" : "&cNo");
         }
 
-        public static void SetAI(Player p, BlockProps[] scope, BlockID block, string msg)
+        public static void SetAI(Player p, BlockProps[] scope, ushort block, string msg)
         {
             AnimalAI ai = AnimalAI.None;
             if (!CommandParser.GetEnum(p, msg, "Animal AI", ref ai)) return;
@@ -179,7 +179,7 @@ namespace Flames.Blocks
             p.Message("Animal AI for {0} set to: {1}", name, ai);
         }
 
-        public static void SetDeathMsg(Player p, BlockProps[] scope, BlockID block, string msg)
+        public static void SetDeathMsg(Player p, BlockProps[] scope, ushort block, string msg)
         {
             string name = BlockProps.ScopedName(scope, p, block);
             if (msg.Length == 0)
@@ -194,9 +194,9 @@ namespace Flames.Blocks
             }
         }
 
-        public static void SetStackId(Player p, BlockProps[] scope, BlockID block, string msg)
+        public static void SetStackId(Player p, BlockProps[] scope, ushort block, string msg)
         {
-            BlockID stackBlock;
+            ushort stackBlock;
             if (msg.Length == 0)
             {
                 stackBlock = Block.Air;
@@ -219,8 +219,8 @@ namespace Flames.Blocks
             }
         }
 
-        public static void SetBlock(Player p, BlockProps[] scope, BlockID block,
-                             string msg, string type, ref BlockID target)
+        public static void SetBlock(Player p, BlockProps[] scope, ushort block,
+                             string msg, string type, ref ushort target)
         {
             string name = BlockProps.ScopedName(scope, p, block);
             if (msg.Length == 0)

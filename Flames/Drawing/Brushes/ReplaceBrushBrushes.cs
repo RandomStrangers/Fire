@@ -17,16 +17,15 @@
  */
 using Flames.DB;
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
     public class ReplaceBrushBrush : Brush
     {
-        public BlockID target;
+        public ushort target;
         public Brush replacement;
 
-        public ReplaceBrushBrush(BlockID include, Brush replacement)
+        public ReplaceBrushBrush(ushort include, Brush replacement)
         {
             target = include; 
             this.replacement = replacement;
@@ -40,10 +39,10 @@ namespace Flames.Drawing.Brushes
             replacement.Configure(op, p);
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             ushort x = op.Coords.X, y = op.Coords.Y, z = op.Coords.Z;
-            BlockID block = op.Level.GetBlock(x, y, z); // TODO FastGetBlock
+            ushort block = op.Level.GetBlock(x, y, z); // TODO FastGetBlock
 
             if (block != target) return Block.Invalid;
             return replacement.NextBlock(op);
@@ -52,16 +51,16 @@ namespace Flames.Drawing.Brushes
 
     public class ReplaceNotBrushBrush : ReplaceBrushBrush
     {
-        public ReplaceNotBrushBrush(BlockID exclude, Brush replacement) : base(exclude, replacement) 
+        public ReplaceNotBrushBrush(ushort exclude, Brush replacement) : base(exclude, replacement) 
         { 
         }
 
         public override string Name { get { return "ReplaceNotBrush"; } }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             ushort x = op.Coords.X, y = op.Coords.Y, z = op.Coords.Z;
-            BlockID block = op.Level.GetBlock(x, y, z); // TODO FastGetBlock
+            ushort block = op.Level.GetBlock(x, y, z); // TODO FastGetBlock
 
             if (block == target) return Block.Invalid;
             return replacement.NextBlock(op);

@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System.Runtime.InteropServices;
-using BlockID = System.UInt16;
 
 namespace Flames.DB
 {
@@ -41,13 +40,13 @@ namespace Flames.DB
         /// <summary> Flags for the block change. </summary>
         public ushort Flags;
 
-        public BlockID OldBlock
+        public ushort OldBlock
         {
-            get { return (BlockID)(OldRaw | ((Flags & BlockDBFlags.OldExtended) >> 6) | ((Flags & BlockDBFlags.OldExtended2) >> 3)); }
+            get { return (ushort)(OldRaw | ((Flags & BlockDBFlags.OldExtended) >> 6) | ((Flags & BlockDBFlags.OldExtended2) >> 3)); }
         }
-        public BlockID NewBlock
+        public ushort NewBlock
         {
-            get { return (BlockID)(NewRaw | ((Flags & BlockDBFlags.NewExtended) >> 7) | ((Flags & BlockDBFlags.NewExtended2) >> 4)); }
+            get { return (ushort)(NewRaw | ((Flags & BlockDBFlags.NewExtended) >> 7) | ((Flags & BlockDBFlags.NewExtended2) >> 4)); }
         }
     }
 

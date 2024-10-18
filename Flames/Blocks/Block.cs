@@ -18,13 +18,12 @@
 using System.IO;
 using Flames.Blocks;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
     public static partial class Block
     {
-        public static bool Walkthrough(BlockID block)
+        public static bool Walkthrough(ushort block)
         {
             return block == Air || block == Sapling || block == Snow
                 || block == Fire || block == Rope
@@ -32,7 +31,7 @@ namespace Flames
                 || (block >= Dandelion && block <= RedMushroom);
         }
 
-        public static bool AllowBreak(BlockID block)
+        public static bool AllowBreak(ushort block)
         {
             switch (block)
             {
@@ -90,7 +89,7 @@ namespace Flames
             return false;
         }
 
-        public static bool LightPass(BlockID block)
+        public static bool LightPass(ushort block)
         {
             switch (Convert(block))
             {
@@ -108,7 +107,7 @@ namespace Flames
             return false;
         }
 
-        public static bool NeedRestart(BlockID block)
+        public static bool NeedRestart(ushort block)
         {
             switch (block)
             {
@@ -151,7 +150,7 @@ namespace Flames
             return false;
         }
 
-        public static AABB BlockAABB(BlockID block, Level lvl)
+        public static AABB BlockAABB(ushort block, Level lvl)
         {
             BlockDefinition def = lvl.GetBlockDef(block);
             if (def != null)
@@ -161,7 +160,7 @@ namespace Flames
             }
 
             if (block >= Extended) return new AABB(0, 0, 0, 32, 32, 32);
-            BlockID core = Convert(block);
+            ushort core = Convert(block);
             return new AABB(0, 0, 0, 32, DefaultSet.Height(core) * 2, 32);
         }
 
@@ -170,7 +169,7 @@ namespace Flames
             BlockProps[] props = Props;
             for (int b = 0; b < props.Length; b++)
             {
-                props[b] = MakeDefaultProps((BlockID)b);
+                props[b] = MakeDefaultProps((ushort)b);
             }
 
             SetDefaultNames();
@@ -201,31 +200,31 @@ namespace Flames
         }
 
         /// <summary> Converts a raw/client block ID to a server block ID </summary>
-        public static BlockID FromRaw(BlockID raw)
+        public static ushort FromRaw(ushort raw)
         {
-            return raw < CPE_COUNT ? raw : (BlockID)(raw + Extended);
+            return raw < CPE_COUNT ? raw : (ushort)(raw + Extended);
         }
 
         /// <summary> Converts a server block ID to a raw/client block ID </summary>
         /// <remarks> Undefined behaviour for physics block IDs </remarks>
-        public static BlockID ToRaw(BlockID raw)
+        public static ushort ToRaw(ushort raw)
         {
-            return raw < CPE_COUNT ? raw : (BlockID)(raw - Extended);
+            return raw < CPE_COUNT ? raw : (ushort)(raw - Extended);
         }
 
-        public static BlockID MapOldRaw(BlockID raw)
+        public static ushort MapOldRaw(ushort raw)
         {
             // old raw form was: 0 - 65 core block ids, 66 - 255 custom block ids
             // 256+ remain unchanged
-            return IsPhysicsType(raw) ? ((BlockID)(raw + Extended)) : raw;
+            return IsPhysicsType(raw) ? ((ushort)(raw + Extended)) : raw;
         }
 
-        public static bool IsPhysicsType(BlockID block)
+        public static bool IsPhysicsType(ushort block)
         {
             return block >= CPE_COUNT && block < Extended;
         }
 
-        public static bool VisuallyEquals(BlockID a, BlockID b)
+        public static bool VisuallyEquals(ushort a, ushort b)
         {
             return Convert(a) == Convert(b);
         }

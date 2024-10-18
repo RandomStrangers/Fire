@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -111,10 +110,10 @@ namespace Flames
             string model = GetRawModel(entity.Model);
 
             AABB bb;
-            BlockID raw;
-            if (BlockID.TryParse(model, out raw) && raw <= Block.MaxRaw)
+            ushort raw;
+            if (ushort.TryParse(model, out raw) && raw <= Block.MaxRaw)
             {
-                BlockID block = Block.FromRaw(raw);
+                ushort block = Block.FromRaw(raw);
                 bb = Block.BlockAABB(block, entity.Level);
                 bb = bb.Offset(-16, 0, -16); // centre around [-16, 16] instead of [0, 32]
             }
@@ -146,8 +145,8 @@ namespace Flames
         {
             Vec3F32 scale = CalcScale(entity);
             string model = GetRawModel(entity.Model);
-            BlockID raw;
-            if (BlockID.TryParse(model, out raw) && raw <= Block.MaxRaw) return 16; //lazily return middle of full block if it thinks it's a block ID.
+            ushort raw;
+            if (ushort.TryParse(model, out raw) && raw <= Block.MaxRaw) return 16; //lazily return middle of full block if it thinks it's a block ID.
 
             float eyeHeight = Get(model).EyeHeight;
             eyeHeight *= scale.Y;

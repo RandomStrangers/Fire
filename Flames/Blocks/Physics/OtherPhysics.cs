@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Generator.Foliage;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -36,7 +35,7 @@ namespace Flames.Blocks.Physics
             {
                 index = lvl.IntOffset(index, 0, -1, 0); 
                 yCur--;// Get block below each loop
-                BlockID cur = lvl.GetBlock(x, yCur, z);
+                ushort cur = lvl.GetBlock(x, yCur, z);
                 if (cur == Block.Invalid) break;
                 bool hitBlock = false;
 
@@ -78,16 +77,15 @@ namespace Flames.Blocks.Physics
         public static void DoFloatwood(Level lvl, ref PhysInfo C)
         {
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
 
-            if (lvl.GetBlock(x, (ushort)(y - 1), z, out index) == Block.Air)
+            if (lvl.GetBlock(x, (ushort)(y - 1), z, out int index) == Block.Air)
             {
                 lvl.AddUpdate(C.Index, Block.Air, default(PhysicsArgs));
                 lvl.AddUpdate(index, Block.FloatWood, default(PhysicsArgs));
             }
             else
             {
-                BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z, out index);
+                ushort above = lvl.GetBlock(x, (ushort)(y + 1), z, out index);
                 if (above == Block.StillWater || Block.Convert(above) == Block.Water)
                 {
                     lvl.AddUpdate(C.Index, C.Block);
@@ -118,14 +116,12 @@ namespace Flames.Blocks.Physics
             }
 
             lvl.SetTile(x, y, z, Block.Air);
-            Tree tree = Tree.Find(lvl.Config.TreeType);
-            if (tree == null) tree = new NormalTree();
-
+            Tree tree = Tree.Find(lvl.Config.TreeType) ?? new NormalTree();
             tree.SetData(rand, tree.DefaultSize(rand));
             tree.Generate(x, y, z, (xT, yT, zT, bT) =>
             {
                 if (!lvl.IsAirAt(xT, yT, zT)) return;
-                lvl.Blockchange(xT, yT, zT, (ushort)bT);
+                lvl.Blockchange(xT, yT, zT, bT);
             });
 
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
@@ -142,11 +138,11 @@ namespace Flames.Blocks.Physics
 
             if (C.Data.Data > 20)
             {
-                BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
+                ushort above = lvl.GetBlock(x, (ushort)(y + 1), z);
                 if (lvl.LightPasses(above))
                 {
-                    BlockID block = lvl.GetBlock(x, y, z);
-                    BlockID grass = lvl.Props[block].GrassBlock;
+                    ushort block = lvl.GetBlock(x, y, z);
+                    ushort grass = lvl.Props[block].GrassBlock;
                     lvl.AddUpdate(C.Index, grass);
                 }
                 C.Data.Data = PhysicsArgs.RemoveFromChecks;
@@ -168,11 +164,11 @@ namespace Flames.Blocks.Physics
 
             if (C.Data.Data > 20)
             {
-                BlockID above = lvl.GetBlock(x, (ushort)(y + 1), z);
+                ushort above = lvl.GetBlock(x, (ushort)(y + 1), z);
                 if (!lvl.LightPasses(above))
                 {
-                    BlockID block = lvl.GetBlock(x, y, z);
-                    BlockID dirt = lvl.Props[block].DirtBlock;
+                    ushort block = lvl.GetBlock(x, y, z);
+                    ushort dirt = lvl.Props[block].DirtBlock;
                     lvl.AddUpdate(C.Index, dirt);
                 }
                 C.Data.Data = PhysicsArgs.RemoveFromChecks;
@@ -186,16 +182,15 @@ namespace Flames.Blocks.Physics
 
         public static void DoSponge(Level lvl, ref PhysInfo C, bool lava)
         {
-            BlockID target = lava ? Block.Lava : Block.Water;
-            BlockID alt = lava ? Block.StillLava : Block.StillWater;
+            ushort target = lava ? Block.Lava : Block.Water;
+            ushort alt = lava ? Block.StillLava : Block.StillWater;
             ushort x = C.X, y = C.Y, z = C.Z;
 
             for (int yy = y - 2; yy <= y + 2; ++yy)
                 for (int zz = z - 2; zz <= z + 2; ++zz)
                     for (int xx = x - 2; xx <= x + 2; ++xx)
                     {
-                        int index;
-                        BlockID block = lvl.GetBlock((ushort)xx, (ushort)yy, (ushort)zz, out index);
+                        ushort block = lvl.GetBlock((ushort)xx, (ushort)yy, (ushort)zz, out int index);
                         if (Block.Convert(block) == target || Block.Convert(block) == alt)
                         {
                             lvl.AddUpdate(index, Block.Air, default(PhysicsArgs));
@@ -206,10 +201,9 @@ namespace Flames.Blocks.Physics
 
         public static void DoSpongeRemoved(Level lvl, int b, bool lava)
         {
-            BlockID target = lava ? Block.Lava : Block.Water;
-            BlockID alt = lava ? Block.StillLava : Block.StillWater;
-            ushort x, y, z;
-            lvl.IntToPos(b, out x, out y, out z);
+            ushort target = lava ? Block.Lava : Block.Water;
+            ushort alt = lava ? Block.StillLava : Block.StillWater;
+            lvl.IntToPos(b, out ushort x, out ushort y, out ushort z);
 
             for (int yy = -3; yy <= +3; ++yy)
                 for (int zz = -3; zz <= +3; ++zz)
@@ -217,8 +211,7 @@ namespace Flames.Blocks.Physics
                     {
                         if (Math.Abs(xx) == 3 || Math.Abs(yy) == 3 || Math.Abs(zz) == 3)
                         { // Calc only edge
-                            int index;
-                            BlockID block = lvl.GetBlock((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz), out index);
+                            ushort block = lvl.GetBlock((ushort)(x + xx), (ushort)(y + yy), (ushort)(z + zz), out int index);
                             if (Block.Convert(block) == target || Block.Convert(block) == alt)
                                 lvl.AddCheck(index);
                         }

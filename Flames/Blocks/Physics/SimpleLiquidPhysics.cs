@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -94,7 +93,7 @@ namespace Flames.Blocks.Physics
             if (!lvl.CheckSpongeWater(x, y, z))
             {
                 byte data = C.Data.Data;
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 if (y < lvl.Height - 1)
                 {
                     CheckFallingBlocks(lvl, C.Index + lvl.Width * lvl.Length);
@@ -170,7 +169,7 @@ namespace Flames.Blocks.Physics
 
             if (!lvl.CheckSpongeWater(x, y, z))
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 if (y < lvl.Height - 1)
                 {
                     CheckFallingBlocks(lvl, C.Index + lvl.Width * lvl.Length);
@@ -191,7 +190,7 @@ namespace Flames.Blocks.Physics
 
         public static bool WaterBlocked(Level lvl, ushort x, ushort y, ushort z)
         {
-            BlockID block = lvl.GetBlock(x, y, z);
+            ushort block = lvl.GetBlock(x, y, z);
 
             switch (block)
             {
@@ -232,7 +231,7 @@ namespace Flames.Blocks.Physics
                 // Upper 3 bits are time flags - reset random delay
                 data &= flowed_maskAll;
                 data |= (byte)(rand.Next(3) << 5);
-                BlockID block = C.Block;
+                ushort block = C.Block;
 
                 if ((data & flowed_xMax) == 0 && rand.Next(4) == 0)
                 {
@@ -304,7 +303,7 @@ namespace Flames.Blocks.Physics
 
             if (!lvl.CheckSpongeLava(x, y, z))
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 LiquidPhysics.PhysLava(lvl, (ushort)(x + 1), y, z, block);
                 LiquidPhysics.PhysLava(lvl, (ushort)(x - 1), y, z, block);
                 LiquidPhysics.PhysLava(lvl, x, y, (ushort)(z + 1), block);
@@ -324,7 +323,7 @@ namespace Flames.Blocks.Physics
 
         public static bool LavaBlocked(Level lvl, ushort x, ushort y, ushort z)
         {
-            BlockID block = lvl.GetBlock(x, y, z);
+            ushort block = lvl.GetBlock(x, y, z);
 
             switch (block)
             {

@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames.Maths
 {
@@ -144,7 +143,7 @@ namespace Flames.Maths
                 for (int z = min.Z; z <= max.Z; z++)
                     for (int x = min.X; x <= max.X; x++)
                     {
-                        BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z);
+                        ushort block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z);
 
                         AABB blockBB = lvl.blockAABBs[block].Offset(x * 32, y * 32, z * 32);
                         if (!Intersects(ref bb, ref blockBB)) continue;
@@ -177,7 +176,7 @@ namespace Flames.Maths
                 for (int z = min.Z; z <= max.Z; z++)
                     for (int x = min.X; x <= max.X; x++)
                     {
-                        BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z);
+                        ushort block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z);
                         AABB blockBB = lvl.blockAABBs[block];
 
                         blockBB.Min.X += x * 32; 

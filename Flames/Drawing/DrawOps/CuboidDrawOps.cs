@@ -18,16 +18,15 @@
 using System;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
     public class HollowDrawOp : CuboidDrawOp
     {
         public override string Name { get { return "Hollow"; } }
-        public BlockID Skip;
+        public ushort Skip;
 
-        public static bool CanHollow(BlockID block, bool andAir = false)
+        public static bool CanHollow(ushort block, bool andAir = false)
         {
             block = Block.Convert(block);
             if (andAir && block == Block.Air) return true;
@@ -43,7 +42,7 @@ namespace Flames.Drawing.Ops
                     for (ushort x = p1.X; x <= p2.X; x++)
                     {
                         bool hollow = true;
-                        BlockID block = Level.GetBlock(x, y, z);
+                        ushort block = Level.GetBlock(x, y, z);
                         if (!CanHollow(block, true) && block != Skip)
                         {
                             CheckTile(x - 1, y, z, ref hollow);
@@ -64,7 +63,7 @@ namespace Flames.Drawing.Ops
 
         public void CheckTile(int x, int y, int z, ref bool hollow)
         {
-            BlockID block = Level.GetBlock((ushort)x, (ushort)y, (ushort)z);
+            ushort block = Level.GetBlock((ushort)x, (ushort)y, (ushort)z);
             if (CanHollow(block) || block == Skip) hollow = false;
         }
     }
@@ -72,7 +71,7 @@ namespace Flames.Drawing.Ops
     public class OutlineDrawOp : CuboidDrawOp
     {
         public override string Name { get { return "Outline"; } }
-        public BlockID Target;
+        public ushort Target;
         public bool Above = true, Layer = true, Below = true;
 
         public override void Perform(Vec3S32[] marks, Brush brush, DrawOpOutput output)
@@ -139,7 +138,7 @@ namespace Flames.Drawing.Ops
                         {
                             // Need this because RainbowBrush works on world coords
                             Coords.X = (ushort)i; Coords.Y = 0; Coords.Z = 0;
-                            BlockID block = brush.NextBlock(this);
+                            ushort block = brush.NextBlock(this);
                             output(Place(x, y, z, block));
                         }
                     }

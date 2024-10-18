@@ -351,6 +351,7 @@
     <Compile Include="Commands\World\CmdUnload.cs" />
     <Compile Include="Commands\World\PermissionCmds.cs" />
     <Compile Include="Config\ConfigAttribute.cs" />
+    <Compile Include="Config\OtherNumberAttributes.cs" />
     <Compile Include="Config\UnsignedNumberAttributes.cs" />
     <Compile Include="Config\JSON.cs" />
     <Compile Include="Config\SignedNumberAttributes.cs" />

@@ -79,8 +79,7 @@ namespace Flames
 
             foreach (ConfigElement elem in elements)
             {
-                List<ConfigElement> members;
-                if (!sections.TryGetValue(elem.Attrib.Section, out members))
+                if (!sections.TryGetValue(elem.Attrib.Section, out List<ConfigElement> members))
                 {
                     members = new List<ConfigElement>();
                     sections[elem.Attrib.Section] = members;

@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -27,7 +26,7 @@ namespace Flames.Blocks.Physics
         {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
-            BlockID block = lvl.GetBlock(x, y, z);
+            ushort block = lvl.GetBlock(x, y, z);
             int index;
 
             switch (rand.Next(1, 15))
@@ -69,9 +68,9 @@ namespace Flames.Blocks.Physics
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
 
-        public static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, BlockID block)
+        public static void FlyTo(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z, ushort block)
         {
-            BlockID neighbour = lvl.GetBlock(x, y, z, out int index);
+            ushort neighbour = lvl.GetBlock(x, y, z, out int index);
             if (neighbour == Block.Invalid) return;
 
             switch (neighbour)

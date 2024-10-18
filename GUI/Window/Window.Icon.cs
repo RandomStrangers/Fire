@@ -25,7 +25,7 @@ namespace Flames.Gui
     public partial class Window : Form
     {
 
-       public Icon GetIcon()
+        public Icon GetIcon()
         {
             byte[] data = Convert.FromBase64String(icon_source);
             Stream source = new MemoryStream(data);

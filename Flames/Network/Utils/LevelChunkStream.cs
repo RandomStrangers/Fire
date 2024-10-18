@@ -18,7 +18,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using BlockID = System.UInt16;
 
 namespace Flames.Network
 {
@@ -156,7 +155,7 @@ namespace Flames.Network
             byte* conv = stackalloc byte[256];
             for (int i = 0; i < 256; i++)
             {
-                conv[i] = (byte)s.ConvertBlock((BlockID)i);
+                conv[i] = (byte)s.ConvertBlock((ushort)i);
             }
 
             // compress the map data in 64 kb chunks
@@ -193,7 +192,7 @@ namespace Flames.Network
 
             for (int j = 0; j < Block.SUPPORTED_COUNT; j++)
             {
-                conv[j] = (byte)s.ConvertBlock((BlockID)j);
+                conv[j] = (byte)s.ConvertBlock((ushort)j);
             }
 
             // compress the map data in 64 kb chunks

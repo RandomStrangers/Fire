@@ -1,7 +1,6 @@
 ﻿// Part of fCraft | Copyright 2009-2015 Matvei Stefarov <me@matvei.org> | BSD-3 | See LICENSE.txt
 using System;
 using Flames.Generator.Foliage;
-using BlockID = System.UInt16;
 
 namespace Flames.Generator.fCraft
 {
@@ -383,7 +382,7 @@ namespace Flames.Generator.fCraft
                                     int xx = x + dx, yy = y + dy, zz = z + dz;
                                     if (xx < 0 || xx >= map.Width || yy < 0 || yy >= map.Height || zz < 0 || zz >= map.Length) continue;
 
-                                    BlockID block = map.GetBlock((ushort)xx, (ushort)yy, (ushort)zz);
+                                    ushort block = map.GetBlock((ushort)xx, (ushort)yy, (ushort)zz);
                                     if (block == bWater)
                                     {
                                         found = true;

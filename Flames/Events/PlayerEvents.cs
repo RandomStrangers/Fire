@@ -17,7 +17,6 @@
  */
 using System;
 using System.Collections.Generic;
-using BlockID = System.UInt16;
 
 namespace Flames.Events.PlayerEvents
 {
@@ -140,12 +139,12 @@ namespace Flames.Events.PlayerEvents
         }
     }
 
-    public delegate void OnPlayerDying(Player p, BlockID cause, ref bool cancel);
+    public delegate void OnPlayerDying(Player p, ushort cause, ref bool cancel);
     /// <summary> Called whenever a player is about to die </summary>
     /// <remarks> Can be caused by e.g. walking into a deadly block like nerve_gas </remarks>
     public sealed class OnPlayerDyingEvent : IEvent<OnPlayerDying>
     {
-        public static void Call(Player p, BlockID block, ref bool cancel)
+        public static void Call(Player p, ushort block, ref bool cancel)
         {
             IEvent<OnPlayerDying>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++)
@@ -162,12 +161,12 @@ namespace Flames.Events.PlayerEvents
         }
     }
 
-    public delegate void OnPlayerDied(Player p, BlockID cause, ref TimeSpan cooldown);
+    public delegate void OnPlayerDied(Player p, ushort cause, ref TimeSpan cooldown);
     /// <summary> Called whenever a player has died </summary>
     /// <remarks> Can be caused by e.g. walking into a deadly block like nerve_gas </remarks>
     public sealed class OnPlayerDiedEvent : IEvent<OnPlayerDied>
     {
-        public static void Call(Player p, BlockID block, ref TimeSpan cooldown)
+        public static void Call(Player p, ushort block, ref TimeSpan cooldown)
         {
             IEvent<OnPlayerDied>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++)
@@ -195,14 +194,14 @@ namespace Flames.Events.PlayerEvents
         }
     }
 
-    public delegate void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, BlockID block);
-    public delegate void OnBlockChanging(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel);
+    public delegate void SelectionBlockChange(Player p, ushort x, ushort y, ushort z, ushort block);
+    public delegate void OnBlockChanging(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel);
     /// <summary> Called whenever a player is manually placing or deleting a block </summary>
     /// <remarks> The client always assumes a block change succeeds. 
     /// So if you cancel this event, make sure you have sent a block change or reverted it using p.RevertBlock </remarks>
     public sealed class OnBlockChangingEvent : IEvent<OnBlockChanging>
     {
-        public static void Call(Player p, ushort x, ushort y, ushort z, BlockID block, bool placing, ref bool cancel)
+        public static void Call(Player p, ushort x, ushort y, ushort z, ushort block, bool placing, ref bool cancel)
         {
             IEvent<OnBlockChanging>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++)

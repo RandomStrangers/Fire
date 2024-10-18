@@ -16,34 +16,46 @@
     permissions and limitations under the Licenses.
  */
 
-namespace Flames.Modules.Relay 
+namespace Flames.Modules.Relay
 {
-    public abstract class RelayBotCmd : Command2 
+    public abstract class RelayBotCmd : Command2
     {
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Admin; } }
         public abstract RelayBot Bot { get; }
-        
-        public override void Use(Player p, string message, CommandData data) {
+
+        public override void Use(Player p, string message, CommandData data)
+        {
             RelayBot bot = Bot;
-            
-            if (message.CaselessEq("reset") || message.CaselessEq("reconnect")) {
-                if (!bot.Enabled) { p.Message("{0} is not enabled", bot.RelayName); }
+
+            if (message.CaselessEq("reset") || message.CaselessEq("reconnect"))
+            {
+                if (!bot.Enabled) 
+                {
+                    p.Message("{0} is not enabled", bot.RelayName); 
+                }
                 bot.Reset();
-            } else if (message.CaselessEq("connect")) {
+            }
+            else if (message.CaselessEq("connect"))
+            {
                 string err = bot.Connect();
                 if (err != null) p.Message("{0} bot {1}", bot.RelayName, err);
-            } else if (message.CaselessEq("disconnect")) {
+            }
+            else if (message.CaselessEq("disconnect"))
+            {
                 bot.Disconnect("Disconnecting IRC bot");
-            } else {
+            }
+            else
+            {
                 Help(p);
             }
         }
-        
-        public override void Help(Player p) {
-            string cmd   = name;
+
+        public override void Help(Player p)
+        {
+            string cmd = name;
             string relay = Bot.RelayName;
-            
+
             p.Message("&T/{0} connect", cmd);
             p.Message("&HCauses the {0} bot to connect to {0}.", relay);
             p.Message("&T/{0} disconnect", cmd);

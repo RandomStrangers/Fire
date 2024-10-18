@@ -20,107 +20,145 @@ using System.Threading;
 using System.Windows.Forms;
 using Flames.UI;
 
-namespace Flames.Gui {
-    public partial class Window : Form {
+namespace Flames.Gui
+{
+    public partial class Window : Form
+    {
 
-        public void map_BtnGen_Click(object sender, EventArgs e) {
-            if (mapgen) { Popup.Warning("Another map is already being generated."); return; }
+        public void map_BtnGen_Click(object sender, EventArgs e)
+        {
+            if (mapgen) 
+            {
+                Popup.Warning("Another map is already being generated."); 
+                return; 
+            }
 
             string name = map_txtName.Text;
             string seed = map_txtSeed.Text;
-            if (string.IsNullOrEmpty(name)) { Popup.Warning("Map name cannot be blank."); return; }
-            
+            if (string.IsNullOrEmpty(name)) 
+            { 
+                Popup.Warning("Map name cannot be blank."); 
+                return; 
+            }
+
             string x = Map_GetComboboxSize(map_cmbX, "width");
-            if (x == null) return;           
+            if (x == null) return;
             string y = Map_GetComboboxSize(map_cmbY, "height");
-            if (y == null) return;            
+            if (y == null) return;
             string z = Map_GetComboboxSize(map_cmbZ, "length");
-            if (z == null) return;            
+            if (z == null) return;
             string type = Map_GetComboboxItem(map_cmbType, "type");
-            if (type == null) return;            
+            if (type == null) return;
 
             string args = name + " " + x + " " + y + " " + z + " " + type;
             if (!string.IsNullOrEmpty(seed)) args += " " + seed;
-            
-            Thread genThread = new Thread(() => DoGen(name, args));
-            genThread.Name = "GuiGenMap";
+
+            Thread genThread = new Thread(() => DoGen(name, args))
+            {
+                Name = "GuiGenMap"
+            };
             genThread.Start();
         }
 
-        public void DoGen(string name, string args) {
+        public void DoGen(string name, string args)
+        {
             mapgen = true;
-            try {
+            try
+            {
                 Command.Find("NewLvl").Use(Player.Flame, args);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 Popup.Error("Failed to generate level. Check error logs for details.");
                 mapgen = false;
                 return;
             }
-            
-            if (LevelInfo.MapExists(name)) {
+
+            if (LevelInfo.MapExists(name))
+            {
                 Popup.Message("Level successfully generated.");
-                RunOnUI_Async(() => {
+                RunOnUI_Async(() => 
+                {
                     Map_UpdateUnloadedList();
                     Map_UpdateLoadedList();
                     Main_UpdateMapList();
                 });
-            } else {
-               Popup.Error("Level was not generated. Check main log for details.");
+            }
+            else
+            {
+                Popup.Error("Level was not generated. Check main log for details.");
             }
             mapgen = false;
         }
 
-        public string Map_GetComboboxItem(ComboBox box, string propName) {
+        public string Map_GetComboboxItem(ComboBox box, string propName)
+        {
             object selected = box.SelectedItem;
             string value = selected == null ? "" : selected.ToString();
-            
-            if (value.Length == 0) {
+
+            if (value.Length == 0)
+            {
                 Popup.Warning("Map " + propName + " cannot be blank.");
                 return null;
             }
             return value;
         }
 
-        public string Map_GetComboboxSize(ComboBox box, string propName) {
-            string value = box.Text; 
-            
-            if (value.Length == 0) {
+        public string Map_GetComboboxSize(ComboBox box, string propName)
+        {
+            string value = box.Text;
+
+            if (value.Length == 0)
+            {
                 Popup.Warning("Map " + propName + " cannot be blank.");
                 return null;
             }
-            
+
             ushort size;
-            if (!ushort.TryParse(value, out size) || size == 0 || size > 16384) {
+            if (!ushort.TryParse(value, out size) || size == 0 || size > 16384)
+            {
                 Popup.Warning("Map " + propName + " must be an integer between 1 and 16384");
                 return null;
             }
             return value;
         }
 
-        public void map_BtnLoad_Click(object sender, EventArgs e) {
+        public void map_BtnLoad_Click(object sender, EventArgs e)
+        {
             object selected = map_lbUnloaded.SelectedItem;
-            if (selected == null) { Popup.Warning("No unloaded level selected."); return; }
+            if (selected == null) 
+            { 
+                Popup.Warning("No unloaded level selected."); 
+                return; 
+            }
 
             UIHelpers.HandleCommand("Load " + selected.ToString());
         }
 
         public string last = null;
-        public void Map_UpdateSelected(object sender, EventArgs e) {
-            if (map_lbLoaded.SelectedItem == null) {
+        public void Map_UpdateSelected(object sender, EventArgs e)
+        {
+            if (map_lbLoaded.SelectedItem == null)
+            {
                 if (map_pgProps.SelectedObject == null) return;
-                map_pgProps.SelectedObject = null; last = null;
-                map_gbProps.Text = "Properties for (none selected)"; return;
+                map_pgProps.SelectedObject = null; 
+                last = null;
+                map_gbProps.Text = "Properties for (none selected)";
+                return;
             }
-            
+
             string name = map_lbLoaded.SelectedItem.ToString();
             Level lvl = LevelInfo.FindExact(name);
-            if (lvl == null) {
+            if (lvl == null)
+            {
                 if (map_pgProps.SelectedObject == null) return;
-                map_pgProps.SelectedObject = null; last = null;
-                map_gbProps.Text = "Properties for (none selected)"; return;
+                map_pgProps.SelectedObject = null; 
+                last = null;
+                map_gbProps.Text = "Properties for (none selected)"; 
+                return;
             }
-            
+
             if (name == last) return;
             last = name;
             LevelProperties settings = new LevelProperties(lvl);
@@ -128,33 +166,38 @@ namespace Flames.Gui {
             map_gbProps.Text = "Properties for " + name;
         }
 
-        public void Map_UpdateUnloadedList() {
+        public void Map_UpdateUnloadedList()
+        {
             object selected = map_lbUnloaded.SelectedItem;
             map_lbUnloaded.Items.Clear();
-            
+
             string[] allMaps = LevelInfo.AllMapNames();
-            foreach (string map in allMaps) {
+            foreach (string map in allMaps)
+            {
                 if (LevelInfo.FindExact(map) == null)
                     map_lbUnloaded.Items.Add(map);
             }
-            
+
             Map_Reselect(map_lbUnloaded, selected);
         }
 
-        public void Map_UpdateLoadedList() {
+        public void Map_UpdateLoadedList()
+        {
             object selected = map_lbLoaded.SelectedItem;
             map_lbLoaded.Items.Clear();
-            
+
             Level[] loaded = LevelInfo.Loaded.Items;
-            foreach (Level lvl in loaded) {
+            foreach (Level lvl in loaded)
+            {
                 map_lbLoaded.Items.Add(lvl.name);
             }
-            
+
             Map_Reselect(map_lbLoaded, selected);
             Map_UpdateSelected(null, null);
         }
 
-        public void Map_Reselect(ListBox box, object selected) {
+        public void Map_Reselect(ListBox box, object selected)
+        {
             int i = -1;
             if (selected != null) i = box.Items.IndexOf(selected);
             box.SelectedIndex = i;

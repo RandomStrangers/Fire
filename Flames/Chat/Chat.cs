@@ -324,9 +324,8 @@ namespace Flames
 
             lock (locker)
             {
-                List<PersistentMessage> field = null;
 
-                if (!persistentMsgs.TryGetValue(type, out field))
+                if (!persistentMsgs.TryGetValue(type, out List<PersistentMessage> field))
                 {
                     field = new List<PersistentMessage>();
                     persistentMsgs[type] = field;

@@ -22,7 +22,6 @@ using System.Collections.Generic;
 using Flames.Games;
 using Flames.Maths;
 using Flames.SQL;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
@@ -39,7 +38,7 @@ namespace Flames.Modules.Games.CTF
         public string ColoredName { get { return Color + Name; } }
         public int Captures;
         public Vec3U16 FlagPos, SpawnPos;
-        public BlockID FlagBlock;
+        public ushort FlagBlock;
         public VolatileArray<Player> Members = new VolatileArray<Player>();
 
         public CtfTeam(string name, string color) { Name = name; Color = color; }

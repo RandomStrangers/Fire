@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -47,7 +46,7 @@ namespace Flames.Drawing.Brushes
             n.Persistence = 0.75f;
             n.Lacunarity = 2;
 
-            List<BlockID> toAffect;
+            List<ushort> toAffect;
             List<int> freqs;
 
             bool ok = FrequencyBrush.GetBlocks(args, out toAffect, out freqs,

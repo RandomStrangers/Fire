@@ -51,13 +51,13 @@ namespace Flames
             LevelInfo.Add(mainLevel);
         }
 
-        public static void LoadAllPlugins(SchedulerTask task) 
-        { 
-            Plugin.LoadAll(); 
+        public static void LoadAllPlugins(SchedulerTask task)
+        {
+            Plugin.LoadAll();
         }
-        public static void LoadAllSimplePlugins(SchedulerTask task) 
-        { 
-            Plugin_Simple.LoadAll(); 
+        public static void LoadAllSimplePlugins(SchedulerTask task)
+        {
+            Plugin_Simple.LoadAll();
         }
 
         public static void InitPlayerLists(SchedulerTask task)

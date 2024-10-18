@@ -26,7 +26,6 @@ using System.Collections.Generic;
 using Flames.Blocks.Physics;
 using Flames.Games;
 using Flames.Tasks;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.TW
 {
@@ -37,7 +36,7 @@ namespace Flames.Modules.Games.TW
             Map.UpdateBlockHandlers(Block.TNT);
         }
 
-        public void HandleBlockHandlersUpdated(Level lvl, BlockID block)
+        public void HandleBlockHandlersUpdated(Level lvl, ushort block)
         {
             if (!Running || lvl != Map || block != Block.TNT) return;
 
@@ -67,7 +66,7 @@ namespace Flames.Modules.Games.TW
             return true;
         }
 
-        public ChangeResult HandleTNTPlace(Player p, BlockID newBlock, ushort x, ushort y, ushort z)
+        public ChangeResult HandleTNTPlace(Player p, ushort newBlock, ushort x, ushort y, ushort z)
         {
             TWData data = Get(p);
             if (!CheckTNTPlace(p, data, x, y, z))

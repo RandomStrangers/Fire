@@ -18,7 +18,6 @@
 using System.Collections.Generic;
 using Flames.Commands;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -246,7 +245,7 @@ namespace Flames
             }
         }
 
-        public static void SetBlock(Player p, string input, string area, string type, ref BlockID target)
+        public static void SetBlock(Player p, string input, string area, string type, ref ushort target)
         {
             if (IsResetString(input))
             {
@@ -255,7 +254,7 @@ namespace Flames
             }
             else
             {
-                BlockID block;
+                ushort block;
                 if (!CommandParser.GetBlock(p, input, out block)) return;
                 if (Block.IsPhysicsType(block))
                 {

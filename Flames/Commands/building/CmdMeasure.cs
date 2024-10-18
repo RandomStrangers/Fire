@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -31,11 +30,11 @@ namespace Flames.Commands.Building
 
         public override void Use(Player p, string message, CommandData data)
         {
-            List<BlockID> toCount = null;
+            List<ushort> toCount = null;
             if (message.Length > 0)
             {
                 string[] args = message.SplitSpaces();
-                toCount = new List<BlockID>(args.Length);
+                toCount = new List<ushort>(args.Length);
 
                 for (int i = 0; i < args.Length; i++)
                 {
@@ -48,9 +47,9 @@ namespace Flames.Commands.Building
             p.MakeSelection(2, "Selecting region for &SMeasure", toCount, DoMeasure);
         }
 
-        public bool DoMeasure(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoMeasure(Player p, Vec3S32[] m, object state, ushort block)
         {
-            List<BlockID> toCount = (List<BlockID>)state;
+            List<ushort> toCount = (List<ushort>)state;
             Vec3S32 min = Vec3S32.Min(m[0], m[1]);
             Vec3S32 max = Vec3S32.Max(m[0], m[1]);
             int[] counts = new int[Block.SUPPORTED_COUNT];
@@ -80,15 +79,15 @@ namespace Flames.Commands.Building
             return true;
         }
 
-        public static List<BlockID> MostFrequentBlocks(int[] countsRaw)
+        public static List<ushort> MostFrequentBlocks(int[] countsRaw)
         {
-            BlockID[] blocks = new BlockID[Block.SUPPORTED_COUNT];
+            ushort[] blocks = new ushort[Block.SUPPORTED_COUNT];
             int[] counts = new int[Block.SUPPORTED_COUNT]; // copy array as Sort works in place
             int total = 0;
 
             for (int i = 0; i < blocks.Length; i++)
             {
-                blocks[i] = (BlockID)i;
+                blocks[i] = (ushort)i;
                 counts[i] = countsRaw[i];
                 if (counts[i] > 0) total++;
             }
@@ -96,7 +95,7 @@ namespace Flames.Commands.Building
             Array.Sort(counts, blocks);
             if (total > 5) total = 5;
 
-            List<BlockID> mostFrequent = new List<BlockID>(total);
+            List<ushort> mostFrequent = new List<ushort>(total);
             for (int i = 0; i < total; i++)
             {
                 mostFrequent.Add(blocks[blocks.Length - 1 - i]);

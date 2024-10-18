@@ -15,8 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Network
 {
@@ -29,7 +27,7 @@ namespace Flames.Network
         public Player player;
         // fields below should not be modified by code outside of BufferedBlockSender
         public int[] indices = new int[256];
-        public BlockID[] blocks = new BlockID[256];
+        public ushort[] blocks = new ushort[256];
         public int count;
 
         public BufferedBlockSender() 
@@ -51,7 +49,7 @@ namespace Flames.Network
 
         /// <summary> Adds a block change to list of buffered changes </summary>
         /// <remarks> This method automatically calls Flush() when buffer limit is reached </remarks>
-        public void Add(int index, BlockID block)
+        public void Add(int index, ushort block)
         {
             indices[count] = index;
             if (Block.IsPhysicsType(block))
@@ -162,7 +160,7 @@ namespace Flames.Network
 
             for (int i = 0, j = 2 + 256 * sizeof(int); i < count; i++)
             {
-                data[j++] = (BlockRaw)blocks[i];
+                data[j++] = (byte)blocks[i];
             }
 
             for (int i = 0, j = 2 + 256 * (sizeof(int) + 1); i < count; i += 4)
@@ -194,7 +192,7 @@ namespace Flames.Network
                 data[j++] = (byte)y;
                 data[j++] = (byte)(z >> 8); 
                 data[j++] = (byte)z;
-                BlockID raw = Block.ToRaw(blocks[i]);
+                ushort raw = Block.ToRaw(blocks[i]);
                 data[j++] = (byte)(raw >> 8);
                 data[j++] = (byte)raw;
             }
@@ -215,8 +213,8 @@ namespace Flames.Network
             }
             for (int i = 0, j = 2 + 256 * sizeof(int); i < count; i++)
             {
-                BlockID block = blocks[i];
-                data[j++] = block <= 511 ? (BlockRaw)block : level.GetFallback(block);
+                ushort block = blocks[i];
+                data[j++] = block <= 511 ? (byte)block : level.GetFallback(block);
             }
             return data;
         }
@@ -238,8 +236,8 @@ namespace Flames.Network
                 data[j++] = (byte)y;
                 data[j++] = (byte)(z >> 8); 
                 data[j++] = (byte)z;
-                BlockID block = blocks[i];
-                data[j++] = block <= 511 ? (BlockRaw)block : level.GetFallback(block);
+                ushort block = blocks[i];
+                data[j++] = block <= 511 ? (byte)block : level.GetFallback(block);
             }
             return data;
         }

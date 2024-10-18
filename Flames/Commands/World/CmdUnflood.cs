@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.World
 {
@@ -34,8 +33,7 @@ namespace Flames.Commands.World
                 Help(p); 
                 return; 
             }
-            BlockID block;
-            if (!message.CaselessEq("all") && !CommandParser.GetBlock(p, message, out block)) return;
+            if (!message.CaselessEq("all") && !CommandParser.GetBlock(p, message, out ushort block)) return;
 
             Level lvl = p.level;
             if (!LevelInfo.Check(p, data.Rank, lvl, "unflood this level")) return;

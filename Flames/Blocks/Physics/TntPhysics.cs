@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -103,8 +102,7 @@ namespace Flames.Blocks.Physics
             Random rand = new Random();
             if ((lvl.physics < 2 || lvl.physics == 5) && !force) return;
 
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
             if (index >= 0 && !lvl.Props[block].OPBlock)
             {
                 lvl.AddUpdate(index, Block.TNT_Explosion, default, true);
@@ -115,7 +113,7 @@ namespace Flames.Blocks.Physics
             Explode(lvl, x, y, z, size + 3, rand, 3, filter);
         }
 
-        public static bool IsFuse(BlockID b, int dx, int dy, int dz)
+        public static bool IsFuse(ushort b, int dx, int dy, int dz)
         {
             return dx == 0 && dy == 1 && dz == 0 && b == Block.StillLava;
         }
@@ -127,8 +125,7 @@ namespace Flames.Blocks.Physics
                 for (int yy = (y - size); yy <= (y + size); ++yy)
                     for (int zz = (z - size); zz <= (z + size); ++zz)
                     {
-                        int index;
-                        BlockID b = lvl.GetBlock((ushort)xx, (ushort)yy, (ushort)zz, out index);
+                        ushort b = lvl.GetBlock((ushort)xx, (ushort)yy, (ushort)zz, out int index);
                         if (b == Block.Invalid) continue;
 
                         bool doDestroy = prob < 0 || rand.Next(1, 10) < prob;

@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Blocks.Physics;
-using BlockID = System.UInt16;
 
 namespace Flames.Events.LevelEvents
 {
@@ -172,10 +171,10 @@ namespace Flames.Events.LevelEvents
         }
     }
 
-    public delegate void OnBlockHandlersUpdated(Level lvl, BlockID block);
+    public delegate void OnBlockHandlersUpdated(Level lvl, ushort block);
     public sealed class OnBlockHandlersUpdatedEvent : IEvent<OnBlockHandlersUpdated>
     {
-        public static void Call(Level lvl, BlockID block)
+        public static void Call(Level lvl, ushort block)
         {
             if (handlers.Count == 0) return;
             CallCommon(pl => pl(lvl, block));

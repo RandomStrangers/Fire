@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing
 {
@@ -30,7 +29,7 @@ namespace Flames.Drawing
             newState.Height = angle == 180 ? state.Height : state.Length;
             newState.Length = angle == 180 ? state.Length : state.Height;
 
-            BlockID[] transform;
+            ushort[] transform;
             if (angle == 90 || angle == 270) transform = Transform(defs, rotX_90_270, null);
             else if (angle == 180) transform = Transform(defs, rotX_180, null);
             else transform = Transform(defs, null, null);
@@ -58,7 +57,7 @@ namespace Flames.Drawing
             newState.Width = angle == 180 ? state.Width : state.Length;
             newState.Length = angle == 180 ? state.Length : state.Width;
 
-            BlockID[] transform;
+            ushort[] transform;
             if (angle == 90) transform = Transform(defs, null, rotY_90);
             else if (angle == 180) transform = Transform(defs, rotY_180, null);
             else if (angle == 270) transform = Transform(defs, null, rotY_270);
@@ -86,7 +85,7 @@ namespace Flames.Drawing
             newState.Width = angle == 180 ? state.Width : state.Height;
             newState.Height = angle == 180 ? state.Height : state.Width;
 
-            BlockID[] transform;
+            ushort[] transform;
             if (angle == 90 || angle == 270) transform = Transform(defs, rotZ_90_270, null);
             else if (angle == 180) transform = Transform(defs, rotZ_180, null);
             else transform = Transform(defs, null, null);
@@ -105,14 +104,14 @@ namespace Flames.Drawing
             return Rotate(state, newState, m, transform);
         }
 
-        public static CopyState Rotate(CopyState state, CopyState flipped, int[] m, BlockID[] transform)
+        public static CopyState Rotate(CopyState state, CopyState flipped, int[] m, ushort[] transform)
         {
             int volume = state.Volume;
             for (int i = 0; i < volume; i++)
             {
                 ushort x, y, z;
                 state.GetCoords(i, out x, out y, out z);
-                BlockID block = transform[state.Get(i)];
+                ushort block = transform[state.Get(i)];
 
                 flipped.Set(block,
                             Rotate(m[0], x, y, z, state),
@@ -175,7 +174,7 @@ namespace Flames.Drawing
             int midX = (state.Width + 1) / 2, maxX = state.Width - 1;
             state.OriginX = state.OppositeOriginX;
             state.Offset.X = -state.Offset.X;
-            BlockID[] transform = Transform(defs, mirrorX, null);
+            ushort[] transform = Transform(defs, mirrorX, null);
 
             for (int y = 0; y < state.Height; y++)
             {
@@ -187,8 +186,8 @@ namespace Flames.Drawing
                         int beg = state.GetIndex(x, y, z);
                         int end = state.GetIndex(endX, y, z);
 
-                        BlockID blockA = transform[state.Get(beg)];
-                        BlockID blockB = transform[state.Get(end)];
+                        ushort blockA = transform[state.Get(beg)];
+                        ushort blockB = transform[state.Get(end)];
                         state.Set(blockB, beg); state.Set(blockA, end);
                     }
                 }
@@ -201,7 +200,7 @@ namespace Flames.Drawing
             int midY = (state.Height + 1) / 2, maxY = state.Height - 1;
             state.OriginY = state.OppositeOriginY;
             state.Offset.Y = -state.Offset.Y;
-            BlockID[] transform = Transform(defs, mirrorY, null);
+            ushort[] transform = Transform(defs, mirrorY, null);
 
             for (int y = 0; y < midY; y++)
             {
@@ -213,8 +212,8 @@ namespace Flames.Drawing
                 {
                     for (int x = 0; x < state.Width; x++)
                     {
-                        BlockID blockA = transform[state.Get(beg)];
-                        BlockID blockB = transform[state.Get(end)];
+                        ushort blockA = transform[state.Get(beg)];
+                        ushort blockB = transform[state.Get(end)];
                         state.Set(blockB, beg); state.Set(blockA, end);
                         beg++; end++;
                     }
@@ -228,7 +227,7 @@ namespace Flames.Drawing
             int midZ = (state.Length + 1) / 2, maxZ = state.Length - 1;
             state.OriginZ = state.OppositeOriginZ;
             state.Offset.Z = -state.Offset.Z;
-            BlockID[] transform = Transform(defs, mirrorZ, null);
+            ushort[] transform = Transform(defs, mirrorZ, null);
 
             for (int y = 0; y < state.Height; y++)
             {
@@ -240,8 +239,8 @@ namespace Flames.Drawing
 
                     for (int x = 0; x < state.Width; x++)
                     {
-                        BlockID blockA = transform[state.Get(beg)];
-                        BlockID blockB = transform[state.Get(end)];
+                        ushort blockA = transform[state.Get(beg)];
+                        ushort blockB = transform[state.Get(end)];
                         state.Set(blockB, beg); state.Set(blockA, end);
                         beg++; end++;
                     }
@@ -250,12 +249,12 @@ namespace Flames.Drawing
         }
 
 
-        public static BlockID[] Transform(BlockDefinition[] defs, string[] mirrorDirs, string[] rotateDirs)
+        public static ushort[] Transform(BlockDefinition[] defs, string[] mirrorDirs, string[] rotateDirs)
         {
-            BlockID[] transform = new BlockID[Block.SUPPORTED_COUNT];
+            ushort[] transform = new ushort[Block.SUPPORTED_COUNT];
             for (int i = 0; i < transform.Length; i++)
             {
-                transform[i] = (BlockID)i;
+                transform[i] = (ushort)i;
             }
             if (mirrorDirs == null && rotateDirs == null) return transform;
 
@@ -277,7 +276,7 @@ namespace Flames.Drawing
                 }
 
                 if (transformed == null) continue;
-                BlockID src = defs[i].GetBlock();
+                ushort src = defs[i].GetBlock();
                 transform[src] = transformed.GetBlock();
             }
             return transform;

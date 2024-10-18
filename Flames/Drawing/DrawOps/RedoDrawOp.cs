@@ -19,7 +19,6 @@ using System;
 using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -68,7 +67,7 @@ namespace Flames.Drawing.Ops
 
         public void RedoBlock(BlockDBEntry e)
         {
-            BlockID block = e.OldBlock;
+            ushort block = e.OldBlock;
             if (block == Block.Invalid) return; // Exported BlockDB SQL table entries don't have previous block
             if ((e.Flags & BlockDBFlags.UndoSelf) == 0) return; // not an undo
 

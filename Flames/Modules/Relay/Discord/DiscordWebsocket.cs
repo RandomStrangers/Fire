@@ -26,28 +26,28 @@ using Flames.Config;
 using Flames.Network;
 using Flames.Tasks;
 
-namespace Flames.Modules.Relay.Discord 
-{    
-    public class DiscordSession 
-    { 
+namespace Flames.Modules.Relay.Discord
+{
+    public class DiscordSession
+    {
         public string ID, LastSeq;
         public int Intents;
     }
     public delegate string DiscordGetStatus();
     public delegate void GatewayEventCallback(string eventName, JsonObject data);
-    
+
     /// <summary> Implements a basic websocket for communicating with Discord's gateway </summary>
     /// <remarks> https://discord.com/developers/docs/topics/gateway </remarks>
     /// <remarks> https://i.imgur.com/Lwc5Wde.png </remarks>
-    public class DiscordWebsocket : ClientWebSocket 
-    {       
+    public class DiscordWebsocket : ClientWebSocket
+    {
         /// <summary> Authorisation token for the bot account </summary>
         public string Token;
         public string Host;
-        
+
         public bool CanReconnect = true, SentIdentify;
         public DiscordSession Session;
-        
+
         /// <summary> Whether presence support is enabled </summary>
         public bool Presence = true;
         /// <summary> Presence status (E.g. online) </summary>
@@ -56,7 +56,7 @@ namespace Flames.Modules.Relay.Discord
         public PresenceActivity Activity;
         /// <summary> Callback function to retrieve the activity status message </summary>
         public DiscordGetStatus GetStatus;
-        
+
         /// <summary> Callback invoked when a ready event has been received </summary>
         public Action<JsonObject> OnReady;
         /// <summary> Callback invoked when a resumed event has been received </summary>
@@ -68,58 +68,65 @@ namespace Flames.Modules.Relay.Discord
         /// <summary> Callback invoked when a gateway event has been received </summary>
         public GatewayEventCallback OnGatewayEvent;
 
-        public readonly object sendLock = new object();
+        public object sendLock = new object();
         public SchedulerTask heartbeat;
         public TcpClient client;
         public SslStream stream;
         public bool readable;
 
         public const int DEFAULT_INTENTS = INTENT_GUILD_MESSAGES | INTENT_DIRECT_MESSAGES | INTENT_MESSAGE_CONTENT;
-        public const int INTENT_GUILD_MESSAGES  = 1 << 9;
+        public const int INTENT_GUILD_MESSAGES = 1 << 9;
         public const int INTENT_DIRECT_MESSAGES = 1 << 12;
         public const int INTENT_MESSAGE_CONTENT = 1 << 15;
 
-        public const int OPCODE_DISPATCH        = 0;
-        public const int OPCODE_HEARTBEAT       = 1;
-        public const int OPCODE_IDENTIFY        = 2;
-        public const int OPCODE_STATUS_UPDATE   = 3;
+        public const int OPCODE_DISPATCH = 0;
+        public const int OPCODE_HEARTBEAT = 1;
+        public const int OPCODE_IDENTIFY = 2;
+        public const int OPCODE_STATUS_UPDATE = 3;
         public const int OPCODE_VOICE_STATE_UPDATE = 4;
-        public const int OPCODE_RESUME          = 6;
+        public const int OPCODE_RESUME = 6;
         public const int OPCODE_REQUEST_SERVER_MEMBERS = 8;
         public const int OPCODE_INVALID_SESSION = 9;
-        public const int OPCODE_HELLO           = 10;
-        public const int OPCODE_HEARTBEAT_ACK   = 11;
-        
-        
-        public DiscordWebsocket(string apiPath) {
+        public const int OPCODE_HELLO = 10;
+        public const int OPCODE_HEARTBEAT_ACK = 11;
+
+
+        public DiscordWebsocket(string apiPath)
+        {
             path = apiPath;
         }
-        
+
         // stubs
         public override bool LowLatency { set { } }
         public override IPAddress IP { get { return null; } }
-        
-        public void Connect() {
+
+        public void Connect()
+        {
             client = new TcpClient();
             client.Connect(Host, 443);
             readable = true;
 
-            stream   = HttpUtil.WrapSSLStream(client.GetStream(), Host);
+            stream = HttpUtil.WrapSSLStream(client.GetStream(), Host);
             protocol = this;
             Init();
         }
 
-        public override void WriteCustomHeaders() {
+        public override void WriteCustomHeaders()
+        {
             WriteHeader("Authorization: Bot " + Token);
             WriteHeader("Host: " + Host);
         }
-        
-        public override void Close() {
+
+        public override void Close()
+        {
             readable = false;
             Server.Heartbeats.Cancel(heartbeat);
-            try {
+            try
+            {
                 client.Close();
-            } catch {
+            }
+            catch
+            {
                 // ignore errors when closing socket
             }
         }
@@ -127,15 +134,19 @@ namespace Flames.Modules.Relay.Discord
         public const int REASON_INVALID_TOKEN = 4004;
         public const int REASON_DENIED_INTENT = 4014;
 
-        public override void OnDisconnected(int reason) {
+        public override void OnDisconnected(int reason)
+        {
             SentIdentify = false;
             if (readable) Logger.Log(LogType.SystemActivity, "Discord relay bot closing: " + reason);
             Close();
 
-            if (reason == REASON_INVALID_TOKEN) {
+            if (reason == REASON_INVALID_TOKEN)
+            {
                 CanReconnect = false;
                 throw new InvalidOperationException("Discord relay: Invalid bot token provided - unable to connect");
-            } else if (reason == REASON_DENIED_INTENT) {
+            }
+            else if (reason == REASON_DENIED_INTENT)
+            {
                 // privileged intent since August 2022 https://support-dev.discord.com/hc/en-us/articles/4404772028055
                 CanReconnect = false;
                 throw new InvalidOperationException("Discord relay: Message Content Intent is not enabled in Bot Account settings, " +
@@ -143,43 +154,51 @@ namespace Flames.Modules.Relay.Discord
                     "(See " + Updater.WikiURL + "Discord-relay-bot#read-permissions)");
             }
         }
-        
-        
-        public void ReadLoop() {
+
+
+        public void ReadLoop()
+        {
             byte[] data = new byte[4096];
             readable = true;
 
-            while (readable) 
+            while (readable)
             {
                 int len = stream.Read(data, 0, 4096);
                 if (len == 0) throw new IOException("stream.Read returned 0");
-                
+
                 HandleReceived(data, len);
             }
         }
 
-        public override void HandleData(byte[] data, int len) {
-            string value   = Encoding.UTF8.GetString(data, 0, len);
+        public override void HandleData(byte[] data, int len)
+        {
+            string value = Encoding.UTF8.GetString(data, 0, len);
             JsonReader ctx = new JsonReader(value);
             JsonObject obj = (JsonObject)ctx.Parse();
             if (obj == null) return;
-            
+
             int opcode = NumberUtils.ParseInt32((string)obj["op"]);
             DispatchPacket(opcode, obj);
         }
 
-        public void DispatchPacket(int opcode, JsonObject obj) {
-            if (opcode == OPCODE_DISPATCH) {
+        public void DispatchPacket(int opcode, JsonObject obj)
+        {
+            if (opcode == OPCODE_DISPATCH)
+            {
                 HandleDispatch(obj);
-            } else if (opcode == OPCODE_HELLO) {
+            }
+            else if (opcode == OPCODE_HELLO)
+            {
                 HandleHello(obj);
-            } else if (opcode == OPCODE_INVALID_SESSION) {
+            }
+            else if (opcode == OPCODE_INVALID_SESSION)
+            {
                 // See notes at https://discord.com/developers/docs/topics/gateway#resuming
                 //  (note that in this implementation, if resume fails, the bot just
                 //   gives up altogether instead of trying to resume again later)
-                Session.ID      = null;
+                Session.ID = null;
                 Session.LastSeq = null;
-                
+
                 Logger.Log(LogType.Warning, "Discord relay: Resuming failed, trying again in 5 seconds");
                 Thread.Sleep(5 * 1000);
                 Identify();
@@ -187,132 +206,198 @@ namespace Flames.Modules.Relay.Discord
         }
 
 
-        public void HandleHello(JsonObject obj) {
+        public void HandleHello(JsonObject obj)
+        {
             JsonObject data = (JsonObject)obj["d"];
-            string interval = (string)data["heartbeat_interval"];            
-            int msInterval  = NumberUtils.ParseInt32(interval);
-            
-            heartbeat = Server.Heartbeats.QueueRepeat(SendHeartbeat, null, 
+            string interval = (string)data["heartbeat_interval"];
+            int msInterval = NumberUtils.ParseInt32(interval);
+
+            heartbeat = Server.Heartbeats.QueueRepeat(SendHeartbeat, null,
                                           TimeSpan.FromMilliseconds(msInterval));
             Identify();
         }
 
-        public void HandleDispatch(JsonObject obj) {
+        public void HandleDispatch(JsonObject obj)
+        {
             // update last sequence number
             object sequence;
-            if (obj.TryGetValue("s", out sequence)) 
+            if (obj.TryGetValue("s", out sequence))
                 Session.LastSeq = (string)sequence;
-            
+
             string eventName = (string)obj["t"];
-            
-            object rawData;            
+
+            object rawData;
             obj.TryGetValue("d", out rawData);
             JsonObject data = rawData as JsonObject;
-            
-            if (eventName == "READY") {
+
+            if (eventName == "READY")
+            {
                 HandleReady(data);
                 OnReady(data);
-            } else if (eventName == "RESUMED") {
+            }
+            else if (eventName == "RESUMED")
+            {
                 OnResumed(data);
-            } else if (eventName == "MESSAGE_CREATE") {
+            }
+            else if (eventName == "MESSAGE_CREATE")
+            {
                 OnMessageCreate(data);
-            } else if (eventName == "CHANNEL_CREATE") {
+            }
+            else if (eventName == "CHANNEL_CREATE")
+            {
                 OnChannelCreate(data);
             }
             OnGatewayEvent(eventName, data);
         }
 
-        public void HandleReady(JsonObject data) {
+        public void HandleReady(JsonObject data)
+        {
             object session;
-            if (data.TryGetValue("session_id", out session)) 
+            if (data.TryGetValue("session_id", out session))
                 Session.ID = (string)session;
         }
-        
-        
-        public void SendMessage(int opcode, JsonObject data) {
+
+
+        public void SendMessage(int opcode, JsonObject data)
+        {
             JsonObject obj = new JsonObject()
             {
-                { "op", opcode },
-                { "d",  data }
+                { 
+                    "op", opcode 
+                },
+                { 
+                    "d",  data 
+                }
             };
             SendMessage(obj);
         }
-        
-        public void SendMessage(JsonObject obj) {
+
+        public void SendMessage(JsonObject obj)
+        {
             string str = Json.SerialiseObject(obj);
             Send(Encoding.UTF8.GetBytes(str), SendFlags.None);
         }
 
-        public override void SendRaw(byte[] data, SendFlags flags) {
+        public override void SendRaw(byte[] data, SendFlags flags)
+        {
             lock (sendLock) stream.Write(data);
         }
 
-        public void SendHeartbeat(SchedulerTask task) {
-            JsonObject obj = new JsonObject();
-            obj["op"] = OPCODE_HEARTBEAT;
-            
-            if (Session.LastSeq != null) {
+        public void SendHeartbeat(SchedulerTask task)
+        {
+            JsonObject obj = new JsonObject
+            {
+                ["op"] = OPCODE_HEARTBEAT
+            };
+
+            if (Session.LastSeq != null)
+            {
                 obj["d"] = NumberUtils.ParseInt32(Session.LastSeq);
-            } else {
+            }
+            else
+            {
                 obj["d"] = null;
             }
             SendMessage(obj);
         }
-        
-        public void Identify() {
-            if (Session.ID != null && Session.LastSeq != null) {
-                SendMessage(OPCODE_RESUME,   MakeResume());
-            } else {
+
+        public void Identify()
+        {
+            if (Session.ID != null && Session.LastSeq != null)
+            {
+                SendMessage(OPCODE_RESUME, MakeResume());
+            }
+            else
+            {
                 SendMessage(OPCODE_IDENTIFY, MakeIdentify());
             }
             SentIdentify = true;
         }
-        
-        public void UpdateStatus() {
+
+        public void UpdateStatus()
+        {
             JsonObject data = MakePresence();
             SendMessage(OPCODE_STATUS_UPDATE, data);
         }
 
-        public JsonObject MakeResume() {
+        public JsonObject MakeResume()
+        {
             return new JsonObject()
             {
-                { "token",      Token },
-                { "session_id", Session.ID },
-                { "seq",        NumberUtils.ParseInt32(Session.LastSeq) }
+                { 
+                    "token", Token 
+                },
+                { 
+                    "session_id", Session.ID 
+                },
+                { 
+                    "seq", NumberUtils.ParseInt32(Session.LastSeq) 
+                }
             };
         }
 
-        public JsonObject MakeIdentify() {
+        public JsonObject MakeIdentify()
+        {
             JsonObject props = new JsonObject()
             {
-                { "$os",      "linux" },
-                { "$browser", Server.SoftwareName },
-                { "$device",  Server.SoftwareName }
+                { 
+                    "$os",      "linux" 
+                },
+                { 
+                    "$browser", Server.SoftwareName 
+                },
+                { 
+                    "$device",  Server.SoftwareName 
+                }
             };
-            
+
             return new JsonObject()
             {
-                { "token",      Token },
-                { "intents",    Session.Intents },
-                { "properties", props },
-                { "presence",   MakePresence() }
+                { 
+                    "token", Token 
+                },
+                { 
+                    "intents", Session.Intents 
+                },
+                { 
+                    "properties", props 
+                },
+                { 
+                    "presence", MakePresence() 
+                }
             };
         }
 
-        public JsonObject MakePresence() {
+        public JsonObject MakePresence()
+        {
             if (!Presence) return null;
-            
+
             JsonObject activity = new JsonObject()
             {
-                { "name", GetStatus() },
-                { "type", (int)Activity }
+                { 
+                    "name", GetStatus() 
+                },
+                { 
+                    "type", (int)Activity 
+                }
             };
             return new JsonObject()
             {
-                { "since",      Server.UpTime.ToString() },
-                { "activities", new JsonArray() { activity } },
-                { "status",     Status.ToString() },
-                { "afk",        false }
+                { 
+                    "since", Server.UpTime.ToString() 
+                },
+                { 
+                    "activities", new JsonArray() 
+                    { 
+                        activity 
+                    } 
+                },
+                { 
+                    "status", Status.ToString() 
+                },
+                { 
+                    "afk", false 
+                }
             };
         }
     }

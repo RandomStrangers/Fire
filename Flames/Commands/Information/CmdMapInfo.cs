@@ -23,7 +23,6 @@ using Flames.DB;
 using Flames.Games;
 using Flames.Levels.IO;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Info
 {
@@ -182,8 +181,8 @@ namespace Flames.Commands.Info
                       data.Get(EnvProp.EdgeLevel), data.Get(EnvProp.SidesOffset),
                       data.Get(EnvProp.CloudsLevel), data.Get(EnvProp.MaxFog));
             p.Message("Edge Block: &b{0}&S, Horizon Block: &b{1}",
-                      Block.GetName(p, (BlockID)data.Get(EnvProp.SidesBlock)),
-                      Block.GetName(p, (BlockID)data.Get(EnvProp.EdgeBlock)));
+                      Block.GetName(p, (ushort)data.Get(EnvProp.SidesBlock)),
+                      Block.GetName(p, (ushort)data.Get(EnvProp.EdgeBlock)));
             p.Message("Clouds speed: &b{0}%&S, Weather speed: &b{1}%",
                       (data.Get(EnvProp.CloudsSpeed) / 256f).ToString("F2"),
                       (data.Get(EnvProp.WeatherSpeed) / 256f).ToString("F2"));

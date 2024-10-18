@@ -18,7 +18,6 @@
  */
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.World
 {
@@ -62,7 +61,7 @@ namespace Flames.Commands.World
             p.MakeSelection(2, "Selecting corners for &SFixGrass", op, DoFixGrass);
         }
 
-        public bool DoFixGrass(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool DoFixGrass(Player p, Vec3S32[] marks, object state, ushort block)
         {
             FixGrassDrawOp op = (FixGrassDrawOp)state;
             op.AlwaysUsable = true;

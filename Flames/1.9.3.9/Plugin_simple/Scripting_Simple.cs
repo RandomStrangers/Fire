@@ -42,7 +42,9 @@ namespace Flames.Scripting
 
         public sealed class AlreadyLoadedException : Exception
         {
-            public AlreadyLoadedException(string msg) : base(msg) { }
+            public AlreadyLoadedException(string msg) : base(msg) 
+            { 
+            }
         }
         public static Assembly LoadAssembly(string path)
         {
@@ -186,7 +188,10 @@ namespace Flames.Scripting
         /// <summary> Visual Basic compiler instance. </summary>
         public static ICompiler_Simple VB = new VBCompiler_Simple();
 
-        public static List<ICompiler_Simple> Compilers = new List<ICompiler_Simple>() { CS, VB };
+        public static List<ICompiler_Simple> Compilers = new List<ICompiler_Simple>() 
+        { 
+            CS, VB 
+        };
 
 
         public static string FormatSource(string source, params string[] args)

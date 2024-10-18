@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System.Collections.Generic;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -69,9 +68,9 @@ namespace Flames.Drawing.Brushes
         public string Message;
 
         /// <summary> Block the player is currently holding. </summary>
-        public BlockID Block;
+        public ushort Block;
 
-        public BrushArgs(Player p, string message, BlockID block)
+        public BrushArgs(Player p, string message, ushort block)
         {
             Player = p; 
             Message = message; 

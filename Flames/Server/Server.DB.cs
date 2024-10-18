@@ -24,7 +24,8 @@ namespace Flames
 {
     public sealed partial class Server
     {
-        public static ColumnDesc[] playersTable = new ColumnDesc[] {
+        public static ColumnDesc[] playersTable = new ColumnDesc[] 
+        {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
             new ColumnDesc("Name", ColumnType.VarChar, 17),
             new ColumnDesc("IP", ColumnType.Char, 15),
@@ -43,7 +44,8 @@ namespace Flames
             new ColumnDesc("Messages", ColumnType.UInt24),
         };
 
-        public static ColumnDesc[] opstatsTable = new ColumnDesc[] {
+        public static ColumnDesc[] opstatsTable = new ColumnDesc[] 
+        {
             new ColumnDesc("ID", ColumnType.Integer, priKey: true, autoInc: true, notNull: true),
             new ColumnDesc("Time", ColumnType.DateTime),
             new ColumnDesc("Name", ColumnType.VarChar, 17),
@@ -70,7 +72,7 @@ namespace Flames
             Database.CreateTable("Opstats", opstatsTable);
             Database.CreateTable("Players", playersTable);
 
-            //since 5.5.11 we are cleaning up the table Playercmds
+            //since MCForge 5.5.11 we are cleaning up the table Playercmds
             //if Playercmds exists copy-filter to Opstats and remove Playercmds
             if (Database.TableExists("Playercmds"))
             {

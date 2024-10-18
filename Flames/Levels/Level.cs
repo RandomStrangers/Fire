@@ -26,8 +26,6 @@ using Flames.DB;
 using Flames.Events.LevelEvents;
 using Flames.Levels.IO;
 using Flames.Util;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames
 {
@@ -397,7 +395,7 @@ namespace Flames
             for (int b = 0; b < defs.Length; b++)
             {
                 if (defs[b] == null) continue;
-                lvl.UpdateCustomBlock((BlockID)b, defs[b]);
+                lvl.UpdateCustomBlock((ushort)b, defs[b]);
             }
 
             lvl.UpdateBlockProps();
@@ -450,28 +448,28 @@ namespace Flames
         {
             public int Index;
             public int flags;
-            public BlockRaw oldRaw, newRaw;
+            public byte oldRaw, newRaw;
 
-            public BlockID OldBlock
+            public ushort OldBlock
             {
-                get { return (BlockID)(oldRaw | ((flags & 0x03) << Block.ExtendedShift)); }
+                get { return (ushort)(oldRaw | ((flags & 0x03) << Block.ExtendedShift)); }
             }
-            public BlockID NewBlock
+            public ushort NewBlock
             {
-                get { return (BlockID)(newRaw | ((flags & 0xC >> 2) << Block.ExtendedShift)); }
+                get { return (ushort)(newRaw | ((flags & 0xC >> 2) << Block.ExtendedShift)); }
             }
             public DateTime Time
             {
                 get { return Server.StartTime.AddTicks((flags >> 4) * TimeSpan.TicksPerSecond); }
             }
 
-            public void SetData(BlockID oldBlock, BlockID newBlock)
+            public void SetData(ushort oldBlock, ushort newBlock)
             {
                 TimeSpan delta = DateTime.UtcNow.Subtract(Server.StartTime);
                 flags = (int)delta.TotalSeconds << 4;
 
-                oldRaw = (BlockRaw)oldBlock; flags |= oldBlock >> Block.ExtendedShift;
-                newRaw = (BlockRaw)newBlock; flags |= (newBlock >> Block.ExtendedShift) << 2;
+                oldRaw = (byte)oldBlock; flags |= oldBlock >> Block.ExtendedShift;
+                newRaw = (byte)newBlock; flags |= (newBlock >> Block.ExtendedShift) << 2;
             }
         }
 
@@ -479,7 +477,7 @@ namespace Flames
         {
             for (int b = 0; b < Props.Length; b++)
             {
-                Props[b] = BlockProps.MakeDefault(Props, this, (BlockID)b);
+                Props[b] = BlockProps.MakeDefault(Props, this, (ushort)b);
             }
         }
 
@@ -503,11 +501,11 @@ namespace Flames
         {
             for (int i = 0; i < Props.Length; i++)
             {
-                UpdateBlockHandlers((BlockID)i);
+                UpdateBlockHandlers((ushort)i);
             }
         }
 
-        public void UpdateBlockHandlers(BlockID block)
+        public void UpdateBlockHandlers(ushort block)
         {
             bool nonSolid = !Blocks.CollideType.IsSolid(CollideType(block));
             DeleteHandlers[block] = BlockBehaviour.GetDeleteHandler(block, Props);
@@ -518,7 +516,7 @@ namespace Flames
             OnBlockHandlersUpdatedEvent.Call(this, block);
         }
 
-        public void UpdateCustomBlock(BlockID block, BlockDefinition def)
+        public void UpdateCustomBlock(ushort block, BlockDefinition def)
         {
             CustomBlockDefs[block] = def;
             UpdateBlockHandlers(block);

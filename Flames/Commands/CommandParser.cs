@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands
 {
@@ -121,10 +120,9 @@ namespace Flames.Commands
         public static bool GetInt(Player p, string input, string argName, ref int result,
                                   int min = int.MinValue, int max = int.MaxValue)
         {
-            int value;
-            if (!int.TryParse(input, out value))
+            if (!int.TryParse(input, out int value))
             {
-                p.Message("&W\"{0}\" is not a valid integer.", input); 
+                p.Message("&W\"{0}\" is not a valid integer.", input);
                 return false;
             }
 
@@ -137,10 +135,9 @@ namespace Flames.Commands
         public static bool GetReal(Player p, string input, string argName, ref float result,
                                    float min = float.NegativeInfinity, float max = float.MaxValue)
         {
-            float value;
-            if (!Utils.TryParseSingle(input, out value))
+            if (!Utils.TryParseSingle(input, out float value))
             {
-                p.Message("&W\"{0}\" is not a valid number.", input); 
+                p.Message("&W\"{0}\" is not a valid number.", input);
                 return false;
             }
 
@@ -181,10 +178,9 @@ namespace Flames.Commands
         /// <summary> Attempts to parse the given argument as a hex color. </summary>
         public static bool GetHex(Player p, string input, ref ColorDesc col)
         {
-            ColorDesc tmp;
-            if (!Colors.TryParseHex(input, out tmp))
+            if (!Colors.TryParseHex(input, out ColorDesc tmp))
             {
-                p.Message("&W\"#{0}\" is not a valid HEX color.", input); 
+                p.Message("&W\"#{0}\" is not a valid HEX color.", input);
                 return false;
             }
             col = tmp; 
@@ -236,7 +232,7 @@ namespace Flames.Commands
         }
 
 
-        public static bool IsSkipBlock(string input, out BlockID block)
+        public static bool IsSkipBlock(string input, out ushort block)
         {
             // Skip/None block for draw operations
             if (input.CaselessEq("skip") || input.CaselessEq("none"))
@@ -254,7 +250,7 @@ namespace Flames.Commands
         /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
         /// <remarks> Also ensures the player is allowed to place the given block. </remarks>
         public static bool GetBlockIfAllowed(Player p, string input, string action,
-                                             out BlockID block, bool allowSkip = false)
+                                             out ushort block, bool allowSkip = false)
         {
             if (allowSkip && IsSkipBlock(input, out block)) return true;
 
@@ -262,7 +258,7 @@ namespace Flames.Commands
         }
 
         /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
-        public static bool GetBlock(Player p, string input, out BlockID block, bool allowSkip = false)
+        public static bool GetBlock(Player p, string input, out ushort block, bool allowSkip = false)
         {
             if (allowSkip && IsSkipBlock(input, out block)) return true;
 
@@ -273,7 +269,7 @@ namespace Flames.Commands
 
         /// <summary> Returns whether the player is allowed to place/modify/delete the given block. </summary>
         /// <remarks> Outputs information of which ranks can modify the block if not. </remarks>
-        public static bool IsBlockAllowed(Player p, string action, BlockID block)
+        public static bool IsBlockAllowed(Player p, string action, ushort block)
         {
             if (p.group.Blocks[block]) return true;
             BlockPerms.Find(block).MessageCannotUse(p, action);
@@ -282,14 +278,12 @@ namespace Flames.Commands
 
 
         public static int GetBlocks(Player p, string input,
-                                    List<BlockID> blocks, bool allowSkip)
+                                    List<ushort> blocks, bool allowSkip)
         {
-            string[] bits;
-            if (!IsRawBlockRange(input, out bits))
+            if (!IsRawBlockRange(input, out string[] bits))
             {
-                BlockID block;
 
-                if (!allowSkip || !IsSkipBlock(input, out block))
+                if (!allowSkip || !IsSkipBlock(input, out ushort block))
                 {
                     if (!GetBlock(p, input, out block)) return 0;
                 }
@@ -298,14 +292,14 @@ namespace Flames.Commands
                 return 1;
             }
 
-            BlockID min = 0, max = 0;
+            ushort min = 0, max = 0;
             if (!GetUShort(p, bits[0], "Raw block ID", ref min, Block.Air, Block.MaxRaw)) return 0;
             if (!GetUShort(p, bits[1], "Raw block ID", ref max, Block.Air, Block.MaxRaw)) return 0;
 
             int count = 0;
-            for (BlockID raw = min; raw <= max; raw++)
+            for (ushort raw = min; raw <= max; raw++)
             {
-                BlockID b = Block.FromRaw(raw);
+                ushort b = Block.FromRaw(raw);
                 if (!Block.ExistsFor(p, b)) continue;
 
                 blocks.Add(b);
@@ -324,8 +318,7 @@ namespace Flames.Commands
             if (input.IndexOf('-') == -1) return false;
             bits = input.Split(new char[] { '-' }, 2);
 
-            int tmp;
-            return int.TryParse(bits[0], out tmp)
+            return int.TryParse(bits[0], out int tmp)
                 && int.TryParse(bits[1], out tmp);
         }
     }

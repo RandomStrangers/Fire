@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using Flames.Blocks.Extended;
 using Flames.Maths;
 using Flames.SQL;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -114,7 +113,7 @@ namespace Flames
             int deleted = 0;
             foreach (Vec3U16 p in coords)
             {
-                BlockID block = level.GetBlock(p.X, p.Y, p.Z);
+                ushort block = level.GetBlock(p.X, p.Y, p.Z);
                 if (level.Props[block].IsPortal) continue;
 
                 Portal.Delete(map, p.X, p.Y, p.Z);
@@ -134,7 +133,7 @@ namespace Flames
             int deleted = 0;
             foreach (Vec3U16 p in coords)
             {
-                BlockID block = level.GetBlock(p.X, p.Y, p.Z);
+                ushort block = level.GetBlock(p.X, p.Y, p.Z);
                 if (level.Props[block].IsMessageBlock) continue;
 
                 MessageBlock.Delete(map, p.X, p.Y, p.Z);

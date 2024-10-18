@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -27,7 +26,7 @@ namespace Flames.Drawing.Brushes
     public static class FrequencyBrush
     {
         public static bool GetBlocks(BrushArgs args,
-                                     out List<BlockID> blocks, out List<int> freqs,
+                                     out List<ushort> blocks, out List<int> freqs,
                                      Predicate<string> argFilter,
                                      Predicate<string> argHandler)
         {
@@ -35,7 +34,7 @@ namespace Flames.Drawing.Brushes
             Player p = args.Player;
 
             int minArgs = Math.Max(2, parts.Length);
-            blocks = new List<BlockID>(minArgs);
+            blocks = new List<ushort>(minArgs);
             freqs = new List<int>(minArgs);
 
             for (int i = 0; i < parts.Length; i++)
@@ -83,7 +82,7 @@ namespace Flames.Drawing.Brushes
                 freqs.Add(1);
             }
 
-            foreach (BlockID b in blocks)
+            foreach (ushort b in blocks)
             {
                 if (b == Block.Invalid) continue; // "Skip" block
                 if (!CommandParser.IsBlockAllowed(p, "draw with", b)) return false;
@@ -93,12 +92,12 @@ namespace Flames.Drawing.Brushes
 
         /// <summary> Combines list of block IDs and weights/frequencies into a single array of block IDs </summary>
         /// <example> [DIRT, GRASS] and [2, 1] becomes [DIRT, DIRT, GRASS] </example>
-        public static BlockID[] Combine(List<BlockID> toAffect, List<int> freqs)
+        public static ushort[] Combine(List<ushort> toAffect, List<int> freqs)
         {
             int sum = 0;
             foreach (int freq in freqs) sum += freq;
 
-            BlockID[] blocks = new BlockID[sum];
+            ushort[] blocks = new ushort[sum];
             for (int i = 0, index = 0; i < toAffect.Count; i++)
             {
                 for (int j = 0; j < freqs[i]; j++)
@@ -122,14 +121,14 @@ namespace Flames.Drawing.Brushes
 
         public override Brush Construct(BrushArgs args)
         {
-            List<BlockID> toAffect;
+            List<ushort> toAffect;
             List<int> freqs;
 
             bool ok = FrequencyBrush.GetBlocks(args, out toAffect, out freqs,
                                                P => false, null);
             if (!ok) return null;
 
-            BlockID[] blocks = FrequencyBrush.Combine(toAffect, freqs);
+            ushort[] blocks = FrequencyBrush.Combine(toAffect, freqs);
             return new RandomBrush(blocks);
         }
     }
@@ -149,14 +148,14 @@ namespace Flames.Drawing.Brushes
         public override Brush Construct(BrushArgs args)
         {
             CustomModelAnimAxis axis = GetAxis(ref args);
-            List<BlockID> toAffect;
+            List<ushort> toAffect;
             List<int> freqs;
 
             bool ok = FrequencyBrush.GetBlocks(args, out toAffect, out freqs,
                                                P => false, null);
             if (!ok) return null;
 
-            BlockID[] blocks = FrequencyBrush.Combine(toAffect, freqs);
+            ushort[] blocks = FrequencyBrush.Combine(toAffect, freqs);
             return new GradientBrush(blocks, axis);
         }
 

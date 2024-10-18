@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -41,7 +40,7 @@ namespace Flames.Drawing.Brushes
                 return new SolidBrush(args.Block);
             }
 
-            BlockID block;
+            ushort block;
             if (!CommandParser.GetBlockIfAllowed(p, args.Message, "draw with", out block)) return null;
             return new SolidBrush(block);
         }
@@ -51,7 +50,7 @@ namespace Flames.Drawing.Brushes
         public override bool Validate(BrushArgs args)
         {
             if (args.Message.Length == 0) return true;
-            BlockID block;
+            ushort block;
             return CommandParser.GetBlockIfAllowed(args.Player, args.Message, "draw with", out block);
         }
     }
@@ -79,14 +78,14 @@ namespace Flames.Drawing.Brushes
                 return new CheckeredBrush(args.Block, Block.Invalid);
             }
 
-            List<BlockID> toAffect;
+            List<ushort> toAffect;
             List<int> freqs;
 
             bool ok = FrequencyBrush.GetBlocks(args, out toAffect, out freqs,
                                                P => false, null);
             if (!ok) return null;
 
-            BlockID[] blocks = FrequencyBrush.Combine(toAffect, freqs);
+            ushort[] blocks = FrequencyBrush.Combine(toAffect, freqs);
             if (blocks.Length == 2)
                 return new CheckeredBrush(blocks[0], blocks[1]);
             return new CheckeredPaletteBrush(blocks);
@@ -107,7 +106,7 @@ namespace Flames.Drawing.Brushes
 
         public override Brush Construct(BrushArgs args)
         {
-            List<BlockID> toAffect;
+            List<ushort> toAffect;
             List<int> freqs;
 
             bool ok = FrequencyBrush.GetBlocks(args, out toAffect, out freqs,
@@ -186,12 +185,12 @@ namespace Flames.Drawing.Brushes
             }
             string[] parts = args.Message.SplitSpaces();
 
-            BlockID block1;
+            ushort block1;
             if (!CommandParser.GetBlockIfAllowed(p, parts[0], "draw with", out block1, true)) return null;
             if (parts.Length == 1)
                 return new StripedBrush(block1, Block.Invalid);
 
-            BlockID block2;
+            ushort block2;
             if (!CommandParser.GetBlockIfAllowed(p, parts[1], "draw with", out block2, true)) return null;
             return new StripedBrush(block1, block2);
         }

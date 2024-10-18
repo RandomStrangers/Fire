@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Blocks.Physics;
 using Flames.Maths;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Commands.Building
 {
@@ -81,10 +79,9 @@ namespace Flames.Commands.Building
         {
             if (name == "revert")
             {
-                BlockID block;
-                if (!CommandParser.GetBlock(p, arg, out block)) return false;
+                if (!CommandParser.GetBlock(p, arg, out ushort block)) return false;
 
-                type = PhysicsArgs.Revert; value = (BlockRaw)block;
+                type = PhysicsArgs.Revert; value = (byte)block;
                 isExt = (byte)(block >> Block.ExtendedShift);
                 return true;
             }
@@ -113,17 +110,16 @@ namespace Flames.Commands.Building
             return false;
         }
 
-        public bool DoRestart(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoRestart(Player p, Vec3S32[] m, object state, ushort block)
         {
             PhysicsArgs args = (PhysicsArgs)state;
             List<int> buffer = new List<int>();
-            int index;
 
             for (int y = Math.Min(m[0].Y, m[1].Y); y <= Math.Max(m[0].Y, m[1].Y); y++)
                 for (int z = Math.Min(m[0].Z, m[1].Z); z <= Math.Max(m[0].Z, m[1].Z); z++)
                     for (int x = Math.Min(m[0].X, m[1].X); x <= Math.Max(m[0].X, m[1].X); x++)
                     {
-                        if (!p.level.IsAirAt((ushort)x, (ushort)y, (ushort)z, out index))
+                        if (!p.level.IsAirAt((ushort)x, (ushort)y, (ushort)z, out int index))
                         {
                             buffer.Add(index);
                         }

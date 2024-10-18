@@ -24,19 +24,27 @@ namespace Flames.Gui
     {
         public string Name;
         public LevelPermission Permission;
-        public GuiRank(string name, LevelPermission perm) { Name = name; Permission = perm; }
+        public GuiRank(string name, LevelPermission perm)
+        { 
+            Name = name; 
+            Permission = perm; 
+        }
 
-        public override string ToString() { return Name; }
+        public override string ToString()
+        { 
+            return Name;
+        }
     }
 
-    public static class GuiPerms 
+    public static class GuiPerms
     {
         public static List<GuiRank> Ranks, RanksRemove;
 
-        public static void UpdateRanks() {
+        public static void UpdateRanks()
+        {
             Ranks = new List<GuiRank>(Group.AllRanks.Count);
-            
-            foreach (Group group in Group.AllRanks) 
+
+            foreach (Group group in Group.AllRanks)
             {
                 Ranks.Add(new GuiRank(group.Name, group.Permission));
             }
@@ -47,31 +55,38 @@ namespace Flames.Gui
             };
         }
 
-        public static LevelPermission GetSelectedRank(ComboBox box, LevelPermission defPerm) {
+        public static LevelPermission GetSelectedRank(ComboBox box, LevelPermission defPerm)
+        {
             GuiRank rank = (GuiRank)box.SelectedItem;
             return rank == null ? defPerm : rank.Permission;
         }
 
-        public static void SetSelectedRank(ComboBox box, LevelPermission perm) {
+        public static void SetSelectedRank(ComboBox box, LevelPermission perm)
+        {
             List<GuiRank> ranks = (List<GuiRank>)box.DataSource;
             GuiRank rank = ranks.Find(r => r.Permission == perm);
 
-            if (rank == null) {
+            if (rank == null)
+            {
                 box.SelectedIndex = 1;
-            } else {
-                box.SelectedItem  = rank;
+            }
+            else
+            {
+                box.SelectedItem = rank;
             }
         }
 
-        public static void SetRanks(ComboBox box, bool removeRank = false) {
+        public static void SetRanks(ComboBox box, bool removeRank = false)
+        {
             List<GuiRank> ranks = removeRank ? RanksRemove : Ranks;
             box.DisplayMember = "Name";
-            box.ValueMember   = "Permission";
+            box.ValueMember = "Permission";
             // run into issues otherwise if multiple combo boxes share same source
-            box.DataSource    = new List<GuiRank>(ranks);
+            box.DataSource = new List<GuiRank>(ranks);
         }
 
-        public static void SetRanks(ComboBox[] boxes, bool removeRank = false) {
+        public static void SetRanks(ComboBox[] boxes, bool removeRank = false)
+        {
             foreach (ComboBox box in boxes)
             {
                 SetRanks(box, removeRank);

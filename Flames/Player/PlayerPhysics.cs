@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -35,7 +34,7 @@ namespace Flames.Blocks.Physics
                     for (int x = min.X; x <= max.X; x++)
                     {
                         ushort xP = (ushort)x, yP = (ushort)y, zP = (ushort)z;
-                        BlockID block = p.level.GetBlock(xP, yP, zP);
+                        ushort block = p.level.GetBlock(xP, yP, zP);
                         if (block == Block.Invalid) continue;
 
                         AABB blockBB = p.level.blockAABBs[block].Offset(x * 32, y * 32, z * 32);
@@ -81,7 +80,7 @@ namespace Flames.Blocks.Physics
             for (int z = min.Z; z <= max.Z; z++)
                 for (int x = min.X; x <= max.X; x++)
                 {
-                    BlockID block = GetSurvivalBlock(p, x, min.Y, z);
+                    ushort block = GetSurvivalBlock(p, x, min.Y, z);
                     byte collide = p.level.CollideType(block);
                     allGas = allGas && collide == CollideType.WalkThrough;
                     if (!CollideType.IsSolid(collide)) continue;
@@ -108,7 +107,7 @@ namespace Flames.Blocks.Physics
             bb.Max.Z -= (bb.Max.Z - bb.Min.Z) / 2;
 
             Vec3S32 P = bb.BlockMax;
-            BlockID bHead = GetSurvivalBlock(p, P.X, P.Y, P.Z);
+            ushort bHead = GetSurvivalBlock(p, P.X, P.Y, P.Z);
             if (Block.IsPhysicsType(bHead)) bHead = Block.Convert(bHead);
 
             if (p.level.Props[bHead].Drownable)
@@ -138,7 +137,7 @@ namespace Flames.Blocks.Physics
             }
         }
 
-        public static BlockID GetSurvivalBlock(Player p, int x, int y, int z)
+        public static ushort GetSurvivalBlock(Player p, int x, int y, int z)
         {
             if (y < 0) return Block.Bedrock;
             if (y >= p.level.Height) return Block.Air;

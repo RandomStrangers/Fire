@@ -93,7 +93,7 @@ namespace Flames.Commands.Scripting
             }
         }
 
-        static void CompileSimplePlugin(Player p, string name, string language)
+        public static void CompileSimplePlugin(Player p, string name, string language)
         {
             ICompiler_Simple compiler = ScriptingOperations_Simple.GetCompiler(p, language);
             if (compiler == null) return;
@@ -109,7 +109,7 @@ namespace Flames.Commands.Scripting
             ScriptingOperations_Simple.Compile(p, compiler, "Simple plugin", paths, dstPath);
         }
 
-        static void LoadSimplePlugin(Player p, string name)
+        public static void LoadSimplePlugin(Player p, string name)
         {
             string path = IScripting_Simple.SimplePluginPath(name);
             if (!File.Exists(path))
@@ -128,7 +128,7 @@ namespace Flames.Commands.Scripting
             }
         }
 
-        static void UnloadSimplePlugin(Player p, string name)
+        public static void UnloadSimplePlugin(Player p, string name)
         {
             Plugin_Simple plugin = Matcher.Find(p, name, out int matches, Plugin_Simple.all,
                                          null, pln => pln.Name, "");
@@ -157,7 +157,7 @@ namespace Flames.Commands.Scripting
             }
         }
 
-        static void CreateSimplePlugin(Player p, string name, string language)
+        public static void CreateSimplePlugin(Player p, string name, string language)
         {
             ICompiler_Simple engine = ScriptingOperations_Simple.GetCompiler(p, language);
             if (engine == null) return;

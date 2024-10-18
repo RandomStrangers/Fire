@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -32,7 +31,7 @@ namespace Flames.Blocks.Physics
 
             if (C.Data.Data == 0)
             {
-                BlockID block = (BlockID)(C.Data.Value2 | (C.Data.ExtBlock << Block.ExtendedShift));
+                ushort block = (ushort)(C.Data.Value2 | (C.Data.ExtBlock << Block.ExtendedShift));
                 bool tdoor = lvl.Props[block].IsTDoor;
 
                 if (tdoor) tDoor(lvl, ref C);
@@ -56,7 +55,7 @@ namespace Flames.Blocks.Physics
         public static void Door(Level lvl, ref PhysInfo C)
         {
             ushort x = C.X, y = C.Y, z = C.Z;
-            BlockID block = (BlockID)(C.Data.Value2 | (C.Data.ExtBlock << Block.ExtendedShift));
+            ushort block = (ushort)(C.Data.Value2 | (C.Data.ExtBlock << Block.ExtendedShift));
             bool instant = block == Block.Door_Air || block == Block.Door_AirActivatable;
 
             ActivateablePhysics.DoDoors(lvl, (ushort)(x + 1), y, z, instant);
@@ -75,7 +74,7 @@ namespace Flames.Blocks.Physics
         public static void oDoor(Level lvl, ref PhysInfo C)
         {
             ushort x = C.X, y = C.Y, z = C.Z;
-            BlockID block = C.Block;
+            ushort block = C.Block;
 
             ActivateODoor(lvl, block, (ushort)(x - 1), y, z);
             ActivateODoor(lvl, block, (ushort)(x + 1), y, z);
@@ -86,10 +85,9 @@ namespace Flames.Blocks.Physics
             C.Data.Data = PhysicsArgs.RemoveFromChecks;
         }
 
-        public static void ActivateODoor(Level lvl, BlockID target, ushort x, ushort y, ushort z)
+        public static void ActivateODoor(Level lvl, ushort target, ushort x, ushort y, ushort z)
         {
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
             block = lvl.Props[block].oDoorBlock;
 
             if (index >= 0 && block == target)
@@ -111,8 +109,7 @@ namespace Flames.Blocks.Physics
 
         public static void ActivateTDoor(Level lvl, ushort x, ushort y, ushort z)
         {
-            int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
 
             if (lvl.Props[block].IsTDoor)
             {

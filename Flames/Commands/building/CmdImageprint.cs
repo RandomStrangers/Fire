@@ -23,7 +23,6 @@ using Flames.Drawing.Ops;
 using Flames.Maths;
 using Flames.Network;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -147,7 +146,7 @@ namespace Flames.Commands.Building
             return true;
         }
 
-        public bool DoImage(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoImage(Player p, Vec3S32[] m, object state, ushort block)
         {
             if (m[0].X == m[1].X && m[0].Z == m[1].Z)
             {

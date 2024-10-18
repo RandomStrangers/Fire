@@ -16,22 +16,21 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
     public sealed class SolidBrush : Brush
     {
-        public BlockID block;
+        public ushort block;
 
-        public SolidBrush(BlockID block)
+        public SolidBrush(ushort block)
         {
             this.block = block;
         }
 
         public override string Name { get { return "Normal"; } }
 
-        public override BlockID NextBlock(DrawOp op) 
+        public override ushort NextBlock(DrawOp op) 
         { 
             return block; 
         }
@@ -40,9 +39,9 @@ namespace Flames.Drawing.Brushes
     // CheckeredPaletteBrush of { b1, b1, b2, b2 }
     public sealed class StripedBrush : Brush
     {
-        public BlockID b1, b2;
+        public ushort b1, b2;
 
-        public StripedBrush(BlockID block1, BlockID block2)
+        public StripedBrush(ushort block1, ushort block2)
         {
             b1 = block1; 
             b2 = block2;
@@ -50,7 +49,7 @@ namespace Flames.Drawing.Brushes
 
         public override string Name { get { return "Striped"; } }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             return ((op.Coords.X + op.Coords.Y + op.Coords.Z) & 3) <= 1 ? b1 : b2;
         }
@@ -59,9 +58,9 @@ namespace Flames.Drawing.Brushes
     // CheckeredPaletteBrush of { b1, b2 }
     public sealed class CheckeredBrush : Brush
     {
-        public BlockID b1, b2;
+        public ushort b1, b2;
 
-        public CheckeredBrush(BlockID block1, BlockID block2)
+        public CheckeredBrush(ushort block1, ushort block2)
         {
             b1 = block1; 
             b2 = block2;
@@ -69,7 +68,7 @@ namespace Flames.Drawing.Brushes
 
         public override string Name { get { return "Checkered"; } }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             return ((op.Coords.X + op.Coords.Y + op.Coords.Z) & 1) == 0 ? b1 : b2;
         }
@@ -77,16 +76,16 @@ namespace Flames.Drawing.Brushes
 
     public class CheckeredPaletteBrush : Brush
     {
-        public BlockID[] blocks;
+        public ushort[] blocks;
 
-        public CheckeredPaletteBrush(BlockID[] blocks) 
+        public CheckeredPaletteBrush(ushort[] blocks) 
         { 
             this.blocks = blocks; 
         }
 
         public override string Name { get { return "Checkered"; } }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             int i = (op.Coords.X + op.Coords.Y + op.Coords.Z) % blocks.Length;
             if (i < 0) i += blocks.Length;

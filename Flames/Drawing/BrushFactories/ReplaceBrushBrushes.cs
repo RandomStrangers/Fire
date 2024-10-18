@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -32,14 +31,14 @@ namespace Flames.Drawing.Brushes
 
         public override Brush Construct(BrushArgs args)
         {
-            BlockID include = 0;
+            ushort include = 0;
             Brush brush = ParseArguments(args, ref include);
 
             if (brush == null) return null;
             return new ReplaceBrushBrush(include, brush);
         }
 
-        public Brush ParseArguments(BrushArgs args, ref BlockID target)
+        public Brush ParseArguments(BrushArgs args, ref ushort target)
         {
             string[] parts = args.Message.SplitSpaces(3);
             Player p = args.Player;
@@ -76,7 +75,7 @@ namespace Flames.Drawing.Brushes
 
         public override Brush Construct(BrushArgs args)
         {
-            BlockID exclude = 0;
+            ushort exclude = 0;
             Brush brush = ParseArguments(args, ref exclude);
 
             if (brush == null) return null;

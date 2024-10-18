@@ -20,7 +20,6 @@ using Flames.DB;
 using Flames.Drawing.Ops;
 using Flames.Maths;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -76,7 +75,7 @@ namespace Flames.Commands.Moderation
             }
         }
 
-        public bool DoHighlightArea(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool DoHighlightArea(Player p, Vec3S32[] marks, object state, ushort block)
         {
             HighlightAreaArgs args = (HighlightAreaArgs)state;
             HighlightPlayer(p, args.delta, args.who, args.ids, marks);

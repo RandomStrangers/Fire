@@ -15,7 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -44,7 +43,7 @@ namespace Flames.Commands.Building
             {
                 for (int b = 0; b < p.BlockBindings.Length; b++)
                 {
-                    p.BlockBindings[b] = (BlockID)b;
+                    p.BlockBindings[b] = (ushort)b;
                 }
                 p.Message("All bindings were unbound.");
                 return;

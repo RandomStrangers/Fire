@@ -23,7 +23,6 @@
 using System;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -103,7 +102,7 @@ namespace Flames.Drawing.Ops
                             !(dist <= (curRadius - 1) * (curRadius - 1) &&
                               dist <= curRadius2 * curRadius2);
 
-                        BlockID block = layer ? Block.Grass : Block.StillLava;
+                        ushort block = layer ? Block.Grass : Block.StillLava;
                         output(Place(x, y, z, block));
                     }
             }

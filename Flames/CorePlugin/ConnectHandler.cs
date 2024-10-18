@@ -50,8 +50,7 @@ namespace Flames.Core
             string reach = Server.reach.Get(p.name);
             if (string.IsNullOrEmpty(reach)) return;
 
-            short reachDist;
-            if (!short.TryParse(reach, out reachDist)) return;
+            if (!short.TryParse(reach, out short reachDist)) return;
 
             p.ReachDistance = reachDist / 32f;
             p.Session.SendSetReach(p.ReachDistance);

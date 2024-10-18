@@ -14,7 +14,6 @@ permissions and limitations under the Licenses.
  */
 using System.Collections.Generic;
 using Flames.SQL;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Info
 {
@@ -75,10 +74,10 @@ namespace Flames.Commands.Info
 
         public static void SearchBlocks(Player p, string keyword, string modifier)
         {
-            List<BlockID> blocks = new List<BlockID>();
+            List<ushort> blocks = new List<ushort>();
             for (int b = 0; b < Block.SUPPORTED_COUNT; b++)
             {
-                BlockID block = (BlockID)b;
+                ushort block = (ushort)b;
                 if (Block.ExistsFor(p, block)) blocks.Add(block);
             }
 

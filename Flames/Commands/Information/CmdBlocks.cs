@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Commands.World;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Info
 {
@@ -38,7 +37,7 @@ namespace Flames.Commands.Info
             string[] args = message.SplitSpaces();
             string modifier = args.Length > 1 ? args[1] : "";
             string type = args[0];
-            BlockID block;
+            ushort block;
 
             if (type.Length == 0 || type.CaselessEq("basic"))
             {
@@ -73,10 +72,10 @@ namespace Flames.Commands.Info
             }
         }
 
-        public static void OutputBlocks(Player p, string type, string modifier, Predicate<BlockID> selector)
+        public static void OutputBlocks(Player p, string type, string modifier, Predicate<ushort> selector)
         {
-            List<BlockID> blocks = new List<BlockID>(Block.SUPPORTED_COUNT);
-            for (BlockID b = 0; b < Block.SUPPORTED_COUNT; b++)
+            List<ushort> blocks = new List<ushort>(Block.SUPPORTED_COUNT);
+            for (ushort b = 0; b < Block.SUPPORTED_COUNT; b++)
             {
                 if (Block.ExistsFor(p, b) && selector(b)) blocks.Add(b);
             }
@@ -85,7 +84,7 @@ namespace Flames.Commands.Info
                              "Blocks " + type, "blocks", modifier);
         }
 
-        public static void OutputBlockInfo(Player p, BlockID block)
+        public static void OutputBlockInfo(Player p, ushort block)
         {
             string name = Block.GetName(p, block);
             BlockProps[] scope = p.IsSuper ? Block.Props : p.level.Props;
@@ -99,7 +98,7 @@ namespace Flames.Commands.Info
             }
 
             string msg = "";
-            for (BlockID b = Block.CPE_COUNT; b < Block.CORE_COUNT; b++)
+            for (ushort b = Block.CPE_COUNT; b < Block.CORE_COUNT; b++)
             {
                 if (Block.Convert(b) != block) continue;
                 msg += Block.GetColoredName(p, b) + ", ";
@@ -116,9 +115,9 @@ namespace Flames.Commands.Info
             }
         }
 
-        public static void OutputPhysicsInfo(Player p, BlockProps[] scope, BlockID b)
+        public static void OutputPhysicsInfo(Player p, BlockProps[] scope, ushort b)
         {
-            BlockID conv = Block.Convert(b);
+            ushort conv = Block.Convert(b);
             p.Message("&c  Appears as a \"{0}\" block", Block.GetName(p, conv));
 
             // TODO: Use scope[b] instead of hardcoded global
@@ -139,13 +138,13 @@ namespace Flames.Commands.Info
             if (Mover(scope, conv)) p.Message("  Can be activated by walking through it");
         }
 
-        public static bool Mover(BlockProps[] scope, BlockID conv)
+        public static bool Mover(BlockProps[] scope, ushort conv)
         {
             bool nonSolid = Block.Walkthrough(conv);
             return BlockBehaviour.GetWalkthroughHandler(conv, scope, nonSolid) != null;
         }
 
-        public static bool Physics(BlockProps[] scope, BlockID b)
+        public static bool Physics(BlockProps[] scope, ushort b)
         {
             if (scope[b].IsMessageBlock || scope[b].IsPortal) return false;
             if (scope[b].IsDoor || scope[b].IsTDoor) return false;

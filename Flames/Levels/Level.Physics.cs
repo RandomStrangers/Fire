@@ -21,7 +21,6 @@ using Flames.Blocks;
 using Flames.Blocks.Physics;
 using Flames.Events.LevelEvents;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -166,10 +165,10 @@ namespace Flames
                     if (OnPhysicsUpdateEvent.handlers.Count > 0)
                         OnPhysicsUpdateEvent.Call(C.X, C.Y, C.Z, C.Data, this);
                     C.Block = blocks[chk.Index];
-                    BlockID extended = Block.ExtendedBase[C.Block];
+                    ushort extended = Block.ExtendedBase[C.Block];
                     if (extended > 0)
                     {
-                        C.Block = (BlockID)(extended | FastGetExtTile(C.X, C.Y, C.Z));
+                        C.Block = (ushort)(extended | FastGetExtTile(C.X, C.Y, C.Z));
                     }
                     if ((C.Data.Raw & mask) == 0 || C.Data.Type1 == PhysicsArgs.Custom || extraHandler(this, ref C))
                     {
@@ -201,13 +200,13 @@ namespace Flames
                 Update U = ListUpdate.Items[i];
                 try
                 {
-                    BlockID block = U.data.Data;
+                    ushort block = U.data.Data;
                     U.data.Data = 0;
                     // Is the Ext flag just an indicator for the block update?
                     byte extBits = U.data.ExtBlock;
                     if (extBits != 0 && (U.data.Raw & PhysicsArgs.TypeMask) == 0)
                     {
-                        block |= (BlockID)(extBits << Block.ExtendedShift);
+                        block |= (ushort)(extBits << Block.ExtendedShift);
                         U.data.Raw &= ~PhysicsArgs.ExtBits;
                     }
                     if (DoPhysicsBlockchange(U.Index, block, false, U.data, true))
@@ -271,7 +270,7 @@ namespace Flames
         }
         /// <summary> Adds the given entry to the list of updates to be applied at the end of the current physics tick </summary>
         /// <remarks> Must only be called from the physics thread (i.e. in a HandlePhysics handler function) </remarks>
-        public bool AddUpdate(int index, BlockID block, bool overRide = false)
+        public bool AddUpdate(int index, ushort block, bool overRide = false)
         {
             PhysicsArgs args = default;
             args.Raw |= (uint)(PhysicsArgs.ExtBit * (block >> Block.ExtendedShift));
@@ -279,7 +278,7 @@ namespace Flames
         }
         /// <summary> Adds the given entry to the list of updates to be applied at the end of the current physics tick </summary>
         /// <remarks> Must only be called from the physics thread (i.e. in a HandlePhysics handler function) </remarks>
-        public bool AddUpdate(int index, BlockID block, PhysicsArgs data, bool overRide = false)
+        public bool AddUpdate(int index, ushort block, PhysicsArgs data, bool overRide = false)
         {
             try
             {
@@ -394,12 +393,12 @@ namespace Flames
                 // Copy paste here because it's worthwhile inlining
                 if (args.Type1 == PhysicsArgs.Revert)
                 {
-                    BlockID block = (BlockID)(args.Value1 | (args.ExtBlock << Block.ExtendedShift));
+                    ushort block = (ushort)(args.Value1 | (args.ExtBlock << Block.ExtendedShift));
                     Blockchange(C.Index, block, true, default);
                 }
                 else if (args.Type2 == PhysicsArgs.Revert)
                 {
-                    BlockID block = (BlockID)(args.Value2 | (args.ExtBlock << Block.ExtendedShift));
+                    ushort block = (ushort)(args.Value2 | (args.ExtBlock << Block.ExtendedShift));
                     Blockchange(C.Index, block, true, default);
                 }
             }
@@ -408,7 +407,7 @@ namespace Flames
                 Logger.LogError(e);
             }
         }
-        public bool ActivatesPhysics(BlockID block)
+        public bool ActivatesPhysics(ushort block)
         {
             if (Props[block].IsMessageBlock || Props[block].IsPortal) return false;
             if (Props[block].IsDoor || Props[block].IsTDoor) return false;
@@ -462,7 +461,7 @@ namespace Flames
         /// <summary> X/Y/Z coordinates of this tick entry </summary>
         public ushort X, Y, Z;
         /// <summary> Block ID that is located at the coordinates of this tick entry </summary>
-        public BlockID Block;
+        public ushort Block;
         /// <summary> Packed coordinates of this tick entry </summary>
         public int Index;
         /// <summary> Data/State of this tick entry </summary>

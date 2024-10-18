@@ -18,20 +18,19 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks
 {
     /// <summary> Represents which ranks are allowed (and which are disallowed) to use a block. </summary>
     public sealed class BlockPerms : ItemPerms
     {
-        public BlockID ID;
+        public ushort ID;
         public override string ItemName { get { return ID.ToString(); } }
 
         public static BlockPerms[] List = new BlockPerms[Block.SUPPORTED_COUNT];
 
 
-        public BlockPerms(BlockID id, LevelPermission min) : base(min)
+        public BlockPerms(ushort id, LevelPermission min) : base(min)
         {
             ID = id;
         }
@@ -45,7 +44,7 @@ namespace Flames.Blocks
 
 
         /// <summary> Find the permissions for the given block. </summary>
-        public static BlockPerms Find(BlockID b) 
+        public static BlockPerms Find(ushort b) 
         { 
             return List[b]; 
         }
@@ -144,8 +143,7 @@ namespace Flames.Blocks
                 // Format - ID : Lowest : Disallow : Allow
                 line.Replace(" ", "").FixedSplit(args, ':');
 
-                BlockID block;
-                if (!BlockID.TryParse(args[0], out block))
+                if (!ushort.TryParse(args[0], out ushort block))
                 {
                     // Old format - Name : Lowest : Disallow : Allow
                     block = Block.Parse(Player.Flame, args[0]);
@@ -154,10 +152,8 @@ namespace Flames.Blocks
 
                 try
                 {
-                    LevelPermission min;
-                    List<LevelPermission> allowed, disallowed;
 
-                    Deserialise(args, 1, out min, out allowed, out disallowed);
+                    Deserialise(args, 1, out LevelPermission min, out List<LevelPermission> allowed, out List<LevelPermission> disallowed);
                     Set(block, min, allowed, disallowed);
                 }
                 catch
@@ -168,7 +164,7 @@ namespace Flames.Blocks
             }
         }
 
-        public static void Set(BlockID b, LevelPermission min,
+        public static void Set(ushort b, LevelPermission min,
                         List<LevelPermission> allowed, List<LevelPermission> disallowed)
         {
             BlockPerms perms = List[b];
@@ -183,7 +179,7 @@ namespace Flames.Blocks
 
         public static void SetDefaultPerms()
         {
-            for (BlockID block = 0; block < Block.SUPPORTED_COUNT; block++)
+            for (ushort block = 0; block < Block.SUPPORTED_COUNT; block++)
             {
                 BlockProps props = Block.Props[block];
                 LevelPermission min;
@@ -213,7 +209,7 @@ namespace Flames.Blocks
             }
         }
 
-        public static LevelPermission DefaultPerm(BlockID block)
+        public static LevelPermission DefaultPerm(ushort block)
         {
             switch (block)
             {

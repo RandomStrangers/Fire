@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
 */
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -44,7 +43,7 @@ namespace Flames.Commands.Moderation
             BlockPerms.Save();
             BlockPerms.ApplyChanges();
 
-            BlockID block = ((BlockPerms)perms).ID;
+            ushort block = ((BlockPerms)perms).ID;
             if (!Block.IsPhysicsType(block))
             {
                 BlockPerms.ResendAllBlockPermissions();

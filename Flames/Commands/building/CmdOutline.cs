@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -34,11 +33,10 @@ namespace Flames.Commands.Building
                 return null;
             }
 
-            BlockID target;
             string[] parts = dArgs.Message.SplitSpaces(2);
             // NOTE: Don't need to check if allowed to use block here
             // (OutlineDrawOp skips all blocks that are equal to target)
-            if (!CommandParser.GetBlock(p, parts[0], out target)) return null;
+            if (!CommandParser.GetBlock(p, parts[0], out ushort target)) return null;
 
             OutlineDrawOp op = new OutlineDrawOp();
             // e.g. testing air 'above' grass - therefore op.Above needs to be false for 'up mode'

@@ -25,20 +25,21 @@ using Flames.Games;
 using Flames.Tasks;
 using Flames.Util;
 
-namespace Flames.Modules.Relay.Discord 
+namespace Flames.Modules.Relay.Discord
 {
     public sealed class DiscordUser : RelayUser
     {
         public string ReferencedUser;
-        
-        public override string GetMessagePrefix() {
+
+        public override string GetMessagePrefix()
+        {
             if (string.IsNullOrEmpty(ReferencedUser))
                 return "";
-            
+
             return "@" + ReferencedUser + " ";
         }
     }
-    
+
     public class DiscordBot : RelayBot
     {
         public DiscordApiClient api;
@@ -48,15 +49,15 @@ namespace Flames.Modules.Relay.Discord
 
         public Dictionary<string, byte> channelTypes = new Dictionary<string, byte>();
         public const byte CHANNEL_DIRECT = 0;
-        public const byte CHANNEL_TEXT   = 1;
+        public const byte CHANNEL_TEXT = 1;
 
         public List<string> filter_triggers = new List<string>();
         public List<string> filter_replacements = new List<string>();
         public JsonArray allowed;
 
         public override string RelayName { get { return "Discord"; } }
-        public override bool Enabled     { get { return Config.Enabled; } }
-        public override string UserID    { get { return botUserID; } }
+        public override bool Enabled { get { return Config.Enabled; } }
+        public override string UserID { get { return botUserID; } }
         public DiscordConfig Config;
 
         public TextFile replacementsFile = new TextFile("text/discord/replacements.txt",
@@ -65,31 +66,35 @@ namespace Flames.Modules.Relay.Discord
                                         "// Lines should be formatted like this:",
                                         "// example:http://example.org",
                                         "// That would replace 'example' in messages sent to Discord with 'http://example.org'");
-        
+
         public string APIHost = "https://discord.com/api/v10";
-        public string WSHost  = "gateway.discord.gg";
-        public string WSPath  = "/?v=10&encoding=json";
+        public string WSHost = "gateway.discord.gg";
+        public string WSPath = "/?v=10&encoding=json";
 
 
-        public override bool CanReconnect {
+        public override bool CanReconnect
+        {
             get { return canReconnect && (socket == null || socket.CanReconnect); }
         }
 
-        public override void DoConnect() {
-            socket = new DiscordWebsocket(WSPath);
-            socket.Session   = session;
-            socket.Token     = Config.BotToken;
-            socket.Host      = WSHost;
-            socket.Presence  = Config.PresenceEnabled;
-            socket.Status    = Config.Status;
-            socket.Activity  = Config.Activity;
-            socket.GetStatus = GetStatusMessage;
-            
-            socket.OnReady         = HandleReadyEvent;
-            socket.OnResumed       = HandleResumedEvent;
-            socket.OnMessageCreate = HandleMessageEvent;
-            socket.OnChannelCreate = HandleChannelEvent;
-            socket.OnGatewayEvent  = HandleGatewayEvent;
+        public override void DoConnect()
+        {
+            socket = new DiscordWebsocket(WSPath)
+            {
+                Session = session,
+                Token = Config.BotToken,
+                Host = WSHost,
+                Presence = Config.PresenceEnabled,
+                Status = Config.Status,
+                Activity = Config.Activity,
+                GetStatus = GetStatusMessage,
+
+                OnReady = HandleReadyEvent,
+                OnResumed = HandleResumedEvent,
+                OnMessageCreate = HandleMessageEvent,
+                OnChannelCreate = HandleChannelEvent,
+                OnGatewayEvent = HandleGatewayEvent
+            };
             socket.Connect();
         }
 
@@ -99,110 +104,129 @@ namespace Flames.Modules.Relay.Discord
         // .NET sometimes wraps exceptions from reading in an IOException, e.g.:
         //   * IOException - The read operation failed, see inner exception.
         //      * ObjectDisposedException - Cannot access a disposed object.
-        public static Exception UnpackError(Exception ex) {
+        public static Exception UnpackError(Exception ex)
+        {
             if (ex.InnerException is ObjectDisposedException)
                 return ex.InnerException;
             if (ex.InnerException is IOException)
                 return ex.InnerException;
-            
+
             // TODO can we ever get an IOException wrapping an IOException?
             return null;
         }
 
-        public override void DoReadLoop() {
-            try {
+        public override void DoReadLoop()
+        {
+            try
+            {
                 socket.ReadLoop();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Exception unpacked = UnpackError(ex);
                 // throw a more specific exception if possible
                 if (unpacked != null) throw unpacked;
-                
+
                 // rethrow original exception otherwise
                 throw;
             }
         }
 
-        public override void DoDisconnect(string reason) {
-            try {
+        public override void DoDisconnect(string reason)
+        {
+            try
+            {
                 socket.Disconnect();
-            } catch {
+            }
+            catch
+            {
                 // no point logging disconnect failures
             }
         }
-        
-        
-        public override void ReloadConfig() {
+
+
+        public override void ReloadConfig()
+        {
             Config.Load();
             base.ReloadConfig();
             LoadReplacements();
-            
+
             if (!Config.CanMentionHere) return;
             Logger.Log(LogType.Warning, "can-mention-everyone option is enabled in {0}, " +
                        "which allows pinging all users on Discord from in-game. " +
                        "It is recommended that this option be disabled.", DiscordConfig.PROPS_PATH);
         }
 
-        public override void UpdateConfig() {
-            Channels     = Config.Channels.SplitComma();
-            OpChannels   = Config.OpChannels.SplitComma();
+        public override void UpdateConfig()
+        {
+            Channels = Config.Channels.SplitComma();
+            OpChannels = Config.OpChannels.SplitComma();
             IgnoredUsers = Config.IgnoredUsers.SplitComma();
-            
+
             UpdateAllowed();
             LoadBannedCommands();
         }
 
-        public void UpdateAllowed() {
+        public void UpdateAllowed()
+        {
             JsonArray mentions = new JsonArray();
             if (Config.CanMentionUsers) mentions.Add("users");
             if (Config.CanMentionRoles) mentions.Add("roles");
-            if (Config.CanMentionHere)  mentions.Add("everyone");
+            if (Config.CanMentionHere) mentions.Add("everyone");
             allowed = mentions;
         }
 
-        public void LoadReplacements() {
-            replacementsFile.EnsureExists();            
+        public void LoadReplacements()
+        {
+            replacementsFile.EnsureExists();
             string[] lines = replacementsFile.GetText();
-            
+
             filter_triggers.Clear();
             filter_replacements.Clear();
-            
-            ChatTokens.LoadTokens(lines, (phrase, replacement) => 
-                                  {
-                                      filter_triggers.Add(phrase);
-                                      filter_replacements.Add(DiscordUtils.MarkdownToSpecial(replacement));
-                                  });
+
+            ChatTokens.LoadTokens(lines, (phrase, replacement) =>
+            {
+                filter_triggers.Add(phrase);
+                filter_replacements.Add(DiscordUtils.MarkdownToSpecial(replacement));
+            });
         }
-        
-        public override void LoadControllers() {
+
+        public override void LoadControllers()
+        {
             Controllers = PlayerList.Load("text/discord/controllers.txt");
         }
 
 
-        public DiscordUser ExtractUser(JsonObject data) {
+        public DiscordUser ExtractUser(JsonObject data)
+        {
             JsonObject author = (JsonObject)data["author"];
-            
-            DiscordUser user = new DiscordUser();
-            user.Nick = GetNick(data) ?? GetUser(author);
-            user.ID   = (string)author["id"];
-            
-            user.ReferencedUser = ExtractReferencedUser(data);
+
+            DiscordUser user = new DiscordUser
+            {
+                Nick = GetNick(data) ?? GetUser(author),
+                ID = (string)author["id"],
+
+                ReferencedUser = ExtractReferencedUser(data)
+            };
             return user;
         }
 
-        public string GetNick(JsonObject data) {
+        public string GetNick(JsonObject data)
+        {
             if (!Config.UseNicks) return null;
             object raw;
             if (!data.TryGetValue("member", out raw)) return null;
-            
+
             // Make sure this is really a member object first
             JsonObject member = raw as JsonObject;
             if (member == null) return null;
-            
+
             member.TryGetValue("nick", out raw);
             return raw as string;
         }
 
-        public string GetUser(JsonObject author) {
+        public string GetUser(JsonObject author)
+        {
             // User's chosen display name (configurable)
             object name = null;
             author.TryGetValue("global_name", out name);
@@ -211,26 +235,28 @@ namespace Flames.Modules.Relay.Discord
             return (string)author["username"];
         }
 
-        public string ExtractReferencedUser(JsonObject data) {
+        public string ExtractReferencedUser(JsonObject data)
+        {
             object refMsgRaw;
             data.TryGetValue("referenced_message", out refMsgRaw);
-            
+
             JsonObject refMsgData = refMsgRaw as JsonObject;
             if (refMsgData == null) return null;
-            
+
             object authorRaw;
             refMsgData.TryGetValue("author", out authorRaw);
             if (authorRaw == null) return null;
-            
+
             return GetUser((JsonObject)authorRaw);
         }
 
 
-        public void HandleMessageEvent(JsonObject data) {
+        public void HandleMessageEvent(JsonObject data)
+        {
             DiscordUser user = ExtractUser(data);
             // ignore messages from self
             if (user.ID == botUserID) return;
-            
+
             string channel = (string)data["channel_id"];
             string message = (string)data["content"];
             byte type;
@@ -244,47 +270,54 @@ namespace Flames.Modules.Relay.Discord
             //  "Bots no longer receive Channel Create Gateway Event for DMs"
             // Therefore the code is now forced to instead calculate which
             //  channels are probably text channels, and which aren't        
-            if (!channelTypes.TryGetValue(channel, out type)) {
+            if (!channelTypes.TryGetValue(channel, out type))
+            {
                 type = GuessChannelType(data);
                 // channel is definitely a text/normal channel
                 if (type == CHANNEL_TEXT) channelTypes[channel] = type;
             }
-            
-            if (type == CHANNEL_DIRECT) {
-                HandleDirectMessage(user,  channel, message);
-            } else {
+
+            if (type == CHANNEL_DIRECT)
+            {
+                HandleDirectMessage(user, channel, message);
+            }
+            else
+            {
                 HandleChannelMessage(user, channel, message);
                 PrintAttachments(user, data, channel);
             }
         }
 
-        public void PrintAttachments(RelayUser user, JsonObject data, string channel) {
+        public void PrintAttachments(RelayUser user, JsonObject data, string channel)
+        {
             object raw;
             if (!data.TryGetValue("attachments", out raw)) return;
-            
+
             JsonArray list = raw as JsonArray;
             if (list == null) return;
-            
-            foreach (object entry in list) 
+
+            foreach (object entry in list)
             {
                 JsonObject attachment = entry as JsonObject;
                 if (attachment == null) continue;
-                
+
                 string url = (string)attachment["url"];
                 HandleChannelMessage(user, channel, url);
             }
         }
 
 
-        public void HandleChannelEvent(JsonObject data) {
+        public void HandleChannelEvent(JsonObject data)
+        {
             string channel = (string)data["id"];
-            string type    = (string)data["type"];
+            string type = (string)data["type"];
 
             // 1 = direct/private message channel type
             if (type == "1") channelTypes[channel] = CHANNEL_DIRECT;
         }
 
-        public byte GuessChannelType(JsonObject data) {
+        public byte GuessChannelType(JsonObject data)
+        {
             // As per discord's documentation:
             //  "The member object exists in MESSAGE_CREATE and MESSAGE_UPDATE
             //   events from text-based guild channels, provided that the
@@ -301,71 +334,82 @@ namespace Flames.Modules.Relay.Discord
         }
 
 
-        public void HandleReadyEvent(JsonObject data) {
+        public void HandleReadyEvent(JsonObject data)
+        {
             JsonObject user = (JsonObject)data["user"];
-            botUserID       = (string)user["id"];
+            botUserID = (string)user["id"];
             HandleResumedEvent(data);
         }
 
-        public void HandleResumedEvent(JsonObject data) {
+        public void HandleResumedEvent(JsonObject data)
+        {
             // May not be null when reconnecting
-            if (api == null) {
-                api = new DiscordApiClient();
-                api.Token = Config.BotToken;
-                api.Host  = APIHost;
+            if (api == null)
+            {
+                api = new DiscordApiClient
+                {
+                    Token = Config.BotToken,
+                    Host = APIHost
+                };
                 api.RunAsync();
             }
             OnReady();
         }
 
-        public void HandleGatewayEvent(string eventName, JsonObject data) {
+        public void HandleGatewayEvent(string eventName, JsonObject data)
+        {
             OnGatewayEventReceivedEvent.Call(this, eventName, data);
         }
 
 
-        public static bool IsEscaped(char c) {
+        public static bool IsEscaped(char c)
+        {
             // To match Discord: \a --> \a, \* --> *
-            return (c >  ' ' && c <= '/') || (c >= ':' && c <= '@') 
+            return (c > ' ' && c <= '/') || (c >= ':' && c <= '@')
                 || (c >= '[' && c <= '`') || (c >= '{' && c <= '~');
         }
-        public override string ParseMessage(string input) {
+        public override string ParseMessage(string input)
+        {
             StringBuilder sb = new StringBuilder(input);
             SimplifyCharacters(sb);
-            
+
             // remove variant selector character used with some emotes
             sb.Replace("\uFE0F", "");
-            
+
             // unescape \ escaped characters
             //  -1 in case message ends with a \
             int length = sb.Length - 1;
-            for (int i = 0; i < length; i++) 
+            for (int i = 0; i < length; i++)
             {
                 if (sb[i] != '\\') continue;
                 if (!IsEscaped(sb[i + 1])) continue;
-                
+
                 sb.Remove(i, 1); length--;
             }
-            
+
             StripMarkdown(sb);
             return sb.ToString();
         }
 
-        public static void StripMarkdown(StringBuilder sb) {
+        public static void StripMarkdown(StringBuilder sb)
+        {
             // TODO proper markdown parsing
             sb.Replace("**", "");
         }
 
 
-        public readonly object updateLocker = new object();
+        public object updateLocker = new object();
         public volatile bool updateScheduled;
         public DateTime nextUpdate;
 
-        public void UpdateDiscordStatus() {
+        public void UpdateDiscordStatus()
+        {
             TimeSpan delay = default(TimeSpan);
-            DateTime now   = DateTime.UtcNow;
+            DateTime now = DateTime.UtcNow;
 
             // websocket gets disconnected with code 4008 if try to send too many updates too quickly
-            lock (updateLocker) {
+            lock (updateLocker)
+            {
                 // status update already pending?
                 if (updateScheduled) return;
                 updateScheduled = true;
@@ -373,16 +417,18 @@ namespace Flames.Modules.Relay.Discord
                 // slowdown if sending too many status updates
                 if (nextUpdate > now) delay = nextUpdate - now;
             }
-            
+
             Server.MainScheduler.QueueOnce(DoUpdateStatus, null, delay);
         }
 
-        public void DoUpdateStatus(SchedulerTask task) {
+        public void DoUpdateStatus(SchedulerTask task)
+        {
             DateTime now = DateTime.UtcNow;
             // OK to queue next status update now
-            lock (updateLocker) {
+            lock (updateLocker)
+            {
                 updateScheduled = false;
-                nextUpdate      = now.AddSeconds(0.5);
+                nextUpdate = now.AddSeconds(0.5);
                 // ensures status update can't be sent more than once every 0.5 seconds
             }
 
@@ -391,61 +437,82 @@ namespace Flames.Modules.Relay.Discord
             //  https://discord.com/developers/docs/topics/opcodes-and-status-codes
             if (s == null || !s.SentIdentify) return;
 
-            try { s.UpdateStatus(); } catch { }
+            try 
+            { 
+                s.UpdateStatus(); 
+            } 
+            catch 
+            { 
+            }
         }
 
-        public string GetStatusMessage() {
-            fakeGuest.group     = Group.DefaultRank;
-            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank); 
+        public string GetStatusMessage()
+        {
+            fakeGuest.group = Group.DefaultRank;
+            List<Player> online = PlayerInfo.GetOnlineCanSee(fakeGuest, fakeGuest.Rank);
 
             string numOnline = NumberUtils.StringifyInt(online.Count);
             return Config.StatusMessage.Replace("{PLAYERS}", numOnline);
         }
 
 
-        public override void OnStart() {
-            DiscordSession s = new DiscordSession();
-            s.Intents = DiscordWebsocket.DEFAULT_INTENTS | Config.ExtraIntents;
-            session   = s;
-            
-            base.OnStart();            
+        public override void OnStart()
+        {
+            DiscordSession s = new DiscordSession
+            {
+                Intents = DiscordWebsocket.DEFAULT_INTENTS | Config.ExtraIntents
+            };
+            session = s;
+
+            base.OnStart();
             OnPlayerConnectEvent.Register(HandlePlayerConnect, Priority.Low);
             OnPlayerDisconnectEvent.Register(HandlePlayerDisconnect, Priority.Low);
             OnPlayerActionEvent.Register(HandlePlayerAction, Priority.Low);
         }
 
-        public override void OnStop() {
+        public override void OnStop()
+        {
             socket = null;
-            if (api != null) {
+            if (api != null)
+            {
                 api.StopAsync();
                 api = null;
             }
             base.OnStop();
-            
+
             OnPlayerConnectEvent.Unregister(HandlePlayerConnect);
             OnPlayerDisconnectEvent.Unregister(HandlePlayerDisconnect);
             OnPlayerActionEvent.Unregister(HandlePlayerAction);
         }
 
-        public void HandlePlayerConnect(Player p) { UpdateDiscordStatus(); }
-        public void HandlePlayerDisconnect(Player p, string reason) { UpdateDiscordStatus(); }
+        public void HandlePlayerConnect(Player p) 
+        { 
+            UpdateDiscordStatus(); 
+        }
+        public void HandlePlayerDisconnect(Player p, string reason) 
+        { 
+            UpdateDiscordStatus(); 
+        }
 
-        public void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth) {
+        public void HandlePlayerAction(Player p, PlayerAction action, string message, bool stealth)
+        {
             if (action != PlayerAction.Hide && action != PlayerAction.Unhide) return;
             UpdateDiscordStatus();
         }
-        
-        
+
+
         /// <summary> Asynchronously sends a message to the discord API </summary>
-        public void Send(DiscordApiMessage msg) {
+        public void Send(DiscordApiMessage msg)
+        {
             // can be null in gap between initial connection and ready event received
-            if (api != null) api.QueueAsync(msg);
+            api?.QueueAsync(msg);
         }
 
-        public override void DoSendMessage(string channel, string message) {
+        public override void DoSendMessage(string channel, string message)
+        {
             message = ConvertMessage(message);
             const int MAX_MSG_LEN = 2000;
-            
+
             // Discord doesn't allow more than 2000 characters in a single message,
             //  so break up message into multiple parts for this extremely rare case
             //  https://discord.com/developers/docs/resources/channel#create-message
@@ -453,16 +520,19 @@ namespace Flames.Modules.Relay.Discord
             {
                 int partLen = Math.Min(message.Length - offset, MAX_MSG_LEN);
                 string part = message.Substring(offset, partLen);
-                
-                ChannelSendMessage msg = new ChannelSendMessage(channel, part);
-                msg.Allowed = allowed;
+
+                ChannelSendMessage msg = new ChannelSendMessage(channel, part)
+                {
+                    Allowed = allowed
+                };
                 Send(msg);
             }
         }
 
         /// <summary> Formats a message for displaying on Discord </summary>
         /// <example> Escapes markdown characters such as _ and * </example>
-        public string ConvertMessage(string message) {
+        public string ConvertMessage(string message)
+        {
             message = ConvertMessageCommon(message);
             message = Colors.StripUsed(message);
             message = DiscordUtils.EscapeMarkdown(message);
@@ -470,9 +540,10 @@ namespace Flames.Modules.Relay.Discord
             return message;
         }
 
-        public override string PrepareMessage(string message) {
+        public override string PrepareMessage(string message)
+        {
             // allow uses to do things like replacing '+' with ':green_square:'
-            for (int i = 0; i < filter_triggers.Count; i++) 
+            for (int i = 0; i < filter_triggers.Count; i++)
             {
                 message = message.Replace(filter_triggers[i], filter_replacements[i]);
             }
@@ -481,87 +552,100 @@ namespace Flames.Modules.Relay.Discord
 
 
         // all users are already verified by Discord
-        public override bool CheckController(string userID, ref string error) { return true; }
+        public override bool CheckController(string userID, ref string error) 
+        { 
+            return true; 
+        }
 
-        public override string UnescapeFull(Player p) {
+        public override string UnescapeFull(Player p)
+        {
             return BOLD + base.UnescapeFull(p) + BOLD;
         }
-        public override string UnescapeNick(Player p) {
+        public override string UnescapeNick(Player p)
+        {
             return BOLD + base.UnescapeNick(p) + BOLD;
         }
 
-        public override void MessagePlayers(RelayPlayer p) {
+        public override void MessagePlayers(RelayPlayer p)
+        {
             ChannelSendEmbed embed = new ChannelSendEmbed(p.ChannelID);
             int total;
             List<OnlineListEntry> entries = PlayerInfo.GetOnlineList(p, p.Rank, out total);
-            
-            embed.Color  = Config.EmbedColor;
-            embed.Title  = string.Format("{0} player{1} currently online",
+
+            embed.Color = Config.EmbedColor;
+            embed.Title = string.Format("{0} player{1} currently online",
                                         total, total.Plural());
-            
-            foreach (OnlineListEntry e in entries) 
+
+            foreach (OnlineListEntry e in entries)
             {
                 if (e.players.Count == 0) continue;
-                
+
                 embed.Fields.Add(
                     ConvertMessage(FormatRank(e)),
                     ConvertMessage(FormatPlayers(p, e))
                 );
             }
-            
+
             AddGameStatus(embed);
             OnSendingWhoEmbedEvent.Call(this, p.User, ref embed);
             Send(embed);
         }
 
-        public static string FormatPlayers(Player p, OnlineListEntry e) {
+        public static string FormatPlayers(Player p, OnlineListEntry e)
+        {
             return e.players.Join(pl => FormatNick(p, pl), ", ");
         }
 
-        public static string FormatRank(OnlineListEntry e) {
+        public static string FormatRank(OnlineListEntry e)
+        {
             return string.Format(UNDERLINE + "{0}" + UNDERLINE + " (" + CODE + "{1}" + CODE + ")",
                                  e.group.GetFormattedName(), e.players.Count);
         }
 
-        public static string FormatNick(Player p, Player pl) {
-            string flags  = OnlineListEntry.GetFlags(pl);
+        public static string FormatNick(Player p, Player pl)
+        {
+            string flags = OnlineListEntry.GetFlags(pl);
             string format;
-            
-            if (flags.Length > 0) {
+
+            if (flags.Length > 0)
+            {
                 format = BOLD + "{0}" + BOLD + ITALIC + "{2}" + ITALIC + " (" + CODE + "{1}" + CODE + ")";
-            } else {
-                format = BOLD + "{0}" + BOLD                           + " (" + CODE + "{1}" + CODE + ")";
             }
-            return string.Format(format, p.FormatNick(pl), 
+            else
+            {
+                format = BOLD + "{0}" + BOLD + " (" + CODE + "{1}" + CODE + ")";
+            }
+            return string.Format(format, p.FormatNick(pl),
                                  // level name must not have _ escaped as the level name is in a code block -
                                  //  otherwise the escaped "\_" actually shows as "\_" instead of "_" 
                                  pl.level.name.Replace('_', DiscordUtils.UNDERSCORE),
                                  flags);
         }
 
-        public void AddGameStatus(ChannelSendEmbed embed) {
+        public void AddGameStatus(ChannelSendEmbed embed)
+        {
             if (!Config.EmbedGameStatuses) return;
-            
+
             StringBuilder sb = new StringBuilder();
-            IGame[] games    = IGame.RunningGames.Items;
-            
+            IGame[] games = IGame.RunningGames.Items;
+
             foreach (IGame game in games)
             {
                 Level lvl = game.Map;
                 if (!game.Running || lvl == null) continue;
                 sb.Append(BOLD + game.GameName + BOLD + " is running on " + lvl.name + "\n");
             }
-            
+
             if (sb.Length == 0) return;
             embed.Fields.Add("Running games", ConvertMessage(sb.ToString()));
         }
-        
-        
-        public const string UNDERLINE     = DiscordUtils.UNDERLINE;
-        public const string BOLD          = DiscordUtils.BOLD;
-        public const string ITALIC        = DiscordUtils.ITALIC;
-        public const string CODE          = DiscordUtils.CODE;
-        public const string SPOILER       = DiscordUtils.SPOILER;
+
+
+        public const string UNDERLINE = DiscordUtils.UNDERLINE;
+        public const string BOLD = DiscordUtils.BOLD;
+        public const string ITALIC = DiscordUtils.ITALIC;
+        public const string CODE = DiscordUtils.CODE;
+        public const string SPOILER = DiscordUtils.SPOILER;
         public const string STRIKETHROUGH = DiscordUtils.STRIKETHROUGH;
     }
 }

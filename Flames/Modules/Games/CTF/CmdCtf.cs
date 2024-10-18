@@ -19,7 +19,6 @@ using Flames.Commands;
 using Flames.Commands.Fun;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
@@ -73,7 +72,7 @@ namespace Flames.Modules.Games.CTF
             }
         }
 
-        public bool BlueFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool BlueFlagCallback(Player p, Vec3S32[] marks, object state, ushort block)
         {
             CTFMapConfig cfg = (CTFMapConfig)state;
             Vec3U16 P = (Vec3U16)marks[0];
@@ -89,7 +88,7 @@ namespace Flames.Modules.Games.CTF
             return false;
         }
 
-        public bool RedFlagCallback(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool RedFlagCallback(Player p, Vec3S32[] marks, object state, ushort block)
         {
             CTFMapConfig cfg = (CTFMapConfig)state;
             Vec3U16 P = (Vec3U16)marks[0];

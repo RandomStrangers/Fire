@@ -21,7 +21,6 @@ using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Ops
 {
@@ -65,7 +64,7 @@ namespace Flames.Drawing.Ops
         }
 
 
-        public unsafe static List<int> FloodFill(Player p, int index, BlockID block, DrawMode mode)
+        public unsafe static List<int> FloodFill(Player p, int index, ushort block, DrawMode mode)
         {
             Level lvl = p.level;
             SparseBitSet bits = new SparseBitSet(lvl.Width, lvl.Height, lvl.Length);

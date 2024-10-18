@@ -21,22 +21,29 @@ using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.PropertyGridInternal;
 
-namespace Flames.Gui {
+namespace Flames.Gui
+{
     /// <summary> Hacky workaround for PropertyGrid to fix crashing with some versions of wine-mono </summary>
-    public sealed class HackyPropertyGrid : PropertyGrid {
+    public sealed class HackyPropertyGrid : PropertyGrid
+    {
 
-        public sealed class HackyPropertiesTab : PropertiesTab {
-            
+        public sealed class HackyPropertiesTab : PropertiesTab
+        {
+
             // With some versions of wine-mono, if you try to change PropertyGrid's selected object,
             //  some Exceptions gets thrown. (see examples below)
             // The root cause of the Exception is a PropertiesTab instance returning 'null' from its
             //  Bitmap property implementation - so workaround this by never returning null.
-            public override Bitmap Bitmap {
+            public override Bitmap Bitmap
+            {
                 get { return base.Bitmap ?? new Bitmap(16, 16); }
             }
-        }        
-        protected override PropertyTab CreatePropertyTab(Type tabType) { return new HackyPropertiesTab(); }
-        
+        }
+        protected override PropertyTab CreatePropertyTab(Type tabType) 
+        { 
+            return new HackyPropertiesTab(); 
+        }
+
         /*
 Type: IndexOutOfRangeException
 Source: System.Windows.Forms

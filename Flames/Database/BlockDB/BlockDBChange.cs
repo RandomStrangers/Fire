@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Blocks.Extended;
-using BlockID = System.UInt16;
 
 namespace Flames.DB
 {
@@ -26,7 +25,7 @@ namespace Flames.DB
     {
         public static void Output(Player p, string name, BlockDBEntry e)
         {
-            BlockID oldBlock = e.OldBlock, newBlock = e.NewBlock;
+            ushort oldBlock = e.OldBlock, newBlock = e.NewBlock;
             DateTime time = BlockDB.Epoch.AddSeconds(e.TimeDelta);
             TimeSpan delta = DateTime.UtcNow.Subtract(time);
             name = p.FormatNick(name);
@@ -47,7 +46,7 @@ namespace Flames.DB
             }
         }
 
-        public static void OutputMessageBlock(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static void OutputMessageBlock(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (!p.level.Props[block].IsMessageBlock) return;
             if (!MessageBlock.ExistsInDB(p.level.MapName)) return;
@@ -57,7 +56,7 @@ namespace Flames.DB
             p.Message("Message Block contents: {0}", message);
         }
 
-        public static void OutputPortal(Player p, BlockID block, ushort x, ushort y, ushort z)
+        public static void OutputPortal(Player p, ushort block, ushort x, ushort y, ushort z)
         {
             if (!p.level.Props[block].IsPortal) return;
             if (!Portal.ExistsInDB(p.level.MapName)) return;

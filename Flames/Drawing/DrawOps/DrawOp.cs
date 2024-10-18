@@ -19,14 +19,13 @@ using System;
 using Flames.DB;
 using Flames.Drawing.Brushes;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
     public struct DrawOpBlock
     {
         public ushort X, Y, Z;
-        public BlockID Block;
+        public ushort Block;
     }
 }
 
@@ -130,7 +129,7 @@ namespace Flames.Drawing.Ops
             return Coords;
         }
 
-        public DrawOpBlock Place(ushort x, ushort y, ushort z, BlockID block)
+        public DrawOpBlock Place(ushort x, ushort y, ushort z, ushort block)
         {
             Coords.X = x; 
             Coords.Y = y; 

@@ -180,10 +180,9 @@ namespace Flames.Commands.World
 
         public static void HandleGoto(Player p, string map)
         {
-            byte mapNum = 0;
             if (map.Length == 0) map = "1";
 
-            if (!byte.TryParse(map, out mapNum))
+            if (!byte.TryParse(map, out byte mapNum))
             {
                 p.MessageLines(gotoHelp); 
                 return;
@@ -352,8 +351,7 @@ namespace Flames.Commands.World
                 return;
             }
 
-            bool needConfirm;
-            if (CmdResizeLvl.DoResize(p, args, p.DefaultCmdData, out needConfirm)) return;
+            if (CmdResizeLvl.DoResize(p, args, p.DefaultCmdData, out bool needConfirm)) return;
 
             if (!needConfirm) return;
             p.Message("Type &T/{0} map resize {1} {2} {3} confirm &Sif you're sure.",

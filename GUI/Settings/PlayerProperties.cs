@@ -19,14 +19,17 @@ using System;
 using System.ComponentModel;
 using Flames.DB;
 
-namespace Flames.Gui {
-    public sealed class PlayerProperties {
-        public readonly Player p;
+namespace Flames.Gui
+{
+    public sealed class PlayerProperties
+    {
+        public Player p;
         public string inMsg, outMsg;
-        
-        public PlayerProperties(Player player) {
+
+        public PlayerProperties(Player player)
+        {
             this.p = player;
-            inMsg  = PlayerDB.GetLoginMessage(player.name);
+            inMsg = PlayerDB.GetLoginMessage(player.name);
             outMsg = PlayerDB.GetLogoutMessage(player.name);
         }
 
@@ -34,24 +37,24 @@ namespace Flames.Gui {
         [DisplayName("Color")]
         [TypeConverter(typeof(ColorConverter))]
         public string Color { get { return Colors.Name(p.color); } set { DoCmd("Color", value); } }
-        
+
         [Category("Properties")]
         [DisplayName("IP address")]
         public string IP { get { return p.ip; } set { } }
-        
+
         [Category("Properties")]
         [DisplayName("Login message")]
         public string LoginMsg { get { return inMsg; } set { inMsg = value; DoCmd("LoginMessage", value); } }
-        
+
         [Category("Properties")]
         [DisplayName("Logout message")]
         public string LogoutMsg { get { return outMsg; } set { outMsg = value; DoCmd("LogoutMessage", value); } }
-        
+
         [Category("Properties")]
         [DisplayName("Rank")]
         [TypeConverter(typeof(RankConverter))]
         public string Rank { get { return p.group.Name; } set { DoCmd("SetRank", value); } }
-        
+
         [Category("Properties")]
         [DisplayName("Title")]
         public string Title { get { return p.title; } set { DoCmd("Title", value); } }
@@ -60,16 +63,16 @@ namespace Flames.Gui {
         [DisplayName("Title color")]
         [TypeConverter(typeof(ColorConverter))]
         public string TColor { get { return Colors.Name(p.titlecolor); } set { DoCmd("TColor", value); } }
-        
+
 
         [Category("Stats")]
         [DisplayName("Blocks modified")]
         public long BlocksModified { get { return p.TotalModified; } set { p.TotalModified = value; } }
-        
+
         [Category("Stats")]
         [DisplayName("Number of deaths")]
         public int TimesDied { get { return p.TimesDied; } set { p.TimesDied = value; } }
-        
+
         [Category("Stats")]
         [DisplayName("Times been kicked")]
         public int TimesKicked { get { return p.TimesBeenKicked; } set { p.TimesBeenKicked = value; } }
@@ -77,39 +80,46 @@ namespace Flames.Gui {
         [Category("Stats")]
         [DisplayName("Number of logins")]
         public int TimesLogins { get { return p.TimesVisited; } set { p.TimesVisited = value; } }
-        
+
 
         [Category("Status")]
         [DisplayName("AFK")]
         public bool AFK { get { return p.IsAfk; } set { DoCmd("SendCmd", "afk"); } }
-        
+
         [Category("Status")]
         [DisplayName("Hidden")]
         public bool Hidden { get { return p.hidden; } set { DoCmd("oHide"); } }
-        
+
         [Category("Status")]
         [DisplayName("Jokered")]
         public bool Jokered { get { return p.joker; } set { DoCmd("Joker"); } }
-        
+
         [Category("Status")]
         [DisplayName("Map")]
         [TypeConverter(typeof(LevelConverter))]
         public string Map { get { return p.level.name; } set { DoCmd("SendCmd", "goto " + value); } }
-        
+
         [Category("Status")]
         [DisplayName("Voiced")]
         public bool Voiced { get { return p.voice; } set { DoCmd("Voice"); } }
 
-        public void DoCmd(string cmd) { DoCmd(cmd, ""); }
-        public void DoCmd(string cmd, string args) {
+        public void DoCmd(string cmd) 
+        { 
+            DoCmd(cmd, ""); 
+        }
+        public void DoCmd(string cmd, string args)
+        {
             // Is the player still on the server?
             Player pl = PlayerInfo.FindExact(p.name);
             if (pl == null) return;
 
-            try {
+            try
+            {
                 string cmdArgs = args.Length == 0 ? p.name : p.name + " " + args;
                 Command.Find(cmd).Use(Player.Flame, cmdArgs);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
             }
         }

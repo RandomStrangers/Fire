@@ -89,13 +89,12 @@ namespace Flames.Commands.Building
 
         public bool Handle(ref char axis, ref int angle, string arg)
         {
-            int value;
             if (arg == "x" || arg == "y" || arg == "z")
             {
-                axis = char.ToUpper(arg[0]); 
+                axis = char.ToUpper(arg[0]);
                 return true;
             }
-            else if (int.TryParse(arg, out value))
+            else if (int.TryParse(arg, out int value))
             {
                 // Clamp to [0, 360)
                 value %= 360;

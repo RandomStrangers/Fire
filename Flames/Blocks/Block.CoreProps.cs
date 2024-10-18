@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -26,7 +25,7 @@ namespace Flames
         public static BlockProps[] Props = new BlockProps[SUPPORTED_COUNT];
         public static Dictionary<string, byte> Aliases = new Dictionary<string, byte>();
 
-        public static BlockProps MakeDefaultProps(BlockID b)
+        public static BlockProps MakeDefaultProps(ushort b)
         {
             BlockProps props = BlockProps.MakeEmpty();
             if ((b >= Op_Glass && b <= Op_Lava) || b == Invalid || b == RocketStart || b == Bedrock)
@@ -50,19 +49,19 @@ namespace Flames
             // oDoor blocks
             if (b >= oDoor_Log && b <= oDoor_Wood)
             {
-                props.oDoorBlock = (BlockID)(oDoor_Log_air + (b - oDoor_Log));
+                props.oDoorBlock = (ushort)(oDoor_Log_air + (b - oDoor_Log));
             }
             if (b >= oDoor_Green && b <= oDoor_Water)
             {
-                props.oDoorBlock = (BlockID)(oDoor_Green_air + (b - oDoor_Green));
+                props.oDoorBlock = (ushort)(oDoor_Green_air + (b - oDoor_Green));
             }
             if (b >= oDoor_Log_air && b <= oDoor_Wood_air)
             {
-                props.oDoorBlock = (BlockID)(oDoor_Log + (b - oDoor_Log_air));
+                props.oDoorBlock = (ushort)(oDoor_Log + (b - oDoor_Log_air));
             }
             if (b >= oDoor_Green_air && b <= oDoor_Water_air)
             {
-                props.oDoorBlock = (BlockID)(oDoor_Green + (b - oDoor_Green_air));
+                props.oDoorBlock = (ushort)(oDoor_Green + (b - oDoor_Green_air));
             }
 
             // Water/Lava kills
@@ -103,7 +102,7 @@ namespace Flames
             return props;
         }
 
-        public static bool IsDoor(BlockID b)
+        public static bool IsDoor(ushort b)
         {
             if (b >= Door_Obsidian && b <= Door_Slab) return true;
             if (b >= Door_Iron && b <= Door_Bookshelf) return true;
@@ -112,7 +111,7 @@ namespace Flames
             return b == Door_Cobblestone || b == Door_Red || b == Door_Log || b == Door_Gold;
         }
 
-        public static AnimalAI GetAI(BlockID b)
+        public static AnimalAI GetAI(ushort b)
         {
             if (b == Bird_Black || b == Bird_White || b == Bird_Lava || b == Bird_Water) return AnimalAI.Fly;
             if (b == Bird_Red || b == Bird_Blue || b == Bird_Killer) return AnimalAI.KillerAir;
@@ -124,7 +123,7 @@ namespace Flames
             return AnimalAI.None;
         }
 
-        public static string GetDeathMessage(BlockID b)
+        public static string GetDeathMessage(ushort b)
         {
             if (b == TNT_Explosion) return "@p &S&cblew into pieces.";
             if (b == Deadly_Air) return "@p &Swalked into &cnerve gas and suffocated.";

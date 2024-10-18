@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using Flames.Drawing.Ops;
 using Flames.Maths;
 using Flames.Tasks;
-using BlockID = System.UInt16;
 
 namespace Flames.Games
 {
@@ -33,7 +32,7 @@ namespace Flames.Games
 
         public override void OnDisabled(Player p) { }
 
-        public override void OnActivated(Vec3F32 dir, BlockID block)
+        public override void OnActivated(Vec3F32 dir, ushort block)
         {
             MissileData args = new MissileData
             {
@@ -57,7 +56,7 @@ namespace Flames.Games
 
         /// <summary> Called when a missile has collided with a block. </summary>
         /// <returns> true if this block stops the missile, false if it should continue moving. </returns>
-        public virtual bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block)
+        public virtual bool OnHitBlock(MissileData args, Vec3U16 pos, ushort block)
         {
             return true;
         }
@@ -109,7 +108,7 @@ namespace Flames.Games
             for (i = 1; ; i++)
             {
                 Vec3U16 target = args.PosAt(i);
-                BlockID block = p.level.GetBlock(target.X, target.Y, target.Z);
+                ushort block = p.level.GetBlock(target.X, target.Y, target.Z);
 
                 if (block == Block.Invalid) break;
                 if (block != Block.Air && !args.all.Contains(target)) break;
@@ -122,7 +121,7 @@ namespace Flames.Games
 
         public bool MoveMissile(MissileData args, Vec3U16 pos, Vec3U16 target)
         {
-            BlockID block = p.level.GetBlock(pos.X, pos.Y, pos.Z);
+            ushort block = p.level.GetBlock(pos.X, pos.Y, pos.Z);
             if (block != Block.Air && !args.all.Contains(pos) && OnHitBlock(args, pos, block))
                 return false;
 
@@ -170,7 +169,7 @@ namespace Flames.Games
     {
         public override string Name { get { return "Penetrative missile"; } }
 
-        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, ushort block)
         {
             if (p.level.physics < 2) return true;
 
@@ -197,7 +196,7 @@ namespace Flames.Games
             }
         }
 
-        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, ushort block)
         {
             if (p.level.physics >= 3) p.level.MakeExplosion(pos.X, pos.Y, pos.Z, 1);
             return true;
@@ -213,7 +212,7 @@ namespace Flames.Games
             args.DoTeleport(p);
         }
 
-        public override bool OnHitBlock(MissileData args, Vec3U16 pos, BlockID block)
+        public override bool OnHitBlock(MissileData args, Vec3U16 pos, ushort block)
         {
             args.DoTeleport(p);
             return true;

@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Network
 {
@@ -189,7 +188,7 @@ namespace Flames.Network
             return buffer;
         }
 
-        public static byte[] HoldThis(BlockID raw, bool locked, bool extBlocks)
+        public static byte[] HoldThis(ushort raw, bool locked, bool extBlocks)
         {
             byte[] buffer = new byte[extBlocks ? 4 : 3];
             buffer[0] = Opcode.CpeHoldThis;
@@ -285,14 +284,14 @@ namespace Flames.Network
             return buffer;
         }
 
-        public static byte[] BlockPermission(BlockID raw, bool place, bool delete, bool extBlocks)
+        public static byte[] BlockPermission(ushort raw, bool place, bool delete, bool extBlocks)
         {
             byte[] buffer = new byte[extBlocks ? 5 : 4];
             WriteBlockPermission(raw, place, delete, extBlocks, buffer, 0);
             return buffer;
         }
 
-        public static void WriteBlockPermission(BlockID raw, bool place, bool delete, bool extBlocks, byte[] buffer, int index)
+        public static void WriteBlockPermission(ushort raw, bool place, bool delete, bool extBlocks, byte[] buffer, int index)
         {
             buffer[index++] = Opcode.CpeSetBlockPermission;
             NetUtils.WriteBlock(raw, buffer, index, extBlocks);
@@ -438,7 +437,7 @@ namespace Flames.Network
             return buffer;
         }
 
-        public static byte[] SetInventoryOrder(BlockID rawId, BlockID rawOrder, bool extBlocks)
+        public static byte[] SetInventoryOrder(ushort rawId, ushort rawOrder, bool extBlocks)
         {
             byte[] buffer = new byte[extBlocks ? 5 : 3];
             buffer[0] = Opcode.CpeSetInventoryOrder;
@@ -447,7 +446,7 @@ namespace Flames.Network
             return buffer;
         }
 
-        public static byte[] SetHotbar(BlockID rawId, byte slot, bool extBlocks)
+        public static byte[] SetHotbar(ushort rawId, byte slot, bool extBlocks)
         {
             byte[] buffer = new byte[extBlocks ? 4 : 3];
             buffer[0] = Opcode.CpeSetHotbar;

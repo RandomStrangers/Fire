@@ -94,8 +94,7 @@ namespace Flames
 
         public static bool IsListModifier(string str)
         {
-            int ignored;
-            return str.CaselessEq("all") || int.TryParse(str, out ignored);
+            return str.CaselessEq("all") || int.TryParse(str, out int ignored);
         }
 
         public static bool IsCreateCommand(string str)

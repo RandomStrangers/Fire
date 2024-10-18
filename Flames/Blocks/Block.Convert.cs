@@ -16,24 +16,23 @@
     permissions and limitations under the Licenses.
 */
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
     public static partial class Block
     {
         public static string[] coreNames = new string[CORE_COUNT];
-        public static bool Undefined(BlockID block) 
+        public static bool Undefined(ushort block) 
         { 
             return IsPhysicsType(block) && coreNames[block].CaselessEq("unknown"); 
         }
 
-        public static bool ExistsGlobal(BlockID b) 
+        public static bool ExistsGlobal(ushort b) 
         { 
             return ExistsFor(Player.Flame, b); 
         }
 
-        public static bool ExistsFor(Player p, BlockID b)
+        public static bool ExistsFor(Player p, ushort b)
         {
             if (b < CORE_COUNT) return !Undefined(b);
 
@@ -43,7 +42,7 @@ namespace Flames
 
         /// <summary> Gets the name for the block with the given block ID </summary>
         /// <remarks> Block names can differ depending on the player's level </remarks>
-        public static string GetName(Player p, BlockID block)
+        public static string GetName(Player p, ushort block)
         {
             if (IsPhysicsType(block)) return coreNames[block];
 
@@ -61,12 +60,11 @@ namespace Flames
             return block < CPE_COUNT ? coreNames[block] : ToRaw(block).ToString();
         }
 
-        public static BlockID Parse(Player p, string input)
+        public static ushort Parse(Player p, string input)
         {
             BlockDefinition[] defs = p.IsSuper ? BlockDefinition.GlobalDefs : p.level.CustomBlockDefs;
-            BlockID block;
             // raw ID is treated specially, before names
-            if (BlockID.TryParse(input, out block))
+            if (ushort.TryParse(input, out ushort block))
             {
                 if (block < CPE_COUNT || (block <= MaxRaw && defs[FromRaw(block)] != null))
                 {
@@ -77,12 +75,11 @@ namespace Flames
             BlockDefinition def = BlockDefinition.ParseName(input, defs);
             if (def != null) return def.GetBlock();
 
-            byte coreID;
-            bool success = Aliases.TryGetValue(input.ToLower(), out coreID);
+            bool success = Aliases.TryGetValue(input.ToLower(), out byte coreID);
             return success ? coreID : Invalid;
         }
 
-        public static string GetColoredName(Player p, BlockID block)
+        public static string GetColoredName(Player p, ushort block)
         {
             BlockPerms perms = BlockPerms.Find(block);
             return Group.GetColor(perms.MinRank) + GetName(p, block);
@@ -117,13 +114,15 @@ namespace Flames
             return block <= Leaves ? block : v4_fallback[block - Sponge];
         }
 
-        public static byte[] v7_fallback = {
+        public static byte[] v7_fallback = 
+        {
             // CobbleSlab Rope      Sandstone Snow Fire  LightPink ForestGreen Brown
                Slab,      Mushroom, Sand,     Air, Lava, Pink,     Green,      Dirt,
             // DeepBlue Turquoise Ice    CeramicTile Magma     Pillar Crate StoneBrick
                Blue,    Cyan,     Glass, Iron,       Obsidian, White, Wood, Stone
         };
-        public static byte[] v6_fallback = {
+        public static byte[] v6_fallback = 
+        {
             // Iron   DoubleSlab Slab  Brick TNT  Bookshelf MossyRocks   Obsidian
                Stone, Gray,      Gray, Red,  Red, Wood,     Cobblestone, Black,
             // CobbleSlab   Rope      Sandstone Snow Fire  LightPink ForestGreen Brown
@@ -131,7 +130,8 @@ namespace Flames
             // DeepBlue Turquoise Ice    CeramicTile Magma        Pillar Crate StoneBrick
                Blue,    Cyan,     Glass, Gold,       Cobblestone, White, Wood, Stone
         };
-        public static byte[] v5_fallback = {
+        public static byte[] v5_fallback = 
+        {
             // Red   Orange Yellow Lime  Green Teal  Aqua  Cyan
                Sand, Sand,  Sand,  Sand, Sand, Sand, Sand, Sand,
             // Blue  Indigo Violet Magenta Pink  Black  Gray   White
@@ -145,7 +145,8 @@ namespace Flames
             // DeepBlue Turquoise Ice    CeramicTile Magma        Pillar Crate StoneBrick
                Sand,    Sand,     Glass, Stone,      Cobblestone, Stone, Wood, Stone
         };
-        public static byte[] v4_fallback = {
+        public static byte[] v4_fallback = 
+        {
             // Sponge   Glass
                GoldOre, Leaves,
             // Red   Orange Yellow Lime  Green Teal  Aqua  Cyan
@@ -166,7 +167,7 @@ namespace Flames
         /// <summary> Converts physics block IDs to their visual block IDs </summary>
         /// <remarks> If block ID is not converted, returns input block ID </remarks>
         /// <example> Op_Glass becomes Glass, Door_Log becomes Log </example>
-        public static BlockID Convert(BlockID block)
+        public static ushort Convert(ushort block)
         {
             switch (block)
             {

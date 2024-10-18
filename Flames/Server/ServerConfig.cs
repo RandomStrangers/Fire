@@ -293,9 +293,13 @@ namespace Flames
         [ConfigEnum("default-mapgen-biome", "Mapgen", MapGenBiomeName.Forest, typeof(MapGenBiomeName))]
         public MapGenBiomeName DefaultMapGenBiome = MapGenBiomeName.Forest;
 
-        public static bool[] defLogLevels = new bool[] {
-            true,true,true,true,true,true, true,true,true,
-            true,true,true,true,true,true, true,true };
+        public static bool[] defLogLevels = new bool[] 
+        {
+            true, true, true, true,
+            true, true, true, true, 
+            true, true, true, true, 
+            true, true, true, true, true 
+        };
         [ConfigBool("log-notes", "Logging", true)]
         public bool LogNotes = true;
         [ConfigBoolArray("file-logging", "Logging", true, 17)]

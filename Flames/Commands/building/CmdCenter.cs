@@ -17,7 +17,6 @@
 */
 using Flames.DB;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -33,7 +32,7 @@ namespace Flames.Commands.Building
             p.MakeSelection(2, "Selecting region for &SCenter", null, DoCentre);
         }
 
-        public bool DoCentre(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoCentre(Player p, Vec3S32[] m, object state, ushort block)
         {
             int lenX = m[0].X + m[1].X, lenY = m[0].Y + m[1].Y, lenZ = m[0].Z + m[1].Z;
             int x = lenX / 2, y = lenY / 2, z = lenZ / 2;

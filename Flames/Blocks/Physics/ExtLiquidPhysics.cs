@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -30,8 +29,7 @@ namespace Flames.Blocks.Physics
             if (C.Data.Data < 3) return;
 
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
 
             if (below == Block.Air)
             {
@@ -39,7 +37,7 @@ namespace Flames.Blocks.Physics
             }
             else if (below != Block.Magma)
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 LiquidPhysics.PhysLava(lvl, (ushort)(x + 1), y, z, block);
                 LiquidPhysics.PhysLava(lvl, (ushort)(x - 1), y, z, block);
                 LiquidPhysics.PhysLava(lvl, x, y, (ushort)(z + 1), block);
@@ -61,8 +59,7 @@ namespace Flames.Blocks.Physics
 
         public static void MagmaFlow(Level lvl, int x, int y, int z, ref bool flowUp)
         {
-            int index;
-            BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
+            ushort block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out int index);
 
             if (lvl.Props[block].LavaKills)
             {
@@ -76,8 +73,7 @@ namespace Flames.Blocks.Physics
             C.Data.Data++;
 
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
 
             if (below == Block.Air)
             {
@@ -85,7 +81,7 @@ namespace Flames.Blocks.Physics
             }
             else if (below != Block.Geyser)
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 LiquidPhysics.PhysWater(lvl, (ushort)(x + 1), y, z, block);
                 LiquidPhysics.PhysWater(lvl, (ushort)(x - 1), y, z, block);
                 LiquidPhysics.PhysWater(lvl, x, y, (ushort)(z + 1), block);
@@ -107,8 +103,7 @@ namespace Flames.Blocks.Physics
 
         public static void GeyserFlow(Level lvl, int x, int y, int z, ref bool flowUp)
         {
-            int index;
-            BlockID block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out index);
+            ushort block = lvl.GetBlock((ushort)x, (ushort)y, (ushort)z, out int index);
 
             if (lvl.Props[block].WaterKills)
             {
@@ -120,8 +115,7 @@ namespace Flames.Blocks.Physics
         public static void DoWaterfall(Level lvl, ref PhysInfo C)
         {
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
 
             switch (below)
             {
@@ -136,7 +130,7 @@ namespace Flames.Blocks.Physics
                     break;
 
                 default:
-                    BlockID block = C.Block;
+                    ushort block = C.Block;
                     LiquidPhysics.PhysWater(lvl, (ushort)(x + 1), y, z, block);
                     LiquidPhysics.PhysWater(lvl, (ushort)(x - 1), y, z, block);
                     LiquidPhysics.PhysWater(lvl, x, y, (ushort)(z + 1), block);
@@ -149,8 +143,7 @@ namespace Flames.Blocks.Physics
         public static void DoLavafall(Level lvl, ref PhysInfo C)
         {
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
 
             switch (below)
             {
@@ -164,7 +157,7 @@ namespace Flames.Blocks.Physics
                 case Block.LavaDown:
                     break;
                 default:
-                    BlockID block = C.Block;
+                    ushort block = C.Block;
                     LiquidPhysics.PhysLava(lvl, (ushort)(x + 1), y, z, block);
                     LiquidPhysics.PhysLava(lvl, (ushort)(x - 1), y, z, block);
                     LiquidPhysics.PhysLava(lvl, x, y, (ushort)(z + 1), block);
@@ -174,15 +167,14 @@ namespace Flames.Blocks.Physics
             }
         }
 
-        public static void DoFaucet(Level lvl, ref PhysInfo C, BlockID target)
+        public static void DoFaucet(Level lvl, ref PhysInfo C, ushort target)
         {
             C.Data.Data++;
             if (C.Data.Data < 2) return;
             C.Data.Data = 0;
 
             Random rand = lvl.physRandom;
-            int index;
-            BlockID below = lvl.GetBlock(C.X, (ushort)(C.Y - 1), C.Z, out index);
+            ushort below = lvl.GetBlock(C.X, (ushort)(C.Y - 1), C.Z, out int index);
 
             if (below == Block.Air || below == target)
             {

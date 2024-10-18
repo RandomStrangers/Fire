@@ -17,16 +17,15 @@
  */
 using Flames.DB;
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
     public sealed class ReplaceBrush : Brush
     {
-        public BlockID[] include;
-        public BlockID target;
+        public ushort[] include;
+        public ushort target;
 
-        public ReplaceBrush(BlockID[] include, BlockID target)
+        public ReplaceBrush(ushort[] include, ushort target)
         {
             this.include = include; 
             this.target = target;
@@ -39,10 +38,10 @@ namespace Flames.Drawing.Brushes
             op.Flags = BlockDBFlags.Replaced;
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             ushort x = op.Coords.X, y = op.Coords.Y, z = op.Coords.Z;
-            BlockID block = op.Level.GetBlock(x, y, z);
+            ushort block = op.Level.GetBlock(x, y, z);
 
             for (int i = 0; i < include.Length; i++)
             {
@@ -54,10 +53,10 @@ namespace Flames.Drawing.Brushes
 
     public sealed class ReplaceNotBrush : Brush
     {
-        public BlockID[] exclude;
-        public BlockID target;
+        public ushort[] exclude;
+        public ushort target;
 
-        public ReplaceNotBrush(BlockID[] exclude, BlockID target)
+        public ReplaceNotBrush(ushort[] exclude, ushort target)
         {
             this.exclude = exclude; 
             this.target = target;
@@ -70,10 +69,10 @@ namespace Flames.Drawing.Brushes
             op.Flags = BlockDBFlags.Replaced;
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             ushort x = op.Coords.X, y = op.Coords.Y, z = op.Coords.Z;
-            BlockID block = op.Level.GetBlock(x, y, z);
+            ushort block = op.Level.GetBlock(x, y, z);
 
             for (int i = 0; i < exclude.Length; i++)
             {

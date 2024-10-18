@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using Flames.DB;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -129,7 +128,7 @@ namespace Flames.Commands.Moderation
 
         public static void CheckBlockBindings(Player who)
         {
-            BlockID block = who.ModeBlock;
+            ushort block = who.ModeBlock;
             if (block != Block.Invalid && !CommandParser.IsBlockAllowed(who, "place", block))
             {
                 who.ModeBlock = Block.Invalid;
@@ -144,9 +143,9 @@ namespace Flames.Commands.Moderation
 
                 if (!CommandParser.IsBlockAllowed(who, "place", block))
                 {
-                    who.BlockBindings[b] = (BlockID)b;
+                    who.BlockBindings[b] = (ushort)b;
                     who.Message("   Hence, binding for &b{0} &Swas unbound",
-                                Block.GetName(who, (BlockID)b));
+                                Block.GetName(who, (ushort)b));
                 }
             }
         }

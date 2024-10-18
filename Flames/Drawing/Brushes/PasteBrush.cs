@@ -17,7 +17,6 @@
  */
 using Flames.DB;
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -37,7 +36,7 @@ namespace Flames.Drawing.Brushes
             op.Flags = BlockDBFlags.Pasted;
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             // Figure out local coords for this block
             int x = (op.Coords.X - op.Min.X) % state.Width;
@@ -54,14 +53,14 @@ namespace Flames.Drawing.Brushes
 
     public sealed class PasteBrush : SimplePasteBrush
     {
-        public BlockID[] Include;
+        public ushort[] Include;
 
         public PasteBrush(CopyState state) : base(state) { }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
-            BlockID block = base.NextBlock(op);
-            BlockID[] include = Include; // local var to avoid JIT bounds check
+            ushort block = base.NextBlock(op);
+            ushort[] include = Include; // local var to avoid JIT bounds check
 
             for (int i = 0; i < include.Length; i++)
             {
@@ -73,14 +72,14 @@ namespace Flames.Drawing.Brushes
 
     public sealed class PasteNotBrush : SimplePasteBrush
     {
-        public BlockID[] Exclude;
+        public ushort[] Exclude;
 
         public PasteNotBrush(CopyState state) : base(state) { }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
-            BlockID block = base.NextBlock(op);
-            BlockID[] exclude = Exclude; // local var to avoid JIT bounds check
+            ushort block = base.NextBlock(op);
+            ushort[] exclude = Exclude; // local var to avoid JIT bounds check
 
             for (int i = 0; i < exclude.Length; i++)
             {

@@ -19,7 +19,6 @@ using System;
 using System.IO;
 using fNbt;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Levels.IO
 {
@@ -82,7 +81,7 @@ namespace Flames.Levels.IO
 
                 lvl.IntToPos(i, out x, out y, out z);
                 int b = ((hi[i] << 8) | lo[i]) + Block.Extended;
-                lvl.SetBlock(x, y, z, (BlockID)b);
+                lvl.SetBlock(x, y, z, (ushort)b);
             }
         }
 
@@ -195,7 +194,7 @@ namespace Flames.Levels.IO
                 def.MaxZ = coords[4]; 
                 def.MaxY = coords[5];
 
-                BlockID block = def.GetBlock();
+                ushort block = def.GetBlock();
                 if (block >= Block.SUPPORTED_COUNT)
                 {
                     Logger.Log(LogType.Warning, "Cannot import custom block {0} (ID {1})",

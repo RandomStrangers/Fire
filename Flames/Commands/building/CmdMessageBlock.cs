@@ -20,7 +20,6 @@ using Flames.Blocks;
 using Flames.Blocks.Extended;
 using Flames.Maths;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -75,14 +74,14 @@ namespace Flames.Commands.Building
             p.MakeSelection(1, mbArgs, PlacedMark);
         }
 
-        public BlockID GetBlock(Player p, string name, ref bool allMessage)
+        public ushort GetBlock(Player p, string name, ref bool allMessage)
         {
             if (name == "show")
             {
                 ShowMessageBlocks(p);
                 return Block.Invalid;
             }
-            BlockID block = Block.Parse(p, name);
+            ushort block = Block.Parse(p, name);
             if (block != Block.Invalid && p.level.Props[block].IsMessageBlock)
                 return block;
 
@@ -101,12 +100,12 @@ namespace Flames.Commands.Building
             return Block.Invalid;
         }
 
-        public bool PlacedMark(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool PlacedMark(Player p, Vec3S32[] marks, object state, ushort block)
         {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             MBArgs args = (MBArgs)state;
 
-            BlockID old = p.level.GetBlock(x, y, z);
+            ushort old = p.level.GetBlock(x, y, z);
             if (p.level.CheckAffect(p, x, y, z, old, args.Block))
             {
                 p.level.UpdateBlock(p, x, y, z, args.Block);
@@ -134,7 +133,7 @@ namespace Flames.Commands.Building
         public class MBArgs
         {
             public string Message;
-            public BlockID Block;
+            public ushort Block;
         }
 
 
@@ -159,7 +158,7 @@ namespace Flames.Commands.Building
                            p.showMBs ? "showing &a" + coords.Count : "hiding");
         }
 
-        public static string Format(BlockID block, Player p, BlockProps[] props)
+        public static string Format(ushort block, Player p, BlockProps[] props)
         {
             if (!props[block].IsMessageBlock) return null;
 
@@ -179,7 +178,7 @@ namespace Flames.Commands.Building
 
             for (int i = 0; i < props.Length; i++)
             {
-                string name = Format((BlockID)i, p, props);
+                string name = Format((ushort)i, p, props);
                 if (name != null) names.Add(name);
             }
             return names;

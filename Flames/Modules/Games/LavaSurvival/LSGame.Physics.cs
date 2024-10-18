@@ -18,7 +18,6 @@
 using System;
 using Flames.Blocks.Physics;
 using Flames.Games;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS
 {
@@ -35,7 +34,7 @@ namespace Flames.Modules.Games.LS
             Map.UpdateBlockHandlers(Block.Door_Log);
         }
 
-        public void HandleBlockHandlersUpdated(Level lvl, BlockID block)
+        public void HandleBlockHandlersUpdated(Level lvl, ushort block)
         {
             if (!Running || lvl != Map) return;
 
@@ -62,7 +61,7 @@ namespace Flames.Modules.Games.LS
             }
         }
 
-        public ChangeResult PlaceSponge(Player p, BlockID newBlock, ushort x, ushort y, ushort z)
+        public ChangeResult PlaceSponge(Player p, ushort newBlock, ushort x, ushort y, ushort z)
         {
             LSData data = Get(p);
             bool placed = TryPlaceBlock(p, ref data.SpongesLeft, "Sponges", Block.Sponge, x, y, z);
@@ -76,7 +75,7 @@ namespace Flames.Modules.Games.LS
             return ChangeResult.Modified;
         }
 
-        public ChangeResult PlaceWater(Player p, BlockID newBlock, ushort x, ushort y, ushort z)
+        public ChangeResult PlaceWater(Player p, ushort newBlock, ushort x, ushort y, ushort z)
         {
             LSData data = Get(p);
             bool placed = TryPlaceBlock(p, ref data.WaterLeft, "Water blocks", Block.StillWater, x, y, z);
@@ -85,7 +84,7 @@ namespace Flames.Modules.Games.LS
             return ChangeResult.Modified;
         }
 
-        public ChangeResult PlaceDoor(Player p, BlockID newBlock, ushort x, ushort y, ushort z)
+        public ChangeResult PlaceDoor(Player p, ushort newBlock, ushort x, ushort y, ushort z)
         {
             LSData data = Get(p);
             bool placed = TryPlaceBlock(p, ref data.DoorsLeft, "Door blocks", Block.Door_Log, x, y, z);
@@ -110,7 +109,7 @@ namespace Flames.Modules.Games.LS
 
             if (!lvl.CheckSpongeWater(x, y, z))
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
 
                 SpreadWater(lvl, (ushort)(x + 1), y, z, block);
                 SpreadWater(lvl, (ushort)(x - 1), y, z, block);
@@ -139,7 +138,7 @@ namespace Flames.Modules.Games.LS
 
             if (!lvl.CheckSpongeWater(x, y, z))
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 SpreadLava(lvl, (ushort)(x + 1), y, z, block);
                 SpreadLava(lvl, (ushort)(x - 1), y, z, block);
                 SpreadLava(lvl, x, y, (ushort)(z + 1), block);
@@ -156,10 +155,10 @@ namespace Flames.Modules.Games.LS
         }
 
 
-        public void SpreadWater(Level lvl, ushort x, ushort y, ushort z, BlockID type)
+        public void SpreadWater(Level lvl, ushort x, ushort y, ushort z, ushort type)
         {
             int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out index);
             if (InSafeZone(x, y, z)) return;
 
             switch (block)
@@ -197,10 +196,10 @@ namespace Flames.Modules.Games.LS
             }
         }
 
-        public void SpreadLava(Level lvl, ushort x, ushort y, ushort z, BlockID type)
+        public void SpreadLava(Level lvl, ushort x, ushort y, ushort z, ushort type)
         {
             int index;
-            BlockID block = lvl.GetBlock(x, y, z, out index);
+            ushort block = lvl.GetBlock(x, y, z, out index);
             if (InSafeZone(x, y, z)) return;
 
             // in LS, sponge should stop lava too
@@ -249,7 +248,7 @@ namespace Flames.Modules.Games.LS
         }
 
         public void SpreadLiquid(Level lvl, ushort x, ushort y, ushort z, int index,
-                          BlockID block, bool isWater)
+                          ushort block, bool isWater)
         {
             if (floodMode == LSFloodMode.Calm) return;
             Random rand = lvl.physRandom;

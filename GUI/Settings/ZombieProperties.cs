@@ -18,38 +18,42 @@
 using System.ComponentModel;
 using Flames.Modules.Games.ZS;
 
-namespace Flames.Gui {
-    public sealed class ZombieProperties {  
-        
+namespace Flames.Gui
+{
+    public sealed class ZombieProperties
+    {
+
         [Description("Whether players are allowed to pillar in zombie survival. " +
                      "Note this can be overriden for specific maps using /ZS set.")]
         [Category("General settings")]
         [DisplayName("Pillaring allowed")]
         public bool Pillaring { get; set; }
-        
-        
+
+
         [Description("Max distance players are allowed to move between packets. (for speedhack detection)")]
         [Category("Other settings")]
         [DisplayName("Max move distance")]
         public float MaxMoveDistance { get; set; }
-        
+
         [Description("Distance between players before they are considered to have 'collided'. (for infecting)")]
         [Category("Other settings")]
         [DisplayName("Hitbox precision")]
         public float HitboxPrecision { get; set; }
-        
-        public void LoadFromServer() {
+
+        public void LoadFromServer()
+        {
             ZSConfig cfg = ZSGame.Instance.Config;
-            
-            Pillaring = !cfg.NoPillaring;          
+
+            Pillaring = !cfg.NoPillaring;
             MaxMoveDistance = cfg.MaxMoveDist;
             HitboxPrecision = cfg.HitboxDist;
         }
-        
-        public void ApplyToServer() {
+
+        public void ApplyToServer()
+        {
             ZSConfig cfg = ZSGame.Instance.Config;
 
-            cfg.NoPillaring = !Pillaring;            
+            cfg.NoPillaring = !Pillaring;
             cfg.MaxMoveDist = MaxMoveDistance;
             cfg.HitboxDist = HitboxPrecision;
         }

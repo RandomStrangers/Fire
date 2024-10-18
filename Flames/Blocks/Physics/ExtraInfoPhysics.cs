@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -158,27 +157,26 @@ namespace Flames.Blocks.Physics
         {
             if (rainbownum > 2)
             {
-                BlockID block = C.Block;
+                ushort block = C.Block;
                 if (block < Block.Red || block > Block.Pink)
                 {
                     lvl.AddUpdate(C.Index, Block.Red, C.Data);
                 }
                 else
                 {
-                    BlockID next = block == Block.Pink ? Block.Red : (BlockID)(block + 1);
+                    ushort next = block == Block.Pink ? Block.Red : (ushort)(block + 1);
                     lvl.AddUpdate(C.Index, next, default(PhysicsArgs));
                 }
             }
             else
             {
-                lvl.AddUpdate(C.Index, (BlockID)rand.Next(Block.Red, Block.Pink + 1), default(PhysicsArgs));
+                lvl.AddUpdate(C.Index, (ushort)rand.Next(Block.Red, Block.Pink + 1), default(PhysicsArgs));
             }
         }
 
         public static void DoDrop(Level lvl, ref PhysInfo C, Random rand, int dropnum, ushort x, ushort y, ushort z)
         {
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
             if (!(below == Block.Air || below == Block.Lava || below == Block.Water)) return;
 
             if (rand.Next(1, 100) < dropnum && lvl.AddUpdate(index, C.Block, C.Data))

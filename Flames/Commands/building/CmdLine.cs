@@ -57,8 +57,7 @@ namespace Flames.Commands.Building
             if (msg.IndexOf(' ') == -1 || dArgs.Mode == DrawMode.normal) return line;
 
             string arg = msg.Substring(msg.LastIndexOf(' ') + 1);
-            ushort len;
-            if (ushort.TryParse(arg, out len)) line.MaxLength = len;
+            if (ushort.TryParse(arg, out ushort len)) line.MaxLength = len;
             return line;
         }
 

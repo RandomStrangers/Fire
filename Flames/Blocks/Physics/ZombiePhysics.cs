@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -112,7 +111,7 @@ namespace Flames.Blocks.Physics
 
         public static void DoHead(Level lvl, ref PhysInfo C)
         {
-            BlockID below = lvl.GetBlock(C.X, (ushort)(C.Y - 1), C.Z);
+            ushort below = lvl.GetBlock(C.X, (ushort)(C.Y - 1), C.Z);
 
             if (below != Block.ZombieBody && below != Block.Creeper)
             {
@@ -123,10 +122,9 @@ namespace Flames.Blocks.Physics
 
         public static bool MoveZombie(Level lvl, ref PhysInfo C, ushort x, ushort y, ushort z)
         {
-            int index;
 
             // Move zombie up or down blocks
-            if (lvl.IsAirAt(x, (ushort)(y - 1), z, out index) && lvl.IsAirAt(x, y, z))
+            if (lvl.IsAirAt(x, (ushort)(y - 1), z, out int index) && lvl.IsAirAt(x, y, z))
             {
             }
             else if (lvl.IsAirAt(x, y, z, out index) && lvl.IsAirAt(x, (ushort)(y + 1), z))

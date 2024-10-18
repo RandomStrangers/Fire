@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System.IO;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks
 {
@@ -24,7 +23,8 @@ namespace Flames.Blocks
     /// <summary> Type of animal this block behaves as. </summary>
     public enum AnimalAI : byte
     {
-        None, Fly, FleeAir, KillerAir, FleeWater, KillerWater, FleeLava, KillerLava,
+        None, Fly, FleeAir, KillerAir, 
+        FleeWater, KillerWater, FleeLava, KillerLava,
     }
 
     /// <summary> Extended and physics properties of a block. </summary>
@@ -42,7 +42,7 @@ namespace Flames.Blocks
         /// <summary> Whether this block is considered a door. </summary>
         public bool IsDoor;
         /// <summary> Block ID of the block this is converted to when toggled by a neighbouring door. </summary>
-        public BlockID oDoorBlock;
+        public ushort oDoorBlock;
 
         /// <summary> Whether this block is considered a message block. </summary>
         public bool IsMessageBlock;
@@ -65,16 +65,16 @@ namespace Flames.Blocks
 
         /// <summary> Block ID that is placed when two of this block are placed on top of each other. </summary>
         /// <remarks> e.g. slabs and cobblestone slabs. </remarks>
-        public BlockID StackBlock;
+        public ushort StackBlock;
 
         /// <summary> Whether players can drown inside this block (e.g. water). </summary>
         public bool Drownable;
 
         /// <summary> Block ID this is changed into when exposed to sunlight. </summary>
-        public BlockID GrassBlock;
+        public ushort GrassBlock;
 
         /// <summary> Block ID this is changed into when no longer exposed to sunlight. </summary>
-        public BlockID DirtBlock;
+        public ushort DirtBlock;
 
 
         /// <summary> Whether the properties for this block have been modified and hence require saving. </summary>
@@ -156,7 +156,7 @@ namespace Flames.Blocks
                     continue;
                 }
 
-                if (!BlockID.TryParse(parts[0], out ushort b))
+                if (!ushort.TryParse(parts[0], out ushort b))
                 {
                     Logger.Log(LogType.Warning, "Invalid line \"{0}\" in {1}", line, path);
                     continue;
@@ -190,7 +190,7 @@ namespace Flames.Blocks
                 }
                 if (parts.Length > 11)
                 {
-                    BlockID.TryParse(parts[11], out list[b].StackBlock);
+                    ushort.TryParse(parts[11], out list[b].StackBlock);
                     list[b].StackBlock = Block.MapOldRaw(list[b].StackBlock);
                 }
                 if (parts.Length > 12)
@@ -199,7 +199,7 @@ namespace Flames.Blocks
                 }
                 if (parts.Length > 13)
                 {
-                    BlockID.TryParse(parts[13], out list[b].oDoorBlock);
+                    ushort.TryParse(parts[13], out list[b].oDoorBlock);
                 }
                 if (parts.Length > 14)
                 {
@@ -207,28 +207,28 @@ namespace Flames.Blocks
                 }
                 if (parts.Length > 15)
                 {
-                    BlockID.TryParse(parts[15], out list[b].GrassBlock);
+                    ushort.TryParse(parts[15], out list[b].GrassBlock);
                 }
                 if (parts.Length > 16)
                 {
-                    BlockID.TryParse(parts[16], out list[b].DirtBlock);
+                    ushort.TryParse(parts[16], out list[b].DirtBlock);
                 }
             }
         }
 
 
-        public static BlockProps MakeDefault(BlockProps[] scope, Level lvl, BlockID block)
+        public static BlockProps MakeDefault(BlockProps[] scope, Level lvl, ushort block)
         {
             if (scope == Block.Props) return Block.MakeDefaultProps(block);
             return IsDefaultBlock(lvl, block) ? Block.Props[block] : MakeEmpty();
         }
 
-        public static bool IsDefaultBlock(Level lvl, BlockID b)
+        public static bool IsDefaultBlock(Level lvl, ushort b)
         {
             return Block.IsPhysicsType(b) || lvl.CustomBlockDefs[b] == BlockDefinition.GlobalDefs[b];
         }
 
-        public static void ApplyChanges(BlockProps[] scope, Level lvl_, BlockID block, bool save)
+        public static void ApplyChanges(BlockProps[] scope, Level lvl_, ushort block, bool save)
         {
             byte scopeId = ScopeId(scope);
             string path;
@@ -261,7 +261,7 @@ namespace Flames.Blocks
             return scope == Block.Props ? (byte)1 : (byte)2; 
         }
 
-        public static string ScopedName(BlockProps[] scope, Player p, BlockID block)
+        public static string ScopedName(BlockProps[] scope, Player p, ushort block)
         {
             return scope == Block.Props ? Block.GetName(Player.Flame, block) : Block.GetName(p, block);
         }

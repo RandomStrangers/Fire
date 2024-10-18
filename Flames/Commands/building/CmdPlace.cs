@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -31,7 +30,7 @@ namespace Flames.Commands.Building
 
         public override void Use(Player p, string message, CommandData data)
         {
-            BlockID block = p.GetHeldBlock();
+            ushort block = p.GetHeldBlock();
             Vec3S32 P = p.Pos.BlockCoords;
             P.Y = (p.Pos.Y - 32) / 32;
 

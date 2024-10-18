@@ -18,7 +18,6 @@
 using System;
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -65,11 +64,11 @@ namespace Flames.Commands.Building
             dArgs.BrushArgs = dArgs.Message.Splice(dArgs.ModeArgsCount, endCount);
         }
 
-        public override bool DoDraw(Player p, Vec3S32[] marks, object state, BlockID block)
+        public override bool DoDraw(Player p, Vec3S32[] marks, object state, ushort block)
         {
             DrawArgs dArgs = (DrawArgs)state;
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
-            BlockID old = p.level.GetBlock(x, y, z);
+            ushort old = p.level.GetBlock(x, y, z);
             if (!CommandParser.IsBlockAllowed(p, "fill over", old)) return false;
 
             bool is2D = dArgs.Mode == DrawMode.volcano;

@@ -21,7 +21,6 @@ using Flames.Commands;
 using Flames.Commands.Fun;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS
 {
@@ -109,7 +108,7 @@ namespace Flames.Modules.Games.LS
             Help(p, "spawn");
         }
 
-        public bool SetFloodPos(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool SetFloodPos(Player p, Vec3S32[] m, object state, ushort block)
         {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.FloodPos = (Vec3U16)m[0];
@@ -119,7 +118,7 @@ namespace Flames.Modules.Games.LS
             return false;
         }
 
-        public bool SetSafeZone(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool SetSafeZone(Player p, Vec3S32[] m, object state, ushort block)
         {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.SafeZoneMin = (Vec3U16)Vec3S32.Min(m[0], m[1]);
@@ -255,7 +254,7 @@ namespace Flames.Modules.Games.LS
             if (ok) SaveMapConfig(p, cfg);
         }
 
-        public bool SetLayerPos(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool SetLayerPos(Player p, Vec3S32[] m, object state, ushort block)
         {
             LSMapConfig cfg = (LSMapConfig)state;
             cfg.LayerPos = (Vec3U16)m[0];

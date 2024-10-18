@@ -18,7 +18,6 @@ using System.Threading;
 using Flames.Events.PlayerEvents;
 using Flames.Events.ServerEvents;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Network
 {
@@ -71,9 +70,9 @@ namespace Flames.Network
             }
         }
 
-        public BlockID ReadBlock(byte[] buffer, int offset)
+        public ushort ReadBlock(byte[] buffer, int offset)
         {
-            BlockID block;
+            ushort block;
             if (hasExtBlocks)
             {
                 block = NetUtils.ReadU16(buffer, offset);
@@ -147,7 +146,7 @@ namespace Flames.Network
                 return left;
             }
 
-            BlockID held = ReadBlock(buffer, offset + 8);
+            ushort held = ReadBlock(buffer, offset + 8);
             player.ProcessBlockchange(x, y, z, action, held);
             return size;
         }
@@ -526,11 +525,11 @@ namespace Flames.Network
             return true;
         }
 
-        public override bool SendHoldThis(BlockID block, bool locked)
+        public override bool SendHoldThis(ushort block, bool locked)
         {
             if (!hasHeldBlock) return false;
 
-            BlockID raw = ConvertBlock(block);
+            ushort raw = ConvertBlock(block);
             Send(Packet.HoldThis(raw, locked, hasExtBlocks));
             return true;
         }
@@ -553,10 +552,10 @@ namespace Flames.Network
 
         public override void SendChangeModel(byte id, string model)
         {
-            BlockID raw;
-            if (BlockID.TryParse(model, out raw) && raw > MaxRawBlock)
+            ushort raw;
+            if (ushort.TryParse(model, out raw) && raw > MaxRawBlock)
             {
-                BlockID block = Block.FromRaw(raw);
+                ushort block = Block.FromRaw(raw);
                 if (block >= Block.SUPPORTED_COUNT)
                 {
                     model = "humanoid"; // invalid block ids
@@ -761,7 +760,7 @@ namespace Flames.Network
         #endregion
 
 
-        public override void SendBlockchange(ushort x, ushort y, ushort z, BlockID block)
+        public override void SendBlockchange(ushort x, ushort y, ushort z, ushort block)
         {
             byte[] buffer = new byte[hasExtBlocks ? 9 : 8];
             buffer[0] = Opcode.SetBlock;
@@ -769,7 +768,7 @@ namespace Flames.Network
             NetUtils.WriteU16(y, buffer, 3);
             NetUtils.WriteU16(z, buffer, 5);
 
-            BlockID raw = ConvertBlock(block);
+            ushort raw = ConvertBlock(block);
             NetUtils.WriteBlock(raw, buffer, 7, hasExtBlocks);
             socket.Send(buffer, SendFlags.LowPriority);
         }

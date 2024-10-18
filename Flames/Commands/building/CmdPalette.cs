@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Drawing;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -119,8 +118,7 @@ namespace Flames.Commands.Building
                 return;
             }
 
-            BlockID block;
-            if (!CommandParser.GetBlock(p, args[2], out block)) return;
+            if (!CommandParser.GetBlock(p, args[2], out ushort block)) return;
 
             ColorDesc rgb = default;
             if (!CommandParser.GetHex(p, args[3], ref rgb)) return;
@@ -155,13 +153,12 @@ namespace Flames.Commands.Building
                 return;
             }
 
-            BlockID block;
-            if (!CommandParser.GetBlock(p, args[2], out block)) return;
+            if (!CommandParser.GetBlock(p, args[2], out ushort block)) return;
             RemoveEntry(p, palette, block);
         }
 
 
-        public static void RemoveEntry(Player p, ImagePalette palette, BlockID block)
+        public static void RemoveEntry(Player p, ImagePalette palette, ushort block)
         {
             PaletteEntry[] entries = palette.Entries;
             if (entries == null)

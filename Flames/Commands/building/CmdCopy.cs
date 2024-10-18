@@ -22,7 +22,6 @@ using Flames.Drawing;
 using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -150,7 +149,7 @@ namespace Flames.Commands.Building
             DrawOpPerformer.Do(op, brush, p, new Vec3S32[] { m[0], m[1] }, false);
         }
 
-        public void DoCopyMark(Player p, Vec3S32[] m, int i, object state, BlockID block)
+        public void DoCopyMark(Player p, Vec3S32[] m, int i, object state, ushort block)
         {
             CopyArgs cArgs = (CopyArgs)state;
             if (i == 2)
@@ -203,7 +202,6 @@ namespace Flames.Commands.Building
                 p.Message("You tried to copy {0} blocks. You cannot copy more than {1} blocks.",
                           cState.UsedBlocks, p.group.DrawLimit);
                 cState.Clear();
-                cState = null;
                 p.ClearSelection();
                 return;
             }
@@ -227,7 +225,7 @@ namespace Flames.Commands.Building
             }
         }
 
-        public bool DoCopy(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoCopy(Player p, Vec3S32[] m, object state, ushort block)
         {
             return false;
         }

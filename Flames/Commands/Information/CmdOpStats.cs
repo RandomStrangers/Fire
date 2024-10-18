@@ -31,15 +31,15 @@ namespace Flames.Commands.Info
         public override void Use(Player p, string message, CommandData data)
         {
             string end = DateTime.Now.ToString(Database.DateFormat);
-            string start = "thismonth", name = null;
+            string start = "thismonth";
             string[] args = message.SplitSpaces();
-
+            string name;
             if (message.Length == 0 || ValidTimespan(message.ToLower()))
             {
-                if (p.IsSuper) 
-                { 
-                    SuperRequiresArgs(p, "player name"); 
-                    return; 
+                if (p.IsSuper)
+                {
+                    SuperRequiresArgs(p, "player name");
+                    return;
                 }
                 name = p.name;
                 if (message.Length > 0) start = message.ToLower();

@@ -18,36 +18,44 @@
 using System;
 using Flames.Events;
 
-namespace Flames.Modules.Relay 
+namespace Flames.Modules.Relay
 {
     public delegate void OnDirectMessage(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel);
     /// <summary> Called when an external communication service user sends a message directly to the relay bot </summary>
-    public sealed class OnDirectMessageEvent : IEvent<OnDirectMessage> 
+    public sealed class OnDirectMessageEvent : IEvent<OnDirectMessage>
     {
-        public static void Call(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel) {
+        public static void Call(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel)
+        {
             IEvent<OnDirectMessage>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try {
+                try
+                {
                     items[i].method(bot, channel, user, message, ref cancel);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     LogHandlerException(ex, items[i]);
                 }
             }
         }
     }
-    
+
     public delegate void OnChannelMessage(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel);
     /// <summary> Called when an external communication service user sends a message to the given channel </summary>
-    public sealed class OnChannelMessageEvent : IEvent<OnChannelMessage> 
-    { 
-        public static void Call(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel) {
+    public sealed class OnChannelMessageEvent : IEvent<OnChannelMessage>
+    {
+        public static void Call(RelayBot bot, string channel, RelayUser user, string message, ref bool cancel)
+        {
             IEvent<OnChannelMessage>[] items = handlers.Items;
-            for (int i = 0; i < items.Length; i++) 
+            for (int i = 0; i < items.Length; i++)
             {
-                try {
+                try
+                {
                     items[i].method(bot, channel, user, message, ref cancel);
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     LogHandlerException(ex, items[i]);
                 }
             }

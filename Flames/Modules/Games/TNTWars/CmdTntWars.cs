@@ -21,7 +21,6 @@ using Flames.Commands;
 using Flames.Commands.Fun;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.TW
 {
@@ -342,7 +341,7 @@ namespace Flames.Modules.Games.TW
             return true;
         }
 
-        public static bool AddZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block)
+        public static bool AddZoneCallback(Player p, Vec3S32[] marks, object state, ushort block)
         {
             Vec3U16 p1 = (Vec3U16)marks[0], p2 = (Vec3U16)marks[1];
             TWGame.TWZone zn = new TWGame.TWZone(p1, p2);
@@ -353,7 +352,7 @@ namespace Flames.Modules.Games.TW
             return false;
         }
 
-        public static bool DeleteZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block)
+        public static bool DeleteZoneCallback(Player p, Vec3S32[] marks, object state, ushort block)
         {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
             List<TWGame.TWZone> zones = (List<TWGame.TWZone>)state;
@@ -374,7 +373,7 @@ namespace Flames.Modules.Games.TW
             return false;
         }
 
-        public static bool CheckZoneCallback(Player p, Vec3S32[] marks, object state, BlockID block)
+        public static bool CheckZoneCallback(Player p, Vec3S32[] marks, object state, ushort block)
         {
             ushort x = (ushort)marks[0].X, y = (ushort)marks[0].Y, z = (ushort)marks[0].Z;
 

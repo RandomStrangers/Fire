@@ -21,8 +21,6 @@ using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
 using Flames.Undo;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Drawing
 {
@@ -178,9 +176,9 @@ namespace Flames.Drawing.Ops
                 if (b.X >= lvl.Width || b.Y >= lvl.Height || b.Z >= lvl.Length) return;
 
                 int index = b.X + lvl.Width * (b.Z + b.Y * lvl.Length);
-                BlockID old = lvl.blocks[index];
-                BlockID extended = Block.ExtendedBase[old];
-                if (extended > 0) old = (BlockID)(extended | lvl.FastGetExtTile(b.X, b.Y, b.Z));
+                ushort old = lvl.blocks[index];
+                ushort extended = Block.ExtendedBase[old];
+                if (extended > 0) old = (ushort)(extended | lvl.FastGetExtTile(b.X, b.Y, b.Z));
 
 
                 // Check to make sure the block is actually different and that can be used
@@ -204,11 +202,11 @@ namespace Flames.Drawing.Ops
                 {
                     lvl.blocks[index] = Block.ExtendedClass[b.Block >> Block.ExtendedShift];
 
-                    lvl.FastSetExtTile(b.X, b.Y, b.Z, (BlockRaw)b.Block);
+                    lvl.FastSetExtTile(b.X, b.Y, b.Z, (byte)b.Block);
                 }
                 else
                 {
-                    lvl.blocks[index] = (BlockRaw)b.Block;
+                    lvl.blocks[index] = (byte)b.Block;
                     if (old >= Block.Extended)
                     {
                         lvl.FastRevertExtTile(b.X, b.Y, b.Z);

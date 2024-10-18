@@ -15,8 +15,6 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Blocks.Physics
 {
@@ -26,16 +24,16 @@ namespace Flames.Blocks.Physics
         /// <summary> Activates fireworks, rockets, and TNT in 1 block radius around (x, y, z) </summary>
         public static void DoNeighbours(Level lvl, ushort x, ushort y, ushort z)
         {
-            int bHead = 0, bTail = 0;
+            int bHead = 0;
             for (int dy = -1; dy <= 1; dy++)
                 for (int dz = -1; dz <= 1; dz++)
                     for (int dx = -1; dx <= 1; dx++)
                     {
-                        BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
+                        ushort block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
                         if (block == Block.RocketStart)
                         {
                             bool isFree =
-                                lvl.GetBlock((ushort)(x + dx * 2), (ushort)(y + dy * 2), (ushort)(z + dz * 2), out bTail) == Block.Air &&
+                                lvl.GetBlock((ushort)(x + dx * 2), (ushort)(y + dy * 2), (ushort)(z + dz * 2), out int bTail) == Block.Air &&
                                 lvl.GetBlock((ushort)(x + dx * 3), (ushort)(y + dy * 3), (ushort)(z + dz * 3), out bHead) == Block.Air &&
                                 !lvl.listUpdateExists.Get(x + dx * 3, y + dy * 3, z + dz * 3) &&
                                 !lvl.listUpdateExists.Get(x + dx * 2, y + dy * 2, z + dz * 2);
@@ -43,13 +41,13 @@ namespace Flames.Blocks.Physics
                             if (isFree)
                             {
                                 lvl.AddUpdate(bHead, Block.RocketHead, default(PhysicsArgs));
-                                lvl.AddUpdate(bTail, Block.LavaFire, default(PhysicsArgs));
+                                lvl.AddUpdate(0, Block.LavaFire, default(PhysicsArgs));
                             }
                         }
                         else if (block == Block.Fireworks)
                         {
                             bool isFree =
-                                lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy + 1), (ushort)(z + dz), out bTail) == Block.Air &&
+                                lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy + 1), (ushort)(z + dz), out int bTail) == Block.Air &&
                                 lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy + 2), (ushort)(z + dz), out bHead) == Block.Air &&
                                 !lvl.listUpdateExists.Get(x + dx, y + dy + 1, z + dz) &&
                                 !lvl.listUpdateExists.Get(x + dx, y + dy + 2, z + dz);
@@ -60,7 +58,7 @@ namespace Flames.Blocks.Physics
                                 PhysicsArgs args = default;
                                 args.Type1 = PhysicsArgs.Dissipate; 
                                 args.Value1 = 100;
-                                lvl.AddUpdate(bTail, Block.StillLava, args);
+                                lvl.AddUpdate(0, Block.StillLava, args);
                             }
                         }
                         else if (block == Block.TNT)
@@ -73,7 +71,7 @@ namespace Flames.Blocks.Physics
         /// <summary> Activates doors, tdoors and toggles odoors at (x, y, z) </summary>
         public static void DoDoors(Level lvl, ushort x, ushort y, ushort z, bool instant)
         {
-            BlockID block = lvl.GetBlock(x, y, z, out int index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
             if (index == -1) return;
 
             if (lvl.Props[block].IsDoor)
@@ -89,20 +87,20 @@ namespace Flames.Blocks.Physics
             }
             else
             {
-                BlockID oDoor = lvl.Props[block].oDoorBlock;
+                ushort oDoor = lvl.Props[block].oDoorBlock;
                 if (oDoor == Block.Invalid) return;
                 lvl.AddUpdate(index, oDoor, true);
             }
         }
 
 
-        public static PhysicsArgs GetDoorArgs(BlockID block, out BlockID physForm)
+        public static PhysicsArgs GetDoorArgs(ushort block, out ushort physForm)
         {
             PhysicsArgs args = default;
             args.Type1 = PhysicsArgs.Custom; 
             args.Value1 = 16 - 1;
             args.Type2 = PhysicsArgs.Revert; 
-            args.Value2 = (BlockRaw)block;
+            args.Value2 = (byte)block;
             args.ExtBlock = (byte)(block >> Block.ExtendedShift);
 
             physForm = Block.Door_Log_air; // air
@@ -122,13 +120,13 @@ namespace Flames.Blocks.Physics
             return args;
         }
 
-        public static PhysicsArgs GetTDoorArgs(BlockID block)
+        public static PhysicsArgs GetTDoorArgs(ushort block)
         {
             PhysicsArgs args = default;
             args.Type1 = PhysicsArgs.Custom; 
             args.Value1 = 16;
             args.Type2 = PhysicsArgs.Revert; 
-            args.Value2 = (BlockRaw)block;
+            args.Value2 = (byte)block;
             args.ExtBlock = (byte)(block >> Block.ExtendedShift);
             return args;
         }
@@ -147,7 +145,7 @@ namespace Flames.Blocks.Physics
         // TODO: Stop checking block type and just always call lvl.AddCheck
         public static void CheckAt(Level lvl, ushort x, ushort y, ushort z)
         {
-            BlockID block = lvl.GetBlock(x, y, z, out int index);
+            ushort block = lvl.GetBlock(x, y, z, out int index);
 
             switch (block)
             {

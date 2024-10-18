@@ -21,7 +21,6 @@ using System.IO;
 using Flames.Config;
 using Flames.Modules.Games.ZS;
 using Flames.Network;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -112,10 +111,10 @@ namespace Flames
 
         /// <summary> The block which will be displayed on the horizon. </summary>
         [ConfigBlock("HorizonBlock", "Env", Block.Invalid)]
-        public BlockID HorizonBlock = Block.Invalid;
+        public ushort HorizonBlock = Block.Invalid;
         /// <summary> The block which will be displayed on the edge of the map. </summary>
         [ConfigBlock("EdgeBlock", "Env", Block.Invalid)]
-        public BlockID EdgeBlock = Block.Invalid;
+        public ushort EdgeBlock = Block.Invalid;
         /// <summary> Whether exponential fog mode is used client-side. </summary>
         [ConfigExpFog("ExpFog")]
         public int ExpFog = ENV_USE_DEFAULT;

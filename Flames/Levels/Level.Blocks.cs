@@ -20,8 +20,6 @@ using Flames.Blocks;
 using Flames.Blocks.Physics;
 using Flames.DB;
 using Flames.Maths;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames
 {
@@ -100,38 +98,38 @@ namespace Flames
 
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
-        public BlockID FastGetBlock(int index)
+        public ushort FastGetBlock(int index)
         {
             byte raw = blocks[index];
-            BlockID extended = Block.ExtendedBase[raw];
-            return extended == 0 ? raw : (BlockID)(extended | GetExtTile(index));
+            ushort extended = Block.ExtendedBase[raw];
+            return extended == 0 ? raw : (ushort)(extended | GetExtTile(index));
 
         }
 
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Undefined behaviour if coordinates are invalid </returns>
-        public BlockID FastGetBlock(ushort x, ushort y, ushort z)
+        public ushort FastGetBlock(ushort x, ushort y, ushort z)
         {
             byte raw = blocks[x + Width * (z + y * Length)];
-            BlockID extended = Block.ExtendedBase[raw];
-            return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
+            ushort extended = Block.ExtendedBase[raw];
+            return extended == 0 ? raw : (ushort)(extended | FastGetExtTile(x, y, z));
 
         }
 
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Block.Invalid if coordinates outside level </returns>
-        public BlockID GetBlock(ushort x, ushort y, ushort z)
+        public ushort GetBlock(ushort x, ushort y, ushort z)
         {
             if (x >= Width || y >= Height || z >= Length || blocks == null) return Block.Invalid;
             byte raw = blocks[x + Width * (z + y * Length)];
 
-            BlockID extended = Block.ExtendedBase[raw];
-            return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
+            ushort extended = Block.ExtendedBase[raw];
+            return extended == 0 ? raw : (ushort)(extended | FastGetExtTile(x, y, z));
         }
 
         /// <summary> Gets the block at the given coordinates </summary>
         /// <returns> Block.Invalid if coordinates outside level </returns>
-        public BlockID GetBlock(ushort x, ushort y, ushort z, out int index)
+        public ushort GetBlock(ushort x, ushort y, ushort z, out int index)
         {
             if (x >= Width || y >= Height || z >= Length || blocks == null) 
             { 
@@ -141,8 +139,8 @@ namespace Flames
             index = x + Width * (z + y * Length);
             byte raw = blocks[index];
 
-            BlockID extended = Block.ExtendedBase[raw];
-            return extended == 0 ? raw : (BlockID)(extended | FastGetExtTile(x, y, z));
+            ushort extended = Block.ExtendedBase[raw];
+            return extended == 0 ? raw : (ushort)(extended | FastGetExtTile(x, y, z));
 
         }
 
@@ -215,7 +213,7 @@ namespace Flames
             chunk[(y & 0x0F) << 8 | (z & 0x0F) << 4 | (x & 0x0F)] = 0;
         }
 
-        public void SetBlock(ushort x, ushort y, ushort z, BlockID block)
+        public void SetBlock(ushort x, ushort y, ushort z, ushort block)
         {
             int index = PosToInt(x, y, z);
             if (blocks == null || index < 0) return;
@@ -224,16 +222,16 @@ namespace Flames
             if (block >= Block.Extended)
             {
                 blocks[index] = Block.ExtendedClass[block >> Block.ExtendedShift];
-                FastSetExtTile(x, y, z, (BlockRaw)block);
+                FastSetExtTile(x, y, z, (byte)block);
             }
             else
             {
-                blocks[index] = (BlockRaw)block;
+                blocks[index] = (byte)block;
             }
         }
 
 
-        public bool BuildIn(BlockID block)
+        public bool BuildIn(ushort block)
         {
             if (block == Block.Op_Water || block == Block.Op_Lava || Props[block].IsPortal || Props[block].IsMessageBlock) return false;
             block = Block.Convert(block);
@@ -282,7 +280,7 @@ namespace Flames
             }
         }
 
-        public bool CheckAffect(Player p, ushort x, ushort y, ushort z, BlockID old, BlockID block)
+        public bool CheckAffect(Player p, ushort x, ushort y, ushort z, ushort old, ushort block)
         {
             if (!p.group.Blocks[old] || !p.group.Blocks[block]) return false;
             AccessController denier = CanAffect(p, x, y, z);
@@ -297,7 +295,7 @@ namespace Flames
         }
 
         /// <summary> Sends a block update packet to all players in this level. </summary>
-        public void BroadcastChange(ushort x, ushort y, ushort z, BlockID block)
+        public void BroadcastChange(ushort x, ushort y, ushort z, ushort block)
         {
             Player[] players = PlayerInfo.Online.Items;
             foreach (Player p in players)
@@ -310,12 +308,12 @@ namespace Flames
         /// <remarks> The block sent is the current block at the given coordinates. </remarks>
         public void BroadcastRevert(ushort x, ushort y, ushort z)
         {
-            BlockID block = GetBlock(x, y, z);
+            ushort block = GetBlock(x, y, z);
             if (block != Block.Invalid) BroadcastChange(x, y, z, block);
         }
 
 
-        public void Blockchange(Player p, ushort x, ushort y, ushort z, BlockID block)
+        public void Blockchange(Player p, ushort x, ushort y, ushort z, ushort block)
         {
             if (TryChangeBlock(p, x, y, z, block) == ChangeResult.Modified) BroadcastChange(x, y, z, block);
         }
@@ -323,12 +321,12 @@ namespace Flames
         /// <summary> Performs a user like block change, but **DOES NOT** update the BlockDB. </summary>
         /// <remarks> The return code can be used to avoid sending redundant block changes. </remarks>
         /// <remarks> Does NOT send the changed block to any players - use BroadcastChange. </remarks>
-        public ChangeResult TryChangeBlock(Player p, ushort x, ushort y, ushort z, BlockID block, bool drawn = false)
+        public ChangeResult TryChangeBlock(Player p, ushort x, ushort y, ushort z, ushort block, bool drawn = false)
         {
             string errorLocation = "start";
             try
             {
-                BlockID old = GetBlock(x, y, z);
+                ushort old = GetBlock(x, y, z);
                 if (old == Block.Invalid) return ChangeResult.Unchanged;
 
                 errorLocation = "Permission checking";
@@ -354,11 +352,11 @@ namespace Flames
                 {
                     SetTile(x, y, z, Block.ExtendedClass[block >> Block.ExtendedShift]);
 
-                    FastSetExtTile(x, y, z, (BlockRaw)block);
+                    FastSetExtTile(x, y, z, (byte)block);
                 }
                 else
                 {
-                    SetTile(x, y, z, (BlockRaw)block);
+                    SetTile(x, y, z, (byte)block);
                     if (old >= Block.Extended)
                     {
                         FastRevertExtTile(x, y, z);
@@ -383,7 +381,7 @@ namespace Flames
             }
         }
 
-        public void Blockchange(int b, BlockID block, bool overRide = false,
+        public void Blockchange(int b, ushort block, bool overRide = false,
                                 PhysicsArgs data = default, bool addUndo = true)
         { //Block change made by physics
             if (!DoPhysicsBlockchange(b, block, overRide, data, addUndo)) return;
@@ -393,24 +391,24 @@ namespace Flames
             BroadcastChange(x, y, z, block);
         }
 
-        public void Blockchange(ushort x, ushort y, ushort z, BlockID block, bool overRide = false,
+        public void Blockchange(ushort x, ushort y, ushort z, ushort block, bool overRide = false,
                                 PhysicsArgs data = default, bool addUndo = true)
         {
             Blockchange(PosToInt(x, y, z), block, overRide, data, addUndo); //Block change made by physics
         }
 
-        public void Blockchange(ushort x, ushort y, ushort z, BlockID block)
+        public void Blockchange(ushort x, ushort y, ushort z, ushort block)
         {
             Blockchange(PosToInt(x, y, z), block, false, default); //Block change made by physics
         }
 
-        public bool DoPhysicsBlockchange(int b, BlockID block, bool overRide = false,
+        public bool DoPhysicsBlockchange(int b, ushort block, bool overRide = false,
                                          PhysicsArgs data = default, bool addUndo = true)
         {
             if (blocks == null || b < 0 || b >= blocks.Length) return false;
-            BlockID old = blocks[b];
-            BlockID extended = Block.ExtendedBase[old];
-            if (extended > 0) old = (BlockID)(extended | GetExtTile(b));
+            ushort old = blocks[b];
+            ushort extended = Block.ExtendedBase[old];
+            if (extended > 0) old = (ushort)(extended | GetExtTile(b));
 
 
             try
@@ -455,11 +453,11 @@ namespace Flames
 
                     ushort x, y, z;
                     IntToPos(b, out x, out y, out z);
-                    FastSetExtTile(x, y, z, (BlockRaw)block);
+                    FastSetExtTile(x, y, z, (byte)block);
                 }
                 else
                 {
-                    blocks[b] = (BlockRaw)block;
+                    blocks[b] = (byte)block;
                     if (old >= Block.Extended)
                     {
                         ushort x, y, z;
@@ -481,11 +479,11 @@ namespace Flames
             }
         }
 
-        public void UpdateBlock(Player p, ushort x, ushort y, ushort z, BlockID block,
+        public void UpdateBlock(Player p, ushort x, ushort y, ushort z, ushort block,
                                 ushort flags = BlockDBFlags.ManualPlace, bool buffered = false)
         {
             int index;
-            BlockID old = GetBlock(x, y, z, out index);
+            ushort old = GetBlock(x, y, z, out index);
             bool drawn = (flags & BlockDBFlags.ManualPlace) == 0;
 
             ChangeResult result = TryChangeBlock(p, x, y, z, block, drawn);
@@ -513,7 +511,7 @@ namespace Flames
             return P;
         }
 
-        public BlockDefinition GetBlockDef(BlockID block)
+        public BlockDefinition GetBlockDef(ushort block)
         {
             if (block == Block.Air) return null;
             if (Block.IsPhysicsType(block))
@@ -526,7 +524,7 @@ namespace Flames
             }
         }
 
-        public byte CollideType(BlockID block)
+        public byte CollideType(ushort block)
         {
             BlockDefinition def = GetBlockDef(block);
             byte collide = def != null ? def.CollideType : Flames.Blocks.CollideType.Solid;
@@ -536,14 +534,14 @@ namespace Flames
             return collide;
         }
 
-        public bool LightPasses(BlockID block)
+        public bool LightPasses(ushort block)
         {
             BlockDefinition def = GetBlockDef(block);
             if (def != null) return !def.BlocksLight || def.BlockDraw == DrawType.TransparentThick || def.MinZ > 0;
             return Block.LightPass(block);
         }
 
-        public byte GetFallback(BlockID b)
+        public byte GetFallback(ushort b)
         {
             BlockDefinition def = CustomBlockDefs[b];
             if (def != null) return def.FallBack;

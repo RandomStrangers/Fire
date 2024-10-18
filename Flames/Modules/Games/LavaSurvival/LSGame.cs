@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.LS
 {
@@ -49,7 +48,7 @@ namespace Flames.Modules.Games.LS
         }
 
         public bool flooded, fastMode, waterMode, layerMode, floodUp;
-        public BlockID floodBlock;
+        public ushort floodBlock;
         public LSFloodMode floodMode;
         public int curLayer, spreadDelay;
         public int roundTotalSecs, floodDelaySecs, layerIntervalSecs;

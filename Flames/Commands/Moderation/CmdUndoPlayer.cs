@@ -21,7 +21,6 @@ using Flames.Commands.Building;
 using Flames.DB;
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Moderation
 {
@@ -80,7 +79,7 @@ namespace Flames.Commands.Moderation
             }
         }
 
-        public bool DoUndoArea(Player p, Vec3S32[] marks, object state, BlockID block)
+        public bool DoUndoArea(Player p, Vec3S32[] marks, object state, ushort block)
         {
             UndoAreaArgs args = (UndoAreaArgs)state;
             UndoPlayer(p, args.delta, args.names, args.ids, marks);

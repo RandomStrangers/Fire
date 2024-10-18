@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -28,8 +27,7 @@ namespace Flames.Blocks.Physics
         {
             Random rand = lvl.physRandom;
             ushort x = C.X, y = C.Y, z = C.Z;
-            int index;
-            BlockID below = lvl.GetBlock(x, (ushort)(y - 1), z, out index);
+            ushort below = lvl.GetBlock(x, (ushort)(y - 1), z, out int index);
 
             if (below == Block.Air)
             {
@@ -52,9 +50,7 @@ namespace Flames.Blocks.Physics
                 for (int k = count - 1; k > 1; --k)
                 {
                     int randIndx = rand.Next(k);
-                    int temp = indices[k];
-                    indices[k] = indices[randIndx]; // move random num to end of list.
-                    indices[randIndx] = temp;
+                    (indices[randIndx], indices[k]) = (indices[k], indices[randIndx]);
                 }
 
                 for (int j = 0; j < count; j++)
@@ -96,8 +92,7 @@ namespace Flames.Blocks.Physics
 
         public static bool Expand(Level lvl, ushort x, ushort y, ushort z)
         {
-            int index;
-            return lvl.IsAirAt(x, y, z, out index) && lvl.AddUpdate(index, Block.FiniteWater, default(PhysicsArgs));
+            return lvl.IsAirAt(x, y, z, out int index) && lvl.AddUpdate(index, Block.FiniteWater, default(PhysicsArgs));
         }
 
         public unsafe static void DoFaucet(Level lvl, ref PhysInfo C)
@@ -113,9 +108,7 @@ namespace Flames.Blocks.Physics
             for (int k = count - 1; k > 1; --k)
             {
                 int randIndx = rand.Next(k);
-                int temp = indices[k];
-                indices[k] = indices[randIndx]; // move random num to end of list.
-                indices[randIndx] = temp;
+                (indices[randIndx], indices[k]) = (indices[k], indices[randIndx]);
             }
 
             for (int j = 0; j < count; j++)

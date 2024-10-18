@@ -18,11 +18,10 @@
 using System;
 using System.Collections.Generic;
 using Flames.Generator.fCraft;
-using BlockID = System.UInt16;
 
 namespace Flames.Generator.Foliage
 {
-    public delegate void TreeOutput(ushort x, ushort y, ushort z, BlockID block);
+    public delegate void TreeOutput(ushort x, ushort y, ushort z, ushort block);
 
     public delegate Tree TreeConstructor();
 
@@ -58,7 +57,7 @@ namespace Flames.Generator.Foliage
                 for (int dz = -size; dz <= size; ++dz)
                     for (int dx = -size; dx <= size; ++dx)
                     {
-                        BlockID block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
+                        ushort block = lvl.GetBlock((ushort)(x + dx), (ushort)(y + dy), (ushort)(z + dz));
                         if (block == Block.Log || block == Block.Green) return true;
                     }
             return false;

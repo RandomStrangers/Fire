@@ -24,16 +24,16 @@ using Flames.Network;
 //  http://www.upnp-hacks.org/upnp.html
 //  http://www.upnp-hacks.org/igd.html
 
-namespace Flames 
+namespace Flames
 {
     public class UPnP
     {
-        public static TimeSpan Timeout   = TimeSpan.FromSeconds(3);
+        public static TimeSpan Timeout = TimeSpan.FromSeconds(3);
         public const string TCP_PROTOCOL = "TCP";
-        
+
         public Action<string> Log;
 
-        public const string SEARCH_REQUEST = 
+        public const string SEARCH_REQUEST =
             "M-SEARCH * HTTP/1.1\r\n" +
             "HOST: 239.255.255.250:1900\r\n" +
             "ST:upnp:rootdevice\r\n" +
@@ -43,63 +43,72 @@ namespace Flames
 
         public string _serviceUrl;
         public List<string> visitedLocations = new List<string>();
-        
-        
-        public bool Discover() {
+
+
+        public bool Discover()
+        {
             Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             s.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.Broadcast, 1);
-            
-            byte[] data   = Encoding.ASCII.GetBytes(SEARCH_REQUEST);
+
+            byte[] data = Encoding.ASCII.GetBytes(SEARCH_REQUEST);
             IPEndPoint ep = new IPEndPoint(IPAddress.Broadcast, 1900);
             byte[] buffer = new byte[0x1000];
 
             s.ReceiveTimeout = 3000;
             visitedLocations.Clear();
             Log("Searching for UPnP supporting routers..");
-            DateTime end  = DateTime.UtcNow.Add(Timeout);
-            
-            try {
+            DateTime end = DateTime.UtcNow.Add(Timeout);
+
+            try
+            {
                 while (DateTime.UtcNow < end)
                 {
                     s.SendTo(data, ep);
                     s.SendTo(data, ep);
                     s.SendTo(data, ep);
-                
+
                     int length = -1;
-                    do {
+                    do
+                    {
                         length = s.Receive(buffer);
                         string resp = Encoding.ASCII.GetString(buffer, 0, length);
-                        
-                        if (resp.Contains("upnp:rootdevice")) {
+
+                        if (resp.Contains("upnp:rootdevice"))
+                        {
                             string location = resp.Substring(resp.ToLower().IndexOf("location:") + 9);
                             location = location.Substring(0, location.IndexOf("\r")).Trim();
-                            
-                            if (!visitedLocations.Contains(location)) {
+
+                            if (!visitedLocations.Contains(location))
+                            {
                                 visitedLocations.Add(location);
                                 //Log("Found UPnP device: " + location);
                                 Log("  Found: " + location);
-                                
+
                                 _serviceUrl = GetServiceUrl(location);
                                 if (string.IsNullOrEmpty(_serviceUrl)) continue;
-                                
+
                                 Log("  Service URL: " + _serviceUrl);
                                 return true;
                             }
                         }
-                    } while (length > 0);
+                    } 
+                    while (length > 0);
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error discovering UPnP devices", ex);
             }
-            
+
             Log("No UPnP supporting routers found");
             return false;
         }
 
-        public void ForwardPort(int port, string protocol, string description) {
+        public void ForwardPort(int port, string protocol, string description)
+        {
             if (string.IsNullOrEmpty(_serviceUrl))
                 throw new InvalidOperationException("No UPnP service available or Discover() has not been called");
-            
+
             string xdoc = SOAPRequest(_serviceUrl, "AddPortMapping",
                 "<u:AddPortMapping xmlns:u=\"urn:schemas-upnp-org:service:WANIPConnection:1\">" +
                 "<NewRemoteHost></NewRemoteHost>" +
@@ -114,10 +123,11 @@ namespace Flames
             Log("Forwarded port " + port);
         }
 
-        public void DeleteForwardingRule(int port, string protocol) {
+        public void DeleteForwardingRule(int port, string protocol)
+        {
             if (string.IsNullOrEmpty(_serviceUrl))
                 throw new InvalidOperationException("No UPnP service available or Discover() has not been called");
-            
+
             string xdoc = SOAPRequest(_serviceUrl, "DeletePortMapping",
                 "<u:DeletePortMapping xmlns:u=\"urn:schemas-upnp-org:service:WANIPConnection:1\">" +
                 "<NewRemoteHost></NewRemoteHost>" +
@@ -128,45 +138,52 @@ namespace Flames
         }
 
 
-        public static string GetServiceUrl(string location) {
-            try {
+        public static string GetServiceUrl(string location)
+        {
+            try
+            {
                 XmlDocument doc = new XmlDocument();
                 WebRequest request = WebRequest.Create(location);
                 doc.Load(request.GetResponse().GetResponseStream());
-                
+
                 XmlNamespaceManager nsMgr = new XmlNamespaceManager(doc.NameTable);
                 nsMgr.AddNamespace("tns", "urn:schemas-upnp-org:device-1-0");
                 XmlNode node;
-                
-                node = doc.SelectSingleNode("//tns:device/tns:deviceType/text()", nsMgr);                
+
+                node = doc.SelectSingleNode("//tns:device/tns:deviceType/text()", nsMgr);
                 if (node == null || !node.Value.Contains("InternetGatewayDevice"))
                     return null;
-                
+
                 node = doc.SelectSingleNode("//tns:service[tns:serviceType=\"urn:schemas-upnp-org:service:WANIPConnection:1\"]/tns:controlURL/text()", nsMgr);
                 if (node != null) return CombineUrls(location, node.Value);
-                
+
                 // Try again with version 2
                 node = doc.SelectSingleNode("//tns:service[tns:serviceType=\"urn:schemas-upnp-org:service:WANIPConnection:2\"]/tns:controlURL/text()", nsMgr);
                 if (node != null) return CombineUrls(location, node.Value);
 
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 HttpUtil.DisposeErrorResponse(ex);
                 Logger.LogError("Error getting UPnP device service URL", ex);
             }
             return null;
         }
 
-        public static string CombineUrls(string location, string p) {
+        public static string CombineUrls(string location, string p)
+        {
             int n = location.IndexOf("://");
             n = location.IndexOf('/', n + 3);
             return location.Substring(0, n) + p;
         }
 
-        public static string GetLocalIP() {
-            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());        
-            foreach (IPAddress ip in host.AddressList) 
+        public static string GetLocalIP()
+        {
+            IPHostEntry host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ip in host.AddressList)
             {
-                if (ip.AddressFamily == AddressFamily.InterNetwork) {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
                     return ip.ToString();
                 }
             }
@@ -175,21 +192,22 @@ namespace Flames
 
         /// <summary> Performs a XML SOAP request </summary>
         /// <returns> XML response from the service </returns>
-        public static string SOAPRequest(string url, string function, string soap) {
-            string req = 
+        public static string SOAPRequest(string url, string function, string soap)
+        {
+            string req =
                 "<?xml version=\"1.0\"?>" +
                 "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\" s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">" +
                 "<s:Body>" + soap + "</s:Body>" +
                 "</s:Envelope>";
-            
+
             WebRequest r = WebRequest.Create(url);
-            r.Method = "POST";            
+            r.Method = "POST";
             r.Headers.Add("SOAPACTION", "\"urn:schemas-upnp-org:service:WANIPConnection:1#" + function + "\"");
             r.ContentType = "text/xml; charset=\"utf-8\"";
-            
+
             byte[] data = Encoding.UTF8.GetBytes(req);
             HttpUtil.SetRequestData(r, data);
-            
+
             WebResponse res = r.GetResponse();
             return HttpUtil.GetResponseText(res);
         }

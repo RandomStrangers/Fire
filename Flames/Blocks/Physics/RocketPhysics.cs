@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using BlockID = System.UInt16;
 
 namespace Flames.Blocks.Physics
 {
@@ -36,10 +35,10 @@ namespace Flames.Blocks.Physics
                 for (int cy = -dirY; cy != 2 * dirY; cy += dirY)
                     for (int cz = -dirZ; cz != 2 * dirZ; cz += dirZ)
                     {
-                        BlockID rocketTail = lvl.GetBlock((ushort)(x + cx), (ushort)(y + cy), (ushort)(z + cz));
+                        ushort rocketTail = lvl.GetBlock((ushort)(x + cx), (ushort)(y + cy), (ushort)(z + cz));
                         if (rocketTail != Block.LavaFire) continue;
 
-                        BlockID rocketHead = lvl.GetBlock((ushort)(x - cx), (ushort)(y - cy), (ushort)(z - cz), out int headIndex);
+                        ushort rocketHead = lvl.GetBlock((ushort)(x - cx), (ushort)(y - cy), (ushort)(z - cz), out int headIndex);
                         bool unblocked = !lvl.listUpdateExists.Get(x, y, z) && (headIndex < 0 || !lvl.listUpdateExists.Get(x - cx, y - cy, z - cz));
 
                         if (unblocked && (rocketHead == Block.Air || rocketHead == Block.RocketStart))

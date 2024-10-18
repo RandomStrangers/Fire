@@ -28,7 +28,6 @@ using Flames.Maths;
 using Flames.Network;
 using Flames.SQL;
 using Flames.Util;
-using BlockID = System.UInt16;
 
 namespace Flames
 {
@@ -39,7 +38,7 @@ namespace Flames
         public readonly object blockchangeLock = new object();
         public bool HasBlockChange() { return Blockchange != null; }
 
-        public bool DoBlockchangeCallback(ushort x, ushort y, ushort z, BlockID block)
+        public bool DoBlockchangeCallback(ushort x, ushort y, ushort z, ushort block)
         {
             lock (blockchangeLock)
             {
@@ -52,9 +51,9 @@ namespace Flames
         }
 
         public void HandleManualChange(ushort x, ushort y, ushort z, bool placing,
-                                       BlockID block, bool checkPlaceDist)
+                                       ushort block, bool checkPlaceDist)
         {
-            BlockID old = level.GetBlock(x, y, z);
+            ushort old = level.GetBlock(x, y, z);
             if (old == Block.Invalid) return;
 
             if (jailed || frozen || possessed) { RevertBlock(x, y, z); return; }
@@ -113,11 +112,11 @@ namespace Flames
                 RevertBlock(x, y, z); return;
             }
 
-            BlockID raw = placing ? block : Block.Air;
+            ushort raw = placing ? block : Block.Air;
             block = BlockBindings[block];
             if (ModeBlock != Block.Invalid) block = ModeBlock;
 
-            BlockID newB = deletingBlock ? Block.Air : block;
+            ushort newB = deletingBlock ? Block.Air : block;
             ChangeResult result;
 
             if (old == newB)
@@ -148,7 +147,7 @@ namespace Flames
             OnBlockChangedEvent.Call(this, x, y, z, result);
         }
 
-        public bool CheckManualChange(BlockID old, bool deleteMode)
+        public bool CheckManualChange(ushort old, bool deleteMode)
         {
             if (!group.Blocks[old] && !level.BuildIn(old) && !Block.AllowBreak(old))
             {
@@ -159,7 +158,7 @@ namespace Flames
             return true;
         }
 
-        public ChangeResult DeleteBlock(BlockID old, ushort x, ushort y, ushort z)
+        public ChangeResult DeleteBlock(ushort old, ushort x, ushort y, ushort z)
         {
             if (deleteMode) return ChangeBlock(x, y, z, Block.Air);
 
@@ -168,7 +167,7 @@ namespace Flames
             return ChangeBlock(x, y, z, Block.Air);
         }
 
-        public ChangeResult PlaceBlock(BlockID old, ushort x, ushort y, ushort z, BlockID block)
+        public ChangeResult PlaceBlock(ushort old, ushort x, ushort y, ushort z, ushort block)
         {
             HandlePlace handler = level.PlaceHandlers[block];
             if (handler != null) return handler(this, block, x, y, z);
@@ -178,9 +177,9 @@ namespace Flames
         /// <summary> Updates the block at the given position, mainly intended for manual changes by the player. </summary>
         /// <remarks> Adds to the BlockDB. Also turns block below to grass/dirt depending on light. </remarks>
         /// <returns> Return code from DoBlockchange </returns>
-        public ChangeResult ChangeBlock(ushort x, ushort y, ushort z, BlockID block)
+        public ChangeResult ChangeBlock(ushort x, ushort y, ushort z, ushort block)
         {
-            BlockID old = level.GetBlock(x, y, z);
+            ushort old = level.GetBlock(x, y, z);
             ChangeResult result = level.TryChangeBlock(this, x, y, z, block);
 
             if (result == ChangeResult.Unchanged) return result;
@@ -197,15 +196,15 @@ namespace Flames
 
             bool grow = level.Config.GrassGrow && (level.physics == 0 || level.physics == 5);
             if (!grow || level.CanAffect(this, x, y, z) != null) return result;
-            BlockID below = level.GetBlock(x, y, z);
+            ushort below = level.GetBlock(x, y, z);
 
-            BlockID grass = level.Props[below].GrassBlock;
+            ushort grass = level.Props[below].GrassBlock;
             if (grass != Block.Invalid && block == Block.Air)
             {
                 level.Blockchange(this, x, y, z, grass);
             }
 
-            BlockID dirt = level.Props[below].DirtBlock;
+            ushort dirt = level.Props[below].DirtBlock;
             if (dirt != Block.Invalid && !level.LightPasses(block))
             {
                 level.Blockchange(this, x, y, z, dirt);
@@ -213,7 +212,7 @@ namespace Flames
             return result;
         }
 
-        public void ProcessBlockchange(ushort x, ushort y, ushort z, byte action, BlockID held)
+        public void ProcessBlockchange(ushort x, ushort y, ushort z, byte action, ushort held)
         {
             try
             {
@@ -257,7 +256,7 @@ namespace Flames
 
         public void ProcessMovement(int x, int y, int z, byte yaw, byte pitch, int held)
         {
-            if (held >= 0) ClientHeldBlock = (BlockID)held;
+            if (held >= 0) ClientHeldBlock = (ushort)held;
 
             if (trainGrab || following.Length > 0) { CheckBlocks(Pos, Pos); return; }
             Position next = new Position(x, y, z);
@@ -317,7 +316,7 @@ namespace Flames
             }
 
             if (value == default_) value = EnvConfig.DefaultEnvProp(i, level.Height);
-            if (block) value = Session.ConvertBlock((BlockID)value);
+            if (block) value = Session.ConvertBlock((ushort)value);
             return value;
         }
 
@@ -393,7 +392,7 @@ namespace Flames
             }
         }
 
-        public bool HandleDeath(BlockID block, string customMsg = "", bool explode = false, bool immediate = false)
+        public bool HandleDeath(ushort block, string customMsg = "", bool explode = false, bool immediate = false)
         {
             if (!immediate && DateTime.UtcNow < deathCooldown) return false;
             if (invincible) return false;

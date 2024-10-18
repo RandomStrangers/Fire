@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Commands;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -47,19 +46,19 @@ namespace Flames.Drawing.Brushes
             }
 
             int count = parts.Length == 1 ? 1 : parts.Length - 1;
-            BlockID[] toAffect = GetBlocks(args.Player, 0, count, parts);
+            ushort[] toAffect = GetBlocks(args.Player, 0, count, parts);
             if (toAffect == null) return null;
 
-            BlockID target;
+            ushort target;
             if (!GetTargetBlock(args, parts, out target)) return null;
 
             if (not) return new ReplaceNotBrush(toAffect, target);
             return new ReplaceBrush(toAffect, target);
         }
 
-        public static BlockID[] GetBlocks(Player p, int start, int max, string[] parts)
+        public static ushort[] GetBlocks(Player p, int start, int max, string[] parts)
         {
-            List<BlockID> blocks = new List<BlockID>(max - start);
+            List<ushort> blocks = new List<ushort>(max - start);
 
             for (int i = 0; start < max; start++, i++)
             {
@@ -67,7 +66,7 @@ namespace Flames.Drawing.Brushes
                 if (count == 0) return null;
             }
 
-            foreach (BlockID b in blocks)
+            foreach (ushort b in blocks)
             {
                 if (b == Block.Invalid) continue; // "Skip" block
                 if (!CommandParser.IsBlockAllowed(p, "replace", b)) return null;
@@ -75,7 +74,7 @@ namespace Flames.Drawing.Brushes
             return blocks.ToArray();
         }
 
-        public static bool GetTargetBlock(BrushArgs args, string[] parts, out BlockID target)
+        public static bool GetTargetBlock(BrushArgs args, string[] parts, out ushort target)
         {
             Player p = args.Player;
             target = 0;

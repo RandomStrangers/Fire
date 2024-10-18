@@ -18,15 +18,25 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Flames.Gui {
+namespace Flames.Gui
+{
 
-    public class ColorConverter : StringConverter {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
-        
-        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+    public class ColorConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
+        { 
+            return true; 
+        }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) 
+        { 
+            return true;
+        }
+
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
             List<string> colors = new List<string>();
-            for (int i = 0; i < Colors.List.Length; i++) {
+            for (int i = 0; i < Colors.List.Length; i++)
+            {
                 if (Colors.List[i].Undefined) continue;
                 colors.Add(Colors.List[i].Name);
             }
@@ -34,13 +44,21 @@ namespace Flames.Gui {
         }
     }
 
-    public class RankConverter : StringConverter {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
-        
-        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+    public class RankConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
+        { 
+            return true; 
+        }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) 
+        {
+            return true; 
+        }
+
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
             List<string> ranks = new List<string>();
-            foreach (Group g in Group.GroupList) 
+            foreach (Group g in Group.GroupList)
             {
                 if (g.Permission <= LevelPermission.Banned) continue;
                 ranks.Add(g.Name);
@@ -49,11 +67,19 @@ namespace Flames.Gui {
         }
     }
 
-    public class LevelConverter : StringConverter {
-        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) { return true; }
-        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) { return true; }
-        
-        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) {
+    public class LevelConverter : StringConverter
+    {
+        public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
+        {
+            return true; 
+        }
+        public override bool GetStandardValuesExclusive(ITypeDescriptorContext context) 
+        { 
+            return true; 
+        }
+
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        {
             List<string> levels = new List<string>();
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded)

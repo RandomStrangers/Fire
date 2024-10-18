@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using System.IO;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing
 {
@@ -86,7 +85,7 @@ namespace Flames.Drawing
 
         public static PaletteEntry ParseEntry(string[] parts)
         {
-            BlockID block = BlockID.Parse(parts[0]);
+            ushort block = ushort.Parse(parts[0]);
             block = Block.MapOldRaw(block);
 
             byte r = byte.Parse(parts[1]);
@@ -172,9 +171,9 @@ namespace Flames.Drawing
     public struct PaletteEntry
     {
         public byte R, G, B;
-        public BlockID Block;
+        public ushort Block;
 
-        public PaletteEntry(byte r, byte g, byte b, BlockID block)
+        public PaletteEntry(byte r, byte g, byte b, ushort block)
         {
             R = r; 
             G = g; 

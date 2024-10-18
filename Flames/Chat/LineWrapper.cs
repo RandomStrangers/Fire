@@ -191,8 +191,7 @@ namespace Flames
         {
             if (value.IndexOf('&') == -1) return value;
 
-            int len;
-            char[] chars = CleanupColors(value, out len, fullAmpersands, customColors);
+            char[] chars = CleanupColors(value, out int len, fullAmpersands, customColors);
             return new string(chars, 0, len);
         }
 

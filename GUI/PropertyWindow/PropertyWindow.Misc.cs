@@ -17,21 +17,24 @@ using System.Windows.Forms;
 using Flames.Gui.Popups;
 using Flames.SQL;
 
-namespace Flames.Gui {
+namespace Flames.Gui
+{
 
-    public partial class PropertyWindow : Form {
+    public partial class PropertyWindow : Form
+    {
 
-        public void LoadMiscProps() {
+        public void LoadMiscProps()
+        {
             bak_numTime.Value = Server.Config.BackupInterval;
             bak_txtLocation.Text = Server.Config.BackupDirectory;
             hack_lbl.Checked = Server.Config.HackrankKicks;
             hack_num.Value = Server.Config.HackrankKickDelay;
-            
+
             afk_numTimer.Value = Server.Config.AutoAfkTime;
             chkPhysRestart.Checked = Server.Config.PhysicsRestart;
             txtRP.Text = Server.Config.PhysicsRestartLimit.ToString();
             txtNormRp.Text = Server.Config.PhysicsRestartNormLimit.ToString();
-            
+
             chkDeath.Checked = Server.Config.AnnounceDeathCount;
             chkSmile.Checked = Server.Config.ParseEmotes;
             chk17Dollar.Checked = Server.Config.DollarNames;
@@ -41,34 +44,38 @@ namespace Flames.Gui {
             chkRestart.Checked = Server.Config.restartOnError;
         }
 
-        public void ApplyMiscProps() {
+        public void ApplyMiscProps()
+        {
             Server.Config.BackupInterval = bak_numTime.Value;
             Server.Config.BackupDirectory = bak_txtLocation.Text;
             Server.Config.HackrankKicks = hack_lbl.Checked;
             Server.Config.HackrankKickDelay = hack_num.Value;
-            
+
             Server.Config.AutoAfkTime = afk_numTimer.Value;
             Server.Config.PhysicsRestart = chkPhysRestart.Checked;
             Server.Config.PhysicsRestartLimit = int.Parse(txtRP.Text);
             Server.Config.PhysicsRestartNormLimit = int.Parse(txtNormRp.Text);
-            
+
             Server.Config.AnnounceDeathCount = chkDeath.Checked;
             Server.Config.ParseEmotes = chkSmile.Checked;
             Server.Config.DollarNames = chk17Dollar.Checked;
             Server.Config.RepeatMBs = chkRepeatMessages.Checked;
             Server.Config.GuestLimitNotify = chkGuestLimitNotify.Checked;
             Server.Config.ReviewCooldown = misc_numReview.Value;
-            Server.Config.restartOnError = chkRestart.Checked; 
+            Server.Config.restartOnError = chkRestart.Checked;
         }
 
-        public void adv_btnEditTexts_Click(object sender, EventArgs e) {
-            using (Form form = new EditText()) {
+        public void adv_btnEditTexts_Click(object sender, EventArgs e)
+        {
+            using (Form form = new EditText())
+            {
                 form.ShowDialog();
             }
         }
 
 
-        public void LoadSqlProps() {
+        public void LoadSqlProps()
+        {
             sql_chkUseSQL.Checked = Server.Config.UseMySQL;
             sql_txtUser.Text = Server.Config.MySQLUsername;
             sql_txtPass.Text = Server.Config.MySQLPassword;
@@ -78,7 +85,8 @@ namespace Flames.Gui {
             ToggleMySQLSettings(Server.Config.UseMySQL);
         }
 
-        public void ApplySqlProps() {
+        public void ApplySqlProps()
+        {
             Server.Config.UseMySQL = sql_chkUseSQL.Checked;
             Server.Config.MySQLUsername = sql_txtUser.Text;
             Server.Config.MySQLPassword = sql_txtPass.Text;
@@ -91,19 +99,27 @@ namespace Flames.Gui {
         }
 
 
-        public void ToggleMySQLSettings(bool enabled) {
-            sql_txtUser.Enabled = enabled; sql_lblUser.Enabled = enabled;
-            sql_txtPass.Enabled = enabled; sql_lblPass.Enabled = enabled;
-            sql_txtPort.Enabled = enabled; sql_lblPort.Enabled = enabled;
-            sql_txtHost.Enabled = enabled; sql_lblHost.Enabled = enabled;
-            sql_txtDBName.Enabled = enabled; sql_lblDBName.Enabled = enabled;
+        public void ToggleMySQLSettings(bool enabled)
+        {
+            sql_txtUser.Enabled = enabled; 
+            sql_lblUser.Enabled = enabled;
+            sql_txtPass.Enabled = enabled; 
+            sql_lblPass.Enabled = enabled;
+            sql_txtPort.Enabled = enabled; 
+            sql_lblPort.Enabled = enabled;
+            sql_txtHost.Enabled = enabled; 
+            sql_lblHost.Enabled = enabled;
+            sql_txtDBName.Enabled = enabled; 
+            sql_lblDBName.Enabled = enabled;
         }
 
-        public void sql_linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+        public void sql_linkDownload_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
             GuiUtils.OpenBrowser("https://dev.mysql.com/downloads/");
         }
 
-        public void sql_chkUseSQL_CheckedChanged(object sender, EventArgs e) {
+        public void sql_chkUseSQL_CheckedChanged(object sender, EventArgs e)
+        {
             ToggleMySQLSettings(sql_chkUseSQL.Checked);
         }
     }

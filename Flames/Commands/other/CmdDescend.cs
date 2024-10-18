@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
 */
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Misc
 {
@@ -72,7 +71,7 @@ namespace Flames.Commands.Misc
         public static bool SolidAt(Level lvl, ushort x, int y, ushort z)
         {
             if (y >= lvl.Height) return false;
-            BlockID block = lvl.GetBlock(x, (ushort)y, z);
+            ushort block = lvl.GetBlock(x, (ushort)y, z);
             return CollideType.IsSolid(lvl.CollideType(block));
         }
 

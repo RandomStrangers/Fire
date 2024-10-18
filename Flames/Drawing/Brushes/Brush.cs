@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
  */
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -28,6 +27,6 @@ namespace Flames.Drawing.Brushes
         /// <summary> Returns the next block that should be placed in the world, 
         /// based on the draw operation's current state. </summary>
         /// <remarks> Returns Block.Invalid if no block should be placed. </remarks>
-        public abstract BlockID NextBlock(DrawOp op);
+        public abstract ushort NextBlock(DrawOp op);
     }
 }

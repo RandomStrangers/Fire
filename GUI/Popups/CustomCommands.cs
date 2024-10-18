@@ -21,28 +21,37 @@ using System.Windows.Forms;
 using Flames.Scripting;
 using Flames.Modules.Compiling;
 
-namespace Flames.Gui.Popups {
-    public partial class CustomCommands : Form {
-        
-        public CustomCommands() {
+namespace Flames.Gui.Popups
+{
+    public partial class CustomCommands : Form
+    {
+
+        public CustomCommands()
+        {
             InitializeComponent();
             LoadCompilers();
 
             //Sigh. I wish there were SOME event to help me.
-            foreach (Command cmd in Command.allCmds) {
+            foreach (Command cmd in Command.allCmds)
+            {
                 if (!Command.IsCore(cmd)) lstCommands.Items.Add(cmd.name);
             }
         }
 
-        public void CustomCommands_Load(object sender, EventArgs e) {
+        public void CustomCommands_Load(object sender, EventArgs e)
+        {
             GuiUtils.SetIcon(this);
         }
 
-        public void LoadCompilers() {
-            Button[] buttons = { btnCreate1, btnCreate2, btnCreate3, btnCreate4, btnCreate5 };
+        public void LoadCompilers()
+        {
+            Button[] buttons = 
+            { 
+                btnCreate1, btnCreate2, btnCreate3, btnCreate4, btnCreate5 
+            };
             List<ICompiler> compilers = ICompiler.Compilers;
             int i;
-            
+
             for (i = 0; i < Math.Min(compilers.Count, buttons.Length); i++)
             {
                 // must be copied to local variable because of the way C# for loop closures work,
@@ -50,28 +59,39 @@ namespace Flames.Gui.Popups {
                 //   from LAST iteration instead of the current iteration
                 ICompiler compiler = compilers[i];
                 buttons[i].Visible = true;
-                buttons[i].Text    = "Create " + compiler.ShortName;
-                buttons[i].Click  += delegate { CreateCommand(compiler); };
+                buttons[i].Text = "Create " + compiler.ShortName;
+                buttons[i].Click += delegate 
+                { 
+                    CreateCommand(compiler); 
+                };
             }
-            
+
             for (; i < buttons.Length; i++) buttons[i].Visible = false;
         }
 
-        public void CreateCommand(ICompiler compiler) {
+        public void CreateCommand(ICompiler compiler)
+        {
             string cmdName = txtCmdName.Text.Trim();
-            if (cmdName.Length == 0) {
-                Popup.Warning("Command must have a name"); return;
+            if (cmdName.Length == 0)
+            {
+                Popup.Warning("Command must have a name"); 
+                return;
             }
-            
+
             string path = compiler.CommandPath(cmdName);
-            if (File.Exists(path)) {
-                Popup.Warning("Command already exists"); return;
+            if (File.Exists(path))
+            {
+                Popup.Warning("Command already exists");
+                return;
             }
-            
-            try {
+
+            try
+            {
                 string source = compiler.GenExampleCommand(cmdName);
                 File.WriteAllText(path, source);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 Popup.Error("Failed to generate command. Check error logs for more details.");
                 return;
@@ -79,34 +99,41 @@ namespace Flames.Gui.Popups {
             Popup.Message("Command Cmd" + cmdName + compiler.FileExtension + " created.");
         }
 
-        public void btnLoad_Click(object sender, EventArgs e) {
+        public void btnLoad_Click(object sender, EventArgs e)
+        {
             string path;
-            
-            using (FileDialog dialog = new OpenFileDialog()) {
+
+            using (FileDialog dialog = new OpenFileDialog())
+            {
                 dialog.RestoreDirectory = true;
                 dialog.Filter = GetFilterText();
-                
+
                 if (dialog.ShowDialog() != DialogResult.OK) return;
                 path = dialog.FileName;
             }
             if (!File.Exists(path)) return;
-            
-            if (path.CaselessEnds(".dll")) {
-                LoadCommands(path); return;
+
+            if (path.CaselessEnds(".dll"))
+            {
+                LoadCommands(path); 
+                return;
             }
-                          
+
             // compile to temp .dll and load that
             string tmp = CompileCommands(path);
-            if (tmp == null) return; 
+            if (tmp == null) return;
             LoadCommands(tmp);
             DeleteAssembly(tmp);
         }
 
-        public void btnUnload_Click(object sender, EventArgs e) {
+        public void btnUnload_Click(object sender, EventArgs e)
+        {
             string cmdName = lstCommands.SelectedItem.ToString();
             Command cmd = Command.Find(cmdName);
-            if (cmd == null) {
-                Popup.Warning("Command " + cmdName + " is not loaded."); return;
+            if (cmd == null)
+            {
+                Popup.Warning("Command " + cmdName + " is not loaded."); 
+                return;
             }
 
             lstCommands.Items.Remove(cmd.name);
@@ -114,21 +141,24 @@ namespace Flames.Gui.Popups {
             Popup.Message("Command successfully unloaded.");
         }
 
-        public void lstCommands_SelectedIndexChanged(object sender, EventArgs e) {
+        public void lstCommands_SelectedIndexChanged(object sender, EventArgs e)
+        {
             btnUnload.Enabled = lstCommands.SelectedIndex != -1;
         }
 
 
-        public void LoadCommands(string path) {
+        public void LoadCommands(string path)
+        {
             Assembly lib = IScripting.LoadAssembly(path);
             if (lib == null) return;
             List<Command> commands = IScripting.LoadTypes<Command>(lib);
-            
-            for (int i = 0; i < commands.Count; i++) 
+
+            for (int i = 0; i < commands.Count; i++)
             {
                 Command cmd = commands[i];
 
-                if (lstCommands.Items.Contains(cmd.name)) {
+                if (lstCommands.Items.Contains(cmd.name))
+                {
                     Popup.Warning("Command " + cmd.name + " already exists, so was not loaded");
                     continue;
                 }
@@ -139,24 +169,27 @@ namespace Flames.Gui.Popups {
             }
         }
 
-        public string CompileCommands(string path) {
+        public string CompileCommands(string path)
+        {
             ICompiler compiler = GetCompiler(path);
-            if (compiler == null) {
+            if (compiler == null)
+            {
                 Popup.Warning("Unsupported file '" + path + "'");
                 return null;
             }
-            
+
             string tmp = "extra/commands/TMP_" + Path.GetRandomFileName() + ".dll";
-            ConsoleHelpPlayer p = new ConsoleHelpPlayer();
+            FlamesHelpPlayer p = new FlamesHelpPlayer();
             if (CompilerOperations.Compile(p, compiler, "Command", new[] { path }, tmp))
                 return tmp;
-            
+
             Popup.Error(Colors.StripUsed(p.Messages));
             DeleteAssembly(tmp);
             return null;
         }
 
-        public static ICompiler GetCompiler(string path) {
+        public static ICompiler GetCompiler(string path)
+        {
             foreach (ICompiler c in ICompiler.Compilers)
             {
                 if (path.CaselessEnds(c.FileExtension)) return c;
@@ -164,27 +197,48 @@ namespace Flames.Gui.Popups {
             return null;
         }
 
-        public static void DeleteAssembly(string path) {
-            try { File.Delete(path); } catch { }
-            try { File.Delete(path.Replace(".dll", ".pdb")); } catch { }
-            try { File.Delete(path + ".mdb"); } catch { }
+        public static void DeleteAssembly(string path)
+        {
+            try 
+            { 
+                File.Delete(path); 
+            } 
+            catch 
+            { 
+            }
+            try 
+            { 
+                File.Delete(path.Replace(".dll", ".pdb")); 
+            } 
+            catch 
+            {
+            }
+            try 
+            { 
+                File.Delete(path + ".mdb"); 
+            } 
+            catch 
+            { 
+            }
         }
 
 
-        public static string ListCompilers(StringFormatter<ICompiler> formatter) {
+        public static string ListCompilers(StringFormatter<ICompiler> formatter)
+        {
             return ICompiler.Compilers.Join(formatter, "");
         }
 
-        public static string GetFilterText() {
+        public static string GetFilterText()
+        {
             StringBuilder sb = new StringBuilder();
             // Returns e.g. "Accepted File Types (*.cs, *.dll)|*.cs;*.dll|C# Source (*.cs)|*.cs|.NET Assemblies (*.dll)|*.dll";
-            
+
             sb.AppendFormat("Accepted File Types ({0}*.dll)|",
                             ListCompilers(c => string.Format("*{0}, ", c.FileExtension)));
-            
+
             sb.AppendFormat("{0}*.dll|",
                             ListCompilers(c => string.Format("*{0};", c.FileExtension)));
-            
+
             sb.AppendFormat("{0}.NET Assemblies (*.dll)|*.dll",
                             ListCompilers(c => string.Format("{0} Source (*{1})|*{1}|", c.FullName, c.FileExtension)));
             return sb.ToString();

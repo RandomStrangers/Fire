@@ -17,25 +17,30 @@ using System.Windows.Forms;
 using Flames.Eco;
 using Flames.Events.GameEvents;
 
-namespace Flames.Gui 
+namespace Flames.Gui
 {
-    public partial class PropertyWindow : Form 
+    public partial class PropertyWindow : Form
     {
         public ZombieProperties zsSettings = new ZombieProperties();
-        
-        public PropertyWindow() {
+
+        public PropertyWindow()
+        {
             InitializeComponent();
             zsSettings.LoadFromServer();
             propsZG.SelectedObject = zsSettings;
         }
-        
-        public void RunOnUI_Async(UIAction act) { BeginInvoke(act); }
 
-        public void PropertyWindow_Load(object sender, EventArgs e) {
+        public void RunOnUI_Async(UIAction act) 
+        { 
+            BeginInvoke(act); 
+        }
+
+        public void PropertyWindow_Load(object sender, EventArgs e)
+        {
             // try to use same icon as main window
             // must be done in OnLoad, otherwise icon doesn't show on Mono
             GuiUtils.SetIcon(this);
-            
+
             OnMapsChangedEvent.Register(HandleMapsChanged, Priority.Low);
             OnStateChangedEvent.Register(HandleStateChanged, Priority.Low);
             GuiPerms.UpdateRanks();
@@ -46,23 +51,28 @@ namespace Flames.Gui
             //Load server stuff
             LoadProperties();
             LoadRanks();
-            try {
+            try
+            {
                 LoadCommands();
                 LoadBlocks();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError("Error loading commands and blocks", ex);
             }
 
             LoadGameProps();
         }
 
-        public void PropertyWindow_Unload(object sender, EventArgs e) {
+        public void PropertyWindow_Unload(object sender, EventArgs e)
+        {
             OnMapsChangedEvent.Unregister(HandleMapsChanged);
             OnStateChangedEvent.Unregister(HandleStateChanged);
             Window.hasPropsForm = false;
         }
 
-        public void LoadProperties() {
+        public void LoadProperties()
+        {
             SrvProperties.Load();
             LoadGeneralProps();
             LoadChatProps();
@@ -75,8 +85,10 @@ namespace Flames.Gui
             zsSettings.LoadFromServer();
         }
 
-        public void SaveProperties() {
-            try {
+        public void SaveProperties()
+        {
+            try
+            {
                 ApplyGeneralProps();
                 ApplyChatProps();
                 ApplyRelayProps();
@@ -85,21 +97,31 @@ namespace Flames.Gui
                 ApplyMiscProps();
                 ApplyRankProps();
                 ApplySecurityProps();
-                
+
                 zsSettings.ApplyToServer();
                 SrvProperties.Save();
-                Economy.Save();                
-            } catch (Exception ex) {
+                Economy.Save();
+            }
+            catch (Exception ex)
+            {
                 Logger.LogError(ex);
                 Logger.Log(LogType.Warning, "SAVE FAILED! properties/server.properties");
             }
             SaveDiscordProps();
         }
 
-        public void btnSave_Click(object sender, EventArgs e) { SaveChanges(); Dispose(); }
-        public void btnApply_Click(object sender, EventArgs e) { SaveChanges(); }
+        public void btnSave_Click(object sender, EventArgs e) 
+        { 
+            SaveChanges(); 
+            Dispose(); 
+        }
+        public void btnApply_Click(object sender, EventArgs e) 
+        { 
+            SaveChanges(); 
+        }
 
-        public void SaveChanges() {
+        public void SaveChanges()
+        {
             SaveProperties();
             SaveRanks();
             SaveCommands();
@@ -109,24 +131,31 @@ namespace Flames.Gui
             SrvProperties.ApplyChanges();
         }
 
-        public void btnDiscard_Click(object sender, EventArgs e) { Dispose(); }
+        public void btnDiscard_Click(object sender, EventArgs e) 
+        {
+            Dispose(); 
+        }
 
-        public void GetHelp(string toHelp) {
-            ConsoleHelpPlayer p = new ConsoleHelpPlayer();
+        public void GetHelp(string toHelp)
+        {
+            FlamesHelpPlayer p = new FlamesHelpPlayer();
             Command.Find("Help").Use(p, toHelp);
             Popup.Message(Colors.StripUsed(p.Messages), "Help for /" + toHelp);
         }
     }
 
-    public sealed class ConsoleHelpPlayer : Player {
+    public sealed class FlamesHelpPlayer : Player
+    {
         public string Messages = "";
-            
-        public ConsoleHelpPlayer() : base("(Flames)") {
+
+        public FlamesHelpPlayer() : base("(Flames)")
+        {
             group = Group.FireRank;
             SuperName = "&S&4F&cl&4a&cm&4e&cs&S";
         }
-            
-        public override void Message(string message) {
+
+        public override void Message(string message)
+        {
             message = Chat.Format(message, this);
             Messages += message + "\r\n";
         }

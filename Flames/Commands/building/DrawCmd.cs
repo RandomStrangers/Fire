@@ -18,7 +18,6 @@
 using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -61,7 +60,7 @@ namespace Flames.Commands.Building
             return dArgs;
         }
 
-        public virtual bool DoDraw(Player p, Vec3S32[] marks, object state, BlockID block)
+        public virtual bool DoDraw(Player p, Vec3S32[] marks, object state, ushort block)
         {
             DrawArgs dArgs = (DrawArgs)state;
             dArgs.Block = block;
@@ -107,7 +106,7 @@ namespace Flames.Commands.Building
         public class DrawArgs
         {
             public DrawMode Mode;
-            public BlockID Block;
+            public ushort Block;
             public string Message, BrushName, BrushArgs;
             public int ModeArgsCount { get { return Mode == DrawMode.normal ? 0 : 1; } }
 

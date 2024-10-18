@@ -20,7 +20,6 @@
 using Flames.Config;
 using Flames.Games;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Modules.Games.CTF
 {
@@ -42,14 +41,14 @@ namespace Flames.Modules.Games.CTF
         [ConfigVec3("red-pos", null)] 
         public Vec3U16 RedFlagPos;
         [ConfigBlock("red-block", null, Block.Air)]
-        public BlockID RedFlagBlock;
+        public ushort RedFlagBlock;
 
         [ConfigVec3("blue-spawn", null)] 
         public Vec3U16 BlueSpawn;
         [ConfigVec3("blue-pos", null)] 
         public Vec3U16 BlueFlagPos;
         [ConfigBlock("blue-block", null, Block.Air)]
-        public BlockID BlueFlagBlock;
+        public ushort BlueFlagBlock;
 
         [ConfigInt("map.line.z", null, 0)]
         public int ZDivider;

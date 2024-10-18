@@ -19,110 +19,131 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Flames.Gui {
+namespace Flames.Gui
+{
     public delegate ItemPerms PermsGetter();
-    public sealed class ItemPermsHelper {
+    public sealed class ItemPermsHelper
+    {
         public ComboBox MinBox;
         public ComboBox[] AllowBoxes, DisallowBoxes;
         public bool SupressEvents = true;
         public PermsGetter GetCurPerms;
-        
-        public void Update(ItemPerms perms) {
+
+        public void Update(ItemPerms perms)
+        {
             SupressEvents = true;
             GuiPerms.SetSelectedRank(MinBox, perms.MinRank);
             SetSpecificPerms(perms.Allowed, AllowBoxes);
             SetSpecificPerms(perms.Disallowed, DisallowBoxes);
             SupressEvents = false;
         }
-        
-        public void FillInitial() {
+
+        public void FillInitial()
+        {
             GuiPerms.SetRanks(AllowBoxes, true);
             GuiPerms.SetRanks(DisallowBoxes, true);
         }
-        
-        public void OnMinRankChanged(ComboBox box) {
+
+        public void OnMinRankChanged(ComboBox box)
+        {
             GuiRank rank = (GuiRank)box.SelectedItem;
             if (rank == null || SupressEvents) return;
             ItemPerms curPerms = GetCurPerms();
 
             curPerms.MinRank = rank.Permission;
         }
-        
-        public void OnSpecificChanged(ComboBox box) {
+
+        public void OnSpecificChanged(ComboBox box)
+        {
             GuiRank rank = (GuiRank)box.SelectedItem;
             if (rank == null || SupressEvents) return;
             ItemPerms curPerms = GetCurPerms();
-            
+
             List<LevelPermission> perms;
-            ComboBox[] boxes;            
-            int boxIdx = Array.IndexOf<ComboBox>(AllowBoxes, box);
-            
-            if (boxIdx == -1) {
+            ComboBox[] boxes;
+            int boxIdx = Array.IndexOf(AllowBoxes, box);
+
+            if (boxIdx == -1)
+            {
                 if (curPerms.Disallowed == null)
                     curPerms.Disallowed = new List<LevelPermission>();
-                
+
                 perms = curPerms.Disallowed;
                 boxes = DisallowBoxes;
-                boxIdx = Array.IndexOf<ComboBox>(DisallowBoxes, box);
-            } else {
+                boxIdx = Array.IndexOf(DisallowBoxes, box);
+            }
+            else
+            {
                 if (curPerms.Allowed == null)
                     curPerms.Allowed = new List<LevelPermission>();
-                
+
                 perms = curPerms.Allowed;
                 boxes = AllowBoxes;
             }
-            
-            if (rank.Permission == LevelPermission.Null) {
+
+            if (rank.Permission == LevelPermission.Null)
+            {
                 if (boxIdx >= perms.Count) return;
                 perms.RemoveAt(boxIdx);
-                
+
                 SupressEvents = true;
                 SetSpecificPerms(perms, boxes);
                 SupressEvents = false;
-            } else {
+            }
+            else
+            {
                 SetSpecific(boxes, boxIdx, perms, rank);
             }
         }
 
-        public static void SetSpecific(ComboBox[] boxes, int boxIdx, List<LevelPermission> perms, GuiRank rank) {
-            if (boxIdx < perms.Count) {
+        public static void SetSpecific(ComboBox[] boxes, int boxIdx, List<LevelPermission> perms, GuiRank rank)
+        {
+            if (boxIdx < perms.Count)
+            {
                 perms[boxIdx] = rank.Permission;
-            } else {
+            }
+            else
+            {
                 perms.Add(rank.Permission);
             }
-            
+
             // Activate next box
-            if (boxIdx < boxes.Length - 1 && !boxes[boxIdx + 1].Visible) {
+            if (boxIdx < boxes.Length - 1 && !boxes[boxIdx + 1].Visible)
+            {
                 SetAddRank(boxes[boxIdx + 1]);
             }
         }
 
-        public static void SetAddRank(ComboBox box) {
+        public static void SetAddRank(ComboBox box)
+        {
             box.Visible = true;
             box.Enabled = true;
             box.Text = "(add rank)";
         }
 
-        public static void SetSpecificPerms(List<LevelPermission> perms, ComboBox[] boxes) {
+        public static void SetSpecificPerms(List<LevelPermission> perms, ComboBox[] boxes)
+        {
             ComboBox box = null;
             int permsCount = perms == null ? 0 : perms.Count;
-            
-            for (int i = 0; i < boxes.Length; i++) {
+
+            for (int i = 0; i < boxes.Length; i++)
+            {
                 box = boxes[i];
                 // Hide the non-visible specific permissions
                 box.Text = "";
                 box.Enabled = false;
                 box.Visible = false;
                 box.SelectedIndex = -1;
-                
+
                 // Show the non-visible specific permissions previously set
-                if (permsCount > i) {
+                if (permsCount > i)
+                {
                     box.Visible = true;
                     box.Enabled = true;
                     GuiPerms.SetSelectedRank(box, perms[i]);
                 }
             }
-            
+
             // Show (add rank) for the last item
             if (permsCount >= boxes.Length) return;
             SetAddRank(boxes[permsCount]);

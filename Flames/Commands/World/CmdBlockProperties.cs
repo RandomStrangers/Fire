@@ -17,7 +17,6 @@
  */
 using System.Collections.Generic;
 using Flames.Blocks;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.World
 {
@@ -50,7 +49,7 @@ namespace Flames.Commands.World
                 return;
             }
 
-            BlockID block = GetBlock(p, scope, args[1]);
+            ushort block = GetBlock(p, scope, args[1]);
             if (block == Block.Invalid) return;
             if (args.Length < 3)
             {
@@ -92,10 +91,10 @@ namespace Flames.Commands.World
             return null;
         }
 
-        public static BlockID GetBlock(Player p, BlockProps[] scope, string str)
+        public static ushort GetBlock(Player p, BlockProps[] scope, string str)
         {
             Player pScope = scope == Block.Props ? Player.Flame : p;
-            BlockID block = Block.Parse(pScope, str);
+            ushort block = Block.Parse(pScope, str);
 
             if (block == Block.Invalid)
             {
@@ -104,7 +103,7 @@ namespace Flames.Commands.World
             return block;
         }
 
-        public static void Detail(Player p, BlockProps[] scope, BlockID block)
+        public static void Detail(Player p, BlockProps[] scope, ushort block)
         {
             BlockProps props = scope[block];
             string name = BlockProps.ScopedName(scope, p, block);
@@ -150,22 +149,22 @@ namespace Flames.Commands.World
             }
         }
 
-        public static List<BlockID> FilterProps(BlockProps[] scope)
+        public static List<ushort> FilterProps(BlockProps[] scope)
         {
             int changed = BlockProps.ScopeId(scope);
-            List<BlockID> filtered = new List<BlockID>();
+            List<ushort> filtered = new List<ushort>();
 
             for (int b = 0; b < scope.Length; b++)
             {
                 if ((scope[b].ChangedScope & changed) == 0) continue;
-                filtered.Add((BlockID)b);
+                filtered.Add((ushort)b);
             }
             return filtered;
         }
 
         public void ListProps(Player p, BlockProps[] scope, string[] args)
         {
-            List<BlockID> filtered = FilterProps(scope);
+            List<ushort> filtered = FilterProps(scope);
             string cmd = "BlockProps " + args[0] + " list";
             string modifier = args.Length > 2 ? args[2] : "";
 
@@ -173,14 +172,14 @@ namespace Flames.Commands.World
                              cmd, "modified blocks", modifier);
         }
 
-        public void CopyProps(Player p, BlockProps[] scope, BlockID block, string[] args)
+        public void CopyProps(Player p, BlockProps[] scope, ushort block, string[] args)
         {
             if (args.Length < 4)
             {
                 Help(p);
                 return;
             }
-            BlockID dst = GetBlock(p, scope, args[3]);
+            ushort dst = GetBlock(p, scope, args[3]);
             if (dst == Block.Invalid) return;
 
             scope[dst] = scope[block];
@@ -192,7 +191,7 @@ namespace Flames.Commands.World
             BlockProps.ApplyChanges(scope, p.level, block, true);
         }
 
-        public void ResetProps(Player p, BlockProps[] scope, BlockID block)
+        public void ResetProps(Player p, BlockProps[] scope, ushort block)
         {
             scope[block] = BlockProps.MakeDefault(scope, p.level, block);
             string name = BlockProps.ScopedName(scope, p, block);
@@ -201,7 +200,7 @@ namespace Flames.Commands.World
             BlockProps.ApplyChanges(scope, p.level, block, true);
         }
 
-        public void SetProps(Player p, BlockProps[] scope, BlockID block, string[] args)
+        public void SetProps(Player p, BlockProps[] scope, ushort block, string[] args)
         {
             BlockOption opt = BlockOptions.Find(args[2]);
             if (opt == null)

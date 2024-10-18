@@ -125,8 +125,7 @@ namespace Flames.Commands.World
 
         public void UpdatePerms(Player p, string map, CommandData data, string[] args, bool max)
         {
-            Level lvl;
-            LevelConfig cfg = LevelInfo.GetConfig(map, out lvl);
+            LevelConfig cfg = LevelInfo.GetConfig(map, out Level lvl);
             int offset = args.Length == 1 ? 0 : 1;
 
             AccessController access;

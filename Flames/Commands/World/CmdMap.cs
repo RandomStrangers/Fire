@@ -50,15 +50,15 @@ namespace Flames.Commands.World
             }
 
             string[] args = message.SplitSpaces(3);
-            Level lvl = null;
-            string optName = null, value = null;
-
+            string value;
+            string optName;
+            Level lvl;
             if (IsMapOption(args))
             {
-                if (p.IsSuper) 
-                { 
-                    SuperRequiresArgs(p, "level name"); 
-                    return; 
+                if (p.IsSuper)
+                {
+                    SuperRequiresArgs(p, "level name");
+                    return;
                 }
                 lvl = p.level;
 

@@ -31,54 +31,73 @@ namespace Flames.Modules.Relay.Discord
         /// <summary> The HTTP method to handle the path/route with </summary>
         /// <example> POST, PATCH, DELETE </example>
         public string Method = "POST";
-        
-        
+
+
         /// <summary> Returns the JSON representation of the request data </summary>
         public abstract JsonObject ToJson();
-        
+
         /// <summary> Attempts to combine this message with a prior message to reduce API calls </summary>
-        public virtual bool CombineWith(DiscordApiMessage prior) { return false; }
-        
+        public virtual bool CombineWith(DiscordApiMessage prior) 
+        { 
+            return false; 
+        }
+
 
         /// <summary> Optionally adjusts the request to send to Discord </summary>
-        public virtual void OnRequest(HttpWebRequest req) { }
-        
+        public virtual void OnRequest(HttpWebRequest req) 
+        { 
+        }
+
         /// <summary> Processes the response received from Discord </summary>
-        public virtual void ProcessResponse(string response) { }
+        public virtual void ProcessResponse(string response) 
+        { 
+        }
     }
-    
+
     /// <summary> Message for sending text to a channel </summary>
     public class ChannelSendMessage : DiscordApiMessage
     {
-        public static JsonArray default_allowed = new JsonArray() { "users", "roles" };
+        public static JsonArray default_allowed = new JsonArray() 
+        { 
+            "users", "roles" 
+        };
         public StringBuilder content;
         public JsonArray Allowed;
-        
-        public ChannelSendMessage(string channelID, string message) {
-            Path    = "/channels/" + channelID + "/messages";
+
+        public ChannelSendMessage(string channelID, string message)
+        {
+            Path = "/channels/" + channelID + "/messages";
             content = new StringBuilder(message);
         }
-        
-        public override JsonObject ToJson() {
+
+        public override JsonObject ToJson()
+        {
             // only allow pinging certain groups
             JsonObject allowed = new JsonObject()
             {
-                { "parse", Allowed ?? default_allowed }
+                { 
+                    "parse", Allowed ?? default_allowed 
+                }
             };
 
             return new JsonObject()
             {
-                { "content", content.ToString() },
-                { "allowed_mentions", allowed }
+                { 
+                    "content", content.ToString() 
+                },
+                { 
+                    "allowed_mentions", allowed 
+                }
             };
         }
-        
-        public override bool CombineWith(DiscordApiMessage prior) {
+
+        public override bool CombineWith(DiscordApiMessage prior)
+        {
             ChannelSendMessage msg = prior as ChannelSendMessage;
             if (msg == null || msg.Path != Path) return false;
-            
+
             if (content.Length + msg.content.Length > 1024) return false;
-            
+
             // TODO: is stringbuilder even beneficial here
             msg.content.Append('\n');
             msg.content.Append(content.ToString());
@@ -86,48 +105,65 @@ namespace Flames.Modules.Relay.Discord
             return true;
         }
     }
-    
+
     public class ChannelSendEmbed : DiscordApiMessage
     {
         public string Title;
         public Dictionary<string, string> Fields = new Dictionary<string, string>();
         public int Color;
-        
-        public ChannelSendEmbed(string channelID) {
+
+        public ChannelSendEmbed(string channelID)
+        {
             Path = "/channels/" + channelID + "/messages";
         }
 
-        public JsonArray GetFields() {
+        public JsonArray GetFields()
+        {
             JsonArray arr = new JsonArray();
-            foreach (var raw in Fields) 
-            { 
+            foreach (var raw in Fields)
+            {
                 JsonObject field = new JsonObject()
                 {
-                    { "name",   raw.Key  },
-                    { "value", raw.Value }
+                    { 
+                        "name",   raw.Key  
+                    },
+                    { 
+                        "value", raw.Value 
+                    }
                 };
                 arr.Add(field);
             }
             return arr;
         }
-        
-        public override JsonObject ToJson() {
+
+        public override JsonObject ToJson()
+        {
             return new JsonObject()
             {
-                { "embeds", new JsonArray()
+                { 
+                    "embeds", new JsonArray()
                     {
                         new JsonObject()
                         {
-                            { "title", Title },
-                            { "color", Color },
-                            { "fields", GetFields() }
+                            { 
+                                "title", Title 
+                            },
+                            { 
+                                "color", Color 
+                            },
+                            { 
+                                "fields", GetFields() 
+                            }
                         }
                     }
                 },
                 // no pinging anything
-                { "allowed_mentions", new JsonObject()
+                { 
+                    "allowed_mentions", new JsonObject()
                     {
-                        { "parse", new JsonArray() }
+                        { 
+                            "parse", new JsonArray() 
+                        }
                     }
                 }
             };

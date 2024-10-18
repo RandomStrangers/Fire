@@ -117,7 +117,8 @@ namespace Flames
         {
             for (int i = 0; i < all.Count; i++)
             {
-                Unload(all[i], true); i--;
+                Unload(all[i], true); 
+                i--;
             }
         }
         public static void LoadAll()

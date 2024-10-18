@@ -19,8 +19,6 @@ using System;
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Maths;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Commands.CPE
 {
@@ -112,7 +110,7 @@ namespace Flames.Commands.CPE
 
         public static void AddHandler(Player p, string[] parts, BlockDefinitionsArgs args)
         {
-            BlockID target;
+            ushort target;
             if (parts.Length >= 2)
             {
                 string id = parts[1];
@@ -183,7 +181,7 @@ namespace Flames.Commands.CPE
             {
                 if (srcDefs[i] == null) continue;
 
-                BlockID b = (BlockID)i;
+                ushort b = (ushort)i;
                 if (!DoCopy(p, args, true, srcDefs[i], b, b)) continue;
                 copied++;
 
@@ -204,9 +202,8 @@ namespace Flames.Commands.CPE
             }
             BlockDefinition[] srcDefs = args.defs;
 
-            BlockID dst;
-            int min, max;
-            if (!CheckRawBlocks(p, parts[1], args, out min, out max, true)) return;
+            ushort dst;
+            if (!CheckRawBlocks(p, parts[1], args, out int min, out int max, true)) return;
 
             if (parts.Length > 2)
             {
@@ -228,7 +225,7 @@ namespace Flames.Commands.CPE
 
             for (int i = min; i <= max && Block.ToRaw(dst) <= Block.MaxRaw; i++, dst++)
             {
-                BlockID src = Block.FromRaw((BlockID)i);
+                ushort src = Block.FromRaw((ushort)i);
                 if (!DoCopy(p, args, false, srcDefs[src], src, dst)) continue;
 
                 p.Message("Duplicated the {0} custom block with id \"{1}\" to \"{2}\".",
@@ -239,7 +236,7 @@ namespace Flames.Commands.CPE
         }
 
         public static bool DoCopy(Player p, BlockDefinitionsArgs args, bool keepOrder,
-                           BlockDefinition srcDef, BlockID src, BlockID dst)
+                           BlockDefinition srcDef, ushort src, ushort dst)
         {
             if (srcDef == null && src < Block.CPE_COUNT)
             {
@@ -274,16 +271,15 @@ namespace Flames.Commands.CPE
                 Help(p, args.cmd);
                 return;
             }
-            int min, max;
-            if (!CheckRawBlocks(p, parts[1], args, out min, out max)) return;
+            if (!CheckRawBlocks(p, parts[1], args, out int min, out int max)) return;
 
             for (int i = min; i <= max; i++)
             {
-                DoInfo(p, args, Block.FromRaw((BlockID)i));
+                DoInfo(p, args, Block.FromRaw((ushort)i));
             }
         }
 
-        public static void DoInfo(Player p, BlockDefinitionsArgs args, BlockID block)
+        public static void DoInfo(Player p, BlockDefinitionsArgs args, ushort block)
         {
             BlockDefinition def = args.defs[block];
             if (def == null)
@@ -352,7 +348,7 @@ namespace Flames.Commands.CPE
             {
                 BlockDefinition def = defs[i];
                 if (def == null) continue;
-                BlockID block = def.GetBlock();
+                ushort block = def.GetBlock();
 
                 if (!ExistsInScope(def, block, args)) continue;
                 defsInScope.Add(def);
@@ -375,18 +371,17 @@ namespace Flames.Commands.CPE
                 return;
             }
 
-            int min, max;
-            if (!CheckRawBlocks(p, parts[1], args, out min, out max)) return;
+            if (!CheckRawBlocks(p, parts[1], args, out int min, out int max)) return;
             bool changed = false;
 
             for (int i = min; i <= max; i++)
             {
-                changed |= DoRemove(p, args, Block.FromRaw((BlockID)i));
+                changed |= DoRemove(p, args, Block.FromRaw((ushort)i));
             }
             if (changed) BlockDefinition.Save(args.global, args.level);
         }
 
-        public static bool DoRemove(Player p, BlockDefinitionsArgs args, BlockID block)
+        public static bool DoRemove(Player p, BlockDefinitionsArgs args, ushort block)
         {
             BlockDefinition def = args.defs[block];
             if (!ExistsInScope(def, block, args))
@@ -542,7 +537,7 @@ namespace Flames.Commands.CPE
             SendStepHelp(p, args);
         }
 
-        public static bool DoEdit(Player p, string[] parts, BlockDefinitionsArgs args, BlockID block)
+        public static bool DoEdit(Player p, string[] parts, BlockDefinitionsArgs args, ushort block)
         {
             BlockDefinition def = args.defs[block], globalDef = BlockDefinition.GlobalDefs[block];
 
@@ -732,13 +727,12 @@ namespace Flames.Commands.CPE
                 return;
             }
 
-            int min, max;
-            if (!CheckRawBlocks(p, parts[1], args, out min, out max)) return;
+            if (!CheckRawBlocks(p, parts[1], args, out int min, out int max)) return;
             bool changed = false;
 
             for (int i = min; i <= max; i++)
             {
-                changed |= DoEdit(p, parts, args, Block.FromRaw((BlockID)i));
+                changed |= DoEdit(p, parts, args, Block.FromRaw((ushort)i));
             }
             if (changed) BlockDefinition.Save(args.global, args.level); // TODO SaveChanged(bool changed, bool global, Level lvl) func
         }
@@ -748,14 +742,14 @@ namespace Flames.Commands.CPE
         {
             p.Message("Created a new {0} custom block {1}({2})", args.scope, def.Name, def.RawID);
 
-            BlockID block = def.GetBlock();
+            ushort block = def.GetBlock();
             BlockDefinition.Add(def, args.defs, args.level);
             ResetProps(args, block);
         }
 
         public static bool AddBlock(Player p, BlockDefinitionsArgs args, BlockDefinition def)
         {
-            BlockID block = def.GetBlock();
+            ushort block = def.GetBlock();
             BlockDefinition old = args.defs[block];
             if (!args.global && old == BlockDefinition.GlobalDefs[block]) old = null; // TODO ExistsInScope
 
@@ -775,10 +769,9 @@ namespace Flames.Commands.CPE
             return true;
         }
 
-        public static BlockRaw GetFallback(Player p, string value)
+        public static byte GetFallback(Player p, string value)
         {
-            BlockID block;
-            if (!CommandParser.GetBlock(p, value, out block)) return Block.Invalid;
+            if (!CommandParser.GetBlock(p, value, out ushort block)) return Block.Invalid;
 
             if (block >= Block.Extended)
             {
@@ -790,27 +783,27 @@ namespace Flames.Commands.CPE
                 p.Message("&WPhysics block cannot be used as fallback blocks.");
                 return Block.Invalid;
             }
-            return (BlockRaw)block;
+            return (byte)block;
         }
 
-        public static BlockID GetFreeBlock(Player p, BlockDefinitionsArgs args)
+        public static ushort GetFreeBlock(Player p, BlockDefinitionsArgs args)
         {
             BlockDefinition[] defs = args.defs;
 
             // Start from opposite ends to avoid overlap
             if (args.global)
             {
-                for (BlockID b = Block.CPE_COUNT; b <= Block.MaxRaw; b++)
+                for (ushort b = Block.CPE_COUNT; b <= Block.MaxRaw; b++)
                 {
-                    BlockID block = Block.FromRaw(b);
+                    ushort block = Block.FromRaw(b);
                     if (defs[block] == null) return block;
                 }
             }
             else
             {
-                for (BlockID b = Block.MaxRaw; b >= Block.CPE_COUNT; b--)
+                for (ushort b = Block.MaxRaw; b >= Block.CPE_COUNT; b--)
                 {
-                    BlockID block = Block.FromRaw(b);
+                    ushort block = Block.FromRaw(b);
                     if (defs[block] == null) return block;
                 }
             }
@@ -820,13 +813,13 @@ namespace Flames.Commands.CPE
         }
 
 
-        public static void MessageNoBlock(Player p, BlockID block, BlockDefinitionsArgs args)
+        public static void MessageNoBlock(Player p, ushort block, BlockDefinitionsArgs args)
         {
             p.Message("&WThere is no {1} custom block with the id \"{0}\".", Block.ToRaw(block), args.scope);
             p.Message("Type &T{0} list &Sto see a list of {1} custom blocks.", args.cmd, args.scope);
         }
 
-        public static void MessageAlreadyBlock(Player p, BlockID block, BlockDefinitionsArgs args)
+        public static void MessageAlreadyBlock(Player p, ushort block, BlockDefinitionsArgs args)
         {
             p.Message("&WThere is already a {1} custom block with the id \"{0}\".", Block.ToRaw(block), args.scope);
             p.Message("Type &T{0} list &Sto see a list of {1} custom blocks.", args.cmd, args.scope);
@@ -875,7 +868,6 @@ namespace Flames.Commands.CPE
         public static bool CheckRaw(Player p, string arg, BlockDefinitionsArgs args,
                              out int raw, bool air = false)
         {
-            raw = -1;
             int min = air ? 0 : 1;
             int max = Block.MaxRaw;
 
@@ -899,11 +891,10 @@ namespace Flames.Commands.CPE
         public static bool CheckRawBlocks(Player p, string arg, BlockDefinitionsArgs args,
                                    out int min, out int max, bool air = false)
         {
-            string[] bits;
             bool success;
 
             // Either "[id]" or "[min]-[max]"
-            if (CommandParser.IsRawBlockRange(arg, out bits))
+            if (CommandParser.IsRawBlockRange(arg, out string[] bits))
             {
                 success = CheckRaw(p, bits[0], args, out min, air)
                         & CheckRaw(p, bits[1], args, out max, air);
@@ -917,16 +908,15 @@ namespace Flames.Commands.CPE
         }
 
         public static bool CheckBlock(Player p, string arg, BlockDefinitionsArgs args,
-                               out BlockID block, bool air = false)
+                               out ushort block, bool air = false)
         {
-            int raw;
-            bool success = CheckRaw(p, arg, args, out raw, air);
+            bool success = CheckRaw(p, arg, args, out int raw, air);
 
-            block = Block.FromRaw((BlockID)raw);
+            block = Block.FromRaw((ushort)raw);
             return success;
         }
 
-        public static void ResetProps(BlockDefinitionsArgs args, BlockID block)
+        public static void ResetProps(BlockDefinitionsArgs args, ushort block)
         {
             Level lvl = args.level;
             BlockProps[] scope = args.global ? Block.Props : lvl.Props;
@@ -956,7 +946,7 @@ namespace Flames.Commands.CPE
             else p.lbStep = step;
         }
 
-        public static bool ExistsInScope(BlockDefinition def, BlockID block, BlockDefinitionsArgs args)
+        public static bool ExistsInScope(BlockDefinition def, ushort block, BlockDefinitionsArgs args)
         {
             return def != null && (args.global || def != BlockDefinition.GlobalDefs[block]);
         }

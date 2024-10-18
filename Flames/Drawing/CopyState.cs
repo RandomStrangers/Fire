@@ -18,8 +18,6 @@
 using System;
 using System.IO;
 using Flames.Maths;
-using BlockID = System.UInt16;
-using BlockRaw = System.Byte;
 
 namespace Flames.Drawing
 {
@@ -93,17 +91,17 @@ namespace Flames.Drawing
             return (y * Length + z) * Width + x;
         }
 
-        public BlockID Get(int index)
+        public ushort Get(int index)
         {
             byte raw = blocks[index];
-            BlockID extended = Block.ExtendedBase[raw];
+            ushort extended = Block.ExtendedBase[raw];
             if (extended == 0) return raw;
             byte[] chunk = extBlocks[index >> chunkShift];
-            return chunk == null ? Block.Air : (BlockID)(extended | chunk[index & chunkMask]);
+            return chunk == null ? Block.Air : (ushort)(extended | chunk[index & chunkMask]);
 
         }
 
-        public void Set(BlockID block, int index)
+        public void Set(ushort block, int index)
         {
             if (block >= Block.Extended)
             {
@@ -116,15 +114,15 @@ namespace Flames.Drawing
                     chunk = new byte[chunkSize];
                     extBlocks[index >> chunkShift] = chunk;
                 }
-                chunk[index & chunkMask] = (BlockRaw)block;
+                chunk[index & chunkMask] = (byte)block;
             }
             else
             {
-                blocks[index] = (BlockRaw)block;
+                blocks[index] = (byte)block;
             }
         }
 
-        public void Set(BlockID block, int x, int y, int z)
+        public void Set(ushort block, int x, int y, int z)
         {
             Set(block, (y * Length + z) * Width + x);
         }
@@ -252,7 +250,7 @@ namespace Flames.Drawing
             for (int i = 0; i < blocks.Length; i++)
             {
                 if (blocks[i] != Block.custom_block) continue;
-                Set((BlockID)(Block.Extended | allExtBlocks[i]), i);
+                Set((ushort)(Block.Extended | allExtBlocks[i]), i);
             }
         }
 
@@ -263,7 +261,7 @@ namespace Flames.Drawing
                 bool isExt = (allExtBlocks[i >> 3] & (1 << (i & 0x7))) != 0;
                 if (isExt) 
                 { 
-                    Set((BlockID)(Block.Extended | blocks[i]), i); 
+                    Set((ushort)(Block.Extended | blocks[i]), i); 
                 }
             }
         }

@@ -19,7 +19,6 @@ using Flames.Drawing;
 using Flames.Drawing.Brushes;
 using Flames.Drawing.Ops;
 using Flames.Maths;
-using BlockID = System.UInt16;
 
 namespace Flames.Commands.Building
 {
@@ -45,7 +44,7 @@ namespace Flames.Commands.Building
             p.MakeSelection(1, "Selecting location for &SPaste", args, DoPaste);
         }
 
-        public bool DoPaste(Player p, Vec3S32[] m, object state, BlockID block)
+        public bool DoPaste(Player p, Vec3S32[] m, object state, ushort block)
         {
             BrushArgs args = (BrushArgs)state;
             Brush brush = BrushFactory.Find("Paste").Construct(args);

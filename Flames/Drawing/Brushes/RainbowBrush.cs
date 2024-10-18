@@ -17,7 +17,6 @@
  */
 using System;
 using Flames.Drawing.Ops;
-using BlockID = System.UInt16;
 
 namespace Flames.Drawing.Brushes
 {
@@ -26,7 +25,7 @@ namespace Flames.Drawing.Brushes
         public override string Name { get { return "Rainbow"; } }
         public RainbowBrush() : base(blocks) { }
 
-        public static BlockID[] blocks = new BlockID[] {
+        public static ushort[] blocks = new ushort[] {
             Block.Red,   Block.Orange,  Block.Yellow,
             Block.Lime,  Block.Green,   Block.Teal,
             Block.Aqua,  Block.Cyan,    Block.Blue,
@@ -39,7 +38,7 @@ namespace Flames.Drawing.Brushes
         public override string Name { get { return "BWRainbow"; } }
         public BWRainbowBrush() : base(blocks) { }
 
-        public static BlockID[] blocks = new BlockID[] {
+        public static ushort[] blocks = new ushort[] {
             Block.Iron,  Block.White,    Block.Gray,
             Block.Black, Block.Obsidian, Block.Black,
             Block.Gray,  Block.White };
@@ -48,16 +47,16 @@ namespace Flames.Drawing.Brushes
     public sealed class RandomRainbowBrush : Brush
     {
         public Random rnd = new Random();
-        public BlockID[] blocks;
+        public ushort[] blocks;
 
         public override string Name { get { return "RandomRainbow"; } }
 
-        public RandomRainbowBrush(BlockID[] list)
+        public RandomRainbowBrush(ushort[] list)
         {
             blocks = list;
         }
 
-        public override BlockID NextBlock(DrawOp op)
+        public override ushort NextBlock(DrawOp op)
         {
             return blocks[rnd.Next(blocks.Length)];
         }
