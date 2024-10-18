@@ -81,7 +81,8 @@ namespace Flames.UI
             }
 
             Thread thread = new Thread(
-                () => {
+                () =>
+                {
                     try
                     {
                         cmd.Use(Player.Flame, args);
@@ -99,9 +100,11 @@ namespace Flames.UI
                         Logger.LogError(ex);
                         Logger.Log(LogType.CommandUsage, "(Flames): FAILED COMMAND");
                     }
-                });
-            thread.Name = "FlamesCMD_" + name;
-            thread.IsBackground = true;
+                })
+            {
+                Name = "FlamesCMD_" + name,
+                IsBackground = true
+            };
             thread.Start();
         }
 
