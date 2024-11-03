@@ -47,11 +47,13 @@ namespace Flames.Bots
         public abstract string[] Help { get; }
 
         /// <summary> All instructions that bots can execute. </summary>
-        public static List<BotInstruction> Instructions = new List<BotInstruction>() {
-            new NodInstruction(), new SpinInstruction(),
-            new HuntInstruction(), new KillInstruction(), new StareInstruction(),
-            new TeleportInstruction(), new WalkInstruction(), new JumpInstruction(), new SpeedInstruction(),
-            new RemoveInstruction(), new ResetInstruction(), new LinkScriptInstruction(), new WaitInstruction(),
+        public static List<BotInstruction> Instructions = new List<BotInstruction>() 
+        {
+            new NodInstruction(), new SpinInstruction(), new HuntInstruction(), 
+            new KillInstruction(), new StareInstruction(), new TeleportInstruction(), 
+            new WalkInstruction(), new JumpInstruction(), new SpeedInstruction(),
+            new RemoveInstruction(), new ResetInstruction(), new LinkScriptInstruction(), 
+            new WaitInstruction(),
         };
 
         /// <summary> Finds the instruction which has the given identifying name. </summary>

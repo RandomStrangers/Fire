@@ -98,7 +98,8 @@ namespace Flames.Bots
         }
 
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] {
+        public static new string[] help = new string[] 
+        {
             "&T/BotAI add [name] walk",
             "&HCauses the bot to walk towards to a position.",
             "&H  Note: The position saved to the AI is your current position.",
@@ -121,7 +122,8 @@ namespace Flames.Bots
         }
 
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] {
+        public static string[] help = new string[] 
+        {
             "&T/BotAI add [name] jump",
             "&HCauses the bot to perform a jump.",
             "&H  Note bots can also do other instructions while jumping",
@@ -159,7 +161,8 @@ namespace Flames.Bots
         }
 
         public override string[] Help { get { return help; } }
-        public static string[] help = new string[] {
+        public static string[] help = new string[] 
+        {
             "&T/BotAI add [name] speed [percentage]",
             "&HSets how fast the bot moves, relative to its normal speed.",
             "&H  100 means it moves at normal speed",

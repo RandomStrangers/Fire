@@ -19,7 +19,7 @@ jobs:
         run: |
           msbuild Flames.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_normal
-          rm bin/Release/Flames_.dll bin/Release/Flames_.pdb
+          rm bin/Release/Flames_.dll
           msbuild Flames/Flames.csproj /p:Configuration=Release /t:Rebuild /p:DefineConstants="CORE"
 
       - uses: ./.github/actions/notify_failure
