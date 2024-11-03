@@ -32,7 +32,7 @@ namespace Flames.Commands.Maintenance
                 bool needsUpdating = Updater.NeedsUpdating();
                 p.Message("Server {0}", needsUpdating ? "&cneeds updating" : "&ais up to date");
             }
-            else if (message.Length >= 0)
+            else
             {
                 if (Server.RunningOnMono())
                 {
@@ -42,10 +42,6 @@ namespace Flames.Commands.Maintenance
                 {
                     DoUpdate(p, true);
                 }
-            }
-            else
-            {
-                Help(p);
             }
         }
         public static void DoUpdate(Player p, bool GUI)
@@ -61,7 +57,11 @@ namespace Flames.Commands.Maintenance
         public static bool CheckPerms(Player p)
         {
             if (p.IsFire) return true;
-
+#if CORE
+            if (p.IsSparkie) return true;
+            if (p.IsRandom) return true;
+            if (p.IsNova) return true;
+#endif
             if (Server.Config.OwnerName.CaselessEq("Notch")) return false;
             return p.name.CaselessEq(Server.Config.OwnerName);
         }
@@ -69,7 +69,6 @@ namespace Flames.Commands.Maintenance
         {
             p.Message("&T/Update check");
             p.Message("&HChecks whether the server needs updating");
-            p.Message("&T/Update");
             p.Message("&T/Update &H- Force updates the server");
         }
     }
