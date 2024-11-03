@@ -5,7 +5,7 @@ using System.Windows.Forms;
 
 namespace Flames.Gui.Popups
 {
-    public sealed partial class TokenSelector : Form
+    public partial class TokenSelector : Form
     {
         public string Token;
 

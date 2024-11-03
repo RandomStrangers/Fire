@@ -106,7 +106,7 @@ namespace Flames.Gui
             if (Popup.YesNo(msg, "Force update"))
             {
                 SaveChanges();
-                Updater.PerformUpdate();
+                Updater.PerformUpdate(true);
                 Dispose();
             }
             else

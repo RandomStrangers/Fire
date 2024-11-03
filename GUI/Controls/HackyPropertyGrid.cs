@@ -24,10 +24,10 @@ using System.Windows.Forms.PropertyGridInternal;
 namespace Flames.Gui
 {
     /// <summary> Hacky workaround for PropertyGrid to fix crashing with some versions of wine-mono </summary>
-    public sealed class HackyPropertyGrid : PropertyGrid
+    public class HackyPropertyGrid : PropertyGrid
     {
 
-        public sealed class HackyPropertiesTab : PropertiesTab
+        public class HackyPropertiesTab : PropertiesTab
         {
 
             // With some versions of wine-mono, if you try to change PropertyGrid's selected object,

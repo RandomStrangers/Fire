@@ -89,7 +89,7 @@ namespace Flames.Util
     }
 
 
-    public unsafe sealed class GDIPlusBitmap : IBitmap2D
+    public unsafe class GDIPlusBitmap : IBitmap2D
     {
         public Image img;
         public Bitmap bmp;

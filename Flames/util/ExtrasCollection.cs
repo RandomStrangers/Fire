@@ -22,7 +22,7 @@ namespace Flames
 {
     /// <summary> Stores extra information for/about a player/level/server. </summary>
     /// <example> Storing a "lives" value for a player. </example>
-    public sealed class ExtrasCollection
+    public class ExtrasCollection
     {
         public Dictionary<string, object> dict = new Dictionary<string, object>();
         public object locker = new object();

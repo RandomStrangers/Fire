@@ -144,7 +144,7 @@ namespace Flames.Gui
         }
     }
 
-    public sealed class FlamesHelpPlayer : Player
+    public class FlamesHelpPlayer : Player
     {
         public string Messages = "";
 

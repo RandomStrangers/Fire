@@ -22,7 +22,7 @@ using Flames.Games;
 
 namespace Flames.Gui
 {
-    public sealed class GamesHelper
+    public class GamesHelper
     {
         public CheckBox cbStart, cbMap, cbMain;
         public Button btnStart, btnStop, btnEnd, btnAdd, btnDel;

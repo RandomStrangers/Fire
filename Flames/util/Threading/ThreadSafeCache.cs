@@ -21,7 +21,7 @@ using Flames.Tasks;
 
 namespace Flames.Util
 {
-    public sealed class ThreadSafeCache
+    public class ThreadSafeCache
     {
         public static ThreadSafeCache DBCache = new ThreadSafeCache();
 

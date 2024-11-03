@@ -24,7 +24,7 @@ namespace Flames.Tasks
 {
     public delegate void SchedulerCallback(SchedulerTask task);
 
-    public sealed class Scheduler
+    public class Scheduler
     {
 
         public List<SchedulerTask> tasks = new List<SchedulerTask>();

@@ -21,7 +21,7 @@ using System.Windows.Forms;
 
 namespace Flames.Gui.Popups
 {
-    public sealed partial class UpdateAvailable : Form
+    public partial class UpdateAvailable : Form
     {
         public static volatile bool Active;
 

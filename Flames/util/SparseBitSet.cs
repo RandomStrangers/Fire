@@ -21,7 +21,7 @@ namespace Flames.Util
     /// <summary> Sparsely represents 1 bit of data per voxel for a 3D volume. </summary>
     /// <remarks> Typically this means 1 bit per block for a level. </remarks>
     /// <remarks> Does NOT perform any bounds checking. </remarks>
-    public sealed class SparseBitSet
+    public class SparseBitSet
     {
 
         public int chunksX, chunksY, chunksZ;

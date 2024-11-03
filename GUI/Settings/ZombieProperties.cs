@@ -20,7 +20,7 @@ using Flames.Modules.Games.ZS;
 
 namespace Flames.Gui
 {
-    public sealed class ZombieProperties
+    public class ZombieProperties
     {
 
         [Description("Whether players are allowed to pillar in zombie survival. " +

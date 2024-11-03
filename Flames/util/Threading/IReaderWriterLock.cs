@@ -21,7 +21,7 @@ using System.Threading;
 namespace Flames.Util
 {
 
-    public sealed class IReaderWriterLock
+    public class IReaderWriterLock
     {
 
         public ReaderWriterLockSlim locker = new ReaderWriterLockSlim();

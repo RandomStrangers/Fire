@@ -51,9 +51,16 @@ namespace Flames.Core
             {
                 bool IsDrawingCmd = command.type.CaselessEq(CommandTypes.Building);
 
-                if (IsDrawingCmd && (lvl.IsMuseum || lvl.Config.Drawing))
+                if (IsDrawingCmd && (lvl.IsMuseum || !lvl.Config.Drawing))
                 {
-                    p.Message("Drawing commands are turned off on this map.");
+                    if (lvl.IsMuseum)
+                    {
+                        p.Message("Drawing commands are disabled in museums.");
+                    }
+                    else
+                    {
+                        p.Message("Drawing commands are turned off on this map.");
+                    }
                     p.cancelcommand = true;
                     Vec3S32 pos = p.Pos.BlockCoords;
                     p.RevertBlock((ushort)pos.X, (ushort)pos.Y, (ushort)pos.Z);

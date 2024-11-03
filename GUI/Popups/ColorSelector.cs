@@ -5,7 +5,7 @@ using System;
 
 namespace Flames.Gui.Popups
 {
-    public sealed partial class ColorSelector : Form
+    public partial class ColorSelector : Form
     {
         public char ColorCode;
 

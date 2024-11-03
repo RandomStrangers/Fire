@@ -18,7 +18,7 @@
 
 namespace Flames
 {
-    public sealed class VolatileArray<T> where T : class
+    public class VolatileArray<T> where T : class
     {
         /// <remarks> Note this field is highly volatile, you should cache references to it. </remarks>
         public volatile T[] Items = new T[0];

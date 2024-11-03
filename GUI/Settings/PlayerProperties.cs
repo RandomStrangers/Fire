@@ -21,7 +21,7 @@ using Flames.DB;
 
 namespace Flames.Gui
 {
-    public sealed class PlayerProperties
+    public class PlayerProperties
     {
         public Player p;
         public string inMsg, outMsg;

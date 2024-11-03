@@ -699,6 +699,26 @@ namespace Flames.Commands.CPE
                     p.Message("Set inventory order for {0} to {1}", blockName,
                                    order == def.RawID ? "default" : order.ToString());
                     return true;
+
+                case "lavalight":
+                    int brightness = 0;
+                    if (!CommandParser.GetInt(p, value, "lava light", ref brightness, 0, 15))
+                    {
+                        SendEditHelp(p, arg); 
+                        return false;
+                    }
+                    def.SetBrightness(brightness, false);
+                    break;
+
+                case "lamplight":
+                    int sunBrightness = 0;
+                    if (!CommandParser.GetInt(p, value, "lamp light", ref sunBrightness, 0, 15))
+                    {
+                        SendEditHelp(p, arg); 
+                        return false;
+                    }
+                    def.SetBrightness(sunBrightness, true);
+                    break;
                 default:
                     p.Message("Unrecognised property: " + arg);
                     return false;

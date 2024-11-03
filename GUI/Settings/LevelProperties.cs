@@ -20,7 +20,7 @@ using System.ComponentModel;
 
 namespace Flames.Gui
 {
-    public sealed class LevelProperties
+    public class LevelProperties
     {
         public Level lvl;
         public LevelConfig cfg;
@@ -147,9 +147,9 @@ namespace Flames.Gui
             Server.AutoloadMaps.Save();
         }
 
-        public void DoMap(string key, object raw) 
-        { 
-            DoCmd("Map", key + " " + raw); 
+        public void DoMap(string key, object raw)
+        {
+            DoCmd("Map", key + " " + raw);
         }
         public void DoCmd(string cmd, object raw)
         {

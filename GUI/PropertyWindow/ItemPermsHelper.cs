@@ -22,7 +22,7 @@ using System.Windows.Forms;
 namespace Flames.Gui
 {
     public delegate ItemPerms PermsGetter();
-    public sealed class ItemPermsHelper
+    public class ItemPermsHelper
     {
         public ComboBox MinBox;
         public ComboBox[] AllowBoxes, DisallowBoxes;
