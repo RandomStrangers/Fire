@@ -1076,6 +1076,14 @@ namespace Flames.Commands.CPE
                     "The default position of a block is its ID.",
                     "A position of 0 hides the block from the inventory." }
             },
+            { "lavalight", new string[] { "Type a number (0-15) for the lava brightness of the block.",
+                    "You need Fancy Lighting to see differences between 1 and 15.",
+                    "The block will glow using the \"lavalight\" env color" }
+            },
+            { "lamplight", new string[] { "Type a number (0-15) for the lamp brightness of the block.",
+                    "You need Fancy Lighting to see differences between 1 and 15.",
+                    "The block will glow using the \"lamplight\" env color" }
+            },
         };
 
 
