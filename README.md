@@ -1,4 +1,4 @@
-Flames is a fully featured and customizable **ClassiCube Server Software** based on [MCGalaxy 1.9.4.9](https://github.com/UnknownShadow200/MCGalaxy/tree/0a6b0da40b7986d31e52179ef915597fc815e2ee).
+Flames is a fully featured and customizable **ClassiCube Server Software** based on [MCGalaxy 1.9.4.9](https://github.com/ClassiCube/MCGalaxy/tree/0a6b0da40b7986d31e52179ef915597fc815e2ee).
 
 **Setup**
 -----------------
@@ -80,10 +80,10 @@ See LICENSE for Flames license, and license.txt for code used from other softwar
 Docker support(MCGalaxy)
 -----------------
 Some **unofficial** dockerfiles for running MCGalaxy in Docker:
-* [using Mono](https://github.com/UnknownShadow200/MCGalaxy/pull/577/files)
-* [using .NET core](https://github.com/UnknownShadow200/MCGalaxy/pull/629/files)
+* [using Mono](https://github.com/ClassiCube/MCGalaxy/pull/577/files)
+* [using .NET core](https://github.com/ClassiCube/MCGalaxy/pull/629/files)
 
 Documentation(MCGalaxy)
 -----------------
-* [General documentation](https://github.com/UnknownShadow200/MCGalaxy/wiki)
+* [General documentation](https://github.com/ClassiCube/MCGalaxy/wiki)
 * [API documentation](https://github.com/ClassiCube/MCGalaxy-API-Documentation)
