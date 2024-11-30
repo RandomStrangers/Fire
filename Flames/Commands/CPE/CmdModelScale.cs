@@ -54,7 +54,7 @@ namespace Flames.Commands.CPE
 
             if (p != who)
             {
-                Chat.MessageFrom(who, "λNICK &Shad their " + axis + " scale changed");
+                Chat.MessageFrom(who, "λNICK &Shad " + who.pronouns.Object + " " + axis + " scale changed");
             }
             else
             {

@@ -72,7 +72,7 @@ namespace Flames.Modules.Awards
             {
                 if (PlayerAwards.Take(plName, award))
                 {
-                    Chat.MessageGlobal("{0} &Shad their &b{1} &Saward removed", displayName, award);
+                    Chat.MessageGlobal(string.Format("{0} &Shad {1} &b{2} &Saward removed", displayName, Pronouns.GetFor(plName)[0].Object, award));
                     PlayerAwards.Save();
                 }
                 else if (plName.CaselessEq(p.name))

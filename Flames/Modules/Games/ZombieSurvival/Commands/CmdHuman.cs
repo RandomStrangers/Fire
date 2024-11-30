@@ -61,7 +61,7 @@ namespace Flames.Modules.Games.ZS
 
             data.PledgeSurvive = true;
             ZSGame.Instance.Map
-                .Message(p.ColoredName + " &Spledges that they will not succumb to the infection!");
+                .Message(p.ColoredName + " &Spledges that " + p.pronouns.Subject + " will not succumb to the infection!");
         }
 
         public override void Help(Player p)

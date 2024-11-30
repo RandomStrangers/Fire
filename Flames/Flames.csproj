@@ -181,6 +181,7 @@
     <Compile Include="Commands\Chat\CmdNick.cs" />
     <Compile Include="Commands\Chat\CmdOpChat.cs" />
     <Compile Include="Commands\Chat\CmdClear.cs" />
+    <Compile Include="Commands\Chat\CmdPronouns.cs" />
     <Compile Include="Commands\Chat\CmdRankMsg.cs" />
     <Compile Include="Commands\Chat\CmdRoll.cs" />
     <Compile Include="Commands\Chat\CmdSay.cs" />
@@ -672,6 +673,7 @@
     <Compile Include="Player\PlayerInfo.cs" />
     <Compile Include="Player\PlayerOperations.cs" />
     <Compile Include="Player\PlayerPhysics.cs" />
+    <Compile Include="Player\Pronouns.cs" />
     <Compile Include="Player\SpamChecker.cs" />
     <Compile Include="Player\Warp.cs" />
     <Compile Include="Database\Undo\UndoFormat.cs" />

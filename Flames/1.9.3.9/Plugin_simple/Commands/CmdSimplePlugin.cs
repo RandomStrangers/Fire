@@ -130,19 +130,19 @@ namespace Flames.Commands.Scripting
 
         public static void UnloadSimplePlugin(Player p, string name)
         {
-            Plugin_Simple plugin = Matcher.Find(p, name, out int matches, Plugin_Simple.all,
-                                         null, pln => pln.Name, "");
-            if (plugin == null) return;
+            Plugin_Simple simpleplugin = Matcher.Find(p, name, out int matches, Plugin_Simple.all,
+                                         null, pln => pln.Name, "simple plugins");
+            if (simpleplugin == null) return;
 
-            if (Plugin_Simple.core.Contains(plugin))
+            if (Plugin_Simple.core.Contains(simpleplugin))
             {
-                p.Message(plugin.Name + " is a core simple plugin and cannot be unloaded.");
+                p.Message(simpleplugin.Name + " is a core simple plugin and cannot be unloaded.");
                 return;
             }
 
-            if (plugin != null)
+            if (simpleplugin != null)
             {
-                if (Plugin_Simple.Unload(plugin, false))
+                if (Plugin_Simple.Unload(simpleplugin, false))
                 {
                     p.Message("Simple plugin unloaded successfully.");
                 }

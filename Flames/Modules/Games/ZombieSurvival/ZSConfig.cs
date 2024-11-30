@@ -129,15 +129,37 @@ namespace Flames.Modules.Games.ZS
             }
         }
 
+        public const string InfectZombiePlaceholder = "<zombie>";
+        public const string InfectHumanPlaceholder = "<human>";
+        public const string InfectZombieObjectPlaceholder = "<zobject>";
+        public const string InfectHumanObjectPlaceholder = "<hobject>";
 
         public static string[] defMessages = new string[] 
         { 
-            "{0} WIKIWOO'D {1}", "{0} stuck their teeth into {1}",
-            "{0} licked {1}'s brain ", "{0} danubed {1}", "{0} made {1} meet their maker", "{0} tripped {1}",
-            "{0} made some zombie babies with {1}", "{0} made {1} see the dark side", "{0} tweeted {1}",
-            "{0} made {1} open source", "{0} infected {1}", "{0} iDotted {1}", "{1} got nommed on",
-            "{0} transplanted {1}'s living brain" 
+            "<zombie> WIKIWOO'D <human>", 
+            "<zombie> stuck <zobject> teeth into <human>",
+            "<zombie> licked <human>'s brain ", 
+            "<zombie> danubed <human>", 
+            "<zombie> made <human> meet <hobject> maker", 
+            "<zombie> tripped <human>",
+            "<zombie> made some zombie babies with <human>", 
+            "<zombie> made <human> see the dark side", 
+            "<zombie> tweeted <human>",
+            "<zombie> made <human> open source", 
+            "<zombie> infected <human>", 
+            "<zombie> iDotted <human>", 
+            "<human> got nommed on",
+            "<zombie> transplanted <human>'s living brain" 
         };
+
+        public static string FormatInfectMessage(string infectMsg, Player pKiller, Player pAlive)
+        {
+            return infectMsg
+                .Replace(InfectZombiePlaceholder, "&c" + pKiller.DisplayName + "&S")
+                .Replace(InfectHumanPlaceholder, pAlive.ColoredName + "&S")
+                .Replace(InfectZombieObjectPlaceholder, pKiller.pronouns.Object)
+                .Replace(InfectHumanObjectPlaceholder, pAlive.pronouns.Object);
+        }
 
         public static List<string> LoadInfectMessages()
         {
@@ -159,10 +181,7 @@ namespace Flames.Modules.Games.ZS
             return ConvertInfectMessages(msgs);
         }
 
-        public static string InfectPath(string name) 
-        { 
-            return "text/infect/" + name.ToLower() + ".txt"; 
-        }
+        public static string InfectPath(string name) { return "text/infect/" + name.ToLower() + ".txt"; }
         public static List<string> LoadPlayerInfectMessages(string name)
         {
             string path = InfectPath(name);
@@ -186,8 +205,8 @@ namespace Flames.Modules.Games.ZS
             for (int i = 0; i < messages.Count; i++)
             {
                 messages[i] = messages[i]
-                                .Replace("{0}", "<zombie>")
-                                .Replace("{1}", "<human>");
+                                .Replace("{0}", InfectZombiePlaceholder)
+                                .Replace("{1}", InfectHumanPlaceholder);
             }
             return messages;
         }

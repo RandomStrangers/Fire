@@ -26,7 +26,7 @@ namespace Flames.Core
     public class NewPluginLoader : Plugin
     {
         public override string name { get { return "NewPluginLoader"; } }
-        public override string creator { get { return Colors.Strip(Server.SoftwareName) + " team"; } }
+        public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
         public static void LoadAllNewPlugins(SchedulerTask task)
         {
             NewPlugin.LoadAll();

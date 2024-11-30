@@ -210,7 +210,7 @@ namespace Flames.Core
             string ip = PlayerDB.FindIP(e.Target);
             if (ip != null && Server.bannedIP.Contains(ip))
             {
-                e.Actor.Message("NOTE: Their IP is still banned.");
+                e.Actor.Message("NOTE: {0} IP is still banned.", Pronouns.GetFor(e.Target)[0].Object);
             }
         }
 

@@ -102,16 +102,11 @@ namespace Flames.Modules.Relay.Discord
 
         public static DiscordConfig Config = new DiscordConfig();
         public static DiscordBot Bot = new DiscordBot();
-
-        public static Command cmdDiscordBot = new CmdDiscordBot();
-        public static Command cmdDiscordCtrls = new CmdDiscordControllers();
-
         public override void Load(bool startup)
         {
             Server.EnsureDirectoryExists("text/discord");
-            Command.Register(cmdDiscordBot);
-            Command.Register(cmdDiscordCtrls);
-
+            Command.Register(new CmdDiscordBot());
+            Command.Register(new CmdDiscordControllers());
             Bot.Config = Config;
             Bot.ReloadConfig();
             Bot.Connect();
@@ -120,8 +115,8 @@ namespace Flames.Modules.Relay.Discord
 
         public override void Unload(bool shutdown)
         {
-            Command.Unregister(cmdDiscordBot, cmdDiscordCtrls);
-
+            Command.Unregister(Command.Find("DiscordBot"));
+            Command.Unregister(Command.Find("DiscordControllers"));
             OnConfigUpdatedEvent.Unregister(OnConfigUpdated);
             Bot.Disconnect("Disconnecting Discord bot");
         }

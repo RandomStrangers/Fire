@@ -66,7 +66,7 @@ namespace Flames.Commands.CPE
 
             if (p != who)
             {
-                Chat.MessageFrom(who, "λNICK &Shad their model changed to a &c" + model);
+                Chat.MessageFrom(who, "λNICK &Shad " + who.pronouns.Object + " model changed to &c" + model);
             }
             else
             {

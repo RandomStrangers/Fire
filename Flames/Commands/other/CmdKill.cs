@@ -39,7 +39,7 @@ namespace Flames.Commands.Misc
 
             if (target == null)
             {
-                p?.HandleDeath(Block.Stone, "@p &Skilled themselves in their confusion");
+                p?.HandleDeath(Block.Stone, "@p &Skilled " + p.pronouns.Reflexive + " in " + p.pronouns.Object + " confusion");
                 return;
             }
             if (!CheckRank(p, data, target, "kill", false)) return;

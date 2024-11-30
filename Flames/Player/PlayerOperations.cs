@@ -185,7 +185,7 @@ namespace Flames
             if (actor == who)
             {
                 message = message.Replace("λACTOR", "λNICK")
-                                 .Replace("λTARGET", "their");
+                                 .Replace("λTARGET", actor.pronouns.Object);
                 Chat.MessageFrom(who, message);
             }
             else if (!global)

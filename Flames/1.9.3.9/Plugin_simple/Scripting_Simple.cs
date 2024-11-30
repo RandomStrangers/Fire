@@ -116,7 +116,7 @@ namespace Flames.Scripting
         }
         public static void AutoloadSimplePlugins()
         {
-            string simplepluginpath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            string simplepluginpath = Path.GetDirectoryName(Assembly.GetCallingAssembly().Location);
 
             string[] files = AtomicIO.TryGetFiles(simplepluginpath, "*.dll");
             if (files != null)
@@ -126,10 +126,6 @@ namespace Flames.Scripting
                     if (!IsSystemDLL(file))
                     {
                         LoadSimplePlugin(file, true);
-                    }
-                    else
-                    {
-                        return;
                     }
                 }
             }

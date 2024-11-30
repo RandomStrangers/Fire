@@ -197,7 +197,7 @@ namespace Flames.Commands.Moderation
 
             string opsMsg = "λNICK &Sreported " + nick + "&S. Reason: " + reason;
             Chat.MessageFrom(ChatScope.Perms, p, opsMsg, checkPerms, null, true);
-            string allMsg = "Use &T/Report check " + target + " &Sto see all of their reports";
+            string allMsg = "Use &T/Report check " + target + " &Sto see all of " + Pronouns.GetFor(target)[0].Object + " reports";
             Chat.MessageFrom(ChatScope.Perms, p, allMsg, checkPerms, null, true);
         }
 

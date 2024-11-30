@@ -70,46 +70,46 @@ namespace Flames
         public static List<Plugin_Simple> core = new List<Plugin_Simple>();
         public static List<Plugin_Simple> all = new List<Plugin_Simple>();
 
-        public static bool Load(Plugin_Simple p, bool auto)
+        public static bool Load(Plugin_Simple ps, bool auto)
         {
             try
             {
-                all.Add(p);
+                all.Add(ps);
 
-                if (p.LoadAtStartup || !auto)
+                if (ps.LoadAtStartup || !auto)
                 {
-                    p.Load(auto);
+                    ps.Load(auto);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /psload", p.Name);
+                    Logger.Log(LogType.SystemActivity, "Simple plugin {0} was not loaded, you can load it with /psload", ps.Name);
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error loading simple plugin " + p.Name, ex);
-                if (!string.IsNullOrEmpty(p.Creator)) Logger.Log(LogType.Warning, "You can go bug {0} about it.", p.Creator);
+                Logger.LogError("Error loading simple plugin " + ps.Name, ex);
+                if (!string.IsNullOrEmpty(ps.Creator)) Logger.Log(LogType.Warning, "You can go bug {0} about it.", ps.Creator);
                 return false;
             }
         }
 
-        public static bool Unload(Plugin_Simple p, bool auto)
+        public static bool Unload(Plugin_Simple ps, bool auto)
         {
             bool success = true;
             try
             {
-                p.Unload(auto);
-                Logger.Log(LogType.SystemActivity, "Simple plugin {0} was unloaded.", p.Name);
+                ps.Unload(auto);
+                Logger.Log(LogType.SystemActivity, "Simple plugin {0} was unloaded.", ps.Name);
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading simple plugin " + p.Name, ex);
+                Logger.LogError("Error unloading simple plugin " + ps.Name, ex);
                 success = false;
             }
 
-            all.Remove(p);
+            all.Remove(ps);
             return success;
         }
 

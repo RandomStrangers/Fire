@@ -30,6 +30,7 @@ namespace Flames.Core
 
             LoadWaypoints(p);
             p.Ignores.Load(p);
+            p.pronounsList = Pronouns.GetFor(p.name);
         }
 
         public static void CheckReviewList(Player p)
