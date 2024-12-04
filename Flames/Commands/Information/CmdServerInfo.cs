@@ -110,6 +110,7 @@ namespace Flames.Commands.Info
             int memory = (int)Math.Round(endUsg.PrivateMemorySize / 1048576.0);
             p.Message("&a{0} &Sthreads, using &a{1} &Smegabytes of memory",
                 endUsg.NumThreads, memory);
+            p.Message("Running a {0} operating system. ({1})", os.BitType, os.PlatformName);
         }
 
         public static string MeasureCPU(TimeSpan beg, TimeSpan end, TimeSpan interval)

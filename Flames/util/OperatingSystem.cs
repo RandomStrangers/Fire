@@ -48,6 +48,9 @@ namespace Flames.Platform
     {
         /// <summary> Whether the operating system currently being run on is Windows </summary>
         public abstract bool IsWindows { get; }
+        public abstract string PlatformName { get; }
+
+        public abstract string BitType { get; }
         public virtual string StandaloneName { get { return "UNSUPPORTED"; } }
 
         public virtual void Init() 
@@ -117,8 +120,12 @@ namespace Flames.Platform
     public class WindowsOS : IOperatingSystem
     {
         public override bool IsWindows { get { return true; } }
+        public override string PlatformName { get { return "Windows"; } }
 
-
+        public override string BitType
+        {
+            get { return IntPtr.Size == 8 ? "64-bit" : "32-bit"; }
+        }
         public override CPUTime MeasureAllCPUTime()
         {
             CPUTime all = default;
@@ -136,6 +143,11 @@ namespace Flames.Platform
 
     public class UnixOS : IOperatingSystem
     {
+        public override string PlatformName { get { return "Unix"; } }
+        public override string BitType
+        {
+            get { return IntPtr.Size == 8 ? "64-bit" : "32-bit"; }
+        }
         public override bool IsWindows { get { return false; } }
 
         public override void RestartProcess()
@@ -213,6 +225,8 @@ namespace Flames.Platform
 
     public class LinuxOS : UnixOS
     {
+        public override string PlatformName { get { return "Linux"; } }
+
         public override string StandaloneName
         {
             get { return IntPtr.Size == 8 ? "nix64" : "nix32"; }
@@ -290,6 +304,8 @@ namespace Flames.Platform
 
     public class FreeBSD_OS : UnixOS
     {
+        public override string PlatformName { get { return "FreeBSD"; } }
+
         // https://stackoverflow.com/questions/5329149/using-system-calls-from-c-how-do-i-get-the-utilization-of-the-cpus
         public unsafe override CPUTime MeasureAllCPUTime()
         {
@@ -310,6 +326,8 @@ namespace Flames.Platform
 
     public class NetBSD_OS : UnixOS
     {
+        public override string PlatformName { get { return "NetBSD"; } }
+
         // https://man.netbsd.org/sysctl.7
         public unsafe override CPUTime MeasureAllCPUTime()
         {
@@ -330,6 +348,8 @@ namespace Flames.Platform
 
     public class macOS : UnixOS
     {
+        public override string PlatformName { get { return "macOS"; } }
+
         public override string StandaloneName
         {
             get { return IntPtr.Size == 8 ? "mac64" : "mac32"; }
