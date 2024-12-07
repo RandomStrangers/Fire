@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
     
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -18,130 +18,75 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Flames.Network;
 
 namespace Flames.Authentication
 {
-    public class AuthServiceConfig
+    public class AuthService
     {
+        public static List<AuthService> Services = new List<AuthService>();
+
         public string URL;
+        public string Salt;
         public string NameSuffix = "";
         public string SkinPrefix = "";
         public bool MojangAuth;
-    }
-
-    public class AuthService
-    {
-        /// <summary> List of all authentication services </summary>
-        public static List<AuthService> Services = new List<AuthService>();
-
-        public Heartbeat Beat;
-        public AuthServiceConfig Config;
 
         public virtual void AcceptPlayer(Player p)
         {
-            AuthServiceConfig cfg = Config;
-
-            p.VerifiedVia = Config.URL;
+            p.VerifiedVia = URL;
             p.verifiedName = true;
-            p.SkinName = cfg.SkinPrefix + p.SkinName;
+            p.SkinName = SkinPrefix + p.SkinName;
 
-            p.name += cfg.NameSuffix;
-            p.truename += cfg.NameSuffix;
-            p.DisplayName += cfg.NameSuffix;
+            string suffix = NameSuffix;
+            p.name += suffix;
+            p.truename += suffix;
+            p.DisplayName += suffix;
         }
 
 
-        public static string lastUrls;
-        /// <summary> Reloads list of authentication services from server config </summary>
-        public static void ReloadDefault()
+        public static AuthService GetOrCreate(string url, bool canSave = true)
         {
-            string urls = Server.Config.HeartbeatURL;
-
-            // don't reload services unless absolutely have to
-            if (urls != lastUrls)
+            foreach (AuthService s in Services)
             {
-                lastUrls = urls;
-                ReloadServices();
+                if (s.URL.CaselessEq(url)) return s;
             }
 
-            LoadConfig();
-            foreach (AuthService service in Services)
-            {
-                service.Config = GetOrCreateConfig(service.Beat.URL);
-            }
-        }
+            AuthService service = new AuthService();
+            service.URL = url;
+            service.Salt = Server.GenerateSalt();
+            Services.Add(service);
 
-        public static void ReloadServices()
-        {
-            // TODO only reload default auth services, don't clear all
-            foreach (AuthService service in Services)
-            {
-                Heartbeat.Heartbeats.Remove(service.Beat);
-            }
-            Services.Clear();
-
-            foreach (string url in lastUrls.SplitComma())
-            {
-                Heartbeat beat = new ClassiCubeBeat() 
-                { 
-                    URL = url 
-                };
-                AuthService auth = new AuthService() 
-                { 
-                    Beat = beat 
-                };
-
-                Services.Add(auth);
-                Heartbeat.Register(beat);
-            }
-        }
-
-
-        public static List<AuthServiceConfig> configs = new List<AuthServiceConfig>();
-        public static AuthServiceConfig GetOrCreateConfig(string url)
-        {
-            foreach (AuthServiceConfig c in configs)
-            {
-                if (c.URL.CaselessEq(url)) return c;
-            }
-
-            AuthServiceConfig cfg = new AuthServiceConfig() 
-            { 
-                URL = url 
-            };
-            configs.Add(cfg);
-
+            // TODO: Maybe seperate method instead
+            if (!canSave) return service;
             try
             {
-                SaveConfig();
+                SaveServices();
             }
             catch (Exception ex)
             {
                 Logger.LogError("Error saving authservices.properties", ex);
             }
-            return cfg;
+            return service;
         }
 
-        public static void LoadConfig()
+
+        /// <summary> Updates list of authentication services from authservices.properties </summary>
+        public static void UpdateList()
         {
-            configs.Clear();
-
-            AuthServiceConfig cur = null;
+            AuthService cur = null;
             PropertiesFile.Read(Paths.AuthServicesFile, ref cur, ParseProperty, '=', true);
-            if (cur != null) configs.Add(cur);
+
+            // NOTE: Heartbeat.ReloadDefault will call GetOrCreate for all of the 
+            //  URLs specified in the HeartbeatURL server configuration property
+            // Therefore it is unnecessary to create default AuthServices here
+            //  (e.g. for when authservices.properties is empty or is missing a URL)
         }
 
-        public static void ParseProperty(string key, string value, ref AuthServiceConfig cur)
+        public static void ParseProperty(string key, string value, ref AuthService cur)
         {
             if (key.CaselessEq("URL"))
             {
-                if (cur != null) configs.Add(cur);
-
-                cur = new AuthServiceConfig() 
-                { 
-                    URL = value 
-                };
+                cur = GetOrCreate(value, false);
             }
             else if (key.CaselessEq("name-suffix"))
             {
@@ -160,7 +105,7 @@ namespace Flames.Authentication
             }
         }
 
-        public static void SaveConfig()
+        public static void SaveServices()
         {
             using (StreamWriter w = new StreamWriter(Paths.AuthServicesFile))
             {
@@ -171,7 +116,7 @@ namespace Flames.Authentication
                 w.WriteLine();
                 w.WriteLine("#URL = string");
                 w.WriteLine("#   URL of the authentication service the following settings apply to");
-                w.WriteLine("#   (this must be the same as one of the heartbeat URLs specified in server.properties)");
+                w.WriteLine("#   (this should be the same as one of the heartbeat URLs specified in server.properties)");
                 w.WriteLine("#name-suffix = string");
                 w.WriteLine("#   Characters that are appended to usernames of players that login through the authentication service");
                 w.WriteLine("#   (used to prevent username collisions between authentication services that would otherwise occur)");
@@ -183,12 +128,12 @@ namespace Flames.Authentication
                 w.WriteLine("#   NOTE: This should only be used for the Betacraft.uk authentication service");
                 w.WriteLine();
 
-                foreach (AuthServiceConfig c in configs)
+                foreach (AuthService service in Services)
                 {
-                    w.WriteLine("URL = " + c.URL);
-                    w.WriteLine("name-suffix = " + c.NameSuffix);
-                    w.WriteLine("skin-prefix = " + c.SkinPrefix);
-                    w.WriteLine("mojang-auth = " + c.MojangAuth);
+                    w.WriteLine("URL = " + service.URL);
+                    w.WriteLine("name-suffix = " + service.NameSuffix);
+                    w.WriteLine("skin-prefix = " + service.SkinPrefix);
+                    w.WriteLine("mojang-auth = " + service.MojangAuth);
                     w.WriteLine();
                 }
             }

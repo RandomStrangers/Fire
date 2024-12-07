@@ -130,7 +130,7 @@ namespace Flames.Network
     }
 
     /// <summary> Abstracts sending to/receiving from a TCP socket </summary>
-    public class TcpSocket : INetSocket
+    public sealed class TcpSocket : INetSocket
     {
         public Socket socket;
         public byte[] recvBuffer = new byte[256];
@@ -311,7 +311,7 @@ namespace Flames.Network
         // Close while also notifying higher level (i.e. show 'X disconnected' in chat)
         public void Disconnect()
         {
-            protocol?.Disconnect();
+            if (protocol != null) protocol.Disconnect();
             Close();
         }
 
@@ -343,7 +343,7 @@ namespace Flames.Network
             try 
             { 
                 recvArgs.Dispose(); 
-            } 
+            }
             catch 
             { 
             }
@@ -364,12 +364,13 @@ namespace Flames.Network
         // websocket connection may be a proxied connection
         public IPAddress clientIP;
 
-        public WebSocket(INetSocket socket) { s = socket; }
+        public WebSocket(INetSocket socket) 
+        { 
+            s = socket; 
+        }
 
         // Init taken care by underlying socket
-        public override void Init() 
-        { 
-        }
+        public override void Init() { }
         public override IPAddress IP { get { return clientIP ?? s.IP; } }
         public override bool LowLatency { set { s.LowLatency = value; } }
 
@@ -389,7 +390,7 @@ namespace Flames.Network
 
         public override void OnDisconnected(int reason)
         {
-            protocol?.Disconnect();
+            if (protocol != null) protocol.Disconnect();
             s.Close();
         }
 

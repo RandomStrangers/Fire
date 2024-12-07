@@ -81,7 +81,27 @@ namespace Flames.Events.PlayerEvents
             }
         }
     }
-
+    public delegate void OnPlayerHelp(Player p, string target, ref bool cancel);
+    /// <summary> Called whenever a player attempts to display help for something via /help </summary>
+    /// <remarks> You can cancel this event to prevent the default /help behaviour. </remarks>
+    public class OnPlayerHelpEvent : IEvent<OnPlayerHelp>
+    {
+        public static void Call(Player p, string target, ref bool cancel)
+        {
+            IEvent<OnPlayerHelp>[] items = handlers.Items;
+            for (int i = 0; i < items.Length; i++)
+            {
+                try 
+                { 
+                    items[i].method(p, target, ref cancel); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]);
+                }
+            }
+        }
+    }
     public delegate void OnPlayerCommand(Player p, string cmd, string args, CommandData data);
     /// <summary> Called whenever a player uses a command </summary>
     /// <remarks> You must cancel this event to prevent "Unknown command!" being shown. </remarks>

@@ -497,7 +497,7 @@ namespace Flames
             }
             if (Unverified)
             {
-                PassAuthenticator.Current.RequiresVerification(this, action);
+                ExtraAuthenticator.Current.RequiresVerification(this, action);
                 return false;
             }
             return true;
@@ -514,7 +514,7 @@ namespace Flames
         /// <summary> Checks if player is currently unverified, and if so, sends a message informing them </summary>
         public void CheckIsUnverified()
         {
-            if (NeedsVerification()) PassAuthenticator.Current.NeedVerification(this);
+            if (NeedsVerification()) ExtraAuthenticator.Current.NeedVerification(this);
         }
 
 

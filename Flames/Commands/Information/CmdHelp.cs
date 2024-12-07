@@ -15,6 +15,7 @@ permissions and limitations under the Licenses.
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Commands.CPE;
+using Flames.Events.PlayerEvents;
 
 namespace Flames.Commands.Info
 {
@@ -34,6 +35,9 @@ namespace Flames.Commands.Info
 
         public override void Use(Player p, string message)
         {
+            bool cancel = false;
+            OnPlayerHelpEvent.Call(p, message, ref cancel);
+            if (cancel) return;
             if (message.Length == 0)
             {
                 PrintHelpMenu(p);
@@ -53,7 +57,9 @@ namespace Flames.Commands.Info
             else
             {
                 if (CmdCommands.ListCommands(p, message)) return;
-                if (ParseCommand(p, message) || ParseBlock(p, message) || ParsePlugin(p, message)) return;
+                if (ParseCommand(p, message) || ParseBlock(p, message) 
+                    || ParsePlugin(p, message) || ParseSimplePlugin(p, message) 
+                    || ParseNewPlugin(p, message)) return;
                 p.Message("Could not find command, plugin or block specified.");
             }
         }
@@ -267,7 +273,26 @@ namespace Flames.Commands.Info
             pl.Help(p);
             return true;
         }
+        public bool ParseSimplePlugin(Player p, string message)
+        {
+            foreach (Plugin_Simple simpleplugin in Plugin_Simple.all)
+            {
+                if (Colors.Strip(simpleplugin.name).CaselessEq(message))
+                {
+                    simpleplugin.Help(p); 
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool ParseNewPlugin(Player p, string message)
+        {
+            NewPlugin npl = NewPlugin.FindNewCustom(message);
+            if (npl == null) return false;
 
+            npl.Help(p);
+            return true;
+        }
         public override void Help(Player p)
         {
             p.Message("...really? Wow. Just...wow.");

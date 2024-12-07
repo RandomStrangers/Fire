@@ -94,7 +94,7 @@ namespace Flames
 
             foreach (AuthService service in AuthService.Services)
             {
-                alphabet += service.Config.NameSuffix;
+                alphabet += service.NameSuffix;
             }
             return IsValidName(p, name, "player", alphabet);
         }

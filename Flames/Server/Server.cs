@@ -101,6 +101,7 @@ namespace Flames
             Logger.Log(LogType.SystemActivity, "Starting Server");
             ServicePointManager.Expect100Continue = false;
             ForceEnableTLS();
+            ExtraAuthenticator.SetActive(new DefaultPassAuthenticator());
 
             SQLiteBackend.Instance.LoadDependencies();
             MySQLBackend.Instance.LoadDependencies();
@@ -183,7 +184,8 @@ namespace Flames
             ImagePalette.Load();
             SrvProperties.Load();
             if (commands) Command.InitAll();
-            AuthService.ReloadDefault();
+            AuthService.UpdateList();
+            Heartbeat.ReloadDefault();
             Group.LoadAll();
             CommandPerms.Load();
             Block.SetBlocks();

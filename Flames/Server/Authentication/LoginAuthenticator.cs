@@ -1,5 +1,5 @@
 ﻿/*
-    Copyright 2015 MCGalaxy
+    Copyright 2015-2024 MCGalaxy
     
     Dual-licensed under the Educational Community License, Version 2.0 and
     the GNU General Public License, Version 3 (the "Licenses"); you may
@@ -44,7 +44,7 @@ namespace Flames.Authentication
                 if (auth.Verify(p, mppass)) return true;
             }
 
-            return !Server.Config.VerifyNames || IPUtil.IsPrivate(p.IP);
+            return !Server.Config.VerifyNames || (IPUtil.IsPrivate(p.IP) && !Server.Config.VerifyLanIPs);
         }
     }
 
@@ -62,7 +62,7 @@ namespace Flames.Authentication
 
         public static bool Authenticate(AuthService auth, Player p, string mppass)
         {
-            string calc = Server.CalcMppass(p.truename, auth.Beat.Salt);
+            string calc = Server.CalcMppass(p.truename, auth.Salt);
             if (!mppass.CaselessEq(calc)) return false;
 
             auth.AcceptPlayer(p);
@@ -73,12 +73,12 @@ namespace Flames.Authentication
     /// <summary> Authenticates a player using the Mojang session verification API </summary>
     public class MojangAuthenticator : LoginAuthenticator
     {
-        public static ThreadSafeCache ip_cache = new ThreadSafeCache();
+        static ThreadSafeCache ip_cache = new ThreadSafeCache();
         public override bool Verify(Player p, string mppass)
         {
             foreach (AuthService auth in AuthService.Services)
             {
-                if (!auth.Config.MojangAuth) continue;
+                if (!auth.MojangAuth) continue;
                 if (Authenticate(auth, p)) return true;
             }
             return false;
@@ -91,7 +91,7 @@ namespace Flames.Authentication
             //  prevent that from spamming Mojang's authentication servers too
             lock (locker)
             {
-                if (!HasJoined(p.truename)) return false;
+                if (!HasJoined(p)) return false;
             }
 
             auth.AcceptPlayer(p);
@@ -100,9 +100,9 @@ namespace Flames.Authentication
 
 
         public const string HAS_JOINED_URL = "https://sessionserver.mojang.com/session/minecraft/hasJoined?username={0}&serverId={1}";
-        public static bool HasJoined(string username)
+        public static bool HasJoined(Player p)
         {
-            string url = string.Format(HAS_JOINED_URL, username, GetServerID());
+            string url = string.Format(HAS_JOINED_URL, p.truename, GetServerID(p));
             try
             {
                 HttpWebRequest req = HttpUtil.CreateRequest(url);
@@ -117,38 +117,17 @@ namespace Flames.Authentication
             catch (Exception ex)
             {
                 HttpUtil.DisposeErrorResponse(ex);
-                Logger.LogError("Verifying Mojang session for " + username, ex);
+                Logger.LogError("Verifying Mojang session for " + p.truename, ex);
             }
 
             return false;
         }
 
-        public static string GetServerID()
+        public static string GetServerID(Player p)
         {
-            UpdateExternalIP();
-            byte[] data = Encoding.UTF8.GetBytes(externalIP + ":" + Server.Config.Port);
+            byte[] data = Encoding.UTF8.GetBytes(p.ip);
             byte[] hash = new SHA1Managed().ComputeHash(data);
             return Utils.ToHexString(hash);
-        }
-
-        public static string externalIP;
-        public static void UpdateExternalIP()
-        {
-            if (externalIP != null) return;
-
-            try
-            {
-                HttpWebRequest req = HttpUtil.CreateRequest("http://classicube.net/api/myip/");
-
-                using (WebResponse response = req.GetResponse())
-                {
-                    externalIP = HttpUtil.GetResponseText(response);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Retrieving external IP", ex);
-            }
         }
     }
 }

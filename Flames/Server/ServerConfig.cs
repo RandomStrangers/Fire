@@ -79,6 +79,8 @@ namespace Flames
         public bool verifyadmins = true;
         [ConfigPerm("verify-admin-perm", "Security", LevelPermission.Operator)]
         public LevelPermission VerifyAdminsRank = LevelPermission.Operator;
+        [ConfigPerm("reset-password-perm", "Security", LevelPermission.Operator)]
+        public LevelPermission ResetPasswordRank = LevelPermission.Owner;
 
         [ConfigBool("support-web-client", "Webclient", true)]
         public bool WebClient = true;
@@ -178,6 +180,8 @@ namespace Flames
 
         [ConfigTimespan("death-invulnerability-cooldown", "Other", 2, false)]
         public TimeSpan DeathCooldown = TimeSpan.FromSeconds(2);
+        [ConfigBool("verify-lan-ips", "Other", false)]
+        public bool VerifyLanIPs = false;
 
         [ConfigBool("irc", "IRC bot", false)]
         public bool UseIRC = false;
@@ -342,18 +346,23 @@ namespace Flames
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        [ConfigString("host-state", "Chat", "Burning")]
         public string ConsoleName = "Burning";
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
+        [ConfigBoolArray("console-logging", "Logging", true, 17)]
         public bool[] ConsoleLogging = defLogLevels;
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         [ConfigString("Core-State", "Chat", "Burning")]
         public string CoreState = "Burning";
         /// <summary> Work on backwards compatibility with other cores </summary>
+        [ConfigBoolArray("GoldenSparks-logging", "Logging", true, 17)]
         public bool[] GoldenSparksLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
+        [ConfigBoolArray("Random-logging", "Logging", true, 17)]
         public bool[] RandomLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
+        [ConfigBoolArray("Nova-logging", "Logging", true, 17)]
         public bool[] NovaLogging = defLogLevels;
 #endif
     }

@@ -19,7 +19,9 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Sockets;
 using System.Text;
+using Flames.Authentication;
 using Flames.Tasks;
 
 namespace Flames.Network
@@ -36,8 +38,9 @@ namespace Flames.Network
 
         /// <summary> The URL this heartbeat is sent to </summary
         public string URL;
-        /// <summary> Salt used for verifying player names </summary>
-        public string Salt = "";
+        /// <summary> Authentication service potentially associated with the heartbeat </summary>
+        /// <example> ClassiCube beats use the Salt of the service for name authentication </example>
+        public AuthService Auth;
 
         public string GetHost()
         {
@@ -102,7 +105,6 @@ namespace Flames.Network
         /// <summary> Adds the given heartbeat to the list of automatically pumped heartbeats </summary>
         public static void Register(Heartbeat beat)
         {
-            beat.Salt = Server.GenerateSalt();
             Heartbeats.Add(beat);
         }
 
@@ -122,9 +124,59 @@ namespace Flames.Network
             if (!Server.Listener.Listening) return;
 
             foreach (Heartbeat beat in Heartbeats) 
-            { 
+            {
                 beat.Pump(); 
             }
+        }
+
+
+        public static string lastUrls;
+        public static void ReloadDefault()
+        {
+            string urls = Server.Config.HeartbeatURL;
+            // don't reload heartbeats unless absolutely have to
+            if (urls == lastUrls) return;
+
+            lastUrls = urls;
+            // TODO only reload default heartbeats, don't clear all
+            Heartbeats.Clear();
+
+            foreach (string url in urls.SplitComma())
+            {
+                AuthService service = AuthService.GetOrCreate(url);
+
+                Heartbeat beat = new ClassiCubeBeat() 
+                { 
+                    URL = url 
+                };
+                beat.Auth = service;
+                Register(beat);
+            }
+        }
+
+
+        // e.g. classicube.net only supports ipv4 servers, so we need to make
+        // sure we are using its ipv4 address when POSTing heartbeats there
+        public string EnsureIPv4Url(string hostUrl)
+        {
+            bool hasIPv6 = false;
+            IPAddress firstIPv4 = null;
+
+            // proxying doesn't work properly with https:// URLs
+            if (URL.CaselessStarts("https://")) return null;
+            IPAddress[] addresses = Dns.GetHostAddresses(hostUrl);
+
+            foreach (IPAddress ip in addresses)
+            {
+                AddressFamily family = ip.AddressFamily;
+                if (family == AddressFamily.InterNetworkV6)
+                    hasIPv6 = true;
+                if (family == AddressFamily.InterNetwork && firstIPv4 == null)
+                    firstIPv4 = ip;
+            }
+
+            if (!hasIPv6 || firstIPv4 == null) return null;
+            return "http://" + firstIPv4 + ":80";
         }
     }
 }

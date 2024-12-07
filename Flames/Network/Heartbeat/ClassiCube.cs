@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
@@ -25,7 +26,7 @@ using Flames.Events.ServerEvents;
 namespace Flames.Network
 {
     /// <summary> Heartbeat to ClassiCube.net's web server. </summary>
-    public class ClassiCubeBeat : Heartbeat
+    public sealed class ClassiCubeBeat : Heartbeat
     {
         public string proxyUrl;
         public string LastResponse;
@@ -39,8 +40,7 @@ namespace Flames.Network
             try
             {
                 hostUrl = GetHost();
-                IPAddress[] addresses = Dns.GetHostAddresses(hostUrl);
-                EnsureIPv4Url(addresses);
+                proxyUrl = EnsureIPv4Url(hostUrl);
             }
             catch (Exception ex)
             {
@@ -51,29 +51,6 @@ namespace Flames.Network
             //  message appears as a clickable link in the Logs textbox in GUI
             hostUrl = hostUrl.Replace("www.", "");
             Logger.Log(LogType.SystemActivity, "Finding " + hostUrl + " url..");
-        }
-
-        // classicube.net only supports ipv4 servers, so we need to make
-        // sure we are using its ipv4 address when POSTing heartbeats
-        public void EnsureIPv4Url(IPAddress[] addresses)
-        {
-            bool hasIPv6 = false;
-            IPAddress firstIPv4 = null;
-
-            // proxying doesn't work properly with https:// URLs
-            if (URL.CaselessStarts("https://")) return;
-
-            foreach (IPAddress ip in addresses)
-            {
-                AddressFamily family = ip.AddressFamily;
-                if (family == AddressFamily.InterNetworkV6)
-                    hasIPv6 = true;
-                if (family == AddressFamily.InterNetwork && firstIPv4 == null)
-                    firstIPv4 = ip;
-            }
-
-            if (!hasIPv6 || firstIPv4 == null) return;
-            proxyUrl = "http://" + firstIPv4 + ":80";
         }
 
         public override string GetHeartbeatData()
@@ -88,7 +65,7 @@ namespace Flames.Network
                 "&name=" + Uri.EscapeDataString(name) +
                 "&public=" + Server.Config.Public +
                 "&version=7" +
-                "&salt=" + Salt +
+                "&salt=" + Auth.Salt +
                 "&users=" + PlayerInfo.NonHiddenUniqueIPCount() +
                 "&software=" + Uri.EscapeDataString(Server.SoftwareNameVersioned) +
                 "&web=" + Server.Config.WebClient;

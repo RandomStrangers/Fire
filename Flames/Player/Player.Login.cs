@@ -61,8 +61,8 @@ namespace Flames
             }
 
             // mppass can be used as /pass when it is not used for name authentication            
-            if (!verifiedName && NeedsVerification() && PassAuthenticator.Current.HasPassword(name))
-                PassAuthenticator.VerifyPassword(this, mppass);
+            if (!verifiedName && NeedsVerification())
+                ExtraAuthenticator.Current.AutoVerify(this, mppass);
 
             level = Server.mainLevel;
             Loading = true;
