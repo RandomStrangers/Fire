@@ -8,10 +8,18 @@ namespace Flames.Commands.Maintenance
 
         public override void Use(Player p, string message)
         {
-            if (p.IsFire)
+
+#if CORE
+            if (p.IsNull)
             {
                 p.Message("Sorry, not shutting down today!");
             }
+#else
+            if (p.IsFire || p.IsConsole)
+            {
+                p.Message("Sorry, not shutting down today!");
+            }
+#endif
             p.Message("Command has been moved to /ShutdownTrue.");
             p.Message("This is to prevent automatic shut downs.");
         }

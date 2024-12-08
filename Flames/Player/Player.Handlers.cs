@@ -78,7 +78,7 @@ namespace Flames
 
             if (Unverified)
             {
-                PassAuthenticator.Current.RequiresVerification(this, "modify blocks");
+                ExtraAuthenticator.Current.RequiresVerification(this, "modify blocks");
                 RevertBlock(x, y, z); 
                 return;
             }
@@ -757,7 +757,7 @@ namespace Flames
             }
             if (Unverified && !(cmd == "pass" || cmd == "setpass"))
             {
-                PassAuthenticator.Current.RequiresVerification(this, "use /" + cmd);
+                ExtraAuthenticator.Current.RequiresVerification(this, "use /" + cmd);
                 return false;
             }
 

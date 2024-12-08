@@ -310,7 +310,8 @@ namespace Flames
         public bool[] FileLogging = defLogLevels;
         [ConfigBoolArray("flame-logging", "Logging", true, 17)]
         public bool[] FlameLogging = defLogLevels;
-
+        [ConfigBool("send-alts-message", "Logging", true)]
+        public bool SendAlts = true;
 
         [ConfigBool("mute-on-spam", "Spam control", false)]
         public bool ChatSpamCheck = false;

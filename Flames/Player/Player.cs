@@ -49,7 +49,25 @@ namespace Flames
             Logger.Log(LogType.FlameMessage, message);
         }
     }
+    public class ConsolePlayer : Player
+    {
+        public ConsolePlayer() : base("(console)")
+        {
+            group = Group.ConsoleRank;
+            color = "&S";
+            SuperName = "Console";
+        }
 
+        public override string FullName
+        {
+            get { return "Console [&a" + Server.Config.ConsoleName + "&S]"; }
+        }
+        public override bool IsNull { get { return true; } }
+        public override void Message(string message)
+        {
+            Logger.Log(LogType.ConsoleMessage, message);
+        }
+    }
 #if CORE
     /// <summary> Work on backwards compatibility with other cores </summary>
     public class GoldenPlayer : Player
@@ -124,16 +142,16 @@ namespace Flames
         public static int sessionCounter;
         public static Player Flame = new FlamePlayer();
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public static Player Console = new FlamePlayer();
+        public static Player Console = new ConsolePlayer();
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Player Sparks = new GoldenPlayer();
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Player Sparkie = new GoldenPlayer();
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public static Player Random = new RandomPlayer();
-        /// <summary> Work on backwards compatibility with other cores </summary>
         public static Player Nova = new NovaPlayer();
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public static Player Random = new RandomPlayer();
 #endif
         //This is so that plugin devs can declare a player without needing a socket..
         //They would still have to do p.Dispose()..
@@ -142,11 +160,9 @@ namespace Flames
             name = playername;
             truename = playername;
             DisplayName = playername;
-
             SetIP(IPAddress.Loopback);
             IsSuper = true;
         }
-
         public const int SESSION_ID_MASK = (1 << 20) - 1;
         public Player(INetSocket socket, IGameSession session)
         {
@@ -471,20 +487,22 @@ namespace Flames
         }
 
         #endregion
-
         /// <summary> Returns whether the player is currently allowed to talk. </summary>
         public bool CanSpeak()
         {
-            return IsFire || (!muted && !Unverified && (voice || !Server.chatmod));
+#if CORE
+            return IsNull || (!muted && !Unverified && (voice || !Server.chatmod));
+#else
+            return IsFire || IsConsole || (!muted && !Unverified && (voice || !Server.chatmod));
+#endif
         }
-
         public bool CheckCanSpeak(string action)
         {
+#if CORE 
+            if (IsNull) return true;
+#else
             if (IsFire) return true;
-#if CORE
-            if (IsSparkie) return true;
-            if (IsRandom) return true;
-            if (IsNova) return true;
+            else if (IsConsole) return true;
 #endif
             if (muted)
             {

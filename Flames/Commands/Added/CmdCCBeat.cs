@@ -45,12 +45,21 @@ namespace Flames.Commands
             bool IsPublic = Server.Config.Public;
             if (IsPublic)
             {
-                if (p.IsFire)
+#if CORE
+                if (p.IsNull)
                 {
                     p.Message("Seriously? Just go look at it!");
                     p.cancelcommand = true;
                     return;
                 }
+#else
+                if (p.IsFire || p.IsConsole)
+                {
+                    p.Message("Seriously? Just go look at it!");
+                    p.cancelcommand = true;
+                    return;
+                }
+#endif
                 else
                 {
                     string file = "./text/externalurl.txt";
@@ -61,7 +70,7 @@ namespace Flames.Commands
             }
             else
             {
-                p.Message("Server is not public! Cannot send URL to chat!");
+                p.Message("Server is not public! Cannot send URL!");
                 p.cancelcommand= true;
                 return;
             }

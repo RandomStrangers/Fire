@@ -23,7 +23,12 @@ namespace Flames.Commands.Chatting
         }
         public static bool CheckPerms(Player p)
         {
+#if CORE 
+            if (p.IsNull) return true;
+#else
             if (p.IsFire) return true;
+            else if (p.IsConsole) return true;
+#endif
 
             if (Server.Config.OwnerName.CaselessEq("Notch")) return false;
             return p.name.CaselessEq(Server.Config.OwnerName);

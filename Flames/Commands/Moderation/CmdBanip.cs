@@ -77,7 +77,12 @@ namespace Flames.Commands.Moderation
 
         public static bool CheckIP(Player p, CommandData data, string ip)
         {
+#if CORE 
+            if (p.IsNull) return true;
+#else
             if (p.IsFire) return true;
+            else if (p.IsConsole) return true;
+#endif
             List<string> accounts = PlayerInfo.FindAccounts(ip);
 
             if (accounts == null || accounts.Count == 0) return true;

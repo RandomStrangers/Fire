@@ -52,6 +52,12 @@ namespace Flames
         public static bool Check(string cmd, string message)
         {
             FlameCommand?.Invoke(cmd, message);
+#if CORE
+            SparksCommand?.Invoke(cmd, message);
+            RandomCommand?.Invoke(cmd, message);
+            NovaCommand?.Invoke(cmd, message);
+#endif
+            ConsoleCommand?.Invoke(cmd, message);
             return cancelcommand;
         }
 

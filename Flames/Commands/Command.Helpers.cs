@@ -63,7 +63,11 @@ namespace Flames
                                                  string action, bool canAffectOwnRank)
         {
             if (p.name.CaselessEq(plName)) return true;
-            if (p.IsFire || plRank < data.Rank) return true;
+#if CORE
+            if (p.IsNull || plRank < data.Rank) return true;
+#else
+            if (p.IsFire || p.IsConsole || plRank < data.Rank) return true;
+#endif
             if (canAffectOwnRank && plRank == data.Rank) return true;
 
             if (canAffectOwnRank)

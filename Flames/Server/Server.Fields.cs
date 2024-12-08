@@ -29,7 +29,16 @@ namespace Flames
         public static event OnFlameCommand FlameCommand;
         public delegate void MessageEventHandler(string message);
         public delegate void VoidHandler();
-
+#if CORE
+        public delegate void OnSparksCommand(string cmd, string message);
+        public static event OnSparksCommand SparksCommand;
+        public delegate void OnNovaCommand(string cmd, string message);
+        public static event OnNovaCommand NovaCommand;
+        public delegate void OnRandomCommand(string cmd, string message);
+        public static event OnRandomCommand RandomCommand;
+#endif
+        public delegate void OnConsoleCommand(string cmd, string message);
+        public static event OnConsoleCommand ConsoleCommand; 
         public static event MessageEventHandler OnURLChange;
         public static event VoidHandler OnSettingsUpdate;
         public static ServerConfig Config = new ServerConfig();
@@ -40,24 +49,22 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.3.7";
+        public const string InternalVersion = "1.0.3.8";
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = FlamesVersion;
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 #endif
-        public const string FlamesVersion = "9.0.6.1";
+        public const string FlamesVersion = "9.0.6.2";
         public static string Version { get { return InternalVersion; } }
         public static string fullName;
-
         public static string SoftwareNameVersioned
         {
             get { return fullName ?? SoftwareName + " " + Version; }
             set { fullName = value; }
         }
         public static INetListen Listener = new TcpListen();
-
         //Other
         public static bool SetupFinished, CLIMode;
 

@@ -19,6 +19,8 @@ using Flames.Authentication;
 using Flames.DB;
 using Flames.Events.PlayerEvents;
 using Flames.Games;
+using Flames.Modules.Relay;
+using Flames.Modules.Relay.IRC;
 using Flames.SQL;
 using Flames.Tasks;
 using Flames.Util;
@@ -142,8 +144,10 @@ namespace Flames
                 cancellogin = false;
                 return; 
             }
-
-            //Server.Background.QueueOnce(ShowAltsTask, name, TimeSpan.Zero);
+            if (Server.Config.SendAlts)
+            {
+                Server.Background.QueueOnce(ShowAltsTask, name, TimeSpan.Zero);
+            }
 
             string joinMsg = "&a+ λFULL &S" + PlayerInfo.GetLoginMessage(this);
             if (hidden) joinMsg = "&8(hidden)" + joinMsg;
@@ -315,16 +319,23 @@ namespace Flames
 
             List<string> alts = PlayerInfo.FindAccounts(p.ip);
             // in older versions it was possible for your name to appear multiple times in DB
-            while (alts.CaselessRemove(p.name)) { }
+            while (alts.CaselessRemove(p.name)) 
+            { 
+            }
             if (alts.Count == 0) return;
 
             ItemPerms opchat = Chat.OpchatPerms;
             string altsMsg = "λNICK &Sis lately known as: " + alts.Join();
-
             Chat.MessageFrom(p, altsMsg,
                              (pl, obj) => pl.CanSee(p) && opchat.UsableBy(pl));
-
-            //IRCBot.Say(temp, true); //Tells people in op channel on IRC
+            if (Server.Config.UseIRC)
+            {
+                if (Server.Config.IRCOpChannels != null)
+                {
+                    IRCPlugin.Bot.SendStaffMessage(altsMsg);
+                    Logger.Log(LogType.Debug, "alts message send to irc opchannels");
+                }
+            }
             altsMsg = altsMsg.Replace("λNICK", name);
             Logger.Log(LogType.UserActivity, altsMsg);
         }

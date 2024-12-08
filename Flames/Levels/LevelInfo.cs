@@ -156,7 +156,12 @@ namespace Flames
         public static bool Check(Player p, LevelPermission plRank, string map, string action, out LevelConfig cfg)
         {
             Level lvl; cfg = GetConfig(map, out lvl);
+#if CORE 
+            if (p.IsNull) return true;
+#else
             if (p.IsFire) return true;
+            else if (p.IsConsole) return true;
+#endif
             if (lvl != null) return Check(p, plRank, lvl, action);
 
             AccessController visit = new LevelAccessController(cfg, map, true);
@@ -177,7 +182,12 @@ namespace Flames
 
         public static bool Check(Player p, LevelPermission plRank, Level lvl, string action)
         {
+#if CORE 
+            if (p.IsNull) return true;
+#else
             if (p.IsFire) return true;
+            else if (p.IsConsole) return true;
+#endif
             if (!lvl.VisitAccess.CheckDetailed(p, plRank) || !lvl.BuildAccess.CheckDetailed(p, plRank))
             {
                 p.Message("Hence, you cannot {0}.", action); 

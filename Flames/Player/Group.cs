@@ -33,7 +33,7 @@ namespace Flames
         public static Group NobodyRank { get { return Find(LevelPermission.Nobody); } }
         public static Group FireRank = new Group(LevelPermission.Flames, int.MaxValue, 21024000, "&4F&cl&4a&cm&4e&cs", "&4", int.MaxValue, 512);
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public static Group ConsoleRank = FireRank;
+        public static Group ConsoleRank { get { return Find(LevelPermission.Console); } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Group GoldenRank { get { return Find(LevelPermission.Sparkie); } }
@@ -42,7 +42,6 @@ namespace Flames
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Group RandomRank { get { return Find(LevelPermission.Random); } }
 #endif
-
 
         public static List<Group> GroupList = new List<Group>();
         public static List<Group> AllRanks = new List<Group>();
@@ -236,7 +235,6 @@ namespace Flames
                 Add(LevelPermission.Operator, 2097152, 90, "Operator", "&c", GEN_LIMIT, 8); // 128^3
                 Add(LevelPermission.Admin, 16777216, 21024000, "Admin", "&e", GEN_ADMIN, 32); // 256^3
                 Add(LevelPermission.Owner, 134217728, 21024000, "Owner", "&0", GEN_ADMIN, 256); // 512^3
-
             }
 
             if (BannedRank == null)
@@ -285,7 +283,7 @@ namespace Flames
         {
             string desired = (int)Permission + "_rank";
             // Try to use the auto filename format
-            if (filename == null || !filename.StartsWith(desired))
+            if (filename == null)
                 MoveToDesired(desired);
 
             Players = PlayerList.Load("ranks/" + filename);
@@ -388,7 +386,7 @@ namespace Flames
             {
                 Logger.Log(LogType.Warning, "Cannot add the rank {0} twice", temp.Name);
             }
-            else if (Find(temp.Permission) != null)
+            else if (Find(temp.Permission) != null && temp.Permission != (LevelPermission)127)
             {
                 Logger.Log(LogType.Warning, "Cannot have 2 ranks set at permission level " + (int)temp.Permission);
             }

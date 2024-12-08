@@ -94,7 +94,7 @@ namespace Flames
         public bool IsConsole { get { return this == Console; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public bool IsSparkie { get { return this == Sparks; } }
+        public bool IsSparkie { get { return this == Sparks || this == Sparkie; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
         public bool IsNova { get { return this == Nova; } }
         /// <summary> Work on backwards compatibility with other cores </summary>

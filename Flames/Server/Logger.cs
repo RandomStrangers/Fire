@@ -42,7 +42,6 @@ namespace Flames
         /// <summary> Activity on a relay bot (e.g. IRC or Discord) </summary>
         RelayActivity,
 
-
         /// <summary> Warning message, such as failure to save a file. </summary>
         Warning,
 
@@ -51,7 +50,6 @@ namespace Flames
 
         /// <summary> Command used by a player. </summary>
         CommandUsage,
-
 
         /// <summary> Chat globally or only on player's level. </summary>
         PlayerChat,
@@ -71,21 +69,21 @@ namespace Flames
         /// <summary> Chat to all players of a rank. </summary>
         RankChat,
 
-
         /// <summary> Debug messages. </summary>
         Debug,
 
         /// <summary> Message shown to the Flames. </summary>
         FlameMessage,
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        ConsoleMessage = FlameMessage,
+        ConsoleMessage,
+
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        RandomMessage = FlameMessage,
+        GoldenSparksMessage,
         /// <summary> Work on backwards compatibility with other cores </summary>
-        NovaMessage = FlameMessage,
+        NovaMessage,
         /// <summary> Work on backwards compatibility with other cores </summary>
-        GoldenSparksMessage = FlameMessage,
+        RandomMessage,
 #endif
     }
 

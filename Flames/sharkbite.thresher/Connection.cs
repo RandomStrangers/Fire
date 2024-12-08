@@ -227,7 +227,10 @@ namespace Sharkbite.Irc
         {
             try
             {
-                lock (sendLock) { writer.WriteLine(command); }
+                lock (sendLock) 
+                { 
+                    writer.WriteLine(command); 
+                }
             }
             catch
             {

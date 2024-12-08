@@ -126,11 +126,17 @@ namespace Flames
                 return; 
             }
             Logger.Log(LogType.PrivateChat, "{0} @{1}: {2}", p.name, target.name, message);
-
-            if (!p.IsFire)
+#if CORE
+            if (!p.IsNull)
             {
                 p.Message("[<] {0}: &f{1}", p.FormatNick(target), message);
             }
+#else
+            if (!p.IsFire && !p.IsConsole)
+            {
+                p.Message("[<] {0}: &f{1}", p.FormatNick(target), message);
+            }
+#endif
             Chat.MessageChat(ChatScope.PM, p, "&9[>] λNICK: &f" + message, target, null);
         }
     }

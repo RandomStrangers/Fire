@@ -138,8 +138,12 @@ namespace Flames
 
         public bool CanJoin(Player p)
         {
-            if (p.IsFire || this == Server.mainLevel) return true;
+#if CORE
+            if (p.IsNull || this == Server.mainLevel) return true;
 
+#else
+            if (p.IsFire || p.IsConsole || this == Server.mainLevel) return true;
+#endif
             bool skip = p.summonedMap != null && p.summonedMap.CaselessEq(name);
             LevelPermission plRank = skip ? LevelPermission.Flames : p.Rank;
             if (!VisitAccess.CheckDetailed(p, plRank)) return false;
