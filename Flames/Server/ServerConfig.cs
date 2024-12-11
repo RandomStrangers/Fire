@@ -44,6 +44,8 @@ namespace Flames
         public bool Public = false;
         [ConfigBool("verify-names", "Server", true)]
         public bool VerifyNames = true;
+        [ConfigBool("allow-clones", "Server", false)]
+        public bool AllowClones = false;
         [ConfigString("default-rank", "Server", "guest")]
         public string DefaultRankName = "guest";
         [ConfigString("server-owner", "Server", "the owner")]
