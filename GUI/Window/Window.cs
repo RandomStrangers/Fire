@@ -116,7 +116,10 @@ Trying to mix two versions is unsupported - you may experience issues";
                 Icon = GetIcon();
                 GuiUtils.WinIcon = Icon;
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
+            }
         }
 
         public void UpdateNotifyIconText()
@@ -441,15 +444,17 @@ Trying to mix two versions is unsupported - you may experience issues";
             { 
                 Map_UpdateUnloadedList(); 
             }
-            catch 
-            { 
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
             try 
             { 
                 Players_UpdateList(); 
             }
-            catch 
-            { 
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
 
             try
@@ -457,8 +462,9 @@ Trying to mix two versions is unsupported - you may experience issues";
                 if (logs_txtGeneral.Text.Length == 0)
                     logs_dateGeneral.Value = DateTime.Now;
             }
-            catch 
-            { 
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
 
             foreach (TabPage page in tabs.TabPages)

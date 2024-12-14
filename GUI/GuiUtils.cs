@@ -66,9 +66,10 @@ namespace Flames.Gui
             try 
             { 
                 form.Icon = WinIcon; 
-            } 
-            catch 
-            { 
+            }
+            catch (Exception ex)
+            {
+                Logger.LogError(ex);
             }
         }
 

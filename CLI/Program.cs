@@ -73,8 +73,9 @@ namespace Flames.Cli
             {
                 Server.CLIMode = true;
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.LogError(ex);
                 // in case user is running CLI with older Flames dll which lacked CLIMode field
             }
             Server.RestartPath = Assembly.GetEntryAssembly().Location;

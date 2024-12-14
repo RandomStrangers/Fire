@@ -19,7 +19,6 @@ using Flames.Authentication;
 using Flames.DB;
 using Flames.Events.PlayerEvents;
 using Flames.Games;
-using Flames.Modules.Relay;
 using Flames.Modules.Relay.IRC;
 using Flames.SQL;
 using Flames.Tasks;
@@ -63,7 +62,7 @@ namespace Flames
             }
 
             // mppass can be used as /pass when it is not used for name authentication            
-            if (!verifiedName && NeedsVerification())
+            if (!Server.Config.AllowClones && !verifiedName && NeedsVerification())
                 ExtraAuthenticator.Current.AutoVerify(this, mppass);
 
             level = Server.mainLevel;
@@ -93,14 +92,14 @@ namespace Flames
 
                 // Remove clone from list (hold lock for as short time as possible)
                 //  NOTE: check 'Server.Config.VerifyNames' too for LAN/localhost IPs
-                if (clone != null && (verifiedName || Server.Config.VerifyNames || !Server.Config.AllowClones))
+                if (clone != null && !Server.Config.AllowClones && (verifiedName || Server.Config.VerifyNames))
                     PlayerInfo.Online.Remove(clone);
 
                 id = NextFreeId();
                 PlayerInfo.Online.Add(this);
             }
 
-            if (clone != null && (verifiedName || Server.Config.VerifyNames || !Server.Config.AllowClones))
+            if (clone != null && !Server.Config.AllowClones && (verifiedName || Server.Config.VerifyNames))
             {
                 string reason = ip == clone.ip ? "(Reconnecting)" : "(Reconnecting from a different IP)";
                 clone.Leave(reason);
@@ -127,7 +126,10 @@ namespace Flames
             Game.Team = Team.TeamIn(this);
             SetPrefix();
 
-            if (Server.noEmotes.Contains(name)) { parseEmotes = !Server.Config.ParseEmotes; }
+            if (Server.noEmotes.Contains(name)) 
+            { 
+                parseEmotes = !Server.Config.ParseEmotes;
+            }
 
             hideRank = Rank;
             hidden = CanUse("Hide") && Server.hidden.Contains(name);
@@ -135,7 +137,8 @@ namespace Flames
 
             if (Chat.AdminchatPerms.UsableBy(this) && Server.Config.AdminsJoinSilently)
             {
-                hidden = true; adminchat = true;
+                hidden = true; 
+                adminchat = true;
             }
 
             OnPlayerConnectEvent.Call(this);
@@ -333,7 +336,7 @@ namespace Flames
                 if (Server.Config.IRCOpChannels != null)
                 {
                     IRCPlugin.Bot.SendStaffMessage(altsMsg);
-                    Logger.Log(LogType.Debug, "alts message send to irc opchannels");
+                    //Logger.Log(LogType.Debug, "alts message send to irc opchannels");
                 }
             }
             altsMsg = altsMsg.Replace("λNICK", name);

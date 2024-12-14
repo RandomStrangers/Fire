@@ -83,8 +83,9 @@ namespace Flames.Gui
             {
                 (Text + e.KeyChar.ToString()).ParseShort("s");
             }
-            catch
+            catch(Exception ex)
             {
+                Logger.LogError(ex);
                 e.Handled = true;
                 SystemSounds.Beep.Play();
             }
@@ -116,8 +117,9 @@ namespace Flames.Gui
             {
                 Value = Text.ParseShort("s");
             }
-            catch
+            catch (Exception ex)
             {
+                Logger.LogError(ex);
             }
             finally
             {

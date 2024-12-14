@@ -25,6 +25,7 @@ using Flames.Modules.Games.LS;
 using Flames.Modules.Games.TW;
 using Flames.Modules.Games.ZS;
 using Flames.Modules.Moderation.Notes;
+using Flames.Modules.NewCompiling;
 using Flames.Modules.Relay.Discord;
 using Flames.Modules.Relay.IRC;
 using Flames.Modules.Security;
@@ -56,11 +57,12 @@ namespace Flames
         public virtual string Flames_Version { get { return null; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string GoldenSparks_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
         public virtual string SuperNova_Version { get { return null; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
         public virtual string DeadNova_Version { get { return null; } }
-        /// <summary> Work on backwards compatibility with other cores </summary>
-        public virtual string GoldenSparks_Version { get { return null; } }
+
         /// <summary> Work on backwards compatibility with other cores </summary>
         public virtual string RandomStrangers_Version { get { return null; } }
 #endif
@@ -134,10 +136,11 @@ namespace Flames
         public static bool Unload(Plugin pl)
         {
             bool success = UnloadPlugin(pl, false);
-
-            // TODO only remove if successful?
-            custom.Remove(pl);
-            core.Remove(pl);
+            if (success)
+            {
+                custom.Remove(pl);
+                core.Remove(pl);
+            }
             return success;
         }
         public static bool UnloadPlugin(Plugin pl, bool auto)
@@ -153,7 +156,6 @@ namespace Flames
                 return false;
             }
         }
-
         public static void UnloadAll()
         {
             for (int i = 0; i < custom.Count; i++)
@@ -182,6 +184,12 @@ namespace Flames
             LoadCorePlugin(new TWPlugin());
             LoadCorePlugin(new ZSPlugin());
             LoadCorePlugin(new CompilerPlugin());
+#if CORE
+            LoadCorePlugin(new GoldenSparksPluginLoader());
+            LoadCorePlugin(new SuperNovaPluginLoader());
+            LoadCorePlugin(new DeadNovaPluginLoader());
+            LoadCorePlugin(new RandomStrangersPluginLoader());
+#endif
             IScripting.AutoloadPlugins();
         }
         public static void LoadCorePlugin(Plugin plugin)
