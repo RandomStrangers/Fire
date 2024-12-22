@@ -30,8 +30,8 @@ namespace Flames
 #else
         public const string Software = "&4F&cl&4a&cm&4e&cs";
 #endif
-        [ConfigString("server-name", "Server", "&a[" + Software + "] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
-        public string Name = "&a[" + Software + "] Default";
+        [ConfigString("server-name", "Server", "&S[" + Software + "&S] Default", false, " !\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~")]
+        public string Name = "&S[" + Software + "&S] Default";
         [ConfigString("motd", "Server", "Welcome", false)]
         public string MOTD = "Welcome!";
         [ConfigInt("max-players", "Server", 16, 1, Server.MAX_PLAYERS)]

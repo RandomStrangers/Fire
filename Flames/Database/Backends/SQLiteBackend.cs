@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading;
-using SQLiteErrorCode = System.Int32;
 
 namespace Flames.SQL
 {
@@ -30,16 +29,16 @@ namespace Flames.SQL
         public const string lib = "sqlite3";
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_open_v2(byte[] utf8Filename, ref IntPtr db, int flags, IntPtr vfs);
+        public static extern int sqlite3_open_v2(byte[] utf8Filename, ref IntPtr db, int flags, IntPtr vfs);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_close_v2(IntPtr db); /* 3.7.14+ */
+        public static extern int sqlite3_close_v2(IntPtr db); /* 3.7.14+ */
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_exec(IntPtr db, byte[] strSql, IntPtr pvCallback, IntPtr pvParam, ref IntPtr errMsg);
+        public static extern int sqlite3_exec(IntPtr db, byte[] strSql, IntPtr pvCallback, IntPtr pvParam, ref IntPtr errMsg);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_prepare_v2(IntPtr db, byte[] strSql, int nBytes, ref IntPtr stmt, ref IntPtr ptrRemain);
+        public static extern int sqlite3_prepare_v2(IntPtr db, byte[] strSql, int nBytes, ref IntPtr stmt, ref IntPtr ptrRemain);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_busy_timeout(IntPtr db, int ms);
+        public static extern int sqlite3_busy_timeout(IntPtr db, int ms);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern long sqlite3_last_insert_rowid(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
@@ -48,18 +47,18 @@ namespace Flames.SQL
         public static extern int sqlite3_get_autocommit(IntPtr db);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_double(IntPtr stmt, int index, double value);
+        public static extern int sqlite3_bind_double(IntPtr stmt, int index, double value);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_int(IntPtr stmt, int index, int value);
+        public static extern int sqlite3_bind_int(IntPtr stmt, int index, int value);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_int64(IntPtr stmt, int index, long value);
+        public static extern int sqlite3_bind_int64(IntPtr stmt, int index, long value);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_null(IntPtr stmt, int index);
+        public static extern int sqlite3_bind_null(IntPtr stmt, int index);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_blob(IntPtr stmt, int index, byte[] value, int nSize, IntPtr nTransient);
+        public static extern int sqlite3_bind_blob(IntPtr stmt, int index, byte[] value, int nSize, IntPtr nTransient);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_bind_text(IntPtr stmt, int index, byte[] value, int nlen, IntPtr pvReserved);
+        public static extern int sqlite3_bind_text(IntPtr stmt, int index, byte[] value, int nlen, IntPtr pvReserved);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern int sqlite3_bind_parameter_count(IntPtr stmt);
@@ -90,20 +89,20 @@ namespace Flames.SQL
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr sqlite3_next_stmt(IntPtr db, IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_step(IntPtr stmt);
+        public static extern int sqlite3_step(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_reset(IntPtr stmt);
+        public static extern int sqlite3_reset(IntPtr stmt);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_finalize(IntPtr stmt);
+        public static extern int sqlite3_finalize(IntPtr stmt);
 
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
         public static extern IntPtr sqlite3_errmsg(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_errcode(IntPtr db);
+        public static extern int sqlite3_errcode(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern SQLiteErrorCode sqlite3_extended_errcode(IntPtr db);
+        public static extern int sqlite3_extended_errcode(IntPtr db);
         [DllImport(lib, CallingConvention = CallingConvention.Cdecl)]
-        public static extern IntPtr sqlite3_errstr(SQLiteErrorCode rc); /* 3.7.15+ */
+        public static extern IntPtr sqlite3_errstr(int rc); /* 3.7.15+ */
     }
 
     public abstract class SQLiteConnection : ISqlConnection
@@ -155,13 +154,13 @@ namespace Flames.SQL
             }
         }
 
-        public SQLiteErrorCode ResultCode()
+        public int ResultCode()
         {
             if (handle == IntPtr.Zero) throw new InvalidOperationException("Database connection closed");
             return Interop.sqlite3_errcode(handle);
         }
 
-        public SQLiteErrorCode ExtendedResultCode()
+        public int ExtendedResultCode()
         {
             if (handle == IntPtr.Zero) throw new InvalidOperationException("Database connection closed");
             return Interop.sqlite3_extended_errcode(handle);
@@ -180,7 +179,7 @@ namespace Flames.SQL
             while (true)
             {
                 IntPtr stmt = IntPtr.Zero, ptr = IntPtr.Zero;
-                SQLiteErrorCode n = Interop.sqlite3_prepare_v2(handle, b, b.Length - 1, ref stmt, ref ptr);
+                int n = Interop.sqlite3_prepare_v2(handle, b, b.Length - 1, ref stmt, ref ptr);
 
                 if (n == SQLiteErrorCodes.Ok)
                 {
@@ -214,7 +213,7 @@ namespace Flames.SQL
                     IntPtr db = IntPtr.Zero;
 
                     const int flags = 4 | 2; // CREATE(4) | READ_WRITE(2)
-                    SQLiteErrorCode n = Interop.sqlite3_open_v2(SQLiteConvert.ToUTF8(DBPath), ref db, flags, IntPtr.Zero);
+                    int n = Interop.sqlite3_open_v2(SQLiteConvert.ToUTF8(DBPath), ref db, flags, IntPtr.Zero);
 
                     if (n != SQLiteErrorCodes.Ok) throw new SQLiteException(n, null);
                     handle = db;
@@ -232,7 +231,7 @@ namespace Flames.SQL
         public void SetTimeout(int timeoutMS)
         {
             if (handle == IntPtr.Zero) throw new SQLiteException("no connection handle available");
-            SQLiteErrorCode n = Interop.sqlite3_busy_timeout(handle, timeoutMS);
+            int n = Interop.sqlite3_busy_timeout(handle, timeoutMS);
             if (n != SQLiteErrorCodes.Ok) throw new SQLiteException(n, GetLastError());
         }
 
@@ -258,7 +257,7 @@ namespace Flames.SQL
             // NOTE: Is a transaction NOT pending on the connection?
             if (AutoCommit) return true;
 
-            SQLiteErrorCode n = Interop.sqlite3_exec(handle, SQLiteConvert.ToUTF8("ROLLBACK"),
+            int n = Interop.sqlite3_exec(handle, SQLiteConvert.ToUTF8("ROLLBACK"),
                                                      IntPtr.Zero, IntPtr.Zero, ref stmt);
             if (n == SQLiteErrorCodes.Ok) return true;
 
@@ -475,7 +474,7 @@ namespace Flames.SQL
         public const int Timeout = 30;
         public static uint seed = 123456789;
 
-        public static void TrySleep(SQLiteConnection conn, SQLiteErrorCode n, uint start)
+        public static void TrySleep(SQLiteConnection conn, int n, uint start)
         {
             if ((uint)Environment.TickCount > start + (Timeout * 1000))
             {
@@ -736,7 +735,7 @@ namespace Flames.SQL
 
     public class SQLiteException : ExternalException
     {
-        public SQLiteException(SQLiteErrorCode code, string message) : base(FormatError(code, message)) 
+        public SQLiteException(int code, string message) : base(FormatError(code, message)) 
         { 
         }
 
@@ -744,7 +743,7 @@ namespace Flames.SQL
         { 
         }
 
-        public static string FormatError(SQLiteErrorCode code, string message)
+        public static string FormatError(int code, string message)
         {
             string msg = GetErrorString(code) + Environment.NewLine + message;
             return msg.Trim();
@@ -782,7 +781,7 @@ namespace Flames.SQL
             /* SQLITE_WARNING     */ "warning message"
         };
 
-        public static string GetErrorString(SQLiteErrorCode rc)
+        public static string GetErrorString(int rc)
         {
             try
             {
@@ -854,7 +853,7 @@ namespace Flames.SQL
             uint start = (uint)Environment.TickCount;
             while (true)
             {
-                SQLiteErrorCode n = Interop.sqlite3_step(handle);
+                int n = Interop.sqlite3_step(handle);
                 if (n == SQLiteErrorCodes.Row) return true;
                 if (n == SQLiteErrorCodes.Done) return false;
                 if (n == SQLiteErrorCodes.Ok) continue;
@@ -898,7 +897,7 @@ namespace Flames.SQL
                 int i = FindParameter(names[idx]);
                 if (i == -1) continue;
 
-                SQLiteErrorCode n = BindParameter(i + 1, values[idx]);
+                int n = BindParameter(i + 1, values[idx]);
                 if (n != SQLiteErrorCodes.Ok) throw new SQLiteException(n, conn.GetLastError());
             }
         }
@@ -913,7 +912,7 @@ namespace Flames.SQL
             return -1;
         }
 
-        public SQLiteErrorCode BindParameter(int i, object obj)
+        public int BindParameter(int i, object obj)
         {
             if (obj == null || obj == DBNull.Value)
             {
@@ -955,23 +954,23 @@ namespace Flames.SQL
             }
         }
 
-        public SQLiteErrorCode Bind_Int32(int index, int value)
+        public int Bind_Int32(int index, int value)
         {
             return Interop.sqlite3_bind_int(handle, index, value);
         }
 
-        public SQLiteErrorCode Bind_Int64(int index, long value)
+        public int Bind_Int64(int index, long value)
         {
             return Interop.sqlite3_bind_int64(handle, index, value);
         }
 
-        public SQLiteErrorCode Bind_Text(int index, string value)
+        public int Bind_Text(int index, string value)
         {
             byte[] b = SQLiteConvert.ToUTF8(value);
             return Interop.sqlite3_bind_text(handle, index, b, b.Length - 1, (IntPtr)(-1));
         }
 
-        public SQLiteErrorCode Bind_DateTime(int index, DateTime dt)
+        public int Bind_DateTime(int index, DateTime dt)
         {
             return Bind_Text(index, SQLiteConvert.ToString(dt));
         }

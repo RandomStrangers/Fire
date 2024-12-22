@@ -16,10 +16,8 @@
     permissions and limitations under the Licenses.
  */
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Net.Sockets;
 using Flames.Config;
 using Flames.Events.ServerEvents;
 

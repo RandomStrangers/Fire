@@ -108,36 +108,8 @@ namespace Flames.Scripting
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
-            byte[] debug = GetDebugData(path);
-            return Assembly.Load(data, debug);
+            return Assembly.Load(data);
         }
-
-        public static byte[] GetDebugData(string path)
-        {
-            if (Server.RunningOnMono())
-            {
-                // Cmdtest.dll -> Cmdtest.dll.mdb
-                path += ".mdb";
-            }
-            else
-            {
-                // Cmdtest.dll -> Cmdtest.pdb
-                path = Path.ChangeExtension(path, ".pdb");
-            }
-
-            if (!File.Exists(path)) return null;
-            try
-            {
-                return File.ReadAllBytes(path);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Error loading .pdb " + path, ex);
-                return null;
-            }
-        }
-
-
         public static void AutoloadCommands()
         {
             string[] files = AtomicIO.TryGetFiles(COMMANDS_DLL_DIR, "*.dll");

@@ -447,8 +447,7 @@ namespace Flames.Modules.SuperNovaCompiling
             AddCoreAssembly(sb);
             AddReferencedAssemblies(sb, referencedAssemblies);
             sb.AppendFormat("/out:{0} ", Quote(dstPath));
-
-            sb.Append("/D:DEBUG /debug+ /optimize- ");
+            sb.Append("/optimize- ");
             sb.Append("/warnaserror- /unsafe ");
 
             foreach (string path in srcPaths)
@@ -917,36 +916,8 @@ namespace Flames.SuperNovaScripting
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
-            byte[] debug = GetDebugData(path);
-            return Assembly.Load(data, debug);
+            return Assembly.Load(data);
         }
-
-        public static byte[] GetDebugData(string path)
-        {
-            if (Server.RunningOnMono())
-            {
-                // test.dll -> test.dll.mdb
-                path += ".mdb";
-            }
-            else
-            {
-                // test.dll -> test.pdb
-                path = Path.ChangeExtension(path, ".pdb");
-            }
-
-            if (!File.Exists(path)) return null;
-            try
-            {
-                return File.ReadAllBytes(path);
-            }
-            catch (Exception ex)
-            {
-                Logger.LogError("Error loading .pdb " + path, ex);
-                return null;
-            }
-        }
-
-
         public static string DescribeLoadError(string path, Exception ex)
         {
             string file = Path.GetFileName(path);

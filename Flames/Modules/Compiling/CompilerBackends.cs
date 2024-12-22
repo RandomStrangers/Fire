@@ -43,7 +43,7 @@ namespace Flames.Modules.Compiling
             CompilerParameters args = new CompilerParameters
             {
                 GenerateExecutable = false,
-                IncludeDebugInformation = true,
+                IncludeDebugInformation = false,
                 OutputAssembly = dstPath
             };
 
