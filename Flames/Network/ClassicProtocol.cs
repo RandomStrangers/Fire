@@ -61,6 +61,9 @@ namespace Flames.Network
                     return HandleTwoWayPing(buffer, offset, left);
                 case Opcode.CpePluginMessage: 
                     return HandlePluginMessage(buffer, offset, left);
+                case Opcode.CpeNotifyAction: 
+                    return HandleNotifyAction(buffer, offset, left);
+
 
                 case Opcode.CpeCustomBlockSupportLevel:
                     return left < 2 ? 0 : 2; // only ever one level anyways
@@ -291,7 +294,15 @@ namespace Flames.Network
             OnPlayerClickEvent.Call(player, Button, Action, yaw, pitch, entityID, x, y, z, face);
             return size;
         }
-
+        public int HandleNotifyAction(byte[] buffer, int offset, int left)
+        {
+            const int size = 1 + 2 + 2;
+            if (left < size) return 0;
+            NotifyActionType action = (NotifyActionType)buffer[offset + 2];
+            short value = NetUtils.ReadI16(buffer, offset + 3);
+            OnNotifyActionEvent.Call(player, action, value);
+            return size;
+        }
         public int HandleTwoWayPing(byte[] buffer, int offset, int left)
         {
             const int size = 1 + 1 + 2;

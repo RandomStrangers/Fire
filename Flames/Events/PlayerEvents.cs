@@ -36,7 +36,12 @@ namespace Flames.Events.PlayerEvents
     { 
         AwayX, TowardsX, AwayY, TowardsY, AwayZ, TowardsZ, None 
     }
-
+    public enum NotifyActionType 
+    { 
+        BlockListSelected, BlockListToggled, LevelSaved, 
+        Respawned, SpawnUpdated, 
+        TexturePackChanged, TexturePromptResponded, ThirdPersonChanged 
+    }
     public delegate void OnPlayerChat(Player p, string message);
     /// <summary> Called whenever a player sends chat to the server </summary>
     /// <remarks> You must cancel this event to prevent the message being sent to the user (and others). </remarks>
@@ -283,7 +288,47 @@ namespace Flames.Events.PlayerEvents
             }
         }
     }
+    public delegate void OnNotifyAction(Player p, NotifyActionType action, short value);
+    /// <summary> Called whenever a player triggers a certain client event </summary>
+    public sealed class OnNotifyActionEvent : IEvent<OnNotifyAction>
+    {
+        public static void Call(Player p, NotifyActionType action, short value)
+        {
+            IEvent<OnNotifyAction>[] items = handlers.Items;
+            for (int i = 0; i < items.Length; i++)
+            {
+                try 
+                { 
+                    items[i].method(p, action, value); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]); 
+                }
+            }
+        }
+    }
 
+    public delegate void OnNotifyPositionAction(Player p, NotifyActionType action, ushort x, ushort y, ushort z);
+    /// <summary> Called whenever a player triggers a respawn/setspawn client event </summary>
+    public sealed class OnNotifyPositionActionEvent : IEvent<OnNotifyPositionAction>
+    {
+        public static void Call(Player p, NotifyActionType action, ushort x, ushort y, ushort z)
+        {
+            IEvent<OnNotifyPositionAction>[] items = handlers.Items;
+            for (int i = 0; i < items.Length; i++)
+            {
+                try 
+                { 
+                    items[i].method(p, action, x, y, z); 
+                }
+                catch (Exception ex) 
+                { 
+                    LogHandlerException(ex, items[i]); 
+                }
+            }
+        }
+    }
     public delegate void OnMessageReceived(Player p, ref string message, ref bool cancel);
     /// <summary> Called whenever a player recieves a message from the server or from another player </summary>
     public class OnMessageRecievedEvent : IEvent<OnMessageReceived>

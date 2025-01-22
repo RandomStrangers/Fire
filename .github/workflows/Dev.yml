@@ -1,0 +1,36 @@
+name: Build Dev
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}-latest
+  cancel-in-progress: true
+
+jobs:
+  build:
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Flames Dev build using mono
+        shell: bash
+        id: compile
+        run: |
+          msbuild Flames.sln /p:Configuration=Release
+          cp -R bin/Release bin/Release_dev
+          msbuild Flames/Flames.csproj /p:Configuration=Release /p:DefineConstants="CORE"
+
+      - uses: ./.github/actions/notify_failure_harmony
+        if: ${{ always() && steps.compile.outcome == 'failure' }}
+        with:
+          NOTIFY_MESSAGE: 'Failed to compile Flames .NET Dev build! <@999409543001931788>'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          
+      - uses: ./.github/actions/notify_success_harmony
+        if: ${{ always() && steps.compile.outcome == 'success' }}
+        with:
+          SOURCE_FILE: 'bin/Release_dev'
+          DEST_NAME: 'Harmony'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames .NET Dev build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'

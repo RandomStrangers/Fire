@@ -93,6 +93,7 @@ namespace Flames
         public const string ExtEntityTeleport = "ExtEntityTeleport";
         public const string LightingMode = "LightingMode";
         public const string CinematicGui = "CinematicGui";
+        public const string NotifyAction = "NotifyAction";
     }
 
     public class CpeExtension
@@ -162,6 +163,7 @@ namespace Flames
             new CpeExtension(CpeExt.LightingMode,        "Allows changing how the client lights worlds"),
             new CpeExtension(CpeExt.CinematicGui,        "Allows changing the visibility of some GUI components"),
             new CpeExtension(CpeExt.ExtBlocks,           "Allows using block IDs over 255 in block definitions"),
+            new CpeExtension(CpeExt.NotifyAction,        "Allows server to be notified of certain client events"),
         };
         public static CpeExt[] Empty = new CpeExt[0];
 
