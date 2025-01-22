@@ -49,14 +49,14 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.4.2";
+        public const string InternalVersion = "1.0.4.3";
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = FlamesVersion;
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 #endif
-        public const string FlamesVersion = "9.0.6.6";
+        public const string FlamesVersion = "9.0.6.7";
         public static string Version { get { return InternalVersion; } }
         public static string fullName;
         public static string SoftwareNameVersioned
@@ -67,12 +67,10 @@ namespace Flames
         public static INetListen Listener = new TcpListen();
         //Other
         public static bool SetupFinished, CLIMode;
-
         public static PlayerList whiteList, invalidIds;
         public static PlayerList ignored, hidden, agreed, vip, noEmotes, lockdown;
         public static PlayerExtList models, skins, reach, rotations, modelScales;
         public static PlayerExtList bannedIP, frozen, muted, tempBans, tempRanks, jailed;
-
         public static readonly List<string> Devs = new List<string>() 
         {
             "DarkBurningFlame", "BurningFlame", "SuperNova", "DeadNova",
@@ -88,26 +86,20 @@ namespace Flames
             "banip", "kick", "warn", 
             "mute", "freeze", "setrank" 
         };
-
         public static Level mainLevel;
-
         public static PlayerList reviewlist = new PlayerList();
         public static string[] announcements = new string[0];
         public static string RestartPath;
-
         // Extra storage for custom commands
         public static ExtrasCollection Extras = new ExtrasCollection();
-
         public static int YesVotes, NoVotes;
         public static bool voting;
         public const int MAX_PLAYERS = int.MaxValue;
-
         public static Scheduler MainScheduler = new Scheduler("F_MainScheduler");
         public static Scheduler Background = new Scheduler("F_BackgroundScheduler");
         public static Scheduler Critical = new Scheduler("F_CriticalScheduler");
         public static Scheduler Heartbeats = new Scheduler("F_HeartbeatsScheduler");
         public static Server s = new Server();
-
         public const byte VERSION_0016 = 3; // classic 0.0.16
         public const byte VERSION_0017 = 4; // classic 0.0.17 / 0.0.18
         public const byte VERSION_0019 = 5; // classic 0.0.19

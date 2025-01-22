@@ -19,18 +19,16 @@ using System;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-
 namespace Flames.Gui
 {
     public partial class Window : Form
     {
-
         public Icon GetIcon()
         {
-            byte[] data = Convert.FromBase64String(icon_source);
+            byte[] data = Convert.FromBase64String(Icon_source);
             Stream source = new MemoryStream(data);
             return new Icon(source);
         }
-        public const string icon_source = Server.GUIIcon_source;
+        public const string Icon_source = Server.GUIIcon_source;
     }
 }

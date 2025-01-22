@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.7.34018.315
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamesGUI", "GUI\FlamesGUI.csproj", "{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}"
 EndProject
@@ -47,24 +47,5 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {155E76E7-9721-4D50-A049-1B0166232E9B}
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Starter.csproj
-		Policies = $0
-		$0.DotNetNamingPolicy = $1
-		$1.DirectoryNamespaceAssociation = None
-		$1.ResourceNamePolicy = FileFormatDefault
-		$0.TextStylePolicy = $4
-		$2.inheritsSet = null
-		$2.scope = text/x-csharp
-		$0.CSharpFormattingPolicy = $3
-		$3.inheritsSet = Mono
-		$3.inheritsScope = text/x-csharp
-		$3.scope = text/x-csharp
-		$4.FileWidth = 120
-		$4.TabWidth = 4
-		$4.inheritsSet = Mono
-		$4.inheritsScope = text/plain
-		$4.scope = text/plain
 	EndGlobalSection
 EndGlobal

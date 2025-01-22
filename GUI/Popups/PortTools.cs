@@ -39,7 +39,7 @@ namespace Flames.Gui.Popups
             worker.RunWorkerCompleted += AsyncWorker_OnCompleted;
 
             this.port = port;
-            btnForward.Text = "Forward " + port;
+            BtnForward.Text = "Forward " + port;
 
             upnp = new UPnP
             {
@@ -81,23 +81,23 @@ namespace Flames.Gui.Popups
         public void StartForwardOrDelete(bool forwardingMode)
         {
             SetUPnPEnabled(false);
-            txtLogs.Text = "";
+            TxtLogs.Text = "";
             MakeLogsVisible();
             worker.RunWorkerAsync(forwardingMode);
         }
 
         public void MakeLogsVisible()
         {
-            if (gbLogs.Visible) return;
+            if (GbLogs.Visible) return;
             // https://stackoverflow.com/questions/5962595/how-do-you-resize-a-form-to-fit-its-content-automatically
             this.AutoSize = true;
-            gbLogs.Visible = true;
+            GbLogs.Visible = true;
         }
 
         public void SetUPnPEnabled(bool enabled)
         {
-            btnDelete.Enabled = enabled;
-            btnForward.Enabled = enabled;
+            BtnDelete.Enabled = enabled;
+            BtnForward.Enabled = enabled;
         }
 
 
@@ -138,27 +138,27 @@ namespace Flames.Gui.Popups
             switch (result)
             {
                 case 0:
-                    lblResult.Text = "Error contacting router.";
-                    lblResult.ForeColor = Color.Red;
+                    LblResult.Text = "Error contacting router.";
+                    LblResult.ForeColor = Color.Red;
                     return;
                 case 1:
-                    lblResult.Text = "Port forwarded automatically using UPnP";
-                    lblResult.ForeColor = Color.Green;
+                    LblResult.Text = "Port forwarded automatically using UPnP";
+                    LblResult.ForeColor = Color.Green;
                     return;
                 case 2:
-                    lblResult.Text = "Unexpected error, see Error Logs";
-                    lblResult.ForeColor = Color.Red;
+                    LblResult.Text = "Unexpected error, see Error Logs";
+                    LblResult.ForeColor = Color.Red;
                     return;
                 case 3:
-                    lblResult.Text = "Deleted port forward rule";
-                    lblResult.ForeColor = Color.Green;
+                    LblResult.Text = "Deleted port forward rule";
+                    LblResult.ForeColor = Color.Green;
                     return;
             }
         }
 
         public void LogUPnP(string message)
         {
-            RunOnUI_Async(() => txtLogs.AppendText(message + "\r\n"));
+            RunOnUI_Async(() => TxtLogs.AppendText(message + "\r\n"));
         }
 
         public void RunOnUI_Async(UIAction act) 

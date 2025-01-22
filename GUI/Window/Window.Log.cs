@@ -26,20 +26,20 @@ namespace Flames.Gui
 
         public void logs_dateGeneral_Changed(object sender, EventArgs e)
         {
-            string date = logs_dateGeneral.Value.ToString("yyyy-MM-dd");
+            string date = Logs_dateGeneral.Value.ToString("yyyy-MM-dd");
             string path = Path.Combine("logs", date + ".txt");
 
             try
             {
-                logs_txtGeneral.Text = ReadAllText(path);
+                Logs_txtGeneral.Text = ReadAllText(path);
             }
             catch (FileNotFoundException)
             {
-                logs_txtGeneral.Text = "No logs found for: " + date;
+                Logs_txtGeneral.Text = "No logs found for: " + date;
             }
             catch (Exception ex)
             {
-                logs_txtGeneral.Text = null;
+                Logs_txtGeneral.Text = null;
 
                 Logger.LogError("Opening " + path, ex);
                 Popup.Error("Failed to open logfile " + path);

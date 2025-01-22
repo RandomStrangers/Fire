@@ -1,10 +1,10 @@
-name: Build latest
+name: Build Normal
 on:
   push:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.ref }}-latest
+  group: ${{ github.ref }}-Normal
   cancel-in-progress: true
 
 jobs:

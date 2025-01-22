@@ -15,174 +15,155 @@ permissions and limitations under the Licenses.
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
-
 namespace Flames.Gui
 {
-
     public partial class PropertyWindow : Form
     {
-
-        public bool rankSupressEvents = false;
-
+        public bool RankSupressEvents = false;
         public void LoadRankProps()
         {
             LoadDefaultRank();
-            GuiPerms.SetRanks(rank_cmbOsMap);
-            GuiPerms.SetSelectedRank(rank_cmbOsMap, Server.Config.OSPerbuildDefault);
-
-            rank_cbTPHigher.Checked = Server.Config.HigherRankTP;
-            rank_cbSilentAdmins.Checked = Server.Config.AdminsJoinSilently;
-            rank_cbEmpty.Checked = Server.Config.ListEmptyRanks;
+            GuiPerms.SetRanks(Rank_cmbOsMap);
+            GuiPerms.SetSelectedRank(Rank_cmbOsMap, Server.Config.OSPerbuildDefault);
+            Rank_cbTPHigher.Checked = Server.Config.HigherRankTP;
+            Rank_cbSilentAdmins.Checked = Server.Config.AdminsJoinSilently;
+            Rank_cbEmpty.Checked = Server.Config.ListEmptyRanks;
         }
-
         public void LoadDefaultRank()
         {
-            rank_cmbDefault.Items.Clear();
+            Rank_cmbDefault.Items.Clear();
             foreach (Group group in Group.GroupList)
             {
-                rank_cmbDefault.Items.Add(group.Name);
+                Rank_cmbDefault.Items.Add(group.Name);
             }
-
-            rank_cmbDefault.SelectedItem = Server.Config.DefaultRankName;
-            if (rank_cmbDefault.SelectedItem == null) rank_cmbDefault.SelectedIndex = 1; // guest rank (usually) TODO rethink
+            Rank_cmbDefault.SelectedItem = Server.Config.DefaultRankName;
+            if (Rank_cmbDefault.SelectedItem == null)
+            {
+                Rank_cmbDefault.SelectedIndex = 1; // guest rank (usually) TODO rethink
+            }
         }
-
         public void ApplyRankProps()
         {
-            Server.Config.DefaultRankName = rank_cmbDefault.SelectedItem.ToString();
-            Server.Config.OSPerbuildDefault = GuiPerms.GetSelectedRank(rank_cmbOsMap, LevelPermission.Owner);
-            Server.Config.HigherRankTP = rank_cbTPHigher.Checked;
-            Server.Config.AdminsJoinSilently = rank_cbSilentAdmins.Checked;
-            Server.Config.ListEmptyRanks = rank_cbEmpty.Checked;
+            Server.Config.DefaultRankName = Rank_cmbDefault.SelectedItem.ToString();
+            Server.Config.OSPerbuildDefault = GuiPerms.GetSelectedRank(Rank_cmbOsMap, LevelPermission.Owner);
+            Server.Config.HigherRankTP = Rank_cbTPHigher.Checked;
+            Server.Config.AdminsJoinSilently = Rank_cbSilentAdmins.Checked;
+            Server.Config.ListEmptyRanks = Rank_cbEmpty.Checked;
         }
-
-
-        public List<Group> copiedGroups = new List<Group>();
-        public Group curGroup;
+        public List<Group> CopiedGroups = new List<Group>();
+        public Group CurGroup;
         public void LoadRanks()
         {
-            rank_list.Items.Clear();
-            copiedGroups.Clear();
-            curGroup = null;
-
+            Rank_list.Items.Clear();
+            CopiedGroups.Clear();
+            CurGroup = null;
             foreach (Group grp in Group.GroupList)
             {
-                copiedGroups.Add(grp.CopyConfig());
-                rank_list.Items.Add(grp.Name + " = " + (int)grp.Permission);
+                CopiedGroups.Add(grp.CopyConfig());
+                Rank_list.Items.Add(grp.Name + " = " + (int)grp.Permission);
             }
-            rank_list.SelectedIndex = 0;
+            Rank_list.SelectedIndex = 0;
         }
-
         public void SaveRanks()
         {
-            Group.SaveAll(copiedGroups);
+            Group.SaveAll(CopiedGroups);
             Group.LoadAll();
             LoadRanks();
         }
-
-
-        public void rank_btnColor_Click(object sender, EventArgs e)
+        public void Rank_btnColor_Click(object sender, EventArgs e)
         {
-            chat_ShowColorDialog(rank_btnColor, curGroup.Name + " rank color");
-            curGroup.Color = Colors.Parse(rank_btnColor.Text);
+            Chat_ShowColorDialog(Rank_btnColor, CurGroup.Name + " rank color");
+            CurGroup.Color = Colors.Parse(Rank_btnColor.Text);
         }
-
-        public void rank_list_SelectedIndexChanged(object sender, EventArgs e)
+        public void Rank_list_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (rankSupressEvents) return;
-            curGroup = null;
-            if (rank_list.SelectedIndex == -1) return;
-
-            Group grp = copiedGroups[rank_list.SelectedIndex];
-            curGroup = grp;
-
-            rank_txtName.Text = grp.Name;
-            rank_numPerm.Value = (int)grp.Permission;
-            chat_ParseColor(grp.Color, rank_btnColor);
-            rank_txtMOTD.Text = grp.MOTD;
-            rank_txtPrefix.Text = grp.Prefix;
-            rank_cbAfk.Checked = grp.AfkKicked;
-            rank_numAfk.Value = grp.AfkKickTime;
-
-            rank_numDraw.Value = grp.DrawLimit;
-            rank_numUndo.Value = grp.MaxUndo;
-            rank_numMaps.Value = grp.OverseerMaps;
-            rank_numGen.Value = grp.GenVolume;
-            rank_numCopy.Value = grp.CopySlots;
-        }
-
-        public void rank_txtName_TextChanged(object sender, EventArgs e)
-        {
-            if (rank_txtName.Text.IndexOf(' ') > 0)
+            if (RankSupressEvents)
             {
-                rank_txtName.Text = rank_txtName.Text.Replace(" ", "");
                 return;
             }
-            if (rank_txtName.Text.Length == 0) return;
-
-            curGroup.Name = rank_txtName.Text;
-            rankSupressEvents = true;
-            rank_list.Items[rank_list.SelectedIndex] = rank_txtName.Text + " = " + (int)curGroup.Permission;
-            rankSupressEvents = false;
+            CurGroup = null;
+            if (Rank_list.SelectedIndex == -1)
+            {
+                return;
+            }
+            Group grp = CopiedGroups[Rank_list.SelectedIndex];
+            CurGroup = grp;
+            Rank_txtName.Text = grp.Name;
+            Rank_numPerm.Value = (int)grp.Permission;
+            Chat_ParseColor(grp.Color, Rank_btnColor);
+            Rank_txtMOTD.Text = grp.MOTD;
+            Rank_txtPrefix.Text = grp.Prefix;
+            Rank_cbAfk.Checked = grp.AfkKicked;
+            Rank_numAfk.Value = grp.AfkKickTime;
+            Rank_numDraw.Value = grp.DrawLimit;
+            Rank_numUndo.Value = grp.MaxUndo;
+            Rank_numMaps.Value = grp.OverseerMaps;
+            Rank_numGen.Value = grp.GenVolume;
+            Rank_numCopy.Value = grp.CopySlots;
         }
 
-        public void rank_numPerm_ValueChanged(object sender, EventArgs e)
+        public void Rank_txtName_TextChanged(object sender, EventArgs e)
         {
-            int perm = (int)rank_numPerm.Value;
-            curGroup.Permission = (LevelPermission)perm;
-            rankSupressEvents = true;
-            rank_list.Items[rank_list.SelectedIndex] = curGroup.Name + " = " + perm;
-            rankSupressEvents = false;
+            if (Rank_txtName.Text.IndexOf(' ') > 0)
+            {
+                Rank_txtName.Text = Rank_txtName.Text.Replace(" ", "");
+                return;
+            }
+            if (Rank_txtName.Text.Length == 0)
+            {
+                return;
+            }
+            CurGroup.Name = Rank_txtName.Text;
+            RankSupressEvents = true;
+            Rank_list.Items[Rank_list.SelectedIndex] = Rank_txtName.Text + " = " + (int)CurGroup.Permission;
+            RankSupressEvents = false;
         }
-
-
-        public void rank_txtMOTD_TextChanged(object sender, EventArgs e)
+        public void Rank_numPerm_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.MOTD = rank_txtMOTD.Text;
+            int perm = (int)Rank_numPerm.Value;
+            CurGroup.Permission = (LevelPermission)perm;
+            RankSupressEvents = true;
+            Rank_list.Items[Rank_list.SelectedIndex] = CurGroup.Name + " = " + perm;
+            RankSupressEvents = false;
         }
-
-        public void rank_txtPrefix_TextChanged(object sender, EventArgs e)
+        public void Rank_txtMOTD_TextChanged(object sender, EventArgs e)
         {
-            curGroup.Prefix = rank_txtPrefix.Text;
+            CurGroup.MOTD = Rank_txtMOTD.Text;
         }
-
-        public void rank_cbAfk_CheckedChanged(object sender, EventArgs e)
+        public void Rank_txtPrefix_TextChanged(object sender, EventArgs e)
         {
-            curGroup.AfkKicked = rank_cbAfk.Checked;
-            rank_numAfk.Enabled = rank_cbAfk.Checked;
+            CurGroup.Prefix = Rank_txtPrefix.Text;
         }
-
-        public void rank_numAfk_ValueChanged(object sender, EventArgs e)
+        public void Rank_cbAfk_CheckedChanged(object sender, EventArgs e)
         {
-            curGroup.AfkKickTime = rank_numAfk.Value;
+            CurGroup.AfkKicked = Rank_cbAfk.Checked;
+            Rank_numAfk.Enabled = Rank_cbAfk.Checked;
         }
-
-        public void rank_numDraw_ValueChanged(object sender, EventArgs e)
+        public void Rank_numAfk_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.DrawLimit = (int)rank_numDraw.Value;
+            CurGroup.AfkKickTime = Rank_numAfk.Value;
         }
-
-        public void rank_numUndo_ValueChanged(object sender, EventArgs e)
+        public void Rank_numDraw_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.MaxUndo = rank_numUndo.Value;
+            CurGroup.DrawLimit = (int)Rank_numDraw.Value;
         }
-
-        public void rank_numMaps_ValueChanged(object sender, EventArgs e)
+        public void Rank_numUndo_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.OverseerMaps = (int)rank_numMaps.Value;
+            CurGroup.MaxUndo = Rank_numUndo.Value;
         }
-
-        public void rank_numGen_ValueChanged(object sender, EventArgs e)
+        public void Rank_numMaps_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.GenVolume = (int)rank_numGen.Value;
+            CurGroup.OverseerMaps = (int)Rank_numMaps.Value;
         }
-
-        public void rank_numCopy_ValueChanged(object sender, EventArgs e)
+        public void Rank_numGen_ValueChanged(object sender, EventArgs e)
         {
-            curGroup.CopySlots = (int)rank_numCopy.Value;
+            CurGroup.GenVolume = (int)Rank_numGen.Value;
         }
-
-        public void rank_btnAdd_Click(object sender, EventArgs e)
+        public void Rank_numCopy_ValueChanged(object sender, EventArgs e)
+        {
+            CurGroup.CopySlots = (int)Rank_numCopy.Value;
+        }
+        public void Rank_btnAdd_Click(object sender, EventArgs e)
         {
             // Find first free rank permission
             int perm = 5;
@@ -194,34 +175,34 @@ namespace Flames.Gui
                     break; 
                 }
             }
-
             Group newGroup = Group.DefaultRank.CopyConfig();
             newGroup.Permission = (LevelPermission)perm;
             newGroup.Name = "CHANGEME_" + perm;
             newGroup.Color = "&1";
-
-            copiedGroups.Add(newGroup);
-            rank_list.Items.Add(newGroup.Name + " = " + (int)newGroup.Permission);
+            CopiedGroups.Add(newGroup);
+            Rank_list.Items.Add(newGroup.Name + " = " + (int)newGroup.Permission);
         }
-
-        public void rank_btnDel_Click(object sender, EventArgs e)
+        public void Rank_btnDel_Click(object sender, EventArgs e)
         {
-            if (rank_list.Items.Count == 0) return;
-
-            copiedGroups.RemoveAt(rank_list.SelectedIndex);
-            rankSupressEvents = true;
-            rank_list.Items.RemoveAt(rank_list.SelectedIndex);
-            rankSupressEvents = false;
-
-            int i = rank_list.Items.Count > 0 ? 0 : -1;
-            rank_list.SelectedIndex = i;
+            if (Rank_list.Items.Count == 0)
+            {
+                return;
+            }
+            CopiedGroups.RemoveAt(Rank_list.SelectedIndex);
+            RankSupressEvents = true;
+            Rank_list.Items.RemoveAt(Rank_list.SelectedIndex);
+            RankSupressEvents = false;
+            int i = Rank_list.Items.Count > 0 ? 0 : -1;
+            Rank_list.SelectedIndex = i;
         }
-
         public bool PermissionFree(int i)
         {
-            foreach (Group grp in copiedGroups)
+            foreach (Group grp in CopiedGroups)
             {
-                if (grp.Permission == (LevelPermission)i) return false;
+                if (grp.Permission == (LevelPermission)i)
+                {
+                    return false;
+                }
             }
             return true;
         }

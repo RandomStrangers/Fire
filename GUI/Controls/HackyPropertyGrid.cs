@@ -20,30 +20,29 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using System.Windows.Forms.PropertyGridInternal;
-
 namespace Flames.Gui
 {
     /// <summary> Hacky workaround for PropertyGrid to fix crashing with some versions of wine-mono </summary>
     public class HackyPropertyGrid : PropertyGrid
     {
-
         public class HackyPropertiesTab : PropertiesTab
         {
-
             // With some versions of wine-mono, if you try to change PropertyGrid's selected object,
             //  some Exceptions gets thrown. (see examples below)
             // The root cause of the Exception is a PropertiesTab instance returning 'null' from its
             //  Bitmap property implementation - so workaround this by never returning null.
             public override Bitmap Bitmap
             {
-                get { return base.Bitmap ?? new Bitmap(16, 16); }
+                get 
+                { 
+                    return base.Bitmap ?? new Bitmap(16, 16); 
+                }
             }
         }
         protected override PropertyTab CreatePropertyTab(Type tabType) 
         { 
             return new HackyPropertiesTab(); 
         }
-
         /*
 Type: IndexOutOfRangeException
 Source: System.Windows.Forms
@@ -53,7 +52,7 @@ Trace:   at System.Windows.Forms.PropertyGrid.UpdatePropertiesViewTabVisibility 
   at System.Windows.Forms.PropertyGrid.set_SelectedObjects (System.Object[] value)
   at System.Windows.Forms.PropertyGrid.set_SelectedObject (System.Object value)
   at (wrapper remoting-invoke-with-check) System.Windows.Forms.PropertyGrid.set_SelectedObject(object)
-  at Flames.Gui.Window.pl_listBox_Click (System.Object sender, System.EventArgs e)
+  at Flames.Gui.Window.Pl_listBox_Click (System.Object sender, System.EventArgs e)
   at System.Windows.Forms.Control.OnClick (System.EventArgs e)
   at System.Windows.Forms.ListBox.WndProc (System.Windows.Forms.Messagem)
   at System.Windows.Forms.Control+ControlNativeWindow.OnMessage (System.Windows.Forms.Messagem)
@@ -74,7 +73,7 @@ Trace:   at System.Windows.Forms.PropertyGrid.RefreshProperties (System.Boolean 
   at Flames.Gui.PropertyWindow.InitializeComponent ()
   at Flames.Gui.PropertyWindow..ctor ()
   at (wrapper remoting-invoke-with-check) Flames.Gui.PropertyWindow..ctor()
-  at Flames.Gui.Window.btnProperties_Click (System.Object sender, System.EventArgs e)
+  at Flames.Gui.Window.BtnProperties_Click (System.Object sender, System.EventArgs e)
   at System.Windows.Forms.Control.OnClick (System.EventArgs e)
   at System.Windows.Forms.Button.OnClick (System.EventArgs e)
   at System.Windows.Forms.Button.OnMouseUp (System.Windows.Forms.MouseEventArgs mevent)

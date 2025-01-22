@@ -30,9 +30,9 @@ namespace Flames.Gui.Popups
             InitializeComponent();
             foreach (var kvp in TextFile.Files)
             {
-                cmbList.Items.Add(kvp.Key);
+                CmbList.Items.Add(kvp.Key);
             }
-            cmbList.Text = "Select file..";
+            CmbList.Text = "Select file..";
         }
 
         public void EditText_Load(object sender, EventArgs e)
@@ -42,16 +42,16 @@ namespace Flames.Gui.Popups
 
         public void cmbList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbList.SelectedIndex == -1) return;
+            if (CmbList.SelectedIndex == -1) return;
             TrySaveChanges();
 
-            string selectedName = cmbList.SelectedItem.ToString();
+            string selectedName = CmbList.SelectedItem.ToString();
             curFile = TextFile.Files[selectedName];
 
             try
             {
                 curFile.EnsureExists();
-                txtEdit.Lines = curFile.GetText();
+                TxtEdit.Lines = curFile.GetText();
                 Text = "Editing " + curFile.Filename;
             }
             catch (Exception ex)
@@ -60,7 +60,7 @@ namespace Flames.Gui.Popups
                 Popup.Error("Failed to read text from " + curFile.Filename);
 
                 curFile = null;
-                cmbList.Text = "";
+                CmbList.Text = "";
                 Text = "Editing (none)";
             }
         }
@@ -74,7 +74,7 @@ namespace Flames.Gui.Popups
         public void TrySaveChanges()
         {
             if (curFile == null) return;
-            string[] lines = txtEdit.Lines;
+            string[] lines = TxtEdit.Lines;
             if (!HasChanged(lines)) return;
 
             if (Popup.YesNo("Save changes to " + curFile.Filename + "?", "Save changes"))
@@ -118,11 +118,11 @@ namespace Flames.Gui.Popups
 
         public void InsertText(string text)
         {
-            int selStart = txtEdit.SelectionStart, selLength = txtEdit.SelectionLength;
-            txtEdit.Paste(text);
+            int selStart = TxtEdit.SelectionStart, selLength = TxtEdit.SelectionLength;
+            TxtEdit.Paste(text);
             // re highlight now replaced text
-            if (selLength > 0) txtEdit.Select(selStart, text.Length);
-            txtEdit.Focus();
+            if (selLength > 0) TxtEdit.Select(selStart, text.Length);
+            TxtEdit.Focus();
         }
 
         public void EditTxt_Unload(object sender, EventArgs e)
@@ -133,7 +133,7 @@ namespace Flames.Gui.Popups
         public void btnSave_Click(object sender, EventArgs e)
         {
             if (curFile == null) return;
-            SaveChanges(txtEdit.Lines);
+            SaveChanges(TxtEdit.Lines);
         }
     }
 }

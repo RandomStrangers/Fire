@@ -15,6449 +15,6437 @@ BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 or implied. See the Licenses for the specific language governing
 permissions and limitations under the Licenses.
 */
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 namespace Flames.Gui
 {
-    partial class PropertyWindow
+    public partial class PropertyWindow
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
+        public IContainer Components = null;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Components != null))
             {
-                components.Dispose();
+                Components.Dispose();
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.pageChat = new System.Windows.Forms.TabPage();
-            this.chat_grpTab = new System.Windows.Forms.GroupBox();
-            this.chat_cbTabRank = new System.Windows.Forms.CheckBox();
-            this.chat_cbTabLevel = new System.Windows.Forms.CheckBox();
-            this.chat_cbTabBots = new System.Windows.Forms.CheckBox();
-            this.chat_grpMessages = new System.Windows.Forms.GroupBox();
-            this.chat_grpModeration = new System.Windows.Forms.GroupBox();
-            this.chat_lblShutdown = new System.Windows.Forms.Label();
-            this.chat_txtShutdown = new System.Windows.Forms.TextBox();
-            this.chat_chkCheap = new System.Windows.Forms.CheckBox();
-            this.chat_txtCheap = new System.Windows.Forms.TextBox();
-            this.chat_lblBan = new System.Windows.Forms.Label();
-            this.chat_txtBan = new System.Windows.Forms.TextBox();
-            this.chat_lblPromote = new System.Windows.Forms.Label();
-            this.chat_txtPromote = new System.Windows.Forms.TextBox();
-            this.chat_lblDemote = new System.Windows.Forms.Label();
-            this.chat_txtDemote = new System.Windows.Forms.TextBox();
-            this.chat_lblLogin = new System.Windows.Forms.Label();
-            this.chat_txtLogin = new System.Windows.Forms.TextBox();
-            this.chat_lblLogout = new System.Windows.Forms.Label();
-            this.chat_txtLogout = new System.Windows.Forms.TextBox();
-            this.chat_grpOther = new System.Windows.Forms.GroupBox();
-            this.chat_chkFilter = new System.Windows.Forms.CheckBox();
-            this.chat_lblConsole = new System.Windows.Forms.Label();
-            this.chat_txtConsole = new System.Windows.Forms.TextBox();
-            this.chat_grpColors = new System.Windows.Forms.GroupBox();
-            this.chat_lblWarn = new System.Windows.Forms.Label();
-            this.chat_btnWarn = new System.Windows.Forms.Button();
-            this.chat_lblDefault = new System.Windows.Forms.Label();
-            this.chat_btnDefault = new System.Windows.Forms.Button();
-            this.chat_lblIRC = new System.Windows.Forms.Label();
-            this.chat_btnIRC = new System.Windows.Forms.Button();
-            this.chat_lblSyntax = new System.Windows.Forms.Label();
-            this.chat_btnSyntax = new System.Windows.Forms.Button();
-            this.chat_lblDesc = new System.Windows.Forms.Label();
-            this.chat_btnDesc = new System.Windows.Forms.Button();
-            this.main_btnSave = new System.Windows.Forms.Button();
-            this.main_btnDiscard = new System.Windows.Forms.Button();
-            this.main_btnApply = new System.Windows.Forms.Button();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.chkRpLimit = new System.Windows.Forms.Label();
-            this.chkDeath = new System.Windows.Forms.CheckBox();
-            this.hack_lbl = new System.Windows.Forms.CheckBox();
-            this.sec_cmbVerifyRank = new System.Windows.Forms.ComboBox();
-            this.sec_cbVerifyAdmins = new System.Windows.Forms.CheckBox();
-            this.chkGuestLimitNotify = new System.Windows.Forms.CheckBox();
-            this.rank_cbTPHigher = new System.Windows.Forms.CheckBox();
-            this.rank_cmbDefault = new System.Windows.Forms.ComboBox();
-            this.sec_cbWhitelist = new System.Windows.Forms.CheckBox();
-            this.sql_chkUseSQL = new System.Windows.Forms.CheckBox();
-            this.irc_chkEnabled = new System.Windows.Forms.CheckBox();
-            this.irc_txtServer = new System.Windows.Forms.TextBox();
-            this.irc_txtNick = new System.Windows.Forms.TextBox();
-            this.irc_txtChannel = new System.Windows.Forms.TextBox();
-            this.irc_txtOpChannel = new System.Windows.Forms.TextBox();
-            this.lvl_chkAutoload = new System.Windows.Forms.CheckBox();
-            this.lvl_chkWorld = new System.Windows.Forms.CheckBox();
-            this.adv_chkVerify = new System.Windows.Forms.CheckBox();
-            this.srv_txtName = new System.Windows.Forms.TextBox();
-            this.srv_txtMOTD = new System.Windows.Forms.TextBox();
-            this.srv_numPort = new System.Windows.Forms.NumericUpDown();
-            this.srv_chkPublic = new System.Windows.Forms.CheckBox();
-            this.rank_cbSilentAdmins = new System.Windows.Forms.CheckBox();
-            this.rank_txtPrefix = new System.Windows.Forms.TextBox();
-            this.rank_txtMOTD = new System.Windows.Forms.TextBox();
-            this.rank_numPerm = new System.Windows.Forms.NumericUpDown();
-            this.rank_txtName = new System.Windows.Forms.TextBox();
-            this.rank_btnColor = new System.Windows.Forms.Button();
-            this.rank_cmbOsMap = new System.Windows.Forms.ComboBox();
-            this.irc_chkPass = new System.Windows.Forms.CheckBox();
-            this.irc_txtPass = new System.Windows.Forms.TextBox();
-            this.rank_numMaps = new System.Windows.Forms.NumericUpDown();
-            this.rank_numDraw = new System.Windows.Forms.NumericUpDown();
-            this.rank_numGen = new System.Windows.Forms.NumericUpDown();
-            this.rank_numCopy = new System.Windows.Forms.NumericUpDown();
-            this.dis_grp = new System.Windows.Forms.GroupBox();
-            this.dis_lblToken = new System.Windows.Forms.Label();
-            this.dis_lblChannel = new System.Windows.Forms.Label();
-            this.dis_txtChannel = new System.Windows.Forms.TextBox();
-            this.dis_lblOpChannel = new System.Windows.Forms.Label();
-            this.dis_chkEnabled = new System.Windows.Forms.CheckBox();
-            this.dis_chkNicks = new System.Windows.Forms.CheckBox();
-            this.dis_txtToken = new System.Windows.Forms.TextBox();
-            this.dis_txtOpChannel = new System.Windows.Forms.TextBox();
-            this.dis_linkHelp = new System.Windows.Forms.LinkLabel();
-            this.adv_chkCPE = new System.Windows.Forms.CheckBox();
-            this.eco_cmbItemRank = new System.Windows.Forms.ComboBox();
-            this.rank_numUndo = new Flames.Gui.TimespanUpDown();
-            this.chkPhysRestart = new System.Windows.Forms.CheckBox();
-            this.ls_numMax = new System.Windows.Forms.NumericUpDown();
-            this.ls_numWater = new System.Windows.Forms.NumericUpDown();
-            this.ls_numFast = new System.Windows.Forms.NumericUpDown();
-            this.ls_numFloodUp = new System.Windows.Forms.NumericUpDown();
-            this.ls_numLayer = new System.Windows.Forms.NumericUpDown();
-            this.ls_numCount = new System.Windows.Forms.NumericUpDown();
-            this.ls_numHeight = new System.Windows.Forms.NumericUpDown();
-            this.ls_cbMain = new System.Windows.Forms.CheckBox();
-            this.ls_cbStart = new System.Windows.Forms.CheckBox();
-            this.rank_numAfk = new Flames.Gui.TimespanUpDown();
-            this.sec_cbLogNotes = new System.Windows.Forms.CheckBox();
-            this.sec_cbChatAuto = new System.Windows.Forms.CheckBox();
-            this.pageBlocks = new System.Windows.Forms.TabPage();
-            this.blk_grpPhysics = new System.Windows.Forms.GroupBox();
-            this.blk_cbWater = new System.Windows.Forms.CheckBox();
-            this.blk_cbLava = new System.Windows.Forms.CheckBox();
-            this.blk_cbRails = new System.Windows.Forms.CheckBox();
-            this.blk_cbTdoor = new System.Windows.Forms.CheckBox();
-            this.blk_cbDoor = new System.Windows.Forms.CheckBox();
-            this.blk_grpBehaviour = new System.Windows.Forms.GroupBox();
-            this.blk_txtDeath = new System.Windows.Forms.TextBox();
-            this.blk_cbDeath = new System.Windows.Forms.CheckBox();
-            this.blk_cbPortal = new System.Windows.Forms.CheckBox();
-            this.blk_cbMsgBlock = new System.Windows.Forms.CheckBox();
-            this.blk_grpPermissions = new System.Windows.Forms.GroupBox();
-            this.blk_cmbAlw3 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbAlw2 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbDis3 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbDis2 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbAlw1 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbDis1 = new System.Windows.Forms.ComboBox();
-            this.blk_cmbMin = new System.Windows.Forms.ComboBox();
-            this.blk_lblMin = new System.Windows.Forms.Label();
-            this.blk_lblAllow = new System.Windows.Forms.Label();
-            this.blk_lblDisallow = new System.Windows.Forms.Label();
-            this.blk_btnHelp = new System.Windows.Forms.Button();
-            this.blk_list = new System.Windows.Forms.ListBox();
-            this.pageRanks = new System.Windows.Forms.TabPage();
-            this.rank_grpLimits = new System.Windows.Forms.GroupBox();
-            this.rank_lblCopy = new System.Windows.Forms.Label();
-            this.rank_lblGen = new System.Windows.Forms.Label();
-            this.rank_lblMaps = new System.Windows.Forms.Label();
-            this.rank_lblDraw = new System.Windows.Forms.Label();
-            this.rank_lblUndo = new System.Windows.Forms.Label();
-            this.rank_grpGeneral = new System.Windows.Forms.GroupBox();
-            this.rank_lblOsMap = new System.Windows.Forms.Label();
-            this.rank_cbEmpty = new System.Windows.Forms.CheckBox();
-            this.rank_lblDefault = new System.Windows.Forms.Label();
-            this.rank_grpMisc = new System.Windows.Forms.GroupBox();
-            this.rank_cbAfk = new System.Windows.Forms.CheckBox();
-            this.rank_lblPrefix = new System.Windows.Forms.Label();
-            this.rank_lblPerm = new System.Windows.Forms.Label();
-            this.rank_lblMOTD = new System.Windows.Forms.Label();
-            this.rank_lblName = new System.Windows.Forms.Label();
-            this.rank_lblColor = new System.Windows.Forms.Label();
-            this.rank_btnDel = new System.Windows.Forms.Button();
-            this.rank_btnAdd = new System.Windows.Forms.Button();
-            this.rank_list = new System.Windows.Forms.ListBox();
-            this.pageMisc = new System.Windows.Forms.TabPage();
-            this.grpExtra = new System.Windows.Forms.GroupBox();
-            this.misc_numReview = new Flames.Gui.TimespanUpDown();
-            this.chkRestart = new System.Windows.Forms.CheckBox();
-            this.misc_lblReview = new System.Windows.Forms.Label();
-            this.chkRepeatMessages = new System.Windows.Forms.CheckBox();
-            this.chk17Dollar = new System.Windows.Forms.CheckBox();
-            this.chkSmile = new System.Windows.Forms.CheckBox();
-            this.grpMessages = new System.Windows.Forms.GroupBox();
-            this.hack_num = new Flames.Gui.TimespanUpDown();
-            this.grpPhysics = new System.Windows.Forms.GroupBox();
-            this.txtRP = new System.Windows.Forms.TextBox();
-            this.chkRpNorm = new System.Windows.Forms.Label();
-            this.txtNormRp = new System.Windows.Forms.TextBox();
-            this.afk_grp = new System.Windows.Forms.GroupBox();
-            this.afk_numTimer = new Flames.Gui.TimespanUpDown();
-            this.afk_lblTimer = new System.Windows.Forms.Label();
-            this.bak_grp = new System.Windows.Forms.GroupBox();
-            this.bak_numTime = new Flames.Gui.TimespanUpDown();
-            this.bak_lblLocation = new System.Windows.Forms.Label();
-            this.bak_txtLocation = new System.Windows.Forms.TextBox();
-            this.bak_lblTime = new System.Windows.Forms.Label();
-            this.pageRelay = new System.Windows.Forms.TabPage();
-            this.gb_ircSettings = new System.Windows.Forms.GroupBox();
-            this.irc_txtPrefix = new System.Windows.Forms.TextBox();
-            this.irc_lblPrefix = new System.Windows.Forms.Label();
-            this.irc_cmbVerify = new System.Windows.Forms.ComboBox();
-            this.irc_lblVerify = new System.Windows.Forms.Label();
-            this.irc_cmbRank = new System.Windows.Forms.ComboBox();
-            this.irc_lblRank = new System.Windows.Forms.Label();
-            this.irc_cbAFK = new System.Windows.Forms.CheckBox();
-            this.irc_cbWorldChanges = new System.Windows.Forms.CheckBox();
-            this.irc_cbTitles = new System.Windows.Forms.CheckBox();
-            this.sql_grp = new System.Windows.Forms.GroupBox();
-            this.sql_linkDownload = new System.Windows.Forms.LinkLabel();
-            this.sql_lblUser = new System.Windows.Forms.Label();
-            this.sql_txtUser = new System.Windows.Forms.TextBox();
-            this.sql_lblPass = new System.Windows.Forms.Label();
-            this.sql_txtPass = new System.Windows.Forms.TextBox();
-            this.sql_lblDBName = new System.Windows.Forms.Label();
-            this.sql_txtDBName = new System.Windows.Forms.TextBox();
-            this.sql_lblHost = new System.Windows.Forms.Label();
-            this.sql_txtHost = new System.Windows.Forms.TextBox();
-            this.sql_lblPort = new System.Windows.Forms.Label();
-            this.sql_txtPort = new System.Windows.Forms.TextBox();
-            this.irc_grp = new System.Windows.Forms.GroupBox();
-            this.irc_lblServer = new System.Windows.Forms.Label();
-            this.irc_lblPort = new System.Windows.Forms.Label();
-            this.irc_numPort = new System.Windows.Forms.NumericUpDown();
-            this.irc_lblNick = new System.Windows.Forms.Label();
-            this.irc_lblChannel = new System.Windows.Forms.Label();
-            this.irc_lblOpChannel = new System.Windows.Forms.Label();
-            this.pageServer = new System.Windows.Forms.TabPage();
-            this.lvl_grp = new System.Windows.Forms.GroupBox();
-            this.lvl_lblMain = new System.Windows.Forms.Label();
-            this.lvl_txtMain = new System.Windows.Forms.TextBox();
-            this.adv_grp = new System.Windows.Forms.GroupBox();
-            this.adv_btnEditTexts = new System.Windows.Forms.Button();
-            this.srv_grp = new System.Windows.Forms.GroupBox();
-            this.srv_lblName = new System.Windows.Forms.Label();
-            this.srv_lblMotd = new System.Windows.Forms.Label();
-            this.srv_lblPort = new System.Windows.Forms.Label();
-            this.srv_btnPort = new System.Windows.Forms.Button();
-            this.srv_lblOwner = new System.Windows.Forms.Label();
-            this.srv_txtOwner = new System.Windows.Forms.TextBox();
-            this.srv_grpUpdate = new System.Windows.Forms.GroupBox();
-            this.srv_btnForceUpdate = new System.Windows.Forms.Button();
-            this.chkUpdates = new System.Windows.Forms.CheckBox();
-            this.grpPlayers = new System.Windows.Forms.GroupBox();
-            this.srv_lblPlayers = new System.Windows.Forms.Label();
-            this.srv_numPlayers = new System.Windows.Forms.NumericUpDown();
-            this.srv_cbMustAgree = new System.Windows.Forms.CheckBox();
-            this.srv_lblGuests = new System.Windows.Forms.Label();
-            this.srv_numGuests = new System.Windows.Forms.NumericUpDown();
-            this.tabControl = new System.Windows.Forms.TabControl();
-            this.pageEco = new System.Windows.Forms.TabPage();
-            this.eco_gbRank = new System.Windows.Forms.GroupBox();
-            this.eco_dgvRanks = new System.Windows.Forms.DataGridView();
-            this.eco_colRankName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colRankPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_cbRank = new System.Windows.Forms.CheckBox();
-            this.eco_gbLvl = new System.Windows.Forms.GroupBox();
-            this.eco_dgvMaps = new System.Windows.Forms.DataGridView();
-            this.eco_colLvlName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colLvlPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colLvlX = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colLvlY = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colLvlZ = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.eco_colLvlTheme = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.eco_btnLvlDel = new System.Windows.Forms.Button();
-            this.eco_btnLvlAdd = new System.Windows.Forms.Button();
-            this.eco_cbLvl = new System.Windows.Forms.CheckBox();
-            this.eco_gbItem = new System.Windows.Forms.GroupBox();
-            this.eco_lblItemRank = new System.Windows.Forms.Label();
-            this.eco_numItemPrice = new System.Windows.Forms.NumericUpDown();
-            this.eco_lblItemPrice = new System.Windows.Forms.Label();
-            this.eco_cbItem = new System.Windows.Forms.CheckBox();
-            this.eco_gb = new System.Windows.Forms.GroupBox();
-            this.eco_cmbCfg = new System.Windows.Forms.ComboBox();
-            this.eco_lblCfg = new System.Windows.Forms.Label();
-            this.eco_cbEnabled = new System.Windows.Forms.CheckBox();
-            this.eco_txtCurrency = new System.Windows.Forms.TextBox();
-            this.eco_lblCurrency = new System.Windows.Forms.Label();
-            this.pageGames = new System.Windows.Forms.TabPage();
-            this.tabGames = new System.Windows.Forms.TabControl();
-            this.tabLS = new System.Windows.Forms.TabPage();
-            this.ls_grpControls = new System.Windows.Forms.GroupBox();
-            this.ls_btnEnd = new System.Windows.Forms.Button();
-            this.ls_btnStop = new System.Windows.Forms.Button();
-            this.ls_btnStart = new System.Windows.Forms.Button();
-            this.ls_grpMapSettings = new System.Windows.Forms.GroupBox();
-            this.ls_grpTime = new System.Windows.Forms.GroupBox();
-            this.ls_numFlood = new Flames.Gui.TimespanUpDown();
-            this.ls_numLayerTime = new Flames.Gui.TimespanUpDown();
-            this.ls_numRound = new Flames.Gui.TimespanUpDown();
-            this.ls_lblLayerTime = new System.Windows.Forms.Label();
-            this.ls_lblFlood = new System.Windows.Forms.Label();
-            this.ls_lblRound = new System.Windows.Forms.Label();
-            this.ls_grpLayer = new System.Windows.Forms.GroupBox();
-            this.ls_lblBlocksTall = new System.Windows.Forms.Label();
-            this.ls_lblLayersEach = new System.Windows.Forms.Label();
-            this.ls_lblLayer = new System.Windows.Forms.Label();
-            this.ls_grpFlood = new System.Windows.Forms.GroupBox();
-            this.ls_lblFloodUp = new System.Windows.Forms.Label();
-            this.ls_lblFast = new System.Windows.Forms.Label();
-            this.ls_lblWater = new System.Windows.Forms.Label();
-            this.ls_grpSettings = new System.Windows.Forms.GroupBox();
-            this.ls_lblMax = new System.Windows.Forms.Label();
-            this.ls_cbMap = new System.Windows.Forms.CheckBox();
-            this.ls_grpMaps = new System.Windows.Forms.GroupBox();
-            this.ls_lblNotUsed = new System.Windows.Forms.Label();
-            this.ls_lblUsed = new System.Windows.Forms.Label();
-            this.ls_btnAdd = new System.Windows.Forms.Button();
-            this.ls_btnRemove = new System.Windows.Forms.Button();
-            this.ls_lstNotUsed = new System.Windows.Forms.ListBox();
-            this.ls_lstUsed = new System.Windows.Forms.ListBox();
-            this.tabZS = new System.Windows.Forms.TabPage();
-            this.zs_grpControls = new System.Windows.Forms.GroupBox();
-            this.zs_btnEnd = new System.Windows.Forms.Button();
-            this.zs_btnStop = new System.Windows.Forms.Button();
-            this.zs_btnStart = new System.Windows.Forms.Button();
-            this.zs_grpMap = new System.Windows.Forms.GroupBox();
-            this.zs_grpTime = new System.Windows.Forms.GroupBox();
-            this.timespanUpDown1 = new Flames.Gui.TimespanUpDown();
-            this.timespanUpDown2 = new Flames.Gui.TimespanUpDown();
-            this.timespanUpDown3 = new Flames.Gui.TimespanUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.zs_grpSettings = new System.Windows.Forms.GroupBox();
-            this.zs_grpZombie = new System.Windows.Forms.GroupBox();
-            this.zs_txtModel = new System.Windows.Forms.TextBox();
-            this.zs_txtName = new System.Windows.Forms.TextBox();
-            this.zs_lblModel = new System.Windows.Forms.Label();
-            this.zs_lblName = new System.Windows.Forms.Label();
-            this.zs_grpRevive = new System.Windows.Forms.GroupBox();
-            this.zs_lblReviveEff = new System.Windows.Forms.Label();
-            this.zs_numReviveEff = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.zs_lblReviveLimitFtr = new System.Windows.Forms.Label();
-            this.zs_lblReviveLimitHdr = new System.Windows.Forms.Label();
-            this.zs_numReviveLimit = new System.Windows.Forms.NumericUpDown();
-            this.zs_numReviveMax = new System.Windows.Forms.NumericUpDown();
-            this.label9 = new System.Windows.Forms.Label();
-            this.zs_cbMain = new System.Windows.Forms.CheckBox();
-            this.zs_cbMap = new System.Windows.Forms.CheckBox();
-            this.zs_grpInv = new System.Windows.Forms.GroupBox();
-            this.zs_numInvZombieDur = new System.Windows.Forms.NumericUpDown();
-            this.zs_numInvHumanDur = new System.Windows.Forms.NumericUpDown();
-            this.zs_numInvZombieMax = new System.Windows.Forms.NumericUpDown();
-            this.zs_numInvHumanMax = new System.Windows.Forms.NumericUpDown();
-            this.zs_lblInvZombieDur = new System.Windows.Forms.Label();
-            this.zs_lblInvZombieMax = new System.Windows.Forms.Label();
-            this.zs_lblInvHumanDur = new System.Windows.Forms.Label();
-            this.zs_lblInvHumanMax = new System.Windows.Forms.Label();
-            this.zs_cbStart = new System.Windows.Forms.CheckBox();
-            this.zs_grpMaps = new System.Windows.Forms.GroupBox();
-            this.zs_lblNotUsed = new System.Windows.Forms.Label();
-            this.zs_lblUsed = new System.Windows.Forms.Label();
-            this.zs_btnAdd = new System.Windows.Forms.Button();
-            this.zs_btnRemove = new System.Windows.Forms.Button();
-            this.zs_lstNotUsed = new System.Windows.Forms.ListBox();
-            this.zs_lstUsed = new System.Windows.Forms.ListBox();
-            this.tabZS_old = new System.Windows.Forms.TabPage();
-            this.propsZG = new Flames.Gui.HackyPropertyGrid();
-            this.tabCTF = new System.Windows.Forms.TabPage();
-            this.ctf_grpControls = new System.Windows.Forms.GroupBox();
-            this.ctf_btnEnd = new System.Windows.Forms.Button();
-            this.ctf_btnStop = new System.Windows.Forms.Button();
-            this.ctf_btnStart = new System.Windows.Forms.Button();
-            this.ctf_grpSettings = new System.Windows.Forms.GroupBox();
-            this.ctf_cbMain = new System.Windows.Forms.CheckBox();
-            this.ctf_cbMap = new System.Windows.Forms.CheckBox();
-            this.ctf_cbStart = new System.Windows.Forms.CheckBox();
-            this.ctf_grpMaps = new System.Windows.Forms.GroupBox();
-            this.ctf_lblNotUsed = new System.Windows.Forms.Label();
-            this.ctf_lblUsed = new System.Windows.Forms.Label();
-            this.ctf_btnAdd = new System.Windows.Forms.Button();
-            this.ctf_btnRemove = new System.Windows.Forms.Button();
-            this.ctf_lstNotUsed = new System.Windows.Forms.ListBox();
-            this.ctf_lstUsed = new System.Windows.Forms.ListBox();
-            this.tabTW = new System.Windows.Forms.TabPage();
-            this.tw_grpControls = new System.Windows.Forms.GroupBox();
-            this.tw_btnEnd = new System.Windows.Forms.Button();
-            this.tw_btnStop = new System.Windows.Forms.Button();
-            this.tw_btnStart = new System.Windows.Forms.Button();
-            this.tw_grpMapSettings = new System.Windows.Forms.GroupBox();
-            this.tw_grpTeams = new System.Windows.Forms.GroupBox();
-            this.tw_cbKills = new System.Windows.Forms.CheckBox();
-            this.tw_cbBalance = new System.Windows.Forms.CheckBox();
-            this.tw_grpGrace = new System.Windows.Forms.GroupBox();
-            this.tw_numGrace = new Flames.Gui.TimespanUpDown();
-            this.tw_lblGrace = new System.Windows.Forms.Label();
-            this.tw_cbGrace = new System.Windows.Forms.CheckBox();
-            this.tw_grpScores = new System.Windows.Forms.GroupBox();
-            this.tw_lblMulti = new System.Windows.Forms.Label();
-            this.tw_lblAssist = new System.Windows.Forms.Label();
-            this.tw_cbStreaks = new System.Windows.Forms.CheckBox();
-            this.tw_numMultiKills = new System.Windows.Forms.NumericUpDown();
-            this.tw_numScoreAssists = new System.Windows.Forms.NumericUpDown();
-            this.tw_lblScorePerKill = new System.Windows.Forms.Label();
-            this.tw_numScorePerKill = new System.Windows.Forms.NumericUpDown();
-            this.tw_lblScoreLimit = new System.Windows.Forms.Label();
-            this.tw_numScoreLimit = new System.Windows.Forms.NumericUpDown();
-            this.tw_grpSettings = new System.Windows.Forms.GroupBox();
-            this.tw_cmbMode = new System.Windows.Forms.ComboBox();
-            this.tw_cmbDiff = new System.Windows.Forms.ComboBox();
-            this.tw_lblMode = new System.Windows.Forms.Label();
-            this.tw_lblDiff = new System.Windows.Forms.Label();
-            this.tw_cbMain = new System.Windows.Forms.CheckBox();
-            this.tw_cbMap = new System.Windows.Forms.CheckBox();
-            this.tw_cbStart = new System.Windows.Forms.CheckBox();
-            this.tw_gbMaps = new System.Windows.Forms.GroupBox();
-            this.tw_lblInUse = new System.Windows.Forms.Label();
-            this.tw_btnAdd = new System.Windows.Forms.Button();
-            this.tw_btnRemove = new System.Windows.Forms.Button();
-            this.tw_lstNotUsed = new System.Windows.Forms.ListBox();
-            this.tw_lstUsed = new System.Windows.Forms.ListBox();
-            this.tabCD = new System.Windows.Forms.TabPage();
-            this.cd_grpControls = new System.Windows.Forms.GroupBox();
-            this.cd_btnEnd = new System.Windows.Forms.Button();
-            this.cd_btnStop = new System.Windows.Forms.Button();
-            this.cd_btnStart = new System.Windows.Forms.Button();
-            this.cd_grpSettings = new System.Windows.Forms.GroupBox();
-            this.cd_cbMain = new System.Windows.Forms.CheckBox();
-            this.cd_cbMap = new System.Windows.Forms.CheckBox();
-            this.cd_cbStart = new System.Windows.Forms.CheckBox();
-            this.cd_grpMaps = new System.Windows.Forms.GroupBox();
-            this.cd_lblNotUsed = new System.Windows.Forms.Label();
-            this.cd_lblUsed = new System.Windows.Forms.Label();
-            this.cd_btnAdd = new System.Windows.Forms.Button();
-            this.cd_btnRemove = new System.Windows.Forms.Button();
-            this.cd_lstNotUsed = new System.Windows.Forms.ListBox();
-            this.cd_lstUsed = new System.Windows.Forms.ListBox();
-            this.pageCommands = new System.Windows.Forms.TabPage();
-            this.cmd_grpExtra = new System.Windows.Forms.GroupBox();
-            this.cmd_cmbExtra7 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra7 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra6 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra6 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra5 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra5 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra4 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra4 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra3 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra3 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra2 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra2 = new System.Windows.Forms.Label();
-            this.cmd_cmbExtra1 = new System.Windows.Forms.ComboBox();
-            this.cmd_lblExtra1 = new System.Windows.Forms.Label();
-            this.cmd_grpPermissions = new System.Windows.Forms.GroupBox();
-            this.cmd_cmbAlw3 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbAlw2 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbDis3 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbDis2 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbAlw1 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbDis1 = new System.Windows.Forms.ComboBox();
-            this.cmd_cmbMin = new System.Windows.Forms.ComboBox();
-            this.cmd_lblMin = new System.Windows.Forms.Label();
-            this.cmd_lblDisallow = new System.Windows.Forms.Label();
-            this.cmd_lblAllow = new System.Windows.Forms.Label();
-            this.cmd_btnCustom = new System.Windows.Forms.Button();
-            this.cmd_btnHelp = new System.Windows.Forms.Button();
-            this.cmd_list = new System.Windows.Forms.ListBox();
-            this.pageSecurity = new System.Windows.Forms.TabPage();
-            this.sec_grpChat = new System.Windows.Forms.GroupBox();
-            this.sec_lblChatOnMute = new System.Windows.Forms.Label();
-            this.sec_numChatMsgs = new System.Windows.Forms.NumericUpDown();
-            this.sec_lblChatOnMsgs = new System.Windows.Forms.Label();
-            this.sec_numChatSecs = new Flames.Gui.TimespanUpDown();
-            this.sec_lblChatForMute = new System.Windows.Forms.Label();
-            this.sec_numChatMute = new Flames.Gui.TimespanUpDown();
-            this.sec_grpCmd = new System.Windows.Forms.GroupBox();
-            this.sec_cbCmdAuto = new System.Windows.Forms.CheckBox();
-            this.sec_lblCmdOnMute = new System.Windows.Forms.Label();
-            this.sec_numCmdMsgs = new System.Windows.Forms.NumericUpDown();
-            this.sec_lblCmdOnMsgs = new System.Windows.Forms.Label();
-            this.sec_numCmdSecs = new Flames.Gui.TimespanUpDown();
-            this.sec_lblCmdForMute = new System.Windows.Forms.Label();
-            this.sec_numCmdMute = new Flames.Gui.TimespanUpDown();
-            this.sec_grpIP = new System.Windows.Forms.GroupBox();
-            this.sec_cbIPAuto = new System.Windows.Forms.CheckBox();
-            this.sec_lblIPOnMute = new System.Windows.Forms.Label();
-            this.sec_numIPMsgs = new System.Windows.Forms.NumericUpDown();
-            this.sec_lblIPOnMsgs = new System.Windows.Forms.Label();
-            this.sec_numIPSecs = new Flames.Gui.TimespanUpDown();
-            this.sec_lblIPForMute = new System.Windows.Forms.Label();
-            this.sec_numIPMute = new Flames.Gui.TimespanUpDown();
-            this.sec_grpOther = new System.Windows.Forms.GroupBox();
-            this.sec_lblRank = new System.Windows.Forms.Label();
-            this.sec_grpBlocks = new System.Windows.Forms.GroupBox();
-            this.sec_cbBlocksAuto = new System.Windows.Forms.CheckBox();
-            this.sec_lblBlocksOnMute = new System.Windows.Forms.Label();
-            this.sec_numBlocksMsgs = new System.Windows.Forms.NumericUpDown();
-            this.sec_lblBlocksOnMsgs = new System.Windows.Forms.Label();
-            this.sec_numBlocksSecs = new Flames.Gui.TimespanUpDown();
-            this.pageChat.SuspendLayout();
-            this.chat_grpTab.SuspendLayout();
-            this.chat_grpMessages.SuspendLayout();
-            this.chat_grpModeration.SuspendLayout();
-            this.chat_grpOther.SuspendLayout();
-            this.chat_grpColors.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numPort)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numPerm)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numMaps)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numDraw)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numGen)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numCopy)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numUndo)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numWater)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFast)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFloodUp)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numLayer)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numCount)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numHeight)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numAfk)).BeginInit();
-            this.pageBlocks.SuspendLayout();
-            this.blk_grpPhysics.SuspendLayout();
-            this.blk_grpBehaviour.SuspendLayout();
-            this.blk_grpPermissions.SuspendLayout();
-            this.pageRanks.SuspendLayout();
-            this.rank_grpLimits.SuspendLayout();
-            this.rank_grpGeneral.SuspendLayout();
-            this.rank_grpMisc.SuspendLayout();
-            this.pageMisc.SuspendLayout();
-            this.grpExtra.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.misc_numReview)).BeginInit();
-            this.grpMessages.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.hack_num)).BeginInit();
-            this.grpPhysics.SuspendLayout();
-            this.afk_grp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.afk_numTimer)).BeginInit();
-            this.bak_grp.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bak_numTime)).BeginInit();
-            this.pageRelay.SuspendLayout();
-            this.gb_ircSettings.SuspendLayout();
-            this.sql_grp.SuspendLayout();
-            this.irc_grp.SuspendLayout();
-            this.pageServer.SuspendLayout();
-            this.lvl_grp.SuspendLayout();
-            this.adv_grp.SuspendLayout();
-            this.srv_grp.SuspendLayout();
-            this.srv_grpUpdate.SuspendLayout();
+            this.Components = new Container();
+            this.PageChat = new TabPage();
+            this.Chat_grpTab = new GroupBox();
+            this.Chat_cbTabRank = new CheckBox();
+            this.Chat_cbTabLevel = new CheckBox();
+            this.Chat_cbTabBots = new CheckBox();
+            this.Chat_grpMessages = new GroupBox();
+            this.Chat_grpModeration = new GroupBox();
+            this.Chat_lblShutdown = new Label();
+            this.Chat_txtShutdown = new TextBox();
+            this.Chat_chkCheap = new CheckBox();
+            this.Chat_txtCheap = new TextBox();
+            this.Chat_lblBan = new Label();
+            this.Chat_txtBan = new TextBox();
+            this.Chat_lblPromote = new Label();
+            this.Chat_txtPromote = new TextBox();
+            this.Chat_lblDemote = new Label();
+            this.Chat_txtDemote = new TextBox();
+            this.Chat_lblLogin = new Label();
+            this.Chat_txtLogin = new TextBox();
+            this.Chat_lblLogout = new Label();
+            this.Chat_txtLogout = new TextBox();
+            this.Chat_grpOther = new GroupBox();
+            this.Chat_chkFilter = new CheckBox();
+            this.Chat_lblConsole = new Label();
+            this.Chat_txtConsole = new TextBox();
+            this.Chat_grpColors = new GroupBox();
+            this.Chat_lblWarn = new Label();
+            this.Chat_btnWarn = new Button();
+            this.Chat_lblDefault = new Label();
+            this.Chat_btnDefault = new Button();
+            this.Chat_lblIRC = new Label();
+            this.Chat_btnIRC = new Button();
+            this.Chat_lblSyntax = new Label();
+            this.Chat_btnSyntax = new Button();
+            this.Chat_lblDesc = new Label();
+            this.Chat_btnDesc = new Button();
+            this.Main_btnSave = new Button();
+            this.Main_btnDiscard = new Button();
+            this.Main_btnApply = new Button();
+            this.GUIToolTip = new ToolTip(this.Components);
+            this.ChkRpLimit = new Label();
+            this.ChkDeath = new CheckBox();
+            this.Hack_lbl = new CheckBox();
+            this.Sec_cmbVerifyRank = new ComboBox();
+            this.Sec_cbVerifyAdmins = new CheckBox();
+            this.ChkGuestLimitNotify = new CheckBox();
+            this.Rank_cbTPHigher = new CheckBox();
+            this.Rank_cmbDefault = new ComboBox();
+            this.Sec_cbWhitelist = new CheckBox();
+            this.Sql_chkUseSQL = new CheckBox();
+            this.Irc_chkEnabled = new CheckBox();
+            this.Irc_txtServer = new TextBox();
+            this.Irc_txtNick = new TextBox();
+            this.Irc_txtChannel = new TextBox();
+            this.Irc_txtOpChannel = new TextBox();
+            this.Lvl_chkAutoload = new CheckBox();
+            this.Lvl_chkWorld = new CheckBox();
+            this.Adv_chkVerify = new CheckBox();
+            this.Srv_txtName = new TextBox();
+            this.Srv_txtMOTD = new TextBox();
+            this.Srv_numPort = new NumericUpDown();
+            this.Srv_chkPublic = new CheckBox();
+            this.Rank_cbSilentAdmins = new CheckBox();
+            this.Rank_txtPrefix = new TextBox();
+            this.Rank_txtMOTD = new TextBox();
+            this.Rank_numPerm = new NumericUpDown();
+            this.Rank_txtName = new TextBox();
+            this.Rank_btnColor = new Button();
+            this.Rank_cmbOsMap = new ComboBox();
+            this.Irc_chkPass = new CheckBox();
+            this.Irc_txtPass = new TextBox();
+            this.Rank_numMaps = new NumericUpDown();
+            this.Rank_numDraw = new NumericUpDown();
+            this.Rank_numGen = new NumericUpDown();
+            this.Rank_numCopy = new NumericUpDown();
+            this.Dis_grp = new GroupBox();
+            this.Dis_lblToken = new Label();
+            this.Dis_lblChannel = new Label();
+            this.Dis_txtChannel = new TextBox();
+            this.Dis_lblOpChannel = new Label();
+            this.Dis_chkEnabled = new CheckBox();
+            this.Dis_chkNicks = new CheckBox();
+            this.Dis_txtToken = new TextBox();
+            this.Dis_txtOpChannel = new TextBox();
+            this.Dis_linkHelp = new LinkLabel();
+            this.Adv_chkCPE = new CheckBox();
+            this.Eco_cmbItemRank = new ComboBox();
+            this.Rank_numUndo = new Flames.Gui.TimespanUpDown();
+            this.ChkPhysRestart = new CheckBox();
+            this.Ls_numMax = new NumericUpDown();
+            this.Ls_numWater = new NumericUpDown();
+            this.Ls_numFast = new NumericUpDown();
+            this.Ls_numFloodUp = new NumericUpDown();
+            this.Ls_numLayer = new NumericUpDown();
+            this.Ls_numCount = new NumericUpDown();
+            this.Ls_numHeight = new NumericUpDown();
+            this.Ls_cbMain = new CheckBox();
+            this.Ls_cbStart = new CheckBox();
+            this.Rank_numAfk = new Flames.Gui.TimespanUpDown();
+            this.Sec_cbLogNotes = new CheckBox();
+            this.Sec_cbChatAuto = new CheckBox();
+            this.PageBlocks = new TabPage();
+            this.Blk_grpPhysics = new GroupBox();
+            this.Blk_cbWater = new CheckBox();
+            this.Blk_cbLava = new CheckBox();
+            this.Blk_cbRails = new CheckBox();
+            this.Blk_cbTdoor = new CheckBox();
+            this.Blk_cbDoor = new CheckBox();
+            this.Blk_grpBehaviour = new GroupBox();
+            this.Blk_txtDeath = new TextBox();
+            this.Blk_cbDeath = new CheckBox();
+            this.Blk_cbPortal = new CheckBox();
+            this.Blk_cbMsgBlock = new CheckBox();
+            this.Blk_grpPermissions = new GroupBox();
+            this.Blk_cmbAlw3 = new ComboBox();
+            this.Blk_cmbAlw2 = new ComboBox();
+            this.Blk_cmbDis3 = new ComboBox();
+            this.Blk_cmbDis2 = new ComboBox();
+            this.Blk_cmbAlw1 = new ComboBox();
+            this.Blk_cmbDis1 = new ComboBox();
+            this.Blk_cmbMin = new ComboBox();
+            this.Blk_lblMin = new Label();
+            this.Blk_lblAllow = new Label();
+            this.Blk_lblDisallow = new Label();
+            this.Blk_btnHelp = new Button();
+            this.Blk_list = new ListBox();
+            this.PageRanks = new TabPage();
+            this.Rank_grpLimits = new GroupBox();
+            this.Rank_lblCopy = new Label();
+            this.Rank_lblGen = new Label();
+            this.Rank_lblMaps = new Label();
+            this.Rank_lblDraw = new Label();
+            this.Rank_lblUndo = new Label();
+            this.Rank_grpGeneral = new GroupBox();
+            this.Rank_lblOsMap = new Label();
+            this.Rank_cbEmpty = new CheckBox();
+            this.Rank_lblDefault = new Label();
+            this.Rank_grpMisc = new GroupBox();
+            this.Rank_cbAfk = new CheckBox();
+            this.Rank_lblPrefix = new Label();
+            this.Rank_lblPerm = new Label();
+            this.Rank_lblMOTD = new Label();
+            this.Rank_lblName = new Label();
+            this.Rank_lblColor = new Label();
+            this.Rank_btnDel = new Button();
+            this.Rank_btnAdd = new Button();
+            this.Rank_list = new ListBox();
+            this.PageMisc = new TabPage();
+            this.GrpExtra = new GroupBox();
+            this.Misc_numReview = new Flames.Gui.TimespanUpDown();
+            this.ChkRestart = new CheckBox();
+            this.Misc_lblReview = new Label();
+            this.ChkRepeatMessages = new CheckBox();
+            this.Chk17Dollar = new CheckBox();
+            this.ChkSmile = new CheckBox();
+            this.GrpMessages = new GroupBox();
+            this.Hack_num = new Flames.Gui.TimespanUpDown();
+            this.GrpPhysics = new GroupBox();
+            this.TxtRP = new TextBox();
+            this.ChkRpNorm = new Label();
+            this.TxtNormRp = new TextBox();
+            this.Afk_grp = new GroupBox();
+            this.Afk_numTimer = new Flames.Gui.TimespanUpDown();
+            this.Afk_lblTimer = new Label();
+            this.Bak_grp = new GroupBox();
+            this.Bak_numTime = new Flames.Gui.TimespanUpDown();
+            this.Bak_lblLocation = new Label();
+            this.Bak_txtLocation = new TextBox();
+            this.Bak_lblTime = new Label();
+            this.PageRelay = new TabPage();
+            this.Gb_ircSettings = new GroupBox();
+            this.Irc_txtPrefix = new TextBox();
+            this.Irc_lblPrefix = new Label();
+            this.Irc_cmbVerify = new ComboBox();
+            this.Irc_lblVerify = new Label();
+            this.Irc_cmbRank = new ComboBox();
+            this.Irc_lblRank = new Label();
+            this.Irc_cbAFK = new CheckBox();
+            this.Irc_cbWorldChanges = new CheckBox();
+            this.Irc_cbTitles = new CheckBox();
+            this.Sql_grp = new GroupBox();
+            this.Sql_linkDownload = new LinkLabel();
+            this.Sql_lblUser = new Label();
+            this.Sql_txtUser = new TextBox();
+            this.Sql_lblPass = new Label();
+            this.Sql_txtPass = new TextBox();
+            this.Sql_lblDBName = new Label();
+            this.Sql_txtDBName = new TextBox();
+            this.Sql_lblHost = new Label();
+            this.Sql_txtHost = new TextBox();
+            this.Sql_lblPort = new Label();
+            this.Sql_txtPort = new TextBox();
+            this.Irc_grp = new GroupBox();
+            this.Irc_lblServer = new Label();
+            this.Irc_lblPort = new Label();
+            this.Irc_numPort = new NumericUpDown();
+            this.Irc_lblNick = new Label();
+            this.Irc_lblChannel = new Label();
+            this.Irc_lblOpChannel = new Label();
+            this.PageServer = new TabPage();
+            this.Lvl_grp = new GroupBox();
+            this.Lvl_lblMain = new Label();
+            this.Lvl_txtMain = new TextBox();
+            this.Adv_grp = new GroupBox();
+            this.Adv_btnEditTexts = new Button();
+            this.Srv_grp = new GroupBox();
+            this.Srv_lblName = new Label();
+            this.Srv_lblMotd = new Label();
+            this.Srv_lblPort = new Label();
+            this.Srv_btnPort = new Button();
+            this.Srv_lblOwner = new Label();
+            this.Srv_txtOwner = new TextBox();
+            this.Srv_grpUpdate = new GroupBox();
+            this.Srv_btnForceUpdate = new Button();
+            this.ChkUpdates = new CheckBox();
+            this.grpPlayers = new GroupBox();
+            this.Srv_lblPlayers = new Label();
+            this.Srv_numPlayers = new NumericUpDown();
+            this.Srv_cbMustAgree = new CheckBox();
+            this.Srv_lblGuests = new Label();
+            this.Srv_numGuests = new NumericUpDown();
+            this.TabControl = new TabControl();
+            this.PageEco = new TabPage();
+            this.Eco_gbRank = new GroupBox();
+            this.Eco_dgvRanks = new DataGridView();
+            this.Eco_colRankName = new DataGridViewTextBoxColumn();
+            this.Eco_colRankPrice = new DataGridViewTextBoxColumn();
+            this.Eco_cbRank = new CheckBox();
+            this.Eco_gbLvl = new GroupBox();
+            this.Eco_dgvMaps = new DataGridView();
+            this.Eco_colLvlName = new DataGridViewTextBoxColumn();
+            this.Eco_colLvlPrice = new DataGridViewTextBoxColumn();
+            this.Eco_colLvlX = new DataGridViewTextBoxColumn();
+            this.Eco_colLvlY = new DataGridViewTextBoxColumn();
+            this.Eco_colLvlZ = new DataGridViewTextBoxColumn();
+            this.Eco_colLvlTheme = new DataGridViewComboBoxColumn();
+            this.Eco_btnLvlDel = new Button();
+            this.Eco_btnLvlAdd = new Button();
+            this.Eco_cbLvl = new CheckBox();
+            this.Eco_gbItem = new GroupBox();
+            this.Eco_lblItemRank = new Label();
+            this.Eco_numItemPrice = new NumericUpDown();
+            this.Eco_lblItemPrice = new Label();
+            this.Eco_cbItem = new CheckBox();
+            this.Eco_gb = new GroupBox();
+            this.Eco_cmbCfg = new ComboBox();
+            this.Eco_lblCfg = new Label();
+            this.Eco_cbEnabled = new CheckBox();
+            this.Eco_txtCurrency = new TextBox();
+            this.Eco_lblCurrency = new Label();
+            this.PageGames = new TabPage();
+            this.TabGames = new TabControl();
+            this.TabLS = new TabPage();
+            this.Ls_grpControls = new GroupBox();
+            this.Ls_btnEnd = new Button();
+            this.Ls_btnStop = new Button();
+            this.Ls_btnStart = new Button();
+            this.Ls_grpMapSettings = new GroupBox();
+            this.Ls_grpTime = new GroupBox();
+            this.Ls_numFlood = new Flames.Gui.TimespanUpDown();
+            this.Ls_numLayerTime = new Flames.Gui.TimespanUpDown();
+            this.Ls_numRound = new Flames.Gui.TimespanUpDown();
+            this.Ls_lblLayerTime = new Label();
+            this.Ls_lblFlood = new Label();
+            this.Ls_lblRound = new Label();
+            this.Ls_grpLayer = new GroupBox();
+            this.Ls_lblBlocksTall = new Label();
+            this.Ls_lblLayersEach = new Label();
+            this.Ls_lblLayer = new Label();
+            this.Ls_grpFlood = new GroupBox();
+            this.Ls_lblFloodUp = new Label();
+            this.Ls_lblFast = new Label();
+            this.Ls_lblWater = new Label();
+            this.Ls_grpSettings = new GroupBox();
+            this.Ls_lblMax = new Label();
+            this.Ls_cbMap = new CheckBox();
+            this.Ls_grpMaps = new GroupBox();
+            this.Ls_lblNotUsed = new Label();
+            this.Ls_lblUsed = new Label();
+            this.Ls_btnAdd = new Button();
+            this.Ls_btnRemove = new Button();
+            this.Ls_lstNotUsed = new ListBox();
+            this.Ls_lstUsed = new ListBox();
+            this.TabZS = new TabPage();
+            this.Zs_grpControls = new GroupBox();
+            this.Zs_btnEnd = new Button();
+            this.Zs_btnStop = new Button();
+            this.Zs_btnStart = new Button();
+            this.Zs_grpMap = new GroupBox();
+            this.Zs_grpTime = new GroupBox();
+            this.TimespanUpDown1 = new Flames.Gui.TimespanUpDown();
+            this.TimespanUpDown2 = new Flames.Gui.TimespanUpDown();
+            this.TimespanUpDown3 = new Flames.Gui.TimespanUpDown();
+            this.Label1 = new Label();
+            this.Label2 = new Label();
+            this.Label3 = new Label();
+            this.Zs_grpSettings = new GroupBox();
+            this.Zs_grpZombie = new GroupBox();
+            this.Zs_txtModel = new TextBox();
+            this.Zs_txtName = new TextBox();
+            this.Zs_lblModel = new Label();
+            this.Zs_lblName = new Label();
+            this.Zs_grpRevive = new GroupBox();
+            this.Zs_lblReviveEff = new Label();
+            this.Zs_numReviveEff = new NumericUpDown();
+            this.Label4 = new Label();
+            this.Zs_lblReviveLimitFtr = new Label();
+            this.Zs_lblReviveLimitHdr = new Label();
+            this.Zs_numReviveLimit = new NumericUpDown();
+            this.Zs_numReviveMax = new NumericUpDown();
+            this.Label9 = new Label();
+            this.Zs_cbMain = new CheckBox();
+            this.Zs_cbMap = new CheckBox();
+            this.Zs_grpInv = new GroupBox();
+            this.Zs_numInvZombieDur = new NumericUpDown();
+            this.Zs_numInvHumanDur = new NumericUpDown();
+            this.Zs_numInvZombieMax = new NumericUpDown();
+            this.Zs_numInvHumanMax = new NumericUpDown();
+            this.Zs_lblInvZombieDur = new Label();
+            this.Zs_lblInvZombieMax = new Label();
+            this.Zs_lblInvHumanDur = new Label();
+            this.Zs_lblInvHumanMax = new Label();
+            this.Zs_cbStart = new CheckBox();
+            this.Zs_grpMaps = new GroupBox();
+            this.Zs_lblNotUsed = new Label();
+            this.Zs_lblUsed = new Label();
+            this.Zs_btnAdd = new Button();
+            this.Zs_btnRemove = new Button();
+            this.Zs_lstNotUsed = new ListBox();
+            this.Zs_lstUsed = new ListBox();
+            this.TabZS_old = new TabPage();
+            this.PropsZG = new Flames.Gui.HackyPropertyGrid();
+            this.TabCTF = new TabPage();
+            this.Ctf_grpControls = new GroupBox();
+            this.Ctf_btnEnd = new Button();
+            this.Ctf_btnStop = new Button();
+            this.Ctf_btnStart = new Button();
+            this.Ctf_grpSettings = new GroupBox();
+            this.Ctf_cbMain = new CheckBox();
+            this.Ctf_cbMap = new CheckBox();
+            this.Ctf_cbStart = new CheckBox();
+            this.Ctf_grpMaps = new GroupBox();
+            this.Ctf_lblNotUsed = new Label();
+            this.Ctf_lblUsed = new Label();
+            this.Ctf_btnAdd = new Button();
+            this.Ctf_btnRemove = new Button();
+            this.Ctf_lstNotUsed = new ListBox();
+            this.Ctf_lstUsed = new ListBox();
+            this.TabTW = new TabPage();
+            this.Tw_grpControls = new GroupBox();
+            this.Tw_btnEnd = new Button();
+            this.Tw_btnStop = new Button();
+            this.Tw_btnStart = new Button();
+            this.Tw_grpMapSettings = new GroupBox();
+            this.Tw_grpTeams = new GroupBox();
+            this.Tw_cbKills = new CheckBox();
+            this.Tw_cbBalance = new CheckBox();
+            this.Tw_grpGrace = new GroupBox();
+            this.Tw_numGrace = new Flames.Gui.TimespanUpDown();
+            this.Tw_lblGrace = new Label();
+            this.Tw_cbGrace = new CheckBox();
+            this.Tw_grpScores = new GroupBox();
+            this.Tw_lblMulti = new Label();
+            this.Tw_lblAssist = new Label();
+            this.Tw_cbStreaks = new CheckBox();
+            this.Tw_numMultiKills = new NumericUpDown();
+            this.Tw_numScoreAssists = new NumericUpDown();
+            this.Tw_lblScorePerKill = new Label();
+            this.Tw_numScorePerKill = new NumericUpDown();
+            this.Tw_lblScoreLimit = new Label();
+            this.Tw_numScoreLimit = new NumericUpDown();
+            this.Tw_grpSettings = new GroupBox();
+            this.Tw_cmbMode = new ComboBox();
+            this.Tw_cmbDiff = new ComboBox();
+            this.Tw_lblMode = new Label();
+            this.Tw_lblDiff = new Label();
+            this.Tw_cbMain = new CheckBox();
+            this.Tw_cbMap = new CheckBox();
+            this.Tw_cbStart = new CheckBox();
+            this.Tw_gbMaps = new GroupBox();
+            this.Tw_lblInUse = new Label();
+            this.Tw_btnAdd = new Button();
+            this.Tw_btnRemove = new Button();
+            this.Tw_lstNotUsed = new ListBox();
+            this.Tw_lstUsed = new ListBox();
+            this.TabCD = new TabPage();
+            this.Cd_grpControls = new GroupBox();
+            this.Cd_btnEnd = new Button();
+            this.Cd_btnStop = new Button();
+            this.Cd_btnStart = new Button();
+            this.Cd_grpSettings = new GroupBox();
+            this.Cd_cbMain = new CheckBox();
+            this.Cd_cbMap = new CheckBox();
+            this.Cd_cbStart = new CheckBox();
+            this.Cd_grpMaps = new GroupBox();
+            this.Cd_lblNotUsed = new Label();
+            this.Cd_lblUsed = new Label();
+            this.Cd_btnAdd = new Button();
+            this.Cd_btnRemove = new Button();
+            this.Cd_lstNotUsed = new ListBox();
+            this.Cd_lstUsed = new ListBox();
+            this.PageCommands = new TabPage();
+            this.Cmd_grpExtra = new GroupBox();
+            this.Cmd_cmbExtra7 = new ComboBox();
+            this.Cmd_lblExtra7 = new Label();
+            this.Cmd_cmbExtra6 = new ComboBox();
+            this.Cmd_lblExtra6 = new Label();
+            this.Cmd_cmbExtra5 = new ComboBox();
+            this.Cmd_lblExtra5 = new Label();
+            this.Cmd_cmbExtra4 = new ComboBox();
+            this.Cmd_lblExtra4 = new Label();
+            this.Cmd_cmbExtra3 = new ComboBox();
+            this.Cmd_lblExtra3 = new Label();
+            this.Cmd_cmbExtra2 = new ComboBox();
+            this.Cmd_lblExtra2 = new Label();
+            this.Cmd_cmbExtra1 = new ComboBox();
+            this.Cmd_lblExtra1 = new Label();
+            this.Cmd_grpPermissions = new GroupBox();
+            this.Cmd_cmbAlw3 = new ComboBox();
+            this.Cmd_cmbAlw2 = new ComboBox();
+            this.Cmd_cmbDis3 = new ComboBox();
+            this.Cmd_cmbDis2 = new ComboBox();
+            this.Cmd_cmbAlw1 = new ComboBox();
+            this.Cmd_cmbDis1 = new ComboBox();
+            this.Cmd_cmbMin = new ComboBox();
+            this.Cmd_lblMin = new Label();
+            this.Cmd_lblDisallow = new Label();
+            this.Cmd_lblAllow = new Label();
+            this.Cmd_btnCustom = new Button();
+            this.Cmd_btnHelp = new Button();
+            this.Cmd_list = new ListBox();
+            this.PageSecurity = new TabPage();
+            this.Sec_grpChat = new GroupBox();
+            this.Sec_lblChatOnMute = new Label();
+            this.Sec_numChatMsgs = new NumericUpDown();
+            this.Sec_lblChatOnMsgs = new Label();
+            this.Sec_numChatSecs = new Flames.Gui.TimespanUpDown();
+            this.Sec_lblChatForMute = new Label();
+            this.Sec_numChatMute = new Flames.Gui.TimespanUpDown();
+            this.Sec_grpCmd = new GroupBox();
+            this.Sec_cbCmdAuto = new CheckBox();
+            this.Sec_lblCmdOnMute = new Label();
+            this.Sec_numCmdMsgs = new NumericUpDown();
+            this.Sec_lblCmdOnMsgs = new Label();
+            this.Sec_numCmdSecs = new Flames.Gui.TimespanUpDown();
+            this.Sec_lblCmdForMute = new Label();
+            this.Sec_numCmdMute = new Flames.Gui.TimespanUpDown();
+            this.Sec_grpIP = new GroupBox();
+            this.Sec_cbIPAuto = new CheckBox();
+            this.Sec_lblIPOnMute = new Label();
+            this.Sec_numIPMsgs = new NumericUpDown();
+            this.Sec_lblIPOnMsgs = new Label();
+            this.Sec_numIPSecs = new Flames.Gui.TimespanUpDown();
+            this.Sec_lblIPForMute = new Label();
+            this.Sec_numIPMute = new Flames.Gui.TimespanUpDown();
+            this.Sec_grpOther = new GroupBox();
+            this.Sec_lblRank = new Label();
+            this.Sec_grpBlocks = new GroupBox();
+            this.Sec_cbBlocksAuto = new CheckBox();
+            this.Sec_lblBlocksOnMute = new Label();
+            this.Sec_numBlocksMsgs = new NumericUpDown();
+            this.Sec_lblBlocksOnMsgs = new Label();
+            this.Sec_numBlocksSecs = new Flames.Gui.TimespanUpDown();
+            this.PageChat.SuspendLayout();
+            this.Chat_grpTab.SuspendLayout();
+            this.Chat_grpMessages.SuspendLayout();
+            this.Chat_grpModeration.SuspendLayout();
+            this.Chat_grpOther.SuspendLayout();
+            this.Chat_grpColors.SuspendLayout();
+            ((ISupportInitialize)(this.Srv_numPort)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numPerm)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numMaps)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numDraw)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numGen)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numCopy)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numUndo)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numMax)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numWater)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numFast)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numFloodUp)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numLayer)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numCount)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numHeight)).BeginInit();
+            ((ISupportInitialize)(this.Rank_numAfk)).BeginInit();
+            this.PageBlocks.SuspendLayout();
+            this.Blk_grpPhysics.SuspendLayout();
+            this.Blk_grpBehaviour.SuspendLayout();
+            this.Blk_grpPermissions.SuspendLayout();
+            this.PageRanks.SuspendLayout();
+            this.Rank_grpLimits.SuspendLayout();
+            this.Rank_grpGeneral.SuspendLayout();
+            this.Rank_grpMisc.SuspendLayout();
+            this.PageMisc.SuspendLayout();
+            this.GrpExtra.SuspendLayout();
+            ((ISupportInitialize)(this.Misc_numReview)).BeginInit();
+            this.GrpMessages.SuspendLayout();
+            ((ISupportInitialize)(this.Hack_num)).BeginInit();
+            this.GrpPhysics.SuspendLayout();
+            this.Afk_grp.SuspendLayout();
+            ((ISupportInitialize)(this.Afk_numTimer)).BeginInit();
+            this.Bak_grp.SuspendLayout();
+            ((ISupportInitialize)(this.Bak_numTime)).BeginInit();
+            this.PageRelay.SuspendLayout();
+            this.Gb_ircSettings.SuspendLayout();
+            this.Sql_grp.SuspendLayout();
+            this.Irc_grp.SuspendLayout();
+            this.PageServer.SuspendLayout();
+            this.Lvl_grp.SuspendLayout();
+            this.Adv_grp.SuspendLayout();
+            this.Srv_grp.SuspendLayout();
+            this.Srv_grpUpdate.SuspendLayout();
             this.grpPlayers.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numPlayers)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numGuests)).BeginInit();
-            this.tabControl.SuspendLayout();
-            this.pageEco.SuspendLayout();
-            this.eco_gbRank.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_dgvRanks)).BeginInit();
-            this.eco_gbLvl.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_dgvMaps)).BeginInit();
-            this.eco_gbItem.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_numItemPrice)).BeginInit();
-            this.eco_gb.SuspendLayout();
-            this.pageGames.SuspendLayout();
-            this.tabGames.SuspendLayout();
-            this.tabLS.SuspendLayout();
-            this.ls_grpControls.SuspendLayout();
-            this.ls_grpMapSettings.SuspendLayout();
-            this.ls_grpTime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFlood)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numLayerTime)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numRound)).BeginInit();
-            this.ls_grpLayer.SuspendLayout();
-            this.ls_grpFlood.SuspendLayout();
-            this.ls_grpSettings.SuspendLayout();
-            this.ls_grpMaps.SuspendLayout();
-            this.tabZS.SuspendLayout();
-            this.zs_grpControls.SuspendLayout();
-            this.zs_grpMap.SuspendLayout();
-            this.zs_grpTime.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown3)).BeginInit();
-            this.zs_grpSettings.SuspendLayout();
-            this.zs_grpZombie.SuspendLayout();
-            this.zs_grpRevive.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveEff)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveLimit)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveMax)).BeginInit();
-            this.zs_grpInv.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvZombieDur)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvHumanDur)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvZombieMax)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvHumanMax)).BeginInit();
-            this.zs_grpMaps.SuspendLayout();
-            this.tabZS_old.SuspendLayout();
-            this.tabCTF.SuspendLayout();
-            this.ctf_grpControls.SuspendLayout();
-            this.ctf_grpSettings.SuspendLayout();
-            this.ctf_grpMaps.SuspendLayout();
-            this.tabTW.SuspendLayout();
-            this.tw_grpControls.SuspendLayout();
-            this.tw_grpMapSettings.SuspendLayout();
-            this.tw_grpTeams.SuspendLayout();
-            this.tw_grpGrace.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numGrace)).BeginInit();
-            this.tw_grpScores.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numMultiKills)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScoreAssists)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScorePerKill)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScoreLimit)).BeginInit();
-            this.tw_grpSettings.SuspendLayout();
-            this.tw_gbMaps.SuspendLayout();
-            this.tabCD.SuspendLayout();
-            this.cd_grpControls.SuspendLayout();
-            this.cd_grpSettings.SuspendLayout();
-            this.cd_grpMaps.SuspendLayout();
-            this.pageCommands.SuspendLayout();
-            this.cmd_grpExtra.SuspendLayout();
-            this.cmd_grpPermissions.SuspendLayout();
-            this.pageSecurity.SuspendLayout();
-            this.sec_grpChat.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatMsgs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatSecs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatMute)).BeginInit();
-            this.sec_grpCmd.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdMsgs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdSecs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdMute)).BeginInit();
-            this.sec_grpIP.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPMsgs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPSecs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPMute)).BeginInit();
-            this.sec_grpOther.SuspendLayout();
-            this.sec_grpBlocks.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numBlocksMsgs)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numBlocksSecs)).BeginInit();
+            ((ISupportInitialize)(this.Srv_numPlayers)).BeginInit();
+            ((ISupportInitialize)(this.Srv_numGuests)).BeginInit();
+            this.TabControl.SuspendLayout();
+            this.PageEco.SuspendLayout();
+            this.Eco_gbRank.SuspendLayout();
+            ((ISupportInitialize)(this.Eco_dgvRanks)).BeginInit();
+            this.Eco_gbLvl.SuspendLayout();
+            ((ISupportInitialize)(this.Eco_dgvMaps)).BeginInit();
+            this.Eco_gbItem.SuspendLayout();
+            ((ISupportInitialize)(this.Eco_numItemPrice)).BeginInit();
+            this.Eco_gb.SuspendLayout();
+            this.PageGames.SuspendLayout();
+            this.TabGames.SuspendLayout();
+            this.TabLS.SuspendLayout();
+            this.Ls_grpControls.SuspendLayout();
+            this.Ls_grpMapSettings.SuspendLayout();
+            this.Ls_grpTime.SuspendLayout();
+            ((ISupportInitialize)(this.Ls_numFlood)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numLayerTime)).BeginInit();
+            ((ISupportInitialize)(this.Ls_numRound)).BeginInit();
+            this.Ls_grpLayer.SuspendLayout();
+            this.Ls_grpFlood.SuspendLayout();
+            this.Ls_grpSettings.SuspendLayout();
+            this.Ls_grpMaps.SuspendLayout();
+            this.TabZS.SuspendLayout();
+            this.Zs_grpControls.SuspendLayout();
+            this.Zs_grpMap.SuspendLayout();
+            this.Zs_grpTime.SuspendLayout();
+            ((ISupportInitialize)(this.TimespanUpDown1)).BeginInit();
+            ((ISupportInitialize)(this.TimespanUpDown2)).BeginInit();
+            ((ISupportInitialize)(this.TimespanUpDown3)).BeginInit();
+            this.Zs_grpSettings.SuspendLayout();
+            this.Zs_grpZombie.SuspendLayout();
+            this.Zs_grpRevive.SuspendLayout();
+            ((ISupportInitialize)(this.Zs_numReviveEff)).BeginInit();
+            ((ISupportInitialize)(this.Zs_numReviveLimit)).BeginInit();
+            ((ISupportInitialize)(this.Zs_numReviveMax)).BeginInit();
+            this.Zs_grpInv.SuspendLayout();
+            ((ISupportInitialize)(this.Zs_numInvZombieDur)).BeginInit();
+            ((ISupportInitialize)(this.Zs_numInvHumanDur)).BeginInit();
+            ((ISupportInitialize)(this.Zs_numInvZombieMax)).BeginInit();
+            ((ISupportInitialize)(this.Zs_numInvHumanMax)).BeginInit();
+            this.Zs_grpMaps.SuspendLayout();
+            this.TabZS_old.SuspendLayout();
+            this.TabCTF.SuspendLayout();
+            this.Ctf_grpControls.SuspendLayout();
+            this.Ctf_grpSettings.SuspendLayout();
+            this.Ctf_grpMaps.SuspendLayout();
+            this.TabTW.SuspendLayout();
+            this.Tw_grpControls.SuspendLayout();
+            this.Tw_grpMapSettings.SuspendLayout();
+            this.Tw_grpTeams.SuspendLayout();
+            this.Tw_grpGrace.SuspendLayout();
+            ((ISupportInitialize)(this.Tw_numGrace)).BeginInit();
+            this.Tw_grpScores.SuspendLayout();
+            ((ISupportInitialize)(this.Tw_numMultiKills)).BeginInit();
+            ((ISupportInitialize)(this.Tw_numScoreAssists)).BeginInit();
+            ((ISupportInitialize)(this.Tw_numScorePerKill)).BeginInit();
+            ((ISupportInitialize)(this.Tw_numScoreLimit)).BeginInit();
+            this.Tw_grpSettings.SuspendLayout();
+            this.Tw_gbMaps.SuspendLayout();
+            this.TabCD.SuspendLayout();
+            this.Cd_grpControls.SuspendLayout();
+            this.Cd_grpSettings.SuspendLayout();
+            this.Cd_grpMaps.SuspendLayout();
+            this.PageCommands.SuspendLayout();
+            this.Cmd_grpExtra.SuspendLayout();
+            this.Cmd_grpPermissions.SuspendLayout();
+            this.PageSecurity.SuspendLayout();
+            this.Sec_grpChat.SuspendLayout();
+            ((ISupportInitialize)(this.Sec_numChatMsgs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numChatSecs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numChatMute)).BeginInit();
+            this.Sec_grpCmd.SuspendLayout();
+            ((ISupportInitialize)(this.Sec_numCmdMsgs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numCmdSecs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numCmdMute)).BeginInit();
+            this.Sec_grpIP.SuspendLayout();
+            ((ISupportInitialize)(this.Sec_numIPMsgs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numIPSecs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numIPMute)).BeginInit();
+            this.Sec_grpOther.SuspendLayout();
+            this.Sec_grpBlocks.SuspendLayout();
+            ((ISupportInitialize)(this.Sec_numBlocksMsgs)).BeginInit();
+            ((ISupportInitialize)(this.Sec_numBlocksSecs)).BeginInit();
             this.SuspendLayout();
             // 
-            // pageChat
+            // PageChat
             // 
-            this.pageChat.BackColor = System.Drawing.SystemColors.Control;
-            this.pageChat.Controls.Add(this.chat_grpTab);
-            this.pageChat.Controls.Add(this.chat_grpMessages);
-            this.pageChat.Controls.Add(this.chat_grpModeration);
-            this.pageChat.Controls.Add(this.chat_grpOther);
-            this.pageChat.Controls.Add(this.chat_grpColors);
-            this.pageChat.Location = new System.Drawing.Point(4, 22);
-            this.pageChat.Name = "pageChat";
-            this.pageChat.Padding = new System.Windows.Forms.Padding(3);
-            this.pageChat.Size = new System.Drawing.Size(498, 521);
-            this.pageChat.TabIndex = 10;
-            this.pageChat.Text = "Chat";
+            this.PageChat.BackColor = SystemColors.Control;
+            this.PageChat.Controls.Add(this.Chat_grpTab);
+            this.PageChat.Controls.Add(this.Chat_grpMessages);
+            this.PageChat.Controls.Add(this.Chat_grpModeration);
+            this.PageChat.Controls.Add(this.Chat_grpOther);
+            this.PageChat.Controls.Add(this.Chat_grpColors);
+            this.PageChat.Location = new Point(4, 22);
+            this.PageChat.Name = "PageChat";
+            this.PageChat.Padding = new Padding(3);
+            this.PageChat.Size = new Size(498, 521);
+            this.PageChat.TabIndex = 10;
+            this.PageChat.Text = "Chat";
             // 
-            // chat_grpTab
+            // Chat_grpTab
             // 
-            this.chat_grpTab.Controls.Add(this.chat_cbTabRank);
-            this.chat_grpTab.Controls.Add(this.chat_cbTabLevel);
-            this.chat_grpTab.Controls.Add(this.chat_cbTabBots);
-            this.chat_grpTab.Location = new System.Drawing.Point(235, 88);
-            this.chat_grpTab.Name = "chat_grpTab";
-            this.chat_grpTab.Size = new System.Drawing.Size(256, 92);
-            this.chat_grpTab.TabIndex = 3;
-            this.chat_grpTab.TabStop = false;
-            this.chat_grpTab.Text = "Tab list";
+            this.Chat_grpTab.Controls.Add(this.Chat_cbTabRank);
+            this.Chat_grpTab.Controls.Add(this.Chat_cbTabLevel);
+            this.Chat_grpTab.Controls.Add(this.Chat_cbTabBots);
+            this.Chat_grpTab.Location = new Point(235, 88);
+            this.Chat_grpTab.Name = "Chat_grpTab";
+            this.Chat_grpTab.Size = new Size(256, 92);
+            this.Chat_grpTab.TabIndex = 3;
+            this.Chat_grpTab.TabStop = false;
+            this.Chat_grpTab.Text = "Tab list";
             // 
-            // chat_cbTabRank
+            // Chat_cbTabRank
             // 
-            this.chat_cbTabRank.AutoSize = true;
-            this.chat_cbTabRank.Location = new System.Drawing.Point(6, 19);
-            this.chat_cbTabRank.Name = "chat_cbTabRank";
-            this.chat_cbTabRank.Size = new System.Drawing.Size(116, 17);
-            this.chat_cbTabRank.TabIndex = 31;
-            this.chat_cbTabRank.Text = "Sort tab list by rank";
-            this.chat_cbTabRank.UseVisualStyleBackColor = true;
+            this.Chat_cbTabRank.AutoSize = true;
+            this.Chat_cbTabRank.Location = new Point(6, 19);
+            this.Chat_cbTabRank.Name = "Chat_cbTabRank";
+            this.Chat_cbTabRank.Size = new Size(116, 17);
+            this.Chat_cbTabRank.TabIndex = 31;
+            this.Chat_cbTabRank.Text = "Sort tab list by rank";
+            this.Chat_cbTabRank.UseVisualStyleBackColor = true;
             // 
-            // chat_cbTabLevel
+            // Chat_cbTabLevel
             // 
-            this.chat_cbTabLevel.AutoSize = true;
-            this.chat_cbTabLevel.Location = new System.Drawing.Point(6, 44);
-            this.chat_cbTabLevel.Name = "chat_cbTabLevel";
-            this.chat_cbTabLevel.Size = new System.Drawing.Size(108, 17);
-            this.chat_cbTabLevel.TabIndex = 30;
-            this.chat_cbTabLevel.Text = "Level only tab list";
-            this.chat_cbTabLevel.UseVisualStyleBackColor = true;
+            this.Chat_cbTabLevel.AutoSize = true;
+            this.Chat_cbTabLevel.Location = new Point(6, 44);
+            this.Chat_cbTabLevel.Name = "Chat_cbTabLevel";
+            this.Chat_cbTabLevel.Size = new Size(108, 17);
+            this.Chat_cbTabLevel.TabIndex = 30;
+            this.Chat_cbTabLevel.Text = "Level only tab list";
+            this.Chat_cbTabLevel.UseVisualStyleBackColor = true;
             // 
-            // chat_cbTabBots
+            // Chat_cbTabBots
             // 
-            this.chat_cbTabBots.AutoSize = true;
-            this.chat_cbTabBots.Location = new System.Drawing.Point(6, 69);
-            this.chat_cbTabBots.Name = "chat_cbTabBots";
-            this.chat_cbTabBots.Size = new System.Drawing.Size(120, 17);
-            this.chat_cbTabBots.TabIndex = 32;
-            this.chat_cbTabBots.Text = "Show bots in tab list";
-            this.chat_cbTabBots.UseVisualStyleBackColor = true;
+            this.Chat_cbTabBots.AutoSize = true;
+            this.Chat_cbTabBots.Location = new Point(6, 69);
+            this.Chat_cbTabBots.Name = "Chat_cbTabBots";
+            this.Chat_cbTabBots.Size = new Size(120, 17);
+            this.Chat_cbTabBots.TabIndex = 32;
+            this.Chat_cbTabBots.Text = "Show bots in tab list";
+            this.Chat_cbTabBots.UseVisualStyleBackColor = true;
             // 
-            // chat_grpMessages
+            // Chat_grpMessages
             // 
-            this.chat_grpMessages.Controls.Add(this.chat_lblShutdown);
-            this.chat_grpMessages.Controls.Add(this.chat_txtShutdown);
-            this.chat_grpMessages.Controls.Add(this.chat_chkCheap);
-            this.chat_grpMessages.Controls.Add(this.chat_txtCheap);
-            this.chat_grpMessages.Controls.Add(this.chat_lblLogin);
-            this.chat_grpMessages.Controls.Add(this.chat_txtLogin);
-            this.chat_grpMessages.Controls.Add(this.chat_lblLogout);
-            this.chat_grpMessages.Controls.Add(this.chat_txtLogout);
-            this.chat_grpMessages.Location = new System.Drawing.Point(8, 186);
-            this.chat_grpMessages.Name = "chat_grpMessages";
-            this.chat_grpMessages.Size = new System.Drawing.Size(483, 145);
-            this.chat_grpMessages.TabIndex = 2;
-            this.chat_grpMessages.TabStop = false;
-            this.chat_grpMessages.Text = "Messages";
+            this.Chat_grpMessages.Controls.Add(this.Chat_lblShutdown);
+            this.Chat_grpMessages.Controls.Add(this.Chat_txtShutdown);
+            this.Chat_grpMessages.Controls.Add(this.Chat_chkCheap);
+            this.Chat_grpMessages.Controls.Add(this.Chat_txtCheap);
+            this.Chat_grpMessages.Controls.Add(this.Chat_lblLogin);
+            this.Chat_grpMessages.Controls.Add(this.Chat_txtLogin);
+            this.Chat_grpMessages.Controls.Add(this.Chat_lblLogout);
+            this.Chat_grpMessages.Controls.Add(this.Chat_txtLogout);
+            this.Chat_grpMessages.Location = new Point(8, 186);
+            this.Chat_grpMessages.Name = "Chat_grpMessages";
+            this.Chat_grpMessages.Size = new Size(483, 145);
+            this.Chat_grpMessages.TabIndex = 2;
+            this.Chat_grpMessages.TabStop = false;
+            this.Chat_grpMessages.Text = "Messages";
             // 
-            // chat_lblShutdown
+            // Chat_lblShutdown
             // 
-            this.chat_lblShutdown.AutoSize = true;
-            this.chat_lblShutdown.Location = new System.Drawing.Point(6, 23);
-            this.chat_lblShutdown.Name = "chat_lblShutdown";
-            this.chat_lblShutdown.Size = new System.Drawing.Size(101, 13);
-            this.chat_lblShutdown.TabIndex = 34;
-            this.chat_lblShutdown.Text = "Shutdown message:";
+            this.Chat_lblShutdown.AutoSize = true;
+            this.Chat_lblShutdown.Location = new Point(6, 23);
+            this.Chat_lblShutdown.Name = "Chat_lblShutdown";
+            this.Chat_lblShutdown.Size = new Size(101, 13);
+            this.Chat_lblShutdown.TabIndex = 34;
+            this.Chat_lblShutdown.Text = "Shutdown message:";
             // 
-            // chat_txtShutdown
+            // Chat_txtShutdown
             // 
-            this.chat_txtShutdown.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtShutdown.Location = new System.Drawing.Point(134, 20);
-            this.chat_txtShutdown.MaxLength = 128;
-            this.chat_txtShutdown.Name = "chat_txtShutdown";
-            this.chat_txtShutdown.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtShutdown.TabIndex = 29;
+            this.Chat_txtShutdown.BackColor = SystemColors.Window;
+            this.Chat_txtShutdown.Location = new Point(134, 20);
+            this.Chat_txtShutdown.MaxLength = 128;
+            this.Chat_txtShutdown.Name = "Chat_txtShutdown";
+            this.Chat_txtShutdown.Size = new Size(343, 21);
+            this.Chat_txtShutdown.TabIndex = 29;
             // 
-            // chat_chkCheap
+            // Chat_chkCheap
             // 
-            this.chat_chkCheap.AutoSize = true;
-            this.chat_chkCheap.Location = new System.Drawing.Point(9, 52);
-            this.chat_chkCheap.Name = "chat_chkCheap";
-            this.chat_chkCheap.Size = new System.Drawing.Size(123, 17);
-            this.chat_chkCheap.TabIndex = 30;
-            this.chat_chkCheap.Text = "/invincible message:";
-            this.toolTip.SetToolTip(this.chat_chkCheap, "Is immortality cheap and unfair?");
-            this.chat_chkCheap.UseVisualStyleBackColor = true;
+            this.Chat_chkCheap.AutoSize = true;
+            this.Chat_chkCheap.Location = new Point(9, 52);
+            this.Chat_chkCheap.Name = "Chat_chkCheap";
+            this.Chat_chkCheap.Size = new Size(123, 17);
+            this.Chat_chkCheap.TabIndex = 30;
+            this.Chat_chkCheap.Text = "/invincible message:";
+            this.GUIToolTip.SetToolTip(this.Chat_chkCheap, "Is immortality cheap and unfair?");
+            this.Chat_chkCheap.UseVisualStyleBackColor = true;
             // 
-            // chat_txtCheap
+            // Chat_txtCheap
             // 
-            this.chat_txtCheap.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtCheap.Location = new System.Drawing.Point(134, 50);
-            this.chat_txtCheap.Name = "chat_txtCheap";
-            this.chat_txtCheap.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtCheap.TabIndex = 31;
+            this.Chat_txtCheap.BackColor = SystemColors.Window;
+            this.Chat_txtCheap.Location = new Point(134, 50);
+            this.Chat_txtCheap.Name = "Chat_txtCheap";
+            this.Chat_txtCheap.Size = new Size(343, 21);
+            this.Chat_txtCheap.TabIndex = 31;
             // 
-            // chat_lblLogin
+            // Chat_lblLogin
             // 
-            this.chat_lblLogin.AutoSize = true;
-            this.chat_lblLogin.Location = new System.Drawing.Point(6, 83);
-            this.chat_lblLogin.Name = "chat_lblLogin";
-            this.chat_lblLogin.Size = new System.Drawing.Size(119, 13);
-            this.chat_lblLogin.TabIndex = 43;
-            this.chat_lblLogin.Text = "Default login message:";
+            this.Chat_lblLogin.AutoSize = true;
+            this.Chat_lblLogin.Location = new Point(6, 83);
+            this.Chat_lblLogin.Name = "Chat_lblLogin";
+            this.Chat_lblLogin.Size = new Size(119, 13);
+            this.Chat_lblLogin.TabIndex = 43;
+            this.Chat_lblLogin.Text = "Default login message:";
             // 
-            // chat_txtLogin
+            // Chat_txtLogin
             // 
-            this.chat_txtLogin.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtLogin.Location = new System.Drawing.Point(134, 80);
-            this.chat_txtLogin.MaxLength = 64;
-            this.chat_txtLogin.Name = "chat_txtLogin";
-            this.chat_txtLogin.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtLogin.TabIndex = 42;
+            this.Chat_txtLogin.BackColor = SystemColors.Window;
+            this.Chat_txtLogin.Location = new Point(134, 80);
+            this.Chat_txtLogin.MaxLength = 64;
+            this.Chat_txtLogin.Name = "Chat_txtLogin";
+            this.Chat_txtLogin.Size = new Size(343, 21);
+            this.Chat_txtLogin.TabIndex = 42;
             // 
-            // chat_lblLogout
+            // Chat_lblLogout
             // 
-            this.chat_lblLogout.AutoSize = true;
-            this.chat_lblLogout.Location = new System.Drawing.Point(6, 113);
-            this.chat_lblLogout.Name = "chat_lblLogout";
-            this.chat_lblLogout.Size = new System.Drawing.Size(119, 13);
-            this.chat_lblLogout.TabIndex = 45;
-            this.chat_lblLogout.Text = "Default logout message:";
+            this.Chat_lblLogout.AutoSize = true;
+            this.Chat_lblLogout.Location = new Point(6, 113);
+            this.Chat_lblLogout.Name = "Chat_lblLogout";
+            this.Chat_lblLogout.Size = new Size(119, 13);
+            this.Chat_lblLogout.TabIndex = 45;
+            this.Chat_lblLogout.Text = "Default logout message:";
             // 
-            // chat_txtLogout
+            // Chat_txtLogout
             // 
-            this.chat_txtLogout.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtLogout.Location = new System.Drawing.Point(134, 110);
-            this.chat_txtLogout.MaxLength = 64;
-            this.chat_txtLogout.Name = "chat_txtLogout";
-            this.chat_txtLogout.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtLogout.TabIndex = 44;
+            this.Chat_txtLogout.BackColor = SystemColors.Window;
+            this.Chat_txtLogout.Location = new Point(134, 110);
+            this.Chat_txtLogout.MaxLength = 64;
+            this.Chat_txtLogout.Name = "Chat_txtLogout";
+            this.Chat_txtLogout.Size = new Size(343, 21);
+            this.Chat_txtLogout.TabIndex = 44;
             // 
-            // chat_grpModeration
+            // Chat_grpModeration
             // 
-            this.chat_grpModeration.Controls.Add(this.chat_lblBan);
-            this.chat_grpModeration.Controls.Add(this.chat_txtBan);
-            this.chat_grpModeration.Controls.Add(this.chat_lblPromote);
-            this.chat_grpModeration.Controls.Add(this.chat_txtPromote);
-            this.chat_grpModeration.Controls.Add(this.chat_lblDemote);
-            this.chat_grpModeration.Controls.Add(this.chat_txtDemote);
-            this.chat_grpModeration.Location = new System.Drawing.Point(8, 337);
-            this.chat_grpModeration.Name = "chat_grpModeration";
-            this.chat_grpModeration.Size = new System.Drawing.Size(483, 115);
-            this.chat_grpModeration.TabIndex = 3;
-            this.chat_grpModeration.TabStop = false;
-            this.chat_grpModeration.Text = "Moderation messages";
+            this.Chat_grpModeration.Controls.Add(this.Chat_lblBan);
+            this.Chat_grpModeration.Controls.Add(this.Chat_txtBan);
+            this.Chat_grpModeration.Controls.Add(this.Chat_lblPromote);
+            this.Chat_grpModeration.Controls.Add(this.Chat_txtPromote);
+            this.Chat_grpModeration.Controls.Add(this.Chat_lblDemote);
+            this.Chat_grpModeration.Controls.Add(this.Chat_txtDemote);
+            this.Chat_grpModeration.Location = new Point(8, 337);
+            this.Chat_grpModeration.Name = "Chat_grpModeration";
+            this.Chat_grpModeration.Size = new Size(483, 115);
+            this.Chat_grpModeration.TabIndex = 3;
+            this.Chat_grpModeration.TabStop = false;
+            this.Chat_grpModeration.Text = "Moderation messages";
             // 
-            // chat_lblBan
+            // Chat_lblBan
             // 
-            this.chat_lblBan.AutoSize = true;
-            this.chat_lblBan.Location = new System.Drawing.Point(6, 23);
-            this.chat_lblBan.Name = "chat_lblBan";
-            this.chat_lblBan.Size = new System.Drawing.Size(100, 13);
-            this.chat_lblBan.TabIndex = 39;
-            this.chat_lblBan.Text = "Default ban reason:";
+            this.Chat_lblBan.AutoSize = true;
+            this.Chat_lblBan.Location = new Point(6, 23);
+            this.Chat_lblBan.Name = "Chat_lblBan";
+            this.Chat_lblBan.Size = new Size(100, 13);
+            this.Chat_lblBan.TabIndex = 39;
+            this.Chat_lblBan.Text = "Default ban reason:";
             // 
-            // chat_txtBan
+            // Chat_txtBan
             // 
-            this.chat_txtBan.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtBan.Location = new System.Drawing.Point(134, 20);
-            this.chat_txtBan.MaxLength = 64;
-            this.chat_txtBan.Name = "chat_txtBan";
-            this.chat_txtBan.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtBan.TabIndex = 33;
+            this.Chat_txtBan.BackColor = SystemColors.Window;
+            this.Chat_txtBan.Location = new Point(134, 20);
+            this.Chat_txtBan.MaxLength = 64;
+            this.Chat_txtBan.Name = "Chat_txtBan";
+            this.Chat_txtBan.Size = new Size(343, 21);
+            this.Chat_txtBan.TabIndex = 33;
             // 
-            // chat_lblPromote
+            // Chat_lblPromote
             // 
-            this.chat_lblPromote.AutoSize = true;
-            this.chat_lblPromote.Location = new System.Drawing.Point(6, 53);
-            this.chat_lblPromote.Name = "chat_lblPromote";
-            this.chat_lblPromote.Size = new System.Drawing.Size(123, 13);
-            this.chat_lblPromote.TabIndex = 40;
-            this.chat_lblPromote.Text = "Default promote reason:";
+            this.Chat_lblPromote.AutoSize = true;
+            this.Chat_lblPromote.Location = new Point(6, 53);
+            this.Chat_lblPromote.Name = "Chat_lblPromote";
+            this.Chat_lblPromote.Size = new Size(123, 13);
+            this.Chat_lblPromote.TabIndex = 40;
+            this.Chat_lblPromote.Text = "Default promote reason:";
             // 
-            // chat_txtPromote
+            // Chat_txtPromote
             // 
-            this.chat_txtPromote.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtPromote.Location = new System.Drawing.Point(134, 50);
-            this.chat_txtPromote.MaxLength = 64;
-            this.chat_txtPromote.Name = "chat_txtPromote";
-            this.chat_txtPromote.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtPromote.TabIndex = 36;
+            this.Chat_txtPromote.BackColor = SystemColors.Window;
+            this.Chat_txtPromote.Location = new Point(134, 50);
+            this.Chat_txtPromote.MaxLength = 64;
+            this.Chat_txtPromote.Name = "Chat_txtPromote";
+            this.Chat_txtPromote.Size = new Size(343, 21);
+            this.Chat_txtPromote.TabIndex = 36;
             // 
-            // chat_lblDemote
+            // Chat_lblDemote
             // 
-            this.chat_lblDemote.AutoSize = true;
-            this.chat_lblDemote.Location = new System.Drawing.Point(6, 83);
-            this.chat_lblDemote.Name = "chat_lblDemote";
-            this.chat_lblDemote.Size = new System.Drawing.Size(119, 13);
-            this.chat_lblDemote.TabIndex = 41;
-            this.chat_lblDemote.Text = "Default demote reason:";
+            this.Chat_lblDemote.AutoSize = true;
+            this.Chat_lblDemote.Location = new Point(6, 83);
+            this.Chat_lblDemote.Name = "Chat_lblDemote";
+            this.Chat_lblDemote.Size = new Size(119, 13);
+            this.Chat_lblDemote.TabIndex = 41;
+            this.Chat_lblDemote.Text = "Default demote reason:";
             // 
-            // chat_txtDemote
+            // Chat_txtDemote
             // 
-            this.chat_txtDemote.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtDemote.Location = new System.Drawing.Point(134, 80);
-            this.chat_txtDemote.MaxLength = 64;
-            this.chat_txtDemote.Name = "chat_txtDemote";
-            this.chat_txtDemote.Size = new System.Drawing.Size(343, 21);
-            this.chat_txtDemote.TabIndex = 38;
+            this.Chat_txtDemote.BackColor = SystemColors.Window;
+            this.Chat_txtDemote.Location = new Point(134, 80);
+            this.Chat_txtDemote.MaxLength = 64;
+            this.Chat_txtDemote.Name = "Chat_txtDemote";
+            this.Chat_txtDemote.Size = new Size(343, 21);
+            this.Chat_txtDemote.TabIndex = 38;
             // 
-            // chat_grpOther
+            // Chat_grpOther
             // 
-            this.chat_grpOther.Controls.Add(this.chat_chkFilter);
-            this.chat_grpOther.Controls.Add(this.chat_lblConsole);
-            this.chat_grpOther.Controls.Add(this.chat_txtConsole);
-            this.chat_grpOther.Location = new System.Drawing.Point(235, 6);
-            this.chat_grpOther.Name = "chat_grpOther";
-            this.chat_grpOther.Size = new System.Drawing.Size(256, 76);
-            this.chat_grpOther.TabIndex = 1;
-            this.chat_grpOther.TabStop = false;
-            this.chat_grpOther.Text = "Other";
+            this.Chat_grpOther.Controls.Add(this.Chat_chkFilter);
+            this.Chat_grpOther.Controls.Add(this.Chat_lblConsole);
+            this.Chat_grpOther.Controls.Add(this.Chat_txtConsole);
+            this.Chat_grpOther.Location = new Point(235, 6);
+            this.Chat_grpOther.Name = "Chat_grpOther";
+            this.Chat_grpOther.Size = new Size(256, 76);
+            this.Chat_grpOther.TabIndex = 1;
+            this.Chat_grpOther.TabStop = false;
+            this.Chat_grpOther.Text = "Other";
             // 
-            // chat_chkFilter
+            // Chat_chkFilter
             // 
-            this.chat_chkFilter.AutoSize = true;
-            this.chat_chkFilter.Location = new System.Drawing.Point(6, 49);
-            this.chat_chkFilter.Name = "chat_chkFilter";
-            this.chat_chkFilter.Size = new System.Drawing.Size(96, 17);
-            this.chat_chkFilter.TabIndex = 31;
-            this.chat_chkFilter.Text = "Profanity Filter";
-            this.chat_chkFilter.UseVisualStyleBackColor = true;
+            this.Chat_chkFilter.AutoSize = true;
+            this.Chat_chkFilter.Location = new Point(6, 49);
+            this.Chat_chkFilter.Name = "Chat_chkFilter";
+            this.Chat_chkFilter.Size = new Size(96, 17);
+            this.Chat_chkFilter.TabIndex = 31;
+            this.Chat_chkFilter.Text = "Profanity Filter";
+            this.Chat_chkFilter.UseVisualStyleBackColor = true;
             // 
-            // chat_lblConsole
+            // Chat_lblConsole
             // 
-            this.chat_lblConsole.AutoSize = true;
-            this.chat_lblConsole.Location = new System.Drawing.Point(6, 20);
-            this.chat_lblConsole.Name = "chat_lblConsole";
-            this.chat_lblConsole.Size = new System.Drawing.Size(77, 13);
-            this.chat_lblConsole.TabIndex = 4;
-            this.chat_lblConsole.Text = "Flame name:";
+            this.Chat_lblConsole.AutoSize = true;
+            this.Chat_lblConsole.Location = new Point(6, 20);
+            this.Chat_lblConsole.Name = "Chat_lblConsole";
+            this.Chat_lblConsole.Size = new Size(77, 13);
+            this.Chat_lblConsole.TabIndex = 4;
+            this.Chat_lblConsole.Text = "Flame name:";
             // 
-            // chat_txtConsole
+            // Chat_txtConsole
             // 
-            this.chat_txtConsole.BackColor = System.Drawing.SystemColors.Window;
-            this.chat_txtConsole.Location = new System.Drawing.Point(89, 17);
-            this.chat_txtConsole.Name = "chat_txtConsole";
-            this.chat_txtConsole.Size = new System.Drawing.Size(161, 21);
-            this.chat_txtConsole.TabIndex = 3;
+            this.Chat_txtConsole.BackColor = SystemColors.Window;
+            this.Chat_txtConsole.Location = new Point(89, 17);
+            this.Chat_txtConsole.Name = "Chat_txtConsole";
+            this.Chat_txtConsole.Size = new Size(161, 21);
+            this.Chat_txtConsole.TabIndex = 3;
             // 
-            // chat_grpColors
+            // Chat_grpColors
             // 
-            this.chat_grpColors.Controls.Add(this.chat_lblWarn);
-            this.chat_grpColors.Controls.Add(this.chat_btnWarn);
-            this.chat_grpColors.Controls.Add(this.chat_lblDefault);
-            this.chat_grpColors.Controls.Add(this.chat_btnDefault);
-            this.chat_grpColors.Controls.Add(this.chat_lblIRC);
-            this.chat_grpColors.Controls.Add(this.chat_btnIRC);
-            this.chat_grpColors.Controls.Add(this.chat_lblSyntax);
-            this.chat_grpColors.Controls.Add(this.chat_btnSyntax);
-            this.chat_grpColors.Controls.Add(this.chat_lblDesc);
-            this.chat_grpColors.Controls.Add(this.chat_btnDesc);
-            this.chat_grpColors.Location = new System.Drawing.Point(8, 6);
-            this.chat_grpColors.Name = "chat_grpColors";
-            this.chat_grpColors.Size = new System.Drawing.Size(221, 174);
-            this.chat_grpColors.TabIndex = 0;
-            this.chat_grpColors.TabStop = false;
-            this.chat_grpColors.Text = "Colors";
+            this.Chat_grpColors.Controls.Add(this.Chat_lblWarn);
+            this.Chat_grpColors.Controls.Add(this.Chat_btnWarn);
+            this.Chat_grpColors.Controls.Add(this.Chat_lblDefault);
+            this.Chat_grpColors.Controls.Add(this.Chat_btnDefault);
+            this.Chat_grpColors.Controls.Add(this.Chat_lblIRC);
+            this.Chat_grpColors.Controls.Add(this.Chat_btnIRC);
+            this.Chat_grpColors.Controls.Add(this.Chat_lblSyntax);
+            this.Chat_grpColors.Controls.Add(this.Chat_btnSyntax);
+            this.Chat_grpColors.Controls.Add(this.Chat_lblDesc);
+            this.Chat_grpColors.Controls.Add(this.Chat_btnDesc);
+            this.Chat_grpColors.Location = new Point(8, 6);
+            this.Chat_grpColors.Name = "Chat_grpColors";
+            this.Chat_grpColors.Size = new Size(221, 174);
+            this.Chat_grpColors.TabIndex = 0;
+            this.Chat_grpColors.TabStop = false;
+            this.Chat_grpColors.Text = "Colors";
             // 
-            // chat_lblWarn
+            // Chat_lblWarn
             // 
-            this.chat_lblWarn.AutoSize = true;
-            this.chat_lblWarn.Location = new System.Drawing.Point(20, 141);
-            this.chat_lblWarn.Name = "chat_lblWarn";
-            this.chat_lblWarn.Size = new System.Drawing.Size(88, 13);
-            this.chat_lblWarn.TabIndex = 35;
-            this.chat_lblWarn.Text = "Warnings/errors:";
+            this.Chat_lblWarn.AutoSize = true;
+            this.Chat_lblWarn.Location = new Point(20, 141);
+            this.Chat_lblWarn.Name = "Chat_lblWarn";
+            this.Chat_lblWarn.Size = new Size(88, 13);
+            this.Chat_lblWarn.TabIndex = 35;
+            this.Chat_lblWarn.Text = "Warnings/errors:";
             // 
-            // chat_btnWarn
+            // Chat_btnWarn
             // 
-            this.chat_btnWarn.Location = new System.Drawing.Point(113, 136);
-            this.chat_btnWarn.Name = "chat_btnWarn";
-            this.chat_btnWarn.Size = new System.Drawing.Size(95, 23);
-            this.chat_btnWarn.TabIndex = 34;
-            this.toolTip.SetToolTip(this.chat_btnWarn, "The color of warning/error messages produced by commands");
-            this.chat_btnWarn.Click += new System.EventHandler(this.chat_btnWarn_Click);
+            this.Chat_btnWarn.Location = new Point(113, 136);
+            this.Chat_btnWarn.Name = "Chat_btnWarn";
+            this.Chat_btnWarn.Size = new Size(95, 23);
+            this.Chat_btnWarn.TabIndex = 34;
+            this.GUIToolTip.SetToolTip(this.Chat_btnWarn, "The color of warning/error messages produced by commands");
+            this.Chat_btnWarn.Click += new EventHandler(this.Chat_btnWarn_Click);
             // 
-            // chat_lblDefault
+            // Chat_lblDefault
             // 
-            this.chat_lblDefault.AutoSize = true;
-            this.chat_lblDefault.Location = new System.Drawing.Point(38, 25);
-            this.chat_lblDefault.Name = "chat_lblDefault";
-            this.chat_lblDefault.Size = new System.Drawing.Size(71, 13);
-            this.chat_lblDefault.TabIndex = 11;
-            this.chat_lblDefault.Text = "Default color:";
+            this.Chat_lblDefault.AutoSize = true;
+            this.Chat_lblDefault.Location = new Point(38, 25);
+            this.Chat_lblDefault.Name = "Chat_lblDefault";
+            this.Chat_lblDefault.Size = new Size(71, 13);
+            this.Chat_lblDefault.TabIndex = 11;
+            this.Chat_lblDefault.Text = "Default color:";
             // 
-            // chat_btnDefault
+            // Chat_btnDefault
             // 
-            this.chat_btnDefault.Location = new System.Drawing.Point(113, 20);
-            this.chat_btnDefault.Name = "chat_btnDefault";
-            this.chat_btnDefault.Size = new System.Drawing.Size(95, 23);
-            this.chat_btnDefault.TabIndex = 10;
-            this.toolTip.SetToolTip(this.chat_btnDefault, "The default color of server messages (excluding player chat).\nFor example, when y" +
+            this.Chat_btnDefault.Location = new Point(113, 20);
+            this.Chat_btnDefault.Name = "Chat_btnDefault";
+            this.Chat_btnDefault.Size = new Size(95, 23);
+            this.Chat_btnDefault.TabIndex = 10;
+            this.GUIToolTip.SetToolTip(this.Chat_btnDefault, "The default color of server messages (excluding player chat).\nFor example, when y" +
                         "ou are asked to select two corners in a cuboid.");
-            this.chat_btnDefault.Click += new System.EventHandler(this.chat_cmbDefault_Click);
+            this.Chat_btnDefault.Click += new EventHandler(this.Chat_cmbDefault_Click);
             // 
-            // chat_lblIRC
+            // Chat_lblIRC
             // 
-            this.chat_lblIRC.AutoSize = true;
-            this.chat_lblIRC.Location = new System.Drawing.Point(36, 54);
-            this.chat_lblIRC.Name = "chat_lblIRC";
-            this.chat_lblIRC.Size = new System.Drawing.Size(74, 13);
-            this.chat_lblIRC.TabIndex = 22;
-            this.chat_lblIRC.Text = "IRC messages:";
+            this.Chat_lblIRC.AutoSize = true;
+            this.Chat_lblIRC.Location = new Point(36, 54);
+            this.Chat_lblIRC.Name = "Chat_lblIRC";
+            this.Chat_lblIRC.Size = new Size(74, 13);
+            this.Chat_lblIRC.TabIndex = 22;
+            this.Chat_lblIRC.Text = "IRC messages:";
             // 
-            // chat_btnIRC
+            // Chat_btnIRC
             // 
-            this.chat_btnIRC.Location = new System.Drawing.Point(113, 49);
-            this.chat_btnIRC.Name = "chat_btnIRC";
-            this.chat_btnIRC.Size = new System.Drawing.Size(95, 23);
-            this.chat_btnIRC.TabIndex = 24;
-            this.toolTip.SetToolTip(this.chat_btnIRC, "The color of messages from IRC, and nicknames of IRC users.");
-            this.chat_btnIRC.Click += new System.EventHandler(this.chat_btnIRC_Click);
+            this.Chat_btnIRC.Location = new Point(113, 49);
+            this.Chat_btnIRC.Name = "Chat_btnIRC";
+            this.Chat_btnIRC.Size = new Size(95, 23);
+            this.Chat_btnIRC.TabIndex = 24;
+            this.GUIToolTip.SetToolTip(this.Chat_btnIRC, "The color of messages from IRC, and nicknames of IRC users.");
+            this.Chat_btnIRC.Click += new EventHandler(this.Chat_btnIRC_Click);
             // 
-            // chat_lblSyntax
+            // Chat_lblSyntax
             // 
-            this.chat_lblSyntax.AutoSize = true;
-            this.chat_lblSyntax.Location = new System.Drawing.Point(41, 83);
-            this.chat_lblSyntax.Name = "chat_lblSyntax";
-            this.chat_lblSyntax.Size = new System.Drawing.Size(68, 13);
-            this.chat_lblSyntax.TabIndex = 31;
-            this.chat_lblSyntax.Text = "/help syntax:";
+            this.Chat_lblSyntax.AutoSize = true;
+            this.Chat_lblSyntax.Location = new Point(41, 83);
+            this.Chat_lblSyntax.Name = "Chat_lblSyntax";
+            this.Chat_lblSyntax.Size = new Size(68, 13);
+            this.Chat_lblSyntax.TabIndex = 31;
+            this.Chat_lblSyntax.Text = "/help syntax:";
             // 
-            // chat_btnSyntax
+            // Chat_btnSyntax
             // 
-            this.chat_btnSyntax.Location = new System.Drawing.Point(113, 78);
-            this.chat_btnSyntax.Name = "chat_btnSyntax";
-            this.chat_btnSyntax.Size = new System.Drawing.Size(95, 23);
-            this.chat_btnSyntax.TabIndex = 30;
-            this.toolTip.SetToolTip(this.chat_btnSyntax, "The color of the /cmdname [args] in /help.");
-            this.chat_btnSyntax.Click += new System.EventHandler(this.chat_btnSyntax_Click);
+            this.Chat_btnSyntax.Location = new Point(113, 78);
+            this.Chat_btnSyntax.Name = "Chat_btnSyntax";
+            this.Chat_btnSyntax.Size = new Size(95, 23);
+            this.Chat_btnSyntax.TabIndex = 30;
+            this.GUIToolTip.SetToolTip(this.Chat_btnSyntax, "The color of the /cmdname [args] in /help.");
+            this.Chat_btnSyntax.Click += new EventHandler(this.Chat_btnSyntax_Click);
             // 
-            // chat_lblDesc
+            // Chat_lblDesc
             // 
-            this.chat_lblDesc.AutoSize = true;
-            this.chat_lblDesc.Location = new System.Drawing.Point(19, 112);
-            this.chat_lblDesc.Name = "chat_lblDesc";
-            this.chat_lblDesc.Size = new System.Drawing.Size(90, 13);
-            this.chat_lblDesc.TabIndex = 32;
-            this.chat_lblDesc.Text = "/help description:";
+            this.Chat_lblDesc.AutoSize = true;
+            this.Chat_lblDesc.Location = new Point(19, 112);
+            this.Chat_lblDesc.Name = "Chat_lblDesc";
+            this.Chat_lblDesc.Size = new Size(90, 13);
+            this.Chat_lblDesc.TabIndex = 32;
+            this.Chat_lblDesc.Text = "/help description:";
             // 
-            // chat_btnDesc
+            // Chat_btnDesc
             // 
-            this.chat_btnDesc.Location = new System.Drawing.Point(113, 107);
-            this.chat_btnDesc.Name = "chat_btnDesc";
-            this.chat_btnDesc.Size = new System.Drawing.Size(95, 23);
-            this.chat_btnDesc.TabIndex = 33;
-            this.toolTip.SetToolTip(this.chat_btnDesc, "The color for the description of a command in /help.");
-            this.chat_btnDesc.Click += new System.EventHandler(this.chat_btnDesc_Click);
+            this.Chat_btnDesc.Location = new Point(113, 107);
+            this.Chat_btnDesc.Name = "Chat_btnDesc";
+            this.Chat_btnDesc.Size = new Size(95, 23);
+            this.Chat_btnDesc.TabIndex = 33;
+            this.GUIToolTip.SetToolTip(this.Chat_btnDesc, "The color for the description of a command in /help.");
+            this.Chat_btnDesc.Click += new EventHandler(this.Chat_btnDesc_Click);
             // 
-            // main_btnSave
+            // Main_btnSave
             // 
-            this.main_btnSave.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnSave.Location = new System.Drawing.Point(346, 553);
-            this.main_btnSave.Name = "main_btnSave";
-            this.main_btnSave.Size = new System.Drawing.Size(75, 23);
-            this.main_btnSave.TabIndex = 1;
-            this.main_btnSave.Text = "Save";
-            this.main_btnSave.UseVisualStyleBackColor = true;
-            this.main_btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            this.Main_btnSave.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnSave.Location = new Point(346, 553);
+            this.Main_btnSave.Name = "Main_btnSave";
+            this.Main_btnSave.Size = new Size(75, 23);
+            this.Main_btnSave.TabIndex = 1;
+            this.Main_btnSave.Text = "Save";
+            this.Main_btnSave.UseVisualStyleBackColor = true;
+            this.Main_btnSave.Click += new EventHandler(this.BtnSave_Click);
             // 
-            // main_btnDiscard
+            // Main_btnDiscard
             // 
-            this.main_btnDiscard.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnDiscard.Location = new System.Drawing.Point(4, 553);
-            this.main_btnDiscard.Name = "main_btnDiscard";
-            this.main_btnDiscard.Size = new System.Drawing.Size(75, 23);
-            this.main_btnDiscard.TabIndex = 1;
-            this.main_btnDiscard.Text = "Discard";
-            this.main_btnDiscard.UseVisualStyleBackColor = true;
-            this.main_btnDiscard.Click += new System.EventHandler(this.btnDiscard_Click);
+            this.Main_btnDiscard.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnDiscard.Location = new Point(4, 553);
+            this.Main_btnDiscard.Name = "Main_btnDiscard";
+            this.Main_btnDiscard.Size = new Size(75, 23);
+            this.Main_btnDiscard.TabIndex = 1;
+            this.Main_btnDiscard.Text = "Discard";
+            this.Main_btnDiscard.UseVisualStyleBackColor = true;
+            this.Main_btnDiscard.Click += new EventHandler(this.BtnDiscard_Click);
             // 
-            // main_btnApply
+            // Main_btnApply
             // 
-            this.main_btnApply.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnApply.Location = new System.Drawing.Point(427, 553);
-            this.main_btnApply.Name = "main_btnApply";
-            this.main_btnApply.Size = new System.Drawing.Size(75, 23);
-            this.main_btnApply.TabIndex = 1;
-            this.main_btnApply.Text = "Apply";
-            this.main_btnApply.UseVisualStyleBackColor = true;
-            this.main_btnApply.Click += new System.EventHandler(this.btnApply_Click);
+            this.Main_btnApply.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnApply.Location = new Point(427, 553);
+            this.Main_btnApply.Name = "Main_btnApply";
+            this.Main_btnApply.Size = new Size(75, 23);
+            this.Main_btnApply.TabIndex = 1;
+            this.Main_btnApply.Text = "Apply";
+            this.Main_btnApply.UseVisualStyleBackColor = true;
+            this.Main_btnApply.Click += new EventHandler(this.BtnApply_Click);
             // 
-            // toolTip
+            // TokenToolTip
             // 
-            this.toolTip.AutoPopDelay = 8000;
-            this.toolTip.InitialDelay = 500;
-            this.toolTip.IsBalloon = true;
-            this.toolTip.ReshowDelay = 100;
-            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.toolTip.ToolTipTitle = "Information";
+            this.GUIToolTip.AutoPopDelay = 8000;
+            this.GUIToolTip.InitialDelay = 500;
+            this.GUIToolTip.IsBalloon = true;
+            this.GUIToolTip.ReshowDelay = 100;
+            this.GUIToolTip.ToolTipIcon = ToolTipIcon.Info;
+            this.GUIToolTip.ToolTipTitle = "Information";
             // 
-            // chkRpLimit
+            // ChkRpLimit
             // 
-            this.chkRpLimit.AutoSize = true;
-            this.chkRpLimit.Location = new System.Drawing.Point(5, 52);
-            this.chkRpLimit.Name = "chkRpLimit";
-            this.chkRpLimit.Size = new System.Drawing.Size(48, 13);
-            this.chkRpLimit.TabIndex = 15;
-            this.chkRpLimit.Text = "/rp limit:";
-            this.toolTip.SetToolTip(this.chkRpLimit, "Limit for custom physics set by /rp");
+            this.ChkRpLimit.AutoSize = true;
+            this.ChkRpLimit.Location = new Point(5, 52);
+            this.ChkRpLimit.Name = "ChkRpLimit";
+            this.ChkRpLimit.Size = new Size(48, 13);
+            this.ChkRpLimit.TabIndex = 15;
+            this.ChkRpLimit.Text = "/rp limit:";
+            this.GUIToolTip.SetToolTip(this.ChkRpLimit, "Limit for custom physics set by /rp");
             // 
-            // chkDeath
+            // ChkDeath
             // 
-            this.chkDeath.AutoSize = true;
-            this.chkDeath.Location = new System.Drawing.Point(6, 20);
-            this.chkDeath.Name = "chkDeath";
-            this.chkDeath.Size = new System.Drawing.Size(84, 17);
-            this.chkDeath.TabIndex = 21;
-            this.chkDeath.Text = "Death count";
-            this.toolTip.SetToolTip(this.chkDeath, "\"Bob has died 10 times.\"");
-            this.chkDeath.UseVisualStyleBackColor = true;
+            this.ChkDeath.AutoSize = true;
+            this.ChkDeath.Location = new Point(6, 20);
+            this.ChkDeath.Name = "ChkDeath";
+            this.ChkDeath.Size = new Size(84, 17);
+            this.ChkDeath.TabIndex = 21;
+            this.ChkDeath.Text = "Death count";
+            this.GUIToolTip.SetToolTip(this.ChkDeath, "\"Bob has died 10 times.\"");
+            this.ChkDeath.UseVisualStyleBackColor = true;
             // 
-            // hack_lbl
+            // Hack_lbl
             // 
-            this.hack_lbl.AutoSize = true;
-            this.hack_lbl.Location = new System.Drawing.Point(7, 20);
-            this.hack_lbl.Name = "hack_lbl";
-            this.hack_lbl.Size = new System.Drawing.Size(193, 17);
-            this.hack_lbl.TabIndex = 32;
-            this.hack_lbl.Text = "Kick people who use hackrank after ";
-            this.toolTip.SetToolTip(this.hack_lbl, "Hackrank kicks people? Or not?");
-            this.hack_lbl.UseVisualStyleBackColor = true;
+            this.Hack_lbl.AutoSize = true;
+            this.Hack_lbl.Location = new Point(7, 20);
+            this.Hack_lbl.Name = "Hack_lbl";
+            this.Hack_lbl.Size = new Size(193, 17);
+            this.Hack_lbl.TabIndex = 32;
+            this.Hack_lbl.Text = "Kick people who use hackrank after ";
+            this.GUIToolTip.SetToolTip(this.Hack_lbl, "Hackrank kicks people? Or not?");
+            this.Hack_lbl.UseVisualStyleBackColor = true;
             // 
-            // sec_cmbVerifyRank
+            // Sec_cmbVerifyRank
             // 
-            this.sec_cmbVerifyRank.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_cmbVerifyRank.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.sec_cmbVerifyRank.FormattingEnabled = true;
-            this.sec_cmbVerifyRank.Location = new System.Drawing.Point(72, 95);
-            this.sec_cmbVerifyRank.Name = "sec_cmbVerifyRank";
-            this.sec_cmbVerifyRank.Size = new System.Drawing.Size(103, 21);
-            this.sec_cmbVerifyRank.TabIndex = 22;
-            this.toolTip.SetToolTip(this.sec_cmbVerifyRank, "Minimum rank that is required to use /pass before they can use commands, modify blocks, or chat");
+            this.Sec_cmbVerifyRank.BackColor = SystemColors.Window;
+            this.Sec_cmbVerifyRank.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Sec_cmbVerifyRank.FormattingEnabled = true;
+            this.Sec_cmbVerifyRank.Location = new Point(72, 95);
+            this.Sec_cmbVerifyRank.Name = "Sec_cmbVerifyRank";
+            this.Sec_cmbVerifyRank.Size = new Size(103, 21);
+            this.Sec_cmbVerifyRank.TabIndex = 22;
+            this.GUIToolTip.SetToolTip(this.Sec_cmbVerifyRank, "Minimum rank that is required to use /pass before they can use commands, modify blocks, or chat");
             // 
-            // sec_cbVerifyAdmins
+            // Sec_cbVerifyAdmins
             // 
-            this.sec_cbVerifyAdmins.AutoSize = true;
-            this.sec_cbVerifyAdmins.Location = new System.Drawing.Point(15, 74);
-            this.sec_cbVerifyAdmins.Name = "sec_cbVerifyAdmins";
-            this.sec_cbVerifyAdmins.Size = new System.Drawing.Size(111, 17);
-            this.sec_cbVerifyAdmins.TabIndex = 23;
-            this.sec_cbVerifyAdmins.Text = "Admin verification";
-            this.toolTip.SetToolTip(this.sec_cbVerifyAdmins, "If enabled, admins must verify with /pass before they can use commands, modify blocks, or chat");
-            this.sec_cbVerifyAdmins.UseVisualStyleBackColor = true;
-            this.sec_cbVerifyAdmins.CheckedChanged += new System.EventHandler(this.VerifyAdminsChecked);
+            this.Sec_cbVerifyAdmins.AutoSize = true;
+            this.Sec_cbVerifyAdmins.Location = new Point(15, 74);
+            this.Sec_cbVerifyAdmins.Name = "Sec_cbVerifyAdmins";
+            this.Sec_cbVerifyAdmins.Size = new Size(111, 17);
+            this.Sec_cbVerifyAdmins.TabIndex = 23;
+            this.Sec_cbVerifyAdmins.Text = "Admin verification";
+            this.GUIToolTip.SetToolTip(this.Sec_cbVerifyAdmins, "If enabled, admins must verify with /pass before they can use commands, modify blocks, or chat");
+            this.Sec_cbVerifyAdmins.UseVisualStyleBackColor = true;
+            this.Sec_cbVerifyAdmins.CheckedChanged += new EventHandler(this.VerifyAdminsChecked);
             // 
-            // chkGuestLimitNotify
+            // ChkGuestLimitNotify
             // 
-            this.chkGuestLimitNotify.AutoSize = true;
-            this.chkGuestLimitNotify.Location = new System.Drawing.Point(6, 134);
-            this.chkGuestLimitNotify.Name = "chkGuestLimitNotify";
-            this.chkGuestLimitNotify.Size = new System.Drawing.Size(109, 17);
-            this.chkGuestLimitNotify.TabIndex = 46;
-            this.chkGuestLimitNotify.Text = "Guest Limit Notify";
-            this.toolTip.SetToolTip(this.chkGuestLimitNotify, "Notify in-game if a guest can\'t join due to the guest limit being reached.");
-            this.chkGuestLimitNotify.UseVisualStyleBackColor = true;
+            this.ChkGuestLimitNotify.AutoSize = true;
+            this.ChkGuestLimitNotify.Location = new Point(6, 134);
+            this.ChkGuestLimitNotify.Name = "ChkGuestLimitNotify";
+            this.ChkGuestLimitNotify.Size = new Size(109, 17);
+            this.ChkGuestLimitNotify.TabIndex = 46;
+            this.ChkGuestLimitNotify.Text = "Guest Limit Notify";
+            this.GUIToolTip.SetToolTip(this.ChkGuestLimitNotify, "Notify in-game if a guest can\'t join due to the guest limit being reached.");
+            this.ChkGuestLimitNotify.UseVisualStyleBackColor = true;
             // 
-            // rank_cbTPHigher
+            // Rank_cbTPHigher
             // 
-            this.rank_cbTPHigher.AutoSize = true;
-            this.rank_cbTPHigher.Location = new System.Drawing.Point(11, 75);
-            this.rank_cbTPHigher.Name = "rank_cbTPHigher";
-            this.rank_cbTPHigher.Size = new System.Drawing.Size(136, 17);
-            this.rank_cbTPHigher.TabIndex = 42;
-            this.rank_cbTPHigher.Text = "Allow tp to higher ranks";
-            this.toolTip.SetToolTip(this.rank_cbTPHigher, "Allows players to /tp to higher ranked players");
-            this.rank_cbTPHigher.UseVisualStyleBackColor = true;
+            this.Rank_cbTPHigher.AutoSize = true;
+            this.Rank_cbTPHigher.Location = new Point(11, 75);
+            this.Rank_cbTPHigher.Name = "Rank_cbTPHigher";
+            this.Rank_cbTPHigher.Size = new Size(136, 17);
+            this.Rank_cbTPHigher.TabIndex = 42;
+            this.Rank_cbTPHigher.Text = "Allow tp to higher ranks";
+            this.GUIToolTip.SetToolTip(this.Rank_cbTPHigher, "Allows players to /tp to higher ranked players");
+            this.Rank_cbTPHigher.UseVisualStyleBackColor = true;
             // 
-            // rank_cmbDefault
+            // Rank_cmbDefault
             // 
-            this.rank_cmbDefault.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_cmbDefault.FormattingEnabled = true;
-            this.rank_cmbDefault.Location = new System.Drawing.Point(85, 20);
-            this.rank_cmbDefault.Name = "rank_cmbDefault";
-            this.rank_cmbDefault.Size = new System.Drawing.Size(81, 21);
-            this.rank_cmbDefault.TabIndex = 44;
-            this.toolTip.SetToolTip(this.rank_cmbDefault, "Default rank assigned to new players.");
+            this.Rank_cmbDefault.BackColor = SystemColors.Window;
+            this.Rank_cmbDefault.FormattingEnabled = true;
+            this.Rank_cmbDefault.Location = new Point(85, 20);
+            this.Rank_cmbDefault.Name = "Rank_cmbDefault";
+            this.Rank_cmbDefault.Size = new Size(81, 21);
+            this.Rank_cmbDefault.TabIndex = 44;
+            this.GUIToolTip.SetToolTip(this.Rank_cmbDefault, "Default rank assigned to new players.");
             // 
-            // sec_cbWhitelist
+            // Sec_cbWhitelist
             // 
-            this.sec_cbWhitelist.Location = new System.Drawing.Point(15, 44);
-            this.sec_cbWhitelist.Name = "sec_cbWhitelist";
-            this.sec_cbWhitelist.Size = new System.Drawing.Size(104, 24);
-            this.sec_cbWhitelist.TabIndex = 23;
-            this.sec_cbWhitelist.Text = "Use whitelist";
-            this.toolTip.SetToolTip(this.sec_cbWhitelist, "If enabled, only players who have been whitelisted with /whitelist are allowed to" +
+            this.Sec_cbWhitelist.Location = new Point(15, 44);
+            this.Sec_cbWhitelist.Name = "Sec_cbWhitelist";
+            this.Sec_cbWhitelist.Size = new Size(104, 24);
+            this.Sec_cbWhitelist.TabIndex = 23;
+            this.Sec_cbWhitelist.Text = "Use whitelist";
+            this.GUIToolTip.SetToolTip(this.Sec_cbWhitelist, "If enabled, only players who have been whitelisted with /whitelist are allowed to" +
                         " join");
-            this.sec_cbWhitelist.UseVisualStyleBackColor = true;
+            this.Sec_cbWhitelist.UseVisualStyleBackColor = true;
             // 
-            // sql_chkUseSQL
+            // Sql_chkUseSQL
             // 
-            this.sql_chkUseSQL.AutoSize = true;
-            this.sql_chkUseSQL.Location = new System.Drawing.Point(12, 20);
-            this.sql_chkUseSQL.Name = "sql_chkUseSQL";
-            this.sql_chkUseSQL.Size = new System.Drawing.Size(77, 17);
-            this.sql_chkUseSQL.TabIndex = 28;
-            this.sql_chkUseSQL.Text = "Use MySQL";
-            this.toolTip.SetToolTip(this.sql_chkUseSQL, "Whether to use MySQL instead of SQLite for database storage. You will need to hav" +
+            this.Sql_chkUseSQL.AutoSize = true;
+            this.Sql_chkUseSQL.Location = new Point(12, 20);
+            this.Sql_chkUseSQL.Name = "Sql_chkUseSQL";
+            this.Sql_chkUseSQL.Size = new Size(77, 17);
+            this.Sql_chkUseSQL.TabIndex = 28;
+            this.Sql_chkUseSQL.Text = "Use MySQL";
+            this.GUIToolTip.SetToolTip(this.Sql_chkUseSQL, "Whether to use MySQL instead of SQLite for database storage. You will need to hav" +
                         "e installed it for this to work.");
-            this.sql_chkUseSQL.UseVisualStyleBackColor = true;
-            this.sql_chkUseSQL.CheckedChanged += new System.EventHandler(this.sql_chkUseSQL_CheckedChanged);
+            this.Sql_chkUseSQL.UseVisualStyleBackColor = true;
+            this.Sql_chkUseSQL.CheckedChanged += new EventHandler(this.Sql_chkUseSQL_CheckedChanged);
             // 
-            // irc_chkEnabled
+            // Irc_chkEnabled
             // 
-            this.irc_chkEnabled.AutoSize = true;
-            this.irc_chkEnabled.Location = new System.Drawing.Point(9, 20);
-            this.irc_chkEnabled.Name = "irc_chkEnabled";
-            this.irc_chkEnabled.Size = new System.Drawing.Size(61, 17);
-            this.irc_chkEnabled.TabIndex = 22;
-            this.irc_chkEnabled.Text = "Use IRC";
-            this.toolTip.SetToolTip(this.irc_chkEnabled, "Whether to use the IRC bot or not.\nIRC stands for Internet Relay Chat and allows " +
+            this.Irc_chkEnabled.AutoSize = true;
+            this.Irc_chkEnabled.Location = new Point(9, 20);
+            this.Irc_chkEnabled.Name = "Irc_chkEnabled";
+            this.Irc_chkEnabled.Size = new Size(61, 17);
+            this.Irc_chkEnabled.TabIndex = 22;
+            this.Irc_chkEnabled.Text = "Use IRC";
+            this.GUIToolTip.SetToolTip(this.Irc_chkEnabled, "Whether to use the IRC bot or not.\nIRC stands for Internet Relay Chat and allows " +
                         "for communication with the server while outside Minecraft.");
-            this.irc_chkEnabled.UseVisualStyleBackColor = true;
-            this.irc_chkEnabled.CheckedChanged += new System.EventHandler(this.irc_chkEnabled_CheckedChanged);
+            this.Irc_chkEnabled.UseVisualStyleBackColor = true;
+            this.Irc_chkEnabled.CheckedChanged += new EventHandler(this.Irc_chkEnabled_CheckedChanged);
             // 
-            // irc_txtServer
+            // Irc_txtServer
             // 
-            this.irc_txtServer.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtServer.Location = new System.Drawing.Point(82, 47);
-            this.irc_txtServer.Name = "irc_txtServer";
-            this.irc_txtServer.Size = new System.Drawing.Size(106, 21);
-            this.irc_txtServer.TabIndex = 15;
-            this.toolTip.SetToolTip(this.irc_txtServer, "IRC server hostname.\nDefault = irc.esper.net\nAnother choice = irc.geekshed.net");
+            this.Irc_txtServer.BackColor = SystemColors.Window;
+            this.Irc_txtServer.Location = new Point(82, 47);
+            this.Irc_txtServer.Name = "Irc_txtServer";
+            this.Irc_txtServer.Size = new Size(106, 21);
+            this.Irc_txtServer.TabIndex = 15;
+            this.GUIToolTip.SetToolTip(this.Irc_txtServer, "IRC server hostname.\nDefault = irc.esper.net\nAnother choice = irc.geekshed.net");
             // 
-            // irc_txtNick
+            // Irc_txtNick
             // 
-            this.irc_txtNick.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtNick.Location = new System.Drawing.Point(82, 101);
-            this.irc_txtNick.Name = "irc_txtNick";
-            this.irc_txtNick.Size = new System.Drawing.Size(106, 21);
-            this.irc_txtNick.TabIndex = 16;
-            this.toolTip.SetToolTip(this.irc_txtNick, "The Nick that the IRC bot will try and use.");
+            this.Irc_txtNick.BackColor = SystemColors.Window;
+            this.Irc_txtNick.Location = new Point(82, 101);
+            this.Irc_txtNick.Name = "Irc_txtNick";
+            this.Irc_txtNick.Size = new Size(106, 21);
+            this.Irc_txtNick.TabIndex = 16;
+            this.GUIToolTip.SetToolTip(this.Irc_txtNick, "The Nick that the IRC bot will try and use.");
             // 
-            // irc_txtChannel
+            // Irc_txtChannel
             // 
-            this.irc_txtChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtChannel.Location = new System.Drawing.Point(82, 128);
-            this.irc_txtChannel.Name = "irc_txtChannel";
-            this.irc_txtChannel.Size = new System.Drawing.Size(106, 21);
-            this.irc_txtChannel.TabIndex = 17;
-            this.toolTip.SetToolTip(this.irc_txtChannel, "The IRC channel to be used for general chat");
+            this.Irc_txtChannel.BackColor = SystemColors.Window;
+            this.Irc_txtChannel.Location = new Point(82, 128);
+            this.Irc_txtChannel.Name = "Irc_txtChannel";
+            this.Irc_txtChannel.Size = new Size(106, 21);
+            this.Irc_txtChannel.TabIndex = 17;
+            this.GUIToolTip.SetToolTip(this.Irc_txtChannel, "The IRC channel to be used for general chat");
             // 
-            // irc_txtOpChannel
+            // Irc_txtOpChannel
             // 
-            this.irc_txtOpChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtOpChannel.Location = new System.Drawing.Point(82, 155);
-            this.irc_txtOpChannel.Name = "irc_txtOpChannel";
-            this.irc_txtOpChannel.Size = new System.Drawing.Size(106, 21);
-            this.irc_txtOpChannel.TabIndex = 26;
-            this.toolTip.SetToolTip(this.irc_txtOpChannel, "The IRC channel to be used for opchat");
+            this.Irc_txtOpChannel.BackColor = SystemColors.Window;
+            this.Irc_txtOpChannel.Location = new Point(82, 155);
+            this.Irc_txtOpChannel.Name = "Irc_txtOpChannel";
+            this.Irc_txtOpChannel.Size = new Size(106, 21);
+            this.Irc_txtOpChannel.TabIndex = 26;
+            this.GUIToolTip.SetToolTip(this.Irc_txtOpChannel, "The IRC channel to be used for opchat");
             // 
-            // lvl_chkAutoload
+            // Lvl_chkAutoload
             // 
-            this.lvl_chkAutoload.AutoSize = true;
-            this.lvl_chkAutoload.Location = new System.Drawing.Point(9, 49);
-            this.lvl_chkAutoload.Name = "lvl_chkAutoload";
-            this.lvl_chkAutoload.Size = new System.Drawing.Size(90, 17);
-            this.lvl_chkAutoload.TabIndex = 4;
-            this.lvl_chkAutoload.Text = "Load on /goto";
-            this.toolTip.SetToolTip(this.lvl_chkAutoload, "Load a map when a user wishes to go to it, and unload empty maps");
-            this.lvl_chkAutoload.UseVisualStyleBackColor = true;
+            this.Lvl_chkAutoload.AutoSize = true;
+            this.Lvl_chkAutoload.Location = new Point(9, 49);
+            this.Lvl_chkAutoload.Name = "Lvl_chkAutoload";
+            this.Lvl_chkAutoload.Size = new Size(90, 17);
+            this.Lvl_chkAutoload.TabIndex = 4;
+            this.Lvl_chkAutoload.Text = "Load on /goto";
+            this.GUIToolTip.SetToolTip(this.Lvl_chkAutoload, "Load a map when a user wishes to go to it, and unload empty maps");
+            this.Lvl_chkAutoload.UseVisualStyleBackColor = true;
             // 
-            // lvl_chkWorld
+            // Lvl_chkWorld
             // 
-            this.lvl_chkWorld.AutoSize = true;
-            this.lvl_chkWorld.Location = new System.Drawing.Point(9, 72);
-            this.lvl_chkWorld.Name = "lvl_chkWorld";
-            this.lvl_chkWorld.Size = new System.Drawing.Size(105, 17);
-            this.lvl_chkWorld.TabIndex = 4;
-            this.lvl_chkWorld.Text = "Server-wide chat";
-            this.toolTip.SetToolTip(this.lvl_chkWorld, "If disabled, every map has isolated chat.\nIf enabled, every map is able to commun" +
+            this.Lvl_chkWorld.AutoSize = true;
+            this.Lvl_chkWorld.Location = new Point(9, 72);
+            this.Lvl_chkWorld.Name = "Lvl_chkWorld";
+            this.Lvl_chkWorld.Size = new Size(105, 17);
+            this.Lvl_chkWorld.TabIndex = 4;
+            this.Lvl_chkWorld.Text = "Server-wide chat";
+            this.GUIToolTip.SetToolTip(this.Lvl_chkWorld, "If disabled, every map has isolated chat.\nIf enabled, every map is able to commun" +
                         "icate without special letters.");
-            this.lvl_chkWorld.UseVisualStyleBackColor = true;
+            this.Lvl_chkWorld.UseVisualStyleBackColor = true;
             // 
-            // adv_chkVerify
+            // Adv_chkVerify
             // 
-            this.adv_chkVerify.AutoSize = true;
-            this.adv_chkVerify.Location = new System.Drawing.Point(9, 20);
-            this.adv_chkVerify.Name = "adv_chkVerify";
-            this.adv_chkVerify.Size = new System.Drawing.Size(87, 17);
-            this.adv_chkVerify.TabIndex = 4;
-            this.adv_chkVerify.Text = "Verify Names";
-            this.toolTip.SetToolTip(this.adv_chkVerify, "Make sure the user is who they claim to be.");
-            this.adv_chkVerify.UseVisualStyleBackColor = true;
-            this.adv_chkVerify.CheckedChanged += new System.EventHandler(this.chkVerify_CheckedChanged);
+            this.Adv_chkVerify.AutoSize = true;
+            this.Adv_chkVerify.Location = new Point(9, 20);
+            this.Adv_chkVerify.Name = "Adv_chkVerify";
+            this.Adv_chkVerify.Size = new Size(87, 17);
+            this.Adv_chkVerify.TabIndex = 4;
+            this.Adv_chkVerify.Text = "Verify Names";
+            this.GUIToolTip.SetToolTip(this.Adv_chkVerify, "Make sure the user is who they claim to be.");
+            this.Adv_chkVerify.UseVisualStyleBackColor = true;
+            this.Adv_chkVerify.CheckedChanged += new EventHandler(this.ChkVerify_CheckedChanged);
             // 
-            // srv_txtName
+            // Srv_txtName
             // 
-            this.srv_txtName.BackColor = System.Drawing.SystemColors.Window;
-            this.srv_txtName.Location = new System.Drawing.Point(83, 19);
-            this.srv_txtName.MaxLength = 64;
-            this.srv_txtName.Name = "srv_txtName";
-            this.srv_txtName.Size = new System.Drawing.Size(387, 21);
-            this.srv_txtName.TabIndex = 0;
-            this.toolTip.SetToolTip(this.srv_txtName, "The name of the server.\nPick something good!");
+            this.Srv_txtName.BackColor = SystemColors.Window;
+            this.Srv_txtName.Location = new Point(83, 19);
+            this.Srv_txtName.MaxLength = 64;
+            this.Srv_txtName.Name = "Srv_txtName";
+            this.Srv_txtName.Size = new Size(387, 21);
+            this.Srv_txtName.TabIndex = 0;
+            this.GUIToolTip.SetToolTip(this.Srv_txtName, "The name of the server.\nPick something good!");
             // 
-            // srv_txtMOTD
+            // Srv_txtMOTD
             // 
-            this.srv_txtMOTD.BackColor = System.Drawing.SystemColors.Window;
-            this.srv_txtMOTD.Location = new System.Drawing.Point(83, 46);
-            this.srv_txtMOTD.MaxLength = 64;
-            this.srv_txtMOTD.Name = "srv_txtMOTD";
-            this.srv_txtMOTD.Size = new System.Drawing.Size(387, 21);
-            this.srv_txtMOTD.TabIndex = 1;
-            this.toolTip.SetToolTip(this.srv_txtMOTD, "The MOTD of the server.\nUse \"+hax\" to allow any WoM hack, \"-hax\" to disallow any " +
+            this.Srv_txtMOTD.BackColor = SystemColors.Window;
+            this.Srv_txtMOTD.Location = new Point(83, 46);
+            this.Srv_txtMOTD.MaxLength = 64;
+            this.Srv_txtMOTD.Name = "Srv_txtMOTD";
+            this.Srv_txtMOTD.Size = new Size(387, 21);
+            this.Srv_txtMOTD.TabIndex = 1;
+            this.GUIToolTip.SetToolTip(this.Srv_txtMOTD, "The MOTD of the server.\nUse \"+hax\" to allow any WoM hack, \"-hax\" to disallow any " +
                         "hacks at all and use \"-fly\" and whatnot to disallow other things.");
             // 
-            // srv_numPort
+            // Srv_numPort
             // 
-            this.srv_numPort.BackColor = System.Drawing.SystemColors.Window;
-            this.srv_numPort.Location = new System.Drawing.Point(83, 73);
-            this.srv_numPort.Maximum = new decimal(new int[] {
+            this.Srv_numPort.BackColor = SystemColors.Window;
+            this.Srv_numPort.Location = new Point(83, 73);
+            this.Srv_numPort.Maximum = new decimal(new int[] {
                                     65535,
                                     0,
                                     0,
                                     0});
-            this.srv_numPort.Name = "srv_numPort";
-            this.srv_numPort.Size = new System.Drawing.Size(60, 21);
-            this.srv_numPort.TabIndex = 2;
-            this.toolTip.SetToolTip(this.srv_numPort, "The port that the server will output on.\nDefault = 25565\n\nChanging will reset you" +
+            this.Srv_numPort.Name = "Srv_numPort";
+            this.Srv_numPort.Size = new Size(60, 21);
+            this.Srv_numPort.TabIndex = 2;
+            this.GUIToolTip.SetToolTip(this.Srv_numPort, "The port that the server will output on.\nDefault = 25565\n\nChanging will reset you" +
                         "r ExternalURL.");
-            this.srv_numPort.Value = new decimal(new int[] {
+            this.Srv_numPort.Value = new decimal(new int[] {
                                     25565,
                                     0,
                                     0,
                                     0});
             // 
-            // srv_chkPublic
+            // Srv_chkPublic
             // 
-            this.srv_chkPublic.AutoSize = true;
-            this.srv_chkPublic.Location = new System.Drawing.Point(9, 124);
-            this.srv_chkPublic.Name = "srv_chkPublic";
-            this.srv_chkPublic.Size = new System.Drawing.Size(55, 17);
-            this.srv_chkPublic.TabIndex = 5;
-            this.srv_chkPublic.Text = "Public";
-            this.toolTip.SetToolTip(this.srv_chkPublic, "Whether or not the server will appear on the server list.");
-            this.srv_chkPublic.UseVisualStyleBackColor = true;
+            this.Srv_chkPublic.AutoSize = true;
+            this.Srv_chkPublic.Location = new Point(9, 124);
+            this.Srv_chkPublic.Name = "Srv_chkPublic";
+            this.Srv_chkPublic.Size = new Size(55, 17);
+            this.Srv_chkPublic.TabIndex = 5;
+            this.Srv_chkPublic.Text = "Public";
+            this.GUIToolTip.SetToolTip(this.Srv_chkPublic, "Whether or not the server will appear on the server list.");
+            this.Srv_chkPublic.UseVisualStyleBackColor = true;
             // 
-            // rank_cbSilentAdmins
+            // Rank_cbSilentAdmins
             // 
-            this.rank_cbSilentAdmins.AutoSize = true;
-            this.rank_cbSilentAdmins.Location = new System.Drawing.Point(11, 52);
-            this.rank_cbSilentAdmins.Name = "rank_cbSilentAdmins";
-            this.rank_cbSilentAdmins.Size = new System.Drawing.Size(118, 17);
-            this.rank_cbSilentAdmins.TabIndex = 41;
-            this.rank_cbSilentAdmins.Text = "Admins join silently";
-            this.toolTip.SetToolTip(this.rank_cbSilentAdmins, "Players who can read adminchat also join the server silently");
-            this.rank_cbSilentAdmins.UseVisualStyleBackColor = true;
+            this.Rank_cbSilentAdmins.AutoSize = true;
+            this.Rank_cbSilentAdmins.Location = new Point(11, 52);
+            this.Rank_cbSilentAdmins.Name = "Rank_cbSilentAdmins";
+            this.Rank_cbSilentAdmins.Size = new Size(118, 17);
+            this.Rank_cbSilentAdmins.TabIndex = 41;
+            this.Rank_cbSilentAdmins.Text = "Admins join silently";
+            this.GUIToolTip.SetToolTip(this.Rank_cbSilentAdmins, "Players who can read adminchat also join the server silently");
+            this.Rank_cbSilentAdmins.UseVisualStyleBackColor = true;
             // 
-            // rank_txtPrefix
+            // Rank_txtPrefix
             // 
-            this.rank_txtPrefix.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_txtPrefix.Location = new System.Drawing.Point(259, 47);
-            this.rank_txtPrefix.Name = "rank_txtPrefix";
-            this.rank_txtPrefix.Size = new System.Drawing.Size(81, 21);
-            this.rank_txtPrefix.TabIndex = 21;
-            this.toolTip.SetToolTip(this.rank_txtPrefix, "Short prefix showed before player names in chat.");
-            this.rank_txtPrefix.TextChanged += new System.EventHandler(this.rank_txtPrefix_TextChanged);
+            this.Rank_txtPrefix.BackColor = SystemColors.Window;
+            this.Rank_txtPrefix.Location = new Point(259, 47);
+            this.Rank_txtPrefix.Name = "Rank_txtPrefix";
+            this.Rank_txtPrefix.Size = new Size(81, 21);
+            this.Rank_txtPrefix.TabIndex = 21;
+            this.GUIToolTip.SetToolTip(this.Rank_txtPrefix, "Short prefix showed before player names in chat.");
+            this.Rank_txtPrefix.TextChanged += new EventHandler(this.Rank_txtPrefix_TextChanged);
             // 
-            // rank_txtMOTD
+            // Rank_txtMOTD
             // 
-            this.rank_txtMOTD.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_txtMOTD.Location = new System.Drawing.Point(85, 74);
-            this.rank_txtMOTD.Name = "rank_txtMOTD";
-            this.rank_txtMOTD.Size = new System.Drawing.Size(255, 21);
-            this.rank_txtMOTD.TabIndex = 17;
-            this.toolTip.SetToolTip(this.rank_txtMOTD, "MOTD shown to players of this rank.\r\nIf left blank, the server MOTD is shown to t" +
+            this.Rank_txtMOTD.BackColor = SystemColors.Window;
+            this.Rank_txtMOTD.Location = new Point(85, 74);
+            this.Rank_txtMOTD.Name = "Rank_txtMOTD";
+            this.Rank_txtMOTD.Size = new Size(255, 21);
+            this.Rank_txtMOTD.TabIndex = 17;
+            this.GUIToolTip.SetToolTip(this.Rank_txtMOTD, "MOTD shown to players of this rank.\r\nIf left blank, the server MOTD is shown to t" +
                         "hem.");
-            this.rank_txtMOTD.TextChanged += new System.EventHandler(this.rank_txtMOTD_TextChanged);
+            this.Rank_txtMOTD.TextChanged += new EventHandler(this.Rank_txtMOTD_TextChanged);
             // 
-            // rank_numPerm
+            // Rank_numPerm
             // 
-            this.rank_numPerm.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numPerm.Location = new System.Drawing.Point(259, 20);
-            this.rank_numPerm.Maximum = new decimal(new int[] {
+            this.Rank_numPerm.BackColor = SystemColors.Window;
+            this.Rank_numPerm.Location = new Point(259, 20);
+            this.Rank_numPerm.Maximum = new decimal(new int[] {
                                     127,
                                     0,
                                     0,
                                     0});
-            this.rank_numPerm.Minimum = new decimal(new int[] {
+            this.Rank_numPerm.Minimum = new decimal(new int[] {
                                     20,
                                     0,
                                     0,
                                     -2147483648});
-            this.rank_numPerm.Name = "rank_numPerm";
-            this.rank_numPerm.Size = new System.Drawing.Size(81, 21);
-            this.rank_numPerm.TabIndex = 6;
-            this.toolTip.SetToolTip(this.rank_numPerm, "Permission level of this rank.");
-            this.rank_numPerm.ValueChanged += new System.EventHandler(this.rank_numPerm_ValueChanged);
+            this.Rank_numPerm.Name = "Rank_numPerm";
+            this.Rank_numPerm.Size = new Size(81, 21);
+            this.Rank_numPerm.TabIndex = 6;
+            this.GUIToolTip.SetToolTip(this.Rank_numPerm, "Permission level of this rank.");
+            this.Rank_numPerm.ValueChanged += new EventHandler(this.Rank_numPerm_ValueChanged);
             // 
-            // rank_txtName
+            // Rank_txtName
             // 
-            this.rank_txtName.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_txtName.Location = new System.Drawing.Point(85, 20);
-            this.rank_txtName.Name = "rank_txtName";
-            this.rank_txtName.Size = new System.Drawing.Size(81, 21);
-            this.rank_txtName.TabIndex = 5;
-            this.toolTip.SetToolTip(this.rank_txtName, "Name of this rank");
-            this.rank_txtName.TextChanged += new System.EventHandler(this.rank_txtName_TextChanged);
+            this.Rank_txtName.BackColor = SystemColors.Window;
+            this.Rank_txtName.Location = new Point(85, 20);
+            this.Rank_txtName.Name = "Rank_txtName";
+            this.Rank_txtName.Size = new Size(81, 21);
+            this.Rank_txtName.TabIndex = 5;
+            this.GUIToolTip.SetToolTip(this.Rank_txtName, "Name of this rank");
+            this.Rank_txtName.TextChanged += new EventHandler(this.Rank_txtName_TextChanged);
             // 
-            // rank_btnColor
+            // Rank_btnColor
             // 
-            this.rank_btnColor.Location = new System.Drawing.Point(85, 47);
-            this.rank_btnColor.Name = "rank_btnColor";
-            this.rank_btnColor.Size = new System.Drawing.Size(81, 23);
-            this.rank_btnColor.TabIndex = 12;
-            this.toolTip.SetToolTip(this.rank_btnColor, "Color of this rank name in chat and the tab list");
-            this.rank_btnColor.MouseClick += new System.Windows.Forms.MouseEventHandler(this.rank_btnColor_Click);
+            this.Rank_btnColor.Location = new Point(85, 47);
+            this.Rank_btnColor.Name = "Rank_btnColor";
+            this.Rank_btnColor.Size = new Size(81, 23);
+            this.Rank_btnColor.TabIndex = 12;
+            this.GUIToolTip.SetToolTip(this.Rank_btnColor, "Color of this rank name in chat and the tab list");
+            this.Rank_btnColor.MouseClick += new MouseEventHandler(this.Rank_btnColor_Click);
             // 
-            // rank_cmbOsMap
+            // Rank_cmbOsMap
             // 
-            this.rank_cmbOsMap.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_cmbOsMap.FormattingEnabled = true;
-            this.rank_cmbOsMap.Location = new System.Drawing.Point(259, 20);
-            this.rank_cmbOsMap.Name = "rank_cmbOsMap";
-            this.rank_cmbOsMap.Size = new System.Drawing.Size(80, 21);
-            this.rank_cmbOsMap.TabIndex = 49;
-            this.toolTip.SetToolTip(this.rank_cmbOsMap, "Default minimum rank required to build on maps made with /os map add.");
+            this.Rank_cmbOsMap.BackColor = SystemColors.Window;
+            this.Rank_cmbOsMap.FormattingEnabled = true;
+            this.Rank_cmbOsMap.Location = new Point(259, 20);
+            this.Rank_cmbOsMap.Name = "Rank_cmbOsMap";
+            this.Rank_cmbOsMap.Size = new Size(80, 21);
+            this.Rank_cmbOsMap.TabIndex = 49;
+            this.GUIToolTip.SetToolTip(this.Rank_cmbOsMap, "Default minimum rank required to build on maps made with /os map add.");
             // 
-            // irc_chkPass
+            // Irc_chkPass
             // 
-            this.irc_chkPass.AutoSize = true;
-            this.irc_chkPass.Location = new System.Drawing.Point(9, 185);
-            this.irc_chkPass.Name = "irc_chkPass";
-            this.irc_chkPass.Size = new System.Drawing.Size(72, 17);
-            this.irc_chkPass.TabIndex = 27;
-            this.irc_chkPass.Text = "Password";
-            this.toolTip.SetToolTip(this.irc_chkPass, "NickServ password set for the username");
-            this.irc_chkPass.UseVisualStyleBackColor = true;
-            this.irc_chkPass.CheckedChanged += new System.EventHandler(this.irc_chkPass_CheckedChanged);
+            this.Irc_chkPass.AutoSize = true;
+            this.Irc_chkPass.Location = new Point(9, 185);
+            this.Irc_chkPass.Name = "Irc_chkPass";
+            this.Irc_chkPass.Size = new Size(72, 17);
+            this.Irc_chkPass.TabIndex = 27;
+            this.Irc_chkPass.Text = "Password";
+            this.GUIToolTip.SetToolTip(this.Irc_chkPass, "NickServ password set for the username");
+            this.Irc_chkPass.UseVisualStyleBackColor = true;
+            this.Irc_chkPass.CheckedChanged += new EventHandler(this.Irc_chkPass_CheckedChanged);
             // 
-            // irc_txtPass
+            // Irc_txtPass
             // 
-            this.irc_txtPass.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtPass.Location = new System.Drawing.Point(82, 182);
-            this.irc_txtPass.Name = "irc_txtPass";
-            this.irc_txtPass.PasswordChar = '*';
-            this.irc_txtPass.Size = new System.Drawing.Size(106, 21);
-            this.irc_txtPass.TabIndex = 28;
-            this.toolTip.SetToolTip(this.irc_txtPass, "NickServ password set for the username");
+            this.Irc_txtPass.BackColor = SystemColors.Window;
+            this.Irc_txtPass.Location = new Point(82, 182);
+            this.Irc_txtPass.Name = "Irc_txtPass";
+            this.Irc_txtPass.PasswordChar = '*';
+            this.Irc_txtPass.Size = new Size(106, 21);
+            this.Irc_txtPass.TabIndex = 28;
+            this.GUIToolTip.SetToolTip(this.Irc_txtPass, "NickServ password set for the username");
             // 
-            // rank_numMaps
+            // Rank_numMaps
             // 
-            this.rank_numMaps.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numMaps.Location = new System.Drawing.Point(259, 20);
-            this.rank_numMaps.Maximum = new decimal(new int[] {
+            this.Rank_numMaps.BackColor = SystemColors.Window;
+            this.Rank_numMaps.Location = new Point(259, 20);
+            this.Rank_numMaps.Maximum = new decimal(new int[] {
                                     2147483647,
                                     0,
                                     0,
                                     0});
-            this.rank_numMaps.Name = "rank_numMaps";
-            this.rank_numMaps.Size = new System.Drawing.Size(81, 21);
-            this.rank_numMaps.TabIndex = 19;
-            this.toolTip.SetToolTip(this.rank_numMaps, "Maximum number of /os maps players are allowed");
-            this.rank_numMaps.ValueChanged += new System.EventHandler(this.rank_numMaps_ValueChanged);
+            this.Rank_numMaps.Name = "Rank_numMaps";
+            this.Rank_numMaps.Size = new Size(81, 21);
+            this.Rank_numMaps.TabIndex = 19;
+            this.GUIToolTip.SetToolTip(this.Rank_numMaps, "Maximum number of /os maps players are allowed");
+            this.Rank_numMaps.ValueChanged += new EventHandler(this.Rank_numMaps_ValueChanged);
             // 
-            // rank_numDraw
+            // Rank_numDraw
             // 
-            this.rank_numDraw.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numDraw.Location = new System.Drawing.Point(85, 20);
-            this.rank_numDraw.Maximum = new decimal(new int[] {
+            this.Rank_numDraw.BackColor = SystemColors.Window;
+            this.Rank_numDraw.Location = new Point(85, 20);
+            this.Rank_numDraw.Maximum = new decimal(new int[] {
                                     2147483647,
                                     0,
                                     0,
                                     0});
-            this.rank_numDraw.Name = "rank_numDraw";
-            this.rank_numDraw.Size = new System.Drawing.Size(81, 21);
-            this.rank_numDraw.TabIndex = 4;
-            this.toolTip.SetToolTip(this.rank_numDraw, "Maximum number of blocks players can affect in draw commands.");
-            this.rank_numDraw.ValueChanged += new System.EventHandler(this.rank_numDraw_ValueChanged);
+            this.Rank_numDraw.Name = "Rank_numDraw";
+            this.Rank_numDraw.Size = new Size(81, 21);
+            this.Rank_numDraw.TabIndex = 4;
+            this.GUIToolTip.SetToolTip(this.Rank_numDraw, "Maximum number of blocks players can affect in draw commands.");
+            this.Rank_numDraw.ValueChanged += new EventHandler(this.Rank_numDraw_ValueChanged);
             // 
-            // rank_numGen
+            // Rank_numGen
             // 
-            this.rank_numGen.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numGen.Location = new System.Drawing.Point(259, 47);
-            this.rank_numGen.Maximum = new decimal(new int[] {
+            this.Rank_numGen.BackColor = SystemColors.Window;
+            this.Rank_numGen.Location = new Point(259, 47);
+            this.Rank_numGen.Maximum = new decimal(new int[] {
                                     2147483647,
                                     0,
                                     0,
                                     0});
-            this.rank_numGen.Name = "rank_numGen";
-            this.rank_numGen.Size = new System.Drawing.Size(81, 21);
-            this.rank_numGen.TabIndex = 21;
-            this.toolTip.SetToolTip(this.rank_numGen, "Maximum volume of (number of blocks in) a map that players can generate");
-            this.rank_numGen.ValueChanged += new System.EventHandler(this.rank_numGen_ValueChanged);
+            this.Rank_numGen.Name = "Rank_numGen";
+            this.Rank_numGen.Size = new Size(81, 21);
+            this.Rank_numGen.TabIndex = 21;
+            this.GUIToolTip.SetToolTip(this.Rank_numGen, "Maximum volume of (number of blocks in) a map that players can generate");
+            this.Rank_numGen.ValueChanged += new EventHandler(this.Rank_numGen_ValueChanged);
             // 
-            // rank_numCopy
+            // Rank_numCopy
             // 
-            this.rank_numCopy.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numCopy.Location = new System.Drawing.Point(85, 74);
-            this.rank_numCopy.Maximum = new decimal(new int[] {
+            this.Rank_numCopy.BackColor = SystemColors.Window;
+            this.Rank_numCopy.Location = new Point(85, 74);
+            this.Rank_numCopy.Maximum = new decimal(new int[] {
                                     255,
                                     0,
                                     0,
                                     0});
-            this.rank_numCopy.Minimum = new decimal(new int[] {
+            this.Rank_numCopy.Minimum = new decimal(new int[] {
                                     1,
                                     0,
                                     0,
                                     0});
-            this.rank_numCopy.Name = "rank_numCopy";
-            this.rank_numCopy.Size = new System.Drawing.Size(81, 21);
-            this.rank_numCopy.TabIndex = 23;
-            this.toolTip.SetToolTip(this.rank_numCopy, "Maximum number of copies player can select in /copyslot");
-            this.rank_numCopy.Value = new decimal(new int[] {
+            this.Rank_numCopy.Name = "Rank_numCopy";
+            this.Rank_numCopy.Size = new Size(81, 21);
+            this.Rank_numCopy.TabIndex = 23;
+            this.GUIToolTip.SetToolTip(this.Rank_numCopy, "Maximum number of copies player can select in /copyslot");
+            this.Rank_numCopy.Value = new decimal(new int[] {
                                     1,
                                     0,
                                     0,
                                     0});
-            this.rank_numCopy.ValueChanged += new System.EventHandler(this.rank_numCopy_ValueChanged);
+            this.Rank_numCopy.ValueChanged += new EventHandler(this.Rank_numCopy_ValueChanged);
             // 
-            // adv_chkCPE
+            // Adv_chkCPE
             // 
-            this.adv_chkCPE.AutoSize = true;
-            this.adv_chkCPE.Location = new System.Drawing.Point(9, 43);
-            this.adv_chkCPE.Name = "adv_chkCPE";
-            this.adv_chkCPE.Size = new System.Drawing.Size(122, 17);
-            this.adv_chkCPE.TabIndex = 4;
-            this.adv_chkCPE.Text = "Non-classic features";
-            this.toolTip.SetToolTip(this.adv_chkCPE, "Enables custom blocks, multiline chat, changing env settings, etc");
-            this.adv_chkCPE.UseVisualStyleBackColor = true;
+            this.Adv_chkCPE.AutoSize = true;
+            this.Adv_chkCPE.Location = new Point(9, 43);
+            this.Adv_chkCPE.Name = "Adv_chkCPE";
+            this.Adv_chkCPE.Size = new Size(122, 17);
+            this.Adv_chkCPE.TabIndex = 4;
+            this.Adv_chkCPE.Text = "Non-classic features";
+            this.GUIToolTip.SetToolTip(this.Adv_chkCPE, "Enables custom blocks, multiline chat, changing env settings, etc");
+            this.Adv_chkCPE.UseVisualStyleBackColor = true;
             // 
-            // eco_cmbItemRank
+            // Eco_cmbItemRank
             // 
-            this.eco_cmbItemRank.BackColor = System.Drawing.SystemColors.Window;
-            this.eco_cmbItemRank.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.eco_cmbItemRank.FormattingEnabled = true;
-            this.eco_cmbItemRank.Location = new System.Drawing.Point(368, 43);
-            this.eco_cmbItemRank.Name = "eco_cmbItemRank";
-            this.eco_cmbItemRank.Size = new System.Drawing.Size(110, 21);
-            this.eco_cmbItemRank.TabIndex = 23;
-            this.toolTip.SetToolTip(this.eco_cmbItemRank, "Minimum rank a player must have to purchase this item.");
-            this.eco_cmbItemRank.SelectedIndexChanged += new System.EventHandler(this.eco_cmbItemRank_SelectedIndexChanged);
+            this.Eco_cmbItemRank.BackColor = SystemColors.Window;
+            this.Eco_cmbItemRank.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Eco_cmbItemRank.FormattingEnabled = true;
+            this.Eco_cmbItemRank.Location = new Point(368, 43);
+            this.Eco_cmbItemRank.Name = "Eco_cmbItemRank";
+            this.Eco_cmbItemRank.Size = new Size(110, 21);
+            this.Eco_cmbItemRank.TabIndex = 23;
+            this.GUIToolTip.SetToolTip(this.Eco_cmbItemRank, "Minimum rank a player must have to purchase this item.");
+            this.Eco_cmbItemRank.SelectedIndexChanged += new EventHandler(this.Eco_cmbItemRank_SelectedIndexChanged);
             // 
-            // rank_numUndo
+            // Rank_numUndo
             // 
-            this.rank_numUndo.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numUndo.Location = new System.Drawing.Point(85, 47);
-            this.rank_numUndo.Name = "rank_numUndo";
-            this.rank_numUndo.Seconds = ((long)(0));
-            this.rank_numUndo.Size = new System.Drawing.Size(81, 21);
-            this.rank_numUndo.TabIndex = 24;
-            this.rank_numUndo.Text = "0s";
-            this.toolTip.SetToolTip(this.rank_numUndo, "Maximum time players can undo up to in the past with /undo");
-            this.rank_numUndo.Value = System.TimeSpan.Parse("00:00:00");
-            this.rank_numUndo.ValueChanged += new System.EventHandler(this.rank_numUndo_ValueChanged);
+            this.Rank_numUndo.BackColor = SystemColors.Window;
+            this.Rank_numUndo.Location = new Point(85, 47);
+            this.Rank_numUndo.Name = "Rank_numUndo";
+            this.Rank_numUndo.Seconds = ((long)(0));
+            this.Rank_numUndo.Size = new Size(81, 21);
+            this.Rank_numUndo.TabIndex = 24;
+            this.Rank_numUndo.Text = "0s";
+            this.GUIToolTip.SetToolTip(this.Rank_numUndo, "Maximum time players can undo up to in the past with /undo");
+            this.Rank_numUndo.Value = TimeSpan.Parse("00:00:00");
+            this.Rank_numUndo.ValueChanged += new EventHandler(this.Rank_numUndo_ValueChanged);
             // 
-            // chkPhysRestart
+            // ChkPhysRestart
             // 
-            this.chkPhysRestart.AutoSize = true;
-            this.chkPhysRestart.Location = new System.Drawing.Point(6, 20);
-            this.chkPhysRestart.Name = "chkPhysRestart";
-            this.chkPhysRestart.Size = new System.Drawing.Size(124, 17);
-            this.chkPhysRestart.TabIndex = 52;
-            this.chkPhysRestart.Text = "Restart on shutdown";
-            this.chkPhysRestart.UseVisualStyleBackColor = true;
+            this.ChkPhysRestart.AutoSize = true;
+            this.ChkPhysRestart.Location = new Point(6, 20);
+            this.ChkPhysRestart.Name = "ChkPhysRestart";
+            this.ChkPhysRestart.Size = new Size(124, 17);
+            this.ChkPhysRestart.TabIndex = 52;
+            this.ChkPhysRestart.Text = "Restart on shutdown";
+            this.ChkPhysRestart.UseVisualStyleBackColor = true;
             // 
-            // ls_numMax
+            // Ls_numMax
             // 
-            this.ls_numMax.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numMax.Location = new System.Drawing.Point(71, 89);
-            this.ls_numMax.Maximum = new decimal(new int[] {
+            this.Ls_numMax.BackColor = SystemColors.Window;
+            this.Ls_numMax.Location = new Point(71, 89);
+            this.Ls_numMax.Maximum = new decimal(new int[] {
                                     1000000,
                                     0,
                                     0,
                                     0});
-            this.ls_numMax.Name = "ls_numMax";
-            this.ls_numMax.Size = new System.Drawing.Size(52, 21);
-            this.ls_numMax.TabIndex = 25;
-            this.ls_numMax.Value = new decimal(new int[] {
+            this.Ls_numMax.Name = "Ls_numMax";
+            this.Ls_numMax.Size = new Size(52, 21);
+            this.Ls_numMax.TabIndex = 25;
+            this.Ls_numMax.Value = new decimal(new int[] {
                                     3,
                                     0,
                                     0,
                                     0});
             // 
-            // ls_numWater
+            // Ls_numWater
             // 
-            this.ls_numWater.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numWater.Location = new System.Drawing.Point(79, 20);
-            this.ls_numWater.Name = "ls_numWater";
-            this.ls_numWater.Size = new System.Drawing.Size(52, 21);
-            this.ls_numWater.TabIndex = 27;
+            this.Ls_numWater.BackColor = SystemColors.Window;
+            this.Ls_numWater.Location = new Point(79, 20);
+            this.Ls_numWater.Name = "Ls_numWater";
+            this.Ls_numWater.Size = new Size(52, 21);
+            this.Ls_numWater.TabIndex = 27;
             // 
-            // ls_numFast
+            // Ls_numFast
             // 
-            this.ls_numFast.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numFast.Location = new System.Drawing.Point(79, 45);
-            this.ls_numFast.Name = "ls_numFast";
-            this.ls_numFast.Size = new System.Drawing.Size(52, 21);
-            this.ls_numFast.TabIndex = 31;
+            this.Ls_numFast.BackColor = SystemColors.Window;
+            this.Ls_numFast.Location = new Point(79, 45);
+            this.Ls_numFast.Name = "Ls_numFast";
+            this.Ls_numFast.Size = new Size(52, 21);
+            this.Ls_numFast.TabIndex = 31;
             // 
-            // ls_numFloodUp
+            // Ls_numFloodUp
             // 
-            this.ls_numFloodUp.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numFloodUp.Location = new System.Drawing.Point(226, 45);
-            this.ls_numFloodUp.Name = "ls_numFloodUp";
-            this.ls_numFloodUp.Size = new System.Drawing.Size(52, 21);
-            this.ls_numFloodUp.TabIndex = 33;
+            this.Ls_numFloodUp.BackColor = SystemColors.Window;
+            this.Ls_numFloodUp.Location = new Point(226, 45);
+            this.Ls_numFloodUp.Name = "Ls_numFloodUp";
+            this.Ls_numFloodUp.Size = new Size(52, 21);
+            this.Ls_numFloodUp.TabIndex = 33;
             // 
-            // ls_numLayer
+            // Ls_numLayer
             // 
-            this.ls_numLayer.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numLayer.Location = new System.Drawing.Point(128, 16);
-            this.ls_numLayer.Name = "ls_numLayer";
-            this.ls_numLayer.Size = new System.Drawing.Size(52, 21);
-            this.ls_numLayer.TabIndex = 34;
+            this.Ls_numLayer.BackColor = SystemColors.Window;
+            this.Ls_numLayer.Location = new Point(128, 16);
+            this.Ls_numLayer.Name = "Ls_numLayer";
+            this.Ls_numLayer.Size = new Size(52, 21);
+            this.Ls_numLayer.TabIndex = 34;
             // 
-            // ls_numCount
+            // Ls_numCount
             // 
-            this.ls_numCount.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numCount.Location = new System.Drawing.Point(7, 44);
-            this.ls_numCount.Maximum = new decimal(new int[] {
+            this.Ls_numCount.BackColor = SystemColors.Window;
+            this.Ls_numCount.Location = new Point(7, 44);
+            this.Ls_numCount.Maximum = new decimal(new int[] {
                                     1000000,
                                     0,
                                     0,
                                     0});
-            this.ls_numCount.Name = "ls_numCount";
-            this.ls_numCount.Size = new System.Drawing.Size(52, 21);
-            this.ls_numCount.TabIndex = 35;
-            this.ls_numCount.Value = new decimal(new int[] {
+            this.Ls_numCount.Name = "Ls_numCount";
+            this.Ls_numCount.Size = new Size(52, 21);
+            this.Ls_numCount.TabIndex = 35;
+            this.Ls_numCount.Value = new decimal(new int[] {
                                     10,
                                     0,
                                     0,
                                     0});
             // 
-            // ls_numHeight
+            // Ls_numHeight
             // 
-            this.ls_numHeight.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numHeight.Location = new System.Drawing.Point(128, 44);
-            this.ls_numHeight.Maximum = new decimal(new int[] {
+            this.Ls_numHeight.BackColor = SystemColors.Window;
+            this.Ls_numHeight.Location = new Point(128, 44);
+            this.Ls_numHeight.Maximum = new decimal(new int[] {
                                     1000000,
                                     0,
                                     0,
                                     0});
-            this.ls_numHeight.Name = "ls_numHeight";
-            this.ls_numHeight.Size = new System.Drawing.Size(52, 21);
-            this.ls_numHeight.TabIndex = 37;
-            this.ls_numHeight.Value = new decimal(new int[] {
+            this.Ls_numHeight.Name = "Ls_numHeight";
+            this.Ls_numHeight.Size = new Size(52, 21);
+            this.Ls_numHeight.TabIndex = 37;
+            this.Ls_numHeight.Value = new decimal(new int[] {
                                     3,
                                     0,
                                     0,
                                     0});
             // 
-            // ls_cbMain
-            // 
-            this.ls_cbMain.AutoSize = true;
-            this.ls_cbMain.Location = new System.Drawing.Point(11, 66);
-            this.ls_cbMain.Name = "ls_cbMain";
-            this.ls_cbMain.Size = new System.Drawing.Size(112, 17);
-            this.ls_cbMain.TabIndex = 24;
-            this.ls_cbMain.Text = "Change main level";
-            this.ls_cbMain.UseVisualStyleBackColor = true;
-            // 
-            // ls_cbStart
-            // 
-            this.ls_cbStart.AutoSize = true;
-            this.ls_cbStart.Location = new System.Drawing.Point(11, 20);
-            this.ls_cbStart.Name = "ls_cbStart";
-            this.ls_cbStart.Size = new System.Drawing.Size(139, 17);
-            this.ls_cbStart.TabIndex = 22;
-            this.ls_cbStart.Text = "Start when server starts";
-            this.ls_cbStart.UseVisualStyleBackColor = true;
-            // 
-            // rank_numAfk
-            // 
-            this.rank_numAfk.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_numAfk.Location = new System.Drawing.Point(113, 102);
-            this.rank_numAfk.Name = "rank_numAfk";
-            this.rank_numAfk.Seconds = ((long)(0));
-            this.rank_numAfk.Size = new System.Drawing.Size(62, 21);
-            this.rank_numAfk.TabIndex = 23;
-            this.rank_numAfk.Text = "0s";
-            this.rank_numAfk.Value = System.TimeSpan.Parse("00:00:00");
-            this.rank_numAfk.ValueChanged += new System.EventHandler(this.rank_numAfk_ValueChanged);
-            // 
-            // sec_cbLogNotes
-            // 
-            this.sec_cbLogNotes.AutoSize = true;
-            this.sec_cbLogNotes.Location = new System.Drawing.Point(15, 20);
-            this.sec_cbLogNotes.Name = "sec_cbLogNotes";
-            this.sec_cbLogNotes.Size = new System.Drawing.Size(178, 17);
-            this.sec_cbLogNotes.TabIndex = 22;
-            this.sec_cbLogNotes.Text = "Log notes (/ban, /warn, /kick etc)";
-            this.sec_cbLogNotes.UseVisualStyleBackColor = true;
-            // 
-            // sec_cbChatAuto
-            // 
-            this.sec_cbChatAuto.AutoSize = true;
-            this.sec_cbChatAuto.Location = new System.Drawing.Point(10, 20);
-            this.sec_cbChatAuto.Name = "sec_cbChatAuto";
-            this.sec_cbChatAuto.Size = new System.Drawing.Size(142, 17);
-            this.sec_cbChatAuto.TabIndex = 24;
-            this.sec_cbChatAuto.Text = "Enable automatic muting";
-            this.sec_cbChatAuto.UseVisualStyleBackColor = true;
-            this.sec_cbChatAuto.CheckedChanged += new System.EventHandler(this.sec_cbChatAuto_Checked);
-            // 
-            // pageBlocks
-            // 
-            this.pageBlocks.BackColor = System.Drawing.SystemColors.Control;
-            this.pageBlocks.Controls.Add(this.blk_grpPhysics);
-            this.pageBlocks.Controls.Add(this.blk_grpBehaviour);
-            this.pageBlocks.Controls.Add(this.blk_grpPermissions);
-            this.pageBlocks.Controls.Add(this.blk_btnHelp);
-            this.pageBlocks.Controls.Add(this.blk_list);
-            this.pageBlocks.Location = new System.Drawing.Point(4, 22);
-            this.pageBlocks.Name = "pageBlocks";
-            this.pageBlocks.Padding = new System.Windows.Forms.Padding(3);
-            this.pageBlocks.Size = new System.Drawing.Size(498, 521);
-            this.pageBlocks.TabIndex = 5;
-            this.pageBlocks.Text = "Blocks";
-            // 
-            // blk_grpPhysics
-            // 
-            this.blk_grpPhysics.Controls.Add(this.blk_cbWater);
-            this.blk_grpPhysics.Controls.Add(this.blk_cbLava);
-            this.blk_grpPhysics.Controls.Add(this.blk_cbRails);
-            this.blk_grpPhysics.Controls.Add(this.blk_cbTdoor);
-            this.blk_grpPhysics.Controls.Add(this.blk_cbDoor);
-            this.blk_grpPhysics.Location = new System.Drawing.Point(134, 180);
-            this.blk_grpPhysics.Name = "blk_grpPhysics";
-            this.blk_grpPhysics.Size = new System.Drawing.Size(360, 92);
-            this.blk_grpPhysics.TabIndex = 26;
-            this.blk_grpPhysics.TabStop = false;
-            this.blk_grpPhysics.Text = "Physics behaviour";
-            // 
-            // blk_cbWater
-            // 
-            this.blk_cbWater.Location = new System.Drawing.Point(186, 65);
-            this.blk_cbWater.Name = "blk_cbWater";
-            this.blk_cbWater.Size = new System.Drawing.Size(104, 24);
-            this.blk_cbWater.TabIndex = 7;
-            this.blk_cbWater.Text = "Killed by water";
-            this.blk_cbWater.UseVisualStyleBackColor = true;
-            this.blk_cbWater.CheckedChanged += new System.EventHandler(this.blk_cbWater_CheckedChanged);
-            // 
-            // blk_cbLava
-            // 
-            this.blk_cbLava.Location = new System.Drawing.Point(10, 65);
-            this.blk_cbLava.Name = "blk_cbLava";
-            this.blk_cbLava.Size = new System.Drawing.Size(116, 24);
-            this.blk_cbLava.TabIndex = 6;
-            this.blk_cbLava.Text = "Killed by lava";
-            this.blk_cbLava.UseVisualStyleBackColor = true;
-            this.blk_cbLava.CheckedChanged += new System.EventHandler(this.blk_cbLava_CheckedChanged);
-            // 
-            // blk_cbRails
-            // 
-            this.blk_cbRails.Location = new System.Drawing.Point(10, 40);
-            this.blk_cbRails.Name = "blk_cbRails";
-            this.blk_cbRails.Size = new System.Drawing.Size(89, 24);
-            this.blk_cbRails.TabIndex = 5;
-            this.blk_cbRails.Text = "Is train rails";
-            this.blk_cbRails.UseVisualStyleBackColor = true;
-            this.blk_cbRails.CheckedChanged += new System.EventHandler(this.blk_cbRails_CheckedChanged);
-            // 
-            // blk_cbTdoor
-            // 
-            this.blk_cbTdoor.Location = new System.Drawing.Point(187, 15);
-            this.blk_cbTdoor.Name = "blk_cbTdoor";
-            this.blk_cbTdoor.Size = new System.Drawing.Size(104, 24);
-            this.blk_cbTdoor.TabIndex = 4;
-            this.blk_cbTdoor.Text = "Is a tDoor";
-            this.blk_cbTdoor.UseVisualStyleBackColor = true;
-            this.blk_cbTdoor.CheckedChanged += new System.EventHandler(this.blk_cbTdoor_CheckedChanged);
-            // 
-            // blk_cbDoor
-            // 
-            this.blk_cbDoor.Location = new System.Drawing.Point(10, 15);
-            this.blk_cbDoor.Name = "blk_cbDoor";
-            this.blk_cbDoor.Size = new System.Drawing.Size(116, 24);
-            this.blk_cbDoor.TabIndex = 3;
-            this.blk_cbDoor.Text = "Is a door";
-            this.blk_cbDoor.UseVisualStyleBackColor = true;
-            this.blk_cbDoor.CheckedChanged += new System.EventHandler(this.blk_cbDoor_CheckedChanged);
-            // 
-            // blk_grpBehaviour
-            // 
-            this.blk_grpBehaviour.Controls.Add(this.blk_txtDeath);
-            this.blk_grpBehaviour.Controls.Add(this.blk_cbDeath);
-            this.blk_grpBehaviour.Controls.Add(this.blk_cbPortal);
-            this.blk_grpBehaviour.Controls.Add(this.blk_cbMsgBlock);
-            this.blk_grpBehaviour.Location = new System.Drawing.Point(133, 105);
-            this.blk_grpBehaviour.Name = "blk_grpBehaviour";
-            this.blk_grpBehaviour.Size = new System.Drawing.Size(360, 70);
-            this.blk_grpBehaviour.TabIndex = 25;
-            this.blk_grpBehaviour.TabStop = false;
-            this.blk_grpBehaviour.Text = "Behaviour";
-            // 
-            // blk_txtDeath
-            // 
-            this.blk_txtDeath.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_txtDeath.Location = new System.Drawing.Point(100, 42);
-            this.blk_txtDeath.Name = "blk_txtDeath";
-            this.blk_txtDeath.Size = new System.Drawing.Size(254, 21);
-            this.blk_txtDeath.TabIndex = 3;
-            this.blk_txtDeath.TextChanged += new System.EventHandler(this.blk_txtDeath_TextChanged);
-            // 
-            // blk_cbDeath
-            // 
-            this.blk_cbDeath.Location = new System.Drawing.Point(10, 40);
-            this.blk_cbDeath.Name = "blk_cbDeath";
-            this.blk_cbDeath.Size = new System.Drawing.Size(89, 24);
-            this.blk_cbDeath.TabIndex = 2;
-            this.blk_cbDeath.Text = "Kills players";
-            this.blk_cbDeath.UseVisualStyleBackColor = true;
-            this.blk_cbDeath.CheckedChanged += new System.EventHandler(this.blk_cbDeath_CheckedChanged);
-            // 
-            // blk_cbPortal
-            // 
-            this.blk_cbPortal.Location = new System.Drawing.Point(187, 15);
-            this.blk_cbPortal.Name = "blk_cbPortal";
-            this.blk_cbPortal.Size = new System.Drawing.Size(104, 24);
-            this.blk_cbPortal.TabIndex = 1;
-            this.blk_cbPortal.Text = "Is a portal";
-            this.blk_cbPortal.UseVisualStyleBackColor = true;
-            this.blk_cbPortal.CheckedChanged += new System.EventHandler(this.blk_cbPortal_CheckedChanged);
-            // 
-            // blk_cbMsgBlock
-            // 
-            this.blk_cbMsgBlock.Location = new System.Drawing.Point(10, 15);
-            this.blk_cbMsgBlock.Name = "blk_cbMsgBlock";
-            this.blk_cbMsgBlock.Size = new System.Drawing.Size(116, 24);
-            this.blk_cbMsgBlock.TabIndex = 0;
-            this.blk_cbMsgBlock.Text = "Is a message block";
-            this.blk_cbMsgBlock.UseVisualStyleBackColor = true;
-            this.blk_cbMsgBlock.CheckedChanged += new System.EventHandler(this.blk_cbMsgBlock_CheckedChanged);
-            // 
-            // blk_grpPermissions
-            // 
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbAlw3);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbAlw2);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbDis3);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbDis2);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbAlw1);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbDis1);
-            this.blk_grpPermissions.Controls.Add(this.blk_cmbMin);
-            this.blk_grpPermissions.Controls.Add(this.blk_lblMin);
-            this.blk_grpPermissions.Controls.Add(this.blk_lblAllow);
-            this.blk_grpPermissions.Controls.Add(this.blk_lblDisallow);
-            this.blk_grpPermissions.Location = new System.Drawing.Point(133, 6);
-            this.blk_grpPermissions.Name = "blk_grpPermissions";
-            this.blk_grpPermissions.Size = new System.Drawing.Size(360, 94);
-            this.blk_grpPermissions.TabIndex = 24;
-            this.blk_grpPermissions.TabStop = false;
-            this.blk_grpPermissions.Text = "Permissions";
-            // 
-            // blk_cmbAlw3
-            // 
-            this.blk_cmbAlw3.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbAlw3.FormattingEnabled = true;
-            this.blk_cmbAlw3.Location = new System.Drawing.Point(274, 67);
-            this.blk_cmbAlw3.Name = "blk_cmbAlw3";
-            this.blk_cmbAlw3.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbAlw3.TabIndex = 28;
-            this.blk_cmbAlw3.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbAlw2
-            // 
-            this.blk_cmbAlw2.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbAlw2.FormattingEnabled = true;
-            this.blk_cmbAlw2.Location = new System.Drawing.Point(187, 67);
-            this.blk_cmbAlw2.Name = "blk_cmbAlw2";
-            this.blk_cmbAlw2.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbAlw2.TabIndex = 27;
-            this.blk_cmbAlw2.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbDis3
-            // 
-            this.blk_cmbDis3.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbDis3.FormattingEnabled = true;
-            this.blk_cmbDis3.Location = new System.Drawing.Point(274, 41);
-            this.blk_cmbDis3.Name = "blk_cmbDis3";
-            this.blk_cmbDis3.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbDis3.TabIndex = 26;
-            this.blk_cmbDis3.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbDis2
-            // 
-            this.blk_cmbDis2.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbDis2.FormattingEnabled = true;
-            this.blk_cmbDis2.Location = new System.Drawing.Point(187, 41);
-            this.blk_cmbDis2.Name = "blk_cmbDis2";
-            this.blk_cmbDis2.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbDis2.TabIndex = 25;
-            this.blk_cmbDis2.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbAlw1
-            // 
-            this.blk_cmbAlw1.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbAlw1.FormattingEnabled = true;
-            this.blk_cmbAlw1.Location = new System.Drawing.Point(100, 67);
-            this.blk_cmbAlw1.Name = "blk_cmbAlw1";
-            this.blk_cmbAlw1.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbAlw1.TabIndex = 24;
-            this.blk_cmbAlw1.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbDis1
-            // 
-            this.blk_cmbDis1.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbDis1.FormattingEnabled = true;
-            this.blk_cmbDis1.Location = new System.Drawing.Point(100, 41);
-            this.blk_cmbDis1.Name = "blk_cmbDis1";
-            this.blk_cmbDis1.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbDis1.TabIndex = 23;
-            this.blk_cmbDis1.SelectedIndexChanged += new System.EventHandler(this.blk_cmbSpecific_SelectedIndexChanged);
-            // 
-            // blk_cmbMin
-            // 
-            this.blk_cmbMin.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_cmbMin.FormattingEnabled = true;
-            this.blk_cmbMin.Location = new System.Drawing.Point(100, 14);
-            this.blk_cmbMin.Name = "blk_cmbMin";
-            this.blk_cmbMin.Size = new System.Drawing.Size(81, 21);
-            this.blk_cmbMin.TabIndex = 22;
-            this.blk_cmbMin.SelectedIndexChanged += new System.EventHandler(this.blk_cmbMin_SelectedIndexChanged);
-            // 
-            // blk_lblMin
-            // 
-            this.blk_lblMin.AutoSize = true;
-            this.blk_lblMin.Location = new System.Drawing.Point(10, 17);
-            this.blk_lblMin.Name = "blk_lblMin";
-            this.blk_lblMin.Size = new System.Drawing.Size(89, 13);
-            this.blk_lblMin.TabIndex = 16;
-            this.blk_lblMin.Text = "Min rank needed:";
-            // 
-            // blk_lblAllow
-            // 
-            this.blk_lblAllow.AutoSize = true;
-            this.blk_lblAllow.Location = new System.Drawing.Point(10, 71);
-            this.blk_lblAllow.Name = "blk_lblAllow";
-            this.blk_lblAllow.Size = new System.Drawing.Size(91, 13);
-            this.blk_lblAllow.TabIndex = 18;
-            this.blk_lblAllow.Text = "Specifically allow:";
-            // 
-            // blk_lblDisallow
-            // 
-            this.blk_lblDisallow.AutoSize = true;
-            this.blk_lblDisallow.Location = new System.Drawing.Point(10, 44);
-            this.blk_lblDisallow.Name = "blk_lblDisallow";
-            this.blk_lblDisallow.Size = new System.Drawing.Size(80, 13);
-            this.blk_lblDisallow.TabIndex = 17;
-            this.blk_lblDisallow.Text = "But don\'t allow:";
-            // 
-            // blk_btnHelp
-            // 
-            this.blk_btnHelp.Location = new System.Drawing.Point(6, 485);
-            this.blk_btnHelp.Name = "blk_btnHelp";
-            this.blk_btnHelp.Size = new System.Drawing.Size(121, 29);
-            this.blk_btnHelp.TabIndex = 23;
-            this.blk_btnHelp.Text = "Help information";
-            this.blk_btnHelp.UseVisualStyleBackColor = true;
-            this.blk_btnHelp.Click += new System.EventHandler(this.blk_btnHelp_Click);
-            // 
-            // blk_list
-            // 
-            this.blk_list.BackColor = System.Drawing.SystemColors.Window;
-            this.blk_list.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.blk_list.FormattingEnabled = true;
-            this.blk_list.Location = new System.Drawing.Point(6, 6);
-            this.blk_list.Name = "blk_list";
-            this.blk_list.Size = new System.Drawing.Size(121, 472);
-            this.blk_list.TabIndex = 15;
-            this.blk_list.SelectedIndexChanged += new System.EventHandler(this.blk_list_SelectedIndexChanged);
-            // 
-            // pageRanks
-            // 
-            this.pageRanks.BackColor = System.Drawing.SystemColors.Control;
-            this.pageRanks.Controls.Add(this.rank_grpLimits);
-            this.pageRanks.Controls.Add(this.rank_grpGeneral);
-            this.pageRanks.Controls.Add(this.rank_grpMisc);
-            this.pageRanks.Controls.Add(this.rank_btnDel);
-            this.pageRanks.Controls.Add(this.rank_btnAdd);
-            this.pageRanks.Controls.Add(this.rank_list);
-            this.pageRanks.Location = new System.Drawing.Point(4, 22);
-            this.pageRanks.Name = "pageRanks";
-            this.pageRanks.Padding = new System.Windows.Forms.Padding(3);
-            this.pageRanks.Size = new System.Drawing.Size(498, 521);
-            this.pageRanks.TabIndex = 4;
-            this.pageRanks.Text = "Ranks";
-            // 
-            // rank_grpLimits
-            // 
-            this.rank_grpLimits.Controls.Add(this.rank_numUndo);
-            this.rank_grpLimits.Controls.Add(this.rank_numCopy);
-            this.rank_grpLimits.Controls.Add(this.rank_lblCopy);
-            this.rank_grpLimits.Controls.Add(this.rank_lblGen);
-            this.rank_grpLimits.Controls.Add(this.rank_numGen);
-            this.rank_grpLimits.Controls.Add(this.rank_lblMaps);
-            this.rank_grpLimits.Controls.Add(this.rank_numMaps);
-            this.rank_grpLimits.Controls.Add(this.rank_numDraw);
-            this.rank_grpLimits.Controls.Add(this.rank_lblDraw);
-            this.rank_grpLimits.Controls.Add(this.rank_lblUndo);
-            this.rank_grpLimits.Location = new System.Drawing.Point(142, 143);
-            this.rank_grpLimits.Name = "rank_grpLimits";
-            this.rank_grpLimits.Size = new System.Drawing.Size(349, 106);
-            this.rank_grpLimits.TabIndex = 22;
-            this.rank_grpLimits.TabStop = false;
-            this.rank_grpLimits.Text = "Rank limits";
-            // 
-            // rank_lblCopy
-            // 
-            this.rank_lblCopy.AutoSize = true;
-            this.rank_lblCopy.Location = new System.Drawing.Point(18, 77);
-            this.rank_lblCopy.Name = "rank_lblCopy";
-            this.rank_lblCopy.Size = new System.Drawing.Size(61, 13);
-            this.rank_lblCopy.TabIndex = 22;
-            this.rank_lblCopy.Text = "/copy slots:";
-            this.rank_lblCopy.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblGen
-            // 
-            this.rank_lblGen.AutoSize = true;
-            this.rank_lblGen.Location = new System.Drawing.Point(185, 50);
-            this.rank_lblGen.Name = "rank_lblGen";
-            this.rank_lblGen.Size = new System.Drawing.Size(68, 13);
-            this.rank_lblGen.TabIndex = 20;
-            this.rank_lblGen.Text = "/gen volume:";
-            this.rank_lblGen.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblMaps
-            // 
-            this.rank_lblMaps.AutoSize = true;
-            this.rank_lblMaps.Location = new System.Drawing.Point(200, 23);
-            this.rank_lblMaps.Name = "rank_lblMaps";
-            this.rank_lblMaps.Size = new System.Drawing.Size(53, 13);
-            this.rank_lblMaps.TabIndex = 18;
-            this.rank_lblMaps.Text = "/os maps:";
-            this.rank_lblMaps.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblDraw
-            // 
-            this.rank_lblDraw.AutoSize = true;
-            this.rank_lblDraw.Location = new System.Drawing.Point(20, 23);
-            this.rank_lblDraw.Name = "rank_lblDraw";
-            this.rank_lblDraw.Size = new System.Drawing.Size(59, 13);
-            this.rank_lblDraw.TabIndex = 3;
-            this.rank_lblDraw.Text = "Draw limit:";
-            this.rank_lblDraw.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblUndo
-            // 
-            this.rank_lblUndo.AutoSize = true;
-            this.rank_lblUndo.Location = new System.Drawing.Point(19, 50);
-            this.rank_lblUndo.Name = "rank_lblUndo";
-            this.rank_lblUndo.Size = new System.Drawing.Size(60, 13);
-            this.rank_lblUndo.TabIndex = 14;
-            this.rank_lblUndo.Text = "Max /undo:";
-            this.rank_lblUndo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_grpGeneral
-            // 
-            this.rank_grpGeneral.Controls.Add(this.rank_lblOsMap);
-            this.rank_grpGeneral.Controls.Add(this.rank_cmbOsMap);
-            this.rank_grpGeneral.Controls.Add(this.rank_cbEmpty);
-            this.rank_grpGeneral.Controls.Add(this.rank_lblDefault);
-            this.rank_grpGeneral.Controls.Add(this.rank_cmbDefault);
-            this.rank_grpGeneral.Controls.Add(this.rank_cbSilentAdmins);
-            this.rank_grpGeneral.Controls.Add(this.rank_cbTPHigher);
-            this.rank_grpGeneral.Location = new System.Drawing.Point(142, 255);
-            this.rank_grpGeneral.Name = "rank_grpGeneral";
-            this.rank_grpGeneral.Size = new System.Drawing.Size(349, 121);
-            this.rank_grpGeneral.TabIndex = 19;
-            this.rank_grpGeneral.TabStop = false;
-            this.rank_grpGeneral.Text = "General settings";
-            // 
-            // rank_lblOsMap
-            // 
-            this.rank_lblOsMap.AutoSize = true;
-            this.rank_lblOsMap.Location = new System.Drawing.Point(186, 23);
-            this.rank_lblOsMap.Name = "rank_lblOsMap";
-            this.rank_lblOsMap.Size = new System.Drawing.Size(67, 13);
-            this.rank_lblOsMap.TabIndex = 50;
-            this.rank_lblOsMap.Text = "/os perbuild:";
-            // 
-            // rank_cbEmpty
-            // 
-            this.rank_cbEmpty.AutoSize = true;
-            this.rank_cbEmpty.Location = new System.Drawing.Point(11, 98);
-            this.rank_cbEmpty.Name = "rank_cbEmpty";
-            this.rank_cbEmpty.Size = new System.Drawing.Size(163, 17);
-            this.rank_cbEmpty.TabIndex = 45;
-            this.rank_cbEmpty.Text = "Show empty ranks in /players";
-            this.rank_cbEmpty.UseVisualStyleBackColor = true;
-            // 
-            // rank_lblDefault
-            // 
-            this.rank_lblDefault.AutoSize = true;
-            this.rank_lblDefault.Location = new System.Drawing.Point(11, 23);
-            this.rank_lblDefault.Name = "rank_lblDefault";
-            this.rank_lblDefault.Size = new System.Drawing.Size(68, 13);
-            this.rank_lblDefault.TabIndex = 43;
-            this.rank_lblDefault.Text = "Default rank:";
-            // 
-            // rank_grpMisc
-            // 
-            this.rank_grpMisc.Controls.Add(this.rank_numAfk);
-            this.rank_grpMisc.Controls.Add(this.rank_cbAfk);
-            this.rank_grpMisc.Controls.Add(this.rank_lblPrefix);
-            this.rank_grpMisc.Controls.Add(this.rank_txtPrefix);
-            this.rank_grpMisc.Controls.Add(this.rank_lblPerm);
-            this.rank_grpMisc.Controls.Add(this.rank_txtMOTD);
-            this.rank_grpMisc.Controls.Add(this.rank_numPerm);
-            this.rank_grpMisc.Controls.Add(this.rank_txtName);
-            this.rank_grpMisc.Controls.Add(this.rank_btnColor);
-            this.rank_grpMisc.Controls.Add(this.rank_lblMOTD);
-            this.rank_grpMisc.Controls.Add(this.rank_lblName);
-            this.rank_grpMisc.Controls.Add(this.rank_lblColor);
-            this.rank_grpMisc.Location = new System.Drawing.Point(142, 6);
-            this.rank_grpMisc.Name = "rank_grpMisc";
-            this.rank_grpMisc.Size = new System.Drawing.Size(349, 131);
-            this.rank_grpMisc.TabIndex = 18;
-            this.rank_grpMisc.TabStop = false;
-            this.rank_grpMisc.Text = "Rank settings";
-            // 
-            // rank_cbAfk
-            // 
-            this.rank_cbAfk.Location = new System.Drawing.Point(11, 102);
-            this.rank_cbAfk.Name = "rank_cbAfk";
-            this.rank_cbAfk.Size = new System.Drawing.Size(108, 24);
-            this.rank_cbAfk.TabIndex = 22;
-            this.rank_cbAfk.Text = "Kick after AFK for";
-            this.rank_cbAfk.UseVisualStyleBackColor = true;
-            this.rank_cbAfk.CheckedChanged += new System.EventHandler(this.rank_cbAfk_CheckedChanged);
-            // 
-            // rank_lblPrefix
-            // 
-            this.rank_lblPrefix.AutoSize = true;
-            this.rank_lblPrefix.Location = new System.Drawing.Point(216, 50);
-            this.rank_lblPrefix.Name = "rank_lblPrefix";
-            this.rank_lblPrefix.Size = new System.Drawing.Size(37, 13);
-            this.rank_lblPrefix.TabIndex = 20;
-            this.rank_lblPrefix.Text = "Prefix:";
-            this.rank_lblPrefix.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblPerm
-            // 
-            this.rank_lblPerm.AutoSize = true;
-            this.rank_lblPerm.Location = new System.Drawing.Point(190, 23);
-            this.rank_lblPerm.Name = "rank_lblPerm";
-            this.rank_lblPerm.Size = new System.Drawing.Size(63, 13);
-            this.rank_lblPerm.TabIndex = 7;
-            this.rank_lblPerm.Text = "Permission:";
-            this.rank_lblPerm.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblMOTD
-            // 
-            this.rank_lblMOTD.AutoSize = true;
-            this.rank_lblMOTD.Location = new System.Drawing.Point(41, 78);
-            this.rank_lblMOTD.Name = "rank_lblMOTD";
-            this.rank_lblMOTD.Size = new System.Drawing.Size(38, 13);
-            this.rank_lblMOTD.TabIndex = 16;
-            this.rank_lblMOTD.Text = "MOTD:";
-            // 
-            // rank_lblName
-            // 
-            this.rank_lblName.AutoSize = true;
-            this.rank_lblName.Location = new System.Drawing.Point(41, 23);
-            this.rank_lblName.Name = "rank_lblName";
-            this.rank_lblName.Size = new System.Drawing.Size(38, 13);
-            this.rank_lblName.TabIndex = 4;
-            this.rank_lblName.Text = "Name:";
-            this.rank_lblName.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // rank_lblColor
-            // 
-            this.rank_lblColor.AutoSize = true;
-            this.rank_lblColor.Location = new System.Drawing.Point(44, 50);
-            this.rank_lblColor.Name = "rank_lblColor";
-            this.rank_lblColor.Size = new System.Drawing.Size(35, 13);
-            this.rank_lblColor.TabIndex = 11;
-            this.rank_lblColor.Text = "Color:";
-            // 
-            // rank_btnDel
-            // 
-            this.rank_btnDel.Location = new System.Drawing.Point(79, 353);
-            this.rank_btnDel.Name = "rank_btnDel";
-            this.rank_btnDel.Size = new System.Drawing.Size(57, 23);
-            this.rank_btnDel.TabIndex = 2;
-            this.rank_btnDel.Text = "Delete";
-            this.rank_btnDel.UseVisualStyleBackColor = true;
-            this.rank_btnDel.Click += new System.EventHandler(this.rank_btnDel_Click);
-            // 
-            // rank_btnAdd
-            // 
-            this.rank_btnAdd.Location = new System.Drawing.Point(6, 353);
-            this.rank_btnAdd.Name = "rank_btnAdd";
-            this.rank_btnAdd.Size = new System.Drawing.Size(57, 23);
-            this.rank_btnAdd.TabIndex = 1;
-            this.rank_btnAdd.Text = "Add";
-            this.rank_btnAdd.UseVisualStyleBackColor = true;
-            this.rank_btnAdd.Click += new System.EventHandler(this.rank_btnAdd_Click);
-            // 
-            // rank_list
-            // 
-            this.rank_list.BackColor = System.Drawing.SystemColors.Window;
-            this.rank_list.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.rank_list.FormattingEnabled = true;
-            this.rank_list.Location = new System.Drawing.Point(6, 6);
-            this.rank_list.Name = "rank_list";
-            this.rank_list.Size = new System.Drawing.Size(130, 342);
-            this.rank_list.TabIndex = 0;
-            this.rank_list.SelectedIndexChanged += new System.EventHandler(this.rank_list_SelectedIndexChanged);
-            // 
-            // pageMisc
-            // 
-            this.pageMisc.BackColor = System.Drawing.SystemColors.Control;
-            this.pageMisc.Controls.Add(this.grpExtra);
-            this.pageMisc.Controls.Add(this.grpMessages);
-            this.pageMisc.Controls.Add(this.grpPhysics);
-            this.pageMisc.Controls.Add(this.afk_grp);
-            this.pageMisc.Controls.Add(this.bak_grp);
-            this.pageMisc.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pageMisc.Location = new System.Drawing.Point(4, 22);
-            this.pageMisc.Name = "pageMisc";
-            this.pageMisc.Size = new System.Drawing.Size(498, 521);
-            this.pageMisc.TabIndex = 3;
-            this.pageMisc.Text = "Misc";
-            // 
-            // grpExtra
-            // 
-            this.grpExtra.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpExtra.Controls.Add(this.misc_numReview);
-            this.grpExtra.Controls.Add(this.chkRestart);
-            this.grpExtra.Controls.Add(this.misc_lblReview);
-            this.grpExtra.Controls.Add(this.chkGuestLimitNotify);
-            this.grpExtra.Controls.Add(this.chkRepeatMessages);
-            this.grpExtra.Controls.Add(this.chkDeath);
-            this.grpExtra.Controls.Add(this.chk17Dollar);
-            this.grpExtra.Controls.Add(this.chkSmile);
-            this.grpExtra.Location = new System.Drawing.Point(10, 158);
-            this.grpExtra.Name = "grpExtra";
-            this.grpExtra.Size = new System.Drawing.Size(332, 124);
-            this.grpExtra.TabIndex = 40;
-            this.grpExtra.TabStop = false;
-            this.grpExtra.Text = "Extra";
-            // 
-            // misc_numReview
-            // 
-            this.misc_numReview.BackColor = System.Drawing.SystemColors.Window;
-            this.misc_numReview.Location = new System.Drawing.Point(126, 89);
-            this.misc_numReview.Name = "misc_numReview";
-            this.misc_numReview.Seconds = ((long)(300));
-            this.misc_numReview.Size = new System.Drawing.Size(66, 21);
-            this.misc_numReview.TabIndex = 35;
-            this.misc_numReview.Text = "5m";
-            this.misc_numReview.Value = System.TimeSpan.Parse("00:05:00");
-            // 
-            // chkRestart
-            // 
-            this.chkRestart.AutoSize = true;
-            this.chkRestart.Location = new System.Drawing.Point(190, 20);
-            this.chkRestart.Name = "chkRestart";
-            this.chkRestart.Size = new System.Drawing.Size(101, 17);
-            this.chkRestart.TabIndex = 51;
-            this.chkRestart.Text = "Restart on error";
-            this.chkRestart.UseVisualStyleBackColor = true;
-            // 
-            // misc_lblReview
-            // 
-            this.misc_lblReview.AutoSize = true;
-            this.misc_lblReview.Location = new System.Drawing.Point(6, 91);
-            this.misc_lblReview.Name = "misc_lblReview";
-            this.misc_lblReview.Size = new System.Drawing.Size(115, 13);
-            this.misc_lblReview.TabIndex = 49;
-            this.misc_lblReview.Text = "Review cooldown time:";
-            // 
-            // chkRepeatMessages
-            // 
-            this.chkRepeatMessages.AutoSize = true;
-            this.chkRepeatMessages.Location = new System.Drawing.Point(190, 43);
-            this.chkRepeatMessages.Name = "chkRepeatMessages";
-            this.chkRepeatMessages.Size = new System.Drawing.Size(136, 17);
-            this.chkRepeatMessages.TabIndex = 29;
-            this.chkRepeatMessages.Text = "Repeat message blocks";
-            this.chkRepeatMessages.UseVisualStyleBackColor = true;
-            // 
-            // chk17Dollar
-            // 
-            this.chk17Dollar.AutoSize = true;
-            this.chk17Dollar.Location = new System.Drawing.Point(6, 66);
-            this.chk17Dollar.Name = "chk17Dollar";
-            this.chk17Dollar.Size = new System.Drawing.Size(100, 17);
-            this.chk17Dollar.TabIndex = 22;
-            this.chk17Dollar.Text = "$ before $name";
-            this.chk17Dollar.UseVisualStyleBackColor = true;
-            // 
-            // chkSmile
-            // 
-            this.chkSmile.AutoSize = true;
-            this.chkSmile.Location = new System.Drawing.Point(6, 43);
-            this.chkSmile.Name = "chkSmile";
-            this.chkSmile.Size = new System.Drawing.Size(91, 17);
-            this.chkSmile.TabIndex = 19;
-            this.chkSmile.Text = "Parse emotes";
-            this.chkSmile.UseVisualStyleBackColor = true;
-            // 
-            // grpMessages
-            // 
-            this.grpMessages.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpMessages.Controls.Add(this.hack_num);
-            this.grpMessages.Controls.Add(this.hack_lbl);
-            this.grpMessages.Location = new System.Drawing.Point(10, 103);
-            this.grpMessages.Name = "grpMessages";
-            this.grpMessages.Size = new System.Drawing.Size(332, 49);
-            this.grpMessages.TabIndex = 39;
-            this.grpMessages.TabStop = false;
-            this.grpMessages.Text = "Messages";
-            // 
-            // hack_num
-            // 
-            this.hack_num.BackColor = System.Drawing.SystemColors.Window;
-            this.hack_num.Location = new System.Drawing.Point(201, 18);
-            this.hack_num.Name = "hack_num";
-            this.hack_num.Seconds = ((long)(5));
-            this.hack_num.Size = new System.Drawing.Size(66, 21);
-            this.hack_num.TabIndex = 34;
-            this.hack_num.Text = "5s";
-            this.hack_num.Value = System.TimeSpan.Parse("00:00:05");
-            // 
-            // grpPhysics
-            // 
-            this.grpPhysics.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpPhysics.Controls.Add(this.chkPhysRestart);
-            this.grpPhysics.Controls.Add(this.chkRpLimit);
-            this.grpPhysics.Controls.Add(this.txtRP);
-            this.grpPhysics.Controls.Add(this.chkRpNorm);
-            this.grpPhysics.Controls.Add(this.txtNormRp);
-            this.grpPhysics.Location = new System.Drawing.Point(352, 124);
-            this.grpPhysics.Name = "grpPhysics";
-            this.grpPhysics.Size = new System.Drawing.Size(133, 117);
-            this.grpPhysics.TabIndex = 38;
-            this.grpPhysics.TabStop = false;
-            this.grpPhysics.Text = "Physics Restart";
-            // 
-            // txtRP
-            // 
-            this.txtRP.BackColor = System.Drawing.SystemColors.Window;
-            this.txtRP.Location = new System.Drawing.Point(72, 49);
-            this.txtRP.Name = "txtRP";
-            this.txtRP.Size = new System.Drawing.Size(55, 21);
-            this.txtRP.TabIndex = 14;
-            // 
-            // chkRpNorm
-            // 
-            this.chkRpNorm.AutoSize = true;
-            this.chkRpNorm.Location = new System.Drawing.Point(5, 79);
-            this.chkRpNorm.Name = "chkRpNorm";
-            this.chkRpNorm.Size = new System.Drawing.Size(61, 13);
-            this.chkRpNorm.TabIndex = 16;
-            this.chkRpNorm.Text = "Normal /rp:";
-            // 
-            // txtNormRp
-            // 
-            this.txtNormRp.BackColor = System.Drawing.SystemColors.Window;
-            this.txtNormRp.Location = new System.Drawing.Point(72, 76);
-            this.txtNormRp.Name = "txtNormRp";
-            this.txtNormRp.Size = new System.Drawing.Size(55, 21);
-            this.txtNormRp.TabIndex = 13;
-            // 
-            // afk_grp
-            // 
-            this.afk_grp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.afk_grp.Controls.Add(this.afk_numTimer);
-            this.afk_grp.Controls.Add(this.afk_lblTimer);
-            this.afk_grp.Location = new System.Drawing.Point(352, 13);
-            this.afk_grp.Name = "afk_grp";
-            this.afk_grp.Size = new System.Drawing.Size(133, 100);
-            this.afk_grp.TabIndex = 37;
-            this.afk_grp.TabStop = false;
-            this.afk_grp.Text = "AFK";
-            // 
-            // afk_numTimer
-            // 
-            this.afk_numTimer.BackColor = System.Drawing.SystemColors.Window;
-            this.afk_numTimer.Location = new System.Drawing.Point(61, 16);
-            this.afk_numTimer.Name = "afk_numTimer";
-            this.afk_numTimer.Seconds = ((long)(600));
-            this.afk_numTimer.Size = new System.Drawing.Size(66, 21);
-            this.afk_numTimer.TabIndex = 33;
-            this.afk_numTimer.Text = "10m";
-            this.afk_numTimer.Value = System.TimeSpan.Parse("00:10:00");
-            // 
-            // afk_lblTimer
-            // 
-            this.afk_lblTimer.AutoSize = true;
-            this.afk_lblTimer.Location = new System.Drawing.Point(5, 20);
-            this.afk_lblTimer.Name = "afk_lblTimer";
-            this.afk_lblTimer.Size = new System.Drawing.Size(54, 13);
-            this.afk_lblTimer.TabIndex = 12;
-            this.afk_lblTimer.Text = "AFK timer:";
-            // 
-            // bak_grp
-            // 
-            this.bak_grp.AutoSize = true;
-            this.bak_grp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.bak_grp.Controls.Add(this.bak_numTime);
-            this.bak_grp.Controls.Add(this.bak_lblLocation);
-            this.bak_grp.Controls.Add(this.bak_txtLocation);
-            this.bak_grp.Controls.Add(this.bak_lblTime);
-            this.bak_grp.Location = new System.Drawing.Point(10, 13);
-            this.bak_grp.Name = "bak_grp";
-            this.bak_grp.Size = new System.Drawing.Size(332, 84);
-            this.bak_grp.TabIndex = 36;
-            this.bak_grp.TabStop = false;
-            this.bak_grp.Text = "Backups";
-            // 
-            // bak_numTime
-            // 
-            this.bak_numTime.BackColor = System.Drawing.SystemColors.Window;
-            this.bak_numTime.Location = new System.Drawing.Point(81, 43);
-            this.bak_numTime.Name = "bak_numTime";
-            this.bak_numTime.Seconds = ((long)(300));
-            this.bak_numTime.Size = new System.Drawing.Size(66, 21);
-            this.bak_numTime.TabIndex = 34;
-            this.bak_numTime.Text = "5m";
-            this.bak_numTime.Value = System.TimeSpan.Parse("00:05:00");
-            // 
-            // bak_lblLocation
-            // 
-            this.bak_lblLocation.AutoSize = true;
-            this.bak_lblLocation.Location = new System.Drawing.Point(5, 21);
-            this.bak_lblLocation.Name = "bak_lblLocation";
-            this.bak_lblLocation.Size = new System.Drawing.Size(44, 13);
-            this.bak_lblLocation.TabIndex = 3;
-            this.bak_lblLocation.Text = "Location:";
-            // 
-            // bak_txtLocation
-            // 
-            this.bak_txtLocation.BackColor = System.Drawing.SystemColors.Window;
-            this.bak_txtLocation.Location = new System.Drawing.Point(81, 17);
-            this.bak_txtLocation.Name = "bak_txtLocation";
-            this.bak_txtLocation.Size = new System.Drawing.Size(245, 21);
-            this.bak_txtLocation.TabIndex = 2;
-            // 
-            // bak_lblTime
-            // 
-            this.bak_lblTime.AutoSize = true;
-            this.bak_lblTime.Location = new System.Drawing.Point(5, 47);
-            this.bak_lblTime.Name = "bak_lblTime";
-            this.bak_lblTime.Size = new System.Drawing.Size(67, 13);
-            this.bak_lblTime.TabIndex = 7;
-            this.bak_lblTime.Text = "Backup time:";
-            // 
-            // pageRelay
-            // 
-            this.pageRelay.BackColor = System.Drawing.SystemColors.Control;
-            this.pageRelay.Controls.Add(this.dis_grp);
-            this.pageRelay.Controls.Add(this.gb_ircSettings);
-            this.pageMisc.Controls.Add(this.sql_grp);
-            this.pageRelay.Controls.Add(this.irc_grp);
-            this.pageRelay.Location = new System.Drawing.Point(4, 22);
-            this.pageRelay.Name = "pageRelay";
-            this.pageRelay.Size = new System.Drawing.Size(498, 521);
-            this.pageRelay.TabIndex = 6;
-            this.pageRelay.Text = "IRC";
-            // 
-            // gb_ircSettings
-            // 
-            this.gb_ircSettings.Controls.Add(this.irc_txtPrefix);
-            this.gb_ircSettings.Controls.Add(this.irc_lblPrefix);
-            this.gb_ircSettings.Controls.Add(this.irc_cmbVerify);
-            this.gb_ircSettings.Controls.Add(this.irc_lblVerify);
-            this.gb_ircSettings.Controls.Add(this.irc_cmbRank);
-            this.gb_ircSettings.Controls.Add(this.irc_lblRank);
-            this.gb_ircSettings.Controls.Add(this.irc_cbAFK);
-            this.gb_ircSettings.Controls.Add(this.irc_cbWorldChanges);
-            this.gb_ircSettings.Controls.Add(this.irc_cbTitles);
-            this.gb_ircSettings.Location = new System.Drawing.Point(8, 223);
-            this.gb_ircSettings.Name = "gb_ircSettings";
-            this.gb_ircSettings.Size = new System.Drawing.Size(483, 95);
-            this.gb_ircSettings.TabIndex = 33;
-            this.gb_ircSettings.TabStop = false;
-            this.gb_ircSettings.Text = "IRC settings";
-            // 
-            // irc_txtPrefix
-            // 
-            this.irc_txtPrefix.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_txtPrefix.Location = new System.Drawing.Point(367, 68);
-            this.irc_txtPrefix.Name = "irc_txtPrefix";
-            this.irc_txtPrefix.Size = new System.Drawing.Size(100, 21);
-            this.irc_txtPrefix.TabIndex = 32;
-            // 
-            // irc_lblPrefix
-            // 
-            this.irc_lblPrefix.AutoSize = true;
-            this.irc_lblPrefix.Location = new System.Drawing.Point(265, 70);
-            this.irc_lblPrefix.Name = "irc_lblPrefix";
-            this.irc_lblPrefix.Size = new System.Drawing.Size(87, 13);
-            this.irc_lblPrefix.TabIndex = 39;
-            this.irc_lblPrefix.Text = "Command prefix:";
-            // 
-            // irc_cmbVerify
-            // 
-            this.irc_cmbVerify.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_cmbVerify.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.irc_cmbVerify.FormattingEnabled = true;
-            this.irc_cmbVerify.Location = new System.Drawing.Point(387, 42);
-            this.irc_cmbVerify.Name = "irc_cmbVerify";
-            this.irc_cmbVerify.Size = new System.Drawing.Size(80, 21);
-            this.irc_cmbVerify.TabIndex = 38;
-            // 
-            // irc_lblVerify
-            // 
-            this.irc_lblVerify.AutoSize = true;
-            this.irc_lblVerify.Location = new System.Drawing.Point(284, 45);
-            this.irc_lblVerify.Name = "irc_lblVerify";
-            this.irc_lblVerify.Size = new System.Drawing.Size(99, 13);
-            this.irc_lblVerify.TabIndex = 37;
-            this.irc_lblVerify.Text = "Verification method:";
-            // 
-            // irc_cmbRank
-            // 
-            this.irc_cmbRank.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_cmbRank.FormattingEnabled = true;
-            this.irc_cmbRank.Location = new System.Drawing.Point(367, 17);
-            this.irc_cmbRank.Name = "irc_cmbRank";
-            this.irc_cmbRank.Size = new System.Drawing.Size(100, 21);
-            this.irc_cmbRank.TabIndex = 36;
-            // 
-            // irc_lblRank
-            // 
-            this.irc_lblRank.AutoSize = true;
-            this.irc_lblRank.Location = new System.Drawing.Point(265, 21);
-            this.irc_lblRank.Name = "irc_lblRank";
-            this.irc_lblRank.Size = new System.Drawing.Size(97, 13);
-            this.irc_lblRank.TabIndex = 35;
-            this.irc_lblRank.Text = "IRC controller rank:";
-            // 
-            // irc_cbAFK
-            // 
-            this.irc_cbAFK.AutoSize = true;
-            this.irc_cbAFK.Location = new System.Drawing.Point(6, 70);
-            this.irc_cbAFK.Name = "irc_cbAFK";
-            this.irc_cbAFK.Size = new System.Drawing.Size(176, 17);
-            this.irc_cbAFK.TabIndex = 34;
-            this.irc_cbAFK.Text = "Announce when player goes AFK";
-            this.irc_cbAFK.UseVisualStyleBackColor = true;
-            // 
-            // irc_cbWorldChanges
-            // 
-            this.irc_cbWorldChanges.AutoSize = true;
-            this.irc_cbWorldChanges.Location = new System.Drawing.Point(6, 45);
-            this.irc_cbWorldChanges.Name = "irc_cbWorldChanges";
-            this.irc_cbWorldChanges.Size = new System.Drawing.Size(199, 17);
-            this.irc_cbWorldChanges.TabIndex = 33;
-            this.irc_cbWorldChanges.Text = "Announce when player changes level";
-            this.irc_cbWorldChanges.UseVisualStyleBackColor = true;
-            // 
-            // irc_cbTitles
-            // 
-            this.irc_cbTitles.AutoSize = true;
-            this.irc_cbTitles.Location = new System.Drawing.Point(6, 20);
-            this.irc_cbTitles.Name = "irc_cbTitles";
-            this.irc_cbTitles.Size = new System.Drawing.Size(171, 17);
-            this.irc_cbTitles.TabIndex = 32;
-            this.irc_cbTitles.Text = "Show player\'s title in messages";
-            this.irc_cbTitles.UseVisualStyleBackColor = true;
-            // 
-            // dis_grp
-            // 
-            this.dis_grp.Controls.Add(this.dis_linkHelp);
-            this.dis_grp.Controls.Add(this.dis_chkEnabled);
-            this.dis_grp.Controls.Add(this.dis_lblToken);
-            this.dis_grp.Controls.Add(this.dis_txtToken);
-            this.dis_grp.Controls.Add(this.dis_lblChannel);
-            this.dis_grp.Controls.Add(this.dis_txtChannel);
-            this.dis_grp.Controls.Add(this.dis_lblOpChannel);
-            this.dis_grp.Controls.Add(this.dis_txtOpChannel);
-            this.dis_grp.Controls.Add(this.dis_chkNicks);
-            this.dis_grp.Location = new System.Drawing.Point(241, 3);
-            this.dis_grp.Name = "dis_grp";
-            this.dis_grp.Size = new System.Drawing.Size(250, 158);
-            this.dis_grp.TabIndex = 34;
-            this.dis_grp.TabStop = false;
-            this.dis_grp.Text = "Discord";
-            // 
-            // dis_lblToken
-            // 
-            this.dis_lblToken.AutoSize = true;
-            this.dis_lblToken.Location = new System.Drawing.Point(6, 50);
-            this.dis_lblToken.Name = "dis_lblToken";
-            this.dis_lblToken.Size = new System.Drawing.Size(55, 13);
-            this.dis_lblToken.TabIndex = 19;
-            this.dis_lblToken.Text = "Bot token:";
-            // 
-            // dis_lblChannel
-            // 
-            this.dis_lblChannel.AutoSize = true;
-            this.dis_lblChannel.Location = new System.Drawing.Point(6, 77);
-            this.dis_lblChannel.Name = "dis_lblChannel";
-            this.dis_lblChannel.Size = new System.Drawing.Size(61, 13);
-            this.dis_lblChannel.TabIndex = 30;
-            this.dis_lblChannel.Text = "Channel ID:";
-            // 
-            // dis_txtChannel
-            // 
-            this.dis_txtChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.dis_txtChannel.Location = new System.Drawing.Point(82, 74);
-            this.dis_txtChannel.Name = "dis_txtChannel";
-            this.dis_txtChannel.Size = new System.Drawing.Size(152, 21);
-            this.dis_txtChannel.TabIndex = 31;
-            this.toolTip.SetToolTip(this.dis_txtOpChannel, "The ID of the channel that chat is sent to and read from.\n\n" +
+            // Ls_cbMain
+            // 
+            this.Ls_cbMain.AutoSize = true;
+            this.Ls_cbMain.Location = new Point(11, 66);
+            this.Ls_cbMain.Name = "Ls_cbMain";
+            this.Ls_cbMain.Size = new Size(112, 17);
+            this.Ls_cbMain.TabIndex = 24;
+            this.Ls_cbMain.Text = "Change main level";
+            this.Ls_cbMain.UseVisualStyleBackColor = true;
+            // 
+            // Ls_cbStart
+            // 
+            this.Ls_cbStart.AutoSize = true;
+            this.Ls_cbStart.Location = new Point(11, 20);
+            this.Ls_cbStart.Name = "Ls_cbStart";
+            this.Ls_cbStart.Size = new Size(139, 17);
+            this.Ls_cbStart.TabIndex = 22;
+            this.Ls_cbStart.Text = "Start when server starts";
+            this.Ls_cbStart.UseVisualStyleBackColor = true;
+            // 
+            // Rank_numAfk
+            // 
+            this.Rank_numAfk.BackColor = SystemColors.Window;
+            this.Rank_numAfk.Location = new Point(113, 102);
+            this.Rank_numAfk.Name = "Rank_numAfk";
+            this.Rank_numAfk.Seconds = ((long)(0));
+            this.Rank_numAfk.Size = new Size(62, 21);
+            this.Rank_numAfk.TabIndex = 23;
+            this.Rank_numAfk.Text = "0s";
+            this.Rank_numAfk.Value = TimeSpan.Parse("00:00:00");
+            this.Rank_numAfk.ValueChanged += new EventHandler(this.Rank_numAfk_ValueChanged);
+            // 
+            // Sec_cbLogNotes
+            // 
+            this.Sec_cbLogNotes.AutoSize = true;
+            this.Sec_cbLogNotes.Location = new Point(15, 20);
+            this.Sec_cbLogNotes.Name = "Sec_cbLogNotes";
+            this.Sec_cbLogNotes.Size = new Size(178, 17);
+            this.Sec_cbLogNotes.TabIndex = 22;
+            this.Sec_cbLogNotes.Text = "Log notes (/ban, /warn, /kick etc)";
+            this.Sec_cbLogNotes.UseVisualStyleBackColor = true;
+            // 
+            // Sec_cbChatAuto
+            // 
+            this.Sec_cbChatAuto.AutoSize = true;
+            this.Sec_cbChatAuto.Location = new Point(10, 20);
+            this.Sec_cbChatAuto.Name = "Sec_cbChatAuto";
+            this.Sec_cbChatAuto.Size = new Size(142, 17);
+            this.Sec_cbChatAuto.TabIndex = 24;
+            this.Sec_cbChatAuto.Text = "Enable automatic muting";
+            this.Sec_cbChatAuto.UseVisualStyleBackColor = true;
+            this.Sec_cbChatAuto.CheckedChanged += new EventHandler(this.Sec_cbChatAuto_Checked);
+            // 
+            // PageBlocks
+            // 
+            this.PageBlocks.BackColor = SystemColors.Control;
+            this.PageBlocks.Controls.Add(this.Blk_grpPhysics);
+            this.PageBlocks.Controls.Add(this.Blk_grpBehaviour);
+            this.PageBlocks.Controls.Add(this.Blk_grpPermissions);
+            this.PageBlocks.Controls.Add(this.Blk_btnHelp);
+            this.PageBlocks.Controls.Add(this.Blk_list);
+            this.PageBlocks.Location = new Point(4, 22);
+            this.PageBlocks.Name = "PageBlocks";
+            this.PageBlocks.Padding = new Padding(3);
+            this.PageBlocks.Size = new Size(498, 521);
+            this.PageBlocks.TabIndex = 5;
+            this.PageBlocks.Text = "Blocks";
+            // 
+            // Blk_grpPhysics
+            // 
+            this.Blk_grpPhysics.Controls.Add(this.Blk_cbWater);
+            this.Blk_grpPhysics.Controls.Add(this.Blk_cbLava);
+            this.Blk_grpPhysics.Controls.Add(this.Blk_cbRails);
+            this.Blk_grpPhysics.Controls.Add(this.Blk_cbTdoor);
+            this.Blk_grpPhysics.Controls.Add(this.Blk_cbDoor);
+            this.Blk_grpPhysics.Location = new Point(134, 180);
+            this.Blk_grpPhysics.Name = "Blk_grpPhysics";
+            this.Blk_grpPhysics.Size = new Size(360, 92);
+            this.Blk_grpPhysics.TabIndex = 26;
+            this.Blk_grpPhysics.TabStop = false;
+            this.Blk_grpPhysics.Text = "Physics behaviour";
+            // 
+            // Blk_cbWater
+            // 
+            this.Blk_cbWater.Location = new Point(186, 65);
+            this.Blk_cbWater.Name = "Blk_cbWater";
+            this.Blk_cbWater.Size = new Size(104, 24);
+            this.Blk_cbWater.TabIndex = 7;
+            this.Blk_cbWater.Text = "Killed by water";
+            this.Blk_cbWater.UseVisualStyleBackColor = true;
+            this.Blk_cbWater.CheckedChanged += new EventHandler(this.Blk_cbWater_CheckedChanged);
+            // 
+            // Blk_cbLava
+            // 
+            this.Blk_cbLava.Location = new Point(10, 65);
+            this.Blk_cbLava.Name = "Blk_cbLava";
+            this.Blk_cbLava.Size = new Size(116, 24);
+            this.Blk_cbLava.TabIndex = 6;
+            this.Blk_cbLava.Text = "Killed by lava";
+            this.Blk_cbLava.UseVisualStyleBackColor = true;
+            this.Blk_cbLava.CheckedChanged += new EventHandler(this.Blk_cbLava_CheckedChanged);
+            // 
+            // Blk_cbRails
+            // 
+            this.Blk_cbRails.Location = new Point(10, 40);
+            this.Blk_cbRails.Name = "Blk_cbRails";
+            this.Blk_cbRails.Size = new Size(89, 24);
+            this.Blk_cbRails.TabIndex = 5;
+            this.Blk_cbRails.Text = "Is train rails";
+            this.Blk_cbRails.UseVisualStyleBackColor = true;
+            this.Blk_cbRails.CheckedChanged += new EventHandler(this.Blk_cbRails_CheckedChanged);
+            // 
+            // Blk_cbTdoor
+            // 
+            this.Blk_cbTdoor.Location = new Point(187, 15);
+            this.Blk_cbTdoor.Name = "Blk_cbTdoor";
+            this.Blk_cbTdoor.Size = new Size(104, 24);
+            this.Blk_cbTdoor.TabIndex = 4;
+            this.Blk_cbTdoor.Text = "Is a tDoor";
+            this.Blk_cbTdoor.UseVisualStyleBackColor = true;
+            this.Blk_cbTdoor.CheckedChanged += new EventHandler(this.Blk_cbTdoor_CheckedChanged);
+            // 
+            // Blk_cbDoor
+            // 
+            this.Blk_cbDoor.Location = new Point(10, 15);
+            this.Blk_cbDoor.Name = "Blk_cbDoor";
+            this.Blk_cbDoor.Size = new Size(116, 24);
+            this.Blk_cbDoor.TabIndex = 3;
+            this.Blk_cbDoor.Text = "Is a door";
+            this.Blk_cbDoor.UseVisualStyleBackColor = true;
+            this.Blk_cbDoor.CheckedChanged += new EventHandler(this.Blk_cbDoor_CheckedChanged);
+            // 
+            // Blk_grpBehaviour
+            // 
+            this.Blk_grpBehaviour.Controls.Add(this.Blk_txtDeath);
+            this.Blk_grpBehaviour.Controls.Add(this.Blk_cbDeath);
+            this.Blk_grpBehaviour.Controls.Add(this.Blk_cbPortal);
+            this.Blk_grpBehaviour.Controls.Add(this.Blk_cbMsgBlock);
+            this.Blk_grpBehaviour.Location = new Point(133, 105);
+            this.Blk_grpBehaviour.Name = "Blk_grpBehaviour";
+            this.Blk_grpBehaviour.Size = new Size(360, 70);
+            this.Blk_grpBehaviour.TabIndex = 25;
+            this.Blk_grpBehaviour.TabStop = false;
+            this.Blk_grpBehaviour.Text = "Behaviour";
+            // 
+            // Blk_txtDeath
+            // 
+            this.Blk_txtDeath.BackColor = SystemColors.Window;
+            this.Blk_txtDeath.Location = new Point(100, 42);
+            this.Blk_txtDeath.Name = "Blk_txtDeath";
+            this.Blk_txtDeath.Size = new Size(254, 21);
+            this.Blk_txtDeath.TabIndex = 3;
+            this.Blk_txtDeath.TextChanged += new EventHandler(this.Blk_txtDeath_TextChanged);
+            // 
+            // Blk_cbDeath
+            // 
+            this.Blk_cbDeath.Location = new Point(10, 40);
+            this.Blk_cbDeath.Name = "Blk_cbDeath";
+            this.Blk_cbDeath.Size = new Size(89, 24);
+            this.Blk_cbDeath.TabIndex = 2;
+            this.Blk_cbDeath.Text = "Kills players";
+            this.Blk_cbDeath.UseVisualStyleBackColor = true;
+            this.Blk_cbDeath.CheckedChanged += new EventHandler(this.Blk_cbDeath_CheckedChanged);
+            // 
+            // Blk_cbPortal
+            // 
+            this.Blk_cbPortal.Location = new Point(187, 15);
+            this.Blk_cbPortal.Name = "Blk_cbPortal";
+            this.Blk_cbPortal.Size = new Size(104, 24);
+            this.Blk_cbPortal.TabIndex = 1;
+            this.Blk_cbPortal.Text = "Is a portal";
+            this.Blk_cbPortal.UseVisualStyleBackColor = true;
+            this.Blk_cbPortal.CheckedChanged += new EventHandler(this.Blk_cbPortal_CheckedChanged);
+            // 
+            // Blk_cbMsgBlock
+            // 
+            this.Blk_cbMsgBlock.Location = new Point(10, 15);
+            this.Blk_cbMsgBlock.Name = "Blk_cbMsgBlock";
+            this.Blk_cbMsgBlock.Size = new Size(116, 24);
+            this.Blk_cbMsgBlock.TabIndex = 0;
+            this.Blk_cbMsgBlock.Text = "Is a message block";
+            this.Blk_cbMsgBlock.UseVisualStyleBackColor = true;
+            this.Blk_cbMsgBlock.CheckedChanged += new EventHandler(this.Blk_cbMsgBlock_CheckedChanged);
+            // 
+            // Blk_grpPermissions
+            // 
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbAlw3);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbAlw2);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbDis3);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbDis2);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbAlw1);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbDis1);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_cmbMin);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_lblMin);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_lblAllow);
+            this.Blk_grpPermissions.Controls.Add(this.Blk_lblDisallow);
+            this.Blk_grpPermissions.Location = new Point(133, 6);
+            this.Blk_grpPermissions.Name = "Blk_grpPermissions";
+            this.Blk_grpPermissions.Size = new Size(360, 94);
+            this.Blk_grpPermissions.TabIndex = 24;
+            this.Blk_grpPermissions.TabStop = false;
+            this.Blk_grpPermissions.Text = "Permissions";
+            // 
+            // Blk_cmbAlw3
+            // 
+            this.Blk_cmbAlw3.BackColor = SystemColors.Window;
+            this.Blk_cmbAlw3.FormattingEnabled = true;
+            this.Blk_cmbAlw3.Location = new Point(274, 67);
+            this.Blk_cmbAlw3.Name = "Blk_cmbAlw3";
+            this.Blk_cmbAlw3.Size = new Size(81, 21);
+            this.Blk_cmbAlw3.TabIndex = 28;
+            this.Blk_cmbAlw3.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbAlw2
+            // 
+            this.Blk_cmbAlw2.BackColor = SystemColors.Window;
+            this.Blk_cmbAlw2.FormattingEnabled = true;
+            this.Blk_cmbAlw2.Location = new Point(187, 67);
+            this.Blk_cmbAlw2.Name = "Blk_cmbAlw2";
+            this.Blk_cmbAlw2.Size = new Size(81, 21);
+            this.Blk_cmbAlw2.TabIndex = 27;
+            this.Blk_cmbAlw2.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbDis3
+            // 
+            this.Blk_cmbDis3.BackColor = SystemColors.Window;
+            this.Blk_cmbDis3.FormattingEnabled = true;
+            this.Blk_cmbDis3.Location = new Point(274, 41);
+            this.Blk_cmbDis3.Name = "Blk_cmbDis3";
+            this.Blk_cmbDis3.Size = new Size(81, 21);
+            this.Blk_cmbDis3.TabIndex = 26;
+            this.Blk_cmbDis3.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbDis2
+            // 
+            this.Blk_cmbDis2.BackColor = SystemColors.Window;
+            this.Blk_cmbDis2.FormattingEnabled = true;
+            this.Blk_cmbDis2.Location = new Point(187, 41);
+            this.Blk_cmbDis2.Name = "Blk_cmbDis2";
+            this.Blk_cmbDis2.Size = new Size(81, 21);
+            this.Blk_cmbDis2.TabIndex = 25;
+            this.Blk_cmbDis2.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbAlw1
+            // 
+            this.Blk_cmbAlw1.BackColor = SystemColors.Window;
+            this.Blk_cmbAlw1.FormattingEnabled = true;
+            this.Blk_cmbAlw1.Location = new Point(100, 67);
+            this.Blk_cmbAlw1.Name = "Blk_cmbAlw1";
+            this.Blk_cmbAlw1.Size = new Size(81, 21);
+            this.Blk_cmbAlw1.TabIndex = 24;
+            this.Blk_cmbAlw1.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbDis1
+            // 
+            this.Blk_cmbDis1.BackColor = SystemColors.Window;
+            this.Blk_cmbDis1.FormattingEnabled = true;
+            this.Blk_cmbDis1.Location = new Point(100, 41);
+            this.Blk_cmbDis1.Name = "Blk_cmbDis1";
+            this.Blk_cmbDis1.Size = new Size(81, 21);
+            this.Blk_cmbDis1.TabIndex = 23;
+            this.Blk_cmbDis1.SelectedIndexChanged += new EventHandler(this.Blk_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Blk_cmbMin
+            // 
+            this.Blk_cmbMin.BackColor = SystemColors.Window;
+            this.Blk_cmbMin.FormattingEnabled = true;
+            this.Blk_cmbMin.Location = new Point(100, 14);
+            this.Blk_cmbMin.Name = "Blk_cmbMin";
+            this.Blk_cmbMin.Size = new Size(81, 21);
+            this.Blk_cmbMin.TabIndex = 22;
+            this.Blk_cmbMin.SelectedIndexChanged += new EventHandler(this.Blk_cmbMin_SelectedIndexChanged);
+            // 
+            // Blk_lblMin
+            // 
+            this.Blk_lblMin.AutoSize = true;
+            this.Blk_lblMin.Location = new Point(10, 17);
+            this.Blk_lblMin.Name = "Blk_lblMin";
+            this.Blk_lblMin.Size = new Size(89, 13);
+            this.Blk_lblMin.TabIndex = 16;
+            this.Blk_lblMin.Text = "Min rank needed:";
+            // 
+            // Blk_lblAllow
+            // 
+            this.Blk_lblAllow.AutoSize = true;
+            this.Blk_lblAllow.Location = new Point(10, 71);
+            this.Blk_lblAllow.Name = "Blk_lblAllow";
+            this.Blk_lblAllow.Size = new Size(91, 13);
+            this.Blk_lblAllow.TabIndex = 18;
+            this.Blk_lblAllow.Text = "Specifically allow:";
+            // 
+            // Blk_lblDisallow
+            // 
+            this.Blk_lblDisallow.AutoSize = true;
+            this.Blk_lblDisallow.Location = new Point(10, 44);
+            this.Blk_lblDisallow.Name = "Blk_lblDisallow";
+            this.Blk_lblDisallow.Size = new Size(80, 13);
+            this.Blk_lblDisallow.TabIndex = 17;
+            this.Blk_lblDisallow.Text = "But don\'t allow:";
+            // 
+            // Blk_btnHelp
+            // 
+            this.Blk_btnHelp.Location = new Point(6, 485);
+            this.Blk_btnHelp.Name = "Blk_btnHelp";
+            this.Blk_btnHelp.Size = new Size(121, 29);
+            this.Blk_btnHelp.TabIndex = 23;
+            this.Blk_btnHelp.Text = "Help information";
+            this.Blk_btnHelp.UseVisualStyleBackColor = true;
+            this.Blk_btnHelp.Click += new EventHandler(this.Blk_btnHelp_Click);
+            // 
+            // Blk_list
+            // 
+            this.Blk_list.BackColor = SystemColors.Window;
+            this.Blk_list.ForeColor = SystemColors.WindowText;
+            this.Blk_list.FormattingEnabled = true;
+            this.Blk_list.Location = new Point(6, 6);
+            this.Blk_list.Name = "Blk_list";
+            this.Blk_list.Size = new Size(121, 472);
+            this.Blk_list.TabIndex = 15;
+            this.Blk_list.SelectedIndexChanged += new EventHandler(this.Blk_list_SelectedIndexChanged);
+            // 
+            // PageRanks
+            // 
+            this.PageRanks.BackColor = SystemColors.Control;
+            this.PageRanks.Controls.Add(this.Rank_grpLimits);
+            this.PageRanks.Controls.Add(this.Rank_grpGeneral);
+            this.PageRanks.Controls.Add(this.Rank_grpMisc);
+            this.PageRanks.Controls.Add(this.Rank_btnDel);
+            this.PageRanks.Controls.Add(this.Rank_btnAdd);
+            this.PageRanks.Controls.Add(this.Rank_list);
+            this.PageRanks.Location = new Point(4, 22);
+            this.PageRanks.Name = "PageRanks";
+            this.PageRanks.Padding = new Padding(3);
+            this.PageRanks.Size = new Size(498, 521);
+            this.PageRanks.TabIndex = 4;
+            this.PageRanks.Text = "Ranks";
+            // 
+            // Rank_grpLimits
+            // 
+            this.Rank_grpLimits.Controls.Add(this.Rank_numUndo);
+            this.Rank_grpLimits.Controls.Add(this.Rank_numCopy);
+            this.Rank_grpLimits.Controls.Add(this.Rank_lblCopy);
+            this.Rank_grpLimits.Controls.Add(this.Rank_lblGen);
+            this.Rank_grpLimits.Controls.Add(this.Rank_numGen);
+            this.Rank_grpLimits.Controls.Add(this.Rank_lblMaps);
+            this.Rank_grpLimits.Controls.Add(this.Rank_numMaps);
+            this.Rank_grpLimits.Controls.Add(this.Rank_numDraw);
+            this.Rank_grpLimits.Controls.Add(this.Rank_lblDraw);
+            this.Rank_grpLimits.Controls.Add(this.Rank_lblUndo);
+            this.Rank_grpLimits.Location = new Point(142, 143);
+            this.Rank_grpLimits.Name = "Rank_grpLimits";
+            this.Rank_grpLimits.Size = new Size(349, 106);
+            this.Rank_grpLimits.TabIndex = 22;
+            this.Rank_grpLimits.TabStop = false;
+            this.Rank_grpLimits.Text = "Rank limits";
+            // 
+            // Rank_lblCopy
+            // 
+            this.Rank_lblCopy.AutoSize = true;
+            this.Rank_lblCopy.Location = new Point(18, 77);
+            this.Rank_lblCopy.Name = "Rank_lblCopy";
+            this.Rank_lblCopy.Size = new Size(61, 13);
+            this.Rank_lblCopy.TabIndex = 22;
+            this.Rank_lblCopy.Text = "/copy slots:";
+            this.Rank_lblCopy.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblGen
+            // 
+            this.Rank_lblGen.AutoSize = true;
+            this.Rank_lblGen.Location = new Point(185, 50);
+            this.Rank_lblGen.Name = "Rank_lblGen";
+            this.Rank_lblGen.Size = new Size(68, 13);
+            this.Rank_lblGen.TabIndex = 20;
+            this.Rank_lblGen.Text = "/gen volume:";
+            this.Rank_lblGen.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblMaps
+            // 
+            this.Rank_lblMaps.AutoSize = true;
+            this.Rank_lblMaps.Location = new Point(200, 23);
+            this.Rank_lblMaps.Name = "Rank_lblMaps";
+            this.Rank_lblMaps.Size = new Size(53, 13);
+            this.Rank_lblMaps.TabIndex = 18;
+            this.Rank_lblMaps.Text = "/os maps:";
+            this.Rank_lblMaps.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblDraw
+            // 
+            this.Rank_lblDraw.AutoSize = true;
+            this.Rank_lblDraw.Location = new Point(20, 23);
+            this.Rank_lblDraw.Name = "Rank_lblDraw";
+            this.Rank_lblDraw.Size = new Size(59, 13);
+            this.Rank_lblDraw.TabIndex = 3;
+            this.Rank_lblDraw.Text = "Draw limit:";
+            this.Rank_lblDraw.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblUndo
+            // 
+            this.Rank_lblUndo.AutoSize = true;
+            this.Rank_lblUndo.Location = new Point(19, 50);
+            this.Rank_lblUndo.Name = "Rank_lblUndo";
+            this.Rank_lblUndo.Size = new Size(60, 13);
+            this.Rank_lblUndo.TabIndex = 14;
+            this.Rank_lblUndo.Text = "Max /undo:";
+            this.Rank_lblUndo.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_grpGeneral
+            // 
+            this.Rank_grpGeneral.Controls.Add(this.Rank_lblOsMap);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_cmbOsMap);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_cbEmpty);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_lblDefault);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_cmbDefault);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_cbSilentAdmins);
+            this.Rank_grpGeneral.Controls.Add(this.Rank_cbTPHigher);
+            this.Rank_grpGeneral.Location = new Point(142, 255);
+            this.Rank_grpGeneral.Name = "Rank_grpGeneral";
+            this.Rank_grpGeneral.Size = new Size(349, 121);
+            this.Rank_grpGeneral.TabIndex = 19;
+            this.Rank_grpGeneral.TabStop = false;
+            this.Rank_grpGeneral.Text = "General settings";
+            // 
+            // Rank_lblOsMap
+            // 
+            this.Rank_lblOsMap.AutoSize = true;
+            this.Rank_lblOsMap.Location = new Point(186, 23);
+            this.Rank_lblOsMap.Name = "Rank_lblOsMap";
+            this.Rank_lblOsMap.Size = new Size(67, 13);
+            this.Rank_lblOsMap.TabIndex = 50;
+            this.Rank_lblOsMap.Text = "/os perbuild:";
+            // 
+            // Rank_cbEmpty
+            // 
+            this.Rank_cbEmpty.AutoSize = true;
+            this.Rank_cbEmpty.Location = new Point(11, 98);
+            this.Rank_cbEmpty.Name = "Rank_cbEmpty";
+            this.Rank_cbEmpty.Size = new Size(163, 17);
+            this.Rank_cbEmpty.TabIndex = 45;
+            this.Rank_cbEmpty.Text = "Show empty ranks in /players";
+            this.Rank_cbEmpty.UseVisualStyleBackColor = true;
+            // 
+            // Rank_lblDefault
+            // 
+            this.Rank_lblDefault.AutoSize = true;
+            this.Rank_lblDefault.Location = new Point(11, 23);
+            this.Rank_lblDefault.Name = "Rank_lblDefault";
+            this.Rank_lblDefault.Size = new Size(68, 13);
+            this.Rank_lblDefault.TabIndex = 43;
+            this.Rank_lblDefault.Text = "Default rank:";
+            // 
+            // Rank_grpMisc
+            // 
+            this.Rank_grpMisc.Controls.Add(this.Rank_numAfk);
+            this.Rank_grpMisc.Controls.Add(this.Rank_cbAfk);
+            this.Rank_grpMisc.Controls.Add(this.Rank_lblPrefix);
+            this.Rank_grpMisc.Controls.Add(this.Rank_txtPrefix);
+            this.Rank_grpMisc.Controls.Add(this.Rank_lblPerm);
+            this.Rank_grpMisc.Controls.Add(this.Rank_txtMOTD);
+            this.Rank_grpMisc.Controls.Add(this.Rank_numPerm);
+            this.Rank_grpMisc.Controls.Add(this.Rank_txtName);
+            this.Rank_grpMisc.Controls.Add(this.Rank_btnColor);
+            this.Rank_grpMisc.Controls.Add(this.Rank_lblMOTD);
+            this.Rank_grpMisc.Controls.Add(this.Rank_lblName);
+            this.Rank_grpMisc.Controls.Add(this.Rank_lblColor);
+            this.Rank_grpMisc.Location = new Point(142, 6);
+            this.Rank_grpMisc.Name = "Rank_grpMisc";
+            this.Rank_grpMisc.Size = new Size(349, 131);
+            this.Rank_grpMisc.TabIndex = 18;
+            this.Rank_grpMisc.TabStop = false;
+            this.Rank_grpMisc.Text = "Rank settings";
+            // 
+            // Rank_cbAfk
+            // 
+            this.Rank_cbAfk.Location = new Point(11, 102);
+            this.Rank_cbAfk.Name = "Rank_cbAfk";
+            this.Rank_cbAfk.Size = new Size(108, 24);
+            this.Rank_cbAfk.TabIndex = 22;
+            this.Rank_cbAfk.Text = "Kick after AFK for";
+            this.Rank_cbAfk.UseVisualStyleBackColor = true;
+            this.Rank_cbAfk.CheckedChanged += new EventHandler(this.Rank_cbAfk_CheckedChanged);
+            // 
+            // Rank_lblPrefix
+            // 
+            this.Rank_lblPrefix.AutoSize = true;
+            this.Rank_lblPrefix.Location = new Point(216, 50);
+            this.Rank_lblPrefix.Name = "Rank_lblPrefix";
+            this.Rank_lblPrefix.Size = new Size(37, 13);
+            this.Rank_lblPrefix.TabIndex = 20;
+            this.Rank_lblPrefix.Text = "Prefix:";
+            this.Rank_lblPrefix.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblPerm
+            // 
+            this.Rank_lblPerm.AutoSize = true;
+            this.Rank_lblPerm.Location = new Point(190, 23);
+            this.Rank_lblPerm.Name = "Rank_lblPerm";
+            this.Rank_lblPerm.Size = new Size(63, 13);
+            this.Rank_lblPerm.TabIndex = 7;
+            this.Rank_lblPerm.Text = "Permission:";
+            this.Rank_lblPerm.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblMOTD
+            // 
+            this.Rank_lblMOTD.AutoSize = true;
+            this.Rank_lblMOTD.Location = new Point(41, 78);
+            this.Rank_lblMOTD.Name = "Rank_lblMOTD";
+            this.Rank_lblMOTD.Size = new Size(38, 13);
+            this.Rank_lblMOTD.TabIndex = 16;
+            this.Rank_lblMOTD.Text = "MOTD:";
+            // 
+            // Rank_lblName
+            // 
+            this.Rank_lblName.AutoSize = true;
+            this.Rank_lblName.Location = new Point(41, 23);
+            this.Rank_lblName.Name = "Rank_lblName";
+            this.Rank_lblName.Size = new Size(38, 13);
+            this.Rank_lblName.TabIndex = 4;
+            this.Rank_lblName.Text = "Name:";
+            this.Rank_lblName.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // Rank_lblColor
+            // 
+            this.Rank_lblColor.AutoSize = true;
+            this.Rank_lblColor.Location = new Point(44, 50);
+            this.Rank_lblColor.Name = "Rank_lblColor";
+            this.Rank_lblColor.Size = new Size(35, 13);
+            this.Rank_lblColor.TabIndex = 11;
+            this.Rank_lblColor.Text = "Color:";
+            // 
+            // Rank_btnDel
+            // 
+            this.Rank_btnDel.Location = new Point(79, 353);
+            this.Rank_btnDel.Name = "Rank_btnDel";
+            this.Rank_btnDel.Size = new Size(57, 23);
+            this.Rank_btnDel.TabIndex = 2;
+            this.Rank_btnDel.Text = "Delete";
+            this.Rank_btnDel.UseVisualStyleBackColor = true;
+            this.Rank_btnDel.Click += new EventHandler(this.Rank_btnDel_Click);
+            // 
+            // Rank_btnAdd
+            // 
+            this.Rank_btnAdd.Location = new Point(6, 353);
+            this.Rank_btnAdd.Name = "Rank_btnAdd";
+            this.Rank_btnAdd.Size = new Size(57, 23);
+            this.Rank_btnAdd.TabIndex = 1;
+            this.Rank_btnAdd.Text = "Add";
+            this.Rank_btnAdd.UseVisualStyleBackColor = true;
+            this.Rank_btnAdd.Click += new EventHandler(this.Rank_btnAdd_Click);
+            // 
+            // Rank_list
+            // 
+            this.Rank_list.BackColor = SystemColors.Window;
+            this.Rank_list.ForeColor = SystemColors.WindowText;
+            this.Rank_list.FormattingEnabled = true;
+            this.Rank_list.Location = new Point(6, 6);
+            this.Rank_list.Name = "Rank_list";
+            this.Rank_list.Size = new Size(130, 342);
+            this.Rank_list.TabIndex = 0;
+            this.Rank_list.SelectedIndexChanged += new EventHandler(this.Rank_list_SelectedIndexChanged);
+            // 
+            // PageMisc
+            // 
+            this.PageMisc.BackColor = SystemColors.Control;
+            this.PageMisc.Controls.Add(this.GrpExtra);
+            this.PageMisc.Controls.Add(this.GrpMessages);
+            this.PageMisc.Controls.Add(this.GrpPhysics);
+            this.PageMisc.Controls.Add(this.Afk_grp);
+            this.PageMisc.Controls.Add(this.Bak_grp);
+            this.PageMisc.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.PageMisc.Location = new Point(4, 22);
+            this.PageMisc.Name = "PageMisc";
+            this.PageMisc.Size = new Size(498, 521);
+            this.PageMisc.TabIndex = 3;
+            this.PageMisc.Text = "Misc";
+            // 
+            // GrpExtra
+            // 
+            this.GrpExtra.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.GrpExtra.Controls.Add(this.Misc_numReview);
+            this.GrpExtra.Controls.Add(this.ChkRestart);
+            this.GrpExtra.Controls.Add(this.Misc_lblReview);
+            this.GrpExtra.Controls.Add(this.ChkGuestLimitNotify);
+            this.GrpExtra.Controls.Add(this.ChkRepeatMessages);
+            this.GrpExtra.Controls.Add(this.ChkDeath);
+            this.GrpExtra.Controls.Add(this.Chk17Dollar);
+            this.GrpExtra.Controls.Add(this.ChkSmile);
+            this.GrpExtra.Location = new Point(10, 158);
+            this.GrpExtra.Name = "GrpExtra";
+            this.GrpExtra.Size = new Size(332, 124);
+            this.GrpExtra.TabIndex = 40;
+            this.GrpExtra.TabStop = false;
+            this.GrpExtra.Text = "Extra";
+            // 
+            // Misc_numReview
+            // 
+            this.Misc_numReview.BackColor = SystemColors.Window;
+            this.Misc_numReview.Location = new Point(126, 89);
+            this.Misc_numReview.Name = "Misc_numReview";
+            this.Misc_numReview.Seconds = ((long)(300));
+            this.Misc_numReview.Size = new Size(66, 21);
+            this.Misc_numReview.TabIndex = 35;
+            this.Misc_numReview.Text = "5m";
+            this.Misc_numReview.Value = TimeSpan.Parse("00:05:00");
+            // 
+            // ChkRestart
+            // 
+            this.ChkRestart.AutoSize = true;
+            this.ChkRestart.Location = new Point(190, 20);
+            this.ChkRestart.Name = "ChkRestart";
+            this.ChkRestart.Size = new Size(101, 17);
+            this.ChkRestart.TabIndex = 51;
+            this.ChkRestart.Text = "Restart on error";
+            this.ChkRestart.UseVisualStyleBackColor = true;
+            // 
+            // Misc_lblReview
+            // 
+            this.Misc_lblReview.AutoSize = true;
+            this.Misc_lblReview.Location = new Point(6, 91);
+            this.Misc_lblReview.Name = "Misc_lblReview";
+            this.Misc_lblReview.Size = new Size(115, 13);
+            this.Misc_lblReview.TabIndex = 49;
+            this.Misc_lblReview.Text = "Review cooldown time:";
+            // 
+            // ChkRepeatMessages
+            // 
+            this.ChkRepeatMessages.AutoSize = true;
+            this.ChkRepeatMessages.Location = new Point(190, 43);
+            this.ChkRepeatMessages.Name = "ChkRepeatMessages";
+            this.ChkRepeatMessages.Size = new Size(136, 17);
+            this.ChkRepeatMessages.TabIndex = 29;
+            this.ChkRepeatMessages.Text = "Repeat message blocks";
+            this.ChkRepeatMessages.UseVisualStyleBackColor = true;
+            // 
+            // Chk17Dollar
+            // 
+            this.Chk17Dollar.AutoSize = true;
+            this.Chk17Dollar.Location = new Point(6, 66);
+            this.Chk17Dollar.Name = "Chk17Dollar";
+            this.Chk17Dollar.Size = new Size(100, 17);
+            this.Chk17Dollar.TabIndex = 22;
+            this.Chk17Dollar.Text = "$ before $name";
+            this.Chk17Dollar.UseVisualStyleBackColor = true;
+            // 
+            // ChkSmile
+            // 
+            this.ChkSmile.AutoSize = true;
+            this.ChkSmile.Location = new Point(6, 43);
+            this.ChkSmile.Name = "ChkSmile";
+            this.ChkSmile.Size = new Size(91, 17);
+            this.ChkSmile.TabIndex = 19;
+            this.ChkSmile.Text = "Parse emotes";
+            this.ChkSmile.UseVisualStyleBackColor = true;
+            // 
+            // GrpMessages
+            // 
+            this.GrpMessages.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.GrpMessages.Controls.Add(this.Hack_num);
+            this.GrpMessages.Controls.Add(this.Hack_lbl);
+            this.GrpMessages.Location = new Point(10, 103);
+            this.GrpMessages.Name = "GrpMessages";
+            this.GrpMessages.Size = new Size(332, 49);
+            this.GrpMessages.TabIndex = 39;
+            this.GrpMessages.TabStop = false;
+            this.GrpMessages.Text = "Messages";
+            // 
+            // Hack_num
+            // 
+            this.Hack_num.BackColor = SystemColors.Window;
+            this.Hack_num.Location = new Point(201, 18);
+            this.Hack_num.Name = "Hack_num";
+            this.Hack_num.Seconds = ((long)(5));
+            this.Hack_num.Size = new Size(66, 21);
+            this.Hack_num.TabIndex = 34;
+            this.Hack_num.Text = "5s";
+            this.Hack_num.Value = TimeSpan.Parse("00:00:05");
+            // 
+            // GrpPhysics
+            // 
+            this.GrpPhysics.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.GrpPhysics.Controls.Add(this.ChkPhysRestart);
+            this.GrpPhysics.Controls.Add(this.ChkRpLimit);
+            this.GrpPhysics.Controls.Add(this.TxtRP);
+            this.GrpPhysics.Controls.Add(this.ChkRpNorm);
+            this.GrpPhysics.Controls.Add(this.TxtNormRp);
+            this.GrpPhysics.Location = new Point(352, 124);
+            this.GrpPhysics.Name = "GrpPhysics";
+            this.GrpPhysics.Size = new Size(133, 117);
+            this.GrpPhysics.TabIndex = 38;
+            this.GrpPhysics.TabStop = false;
+            this.GrpPhysics.Text = "Physics Restart";
+            // 
+            // TxtRP
+            // 
+            this.TxtRP.BackColor = SystemColors.Window;
+            this.TxtRP.Location = new Point(72, 49);
+            this.TxtRP.Name = "TxtRP";
+            this.TxtRP.Size = new Size(55, 21);
+            this.TxtRP.TabIndex = 14;
+            // 
+            // ChkRpNorm
+            // 
+            this.ChkRpNorm.AutoSize = true;
+            this.ChkRpNorm.Location = new Point(5, 79);
+            this.ChkRpNorm.Name = "ChkRpNorm";
+            this.ChkRpNorm.Size = new Size(61, 13);
+            this.ChkRpNorm.TabIndex = 16;
+            this.ChkRpNorm.Text = "Normal /rp:";
+            // 
+            // TxtNormRp
+            // 
+            this.TxtNormRp.BackColor = SystemColors.Window;
+            this.TxtNormRp.Location = new Point(72, 76);
+            this.TxtNormRp.Name = "TxtNormRp";
+            this.TxtNormRp.Size = new Size(55, 21);
+            this.TxtNormRp.TabIndex = 13;
+            // 
+            // Afk_grp
+            // 
+            this.Afk_grp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Afk_grp.Controls.Add(this.Afk_numTimer);
+            this.Afk_grp.Controls.Add(this.Afk_lblTimer);
+            this.Afk_grp.Location = new Point(352, 13);
+            this.Afk_grp.Name = "Afk_grp";
+            this.Afk_grp.Size = new Size(133, 100);
+            this.Afk_grp.TabIndex = 37;
+            this.Afk_grp.TabStop = false;
+            this.Afk_grp.Text = "AFK";
+            // 
+            // Afk_numTimer
+            // 
+            this.Afk_numTimer.BackColor = SystemColors.Window;
+            this.Afk_numTimer.Location = new Point(61, 16);
+            this.Afk_numTimer.Name = "Afk_numTimer";
+            this.Afk_numTimer.Seconds = ((long)(600));
+            this.Afk_numTimer.Size = new Size(66, 21);
+            this.Afk_numTimer.TabIndex = 33;
+            this.Afk_numTimer.Text = "10m";
+            this.Afk_numTimer.Value = TimeSpan.Parse("00:10:00");
+            // 
+            // Afk_lblTimer
+            // 
+            this.Afk_lblTimer.AutoSize = true;
+            this.Afk_lblTimer.Location = new Point(5, 20);
+            this.Afk_lblTimer.Name = "Afk_lblTimer";
+            this.Afk_lblTimer.Size = new Size(54, 13);
+            this.Afk_lblTimer.TabIndex = 12;
+            this.Afk_lblTimer.Text = "AFK timer:";
+            // 
+            // Bak_grp
+            // 
+            this.Bak_grp.AutoSize = true;
+            this.Bak_grp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Bak_grp.Controls.Add(this.Bak_numTime);
+            this.Bak_grp.Controls.Add(this.Bak_lblLocation);
+            this.Bak_grp.Controls.Add(this.Bak_txtLocation);
+            this.Bak_grp.Controls.Add(this.Bak_lblTime);
+            this.Bak_grp.Location = new Point(10, 13);
+            this.Bak_grp.Name = "Bak_grp";
+            this.Bak_grp.Size = new Size(332, 84);
+            this.Bak_grp.TabIndex = 36;
+            this.Bak_grp.TabStop = false;
+            this.Bak_grp.Text = "Backups";
+            // 
+            // Bak_numTime
+            // 
+            this.Bak_numTime.BackColor = SystemColors.Window;
+            this.Bak_numTime.Location = new Point(81, 43);
+            this.Bak_numTime.Name = "Bak_numTime";
+            this.Bak_numTime.Seconds = ((long)(300));
+            this.Bak_numTime.Size = new Size(66, 21);
+            this.Bak_numTime.TabIndex = 34;
+            this.Bak_numTime.Text = "5m";
+            this.Bak_numTime.Value = TimeSpan.Parse("00:05:00");
+            // 
+            // Bak_lblLocation
+            // 
+            this.Bak_lblLocation.AutoSize = true;
+            this.Bak_lblLocation.Location = new Point(5, 21);
+            this.Bak_lblLocation.Name = "Bak_lblLocation";
+            this.Bak_lblLocation.Size = new Size(44, 13);
+            this.Bak_lblLocation.TabIndex = 3;
+            this.Bak_lblLocation.Text = "Location:";
+            // 
+            // Bak_txtLocation
+            // 
+            this.Bak_txtLocation.BackColor = SystemColors.Window;
+            this.Bak_txtLocation.Location = new Point(81, 17);
+            this.Bak_txtLocation.Name = "Bak_txtLocation";
+            this.Bak_txtLocation.Size = new Size(245, 21);
+            this.Bak_txtLocation.TabIndex = 2;
+            // 
+            // Bak_lblTime
+            // 
+            this.Bak_lblTime.AutoSize = true;
+            this.Bak_lblTime.Location = new Point(5, 47);
+            this.Bak_lblTime.Name = "Bak_lblTime";
+            this.Bak_lblTime.Size = new Size(67, 13);
+            this.Bak_lblTime.TabIndex = 7;
+            this.Bak_lblTime.Text = "Backup time:";
+            // 
+            // PageRelay
+            // 
+            this.PageRelay.BackColor = SystemColors.Control;
+            this.PageRelay.Controls.Add(this.Dis_grp);
+            this.PageRelay.Controls.Add(this.Gb_ircSettings);
+            this.PageMisc.Controls.Add(this.Sql_grp);
+            this.PageRelay.Controls.Add(this.Irc_grp);
+            this.PageRelay.Location = new Point(4, 22);
+            this.PageRelay.Name = "PageRelay";
+            this.PageRelay.Size = new Size(498, 521);
+            this.PageRelay.TabIndex = 6;
+            this.PageRelay.Text = "IRC";
+            // 
+            // Gb_ircSettings
+            // 
+            this.Gb_ircSettings.Controls.Add(this.Irc_txtPrefix);
+            this.Gb_ircSettings.Controls.Add(this.Irc_lblPrefix);
+            this.Gb_ircSettings.Controls.Add(this.Irc_cmbVerify);
+            this.Gb_ircSettings.Controls.Add(this.Irc_lblVerify);
+            this.Gb_ircSettings.Controls.Add(this.Irc_cmbRank);
+            this.Gb_ircSettings.Controls.Add(this.Irc_lblRank);
+            this.Gb_ircSettings.Controls.Add(this.Irc_cbAFK);
+            this.Gb_ircSettings.Controls.Add(this.Irc_cbWorldChanges);
+            this.Gb_ircSettings.Controls.Add(this.Irc_cbTitles);
+            this.Gb_ircSettings.Location = new Point(8, 223);
+            this.Gb_ircSettings.Name = "Gb_ircSettings";
+            this.Gb_ircSettings.Size = new Size(483, 95);
+            this.Gb_ircSettings.TabIndex = 33;
+            this.Gb_ircSettings.TabStop = false;
+            this.Gb_ircSettings.Text = "IRC settings";
+            // 
+            // Irc_txtPrefix
+            // 
+            this.Irc_txtPrefix.BackColor = SystemColors.Window;
+            this.Irc_txtPrefix.Location = new Point(367, 68);
+            this.Irc_txtPrefix.Name = "Irc_txtPrefix";
+            this.Irc_txtPrefix.Size = new Size(100, 21);
+            this.Irc_txtPrefix.TabIndex = 32;
+            // 
+            // Irc_lblPrefix
+            // 
+            this.Irc_lblPrefix.AutoSize = true;
+            this.Irc_lblPrefix.Location = new Point(265, 70);
+            this.Irc_lblPrefix.Name = "Irc_lblPrefix";
+            this.Irc_lblPrefix.Size = new Size(87, 13);
+            this.Irc_lblPrefix.TabIndex = 39;
+            this.Irc_lblPrefix.Text = "Command prefix:";
+            // 
+            // Irc_cmbVerify
+            // 
+            this.Irc_cmbVerify.BackColor = SystemColors.Window;
+            this.Irc_cmbVerify.DropDownStyle = ComboBoxStyle.DropDownList;
+            this.Irc_cmbVerify.FormattingEnabled = true;
+            this.Irc_cmbVerify.Location = new Point(387, 42);
+            this.Irc_cmbVerify.Name = "Irc_cmbVerify";
+            this.Irc_cmbVerify.Size = new Size(80, 21);
+            this.Irc_cmbVerify.TabIndex = 38;
+            // 
+            // Irc_lblVerify
+            // 
+            this.Irc_lblVerify.AutoSize = true;
+            this.Irc_lblVerify.Location = new Point(284, 45);
+            this.Irc_lblVerify.Name = "Irc_lblVerify";
+            this.Irc_lblVerify.Size = new Size(99, 13);
+            this.Irc_lblVerify.TabIndex = 37;
+            this.Irc_lblVerify.Text = "Verification method:";
+            // 
+            // Irc_cmbRank
+            // 
+            this.Irc_cmbRank.BackColor = SystemColors.Window;
+            this.Irc_cmbRank.FormattingEnabled = true;
+            this.Irc_cmbRank.Location = new Point(367, 17);
+            this.Irc_cmbRank.Name = "Irc_cmbRank";
+            this.Irc_cmbRank.Size = new Size(100, 21);
+            this.Irc_cmbRank.TabIndex = 36;
+            // 
+            // Irc_lblRank
+            // 
+            this.Irc_lblRank.AutoSize = true;
+            this.Irc_lblRank.Location = new Point(265, 21);
+            this.Irc_lblRank.Name = "Irc_lblRank";
+            this.Irc_lblRank.Size = new Size(97, 13);
+            this.Irc_lblRank.TabIndex = 35;
+            this.Irc_lblRank.Text = "IRC controller rank:";
+            // 
+            // Irc_cbAFK
+            // 
+            this.Irc_cbAFK.AutoSize = true;
+            this.Irc_cbAFK.Location = new Point(6, 70);
+            this.Irc_cbAFK.Name = "Irc_cbAFK";
+            this.Irc_cbAFK.Size = new Size(176, 17);
+            this.Irc_cbAFK.TabIndex = 34;
+            this.Irc_cbAFK.Text = "Announce when player goes AFK";
+            this.Irc_cbAFK.UseVisualStyleBackColor = true;
+            // 
+            // Irc_cbWorldChanges
+            // 
+            this.Irc_cbWorldChanges.AutoSize = true;
+            this.Irc_cbWorldChanges.Location = new Point(6, 45);
+            this.Irc_cbWorldChanges.Name = "Irc_cbWorldChanges";
+            this.Irc_cbWorldChanges.Size = new Size(199, 17);
+            this.Irc_cbWorldChanges.TabIndex = 33;
+            this.Irc_cbWorldChanges.Text = "Announce when player changes level";
+            this.Irc_cbWorldChanges.UseVisualStyleBackColor = true;
+            // 
+            // Irc_cbTitles
+            // 
+            this.Irc_cbTitles.AutoSize = true;
+            this.Irc_cbTitles.Location = new Point(6, 20);
+            this.Irc_cbTitles.Name = "Irc_cbTitles";
+            this.Irc_cbTitles.Size = new Size(171, 17);
+            this.Irc_cbTitles.TabIndex = 32;
+            this.Irc_cbTitles.Text = "Show player\'s title in messages";
+            this.Irc_cbTitles.UseVisualStyleBackColor = true;
+            // 
+            // Dis_grp
+            // 
+            this.Dis_grp.Controls.Add(this.Dis_linkHelp);
+            this.Dis_grp.Controls.Add(this.Dis_chkEnabled);
+            this.Dis_grp.Controls.Add(this.Dis_lblToken);
+            this.Dis_grp.Controls.Add(this.Dis_txtToken);
+            this.Dis_grp.Controls.Add(this.Dis_lblChannel);
+            this.Dis_grp.Controls.Add(this.Dis_txtChannel);
+            this.Dis_grp.Controls.Add(this.Dis_lblOpChannel);
+            this.Dis_grp.Controls.Add(this.Dis_txtOpChannel);
+            this.Dis_grp.Controls.Add(this.Dis_chkNicks);
+            this.Dis_grp.Location = new Point(241, 3);
+            this.Dis_grp.Name = "Dis_grp";
+            this.Dis_grp.Size = new Size(250, 158);
+            this.Dis_grp.TabIndex = 34;
+            this.Dis_grp.TabStop = false;
+            this.Dis_grp.Text = "Discord";
+            // 
+            // Dis_lblToken
+            // 
+            this.Dis_lblToken.AutoSize = true;
+            this.Dis_lblToken.Location = new Point(6, 50);
+            this.Dis_lblToken.Name = "Dis_lblToken";
+            this.Dis_lblToken.Size = new Size(55, 13);
+            this.Dis_lblToken.TabIndex = 19;
+            this.Dis_lblToken.Text = "Bot token:";
+            // 
+            // Dis_lblChannel
+            // 
+            this.Dis_lblChannel.AutoSize = true;
+            this.Dis_lblChannel.Location = new Point(6, 77);
+            this.Dis_lblChannel.Name = "Dis_lblChannel";
+            this.Dis_lblChannel.Size = new Size(61, 13);
+            this.Dis_lblChannel.TabIndex = 30;
+            this.Dis_lblChannel.Text = "Channel ID:";
+            // 
+            // Dis_txtChannel
+            // 
+            this.Dis_txtChannel.BackColor = SystemColors.Window;
+            this.Dis_txtChannel.Location = new Point(82, 74);
+            this.Dis_txtChannel.Name = "Dis_txtChannel";
+            this.Dis_txtChannel.Size = new Size(152, 21);
+            this.Dis_txtChannel.TabIndex = 31;
+            this.GUIToolTip.SetToolTip(this.Dis_txtOpChannel, "The ID of the channel that chat is sent to and read from.\n\n" +
                                     "To get the ID of a channel on Discord, right click it and then click Copy ID on the dropdown menu");
             // 
-            // dis_lblOpChannel
+            // Dis_lblOpChannel
             // 
-            this.dis_lblOpChannel.AutoSize = true;
-            this.dis_lblOpChannel.Location = new System.Drawing.Point(6, 104);
-            this.dis_lblOpChannel.Name = "dis_lblOpChannel";
-            this.dis_lblOpChannel.Size = new System.Drawing.Size(67, 13);
-            this.dis_lblOpChannel.TabIndex = 20;
-            this.dis_lblOpChannel.Text = "OpChannel ID:";
+            this.Dis_lblOpChannel.AutoSize = true;
+            this.Dis_lblOpChannel.Location = new Point(6, 104);
+            this.Dis_lblOpChannel.Name = "Dis_lblOpChannel";
+            this.Dis_lblOpChannel.Size = new Size(67, 13);
+            this.Dis_lblOpChannel.TabIndex = 20;
+            this.Dis_lblOpChannel.Text = "OpChannel ID:";
             // 
-            // dis_chkEnabled
+            // Dis_chkEnabled
             // 
-            this.dis_chkEnabled.AutoSize = true;
-            this.dis_chkEnabled.Location = new System.Drawing.Point(9, 20);
-            this.dis_chkEnabled.Name = "dis_chkEnabled";
-            this.dis_chkEnabled.Size = new System.Drawing.Size(96, 17);
-            this.dis_chkEnabled.TabIndex = 22;
-            this.dis_chkEnabled.Text = "Enable Discord integration";
-            this.toolTip.SetToolTip(this.dis_chkEnabled, "Enables sending chat to and reading chat from Discord channel(s) using a bot account");
-            this.dis_chkEnabled.UseVisualStyleBackColor = true;
-            this.dis_chkEnabled.CheckedChanged += new System.EventHandler(this.dis_chkEnabled_CheckedChanged);
+            this.Dis_chkEnabled.AutoSize = true;
+            this.Dis_chkEnabled.Location = new Point(9, 20);
+            this.Dis_chkEnabled.Name = "Dis_chkEnabled";
+            this.Dis_chkEnabled.Size = new Size(96, 17);
+            this.Dis_chkEnabled.TabIndex = 22;
+            this.Dis_chkEnabled.Text = "Enable Discord integration";
+            this.GUIToolTip.SetToolTip(this.Dis_chkEnabled, "Enables sending chat to and reading chat from Discord channel(s) using a bot account");
+            this.Dis_chkEnabled.UseVisualStyleBackColor = true;
+            this.Dis_chkEnabled.CheckedChanged += new EventHandler(this.Dis_chkEnabled_CheckedChanged);
             // 
-            // dis_txtToken
+            // Dis_txtToken
             // 
-            this.dis_txtToken.BackColor = System.Drawing.SystemColors.Window;
-            this.dis_txtToken.Location = new System.Drawing.Point(82, 47);
-            this.dis_txtToken.Name = "dis_txtToken";
-            this.dis_txtToken.PasswordChar = '*';
-            this.dis_txtToken.Size = new System.Drawing.Size(152, 21);
-            this.dis_txtToken.TabIndex = 15;
-            this.toolTip.SetToolTip(this.dis_txtToken, "The token for the bot account. To find this token:\n" +
+            this.Dis_txtToken.BackColor = SystemColors.Window;
+            this.Dis_txtToken.Location = new Point(82, 47);
+            this.Dis_txtToken.Name = "Dis_txtToken";
+            this.Dis_txtToken.PasswordChar = '*';
+            this.Dis_txtToken.Size = new Size(152, 21);
+            this.Dis_txtToken.TabIndex = 15;
+            this.GUIToolTip.SetToolTip(this.Dis_txtToken, "The token for the bot account. To find this token:\n" +
                                     "Go to Developer portal -> go to the bot application -> Settings -> Bot -> click Copy under TOKEN\n\n" +
                                     "Note: This token allows full access to the bot - NEVER SHARE THIS TOKEN WITH ANYONE ELSE");
             // 
-            // dis_txtOpChannel
+            // Dis_txtOpChannel
             // 
-            this.dis_txtOpChannel.BackColor = System.Drawing.SystemColors.Window;
-            this.dis_txtOpChannel.Location = new System.Drawing.Point(82, 101);
-            this.dis_txtOpChannel.Name = "dis_txtOpChannel";
-            this.dis_txtOpChannel.Size = new System.Drawing.Size(152, 21);
-            this.dis_txtOpChannel.TabIndex = 16;
-            this.toolTip.SetToolTip(this.dis_txtOpChannel, "The ID of the channel that staff only chat is sent to and read from. Can be left blank.\n\n" +
+            this.Dis_txtOpChannel.BackColor = SystemColors.Window;
+            this.Dis_txtOpChannel.Location = new Point(82, 101);
+            this.Dis_txtOpChannel.Name = "Dis_txtOpChannel";
+            this.Dis_txtOpChannel.Size = new Size(152, 21);
+            this.Dis_txtOpChannel.TabIndex = 16;
+            this.GUIToolTip.SetToolTip(this.Dis_txtOpChannel, "The ID of the channel that staff only chat is sent to and read from. Can be left blank.\n\n" +
                                     "To get the ID of a channel on Discord, right click it and then click Copy ID on the dropdown menu");
             // 
-            // dis_chkNicks
+            // Dis_chkNicks
             // 
-            this.dis_chkNicks.AutoSize = true;
-            this.dis_chkNicks.Location = new System.Drawing.Point(9, 131);
-            this.dis_chkNicks.Name = "dis_chkNicks";
-            this.dis_chkNicks.Size = new System.Drawing.Size(171, 17);
-            this.dis_chkNicks.TabIndex = 32;
-            this.dis_chkNicks.Text = "Prefer nicknames to usernames";
-            this.dis_chkNicks.UseVisualStyleBackColor = true;
+            this.Dis_chkNicks.AutoSize = true;
+            this.Dis_chkNicks.Location = new Point(9, 131);
+            this.Dis_chkNicks.Name = "Dis_chkNicks";
+            this.Dis_chkNicks.Size = new Size(171, 17);
+            this.Dis_chkNicks.TabIndex = 32;
+            this.Dis_chkNicks.Text = "Prefer nicknames to usernames";
+            this.Dis_chkNicks.UseVisualStyleBackColor = true;
             // 
-            // dis_linkHelp
+            // Dis_linkHelp
             // 
-            this.dis_linkHelp.AutoSize = true;
-            this.dis_linkHelp.Location = new System.Drawing.Point(207, 21);
-            this.dis_linkHelp.Name = "dis_linkHelp";
-            this.dis_linkHelp.Size = new System.Drawing.Size(28, 13);
-            this.dis_linkHelp.TabIndex = 33;
-            this.dis_linkHelp.TabStop = true;
-            this.dis_linkHelp.Text = "Help";
-            this.dis_linkHelp.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.dis_lnkHelp_LinkClicked);
+            this.Dis_linkHelp.AutoSize = true;
+            this.Dis_linkHelp.Location = new Point(207, 21);
+            this.Dis_linkHelp.Name = "Dis_linkHelp";
+            this.Dis_linkHelp.Size = new Size(28, 13);
+            this.Dis_linkHelp.TabIndex = 33;
+            this.Dis_linkHelp.TabStop = true;
+            this.Dis_linkHelp.Text = "Help";
+            this.Dis_linkHelp.LinkClicked += new LinkLabelLinkClickedEventHandler(this.Dis_lnkHelp_LinkClicked);
             // 
-            // sql_grp
+            // Sql_grp
             // 
-            this.sql_grp.Controls.Add(this.sql_chkUseSQL);
-            this.sql_grp.Controls.Add(this.sql_linkDownload);
-            this.sql_grp.Controls.Add(this.sql_lblUser);
-            this.sql_grp.Controls.Add(this.sql_txtUser);
-            this.sql_grp.Controls.Add(this.sql_lblPass);
-            this.sql_grp.Controls.Add(this.sql_txtPass);
-            this.sql_grp.Controls.Add(this.sql_lblDBName);
-            this.sql_grp.Controls.Add(this.sql_txtDBName);
-            this.sql_grp.Controls.Add(this.sql_lblHost);
-            this.sql_grp.Controls.Add(this.sql_txtHost);
-            this.sql_grp.Controls.Add(this.sql_lblPort);
-            this.sql_grp.Controls.Add(this.sql_txtPort);
-            this.sql_grp.Location = new System.Drawing.Point(10, 288);
-            this.sql_grp.Name = "sql_grp";
-            this.sql_grp.Size = new System.Drawing.Size(227, 214);
-            this.sql_grp.TabIndex = 29;
-            this.sql_grp.TabStop = false;
-            this.sql_grp.Text = "MySQL";
+            this.Sql_grp.Controls.Add(this.Sql_chkUseSQL);
+            this.Sql_grp.Controls.Add(this.Sql_linkDownload);
+            this.Sql_grp.Controls.Add(this.Sql_lblUser);
+            this.Sql_grp.Controls.Add(this.Sql_txtUser);
+            this.Sql_grp.Controls.Add(this.Sql_lblPass);
+            this.Sql_grp.Controls.Add(this.Sql_txtPass);
+            this.Sql_grp.Controls.Add(this.Sql_lblDBName);
+            this.Sql_grp.Controls.Add(this.Sql_txtDBName);
+            this.Sql_grp.Controls.Add(this.Sql_lblHost);
+            this.Sql_grp.Controls.Add(this.Sql_txtHost);
+            this.Sql_grp.Controls.Add(this.Sql_lblPort);
+            this.Sql_grp.Controls.Add(this.Sql_txtPort);
+            this.Sql_grp.Location = new Point(10, 288);
+            this.Sql_grp.Name = "Sql_grp";
+            this.Sql_grp.Size = new Size(227, 214);
+            this.Sql_grp.TabIndex = 29;
+            this.Sql_grp.TabStop = false;
+            this.Sql_grp.Text = "MySQL";
             // 
-            // sql_linkDownload
+            // Sql_linkDownload
             // 
-            this.sql_linkDownload.AutoSize = true;
-            this.sql_linkDownload.Location = new System.Drawing.Point(108, 21);
-            this.sql_linkDownload.Name = "sql_linkDownload";
-            this.sql_linkDownload.Size = new System.Drawing.Size(113, 13);
-            this.sql_linkDownload.TabIndex = 30;
-            this.sql_linkDownload.TabStop = true;
-            this.sql_linkDownload.Tag = "Click here to go to the download page for MySQL.";
-            this.sql_linkDownload.Text = "MySQL Download Page";
-            this.sql_linkDownload.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.sql_linkDownload_LinkClicked);
+            this.Sql_linkDownload.AutoSize = true;
+            this.Sql_linkDownload.Location = new Point(108, 21);
+            this.Sql_linkDownload.Name = "Sql_linkDownload";
+            this.Sql_linkDownload.Size = new Size(113, 13);
+            this.Sql_linkDownload.TabIndex = 30;
+            this.Sql_linkDownload.TabStop = true;
+            this.Sql_linkDownload.Tag = "Click here to go to the download page for MySQL.";
+            this.Sql_linkDownload.Text = "MySQL Download Page";
+            this.Sql_linkDownload.LinkClicked += new LinkLabelLinkClickedEventHandler(this.Sql_linkDownload_LinkClicked);
             // 
-            // sql_lblUser
+            // Sql_lblUser
             // 
-            this.sql_lblUser.AutoSize = true;
-            this.sql_lblUser.Location = new System.Drawing.Point(9, 50);
-            this.sql_lblUser.Name = "sql_lblUser";
-            this.sql_lblUser.Size = new System.Drawing.Size(59, 13);
-            this.sql_lblUser.TabIndex = 3;
-            this.sql_lblUser.Text = "Username:";
+            this.Sql_lblUser.AutoSize = true;
+            this.Sql_lblUser.Location = new Point(9, 50);
+            this.Sql_lblUser.Name = "Sql_lblUser";
+            this.Sql_lblUser.Size = new Size(59, 13);
+            this.Sql_lblUser.TabIndex = 3;
+            this.Sql_lblUser.Text = "Username:";
             // 
-            // sql_txtUser
+            // Sql_txtUser
             // 
-            this.sql_txtUser.BackColor = System.Drawing.SystemColors.Window;
-            this.sql_txtUser.Location = new System.Drawing.Point(111, 47);
-            this.sql_txtUser.Name = "sql_txtUser";
-            this.sql_txtUser.Size = new System.Drawing.Size(100, 21);
-            this.sql_txtUser.TabIndex = 1;
-            this.sql_txtUser.Tag = "The username set while installing MySQL";
+            this.Sql_txtUser.BackColor = SystemColors.Window;
+            this.Sql_txtUser.Location = new Point(111, 47);
+            this.Sql_txtUser.Name = "Sql_txtUser";
+            this.Sql_txtUser.Size = new Size(100, 21);
+            this.Sql_txtUser.TabIndex = 1;
+            this.Sql_txtUser.Tag = "The username set while installing MySQL";
             // 
-            // sql_lblPass
+            // Sql_lblPass
             // 
-            this.sql_lblPass.AutoSize = true;
-            this.sql_lblPass.Location = new System.Drawing.Point(9, 77);
-            this.sql_lblPass.Name = "sql_lblPass";
-            this.sql_lblPass.Size = new System.Drawing.Size(56, 13);
-            this.sql_lblPass.TabIndex = 4;
-            this.sql_lblPass.Text = "Password:";
+            this.Sql_lblPass.AutoSize = true;
+            this.Sql_lblPass.Location = new Point(9, 77);
+            this.Sql_lblPass.Name = "Sql_lblPass";
+            this.Sql_lblPass.Size = new Size(56, 13);
+            this.Sql_lblPass.TabIndex = 4;
+            this.Sql_lblPass.Text = "Password:";
             // 
-            // sql_txtPass
+            // Sql_txtPass
             // 
-            this.sql_txtPass.BackColor = System.Drawing.SystemColors.Window;
-            this.sql_txtPass.Location = new System.Drawing.Point(111, 74);
-            this.sql_txtPass.Name = "sql_txtPass";
-            this.sql_txtPass.PasswordChar = '*';
-            this.sql_txtPass.Size = new System.Drawing.Size(100, 21);
-            this.sql_txtPass.TabIndex = 2;
-            this.sql_txtPass.Tag = "The password set while installing MySQL";
+            this.Sql_txtPass.BackColor = SystemColors.Window;
+            this.Sql_txtPass.Location = new Point(111, 74);
+            this.Sql_txtPass.Name = "Sql_txtPass";
+            this.Sql_txtPass.PasswordChar = '*';
+            this.Sql_txtPass.Size = new Size(100, 21);
+            this.Sql_txtPass.TabIndex = 2;
+            this.Sql_txtPass.Tag = "The password set while installing MySQL";
             // 
-            // sql_lblDBName
+            // Sql_lblDBName
             // 
-            this.sql_lblDBName.AutoSize = true;
-            this.sql_lblDBName.Location = new System.Drawing.Point(9, 104);
-            this.sql_lblDBName.Name = "sql_lblDBName";
-            this.sql_lblDBName.Size = new System.Drawing.Size(86, 13);
-            this.sql_lblDBName.TabIndex = 5;
-            this.sql_lblDBName.Text = "Database Name:";
+            this.Sql_lblDBName.AutoSize = true;
+            this.Sql_lblDBName.Location = new Point(9, 104);
+            this.Sql_lblDBName.Name = "Sql_lblDBName";
+            this.Sql_lblDBName.Size = new Size(86, 13);
+            this.Sql_lblDBName.TabIndex = 5;
+            this.Sql_lblDBName.Text = "Database Name:";
             // 
-            // sql_txtDBName
+            // Sql_txtDBName
             // 
-            this.sql_txtDBName.BackColor = System.Drawing.SystemColors.Window;
-            this.sql_txtDBName.Location = new System.Drawing.Point(111, 101);
-            this.sql_txtDBName.Name = "sql_txtDBName";
-            this.sql_txtDBName.Size = new System.Drawing.Size(100, 21);
-            this.sql_txtDBName.TabIndex = 6;
-            this.sql_txtDBName.Tag = "The name of the database stored (Default = MCZall)";
+            this.Sql_txtDBName.BackColor = SystemColors.Window;
+            this.Sql_txtDBName.Location = new Point(111, 101);
+            this.Sql_txtDBName.Name = "Sql_txtDBName";
+            this.Sql_txtDBName.Size = new Size(100, 21);
+            this.Sql_txtDBName.TabIndex = 6;
+            this.Sql_txtDBName.Tag = "The name of the database stored (Default = MCZall)";
             // 
-            // sql_lblHost
+            // Sql_lblHost
             // 
-            this.sql_lblHost.AutoSize = true;
-            this.sql_lblHost.Location = new System.Drawing.Point(9, 131);
-            this.sql_lblHost.Name = "sql_lblHost";
-            this.sql_lblHost.Size = new System.Drawing.Size(32, 13);
-            this.sql_lblHost.TabIndex = 7;
-            this.sql_lblHost.Text = "Host:";
+            this.Sql_lblHost.AutoSize = true;
+            this.Sql_lblHost.Location = new Point(9, 131);
+            this.Sql_lblHost.Name = "Sql_lblHost";
+            this.Sql_lblHost.Size = new Size(32, 13);
+            this.Sql_lblHost.TabIndex = 7;
+            this.Sql_lblHost.Text = "Host:";
             // 
-            // sql_txtHost
+            // Sql_txtHost
             // 
-            this.sql_txtHost.BackColor = System.Drawing.SystemColors.Window;
-            this.sql_txtHost.Location = new System.Drawing.Point(111, 128);
-            this.sql_txtHost.Name = "sql_txtHost";
-            this.sql_txtHost.Size = new System.Drawing.Size(100, 21);
-            this.sql_txtHost.TabIndex = 8;
-            this.sql_txtHost.Tag = "The host name for the database. Leave this unless problems occur.";
+            this.Sql_txtHost.BackColor = SystemColors.Window;
+            this.Sql_txtHost.Location = new Point(111, 128);
+            this.Sql_txtHost.Name = "Sql_txtHost";
+            this.Sql_txtHost.Size = new Size(100, 21);
+            this.Sql_txtHost.TabIndex = 8;
+            this.Sql_txtHost.Tag = "The host name for the database. Leave this unless problems occur.";
             // 
-            // sql_lblPort
+            // Sql_lblPort
             // 
-            this.sql_lblPort.AutoSize = true;
-            this.sql_lblPort.Location = new System.Drawing.Point(9, 158);
-            this.sql_lblPort.Name = "sql_lblPort";
-            this.sql_lblPort.Size = new System.Drawing.Size(30, 13);
-            this.sql_lblPort.TabIndex = 31;
-            this.sql_lblPort.Text = "Port:";
+            this.Sql_lblPort.AutoSize = true;
+            this.Sql_lblPort.Location = new Point(9, 158);
+            this.Sql_lblPort.Name = "Sql_lblPort";
+            this.Sql_lblPort.Size = new Size(30, 13);
+            this.Sql_lblPort.TabIndex = 31;
+            this.Sql_lblPort.Text = "Port:";
             // 
-            // sql_txtPort
+            // Sql_txtPort
             // 
-            this.sql_txtPort.BackColor = System.Drawing.SystemColors.Window;
-            this.sql_txtPort.Location = new System.Drawing.Point(111, 155);
-            this.sql_txtPort.Name = "sql_txtPort";
-            this.sql_txtPort.Size = new System.Drawing.Size(100, 21);
-            this.sql_txtPort.TabIndex = 32;
+            this.Sql_txtPort.BackColor = SystemColors.Window;
+            this.Sql_txtPort.Location = new Point(111, 155);
+            this.Sql_txtPort.Name = "Sql_txtPort";
+            this.Sql_txtPort.Size = new Size(100, 21);
+            this.Sql_txtPort.TabIndex = 32;
             // 
-            // irc_grp
+            // Irc_grp
             // 
-            this.irc_grp.Controls.Add(this.irc_chkEnabled);
-            this.irc_grp.Controls.Add(this.irc_lblServer);
-            this.irc_grp.Controls.Add(this.irc_txtServer);
-            this.irc_grp.Controls.Add(this.irc_lblPort);
-            this.irc_grp.Controls.Add(this.irc_numPort);
-            this.irc_grp.Controls.Add(this.irc_lblNick);
-            this.irc_grp.Controls.Add(this.irc_txtNick);
-            this.irc_grp.Controls.Add(this.irc_lblChannel);
-            this.irc_grp.Controls.Add(this.irc_txtChannel);
-            this.irc_grp.Controls.Add(this.irc_lblOpChannel);
-            this.irc_grp.Controls.Add(this.irc_chkPass);
-            this.irc_grp.Controls.Add(this.irc_txtPass);
-            this.irc_grp.Controls.Add(this.irc_txtOpChannel);
-            this.irc_grp.Location = new System.Drawing.Point(8, 3);
-            this.irc_grp.Name = "irc_grp";
-            this.irc_grp.Size = new System.Drawing.Size(225, 214);
-            this.irc_grp.TabIndex = 27;
-            this.irc_grp.TabStop = false;
-            this.irc_grp.Text = "IRC";
+            this.Irc_grp.Controls.Add(this.Irc_chkEnabled);
+            this.Irc_grp.Controls.Add(this.Irc_lblServer);
+            this.Irc_grp.Controls.Add(this.Irc_txtServer);
+            this.Irc_grp.Controls.Add(this.Irc_lblPort);
+            this.Irc_grp.Controls.Add(this.Irc_numPort);
+            this.Irc_grp.Controls.Add(this.Irc_lblNick);
+            this.Irc_grp.Controls.Add(this.Irc_txtNick);
+            this.Irc_grp.Controls.Add(this.Irc_lblChannel);
+            this.Irc_grp.Controls.Add(this.Irc_txtChannel);
+            this.Irc_grp.Controls.Add(this.Irc_lblOpChannel);
+            this.Irc_grp.Controls.Add(this.Irc_chkPass);
+            this.Irc_grp.Controls.Add(this.Irc_txtPass);
+            this.Irc_grp.Controls.Add(this.Irc_txtOpChannel);
+            this.Irc_grp.Location = new Point(8, 3);
+            this.Irc_grp.Name = "Irc_grp";
+            this.Irc_grp.Size = new Size(225, 214);
+            this.Irc_grp.TabIndex = 27;
+            this.Irc_grp.TabStop = false;
+            this.Irc_grp.Text = "IRC";
             // 
-            // irc_lblServer
+            // Irc_lblServer
             // 
-            this.irc_lblServer.AutoSize = true;
-            this.irc_lblServer.Location = new System.Drawing.Point(6, 50);
-            this.irc_lblServer.Name = "irc_lblServer";
-            this.irc_lblServer.Size = new System.Drawing.Size(40, 13);
-            this.irc_lblServer.TabIndex = 19;
-            this.irc_lblServer.Text = "Server:";
+            this.Irc_lblServer.AutoSize = true;
+            this.Irc_lblServer.Location = new Point(6, 50);
+            this.Irc_lblServer.Name = "Irc_lblServer";
+            this.Irc_lblServer.Size = new Size(40, 13);
+            this.Irc_lblServer.TabIndex = 19;
+            this.Irc_lblServer.Text = "Server:";
             // 
-            // irc_lblPort
+            // Irc_lblPort
             // 
-            this.irc_lblPort.AutoSize = true;
-            this.irc_lblPort.Location = new System.Drawing.Point(6, 77);
-            this.irc_lblPort.Name = "irc_lblPort";
-            this.irc_lblPort.Size = new System.Drawing.Size(30, 13);
-            this.irc_lblPort.TabIndex = 30;
-            this.irc_lblPort.Text = "Port:";
+            this.Irc_lblPort.AutoSize = true;
+            this.Irc_lblPort.Location = new Point(6, 77);
+            this.Irc_lblPort.Name = "Irc_lblPort";
+            this.Irc_lblPort.Size = new Size(30, 13);
+            this.Irc_lblPort.TabIndex = 30;
+            this.Irc_lblPort.Text = "Port:";
             // 
-            // irc_numPort
+            // Irc_numPort
             // 
-            this.irc_numPort.BackColor = System.Drawing.SystemColors.Window;
-            this.irc_numPort.Location = new System.Drawing.Point(82, 74);
-            this.irc_numPort.Name = "irc_numPort";
-            this.irc_numPort.Size = new System.Drawing.Size(63, 21);
-            this.irc_numPort.TabIndex = 31;
-            this.irc_numPort.Maximum = new decimal(new int[] {
+            this.Irc_numPort.BackColor = SystemColors.Window;
+            this.Irc_numPort.Location = new Point(82, 74);
+            this.Irc_numPort.Name = "Irc_numPort";
+            this.Irc_numPort.Size = new Size(63, 21);
+            this.Irc_numPort.TabIndex = 31;
+            this.Irc_numPort.Maximum = new decimal(new int[] {
                                     65535,
                                     0,
                                     0,
                                     0});
-            this.irc_numPort.Value = new decimal(new int[] {
+            this.Irc_numPort.Value = new decimal(new int[] {
                                     6667,
                                     0,
                                     0,
                                     0});
             // 
-            // irc_lblNick
+            // Irc_lblNick
             // 
-            this.irc_lblNick.AutoSize = true;
-            this.irc_lblNick.Location = new System.Drawing.Point(6, 104);
-            this.irc_lblNick.Name = "irc_lblNick";
-            this.irc_lblNick.Size = new System.Drawing.Size(30, 13);
-            this.irc_lblNick.TabIndex = 20;
-            this.irc_lblNick.Text = "Nick:";
+            this.Irc_lblNick.AutoSize = true;
+            this.Irc_lblNick.Location = new Point(6, 104);
+            this.Irc_lblNick.Name = "Irc_lblNick";
+            this.Irc_lblNick.Size = new Size(30, 13);
+            this.Irc_lblNick.TabIndex = 20;
+            this.Irc_lblNick.Text = "Nick:";
             // 
-            // irc_lblChannel
+            // Irc_lblChannel
             // 
-            this.irc_lblChannel.AutoSize = true;
-            this.irc_lblChannel.Location = new System.Drawing.Point(6, 131);
-            this.irc_lblChannel.Name = "irc_lblChannel";
-            this.irc_lblChannel.Size = new System.Drawing.Size(49, 13);
-            this.irc_lblChannel.TabIndex = 18;
-            this.irc_lblChannel.Text = "Channel:";
+            this.Irc_lblChannel.AutoSize = true;
+            this.Irc_lblChannel.Location = new Point(6, 131);
+            this.Irc_lblChannel.Name = "Irc_lblChannel";
+            this.Irc_lblChannel.Size = new Size(49, 13);
+            this.Irc_lblChannel.TabIndex = 18;
+            this.Irc_lblChannel.Text = "Channel:";
             // 
-            // irc_lblOpChannel
+            // Irc_lblOpChannel
             // 
-            this.irc_lblOpChannel.AutoSize = true;
-            this.irc_lblOpChannel.Location = new System.Drawing.Point(6, 158);
-            this.irc_lblOpChannel.Name = "irc_lblOpChannel";
-            this.irc_lblOpChannel.Size = new System.Drawing.Size(64, 13);
-            this.irc_lblOpChannel.TabIndex = 25;
-            this.irc_lblOpChannel.Text = "Op Channel:";
+            this.Irc_lblOpChannel.AutoSize = true;
+            this.Irc_lblOpChannel.Location = new Point(6, 158);
+            this.Irc_lblOpChannel.Name = "Irc_lblOpChannel";
+            this.Irc_lblOpChannel.Size = new Size(64, 13);
+            this.Irc_lblOpChannel.TabIndex = 25;
+            this.Irc_lblOpChannel.Text = "Op Channel:";
             // 
-            // pageServer
+            // PageServer
             // 
-            this.pageServer.BackColor = System.Drawing.SystemColors.Control;
-            this.pageServer.Controls.Add(this.lvl_grp);
-            this.pageServer.Controls.Add(this.adv_grp);
-            this.pageServer.Controls.Add(this.srv_grp);
-            this.pageServer.Controls.Add(this.srv_grpUpdate);
-            this.pageServer.Controls.Add(this.grpPlayers);
-            this.pageServer.Location = new System.Drawing.Point(4, 22);
-            this.pageServer.Name = "pageServer";
-            this.pageServer.Padding = new System.Windows.Forms.Padding(3);
-            this.pageServer.Size = new System.Drawing.Size(498, 521);
-            this.pageServer.TabIndex = 0;
-            this.pageServer.Text = "Server";
+            this.PageServer.BackColor = SystemColors.Control;
+            this.PageServer.Controls.Add(this.Lvl_grp);
+            this.PageServer.Controls.Add(this.Adv_grp);
+            this.PageServer.Controls.Add(this.Srv_grp);
+            this.PageServer.Controls.Add(this.Srv_grpUpdate);
+            this.PageServer.Controls.Add(this.grpPlayers);
+            this.PageServer.Location = new Point(4, 22);
+            this.PageServer.Name = "PageServer";
+            this.PageServer.Padding = new Padding(3);
+            this.PageServer.Size = new Size(498, 521);
+            this.PageServer.TabIndex = 0;
+            this.PageServer.Text = "Server";
             // 
-            // lvl_grp
+            // Lvl_grp
             // 
-            this.lvl_grp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.lvl_grp.Controls.Add(this.lvl_lblMain);
-            this.lvl_grp.Controls.Add(this.lvl_txtMain);
-            this.lvl_grp.Controls.Add(this.lvl_chkAutoload);
-            this.lvl_grp.Controls.Add(this.lvl_chkWorld);
-            this.lvl_grp.Location = new System.Drawing.Point(314, 160);
-            this.lvl_grp.Name = "lvl_grp";
-            this.lvl_grp.Size = new System.Drawing.Size(177, 105);
-            this.lvl_grp.TabIndex = 44;
-            this.lvl_grp.TabStop = false;
-            this.lvl_grp.Text = "Level Settings";
+            this.Lvl_grp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Lvl_grp.Controls.Add(this.Lvl_lblMain);
+            this.Lvl_grp.Controls.Add(this.Lvl_txtMain);
+            this.Lvl_grp.Controls.Add(this.Lvl_chkAutoload);
+            this.Lvl_grp.Controls.Add(this.Lvl_chkWorld);
+            this.Lvl_grp.Location = new Point(314, 160);
+            this.Lvl_grp.Name = "Lvl_grp";
+            this.Lvl_grp.Size = new Size(177, 105);
+            this.Lvl_grp.TabIndex = 44;
+            this.Lvl_grp.TabStop = false;
+            this.Lvl_grp.Text = "Level Settings";
             // 
-            // lvl_lblMain
+            // Lvl_lblMain
             // 
-            this.lvl_lblMain.AutoSize = true;
-            this.lvl_lblMain.Location = new System.Drawing.Point(6, 22);
-            this.lvl_lblMain.Name = "lvl_lblMain";
-            this.lvl_lblMain.Size = new System.Drawing.Size(63, 13);
-            this.lvl_lblMain.TabIndex = 3;
-            this.lvl_lblMain.Text = "Main name:";
+            this.Lvl_lblMain.AutoSize = true;
+            this.Lvl_lblMain.Location = new Point(6, 22);
+            this.Lvl_lblMain.Name = "Lvl_lblMain";
+            this.Lvl_lblMain.Size = new Size(63, 13);
+            this.Lvl_lblMain.TabIndex = 3;
+            this.Lvl_lblMain.Text = "Main name:";
             // 
-            // lvl_txtMain
+            // Lvl_txtMain
             // 
-            this.lvl_txtMain.BackColor = System.Drawing.SystemColors.Window;
-            this.lvl_txtMain.Location = new System.Drawing.Point(75, 19);
-            this.lvl_txtMain.Name = "lvl_txtMain";
-            this.lvl_txtMain.Size = new System.Drawing.Size(87, 21);
-            this.lvl_txtMain.TabIndex = 2;
+            this.Lvl_txtMain.BackColor = SystemColors.Window;
+            this.Lvl_txtMain.Location = new Point(75, 19);
+            this.Lvl_txtMain.Name = "Lvl_txtMain";
+            this.Lvl_txtMain.Size = new Size(87, 21);
+            this.Lvl_txtMain.TabIndex = 2;
             // 
-            // adv_grp
+            // Adv_grp
             // 
-            this.adv_grp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.adv_grp.Controls.Add(this.adv_chkVerify);
-            this.adv_grp.Controls.Add(this.adv_chkCPE);
-            this.adv_grp.Controls.Add(this.adv_btnEditTexts);
-            this.adv_grp.Location = new System.Drawing.Point(8, 271);
-            this.adv_grp.Name = "adv_grp";
-            this.adv_grp.Size = new System.Drawing.Size(206, 98);
-            this.adv_grp.TabIndex = 42;
-            this.adv_grp.TabStop = false;
-            this.adv_grp.Text = "Advanced Configuration";
+            this.Adv_grp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Adv_grp.Controls.Add(this.Adv_chkVerify);
+            this.Adv_grp.Controls.Add(this.Adv_chkCPE);
+            this.Adv_grp.Controls.Add(this.Adv_btnEditTexts);
+            this.Adv_grp.Location = new Point(8, 271);
+            this.Adv_grp.Name = "Adv_grp";
+            this.Adv_grp.Size = new Size(206, 98);
+            this.Adv_grp.TabIndex = 42;
+            this.Adv_grp.TabStop = false;
+            this.Adv_grp.Text = "Advanced Configuration";
             // 
-            // adv_btnEditTexts
+            // Adv_btnEditTexts
             // 
-            this.adv_btnEditTexts.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.adv_btnEditTexts.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.adv_btnEditTexts.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.adv_btnEditTexts.Location = new System.Drawing.Point(6, 68);
-            this.adv_btnEditTexts.Name = "adv_btnEditTexts";
-            this.adv_btnEditTexts.Size = new System.Drawing.Size(80, 23);
-            this.adv_btnEditTexts.TabIndex = 35;
-            this.adv_btnEditTexts.Text = "Edit Text Files";
-            this.adv_btnEditTexts.UseVisualStyleBackColor = true;
-            this.adv_btnEditTexts.Click += new System.EventHandler(this.adv_btnEditTexts_Click);
+            this.Adv_btnEditTexts.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Adv_btnEditTexts.Cursor = Cursors.Hand;
+            this.Adv_btnEditTexts.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Adv_btnEditTexts.Location = new Point(6, 68);
+            this.Adv_btnEditTexts.Name = "Adv_btnEditTexts";
+            this.Adv_btnEditTexts.Size = new Size(80, 23);
+            this.Adv_btnEditTexts.TabIndex = 35;
+            this.Adv_btnEditTexts.Text = "Edit Text Files";
+            this.Adv_btnEditTexts.UseVisualStyleBackColor = true;
+            this.Adv_btnEditTexts.Click += new EventHandler(this.Adv_btnEditTexts_Click);
             // 
-            // srv_grp
+            // Srv_grp
             // 
-            this.srv_grp.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.srv_grp.Controls.Add(this.srv_lblName);
-            this.srv_grp.Controls.Add(this.srv_txtName);
-            this.srv_grp.Controls.Add(this.srv_lblMotd);
-            this.srv_grp.Controls.Add(this.srv_txtMOTD);
-            this.srv_grp.Controls.Add(this.srv_lblPort);
-            this.srv_grp.Controls.Add(this.srv_numPort);
-            this.srv_grp.Controls.Add(this.srv_btnPort);
-            this.srv_grp.Controls.Add(this.srv_lblOwner);
-            this.srv_grp.Controls.Add(this.srv_txtOwner);
-            this.srv_grp.Controls.Add(this.srv_chkPublic);
-            this.srv_grp.Location = new System.Drawing.Point(8, 6);
-            this.srv_grp.Name = "srv_grp";
-            this.srv_grp.Size = new System.Drawing.Size(483, 148);
-            this.srv_grp.TabIndex = 41;
-            this.srv_grp.TabStop = false;
-            this.srv_grp.Text = "General Configuration";
+            this.Srv_grp.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Srv_grp.Controls.Add(this.Srv_lblName);
+            this.Srv_grp.Controls.Add(this.Srv_txtName);
+            this.Srv_grp.Controls.Add(this.Srv_lblMotd);
+            this.Srv_grp.Controls.Add(this.Srv_txtMOTD);
+            this.Srv_grp.Controls.Add(this.Srv_lblPort);
+            this.Srv_grp.Controls.Add(this.Srv_numPort);
+            this.Srv_grp.Controls.Add(this.Srv_btnPort);
+            this.Srv_grp.Controls.Add(this.Srv_lblOwner);
+            this.Srv_grp.Controls.Add(this.Srv_txtOwner);
+            this.Srv_grp.Controls.Add(this.Srv_chkPublic);
+            this.Srv_grp.Location = new Point(8, 6);
+            this.Srv_grp.Name = "Srv_grp";
+            this.Srv_grp.Size = new Size(483, 148);
+            this.Srv_grp.TabIndex = 41;
+            this.Srv_grp.TabStop = false;
+            this.Srv_grp.Text = "General Configuration";
             // 
-            // srv_lblName
+            // Srv_lblName
             // 
-            this.srv_lblName.AutoSize = true;
-            this.srv_lblName.Location = new System.Drawing.Point(6, 22);
-            this.srv_lblName.Name = "srv_lblName";
-            this.srv_lblName.Size = new System.Drawing.Size(38, 13);
-            this.srv_lblName.TabIndex = 100;
-            this.srv_lblName.Text = "Name:";
+            this.Srv_lblName.AutoSize = true;
+            this.Srv_lblName.Location = new Point(6, 22);
+            this.Srv_lblName.Name = "Srv_lblName";
+            this.Srv_lblName.Size = new Size(38, 13);
+            this.Srv_lblName.TabIndex = 100;
+            this.Srv_lblName.Text = "Name:";
             // 
-            // srv_lblMotd
+            // Srv_lblMotd
             // 
-            this.srv_lblMotd.AutoSize = true;
-            this.srv_lblMotd.Location = new System.Drawing.Point(6, 49);
-            this.srv_lblMotd.Name = "srv_lblMotd";
-            this.srv_lblMotd.Size = new System.Drawing.Size(38, 13);
-            this.srv_lblMotd.TabIndex = 101;
-            this.srv_lblMotd.Text = "MOTD:";
+            this.Srv_lblMotd.AutoSize = true;
+            this.Srv_lblMotd.Location = new Point(6, 49);
+            this.Srv_lblMotd.Name = "Srv_lblMotd";
+            this.Srv_lblMotd.Size = new Size(38, 13);
+            this.Srv_lblMotd.TabIndex = 101;
+            this.Srv_lblMotd.Text = "MOTD:";
             // 
-            // srv_lblPort
+            // Srv_lblPort
             // 
-            this.srv_lblPort.AutoSize = true;
-            this.srv_lblPort.Location = new System.Drawing.Point(6, 76);
-            this.srv_lblPort.Name = "srv_lblPort";
-            this.srv_lblPort.Size = new System.Drawing.Size(30, 13);
-            this.srv_lblPort.TabIndex = 102;
-            this.srv_lblPort.Text = "Port:";
+            this.Srv_lblPort.AutoSize = true;
+            this.Srv_lblPort.Location = new Point(6, 76);
+            this.Srv_lblPort.Name = "Srv_lblPort";
+            this.Srv_lblPort.Size = new Size(30, 13);
+            this.Srv_lblPort.TabIndex = 102;
+            this.Srv_lblPort.Text = "Port:";
             // 
-            // srv_btnPort
+            // Srv_btnPort
             // 
-            this.srv_btnPort.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.srv_btnPort.Location = new System.Drawing.Point(152, 72);
-            this.srv_btnPort.Name = "srv_btnPort";
-            this.srv_btnPort.Size = new System.Drawing.Size(95, 23);
-            this.srv_btnPort.TabIndex = 3;
-            this.srv_btnPort.Text = "Port forwarding";
-            this.srv_btnPort.UseVisualStyleBackColor = true;
-            this.srv_btnPort.Click += new System.EventHandler(this.ChkPort_Click);
+            this.Srv_btnPort.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Srv_btnPort.Location = new Point(152, 72);
+            this.Srv_btnPort.Name = "Srv_btnPort";
+            this.Srv_btnPort.Size = new Size(95, 23);
+            this.Srv_btnPort.TabIndex = 3;
+            this.Srv_btnPort.Text = "Port forwarding";
+            this.Srv_btnPort.UseVisualStyleBackColor = true;
+            this.Srv_btnPort.Click += new EventHandler(this.ChkPort_Click);
             // 
-            // srv_lblOwner
+            // Srv_lblOwner
             // 
-            this.srv_lblOwner.AutoSize = true;
-            this.srv_lblOwner.Location = new System.Drawing.Point(6, 103);
-            this.srv_lblOwner.Name = "srv_lblOwner";
-            this.srv_lblOwner.Size = new System.Drawing.Size(72, 13);
-            this.srv_lblOwner.TabIndex = 104;
-            this.srv_lblOwner.Text = "Server owner:";
+            this.Srv_lblOwner.AutoSize = true;
+            this.Srv_lblOwner.Location = new Point(6, 103);
+            this.Srv_lblOwner.Name = "Srv_lblOwner";
+            this.Srv_lblOwner.Size = new Size(72, 13);
+            this.Srv_lblOwner.TabIndex = 104;
+            this.Srv_lblOwner.Text = "Server owner:";
             // 
-            // srv_txtOwner
+            // Srv_txtOwner
             // 
-            this.srv_txtOwner.BackColor = System.Drawing.SystemColors.Window;
-            this.srv_txtOwner.Location = new System.Drawing.Point(83, 100);
-            this.srv_txtOwner.MaxLength = 64;
-            this.srv_txtOwner.Name = "srv_txtOwner";
-            this.srv_txtOwner.Size = new System.Drawing.Size(119, 21);
-            this.srv_txtOwner.TabIndex = 4;
+            this.Srv_txtOwner.BackColor = SystemColors.Window;
+            this.Srv_txtOwner.Location = new Point(83, 100);
+            this.Srv_txtOwner.MaxLength = 64;
+            this.Srv_txtOwner.Name = "Srv_txtOwner";
+            this.Srv_txtOwner.Size = new Size(119, 21);
+            this.Srv_txtOwner.TabIndex = 4;
             // 
-            // srv_grpUpdate
+            // Srv_grpUpdate
             // 
-            this.srv_grpUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.srv_grpUpdate.Controls.Add(this.srv_btnForceUpdate);
-            this.srv_grpUpdate.Controls.Add(this.chkUpdates);
-            this.srv_grpUpdate.Location = new System.Drawing.Point(220, 271);
-            this.srv_grpUpdate.Name = "srv_grpUpdate";
-            this.srv_grpUpdate.Size = new System.Drawing.Size(271, 98);
-            this.srv_grpUpdate.TabIndex = 44;
-            this.srv_grpUpdate.TabStop = false;
-            this.srv_grpUpdate.Text = "Update Settings";
+            this.Srv_grpUpdate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Srv_grpUpdate.Controls.Add(this.Srv_btnForceUpdate);
+            this.Srv_grpUpdate.Controls.Add(this.ChkUpdates);
+            this.Srv_grpUpdate.Location = new Point(220, 271);
+            this.Srv_grpUpdate.Name = "Srv_grpUpdate";
+            this.Srv_grpUpdate.Size = new Size(271, 98);
+            this.Srv_grpUpdate.TabIndex = 44;
+            this.Srv_grpUpdate.TabStop = false;
+            this.Srv_grpUpdate.Text = "Update Settings";
             // 
-            // srv_btnForceUpdate
+            // Srv_btnForceUpdate
             // 
-            this.srv_btnForceUpdate.AutoSize = true;
-            this.srv_btnForceUpdate.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.srv_btnForceUpdate.Location = new System.Drawing.Point(186, 16);
-            this.srv_btnForceUpdate.Name = "srv_btnForceUpdate";
-            this.srv_btnForceUpdate.Size = new System.Drawing.Size(79, 23);
-            this.srv_btnForceUpdate.TabIndex = 6;
-            this.srv_btnForceUpdate.Text = "Force update";
-            this.srv_btnForceUpdate.UseVisualStyleBackColor = true;
-            this.srv_btnForceUpdate.Click += new System.EventHandler(this.forceUpdateBtn_Click);
+            this.Srv_btnForceUpdate.AutoSize = true;
+            this.Srv_btnForceUpdate.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Srv_btnForceUpdate.Location = new Point(186, 16);
+            this.Srv_btnForceUpdate.Name = "Srv_btnForceUpdate";
+            this.Srv_btnForceUpdate.Size = new Size(79, 23);
+            this.Srv_btnForceUpdate.TabIndex = 6;
+            this.Srv_btnForceUpdate.Text = "Force update";
+            this.Srv_btnForceUpdate.UseVisualStyleBackColor = true;
+            this.Srv_btnForceUpdate.Click += new EventHandler(this.ForceUpdateBtn_Click);
             // 
-            // chkUpdates
+            // ChkUpdates
             // 
-            this.chkUpdates.AutoSize = true;
-            this.chkUpdates.Location = new System.Drawing.Point(6, 20);
-            this.chkUpdates.Name = "chkUpdates";
-            this.chkUpdates.Size = new System.Drawing.Size(110, 17);
-            this.chkUpdates.TabIndex = 4;
-            this.chkUpdates.Text = "Check for updates";
-            this.chkUpdates.UseVisualStyleBackColor = true;
+            this.ChkUpdates.AutoSize = true;
+            this.ChkUpdates.Location = new Point(6, 20);
+            this.ChkUpdates.Name = "ChkUpdates";
+            this.ChkUpdates.Size = new Size(110, 17);
+            this.ChkUpdates.TabIndex = 4;
+            this.ChkUpdates.Text = "Check for updates";
+            this.ChkUpdates.UseVisualStyleBackColor = true;
             // 
             // grpPlayers
             // 
-            this.grpPlayers.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.grpPlayers.Controls.Add(this.srv_lblPlayers);
-            this.grpPlayers.Controls.Add(this.srv_numPlayers);
-            this.grpPlayers.Controls.Add(this.srv_cbMustAgree);
-            this.grpPlayers.Controls.Add(this.srv_lblGuests);
-            this.grpPlayers.Controls.Add(this.srv_numGuests);
-            this.grpPlayers.Location = new System.Drawing.Point(8, 160);
+            this.grpPlayers.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.grpPlayers.Controls.Add(this.Srv_lblPlayers);
+            this.grpPlayers.Controls.Add(this.Srv_numPlayers);
+            this.grpPlayers.Controls.Add(this.Srv_cbMustAgree);
+            this.grpPlayers.Controls.Add(this.Srv_lblGuests);
+            this.grpPlayers.Controls.Add(this.Srv_numGuests);
+            this.grpPlayers.Location = new Point(8, 160);
             this.grpPlayers.Name = "grpPlayers";
-            this.grpPlayers.Size = new System.Drawing.Size(300, 105);
+            this.grpPlayers.Size = new Size(300, 105);
             this.grpPlayers.TabIndex = 46;
             this.grpPlayers.TabStop = false;
             this.grpPlayers.Text = "Players";
             // 
-            // srv_lblPlayers
+            // Srv_lblPlayers
             // 
-            this.srv_lblPlayers.AutoSize = true;
-            this.srv_lblPlayers.Location = new System.Drawing.Point(6, 22);
-            this.srv_lblPlayers.Name = "srv_lblPlayers";
-            this.srv_lblPlayers.Size = new System.Drawing.Size(67, 13);
-            this.srv_lblPlayers.TabIndex = 3;
-            this.srv_lblPlayers.Text = "Max Players:";
+            this.Srv_lblPlayers.AutoSize = true;
+            this.Srv_lblPlayers.Location = new Point(6, 22);
+            this.Srv_lblPlayers.Name = "Srv_lblPlayers";
+            this.Srv_lblPlayers.Size = new Size(67, 13);
+            this.Srv_lblPlayers.TabIndex = 3;
+            this.Srv_lblPlayers.Text = "Max Players:";
             // 
-            // srv_numPlayers
+            // Srv_numPlayers
             // 
-                this.srv_numPlayers.BackColor = System.Drawing.SystemColors.Window;
-                this.srv_numPlayers.Location = new System.Drawing.Point(83, 20);
-                this.srv_numPlayers.Maximum = new decimal(new int[] {
+                this.Srv_numPlayers.BackColor = SystemColors.Window;
+                this.Srv_numPlayers.Location = new Point(83, 20);
+                this.Srv_numPlayers.Maximum = new decimal(new int[] {
                                     Flames.Server.MAX_PLAYERS,
                                     0,
                                     0,
                                     0});
-            this.srv_numPlayers.Name = "srv_numPlayers";
-            this.srv_numPlayers.Size = new System.Drawing.Size(60, 21);
-            this.srv_numPlayers.TabIndex = 29;
-            this.srv_numPlayers.Value = new decimal(new int[] {
+            this.Srv_numPlayers.Name = "Srv_numPlayers";
+            this.Srv_numPlayers.Size = new Size(60, 21);
+            this.Srv_numPlayers.TabIndex = 29;
+            this.Srv_numPlayers.Value = new decimal(new int[] {
                                     12,
                                     0,
                                     0,
                                     0});
-            this.srv_numPlayers.ValueChanged += new System.EventHandler(this.numPlayers_ValueChanged);
+            this.Srv_numPlayers.ValueChanged += new EventHandler(this.NumPlayers_ValueChanged);
             // 
-            // srv_cbMustAgree
+            // Srv_cbMustAgree
             // 
-            this.srv_cbMustAgree.AutoSize = true;
-            this.srv_cbMustAgree.Location = new System.Drawing.Point(9, 74);
-            this.srv_cbMustAgree.Name = "srv_cbMustAgree";
-            this.srv_cbMustAgree.Size = new System.Drawing.Size(169, 17);
-            this.srv_cbMustAgree.TabIndex = 32;
-            this.srv_cbMustAgree.Tag = "Forces guests to use /agree on entry to the server";
-            this.srv_cbMustAgree.Text = "Force new guests to read rules";
-            this.srv_cbMustAgree.UseVisualStyleBackColor = true;
+            this.Srv_cbMustAgree.AutoSize = true;
+            this.Srv_cbMustAgree.Location = new Point(9, 74);
+            this.Srv_cbMustAgree.Name = "Srv_cbMustAgree";
+            this.Srv_cbMustAgree.Size = new Size(169, 17);
+            this.Srv_cbMustAgree.TabIndex = 32;
+            this.Srv_cbMustAgree.Tag = "Forces guests to use /agree on entry to the server";
+            this.Srv_cbMustAgree.Text = "Force new guests to read rules";
+            this.Srv_cbMustAgree.UseVisualStyleBackColor = true;
             // 
-            // srv_lblGuests
+            // Srv_lblGuests
             // 
-            this.srv_lblGuests.AutoSize = true;
-            this.srv_lblGuests.Location = new System.Drawing.Point(6, 49);
-            this.srv_lblGuests.Name = "srv_lblGuests";
-            this.srv_lblGuests.Size = new System.Drawing.Size(65, 13);
-            this.srv_lblGuests.TabIndex = 27;
-            this.srv_lblGuests.Text = "Max Guests:";
+            this.Srv_lblGuests.AutoSize = true;
+            this.Srv_lblGuests.Location = new Point(6, 49);
+            this.Srv_lblGuests.Name = "Srv_lblGuests";
+            this.Srv_lblGuests.Size = new Size(65, 13);
+            this.Srv_lblGuests.TabIndex = 27;
+            this.Srv_lblGuests.Text = "Max Guests:";
             // 
-            // srv_numGuests
+            // Srv_numGuests
             // 
-            this.srv_numGuests.BackColor = System.Drawing.SystemColors.Window;
-            this.srv_numGuests.Location = new System.Drawing.Point(83, 47);
-                this.srv_numGuests.Maximum = new decimal(new int[] {
+            this.Srv_numGuests.BackColor = SystemColors.Window;
+            this.Srv_numGuests.Location = new Point(83, 47);
+                this.Srv_numGuests.Maximum = new decimal(new int[] {
                                     Flames.Server.MAX_PLAYERS,
                                     0,
                                     0,
                                     0});
-            this.srv_numGuests.Name = "srv_numGuests";
-            this.srv_numGuests.Size = new System.Drawing.Size(60, 21);
-            this.srv_numGuests.TabIndex = 28;
-            this.srv_numGuests.Value = new decimal(new int[] {
+            this.Srv_numGuests.Name = "Srv_numGuests";
+            this.Srv_numGuests.Size = new Size(60, 21);
+            this.Srv_numGuests.TabIndex = 28;
+            this.Srv_numGuests.Value = new decimal(new int[] {
                                     10,
                                     0,
                                     0,
                                     0});
             // 
-            // tabControl
+            // TabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                                    | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl.Controls.Add(this.pageServer);
-            this.tabControl.Controls.Add(this.pageChat);
-            this.tabControl.Controls.Add(this.pageRelay);
-            this.tabControl.Controls.Add(this.pageEco);
-            this.tabControl.Controls.Add(this.pageMisc);
-            this.tabControl.Controls.Add(this.pageGames);
-            this.tabControl.Controls.Add(this.pageRanks);
-            this.tabControl.Controls.Add(this.pageCommands);
-            this.tabControl.Controls.Add(this.pageBlocks);
-            this.tabControl.Controls.Add(this.pageSecurity);
-            this.tabControl.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tabControl.Location = new System.Drawing.Point(0, 0);
-            this.tabControl.Name = "tabControl";
-            this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(506, 547);
-            this.tabControl.TabIndex = 1;
+            this.TabControl.Anchor = ((AnchorStyles)(((AnchorStyles.Top | AnchorStyles.Left)
+                                    | AnchorStyles.Right)));
+            this.TabControl.Controls.Add(this.PageServer);
+            this.TabControl.Controls.Add(this.PageChat);
+            this.TabControl.Controls.Add(this.PageRelay);
+            this.TabControl.Controls.Add(this.PageEco);
+            this.TabControl.Controls.Add(this.PageMisc);
+            this.TabControl.Controls.Add(this.PageGames);
+            this.TabControl.Controls.Add(this.PageRanks);
+            this.TabControl.Controls.Add(this.PageCommands);
+            this.TabControl.Controls.Add(this.PageBlocks);
+            this.TabControl.Controls.Add(this.PageSecurity);
+            this.TabControl.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.TabControl.Location = new Point(0, 0);
+            this.TabControl.Name = "TabControl";
+            this.TabControl.SelectedIndex = 0;
+            this.TabControl.Size = new Size(506, 547);
+            this.TabControl.TabIndex = 1;
             // 
-            // pageEco
+            // PageEco
             // 
-            this.pageEco.Controls.Add(this.eco_gbRank);
-            this.pageEco.Controls.Add(this.eco_gbLvl);
-            this.pageEco.Controls.Add(this.eco_gbItem);
-            this.pageEco.Controls.Add(this.eco_gb);
-            this.pageEco.Location = new System.Drawing.Point(4, 22);
-            this.pageEco.Name = "pageEco";
-            this.pageEco.Size = new System.Drawing.Size(498, 521);
-            this.pageEco.TabIndex = 11;
-            this.pageEco.Text = "Eco";
+            this.PageEco.Controls.Add(this.Eco_gbRank);
+            this.PageEco.Controls.Add(this.Eco_gbLvl);
+            this.PageEco.Controls.Add(this.Eco_gbItem);
+            this.PageEco.Controls.Add(this.Eco_gb);
+            this.PageEco.Location = new Point(4, 22);
+            this.PageEco.Name = "PageEco";
+            this.PageEco.Size = new Size(498, 521);
+            this.PageEco.TabIndex = 11;
+            this.PageEco.Text = "Eco";
             // 
-            // eco_gbRank
+            // Eco_gbRank
             // 
-            this.eco_gbRank.Controls.Add(this.eco_dgvRanks);
-            this.eco_gbRank.Controls.Add(this.eco_cbRank);
-            this.eco_gbRank.Enabled = false;
-            this.eco_gbRank.Location = new System.Drawing.Point(8, 85);
-            this.eco_gbRank.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_gbRank.Name = "eco_gbRank";
-            this.eco_gbRank.Padding = new System.Windows.Forms.Padding(2);
-            this.eco_gbRank.Size = new System.Drawing.Size(484, 197);
-            this.eco_gbRank.TabIndex = 43;
-            this.eco_gbRank.TabStop = false;
-            this.eco_gbRank.Text = "Rank";
-            this.eco_gbRank.Visible = false;
+            this.Eco_gbRank.Controls.Add(this.Eco_dgvRanks);
+            this.Eco_gbRank.Controls.Add(this.Eco_cbRank);
+            this.Eco_gbRank.Enabled = false;
+            this.Eco_gbRank.Location = new Point(8, 85);
+            this.Eco_gbRank.Margin = new Padding(2);
+            this.Eco_gbRank.Name = "Eco_gbRank";
+            this.Eco_gbRank.Padding = new Padding(2);
+            this.Eco_gbRank.Size = new Size(484, 197);
+            this.Eco_gbRank.TabIndex = 43;
+            this.Eco_gbRank.TabStop = false;
+            this.Eco_gbRank.Text = "Rank";
+            this.Eco_gbRank.Visible = false;
             // 
-            // eco_dgvRanks
+            // Eco_dgvRanks
             // 
-            this.eco_dgvRanks.AllowUserToAddRows = false;
-            this.eco_dgvRanks.AllowUserToDeleteRows = false;
-            this.eco_dgvRanks.AllowUserToResizeRows = false;
-            this.eco_dgvRanks.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.eco_dgvRanks.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-                                    this.eco_colRankName,
-                                    this.eco_colRankPrice});
-            this.eco_dgvRanks.Location = new System.Drawing.Point(6, 38);
-            this.eco_dgvRanks.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_dgvRanks.MultiSelect = false;
-            this.eco_dgvRanks.Name = "eco_dgvRanks";
-            this.eco_dgvRanks.RowHeadersVisible = false;
-            this.eco_dgvRanks.RowTemplate.Height = 18;
-            this.eco_dgvRanks.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.eco_dgvRanks.Size = new System.Drawing.Size(472, 152);
-            this.eco_dgvRanks.TabIndex = 10;
-            this.eco_dgvRanks.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.eco_dgvRanks_CellValueChanged);
+            this.Eco_dgvRanks.AllowUserToAddRows = false;
+            this.Eco_dgvRanks.AllowUserToDeleteRows = false;
+            this.Eco_dgvRanks.AllowUserToResizeRows = false;
+            this.Eco_dgvRanks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Eco_dgvRanks.Columns.AddRange(new DataGridViewColumn[] {
+                                    this.Eco_colRankName,
+                                    this.Eco_colRankPrice});
+            this.Eco_dgvRanks.Location = new Point(6, 38);
+            this.Eco_dgvRanks.Margin = new Padding(2);
+            this.Eco_dgvRanks.MultiSelect = false;
+            this.Eco_dgvRanks.Name = "Eco_dgvRanks";
+            this.Eco_dgvRanks.RowHeadersVisible = false;
+            this.Eco_dgvRanks.RowTemplate.Height = 18;
+            this.Eco_dgvRanks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.Eco_dgvRanks.Size = new Size(472, 152);
+            this.Eco_dgvRanks.TabIndex = 10;
+            this.Eco_dgvRanks.CellValueChanged += new DataGridViewCellEventHandler(this.Eco_dgvRanks_CellValueChanged);
             // 
-            // eco_colRankName
+            // Eco_colRankName
             // 
-            this.eco_colRankName.HeaderText = "Rank";
-            this.eco_colRankName.Name = "eco_colRankName";
-            this.eco_colRankName.ReadOnly = true;
-            this.eco_colRankName.Width = 140;
+            this.Eco_colRankName.HeaderText = "Rank";
+            this.Eco_colRankName.Name = "Eco_colRankName";
+            this.Eco_colRankName.ReadOnly = true;
+            this.Eco_colRankName.Width = 140;
             // 
-            // eco_colRankPrice
+            // Eco_colRankPrice
             // 
-            this.eco_colRankPrice.HeaderText = "Price";
-            this.eco_colRankPrice.Name = "eco_colRankPrice";
-            this.eco_colRankPrice.Width = 60;
+            this.Eco_colRankPrice.HeaderText = "Price";
+            this.Eco_colRankPrice.Name = "Eco_colRankPrice";
+            this.Eco_colRankPrice.Width = 60;
             // 
-            // eco_cbRank
+            // Eco_cbRank
             // 
-            this.eco_cbRank.AutoSize = true;
-            this.eco_cbRank.Location = new System.Drawing.Point(6, 17);
-            this.eco_cbRank.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_cbRank.Name = "eco_cbRank";
-            this.eco_cbRank.Size = new System.Drawing.Size(64, 17);
-            this.eco_cbRank.TabIndex = 5;
-            this.eco_cbRank.Text = "Enabled";
-            this.eco_cbRank.UseVisualStyleBackColor = true;
-            this.eco_cbRank.CheckedChanged += new System.EventHandler(this.eco_cbRank_CheckedChanged);
+            this.Eco_cbRank.AutoSize = true;
+            this.Eco_cbRank.Location = new Point(6, 17);
+            this.Eco_cbRank.Margin = new Padding(2);
+            this.Eco_cbRank.Name = "Eco_cbRank";
+            this.Eco_cbRank.Size = new Size(64, 17);
+            this.Eco_cbRank.TabIndex = 5;
+            this.Eco_cbRank.Text = "Enabled";
+            this.Eco_cbRank.UseVisualStyleBackColor = true;
+            this.Eco_cbRank.CheckedChanged += new EventHandler(this.Eco_cbRank_CheckedChanged);
             // 
-            // eco_gbLvl
+            // Eco_gbLvl
             // 
-            this.eco_gbLvl.Controls.Add(this.eco_dgvMaps);
-            this.eco_gbLvl.Controls.Add(this.eco_btnLvlDel);
-            this.eco_gbLvl.Controls.Add(this.eco_btnLvlAdd);
-            this.eco_gbLvl.Controls.Add(this.eco_cbLvl);
-            this.eco_gbLvl.Enabled = false;
-            this.eco_gbLvl.Location = new System.Drawing.Point(8, 85);
-            this.eco_gbLvl.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_gbLvl.Name = "eco_gbLvl";
-            this.eco_gbLvl.Padding = new System.Windows.Forms.Padding(2);
-            this.eco_gbLvl.Size = new System.Drawing.Size(484, 222);
-            this.eco_gbLvl.TabIndex = 44;
-            this.eco_gbLvl.TabStop = false;
-            this.eco_gbLvl.Text = "Level";
-            this.eco_gbLvl.Visible = false;
+            this.Eco_gbLvl.Controls.Add(this.Eco_dgvMaps);
+            this.Eco_gbLvl.Controls.Add(this.Eco_btnLvlDel);
+            this.Eco_gbLvl.Controls.Add(this.Eco_btnLvlAdd);
+            this.Eco_gbLvl.Controls.Add(this.Eco_cbLvl);
+            this.Eco_gbLvl.Enabled = false;
+            this.Eco_gbLvl.Location = new Point(8, 85);
+            this.Eco_gbLvl.Margin = new Padding(2);
+            this.Eco_gbLvl.Name = "Eco_gbLvl";
+            this.Eco_gbLvl.Padding = new Padding(2);
+            this.Eco_gbLvl.Size = new Size(484, 222);
+            this.Eco_gbLvl.TabIndex = 44;
+            this.Eco_gbLvl.TabStop = false;
+            this.Eco_gbLvl.Text = "Level";
+            this.Eco_gbLvl.Visible = false;
             // 
-            // eco_dgvMaps
+            // Eco_dgvMaps
             // 
-            this.eco_dgvMaps.AllowUserToAddRows = false;
-            this.eco_dgvMaps.AllowUserToDeleteRows = false;
-            this.eco_dgvMaps.AllowUserToResizeRows = false;
-            this.eco_dgvMaps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.eco_dgvMaps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-                                    this.eco_colLvlName,
-                                    this.eco_colLvlPrice,
-                                    this.eco_colLvlX,
-                                    this.eco_colLvlY,
-                                    this.eco_colLvlZ,
-                                    this.eco_colLvlTheme});
-            this.eco_dgvMaps.Location = new System.Drawing.Point(6, 39);
-            this.eco_dgvMaps.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_dgvMaps.MultiSelect = false;
-            this.eco_dgvMaps.Name = "eco_dgvMaps";
-            this.eco_dgvMaps.RowHeadersVisible = false;
-            this.eco_dgvMaps.RowTemplate.Height = 24;
-            this.eco_dgvMaps.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.eco_dgvMaps.Size = new System.Drawing.Size(472, 151);
-            this.eco_dgvMaps.TabIndex = 9;
-            this.eco_dgvMaps.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.eco_dgvMaps_CellValueChanged);
+            this.Eco_dgvMaps.AllowUserToAddRows = false;
+            this.Eco_dgvMaps.AllowUserToDeleteRows = false;
+            this.Eco_dgvMaps.AllowUserToResizeRows = false;
+            this.Eco_dgvMaps.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Eco_dgvMaps.Columns.AddRange(new DataGridViewColumn[] {
+                                    this.Eco_colLvlName,
+                                    this.Eco_colLvlPrice,
+                                    this.Eco_colLvlX,
+                                    this.Eco_colLvlY,
+                                    this.Eco_colLvlZ,
+                                    this.Eco_colLvlTheme});
+            this.Eco_dgvMaps.Location = new Point(6, 39);
+            this.Eco_dgvMaps.Margin = new Padding(2);
+            this.Eco_dgvMaps.MultiSelect = false;
+            this.Eco_dgvMaps.Name = "Eco_dgvMaps";
+            this.Eco_dgvMaps.RowHeadersVisible = false;
+            this.Eco_dgvMaps.RowTemplate.Height = 24;
+            this.Eco_dgvMaps.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.Eco_dgvMaps.Size = new Size(472, 151);
+            this.Eco_dgvMaps.TabIndex = 9;
+            this.Eco_dgvMaps.CellValueChanged += new DataGridViewCellEventHandler(this.Eco_dgvMaps_CellValueChanged);
             // 
-            // eco_colLvlName
+            // Eco_colLvlName
             // 
-            this.eco_colLvlName.HeaderText = "Name";
-            this.eco_colLvlName.Name = "eco_colLvlName";
-            this.eco_colLvlName.Width = 140;
+            this.Eco_colLvlName.HeaderText = "Name";
+            this.Eco_colLvlName.Name = "Eco_colLvlName";
+            this.Eco_colLvlName.Width = 140;
             // 
-            // eco_colLvlPrice
+            // Eco_colLvlPrice
             // 
-            this.eco_colLvlPrice.HeaderText = "Price";
-            this.eco_colLvlPrice.Name = "eco_colLvlPrice";
-            this.eco_colLvlPrice.Width = 60;
+            this.Eco_colLvlPrice.HeaderText = "Price";
+            this.Eco_colLvlPrice.Name = "Eco_colLvlPrice";
+            this.Eco_colLvlPrice.Width = 60;
             // 
-            // eco_colLvlX
+            // Eco_colLvlX
             // 
-            this.eco_colLvlX.HeaderText = "Width";
-            this.eco_colLvlX.Name = "eco_colLvlX";
-            this.eco_colLvlX.Width = 50;
+            this.Eco_colLvlX.HeaderText = "Width";
+            this.Eco_colLvlX.Name = "Eco_colLvlX";
+            this.Eco_colLvlX.Width = 50;
             // 
-            // eco_colLvlY
+            // Eco_colLvlY
             // 
-            this.eco_colLvlY.HeaderText = "Height";
-            this.eco_colLvlY.Name = "eco_colLvlY";
-            this.eco_colLvlY.Width = 50;
+            this.Eco_colLvlY.HeaderText = "Height";
+            this.Eco_colLvlY.Name = "Eco_colLvlY";
+            this.Eco_colLvlY.Width = 50;
             // 
-            // eco_colLvlZ
+            // Eco_colLvlZ
             // 
-            this.eco_colLvlZ.HeaderText = "Length";
-            this.eco_colLvlZ.Name = "eco_colLvlZ";
-            this.eco_colLvlZ.Width = 50;
+            this.Eco_colLvlZ.HeaderText = "Length";
+            this.Eco_colLvlZ.Name = "Eco_colLvlZ";
+            this.Eco_colLvlZ.Width = 50;
             // 
-            // eco_colLvlTheme
+            // Eco_colLvlTheme
             // 
-            this.eco_colLvlTheme.HeaderText = "Theme";
-            this.eco_colLvlTheme.Name = "eco_colLvlTheme";
-            this.eco_colLvlTheme.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.eco_colLvlTheme.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Eco_colLvlTheme.HeaderText = "Theme";
+            this.Eco_colLvlTheme.Name = "Eco_colLvlTheme";
+            this.Eco_colLvlTheme.Resizable = DataGridViewTriState.True;
+            this.Eco_colLvlTheme.SortMode = DataGridViewColumnSortMode.Automatic;
             // 
-            // eco_btnLvlDel
+            // Eco_btnLvlDel
             // 
-            this.eco_btnLvlDel.Enabled = false;
-            this.eco_btnLvlDel.Location = new System.Drawing.Point(406, 194);
-            this.eco_btnLvlDel.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_btnLvlDel.Name = "eco_btnLvlDel";
-            this.eco_btnLvlDel.Size = new System.Drawing.Size(72, 23);
-            this.eco_btnLvlDel.TabIndex = 8;
-            this.eco_btnLvlDel.Text = "Remove";
-            this.eco_btnLvlDel.UseVisualStyleBackColor = true;
-            this.eco_btnLvlDel.Click += new System.EventHandler(this.eco_lvlDelete_Click);
+            this.Eco_btnLvlDel.Enabled = false;
+            this.Eco_btnLvlDel.Location = new Point(406, 194);
+            this.Eco_btnLvlDel.Margin = new Padding(2);
+            this.Eco_btnLvlDel.Name = "Eco_btnLvlDel";
+            this.Eco_btnLvlDel.Size = new Size(72, 23);
+            this.Eco_btnLvlDel.TabIndex = 8;
+            this.Eco_btnLvlDel.Text = "Remove";
+            this.Eco_btnLvlDel.UseVisualStyleBackColor = true;
+            this.Eco_btnLvlDel.Click += new EventHandler(this.Eco_lvlDelete_Click);
             // 
-            // eco_btnLvlAdd
+            // Eco_btnLvlAdd
             // 
-            this.eco_btnLvlAdd.Location = new System.Drawing.Point(4, 194);
-            this.eco_btnLvlAdd.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_btnLvlAdd.Name = "eco_btnLvlAdd";
-            this.eco_btnLvlAdd.Size = new System.Drawing.Size(72, 23);
-            this.eco_btnLvlAdd.TabIndex = 7;
-            this.eco_btnLvlAdd.Text = "Add";
-            this.eco_btnLvlAdd.UseVisualStyleBackColor = true;
-            this.eco_btnLvlAdd.Click += new System.EventHandler(this.eco_lvlAdd_Click);
+            this.Eco_btnLvlAdd.Location = new Point(4, 194);
+            this.Eco_btnLvlAdd.Margin = new Padding(2);
+            this.Eco_btnLvlAdd.Name = "Eco_btnLvlAdd";
+            this.Eco_btnLvlAdd.Size = new Size(72, 23);
+            this.Eco_btnLvlAdd.TabIndex = 7;
+            this.Eco_btnLvlAdd.Text = "Add";
+            this.Eco_btnLvlAdd.UseVisualStyleBackColor = true;
+            this.Eco_btnLvlAdd.Click += new EventHandler(this.Eco_lvlAdd_Click);
             // 
-            // eco_cbLvl
+            // Eco_cbLvl
             // 
-            this.eco_cbLvl.AutoSize = true;
-            this.eco_cbLvl.Location = new System.Drawing.Point(6, 17);
-            this.eco_cbLvl.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_cbLvl.Name = "eco_cbLvl";
-            this.eco_cbLvl.Size = new System.Drawing.Size(64, 17);
-            this.eco_cbLvl.TabIndex = 6;
-            this.eco_cbLvl.Text = "Enabled";
-            this.eco_cbLvl.UseVisualStyleBackColor = true;
-            this.eco_cbLvl.CheckedChanged += new System.EventHandler(this.eco_lvlEnabled_CheckedChanged);
+            this.Eco_cbLvl.AutoSize = true;
+            this.Eco_cbLvl.Location = new Point(6, 17);
+            this.Eco_cbLvl.Margin = new Padding(2);
+            this.Eco_cbLvl.Name = "Eco_cbLvl";
+            this.Eco_cbLvl.Size = new Size(64, 17);
+            this.Eco_cbLvl.TabIndex = 6;
+            this.Eco_cbLvl.Text = "Enabled";
+            this.Eco_cbLvl.UseVisualStyleBackColor = true;
+            this.Eco_cbLvl.CheckedChanged += new EventHandler(this.Eco_lvlEnabled_CheckedChanged);
             // 
-            // eco_gbItem
+            // Eco_gbItem
             // 
-            this.eco_gbItem.Controls.Add(this.eco_lblItemRank);
-            this.eco_gbItem.Controls.Add(this.eco_cmbItemRank);
-            this.eco_gbItem.Controls.Add(this.eco_numItemPrice);
-            this.eco_gbItem.Controls.Add(this.eco_lblItemPrice);
-            this.eco_gbItem.Controls.Add(this.eco_cbItem);
-            this.eco_gbItem.Enabled = false;
-            this.eco_gbItem.Location = new System.Drawing.Point(8, 85);
-            this.eco_gbItem.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_gbItem.Name = "eco_gbItem";
-            this.eco_gbItem.Padding = new System.Windows.Forms.Padding(2);
-            this.eco_gbItem.Size = new System.Drawing.Size(484, 70);
-            this.eco_gbItem.TabIndex = 42;
-            this.eco_gbItem.TabStop = false;
-            this.eco_gbItem.Text = "Titlecolor";
-            this.eco_gbItem.Visible = false;
+            this.Eco_gbItem.Controls.Add(this.Eco_lblItemRank);
+            this.Eco_gbItem.Controls.Add(this.Eco_cmbItemRank);
+            this.Eco_gbItem.Controls.Add(this.Eco_numItemPrice);
+            this.Eco_gbItem.Controls.Add(this.Eco_lblItemPrice);
+            this.Eco_gbItem.Controls.Add(this.Eco_cbItem);
+            this.Eco_gbItem.Enabled = false;
+            this.Eco_gbItem.Location = new Point(8, 85);
+            this.Eco_gbItem.Margin = new Padding(2);
+            this.Eco_gbItem.Name = "Eco_gbItem";
+            this.Eco_gbItem.Padding = new Padding(2);
+            this.Eco_gbItem.Size = new Size(484, 70);
+            this.Eco_gbItem.TabIndex = 42;
+            this.Eco_gbItem.TabStop = false;
+            this.Eco_gbItem.Text = "Titlecolor";
+            this.Eco_gbItem.Visible = false;
             // 
-            // eco_lblItemRank
+            // Eco_lblItemRank
             // 
-            this.eco_lblItemRank.AutoSize = true;
-            this.eco_lblItemRank.Location = new System.Drawing.Point(311, 46);
-            this.eco_lblItemRank.Name = "eco_lblItemRank";
-            this.eco_lblItemRank.Size = new System.Drawing.Size(51, 13);
-            this.eco_lblItemRank.TabIndex = 24;
-            this.eco_lblItemRank.Text = "Min rank:";
+            this.Eco_lblItemRank.AutoSize = true;
+            this.Eco_lblItemRank.Location = new Point(311, 46);
+            this.Eco_lblItemRank.Name = "Eco_lblItemRank";
+            this.Eco_lblItemRank.Size = new Size(51, 13);
+            this.Eco_lblItemRank.TabIndex = 24;
+            this.Eco_lblItemRank.Text = "Min rank:";
             // 
-            // eco_numItemPrice
+            // Eco_numItemPrice
             // 
-            this.eco_numItemPrice.BackColor = System.Drawing.SystemColors.Window;
-            this.eco_numItemPrice.Location = new System.Drawing.Point(76, 43);
-            this.eco_numItemPrice.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_numItemPrice.Maximum = new decimal(new int[] {
+            this.Eco_numItemPrice.BackColor = SystemColors.Window;
+            this.Eco_numItemPrice.Location = new Point(76, 43);
+            this.Eco_numItemPrice.Margin = new Padding(2);
+            this.Eco_numItemPrice.Maximum = new decimal(new int[] {
                                     16777215,
                                     0,
                                     0,
                                     0});
-            this.eco_numItemPrice.Name = "eco_numItemPrice";
-            this.eco_numItemPrice.Size = new System.Drawing.Size(78, 21);
-            this.eco_numItemPrice.TabIndex = 6;
-            this.eco_numItemPrice.Value = new decimal(new int[] {
+            this.Eco_numItemPrice.Name = "Eco_numItemPrice";
+            this.Eco_numItemPrice.Size = new Size(78, 21);
+            this.Eco_numItemPrice.TabIndex = 6;
+            this.Eco_numItemPrice.Value = new decimal(new int[] {
                                     100,
                                     0,
                                     0,
                                     0});
-            this.eco_numItemPrice.ValueChanged += new System.EventHandler(this.eco_numItemPrice_ValueChanged);
-            // 
-            // eco_lblItemPrice
-            // 
-            this.eco_lblItemPrice.AutoSize = true;
-            this.eco_lblItemPrice.Location = new System.Drawing.Point(38, 45);
-            this.eco_lblItemPrice.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.eco_lblItemPrice.Name = "eco_lblItemPrice";
-            this.eco_lblItemPrice.Size = new System.Drawing.Size(34, 13);
-            this.eco_lblItemPrice.TabIndex = 6;
-            this.eco_lblItemPrice.Text = "Price:";
-            // 
-            // eco_cbItem
-            // 
-            this.eco_cbItem.AutoSize = true;
-            this.eco_cbItem.Location = new System.Drawing.Point(6, 17);
-            this.eco_cbItem.Margin = new System.Windows.Forms.Padding(2);
-            this.eco_cbItem.Name = "eco_cbItem";
-            this.eco_cbItem.Size = new System.Drawing.Size(64, 17);
-            this.eco_cbItem.TabIndex = 6;
-            this.eco_cbItem.Text = "Enabled";
-            this.eco_cbItem.UseVisualStyleBackColor = true;
-            this.eco_cbItem.CheckedChanged += new System.EventHandler(this.eco_cbItem_CheckedChanged);
-            // 
-            // eco_gb
-            // 
-            this.eco_gb.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.eco_gb.Controls.Add(this.eco_cmbCfg);
-            this.eco_gb.Controls.Add(this.eco_lblCfg);
-            this.eco_gb.Controls.Add(this.eco_cbEnabled);
-            this.eco_gb.Controls.Add(this.eco_txtCurrency);
-            this.eco_gb.Controls.Add(this.eco_lblCurrency);
-            this.eco_gb.Location = new System.Drawing.Point(8, 3);
-            this.eco_gb.Name = "eco_gb";
-            this.eco_gb.Size = new System.Drawing.Size(484, 70);
-            this.eco_gb.TabIndex = 41;
-            this.eco_gb.TabStop = false;
-            this.eco_gb.Text = "Economy";
-            // 
-            // eco_cmbCfg
-            // 
-            this.eco_cmbCfg.BackColor = System.Drawing.SystemColors.Window;
-            this.eco_cmbCfg.FormattingEnabled = true;
-            this.eco_cmbCfg.Location = new System.Drawing.Point(368, 42);
-            this.eco_cmbCfg.Name = "eco_cmbCfg";
-            this.eco_cmbCfg.Size = new System.Drawing.Size(110, 21);
-            this.eco_cmbCfg.TabIndex = 23;
-            this.eco_cmbCfg.SelectedIndexChanged += new System.EventHandler(this.Eco_cmbCfg_SelectedIndexChanged);
-            // 
-            // eco_lblCfg
-            // 
-            this.eco_lblCfg.AutoSize = true;
-            this.eco_lblCfg.Location = new System.Drawing.Point(286, 45);
-            this.eco_lblCfg.Name = "eco_lblCfg";
-            this.eco_lblCfg.Size = new System.Drawing.Size(79, 13);
-            this.eco_lblCfg.TabIndex = 22;
-            this.eco_lblCfg.Text = "Configure item:";
-            // 
-            // eco_cbEnabled
-            // 
-            this.eco_cbEnabled.AutoSize = true;
-            this.eco_cbEnabled.Location = new System.Drawing.Point(6, 20);
-            this.eco_cbEnabled.Name = "eco_cbEnabled";
-            this.eco_cbEnabled.Size = new System.Drawing.Size(64, 17);
-            this.eco_cbEnabled.TabIndex = 21;
-            this.eco_cbEnabled.Text = "Enabled";
-            this.eco_cbEnabled.UseVisualStyleBackColor = true;
-            this.eco_cbEnabled.CheckedChanged += new System.EventHandler(this.eco_cbEnabled_CheckedChanged);
-            // 
-            // eco_txtCurrency
-            // 
-            this.eco_txtCurrency.BackColor = System.Drawing.SystemColors.Window;
-            this.eco_txtCurrency.Location = new System.Drawing.Point(76, 42);
-            this.eco_txtCurrency.Name = "eco_txtCurrency";
-            this.eco_txtCurrency.Size = new System.Drawing.Size(118, 21);
-            this.eco_txtCurrency.TabIndex = 1;
-            // 
-            // eco_lblCurrency
-            // 
-            this.eco_lblCurrency.AutoSize = true;
-            this.eco_lblCurrency.Location = new System.Drawing.Point(18, 45);
-            this.eco_lblCurrency.Name = "eco_lblCurrency";
-            this.eco_lblCurrency.Size = new System.Drawing.Size(52, 13);
-            this.eco_lblCurrency.TabIndex = 11;
-            this.eco_lblCurrency.Text = "Currency:";
-            // 
-            // pageGames
-            // 
-            this.pageGames.BackColor = System.Drawing.SystemColors.Control;
-            this.pageGames.Controls.Add(this.tabGames);
-            this.pageGames.Location = new System.Drawing.Point(4, 22);
-            this.pageGames.Name = "pageGames";
-            this.pageGames.Padding = new System.Windows.Forms.Padding(3);
-            this.pageGames.Size = new System.Drawing.Size(498, 521);
-            this.pageGames.TabIndex = 8;
-            this.pageGames.Text = "Games";
-            // 
-            // tabGames
-            // 
-            this.tabGames.Controls.Add(this.tabLS);
-            this.tabGames.Controls.Add(this.tabZS);
-            this.tabGames.Controls.Add(this.tabZS_old);
-            this.tabGames.Controls.Add(this.tabCTF);
-            this.tabGames.Controls.Add(this.tabTW);
-            this.tabGames.Controls.Add(this.tabCD);
-            this.tabGames.Location = new System.Drawing.Point(3, 3);
-            this.tabGames.Name = "tabGames";
-            this.tabGames.SelectedIndex = 0;
-            this.tabGames.Size = new System.Drawing.Size(492, 515);
-            this.tabGames.TabIndex = 0;
-            // 
-            // tabLS
-            // 
-            this.tabLS.BackColor = System.Drawing.SystemColors.Control;
-            this.tabLS.Controls.Add(this.ls_grpControls);
-            this.tabLS.Controls.Add(this.ls_grpMapSettings);
-            this.tabLS.Controls.Add(this.ls_grpSettings);
-            this.tabLS.Controls.Add(this.ls_grpMaps);
-            this.tabLS.Location = new System.Drawing.Point(4, 22);
-            this.tabLS.Name = "tabLS";
-            this.tabLS.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLS.Size = new System.Drawing.Size(484, 489);
-            this.tabLS.TabIndex = 0;
-            this.tabLS.Text = "Lava Survival";
-            // 
-            // ls_grpControls
-            // 
-            this.ls_grpControls.Controls.Add(this.ls_btnEnd);
-            this.ls_grpControls.Controls.Add(this.ls_btnStop);
-            this.ls_grpControls.Controls.Add(this.ls_btnStart);
-            this.ls_grpControls.Location = new System.Drawing.Point(110, 5);
-            this.ls_grpControls.Name = "ls_grpControls";
-            this.ls_grpControls.Size = new System.Drawing.Size(279, 51);
-            this.ls_grpControls.TabIndex = 4;
-            this.ls_grpControls.TabStop = false;
-            this.ls_grpControls.Text = "Controls";
-            // 
-            // ls_btnEnd
-            // 
-            this.ls_btnEnd.Location = new System.Drawing.Point(190, 19);
-            this.ls_btnEnd.Name = "ls_btnEnd";
-            this.ls_btnEnd.Size = new System.Drawing.Size(80, 23);
-            this.ls_btnEnd.TabIndex = 2;
-            this.ls_btnEnd.Text = "End Round";
-            this.ls_btnEnd.UseVisualStyleBackColor = true;
-            // 
-            // ls_btnStop
-            // 
-            this.ls_btnStop.Location = new System.Drawing.Point(100, 19);
-            this.ls_btnStop.Name = "ls_btnStop";
-            this.ls_btnStop.Size = new System.Drawing.Size(80, 23);
-            this.ls_btnStop.TabIndex = 1;
-            this.ls_btnStop.Text = "Stop Game";
-            this.ls_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // ls_btnStart
-            // 
-            this.ls_btnStart.Location = new System.Drawing.Point(10, 19);
-            this.ls_btnStart.Name = "ls_btnStart";
-            this.ls_btnStart.Size = new System.Drawing.Size(80, 23);
-            this.ls_btnStart.TabIndex = 0;
-            this.ls_btnStart.Text = "Start Game";
-            this.ls_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // ls_grpMapSettings
-            // 
-            this.ls_grpMapSettings.Controls.Add(this.ls_grpTime);
-            this.ls_grpMapSettings.Controls.Add(this.ls_grpLayer);
-            this.ls_grpMapSettings.Controls.Add(this.ls_grpFlood);
-            this.ls_grpMapSettings.Enabled = false;
-            this.ls_grpMapSettings.Location = new System.Drawing.Point(182, 184);
-            this.ls_grpMapSettings.Name = "ls_grpMapSettings";
-            this.ls_grpMapSettings.Size = new System.Drawing.Size(296, 287);
-            this.ls_grpMapSettings.TabIndex = 3;
-            this.ls_grpMapSettings.TabStop = false;
-            this.ls_grpMapSettings.Text = "Map Settings";
-            // 
-            // ls_grpTime
-            // 
-            this.ls_grpTime.Controls.Add(this.ls_numFlood);
-            this.ls_grpTime.Controls.Add(this.ls_numLayerTime);
-            this.ls_grpTime.Controls.Add(this.ls_numRound);
-            this.ls_grpTime.Controls.Add(this.ls_lblLayerTime);
-            this.ls_grpTime.Controls.Add(this.ls_lblFlood);
-            this.ls_grpTime.Controls.Add(this.ls_lblRound);
-            this.ls_grpTime.Location = new System.Drawing.Point(6, 180);
-            this.ls_grpTime.Name = "ls_grpTime";
-            this.ls_grpTime.Size = new System.Drawing.Size(284, 71);
-            this.ls_grpTime.TabIndex = 39;
-            this.ls_grpTime.TabStop = false;
-            this.ls_grpTime.Text = "Time settings";
-            // 
-            // ls_numFlood
-            // 
-            this.ls_numFlood.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numFlood.Location = new System.Drawing.Point(69, 43);
-            this.ls_numFlood.Name = "ls_numFlood";
-            this.ls_numFlood.Seconds = ((long)(300));
-            this.ls_numFlood.Size = new System.Drawing.Size(62, 21);
-            this.ls_numFlood.TabIndex = 38;
-            this.ls_numFlood.Text = "5m";
-            this.ls_numFlood.Value = System.TimeSpan.Parse("00:05:00");
-            // 
-            // ls_numLayerTime
-            // 
-            this.ls_numLayerTime.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numLayerTime.Location = new System.Drawing.Point(216, 16);
-            this.ls_numLayerTime.Name = "ls_numLayerTime";
-            this.ls_numLayerTime.Seconds = ((long)(120));
-            this.ls_numLayerTime.Size = new System.Drawing.Size(62, 21);
-            this.ls_numLayerTime.TabIndex = 37;
-            this.ls_numLayerTime.Text = "2m";
-            this.ls_numLayerTime.Value = System.TimeSpan.Parse("00:02:00");
-            // 
-            // ls_numRound
-            // 
-            this.ls_numRound.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_numRound.Location = new System.Drawing.Point(69, 16);
-            this.ls_numRound.Name = "ls_numRound";
-            this.ls_numRound.Seconds = ((long)(900));
-            this.ls_numRound.Size = new System.Drawing.Size(62, 21);
-            this.ls_numRound.TabIndex = 36;
-            this.ls_numRound.Text = "15m";
-            this.ls_numRound.Value = System.TimeSpan.Parse("00:15:00");
-            // 
-            // ls_lblLayerTime
-            // 
-            this.ls_lblLayerTime.AutoSize = true;
-            this.ls_lblLayerTime.Location = new System.Drawing.Point(155, 20);
-            this.ls_lblLayerTime.Name = "ls_lblLayerTime";
-            this.ls_lblLayerTime.Size = new System.Drawing.Size(59, 13);
-            this.ls_lblLayerTime.TabIndex = 35;
-            this.ls_lblLayerTime.Text = "Layer time:";
-            // 
-            // ls_lblFlood
-            // 
-            this.ls_lblFlood.AutoSize = true;
-            this.ls_lblFlood.Location = new System.Drawing.Point(8, 46);
-            this.ls_lblFlood.Name = "ls_lblFlood";
-            this.ls_lblFlood.Size = new System.Drawing.Size(59, 13);
-            this.ls_lblFlood.TabIndex = 34;
-            this.ls_lblFlood.Text = "Flood time:";
-            // 
-            // ls_lblRound
-            // 
-            this.ls_lblRound.AutoSize = true;
-            this.ls_lblRound.Location = new System.Drawing.Point(4, 20);
-            this.ls_lblRound.Name = "ls_lblRound";
-            this.ls_lblRound.Size = new System.Drawing.Size(63, 13);
-            this.ls_lblRound.TabIndex = 34;
-            this.ls_lblRound.Text = "Round time:";
-            // 
-            // ls_grpLayer
-            // 
-            this.ls_grpLayer.Controls.Add(this.ls_lblBlocksTall);
-            this.ls_grpLayer.Controls.Add(this.ls_numHeight);
-            this.ls_grpLayer.Controls.Add(this.ls_lblLayersEach);
-            this.ls_grpLayer.Controls.Add(this.ls_numCount);
-            this.ls_grpLayer.Controls.Add(this.ls_numLayer);
-            this.ls_grpLayer.Controls.Add(this.ls_lblLayer);
-            this.ls_grpLayer.Location = new System.Drawing.Point(6, 100);
-            this.ls_grpLayer.Name = "ls_grpLayer";
-            this.ls_grpLayer.Size = new System.Drawing.Size(284, 74);
-            this.ls_grpLayer.TabIndex = 1;
-            this.ls_grpLayer.TabStop = false;
-            this.ls_grpLayer.Text = "Layer flood settings";
-            // 
-            // ls_lblBlocksTall
-            // 
-            this.ls_lblBlocksTall.AutoSize = true;
-            this.ls_lblBlocksTall.Location = new System.Drawing.Point(183, 48);
-            this.ls_lblBlocksTall.Name = "ls_lblBlocksTall";
-            this.ls_lblBlocksTall.Size = new System.Drawing.Size(55, 13);
-            this.ls_lblBlocksTall.TabIndex = 38;
-            this.ls_lblBlocksTall.Text = "blocks tall";
-            // 
-            // ls_lblLayersEach
-            // 
-            this.ls_lblLayersEach.AutoSize = true;
-            this.ls_lblLayersEach.Location = new System.Drawing.Point(62, 48);
-            this.ls_lblLayersEach.Name = "ls_lblLayersEach";
-            this.ls_lblLayersEach.Size = new System.Drawing.Size(64, 13);
-            this.ls_lblLayersEach.TabIndex = 36;
-            this.ls_lblLayersEach.Text = "layers, each";
-            // 
-            // ls_lblLayer
-            // 
-            this.ls_lblLayer.AutoSize = true;
-            this.ls_lblLayer.Location = new System.Drawing.Point(28, 20);
-            this.ls_lblLayer.Name = "ls_lblLayer";
-            this.ls_lblLayer.Size = new System.Drawing.Size(98, 13);
-            this.ls_lblLayer.TabIndex = 34;
-            this.ls_lblLayer.Text = "Layer flood chance:";
-            // 
-            // ls_grpFlood
-            // 
-            this.ls_grpFlood.Controls.Add(this.ls_numFloodUp);
-            this.ls_grpFlood.Controls.Add(this.ls_numFast);
-            this.ls_grpFlood.Controls.Add(this.ls_numWater);
-            this.ls_grpFlood.Controls.Add(this.ls_lblFloodUp);
-            this.ls_grpFlood.Controls.Add(this.ls_lblFast);
-            this.ls_grpFlood.Controls.Add(this.ls_lblWater);
-            this.ls_grpFlood.Location = new System.Drawing.Point(6, 20);
-            this.ls_grpFlood.Name = "ls_grpFlood";
-            this.ls_grpFlood.Size = new System.Drawing.Size(284, 74);
-            this.ls_grpFlood.TabIndex = 0;
-            this.ls_grpFlood.TabStop = false;
-            this.ls_grpFlood.Text = "Flood settings";
-            // 
-            // ls_lblFloodUp
-            // 
-            this.ls_lblFloodUp.AutoSize = true;
-            this.ls_lblFloodUp.Location = new System.Drawing.Point(133, 48);
-            this.ls_lblFloodUp.Name = "ls_lblFloodUp";
-            this.ls_lblFloodUp.Size = new System.Drawing.Size(88, 13);
-            this.ls_lblFloodUp.TabIndex = 30;
-            this.ls_lblFloodUp.Text = "Floods up chance:";
-            // 
-            // ls_lblFast
-            // 
-            this.ls_lblFast.AutoSize = true;
-            this.ls_lblFast.Location = new System.Drawing.Point(11, 48);
-            this.ls_lblFast.Name = "ls_lblFast";
-            this.ls_lblFast.Size = new System.Drawing.Size(66, 13);
-            this.ls_lblFast.TabIndex = 29;
-            this.ls_lblFast.Text = "Fast chance:";
-            // 
-            // ls_lblWater
-            // 
-            this.ls_lblWater.AutoSize = true;
-            this.ls_lblWater.Location = new System.Drawing.Point(1, 23);
-            this.ls_lblWater.Name = "ls_lblWater";
-            this.ls_lblWater.Size = new System.Drawing.Size(71, 13);
-            this.ls_lblWater.TabIndex = 27;
-            this.ls_lblWater.Text = "Water chance:";
-            // 
-            // ls_grpSettings
-            // 
-            this.ls_grpSettings.Controls.Add(this.ls_lblMax);
-            this.ls_grpSettings.Controls.Add(this.ls_numMax);
-            this.ls_grpSettings.Controls.Add(this.ls_cbMain);
-            this.ls_grpSettings.Controls.Add(this.ls_cbMap);
-            this.ls_grpSettings.Controls.Add(this.ls_cbStart);
-            this.ls_grpSettings.Location = new System.Drawing.Point(182, 59);
-            this.ls_grpSettings.Name = "ls_grpSettings";
-            this.ls_grpSettings.Size = new System.Drawing.Size(296, 119);
-            this.ls_grpSettings.TabIndex = 2;
-            this.ls_grpSettings.TabStop = false;
-            this.ls_grpSettings.Text = "Settings";
-            // 
-            // ls_lblMax
-            // 
-            this.ls_lblMax.AutoSize = true;
-            this.ls_lblMax.Location = new System.Drawing.Point(14, 92);
-            this.ls_lblMax.Name = "ls_lblMax";
-            this.ls_lblMax.Size = new System.Drawing.Size(54, 13);
-            this.ls_lblMax.TabIndex = 26;
-            this.ls_lblMax.Text = "Max lives:";
-            // 
-            // ls_cbMap
-            // 
-            this.ls_cbMap.AutoSize = true;
-            this.ls_cbMap.Location = new System.Drawing.Point(11, 43);
-            this.ls_cbMap.Name = "ls_cbMap";
-            this.ls_cbMap.Size = new System.Drawing.Size(136, 17);
-            this.ls_cbMap.TabIndex = 23;
-            this.ls_cbMap.Text = "Map name in server list";
-            this.ls_cbMap.UseVisualStyleBackColor = true;
-            // 
-            // ls_grpMaps
-            // 
-            this.ls_grpMaps.Controls.Add(this.ls_lblNotUsed);
-            this.ls_grpMaps.Controls.Add(this.ls_lblUsed);
-            this.ls_grpMaps.Controls.Add(this.ls_btnAdd);
-            this.ls_grpMaps.Controls.Add(this.ls_btnRemove);
-            this.ls_grpMaps.Controls.Add(this.ls_lstNotUsed);
-            this.ls_grpMaps.Controls.Add(this.ls_lstUsed);
-            this.ls_grpMaps.Location = new System.Drawing.Point(6, 59);
-            this.ls_grpMaps.Name = "ls_grpMaps";
-            this.ls_grpMaps.Size = new System.Drawing.Size(170, 412);
-            this.ls_grpMaps.TabIndex = 1;
-            this.ls_grpMaps.TabStop = false;
-            this.ls_grpMaps.Text = "Maps";
-            // 
-            // ls_lblNotUsed
-            // 
-            this.ls_lblNotUsed.AutoSize = true;
-            this.ls_lblNotUsed.Location = new System.Drawing.Point(187, 17);
-            this.ls_lblNotUsed.Name = "ls_lblNotUsed";
-            this.ls_lblNotUsed.Size = new System.Drawing.Size(83, 13);
-            this.ls_lblNotUsed.TabIndex = 6;
-            this.ls_lblNotUsed.Text = "Maps Not In Use";
-            // 
-            // ls_lblUsed
-            // 
-            this.ls_lblUsed.AutoSize = true;
-            this.ls_lblUsed.Location = new System.Drawing.Point(6, 17);
-            this.ls_lblUsed.Name = "ls_lblUsed";
-            this.ls_lblUsed.Size = new System.Drawing.Size(38, 13);
-            this.ls_lblUsed.TabIndex = 5;
-            this.ls_lblUsed.Text = "In use:";
-            // 
-            // ls_btnAdd
-            // 
-            this.ls_btnAdd.Location = new System.Drawing.Point(6, 188);
-            this.ls_btnAdd.Name = "ls_btnAdd";
-            this.ls_btnAdd.Size = new System.Drawing.Size(77, 23);
-            this.ls_btnAdd.TabIndex = 4;
-            this.ls_btnAdd.Text = "<< Add";
-            this.ls_btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // ls_btnRemove
-            // 
-            this.ls_btnRemove.Location = new System.Drawing.Point(89, 188);
-            this.ls_btnRemove.Name = "ls_btnRemove";
-            this.ls_btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.ls_btnRemove.TabIndex = 3;
-            this.ls_btnRemove.Text = "Remove >>";
-            this.ls_btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // ls_lstNotUsed
-            // 
-            this.ls_lstNotUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_lstNotUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.ls_lstNotUsed.FormattingEnabled = true;
-            this.ls_lstNotUsed.Location = new System.Drawing.Point(6, 219);
-            this.ls_lstNotUsed.Name = "ls_lstNotUsed";
-            this.ls_lstNotUsed.Size = new System.Drawing.Size(158, 186);
-            this.ls_lstNotUsed.TabIndex = 2;
-            // 
-            // ls_lstUsed
-            // 
-            this.ls_lstUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.ls_lstUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.ls_lstUsed.FormattingEnabled = true;
-            this.ls_lstUsed.Location = new System.Drawing.Point(6, 33);
-            this.ls_lstUsed.Name = "ls_lstUsed";
-            this.ls_lstUsed.Size = new System.Drawing.Size(158, 147);
-            this.ls_lstUsed.TabIndex = 0;
-            this.ls_lstUsed.SelectedIndexChanged += new System.EventHandler(this.lsMapUse_SelectedIndexChanged);
-            // 
-            // tabZS
-            // 
-            this.tabZS.BackColor = System.Drawing.SystemColors.Control;
-            this.tabZS.Controls.Add(this.zs_grpControls);
-            this.tabZS.Controls.Add(this.zs_grpMap);
-            this.tabZS.Controls.Add(this.zs_grpSettings);
-            this.tabZS.Controls.Add(this.zs_grpMaps);
-            this.tabZS.Location = new System.Drawing.Point(4, 22);
-            this.tabZS.Name = "tabZS";
-            this.tabZS.Padding = new System.Windows.Forms.Padding(3);
-            this.tabZS.Size = new System.Drawing.Size(484, 489);
-            this.tabZS.TabIndex = 6;
-            this.tabZS.Text = "Zombie Survival";
-            // 
-            // zs_grpControls
-            // 
-            this.zs_grpControls.Controls.Add(this.zs_btnEnd);
-            this.zs_grpControls.Controls.Add(this.zs_btnStop);
-            this.zs_grpControls.Controls.Add(this.zs_btnStart);
-            this.zs_grpControls.Location = new System.Drawing.Point(110, 5);
-            this.zs_grpControls.Name = "zs_grpControls";
-            this.zs_grpControls.Size = new System.Drawing.Size(279, 51);
-            this.zs_grpControls.TabIndex = 4;
-            this.zs_grpControls.TabStop = false;
-            this.zs_grpControls.Text = "Controls";
-            // 
-            // zs_btnEnd
-            // 
-            this.zs_btnEnd.Location = new System.Drawing.Point(190, 19);
-            this.zs_btnEnd.Name = "zs_btnEnd";
-            this.zs_btnEnd.Size = new System.Drawing.Size(80, 23);
-            this.zs_btnEnd.TabIndex = 2;
-            this.zs_btnEnd.Text = "End Round";
-            this.zs_btnEnd.UseVisualStyleBackColor = true;
-            // 
-            // zs_btnStop
-            // 
-            this.zs_btnStop.Location = new System.Drawing.Point(100, 19);
-            this.zs_btnStop.Name = "zs_btnStop";
-            this.zs_btnStop.Size = new System.Drawing.Size(80, 23);
-            this.zs_btnStop.TabIndex = 1;
-            this.zs_btnStop.Text = "Stop Game";
-            this.zs_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // zs_btnStart
-            // 
-            this.zs_btnStart.Location = new System.Drawing.Point(10, 19);
-            this.zs_btnStart.Name = "zs_btnStart";
-            this.zs_btnStart.Size = new System.Drawing.Size(80, 23);
-            this.zs_btnStart.TabIndex = 0;
-            this.zs_btnStart.Text = "Start Game";
-            this.zs_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // zs_grpMap
-            // 
-            this.zs_grpMap.Controls.Add(this.zs_grpTime);
-            this.zs_grpMap.Enabled = false;
-            this.zs_grpMap.Location = new System.Drawing.Point(182, 374);
-            this.zs_grpMap.Name = "zs_grpMap";
-            this.zs_grpMap.Size = new System.Drawing.Size(296, 97);
-            this.zs_grpMap.TabIndex = 3;
-            this.zs_grpMap.TabStop = false;
-            this.zs_grpMap.Text = "Map Settings";
-            // 
-            // zs_grpTime
-            // 
-            this.zs_grpTime.Controls.Add(this.timespanUpDown1);
-            this.zs_grpTime.Controls.Add(this.timespanUpDown2);
-            this.zs_grpTime.Controls.Add(this.timespanUpDown3);
-            this.zs_grpTime.Controls.Add(this.label1);
-            this.zs_grpTime.Controls.Add(this.label2);
-            this.zs_grpTime.Controls.Add(this.label3);
-            this.zs_grpTime.Location = new System.Drawing.Point(6, 16);
-            this.zs_grpTime.Name = "zs_grpTime";
-            this.zs_grpTime.Size = new System.Drawing.Size(284, 71);
-            this.zs_grpTime.TabIndex = 39;
-            this.zs_grpTime.TabStop = false;
-            this.zs_grpTime.Text = "Time settings";
-            // 
-            // timespanUpDown1
-            // 
-            this.timespanUpDown1.BackColor = System.Drawing.SystemColors.Window;
-            this.timespanUpDown1.Location = new System.Drawing.Point(69, 43);
-            this.timespanUpDown1.Name = "timespanUpDown1";
-            this.timespanUpDown1.Seconds = ((long)(300));
-            this.timespanUpDown1.Size = new System.Drawing.Size(62, 21);
-            this.timespanUpDown1.TabIndex = 38;
-            this.timespanUpDown1.Text = "5m";
-            this.timespanUpDown1.Value = System.TimeSpan.Parse("00:05:00");
-            // 
-            // timespanUpDown2
-            // 
-            this.timespanUpDown2.BackColor = System.Drawing.SystemColors.Window;
-            this.timespanUpDown2.Location = new System.Drawing.Point(216, 16);
-            this.timespanUpDown2.Name = "timespanUpDown2";
-            this.timespanUpDown2.Seconds = ((long)(120));
-            this.timespanUpDown2.Size = new System.Drawing.Size(62, 21);
-            this.timespanUpDown2.TabIndex = 37;
-            this.timespanUpDown2.Text = "2m";
-            this.timespanUpDown2.Value = System.TimeSpan.Parse("00:02:00");
-            // 
-            // timespanUpDown3
-            // 
-            this.timespanUpDown3.BackColor = System.Drawing.SystemColors.Window;
-            this.timespanUpDown3.Location = new System.Drawing.Point(69, 16);
-            this.timespanUpDown3.Name = "timespanUpDown3";
-            this.timespanUpDown3.Seconds = ((long)(900));
-            this.timespanUpDown3.Size = new System.Drawing.Size(62, 21);
-            this.timespanUpDown3.TabIndex = 36;
-            this.timespanUpDown3.Text = "15m";
-            this.timespanUpDown3.Value = System.TimeSpan.Parse("00:15:00");
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(155, 20);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 35;
-            this.label1.Text = "Layer time:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(8, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 13);
-            this.label2.TabIndex = 34;
-            this.label2.Text = "Flood time:";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 20);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(63, 13);
-            this.label3.TabIndex = 34;
-            this.label3.Text = "Round time:";
-            // 
-            // zs_grpSettings
-            // 
-            this.zs_grpSettings.Controls.Add(this.zs_grpZombie);
-            this.zs_grpSettings.Controls.Add(this.zs_grpRevive);
-            this.zs_grpSettings.Controls.Add(this.zs_cbMain);
-            this.zs_grpSettings.Controls.Add(this.zs_cbMap);
-            this.zs_grpSettings.Controls.Add(this.zs_grpInv);
-            this.zs_grpSettings.Controls.Add(this.zs_cbStart);
-            this.zs_grpSettings.Location = new System.Drawing.Point(182, 59);
-            this.zs_grpSettings.Name = "zs_grpSettings";
-            this.zs_grpSettings.Size = new System.Drawing.Size(296, 309);
-            this.zs_grpSettings.TabIndex = 2;
-            this.zs_grpSettings.TabStop = false;
-            this.zs_grpSettings.Text = "Settings";
-            // 
-            // zs_grpZombie
-            // 
-            this.zs_grpZombie.Controls.Add(this.zs_txtModel);
-            this.zs_grpZombie.Controls.Add(this.zs_txtName);
-            this.zs_grpZombie.Controls.Add(this.zs_lblModel);
-            this.zs_grpZombie.Controls.Add(this.zs_lblName);
-            this.zs_grpZombie.Location = new System.Drawing.Point(6, 250);
-            this.zs_grpZombie.Name = "zs_grpZombie";
-            this.zs_grpZombie.Size = new System.Drawing.Size(284, 46);
-            this.zs_grpZombie.TabIndex = 40;
-            this.zs_grpZombie.TabStop = false;
-            this.zs_grpZombie.Text = "Zombie settings";
-            // 
-            // zs_txtModel
-            // 
-            this.zs_txtModel.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_txtModel.Location = new System.Drawing.Point(200, 17);
-            this.zs_txtModel.Name = "zs_txtModel";
-            this.zs_txtModel.Size = new System.Drawing.Size(76, 21);
-            this.zs_txtModel.TabIndex = 39;
-            this.toolTip.SetToolTip(this.zs_txtModel, "Model to use for infected players.\nIf left blank, then 'zombie' model is used.");
-            // 
-            // zs_txtName
-            // 
-            this.zs_txtName.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_txtName.Location = new System.Drawing.Point(49, 17);
-            this.zs_txtName.Name = "zs_txtName";
-            this.zs_txtName.Size = new System.Drawing.Size(80, 21);
-            this.zs_txtName.TabIndex = 38;
-            this.toolTip.SetToolTip(this.zs_txtName, "Name to show above head of infected players.\nIf left blank, then the player's name is shown instead.");
-            // 
-            // zs_lblModel
-            // 
-            this.zs_lblModel.AutoSize = true;
-            this.zs_lblModel.Location = new System.Drawing.Point(154, 20);
-            this.zs_lblModel.Name = "zs_lblModel";
-            this.zs_lblModel.Size = new System.Drawing.Size(40, 13);
-            this.zs_lblModel.TabIndex = 35;
-            this.zs_lblModel.Text = "Model:";
-            // 
-            // zs_lblName
-            // 
-            this.zs_lblName.AutoSize = true;
-            this.zs_lblName.Location = new System.Drawing.Point(5, 20);
-            this.zs_lblName.Name = "zs_lblName";
-            this.zs_lblName.Size = new System.Drawing.Size(38, 13);
-            this.zs_lblName.TabIndex = 34;
-            this.zs_lblName.Text = "Name:";
-            // 
-            // zs_grpRevive
-            // 
-            this.zs_grpRevive.Controls.Add(this.zs_lblReviveEff);
-            this.zs_grpRevive.Controls.Add(this.zs_numReviveEff);
-            this.zs_grpRevive.Controls.Add(this.label4);
-            this.zs_grpRevive.Controls.Add(this.zs_lblReviveLimitFtr);
-            this.zs_grpRevive.Controls.Add(this.zs_lblReviveLimitHdr);
-            this.zs_grpRevive.Controls.Add(this.zs_numReviveLimit);
-            this.zs_grpRevive.Controls.Add(this.zs_numReviveMax);
-            this.zs_grpRevive.Controls.Add(this.label9);
-            this.zs_grpRevive.Location = new System.Drawing.Point(6, 169);
-            this.zs_grpRevive.Name = "zs_grpRevive";
-            this.zs_grpRevive.Size = new System.Drawing.Size(284, 73);
-            this.zs_grpRevive.TabIndex = 25;
-            this.zs_grpRevive.TabStop = false;
-            this.zs_grpRevive.Text = "Revive settings";
-            // 
-            // zs_lblReviveEff
-            // 
-            this.zs_lblReviveEff.AutoSize = true;
-            this.zs_lblReviveEff.Location = new System.Drawing.Point(202, 20);
-            this.zs_lblReviveEff.Name = "zs_lblReviveEff";
-            this.zs_lblReviveEff.Size = new System.Drawing.Size(79, 13);
-            this.zs_lblReviveEff.TabIndex = 40;
-            this.zs_lblReviveEff.Text = "% effectiveness";
-            // 
-            // zs_numReviveEff
-            // 
-            this.zs_numReviveEff.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numReviveEff.Location = new System.Drawing.Point(150, 16);
-            this.zs_numReviveEff.Maximum = new decimal(new int[] {
+            this.Eco_numItemPrice.ValueChanged += new EventHandler(this.Eco_numItemPrice_ValueChanged);
+            // 
+            // Eco_lblItemPrice
+            // 
+            this.Eco_lblItemPrice.AutoSize = true;
+            this.Eco_lblItemPrice.Location = new Point(38, 45);
+            this.Eco_lblItemPrice.Margin = new Padding(2, 0, 2, 0);
+            this.Eco_lblItemPrice.Name = "Eco_lblItemPrice";
+            this.Eco_lblItemPrice.Size = new Size(34, 13);
+            this.Eco_lblItemPrice.TabIndex = 6;
+            this.Eco_lblItemPrice.Text = "Price:";
+            // 
+            // Eco_cbItem
+            // 
+            this.Eco_cbItem.AutoSize = true;
+            this.Eco_cbItem.Location = new Point(6, 17);
+            this.Eco_cbItem.Margin = new Padding(2);
+            this.Eco_cbItem.Name = "Eco_cbItem";
+            this.Eco_cbItem.Size = new Size(64, 17);
+            this.Eco_cbItem.TabIndex = 6;
+            this.Eco_cbItem.Text = "Enabled";
+            this.Eco_cbItem.UseVisualStyleBackColor = true;
+            this.Eco_cbItem.CheckedChanged += new EventHandler(this.Eco_cbItem_CheckedChanged);
+            // 
+            // Eco_gb
+            // 
+            this.Eco_gb.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.Eco_gb.Controls.Add(this.Eco_cmbCfg);
+            this.Eco_gb.Controls.Add(this.Eco_lblCfg);
+            this.Eco_gb.Controls.Add(this.Eco_cbEnabled);
+            this.Eco_gb.Controls.Add(this.Eco_txtCurrency);
+            this.Eco_gb.Controls.Add(this.Eco_lblCurrency);
+            this.Eco_gb.Location = new Point(8, 3);
+            this.Eco_gb.Name = "Eco_gb";
+            this.Eco_gb.Size = new Size(484, 70);
+            this.Eco_gb.TabIndex = 41;
+            this.Eco_gb.TabStop = false;
+            this.Eco_gb.Text = "Economy";
+            // 
+            // Eco_cmbCfg
+            // 
+            this.Eco_cmbCfg.BackColor = SystemColors.Window;
+            this.Eco_cmbCfg.FormattingEnabled = true;
+            this.Eco_cmbCfg.Location = new Point(368, 42);
+            this.Eco_cmbCfg.Name = "Eco_cmbCfg";
+            this.Eco_cmbCfg.Size = new Size(110, 21);
+            this.Eco_cmbCfg.TabIndex = 23;
+            this.Eco_cmbCfg.SelectedIndexChanged += new EventHandler(this.Eco_cmbCfg_SelectedIndexChanged);
+            // 
+            // Eco_lblCfg
+            // 
+            this.Eco_lblCfg.AutoSize = true;
+            this.Eco_lblCfg.Location = new Point(286, 45);
+            this.Eco_lblCfg.Name = "Eco_lblCfg";
+            this.Eco_lblCfg.Size = new Size(79, 13);
+            this.Eco_lblCfg.TabIndex = 22;
+            this.Eco_lblCfg.Text = "Configure item:";
+            // 
+            // Eco_cbEnabled
+            // 
+            this.Eco_cbEnabled.AutoSize = true;
+            this.Eco_cbEnabled.Location = new Point(6, 20);
+            this.Eco_cbEnabled.Name = "Eco_cbEnabled";
+            this.Eco_cbEnabled.Size = new Size(64, 17);
+            this.Eco_cbEnabled.TabIndex = 21;
+            this.Eco_cbEnabled.Text = "Enabled";
+            this.Eco_cbEnabled.UseVisualStyleBackColor = true;
+            this.Eco_cbEnabled.CheckedChanged += new EventHandler(this.Eco_cbEnabled_CheckedChanged);
+            // 
+            // Eco_txtCurrency
+            // 
+            this.Eco_txtCurrency.BackColor = SystemColors.Window;
+            this.Eco_txtCurrency.Location = new Point(76, 42);
+            this.Eco_txtCurrency.Name = "Eco_txtCurrency";
+            this.Eco_txtCurrency.Size = new Size(118, 21);
+            this.Eco_txtCurrency.TabIndex = 1;
+            // 
+            // Eco_lblCurrency
+            // 
+            this.Eco_lblCurrency.AutoSize = true;
+            this.Eco_lblCurrency.Location = new Point(18, 45);
+            this.Eco_lblCurrency.Name = "Eco_lblCurrency";
+            this.Eco_lblCurrency.Size = new Size(52, 13);
+            this.Eco_lblCurrency.TabIndex = 11;
+            this.Eco_lblCurrency.Text = "Currency:";
+            // 
+            // PageGames
+            // 
+            this.PageGames.BackColor = SystemColors.Control;
+            this.PageGames.Controls.Add(this.TabGames);
+            this.PageGames.Location = new Point(4, 22);
+            this.PageGames.Name = "PageGames";
+            this.PageGames.Padding = new Padding(3);
+            this.PageGames.Size = new Size(498, 521);
+            this.PageGames.TabIndex = 8;
+            this.PageGames.Text = "Games";
+            // 
+            // TabGames
+            // 
+            this.TabGames.Controls.Add(this.TabLS);
+            this.TabGames.Controls.Add(this.TabZS);
+            this.TabGames.Controls.Add(this.TabZS_old);
+            this.TabGames.Controls.Add(this.TabCTF);
+            this.TabGames.Controls.Add(this.TabTW);
+            this.TabGames.Controls.Add(this.TabCD);
+            this.TabGames.Location = new Point(3, 3);
+            this.TabGames.Name = "TabGames";
+            this.TabGames.SelectedIndex = 0;
+            this.TabGames.Size = new Size(492, 515);
+            this.TabGames.TabIndex = 0;
+            // 
+            // TabLS
+            // 
+            this.TabLS.BackColor = SystemColors.Control;
+            this.TabLS.Controls.Add(this.Ls_grpControls);
+            this.TabLS.Controls.Add(this.Ls_grpMapSettings);
+            this.TabLS.Controls.Add(this.Ls_grpSettings);
+            this.TabLS.Controls.Add(this.Ls_grpMaps);
+            this.TabLS.Location = new Point(4, 22);
+            this.TabLS.Name = "TabLS";
+            this.TabLS.Padding = new Padding(3);
+            this.TabLS.Size = new Size(484, 489);
+            this.TabLS.TabIndex = 0;
+            this.TabLS.Text = "Lava Survival";
+            // 
+            // Ls_grpControls
+            // 
+            this.Ls_grpControls.Controls.Add(this.Ls_btnEnd);
+            this.Ls_grpControls.Controls.Add(this.Ls_btnStop);
+            this.Ls_grpControls.Controls.Add(this.Ls_btnStart);
+            this.Ls_grpControls.Location = new Point(110, 5);
+            this.Ls_grpControls.Name = "Ls_grpControls";
+            this.Ls_grpControls.Size = new Size(279, 51);
+            this.Ls_grpControls.TabIndex = 4;
+            this.Ls_grpControls.TabStop = false;
+            this.Ls_grpControls.Text = "Controls";
+            // 
+            // Ls_btnEnd
+            // 
+            this.Ls_btnEnd.Location = new Point(190, 19);
+            this.Ls_btnEnd.Name = "Ls_btnEnd";
+            this.Ls_btnEnd.Size = new Size(80, 23);
+            this.Ls_btnEnd.TabIndex = 2;
+            this.Ls_btnEnd.Text = "End Round";
+            this.Ls_btnEnd.UseVisualStyleBackColor = true;
+            // 
+            // Ls_btnStop
+            // 
+            this.Ls_btnStop.Location = new Point(100, 19);
+            this.Ls_btnStop.Name = "Ls_btnStop";
+            this.Ls_btnStop.Size = new Size(80, 23);
+            this.Ls_btnStop.TabIndex = 1;
+            this.Ls_btnStop.Text = "Stop Game";
+            this.Ls_btnStop.UseVisualStyleBackColor = true;
+            // 
+            // Ls_btnStart
+            // 
+            this.Ls_btnStart.Location = new Point(10, 19);
+            this.Ls_btnStart.Name = "Ls_btnStart";
+            this.Ls_btnStart.Size = new Size(80, 23);
+            this.Ls_btnStart.TabIndex = 0;
+            this.Ls_btnStart.Text = "Start Game";
+            this.Ls_btnStart.UseVisualStyleBackColor = true;
+            // 
+            // Ls_grpMapSettings
+            // 
+            this.Ls_grpMapSettings.Controls.Add(this.Ls_grpTime);
+            this.Ls_grpMapSettings.Controls.Add(this.Ls_grpLayer);
+            this.Ls_grpMapSettings.Controls.Add(this.Ls_grpFlood);
+            this.Ls_grpMapSettings.Enabled = false;
+            this.Ls_grpMapSettings.Location = new Point(182, 184);
+            this.Ls_grpMapSettings.Name = "Ls_grpMapSettings";
+            this.Ls_grpMapSettings.Size = new Size(296, 287);
+            this.Ls_grpMapSettings.TabIndex = 3;
+            this.Ls_grpMapSettings.TabStop = false;
+            this.Ls_grpMapSettings.Text = "Map Settings";
+            // 
+            // Ls_grpTime
+            // 
+            this.Ls_grpTime.Controls.Add(this.Ls_numFlood);
+            this.Ls_grpTime.Controls.Add(this.Ls_numLayerTime);
+            this.Ls_grpTime.Controls.Add(this.Ls_numRound);
+            this.Ls_grpTime.Controls.Add(this.Ls_lblLayerTime);
+            this.Ls_grpTime.Controls.Add(this.Ls_lblFlood);
+            this.Ls_grpTime.Controls.Add(this.Ls_lblRound);
+            this.Ls_grpTime.Location = new Point(6, 180);
+            this.Ls_grpTime.Name = "Ls_grpTime";
+            this.Ls_grpTime.Size = new Size(284, 71);
+            this.Ls_grpTime.TabIndex = 39;
+            this.Ls_grpTime.TabStop = false;
+            this.Ls_grpTime.Text = "Time settings";
+            // 
+            // Ls_numFlood
+            // 
+            this.Ls_numFlood.BackColor = SystemColors.Window;
+            this.Ls_numFlood.Location = new Point(69, 43);
+            this.Ls_numFlood.Name = "Ls_numFlood";
+            this.Ls_numFlood.Seconds = ((long)(300));
+            this.Ls_numFlood.Size = new Size(62, 21);
+            this.Ls_numFlood.TabIndex = 38;
+            this.Ls_numFlood.Text = "5m";
+            this.Ls_numFlood.Value = TimeSpan.Parse("00:05:00");
+            // 
+            // Ls_numLayerTime
+            // 
+            this.Ls_numLayerTime.BackColor = SystemColors.Window;
+            this.Ls_numLayerTime.Location = new Point(216, 16);
+            this.Ls_numLayerTime.Name = "Ls_numLayerTime";
+            this.Ls_numLayerTime.Seconds = ((long)(120));
+            this.Ls_numLayerTime.Size = new Size(62, 21);
+            this.Ls_numLayerTime.TabIndex = 37;
+            this.Ls_numLayerTime.Text = "2m";
+            this.Ls_numLayerTime.Value = TimeSpan.Parse("00:02:00");
+            // 
+            // Ls_numRound
+            // 
+            this.Ls_numRound.BackColor = SystemColors.Window;
+            this.Ls_numRound.Location = new Point(69, 16);
+            this.Ls_numRound.Name = "Ls_numRound";
+            this.Ls_numRound.Seconds = ((long)(900));
+            this.Ls_numRound.Size = new Size(62, 21);
+            this.Ls_numRound.TabIndex = 36;
+            this.Ls_numRound.Text = "15m";
+            this.Ls_numRound.Value = TimeSpan.Parse("00:15:00");
+            // 
+            // Ls_lblLayerTime
+            // 
+            this.Ls_lblLayerTime.AutoSize = true;
+            this.Ls_lblLayerTime.Location = new Point(155, 20);
+            this.Ls_lblLayerTime.Name = "Ls_lblLayerTime";
+            this.Ls_lblLayerTime.Size = new Size(59, 13);
+            this.Ls_lblLayerTime.TabIndex = 35;
+            this.Ls_lblLayerTime.Text = "Layer time:";
+            // 
+            // Ls_lblFlood
+            // 
+            this.Ls_lblFlood.AutoSize = true;
+            this.Ls_lblFlood.Location = new Point(8, 46);
+            this.Ls_lblFlood.Name = "Ls_lblFlood";
+            this.Ls_lblFlood.Size = new Size(59, 13);
+            this.Ls_lblFlood.TabIndex = 34;
+            this.Ls_lblFlood.Text = "Flood time:";
+            // 
+            // Ls_lblRound
+            // 
+            this.Ls_lblRound.AutoSize = true;
+            this.Ls_lblRound.Location = new Point(4, 20);
+            this.Ls_lblRound.Name = "Ls_lblRound";
+            this.Ls_lblRound.Size = new Size(63, 13);
+            this.Ls_lblRound.TabIndex = 34;
+            this.Ls_lblRound.Text = "Round time:";
+            // 
+            // Ls_grpLayer
+            // 
+            this.Ls_grpLayer.Controls.Add(this.Ls_lblBlocksTall);
+            this.Ls_grpLayer.Controls.Add(this.Ls_numHeight);
+            this.Ls_grpLayer.Controls.Add(this.Ls_lblLayersEach);
+            this.Ls_grpLayer.Controls.Add(this.Ls_numCount);
+            this.Ls_grpLayer.Controls.Add(this.Ls_numLayer);
+            this.Ls_grpLayer.Controls.Add(this.Ls_lblLayer);
+            this.Ls_grpLayer.Location = new Point(6, 100);
+            this.Ls_grpLayer.Name = "Ls_grpLayer";
+            this.Ls_grpLayer.Size = new Size(284, 74);
+            this.Ls_grpLayer.TabIndex = 1;
+            this.Ls_grpLayer.TabStop = false;
+            this.Ls_grpLayer.Text = "Layer flood settings";
+            // 
+            // Ls_lblBlocksTall
+            // 
+            this.Ls_lblBlocksTall.AutoSize = true;
+            this.Ls_lblBlocksTall.Location = new Point(183, 48);
+            this.Ls_lblBlocksTall.Name = "Ls_lblBlocksTall";
+            this.Ls_lblBlocksTall.Size = new Size(55, 13);
+            this.Ls_lblBlocksTall.TabIndex = 38;
+            this.Ls_lblBlocksTall.Text = "blocks tall";
+            // 
+            // Ls_lblLayersEach
+            // 
+            this.Ls_lblLayersEach.AutoSize = true;
+            this.Ls_lblLayersEach.Location = new Point(62, 48);
+            this.Ls_lblLayersEach.Name = "Ls_lblLayersEach";
+            this.Ls_lblLayersEach.Size = new Size(64, 13);
+            this.Ls_lblLayersEach.TabIndex = 36;
+            this.Ls_lblLayersEach.Text = "layers, each";
+            // 
+            // Ls_lblLayer
+            // 
+            this.Ls_lblLayer.AutoSize = true;
+            this.Ls_lblLayer.Location = new Point(28, 20);
+            this.Ls_lblLayer.Name = "Ls_lblLayer";
+            this.Ls_lblLayer.Size = new Size(98, 13);
+            this.Ls_lblLayer.TabIndex = 34;
+            this.Ls_lblLayer.Text = "Layer flood chance:";
+            // 
+            // Ls_grpFlood
+            // 
+            this.Ls_grpFlood.Controls.Add(this.Ls_numFloodUp);
+            this.Ls_grpFlood.Controls.Add(this.Ls_numFast);
+            this.Ls_grpFlood.Controls.Add(this.Ls_numWater);
+            this.Ls_grpFlood.Controls.Add(this.Ls_lblFloodUp);
+            this.Ls_grpFlood.Controls.Add(this.Ls_lblFast);
+            this.Ls_grpFlood.Controls.Add(this.Ls_lblWater);
+            this.Ls_grpFlood.Location = new Point(6, 20);
+            this.Ls_grpFlood.Name = "Ls_grpFlood";
+            this.Ls_grpFlood.Size = new Size(284, 74);
+            this.Ls_grpFlood.TabIndex = 0;
+            this.Ls_grpFlood.TabStop = false;
+            this.Ls_grpFlood.Text = "Flood settings";
+            // 
+            // Ls_lblFloodUp
+            // 
+            this.Ls_lblFloodUp.AutoSize = true;
+            this.Ls_lblFloodUp.Location = new Point(133, 48);
+            this.Ls_lblFloodUp.Name = "Ls_lblFloodUp";
+            this.Ls_lblFloodUp.Size = new Size(88, 13);
+            this.Ls_lblFloodUp.TabIndex = 30;
+            this.Ls_lblFloodUp.Text = "Floods up chance:";
+            // 
+            // Ls_lblFast
+            // 
+            this.Ls_lblFast.AutoSize = true;
+            this.Ls_lblFast.Location = new Point(11, 48);
+            this.Ls_lblFast.Name = "Ls_lblFast";
+            this.Ls_lblFast.Size = new Size(66, 13);
+            this.Ls_lblFast.TabIndex = 29;
+            this.Ls_lblFast.Text = "Fast chance:";
+            // 
+            // Ls_lblWater
+            // 
+            this.Ls_lblWater.AutoSize = true;
+            this.Ls_lblWater.Location = new Point(1, 23);
+            this.Ls_lblWater.Name = "Ls_lblWater";
+            this.Ls_lblWater.Size = new Size(71, 13);
+            this.Ls_lblWater.TabIndex = 27;
+            this.Ls_lblWater.Text = "Water chance:";
+            // 
+            // Ls_grpSettings
+            // 
+            this.Ls_grpSettings.Controls.Add(this.Ls_lblMax);
+            this.Ls_grpSettings.Controls.Add(this.Ls_numMax);
+            this.Ls_grpSettings.Controls.Add(this.Ls_cbMain);
+            this.Ls_grpSettings.Controls.Add(this.Ls_cbMap);
+            this.Ls_grpSettings.Controls.Add(this.Ls_cbStart);
+            this.Ls_grpSettings.Location = new Point(182, 59);
+            this.Ls_grpSettings.Name = "Ls_grpSettings";
+            this.Ls_grpSettings.Size = new Size(296, 119);
+            this.Ls_grpSettings.TabIndex = 2;
+            this.Ls_grpSettings.TabStop = false;
+            this.Ls_grpSettings.Text = "Settings";
+            // 
+            // Ls_lblMax
+            // 
+            this.Ls_lblMax.AutoSize = true;
+            this.Ls_lblMax.Location = new Point(14, 92);
+            this.Ls_lblMax.Name = "Ls_lblMax";
+            this.Ls_lblMax.Size = new Size(54, 13);
+            this.Ls_lblMax.TabIndex = 26;
+            this.Ls_lblMax.Text = "Max lives:";
+            // 
+            // Ls_cbMap
+            // 
+            this.Ls_cbMap.AutoSize = true;
+            this.Ls_cbMap.Location = new Point(11, 43);
+            this.Ls_cbMap.Name = "Ls_cbMap";
+            this.Ls_cbMap.Size = new Size(136, 17);
+            this.Ls_cbMap.TabIndex = 23;
+            this.Ls_cbMap.Text = "Map name in server list";
+            this.Ls_cbMap.UseVisualStyleBackColor = true;
+            // 
+            // Ls_grpMaps
+            // 
+            this.Ls_grpMaps.Controls.Add(this.Ls_lblNotUsed);
+            this.Ls_grpMaps.Controls.Add(this.Ls_lblUsed);
+            this.Ls_grpMaps.Controls.Add(this.Ls_btnAdd);
+            this.Ls_grpMaps.Controls.Add(this.Ls_btnRemove);
+            this.Ls_grpMaps.Controls.Add(this.Ls_lstNotUsed);
+            this.Ls_grpMaps.Controls.Add(this.Ls_lstUsed);
+            this.Ls_grpMaps.Location = new Point(6, 59);
+            this.Ls_grpMaps.Name = "Ls_grpMaps";
+            this.Ls_grpMaps.Size = new Size(170, 412);
+            this.Ls_grpMaps.TabIndex = 1;
+            this.Ls_grpMaps.TabStop = false;
+            this.Ls_grpMaps.Text = "Maps";
+            // 
+            // Ls_lblNotUsed
+            // 
+            this.Ls_lblNotUsed.AutoSize = true;
+            this.Ls_lblNotUsed.Location = new Point(187, 17);
+            this.Ls_lblNotUsed.Name = "Ls_lblNotUsed";
+            this.Ls_lblNotUsed.Size = new Size(83, 13);
+            this.Ls_lblNotUsed.TabIndex = 6;
+            this.Ls_lblNotUsed.Text = "Maps Not In Use";
+            // 
+            // Ls_lblUsed
+            // 
+            this.Ls_lblUsed.AutoSize = true;
+            this.Ls_lblUsed.Location = new Point(6, 17);
+            this.Ls_lblUsed.Name = "Ls_lblUsed";
+            this.Ls_lblUsed.Size = new Size(38, 13);
+            this.Ls_lblUsed.TabIndex = 5;
+            this.Ls_lblUsed.Text = "In use:";
+            // 
+            // Ls_btnAdd
+            // 
+            this.Ls_btnAdd.Location = new Point(6, 188);
+            this.Ls_btnAdd.Name = "Ls_btnAdd";
+            this.Ls_btnAdd.Size = new Size(77, 23);
+            this.Ls_btnAdd.TabIndex = 4;
+            this.Ls_btnAdd.Text = "<< Add";
+            this.Ls_btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // Ls_btnRemove
+            // 
+            this.Ls_btnRemove.Location = new Point(89, 188);
+            this.Ls_btnRemove.Name = "Ls_btnRemove";
+            this.Ls_btnRemove.Size = new Size(75, 23);
+            this.Ls_btnRemove.TabIndex = 3;
+            this.Ls_btnRemove.Text = "Remove >>";
+            this.Ls_btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // Ls_lstNotUsed
+            // 
+            this.Ls_lstNotUsed.BackColor = SystemColors.Window;
+            this.Ls_lstNotUsed.ForeColor = SystemColors.WindowText;
+            this.Ls_lstNotUsed.FormattingEnabled = true;
+            this.Ls_lstNotUsed.Location = new Point(6, 219);
+            this.Ls_lstNotUsed.Name = "Ls_lstNotUsed";
+            this.Ls_lstNotUsed.Size = new Size(158, 186);
+            this.Ls_lstNotUsed.TabIndex = 2;
+            // 
+            // Ls_lstUsed
+            // 
+            this.Ls_lstUsed.BackColor = SystemColors.Window;
+            this.Ls_lstUsed.ForeColor = SystemColors.WindowText;
+            this.Ls_lstUsed.FormattingEnabled = true;
+            this.Ls_lstUsed.Location = new Point(6, 33);
+            this.Ls_lstUsed.Name = "Ls_lstUsed";
+            this.Ls_lstUsed.Size = new Size(158, 147);
+            this.Ls_lstUsed.TabIndex = 0;
+            this.Ls_lstUsed.SelectedIndexChanged += new EventHandler(this.LsMapUse_SelectedIndexChanged);
+            // 
+            // TabZS
+            // 
+            this.TabZS.BackColor = SystemColors.Control;
+            this.TabZS.Controls.Add(this.Zs_grpControls);
+            this.TabZS.Controls.Add(this.Zs_grpMap);
+            this.TabZS.Controls.Add(this.Zs_grpSettings);
+            this.TabZS.Controls.Add(this.Zs_grpMaps);
+            this.TabZS.Location = new Point(4, 22);
+            this.TabZS.Name = "TabZS";
+            this.TabZS.Padding = new Padding(3);
+            this.TabZS.Size = new Size(484, 489);
+            this.TabZS.TabIndex = 6;
+            this.TabZS.Text = "Zombie Survival";
+            // 
+            // Zs_grpControls
+            // 
+            this.Zs_grpControls.Controls.Add(this.Zs_btnEnd);
+            this.Zs_grpControls.Controls.Add(this.Zs_btnStop);
+            this.Zs_grpControls.Controls.Add(this.Zs_btnStart);
+            this.Zs_grpControls.Location = new Point(110, 5);
+            this.Zs_grpControls.Name = "Zs_grpControls";
+            this.Zs_grpControls.Size = new Size(279, 51);
+            this.Zs_grpControls.TabIndex = 4;
+            this.Zs_grpControls.TabStop = false;
+            this.Zs_grpControls.Text = "Controls";
+            // 
+            // Zs_btnEnd
+            // 
+            this.Zs_btnEnd.Location = new Point(190, 19);
+            this.Zs_btnEnd.Name = "Zs_btnEnd";
+            this.Zs_btnEnd.Size = new Size(80, 23);
+            this.Zs_btnEnd.TabIndex = 2;
+            this.Zs_btnEnd.Text = "End Round";
+            this.Zs_btnEnd.UseVisualStyleBackColor = true;
+            // 
+            // Zs_btnStop
+            // 
+            this.Zs_btnStop.Location = new Point(100, 19);
+            this.Zs_btnStop.Name = "Zs_btnStop";
+            this.Zs_btnStop.Size = new Size(80, 23);
+            this.Zs_btnStop.TabIndex = 1;
+            this.Zs_btnStop.Text = "Stop Game";
+            this.Zs_btnStop.UseVisualStyleBackColor = true;
+            // 
+            // Zs_btnStart
+            // 
+            this.Zs_btnStart.Location = new Point(10, 19);
+            this.Zs_btnStart.Name = "Zs_btnStart";
+            this.Zs_btnStart.Size = new Size(80, 23);
+            this.Zs_btnStart.TabIndex = 0;
+            this.Zs_btnStart.Text = "Start Game";
+            this.Zs_btnStart.UseVisualStyleBackColor = true;
+            // 
+            // Zs_grpMap
+            // 
+            this.Zs_grpMap.Controls.Add(this.Zs_grpTime);
+            this.Zs_grpMap.Enabled = false;
+            this.Zs_grpMap.Location = new Point(182, 374);
+            this.Zs_grpMap.Name = "Zs_grpMap";
+            this.Zs_grpMap.Size = new Size(296, 97);
+            this.Zs_grpMap.TabIndex = 3;
+            this.Zs_grpMap.TabStop = false;
+            this.Zs_grpMap.Text = "Map Settings";
+            // 
+            // Zs_grpTime
+            // 
+            this.Zs_grpTime.Controls.Add(this.TimespanUpDown1);
+            this.Zs_grpTime.Controls.Add(this.TimespanUpDown2);
+            this.Zs_grpTime.Controls.Add(this.TimespanUpDown3);
+            this.Zs_grpTime.Controls.Add(this.Label1);
+            this.Zs_grpTime.Controls.Add(this.Label2);
+            this.Zs_grpTime.Controls.Add(this.Label3);
+            this.Zs_grpTime.Location = new Point(6, 16);
+            this.Zs_grpTime.Name = "Zs_grpTime";
+            this.Zs_grpTime.Size = new Size(284, 71);
+            this.Zs_grpTime.TabIndex = 39;
+            this.Zs_grpTime.TabStop = false;
+            this.Zs_grpTime.Text = "Time settings";
+            // 
+            // TimespanUpDown1
+            // 
+            this.TimespanUpDown1.BackColor = SystemColors.Window;
+            this.TimespanUpDown1.Location = new Point(69, 43);
+            this.TimespanUpDown1.Name = "TimespanUpDown1";
+            this.TimespanUpDown1.Seconds = ((long)(300));
+            this.TimespanUpDown1.Size = new Size(62, 21);
+            this.TimespanUpDown1.TabIndex = 38;
+            this.TimespanUpDown1.Text = "5m";
+            this.TimespanUpDown1.Value = TimeSpan.Parse("00:05:00");
+            // 
+            // TimespanUpDown2
+            // 
+            this.TimespanUpDown2.BackColor = SystemColors.Window;
+            this.TimespanUpDown2.Location = new Point(216, 16);
+            this.TimespanUpDown2.Name = "TimespanUpDown2";
+            this.TimespanUpDown2.Seconds = ((long)(120));
+            this.TimespanUpDown2.Size = new Size(62, 21);
+            this.TimespanUpDown2.TabIndex = 37;
+            this.TimespanUpDown2.Text = "2m";
+            this.TimespanUpDown2.Value = TimeSpan.Parse("00:02:00");
+            // 
+            // TimespanUpDown3
+            // 
+            this.TimespanUpDown3.BackColor = SystemColors.Window;
+            this.TimespanUpDown3.Location = new Point(69, 16);
+            this.TimespanUpDown3.Name = "TimespanUpDown3";
+            this.TimespanUpDown3.Seconds = ((long)(900));
+            this.TimespanUpDown3.Size = new Size(62, 21);
+            this.TimespanUpDown3.TabIndex = 36;
+            this.TimespanUpDown3.Text = "15m";
+            this.TimespanUpDown3.Value = TimeSpan.Parse("00:15:00");
+            // 
+            // Label1
+            // 
+            this.Label1.AutoSize = true;
+            this.Label1.Location = new Point(155, 20);
+            this.Label1.Name = "Label1";
+            this.Label1.Size = new Size(59, 13);
+            this.Label1.TabIndex = 35;
+            this.Label1.Text = "Layer time:";
+            // 
+            // Label2
+            // 
+            this.Label2.AutoSize = true;
+            this.Label2.Location = new Point(8, 46);
+            this.Label2.Name = "Label2";
+            this.Label2.Size = new Size(59, 13);
+            this.Label2.TabIndex = 34;
+            this.Label2.Text = "Flood time:";
+            // 
+            // Label3
+            // 
+            this.Label3.AutoSize = true;
+            this.Label3.Location = new Point(5, 20);
+            this.Label3.Name = "Label3";
+            this.Label3.Size = new Size(63, 13);
+            this.Label3.TabIndex = 34;
+            this.Label3.Text = "Round time:";
+            // 
+            // Zs_grpSettings
+            // 
+            this.Zs_grpSettings.Controls.Add(this.Zs_grpZombie);
+            this.Zs_grpSettings.Controls.Add(this.Zs_grpRevive);
+            this.Zs_grpSettings.Controls.Add(this.Zs_cbMain);
+            this.Zs_grpSettings.Controls.Add(this.Zs_cbMap);
+            this.Zs_grpSettings.Controls.Add(this.Zs_grpInv);
+            this.Zs_grpSettings.Controls.Add(this.Zs_cbStart);
+            this.Zs_grpSettings.Location = new Point(182, 59);
+            this.Zs_grpSettings.Name = "Zs_grpSettings";
+            this.Zs_grpSettings.Size = new Size(296, 309);
+            this.Zs_grpSettings.TabIndex = 2;
+            this.Zs_grpSettings.TabStop = false;
+            this.Zs_grpSettings.Text = "Settings";
+            // 
+            // Zs_grpZombie
+            // 
+            this.Zs_grpZombie.Controls.Add(this.Zs_txtModel);
+            this.Zs_grpZombie.Controls.Add(this.Zs_txtName);
+            this.Zs_grpZombie.Controls.Add(this.Zs_lblModel);
+            this.Zs_grpZombie.Controls.Add(this.Zs_lblName);
+            this.Zs_grpZombie.Location = new Point(6, 250);
+            this.Zs_grpZombie.Name = "Zs_grpZombie";
+            this.Zs_grpZombie.Size = new Size(284, 46);
+            this.Zs_grpZombie.TabIndex = 40;
+            this.Zs_grpZombie.TabStop = false;
+            this.Zs_grpZombie.Text = "Zombie settings";
+            // 
+            // Zs_txtModel
+            // 
+            this.Zs_txtModel.BackColor = SystemColors.Window;
+            this.Zs_txtModel.Location = new Point(200, 17);
+            this.Zs_txtModel.Name = "Zs_txtModel";
+            this.Zs_txtModel.Size = new Size(76, 21);
+            this.Zs_txtModel.TabIndex = 39;
+            this.GUIToolTip.SetToolTip(this.Zs_txtModel, "Model to use for infected players.\nIf left blank, then 'zombie' model is used.");
+            // 
+            // Zs_txtName
+            // 
+            this.Zs_txtName.BackColor = SystemColors.Window;
+            this.Zs_txtName.Location = new Point(49, 17);
+            this.Zs_txtName.Name = "Zs_txtName";
+            this.Zs_txtName.Size = new Size(80, 21);
+            this.Zs_txtName.TabIndex = 38;
+            this.GUIToolTip.SetToolTip(this.Zs_txtName, "Name to show above head of infected players.\nIf left blank, then the player's name is shown instead.");
+            // 
+            // Zs_lblModel
+            // 
+            this.Zs_lblModel.AutoSize = true;
+            this.Zs_lblModel.Location = new Point(154, 20);
+            this.Zs_lblModel.Name = "Zs_lblModel";
+            this.Zs_lblModel.Size = new Size(40, 13);
+            this.Zs_lblModel.TabIndex = 35;
+            this.Zs_lblModel.Text = "Model:";
+            // 
+            // Zs_lblName
+            // 
+            this.Zs_lblName.AutoSize = true;
+            this.Zs_lblName.Location = new Point(5, 20);
+            this.Zs_lblName.Name = "Zs_lblName";
+            this.Zs_lblName.Size = new Size(38, 13);
+            this.Zs_lblName.TabIndex = 34;
+            this.Zs_lblName.Text = "Name:";
+            // 
+            // Zs_grpRevive
+            // 
+            this.Zs_grpRevive.Controls.Add(this.Zs_lblReviveEff);
+            this.Zs_grpRevive.Controls.Add(this.Zs_numReviveEff);
+            this.Zs_grpRevive.Controls.Add(this.Label4);
+            this.Zs_grpRevive.Controls.Add(this.Zs_lblReviveLimitFtr);
+            this.Zs_grpRevive.Controls.Add(this.Zs_lblReviveLimitHdr);
+            this.Zs_grpRevive.Controls.Add(this.Zs_numReviveLimit);
+            this.Zs_grpRevive.Controls.Add(this.Zs_numReviveMax);
+            this.Zs_grpRevive.Controls.Add(this.Label9);
+            this.Zs_grpRevive.Location = new Point(6, 169);
+            this.Zs_grpRevive.Name = "Zs_grpRevive";
+            this.Zs_grpRevive.Size = new Size(284, 73);
+            this.Zs_grpRevive.TabIndex = 25;
+            this.Zs_grpRevive.TabStop = false;
+            this.Zs_grpRevive.Text = "Revive settings";
+            // 
+            // Zs_lblReviveEff
+            // 
+            this.Zs_lblReviveEff.AutoSize = true;
+            this.Zs_lblReviveEff.Location = new Point(202, 20);
+            this.Zs_lblReviveEff.Name = "Zs_lblReviveEff";
+            this.Zs_lblReviveEff.Size = new Size(79, 13);
+            this.Zs_lblReviveEff.TabIndex = 40;
+            this.Zs_lblReviveEff.Text = "% effectiveness";
+            // 
+            // Zs_numReviveEff
+            // 
+            this.Zs_numReviveEff.BackColor = SystemColors.Window;
+            this.Zs_numReviveEff.Location = new Point(150, 16);
+            this.Zs_numReviveEff.Maximum = new decimal(new int[] {
                                     1000000,
                                     0,
                                     0,
                                     0});
-            this.zs_numReviveEff.Name = "zs_numReviveEff";
-            this.zs_numReviveEff.Size = new System.Drawing.Size(52, 21);
-            this.zs_numReviveEff.TabIndex = 39;
-            this.zs_numReviveEff.Value = new decimal(new int[] {
+            this.Zs_numReviveEff.Name = "Zs_numReviveEff";
+            this.Zs_numReviveEff.Size = new Size(52, 21);
+            this.Zs_numReviveEff.TabIndex = 39;
+            this.Zs_numReviveEff.Value = new decimal(new int[] {
                                     3,
                                     0,
                                     0,
                                     0});
-            this.toolTip.SetToolTip(this.zs_numReviveEff, "Likelihood that /buy revive will disinfect a zombie");
+            this.GUIToolTip.SetToolTip(this.Zs_numReviveEff, "Likelihood that /buy revive will disinfect a zombie");
             // 
-            // label4
+            // Label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(91, 19);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
-            this.label4.TabIndex = 34;
-            this.label4.Text = "times, with";
+            this.Label4.AutoSize = true;
+            this.Label4.Location = new Point(91, 19);
+            this.Label4.Name = "Label4";
+            this.Label4.Size = new Size(59, 13);
+            this.Label4.TabIndex = 34;
+            this.Label4.Text = "times, with";
             // 
-            // zs_lblReviveLimitFtr
+            // Zs_lblReviveLimitFtr
             // 
-            this.zs_lblReviveLimitFtr.AutoSize = true;
-            this.zs_lblReviveLimitFtr.Location = new System.Drawing.Point(167, 48);
-            this.zs_lblReviveLimitFtr.Name = "zs_lblReviveLimitFtr";
-            this.zs_lblReviveLimitFtr.Size = new System.Drawing.Size(100, 13);
-            this.zs_lblReviveLimitFtr.TabIndex = 38;
-            this.zs_lblReviveLimitFtr.Text = "seconds of infection";
+            this.Zs_lblReviveLimitFtr.AutoSize = true;
+            this.Zs_lblReviveLimitFtr.Location = new Point(167, 48);
+            this.Zs_lblReviveLimitFtr.Name = "Zs_lblReviveLimitFtr";
+            this.Zs_lblReviveLimitFtr.Size = new Size(100, 13);
+            this.Zs_lblReviveLimitFtr.TabIndex = 38;
+            this.Zs_lblReviveLimitFtr.Text = "seconds of infection";
             // 
-            // zs_lblReviveLimitHdr
+            // Zs_lblReviveLimitHdr
             // 
-            this.zs_lblReviveLimitHdr.AutoSize = true;
-            this.zs_lblReviveLimitHdr.Location = new System.Drawing.Point(7, 48);
-            this.zs_lblReviveLimitHdr.Name = "zs_lblReviveLimitHdr";
-            this.zs_lblReviveLimitHdr.Size = new System.Drawing.Size(102, 13);
-            this.zs_lblReviveLimitHdr.TabIndex = 36;
-            this.zs_lblReviveLimitHdr.Text = "Must be used within";
+            this.Zs_lblReviveLimitHdr.AutoSize = true;
+            this.Zs_lblReviveLimitHdr.Location = new Point(7, 48);
+            this.Zs_lblReviveLimitHdr.Name = "Zs_lblReviveLimitHdr";
+            this.Zs_lblReviveLimitHdr.Size = new Size(102, 13);
+            this.Zs_lblReviveLimitHdr.TabIndex = 36;
+            this.Zs_lblReviveLimitHdr.Text = "Must be used within";
             // 
-            // zs_numReviveLimit
+            // Zs_numReviveLimit
             // 
-            this.zs_numReviveLimit.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numReviveLimit.Location = new System.Drawing.Point(112, 45);
-            this.zs_numReviveLimit.Maximum = new decimal(new int[] {
+            this.Zs_numReviveLimit.BackColor = SystemColors.Window;
+            this.Zs_numReviveLimit.Location = new Point(112, 45);
+            this.Zs_numReviveLimit.Maximum = new decimal(new int[] {
                                     1000000,
                                     0,
                                     0,
                                     0});
-            this.zs_numReviveLimit.Name = "zs_numReviveLimit";
-            this.zs_numReviveLimit.Size = new System.Drawing.Size(52, 21);
-            this.zs_numReviveLimit.TabIndex = 35;
-            this.zs_numReviveLimit.Value = new decimal(new int[] {
+            this.Zs_numReviveLimit.Name = "Zs_numReviveLimit";
+            this.Zs_numReviveLimit.Size = new Size(52, 21);
+            this.Zs_numReviveLimit.TabIndex = 35;
+            this.Zs_numReviveLimit.Value = new decimal(new int[] {
                                     10,
                                     0,
                                     0,
                                     0});
-            this.toolTip.SetToolTip(this.zs_numReviveLimit, "The time limit after a human is infected that /buy revive must be used within");
-            // 
-            // zs_numReviveMax
-            // 
-            this.zs_numReviveMax.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numReviveMax.Location = new System.Drawing.Point(36, 17);
-            this.zs_numReviveMax.Name = "zs_numReviveMax";
-            this.zs_numReviveMax.Size = new System.Drawing.Size(52, 21);
-            this.zs_numReviveMax.TabIndex = 34;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 20);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(27, 13);
-            this.label9.TabIndex = 34;
-            this.label9.Text = "Max";
-            // 
-            // zs_cbMain
-            // 
-            this.zs_cbMain.AutoSize = true;
-            this.zs_cbMain.Location = new System.Drawing.Point(11, 66);
-            this.zs_cbMain.Name = "zs_cbMain";
-            this.zs_cbMain.Size = new System.Drawing.Size(112, 17);
-            this.zs_cbMain.TabIndex = 24;
-            this.zs_cbMain.Text = "Change main level";
-            this.zs_cbMain.UseVisualStyleBackColor = true;
-            // 
-            // zs_cbMap
-            // 
-            this.zs_cbMap.AutoSize = true;
-            this.zs_cbMap.Location = new System.Drawing.Point(11, 43);
-            this.zs_cbMap.Name = "zs_cbMap";
-            this.zs_cbMap.Size = new System.Drawing.Size(136, 17);
-            this.zs_cbMap.TabIndex = 23;
-            this.zs_cbMap.Text = "Map name in server list";
-            this.zs_cbMap.UseVisualStyleBackColor = true;
-            // 
-            // zs_grpInv
-            // 
-            this.zs_grpInv.Controls.Add(this.zs_numInvZombieDur);
-            this.zs_grpInv.Controls.Add(this.zs_numInvHumanDur);
-            this.zs_grpInv.Controls.Add(this.zs_numInvZombieMax);
-            this.zs_grpInv.Controls.Add(this.zs_numInvHumanMax);
-            this.zs_grpInv.Controls.Add(this.zs_lblInvZombieDur);
-            this.zs_grpInv.Controls.Add(this.zs_lblInvZombieMax);
-            this.zs_grpInv.Controls.Add(this.zs_lblInvHumanDur);
-            this.zs_grpInv.Controls.Add(this.zs_lblInvHumanMax);
-            this.zs_grpInv.Location = new System.Drawing.Point(6, 89);
-            this.zs_grpInv.Name = "zs_grpInv";
-            this.zs_grpInv.Size = new System.Drawing.Size(284, 74);
-            this.zs_grpInv.TabIndex = 0;
-            this.zs_grpInv.TabStop = false;
-            this.zs_grpInv.Text = "Invisibility settings";
-            // 
-            // zs_numInvZombieDur
-            // 
-            this.zs_numInvZombieDur.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numInvZombieDur.Location = new System.Drawing.Point(227, 45);
-            this.zs_numInvZombieDur.Name = "zs_numInvZombieDur";
-            this.zs_numInvZombieDur.Size = new System.Drawing.Size(52, 21);
-            this.zs_numInvZombieDur.TabIndex = 33;
-            this.toolTip.SetToolTip(this.zs_numInvZombieDur, "How many seconds a zombie is invisible for after using /buy invisibility");
-            // 
-            // zs_numInvHumanDur
-            // 
-            this.zs_numInvHumanDur.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numInvHumanDur.Location = new System.Drawing.Point(227, 20);
-            this.zs_numInvHumanDur.Name = "zs_numInvHumanDur";
-            this.zs_numInvHumanDur.Size = new System.Drawing.Size(52, 21);
-            this.zs_numInvHumanDur.TabIndex = 32;
-            this.toolTip.SetToolTip(this.zs_numInvHumanDur, "How many seconds a human is invisible for after using /buy invisibility");
-            // 
-            // zs_numInvZombieMax
-            // 
-            this.zs_numInvZombieMax.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numInvZombieMax.Location = new System.Drawing.Point(77, 45);
-            this.zs_numInvZombieMax.Name = "zs_numInvZombieMax";
-            this.zs_numInvZombieMax.Size = new System.Drawing.Size(52, 21);
-            this.zs_numInvZombieMax.TabIndex = 31;
-            this.toolTip.SetToolTip(this.zs_numInvZombieMax, "Maximum number of times a zombie can use /buy invisibility in a round");
-            // 
-            // zs_numInvHumanMax
-            // 
-            this.zs_numInvHumanMax.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_numInvHumanMax.Location = new System.Drawing.Point(78, 20);
-            this.zs_numInvHumanMax.Name = "zs_numInvHumanMax";
-            this.zs_numInvHumanMax.Size = new System.Drawing.Size(52, 21);
-            this.zs_numInvHumanMax.TabIndex = 27;
-            this.toolTip.SetToolTip(this.zs_numInvHumanMax, "Maximum number of times a human can use /buy invisibility in a round");
-            // 
-            // zs_lblInvZombieDur
-            // 
-            this.zs_lblInvZombieDur.AutoSize = true;
-            this.zs_lblInvZombieDur.Location = new System.Drawing.Point(129, 48);
-            this.zs_lblInvZombieDur.Name = "zs_lblInvZombieDur";
-            this.zs_lblInvZombieDur.Size = new System.Drawing.Size(100, 13);
-            this.zs_lblInvZombieDur.TabIndex = 30;
-            this.zs_lblInvZombieDur.Text = "times, which last for";
-            // 
-            // zs_lblInvZombieMax
-            // 
-            this.zs_lblInvZombieMax.AutoSize = true;
-            this.zs_lblInvZombieMax.Location = new System.Drawing.Point(6, 48);
-            this.zs_lblInvZombieMax.Name = "zs_lblInvZombieMax";
-            this.zs_lblInvZombieMax.Size = new System.Drawing.Size(72, 13);
-            this.zs_lblInvZombieMax.TabIndex = 29;
-            this.zs_lblInvZombieMax.Text = "Zombies: max";
-            // 
-            // zs_lblInvHumanDur
-            // 
-            this.zs_lblInvHumanDur.AutoSize = true;
-            this.zs_lblInvHumanDur.Location = new System.Drawing.Point(129, 22);
-            this.zs_lblInvHumanDur.Name = "zs_lblInvHumanDur";
-            this.zs_lblInvHumanDur.Size = new System.Drawing.Size(101, 13);
-            this.zs_lblInvHumanDur.TabIndex = 28;
-            this.zs_lblInvHumanDur.Text = "times, which last for";
-            // 
-            // zs_lblInvHumanMax
-            // 
-            this.zs_lblInvHumanMax.AutoSize = true;
-            this.zs_lblInvHumanMax.Location = new System.Drawing.Point(7, 23);
-            this.zs_lblInvHumanMax.Name = "zs_lblInvHumanMax";
-            this.zs_lblInvHumanMax.Size = new System.Drawing.Size(71, 13);
-            this.zs_lblInvHumanMax.TabIndex = 27;
-            this.zs_lblInvHumanMax.Text = "Humans: max";
-            // 
-            // zs_cbStart
-            // 
-            this.zs_cbStart.AutoSize = true;
-            this.zs_cbStart.Location = new System.Drawing.Point(11, 20);
-            this.zs_cbStart.Name = "zs_cbStart";
-            this.zs_cbStart.Size = new System.Drawing.Size(139, 17);
-            this.zs_cbStart.TabIndex = 22;
-            this.zs_cbStart.Text = "Start when server starts";
-            this.zs_cbStart.UseVisualStyleBackColor = true;
-            // 
-            // zs_grpMaps
-            // 
-            this.zs_grpMaps.Controls.Add(this.zs_lblNotUsed);
-            this.zs_grpMaps.Controls.Add(this.zs_lblUsed);
-            this.zs_grpMaps.Controls.Add(this.zs_btnAdd);
-            this.zs_grpMaps.Controls.Add(this.zs_btnRemove);
-            this.zs_grpMaps.Controls.Add(this.zs_lstNotUsed);
-            this.zs_grpMaps.Controls.Add(this.zs_lstUsed);
-            this.zs_grpMaps.Location = new System.Drawing.Point(6, 59);
-            this.zs_grpMaps.Name = "zs_grpMaps";
-            this.zs_grpMaps.Size = new System.Drawing.Size(170, 412);
-            this.zs_grpMaps.TabIndex = 1;
-            this.zs_grpMaps.TabStop = false;
-            this.zs_grpMaps.Text = "Maps";
-            // 
-            // zs_lblNotUsed
-            // 
-            this.zs_lblNotUsed.AutoSize = true;
-            this.zs_lblNotUsed.Location = new System.Drawing.Point(187, 17);
-            this.zs_lblNotUsed.Name = "zs_lblNotUsed";
-            this.zs_lblNotUsed.Size = new System.Drawing.Size(83, 13);
-            this.zs_lblNotUsed.TabIndex = 6;
-            this.zs_lblNotUsed.Text = "Maps Not In Use";
-            // 
-            // zs_lblUsed
-            // 
-            this.zs_lblUsed.AutoSize = true;
-            this.zs_lblUsed.Location = new System.Drawing.Point(6, 17);
-            this.zs_lblUsed.Name = "zs_lblUsed";
-            this.zs_lblUsed.Size = new System.Drawing.Size(38, 13);
-            this.zs_lblUsed.TabIndex = 5;
-            this.zs_lblUsed.Text = "In use:";
-            // 
-            // zs_btnAdd
-            // 
-            this.zs_btnAdd.Location = new System.Drawing.Point(6, 188);
-            this.zs_btnAdd.Name = "zs_btnAdd";
-            this.zs_btnAdd.Size = new System.Drawing.Size(77, 23);
-            this.zs_btnAdd.TabIndex = 4;
-            this.zs_btnAdd.Text = "<< Add";
-            this.zs_btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // zs_btnRemove
-            // 
-            this.zs_btnRemove.Location = new System.Drawing.Point(89, 188);
-            this.zs_btnRemove.Name = "zs_btnRemove";
-            this.zs_btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.zs_btnRemove.TabIndex = 3;
-            this.zs_btnRemove.Text = "Remove >>";
-            this.zs_btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // zs_lstNotUsed
-            // 
-            this.zs_lstNotUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_lstNotUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.zs_lstNotUsed.FormattingEnabled = true;
-            this.zs_lstNotUsed.Location = new System.Drawing.Point(6, 219);
-            this.zs_lstNotUsed.Name = "zs_lstNotUsed";
-            this.zs_lstNotUsed.Size = new System.Drawing.Size(158, 186);
-            this.zs_lstNotUsed.TabIndex = 2;
-            // 
-            // zs_lstUsed
-            // 
-            this.zs_lstUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.zs_lstUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.zs_lstUsed.FormattingEnabled = true;
-            this.zs_lstUsed.Location = new System.Drawing.Point(6, 33);
-            this.zs_lstUsed.Name = "zs_lstUsed";
-            this.zs_lstUsed.Size = new System.Drawing.Size(158, 147);
-            this.zs_lstUsed.TabIndex = 0;
-            // 
-            // tabZS_old
-            // 
-            this.tabZS_old.BackColor = System.Drawing.SystemColors.Control;
-            this.tabZS_old.Controls.Add(this.propsZG);
-            this.tabZS_old.Location = new System.Drawing.Point(4, 22);
-            this.tabZS_old.Name = "tabZS_old";
-            this.tabZS_old.Padding = new System.Windows.Forms.Padding(3);
-            this.tabZS_old.Size = new System.Drawing.Size(484, 489);
-            this.tabZS_old.TabIndex = 1;
-            this.tabZS_old.Text = "Zombie old";
-            // 
-            // propsZG
-            // 
-            this.propsZG.Location = new System.Drawing.Point(6, 3);
-            this.propsZG.Name = "propsZG";
-            this.propsZG.Size = new System.Drawing.Size(456, 464);
-            this.propsZG.TabIndex = 42;
-            this.propsZG.ToolbarVisible = false;
-            // 
-            // tabCTF
-            // 
-            this.tabCTF.BackColor = System.Drawing.SystemColors.Control;
-            this.tabCTF.Controls.Add(this.ctf_grpControls);
-            this.tabCTF.Controls.Add(this.ctf_grpSettings);
-            this.tabCTF.Controls.Add(this.ctf_grpMaps);
-            this.tabCTF.Location = new System.Drawing.Point(4, 22);
-            this.tabCTF.Name = "tabCTF";
-            this.tabCTF.Size = new System.Drawing.Size(484, 489);
-            this.tabCTF.TabIndex = 3;
-            this.tabCTF.Text = "CTF";
-            // 
-            // ctf_grpControls
-            // 
-            this.ctf_grpControls.Controls.Add(this.ctf_btnEnd);
-            this.ctf_grpControls.Controls.Add(this.ctf_btnStop);
-            this.ctf_grpControls.Controls.Add(this.ctf_btnStart);
-            this.ctf_grpControls.Location = new System.Drawing.Point(110, 5);
-            this.ctf_grpControls.Name = "ctf_grpControls";
-            this.ctf_grpControls.Size = new System.Drawing.Size(279, 51);
-            this.ctf_grpControls.TabIndex = 7;
-            this.ctf_grpControls.TabStop = false;
-            this.ctf_grpControls.Text = "Controls";
-            // 
-            // ctf_btnEnd
-            // 
-            this.ctf_btnEnd.Location = new System.Drawing.Point(190, 19);
-            this.ctf_btnEnd.Name = "ctf_btnEnd";
-            this.ctf_btnEnd.Size = new System.Drawing.Size(80, 23);
-            this.ctf_btnEnd.TabIndex = 2;
-            this.ctf_btnEnd.Text = "End Round";
-            this.ctf_btnEnd.UseVisualStyleBackColor = true;
-            // 
-            // ctf_btnStop
-            // 
-            this.ctf_btnStop.Location = new System.Drawing.Point(100, 19);
-            this.ctf_btnStop.Name = "ctf_btnStop";
-            this.ctf_btnStop.Size = new System.Drawing.Size(80, 23);
-            this.ctf_btnStop.TabIndex = 1;
-            this.ctf_btnStop.Text = "Stop Game";
-            this.ctf_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // ctf_btnStart
-            // 
-            this.ctf_btnStart.Location = new System.Drawing.Point(10, 19);
-            this.ctf_btnStart.Name = "ctf_btnStart";
-            this.ctf_btnStart.Size = new System.Drawing.Size(80, 23);
-            this.ctf_btnStart.TabIndex = 0;
-            this.ctf_btnStart.Text = "Start Game";
-            this.ctf_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // ctf_grpSettings
-            // 
-            this.ctf_grpSettings.Controls.Add(this.ctf_cbMain);
-            this.ctf_grpSettings.Controls.Add(this.ctf_cbMap);
-            this.ctf_grpSettings.Controls.Add(this.ctf_cbStart);
-            this.ctf_grpSettings.Location = new System.Drawing.Point(182, 59);
-            this.ctf_grpSettings.Name = "ctf_grpSettings";
-            this.ctf_grpSettings.Size = new System.Drawing.Size(296, 89);
-            this.ctf_grpSettings.TabIndex = 6;
-            this.ctf_grpSettings.TabStop = false;
-            this.ctf_grpSettings.Text = "Settings";
-            // 
-            // ctf_cbMain
-            // 
-            this.ctf_cbMain.AutoSize = true;
-            this.ctf_cbMain.Location = new System.Drawing.Point(11, 66);
-            this.ctf_cbMain.Name = "ctf_cbMain";
-            this.ctf_cbMain.Size = new System.Drawing.Size(112, 17);
-            this.ctf_cbMain.TabIndex = 24;
-            this.ctf_cbMain.Text = "Change main level";
-            this.ctf_cbMain.UseVisualStyleBackColor = true;
-            // 
-            // ctf_cbMap
-            // 
-            this.ctf_cbMap.AutoSize = true;
-            this.ctf_cbMap.Location = new System.Drawing.Point(11, 43);
-            this.ctf_cbMap.Name = "ctf_cbMap";
-            this.ctf_cbMap.Size = new System.Drawing.Size(136, 17);
-            this.ctf_cbMap.TabIndex = 23;
-            this.ctf_cbMap.Text = "Map name in server list";
-            this.ctf_cbMap.UseVisualStyleBackColor = true;
-            // 
-            // ctf_cbStart
-            // 
-            this.ctf_cbStart.AutoSize = true;
-            this.ctf_cbStart.Location = new System.Drawing.Point(11, 20);
-            this.ctf_cbStart.Name = "ctf_cbStart";
-            this.ctf_cbStart.Size = new System.Drawing.Size(139, 17);
-            this.ctf_cbStart.TabIndex = 22;
-            this.ctf_cbStart.Text = "Start when server starts";
-            this.ctf_cbStart.UseVisualStyleBackColor = true;
-            // 
-            // ctf_grpMaps
-            // 
-            this.ctf_grpMaps.Controls.Add(this.ctf_lblNotUsed);
-            this.ctf_grpMaps.Controls.Add(this.ctf_lblUsed);
-            this.ctf_grpMaps.Controls.Add(this.ctf_btnAdd);
-            this.ctf_grpMaps.Controls.Add(this.ctf_btnRemove);
-            this.ctf_grpMaps.Controls.Add(this.ctf_lstNotUsed);
-            this.ctf_grpMaps.Controls.Add(this.ctf_lstUsed);
-            this.ctf_grpMaps.Location = new System.Drawing.Point(6, 59);
-            this.ctf_grpMaps.Name = "ctf_grpMaps";
-            this.ctf_grpMaps.Size = new System.Drawing.Size(170, 412);
-            this.ctf_grpMaps.TabIndex = 5;
-            this.ctf_grpMaps.TabStop = false;
-            this.ctf_grpMaps.Text = "Maps";
-            // 
-            // ctf_lblNotUsed
-            // 
-            this.ctf_lblNotUsed.AutoSize = true;
-            this.ctf_lblNotUsed.Location = new System.Drawing.Point(187, 17);
-            this.ctf_lblNotUsed.Name = "ctf_lblNotUsed";
-            this.ctf_lblNotUsed.Size = new System.Drawing.Size(83, 13);
-            this.ctf_lblNotUsed.TabIndex = 6;
-            this.ctf_lblNotUsed.Text = "Maps Not In Use";
-            // 
-            // ctf_lblUsed
-            // 
-            this.ctf_lblUsed.AutoSize = true;
-            this.ctf_lblUsed.Location = new System.Drawing.Point(6, 17);
-            this.ctf_lblUsed.Name = "ctf_lblUsed";
-            this.ctf_lblUsed.Size = new System.Drawing.Size(38, 13);
-            this.ctf_lblUsed.TabIndex = 5;
-            this.ctf_lblUsed.Text = "In use:";
-            // 
-            // ctf_btnAdd
-            // 
-            this.ctf_btnAdd.Location = new System.Drawing.Point(6, 188);
-            this.ctf_btnAdd.Name = "ctf_btnAdd";
-            this.ctf_btnAdd.Size = new System.Drawing.Size(77, 23);
-            this.ctf_btnAdd.TabIndex = 4;
-            this.ctf_btnAdd.Text = "<< Add";
-            this.ctf_btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // ctf_btnRemove
-            // 
-            this.ctf_btnRemove.Location = new System.Drawing.Point(89, 188);
-            this.ctf_btnRemove.Name = "ctf_btnRemove";
-            this.ctf_btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.ctf_btnRemove.TabIndex = 3;
-            this.ctf_btnRemove.Text = "Remove >>";
-            this.ctf_btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // ctf_lstNotUsed
-            // 
-            this.ctf_lstNotUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.ctf_lstNotUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.ctf_lstNotUsed.FormattingEnabled = true;
-            this.ctf_lstNotUsed.Location = new System.Drawing.Point(6, 219);
-            this.ctf_lstNotUsed.Name = "ctf_lstNotUsed";
-            this.ctf_lstNotUsed.Size = new System.Drawing.Size(158, 186);
-            this.ctf_lstNotUsed.TabIndex = 2;
-            // 
-            // ctf_lstUsed
-            // 
-            this.ctf_lstUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.ctf_lstUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.ctf_lstUsed.FormattingEnabled = true;
-            this.ctf_lstUsed.Location = new System.Drawing.Point(6, 33);
-            this.ctf_lstUsed.Name = "ctf_lstUsed";
-            this.ctf_lstUsed.Size = new System.Drawing.Size(158, 147);
-            this.ctf_lstUsed.TabIndex = 0;
-            // 
-            // tabTW
-            // 
-            this.tabTW.BackColor = System.Drawing.SystemColors.Control;
-            this.tabTW.Controls.Add(this.tw_grpControls);
-            this.tabTW.Controls.Add(this.tw_grpMapSettings);
-            this.tabTW.Controls.Add(this.tw_grpSettings);
-            this.tabTW.Controls.Add(this.tw_gbMaps);
-            this.tabTW.Location = new System.Drawing.Point(4, 22);
-            this.tabTW.Name = "tabTW";
-            this.tabTW.Size = new System.Drawing.Size(484, 489);
-            this.tabTW.TabIndex = 4;
-            this.tabTW.Text = "TNT Wars";
-            // 
-            // tw_grpControls
-            // 
-            this.tw_grpControls.Controls.Add(this.tw_btnEnd);
-            this.tw_grpControls.Controls.Add(this.tw_btnStop);
-            this.tw_grpControls.Controls.Add(this.tw_btnStart);
-            this.tw_grpControls.Location = new System.Drawing.Point(110, 5);
-            this.tw_grpControls.Name = "tw_grpControls";
-            this.tw_grpControls.Size = new System.Drawing.Size(279, 51);
-            this.tw_grpControls.TabIndex = 8;
-            this.tw_grpControls.TabStop = false;
-            this.tw_grpControls.Text = "Controls";
-            // 
-            // tw_btnEnd
-            // 
-            this.tw_btnEnd.Location = new System.Drawing.Point(190, 19);
-            this.tw_btnEnd.Name = "tw_btnEnd";
-            this.tw_btnEnd.Size = new System.Drawing.Size(80, 23);
-            this.tw_btnEnd.TabIndex = 2;
-            this.tw_btnEnd.Text = "End Round";
-            this.tw_btnEnd.UseVisualStyleBackColor = true;
-            // 
-            // tw_btnStop
-            // 
-            this.tw_btnStop.Location = new System.Drawing.Point(100, 19);
-            this.tw_btnStop.Name = "tw_btnStop";
-            this.tw_btnStop.Size = new System.Drawing.Size(80, 23);
-            this.tw_btnStop.TabIndex = 1;
-            this.tw_btnStop.Text = "Stop Game";
-            this.tw_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // tw_btnStart
-            // 
-            this.tw_btnStart.Location = new System.Drawing.Point(10, 19);
-            this.tw_btnStart.Name = "tw_btnStart";
-            this.tw_btnStart.Size = new System.Drawing.Size(80, 23);
-            this.tw_btnStart.TabIndex = 0;
-            this.tw_btnStart.Text = "Start Game";
-            this.tw_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // tw_grpMapSettings
-            // 
-            this.tw_grpMapSettings.Controls.Add(this.tw_grpTeams);
-            this.tw_grpMapSettings.Controls.Add(this.tw_grpGrace);
-            this.tw_grpMapSettings.Controls.Add(this.tw_grpScores);
-            this.tw_grpMapSettings.Enabled = false;
-            this.tw_grpMapSettings.Location = new System.Drawing.Point(182, 213);
-            this.tw_grpMapSettings.Name = "tw_grpMapSettings";
-            this.tw_grpMapSettings.Size = new System.Drawing.Size(296, 207);
-            this.tw_grpMapSettings.TabIndex = 7;
-            this.tw_grpMapSettings.TabStop = false;
-            this.tw_grpMapSettings.Text = "Map Settings";
-            // 
-            // tw_grpTeams
-            // 
-            this.tw_grpTeams.Controls.Add(this.tw_cbKills);
-            this.tw_grpTeams.Controls.Add(this.tw_cbBalance);
-            this.tw_grpTeams.Location = new System.Drawing.Point(172, 125);
-            this.tw_grpTeams.Name = "tw_grpTeams";
-            this.tw_grpTeams.Size = new System.Drawing.Size(118, 73);
-            this.tw_grpTeams.TabIndex = 8;
-            this.tw_grpTeams.TabStop = false;
-            this.tw_grpTeams.Text = "Teams:";
-            // 
-            // tw_cbKills
-            // 
-            this.tw_cbKills.AutoSize = true;
-            this.tw_cbKills.Location = new System.Drawing.Point(6, 43);
-            this.tw_cbKills.Name = "tw_cbKills";
-            this.tw_cbKills.Size = new System.Drawing.Size(81, 17);
-            this.tw_cbKills.TabIndex = 2;
-            this.tw_cbKills.Text = "Team killing";
-            this.tw_cbKills.UseVisualStyleBackColor = true;
-            // 
-            // tw_cbBalance
-            // 
-            this.tw_cbBalance.AutoSize = true;
-            this.tw_cbBalance.Checked = true;
-            this.tw_cbBalance.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tw_cbBalance.Location = new System.Drawing.Point(6, 20);
-            this.tw_cbBalance.Name = "tw_cbBalance";
-            this.tw_cbBalance.Size = new System.Drawing.Size(96, 17);
-            this.tw_cbBalance.TabIndex = 1;
-            this.tw_cbBalance.Text = "Balance teams";
-            this.tw_cbBalance.UseVisualStyleBackColor = true;
-            // 
-            // tw_grpGrace
-            // 
-            this.tw_grpGrace.Controls.Add(this.tw_numGrace);
-            this.tw_grpGrace.Controls.Add(this.tw_lblGrace);
-            this.tw_grpGrace.Controls.Add(this.tw_cbGrace);
-            this.tw_grpGrace.Location = new System.Drawing.Point(6, 125);
-            this.tw_grpGrace.Name = "tw_grpGrace";
-            this.tw_grpGrace.Size = new System.Drawing.Size(160, 73);
-            this.tw_grpGrace.TabIndex = 7;
-            this.tw_grpGrace.TabStop = false;
-            this.tw_grpGrace.Text = "Grace Period";
-            // 
-            // tw_numGrace
-            // 
-            this.tw_numGrace.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_numGrace.Location = new System.Drawing.Point(59, 41);
-            this.tw_numGrace.Name = "tw_numGrace";
-            this.tw_numGrace.Seconds = ((long)(30));
-            this.tw_numGrace.Size = new System.Drawing.Size(66, 21);
-            this.tw_numGrace.TabIndex = 35;
-            this.tw_numGrace.Text = "30s";
-            this.tw_numGrace.Value = System.TimeSpan.Parse("00:00:30");
-            // 
-            // tw_lblGrace
-            // 
-            this.tw_lblGrace.AutoSize = true;
-            this.tw_lblGrace.Location = new System.Drawing.Point(23, 44);
-            this.tw_lblGrace.Name = "tw_lblGrace";
-            this.tw_lblGrace.Size = new System.Drawing.Size(33, 13);
-            this.tw_lblGrace.TabIndex = 2;
-            this.tw_lblGrace.Text = "Time:";
-            // 
-            // tw_cbGrace
-            // 
-            this.tw_cbGrace.AutoSize = true;
-            this.tw_cbGrace.Checked = true;
-            this.tw_cbGrace.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tw_cbGrace.Location = new System.Drawing.Point(6, 20);
-            this.tw_cbGrace.Name = "tw_cbGrace";
-            this.tw_cbGrace.Size = new System.Drawing.Size(64, 17);
-            this.tw_cbGrace.TabIndex = 0;
-            this.tw_cbGrace.Text = "Enabled";
-            this.tw_cbGrace.UseVisualStyleBackColor = true;
-            // 
-            // tw_grpScores
-            // 
-            this.tw_grpScores.Controls.Add(this.tw_lblMulti);
-            this.tw_grpScores.Controls.Add(this.tw_lblAssist);
-            this.tw_grpScores.Controls.Add(this.tw_cbStreaks);
-            this.tw_grpScores.Controls.Add(this.tw_numMultiKills);
-            this.tw_grpScores.Controls.Add(this.tw_numScoreAssists);
-            this.tw_grpScores.Controls.Add(this.tw_lblScorePerKill);
-            this.tw_grpScores.Controls.Add(this.tw_numScorePerKill);
-            this.tw_grpScores.Controls.Add(this.tw_lblScoreLimit);
-            this.tw_grpScores.Controls.Add(this.tw_numScoreLimit);
-            this.tw_grpScores.Location = new System.Drawing.Point(6, 20);
-            this.tw_grpScores.Name = "tw_grpScores";
-            this.tw_grpScores.Size = new System.Drawing.Size(284, 99);
-            this.tw_grpScores.TabIndex = 6;
-            this.tw_grpScores.TabStop = false;
-            this.tw_grpScores.Text = "Scores";
-            // 
-            // tw_lblMulti
-            // 
-            this.tw_lblMulti.AutoSize = true;
-            this.tw_lblMulti.Location = new System.Drawing.Point(157, 47);
-            this.tw_lblMulti.Name = "tw_lblMulti";
-            this.tw_lblMulti.Size = new System.Drawing.Size(79, 13);
-            this.tw_lblMulti.TabIndex = 10;
-            this.tw_lblMulti.Text = "Multikill bonus:";
-            // 
-            // tw_lblAssist
-            // 
-            this.tw_lblAssist.AutoSize = true;
-            this.tw_lblAssist.Location = new System.Drawing.Point(168, 20);
-            this.tw_lblAssist.Name = "tw_lblAssist";
-            this.tw_lblAssist.Size = new System.Drawing.Size(69, 13);
-            this.tw_lblAssist.TabIndex = 9;
-            this.tw_lblAssist.Text = "Assist bonus:";
-            // 
-            // tw_cbStreaks
-            // 
-            this.tw_cbStreaks.AutoSize = true;
-            this.tw_cbStreaks.Checked = true;
-            this.tw_cbStreaks.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tw_cbStreaks.Location = new System.Drawing.Point(11, 72);
-            this.tw_cbStreaks.Name = "tw_cbStreaks";
-            this.tw_cbStreaks.Size = new System.Drawing.Size(61, 17);
-            this.tw_cbStreaks.TabIndex = 0;
-            this.tw_cbStreaks.Text = "Streaks";
-            this.tw_cbStreaks.UseVisualStyleBackColor = true;
-            // 
-            // tw_numMultiKills
-            // 
-            this.tw_numMultiKills.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_numMultiKills.Location = new System.Drawing.Point(240, 44);
-            this.tw_numMultiKills.Maximum = new decimal(new int[] {
+            this.GUIToolTip.SetToolTip(this.Zs_numReviveLimit, "The time limit after a human is infected that /buy revive must be used within");
+            // 
+            // Zs_numReviveMax
+            // 
+            this.Zs_numReviveMax.BackColor = SystemColors.Window;
+            this.Zs_numReviveMax.Location = new Point(36, 17);
+            this.Zs_numReviveMax.Name = "Zs_numReviveMax";
+            this.Zs_numReviveMax.Size = new Size(52, 21);
+            this.Zs_numReviveMax.TabIndex = 34;
+            // 
+            // Label9
+            // 
+            this.Label9.AutoSize = true;
+            this.Label9.Location = new Point(6, 20);
+            this.Label9.Name = "Label9";
+            this.Label9.Size = new Size(27, 13);
+            this.Label9.TabIndex = 34;
+            this.Label9.Text = "Max";
+            // 
+            // Zs_cbMain
+            // 
+            this.Zs_cbMain.AutoSize = true;
+            this.Zs_cbMain.Location = new Point(11, 66);
+            this.Zs_cbMain.Name = "Zs_cbMain";
+            this.Zs_cbMain.Size = new Size(112, 17);
+            this.Zs_cbMain.TabIndex = 24;
+            this.Zs_cbMain.Text = "Change main level";
+            this.Zs_cbMain.UseVisualStyleBackColor = true;
+            // 
+            // Zs_cbMap
+            // 
+            this.Zs_cbMap.AutoSize = true;
+            this.Zs_cbMap.Location = new Point(11, 43);
+            this.Zs_cbMap.Name = "Zs_cbMap";
+            this.Zs_cbMap.Size = new Size(136, 17);
+            this.Zs_cbMap.TabIndex = 23;
+            this.Zs_cbMap.Text = "Map name in server list";
+            this.Zs_cbMap.UseVisualStyleBackColor = true;
+            // 
+            // Zs_grpInv
+            // 
+            this.Zs_grpInv.Controls.Add(this.Zs_numInvZombieDur);
+            this.Zs_grpInv.Controls.Add(this.Zs_numInvHumanDur);
+            this.Zs_grpInv.Controls.Add(this.Zs_numInvZombieMax);
+            this.Zs_grpInv.Controls.Add(this.Zs_numInvHumanMax);
+            this.Zs_grpInv.Controls.Add(this.Zs_lblInvZombieDur);
+            this.Zs_grpInv.Controls.Add(this.Zs_lblInvZombieMax);
+            this.Zs_grpInv.Controls.Add(this.Zs_lblInvHumanDur);
+            this.Zs_grpInv.Controls.Add(this.Zs_lblInvHumanMax);
+            this.Zs_grpInv.Location = new Point(6, 89);
+            this.Zs_grpInv.Name = "Zs_grpInv";
+            this.Zs_grpInv.Size = new Size(284, 74);
+            this.Zs_grpInv.TabIndex = 0;
+            this.Zs_grpInv.TabStop = false;
+            this.Zs_grpInv.Text = "Invisibility settings";
+            // 
+            // Zs_numInvZombieDur
+            // 
+            this.Zs_numInvZombieDur.BackColor = SystemColors.Window;
+            this.Zs_numInvZombieDur.Location = new Point(227, 45);
+            this.Zs_numInvZombieDur.Name = "Zs_numInvZombieDur";
+            this.Zs_numInvZombieDur.Size = new Size(52, 21);
+            this.Zs_numInvZombieDur.TabIndex = 33;
+            this.GUIToolTip.SetToolTip(this.Zs_numInvZombieDur, "How many seconds a zombie is invisible for after using /buy invisibility");
+            // 
+            // Zs_numInvHumanDur
+            // 
+            this.Zs_numInvHumanDur.BackColor = SystemColors.Window;
+            this.Zs_numInvHumanDur.Location = new Point(227, 20);
+            this.Zs_numInvHumanDur.Name = "Zs_numInvHumanDur";
+            this.Zs_numInvHumanDur.Size = new Size(52, 21);
+            this.Zs_numInvHumanDur.TabIndex = 32;
+            this.GUIToolTip.SetToolTip(this.Zs_numInvHumanDur, "How many seconds a human is invisible for after using /buy invisibility");
+            // 
+            // Zs_numInvZombieMax
+            // 
+            this.Zs_numInvZombieMax.BackColor = SystemColors.Window;
+            this.Zs_numInvZombieMax.Location = new Point(77, 45);
+            this.Zs_numInvZombieMax.Name = "Zs_numInvZombieMax";
+            this.Zs_numInvZombieMax.Size = new Size(52, 21);
+            this.Zs_numInvZombieMax.TabIndex = 31;
+            this.GUIToolTip.SetToolTip(this.Zs_numInvZombieMax, "Maximum number of times a zombie can use /buy invisibility in a round");
+            // 
+            // Zs_numInvHumanMax
+            // 
+            this.Zs_numInvHumanMax.BackColor = SystemColors.Window;
+            this.Zs_numInvHumanMax.Location = new Point(78, 20);
+            this.Zs_numInvHumanMax.Name = "Zs_numInvHumanMax";
+            this.Zs_numInvHumanMax.Size = new Size(52, 21);
+            this.Zs_numInvHumanMax.TabIndex = 27;
+            this.GUIToolTip.SetToolTip(this.Zs_numInvHumanMax, "Maximum number of times a human can use /buy invisibility in a round");
+            // 
+            // Zs_lblInvZombieDur
+            // 
+            this.Zs_lblInvZombieDur.AutoSize = true;
+            this.Zs_lblInvZombieDur.Location = new Point(129, 48);
+            this.Zs_lblInvZombieDur.Name = "Zs_lblInvZombieDur";
+            this.Zs_lblInvZombieDur.Size = new Size(100, 13);
+            this.Zs_lblInvZombieDur.TabIndex = 30;
+            this.Zs_lblInvZombieDur.Text = "times, which Last for";
+            // 
+            // Zs_lblInvZombieMax
+            // 
+            this.Zs_lblInvZombieMax.AutoSize = true;
+            this.Zs_lblInvZombieMax.Location = new Point(6, 48);
+            this.Zs_lblInvZombieMax.Name = "Zs_lblInvZombieMax";
+            this.Zs_lblInvZombieMax.Size = new Size(72, 13);
+            this.Zs_lblInvZombieMax.TabIndex = 29;
+            this.Zs_lblInvZombieMax.Text = "Zombies: max";
+            // 
+            // Zs_lblInvHumanDur
+            // 
+            this.Zs_lblInvHumanDur.AutoSize = true;
+            this.Zs_lblInvHumanDur.Location = new Point(129, 22);
+            this.Zs_lblInvHumanDur.Name = "Zs_lblInvHumanDur";
+            this.Zs_lblInvHumanDur.Size = new Size(101, 13);
+            this.Zs_lblInvHumanDur.TabIndex = 28;
+            this.Zs_lblInvHumanDur.Text = "times, which Last for";
+            // 
+            // Zs_lblInvHumanMax
+            // 
+            this.Zs_lblInvHumanMax.AutoSize = true;
+            this.Zs_lblInvHumanMax.Location = new Point(7, 23);
+            this.Zs_lblInvHumanMax.Name = "Zs_lblInvHumanMax";
+            this.Zs_lblInvHumanMax.Size = new Size(71, 13);
+            this.Zs_lblInvHumanMax.TabIndex = 27;
+            this.Zs_lblInvHumanMax.Text = "Humans: max";
+            // 
+            // Zs_cbStart
+            // 
+            this.Zs_cbStart.AutoSize = true;
+            this.Zs_cbStart.Location = new Point(11, 20);
+            this.Zs_cbStart.Name = "Zs_cbStart";
+            this.Zs_cbStart.Size = new Size(139, 17);
+            this.Zs_cbStart.TabIndex = 22;
+            this.Zs_cbStart.Text = "Start when server starts";
+            this.Zs_cbStart.UseVisualStyleBackColor = true;
+            // 
+            // Zs_grpMaps
+            // 
+            this.Zs_grpMaps.Controls.Add(this.Zs_lblNotUsed);
+            this.Zs_grpMaps.Controls.Add(this.Zs_lblUsed);
+            this.Zs_grpMaps.Controls.Add(this.Zs_btnAdd);
+            this.Zs_grpMaps.Controls.Add(this.Zs_btnRemove);
+            this.Zs_grpMaps.Controls.Add(this.Zs_lstNotUsed);
+            this.Zs_grpMaps.Controls.Add(this.Zs_lstUsed);
+            this.Zs_grpMaps.Location = new Point(6, 59);
+            this.Zs_grpMaps.Name = "Zs_grpMaps";
+            this.Zs_grpMaps.Size = new Size(170, 412);
+            this.Zs_grpMaps.TabIndex = 1;
+            this.Zs_grpMaps.TabStop = false;
+            this.Zs_grpMaps.Text = "Maps";
+            // 
+            // Zs_lblNotUsed
+            // 
+            this.Zs_lblNotUsed.AutoSize = true;
+            this.Zs_lblNotUsed.Location = new Point(187, 17);
+            this.Zs_lblNotUsed.Name = "Zs_lblNotUsed";
+            this.Zs_lblNotUsed.Size = new Size(83, 13);
+            this.Zs_lblNotUsed.TabIndex = 6;
+            this.Zs_lblNotUsed.Text = "Maps Not In Use";
+            // 
+            // Zs_lblUsed
+            // 
+            this.Zs_lblUsed.AutoSize = true;
+            this.Zs_lblUsed.Location = new Point(6, 17);
+            this.Zs_lblUsed.Name = "Zs_lblUsed";
+            this.Zs_lblUsed.Size = new Size(38, 13);
+            this.Zs_lblUsed.TabIndex = 5;
+            this.Zs_lblUsed.Text = "In use:";
+            // 
+            // Zs_btnAdd
+            // 
+            this.Zs_btnAdd.Location = new Point(6, 188);
+            this.Zs_btnAdd.Name = "Zs_btnAdd";
+            this.Zs_btnAdd.Size = new Size(77, 23);
+            this.Zs_btnAdd.TabIndex = 4;
+            this.Zs_btnAdd.Text = "<< Add";
+            this.Zs_btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // Zs_btnRemove
+            // 
+            this.Zs_btnRemove.Location = new Point(89, 188);
+            this.Zs_btnRemove.Name = "Zs_btnRemove";
+            this.Zs_btnRemove.Size = new Size(75, 23);
+            this.Zs_btnRemove.TabIndex = 3;
+            this.Zs_btnRemove.Text = "Remove >>";
+            this.Zs_btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // Zs_lstNotUsed
+            // 
+            this.Zs_lstNotUsed.BackColor = SystemColors.Window;
+            this.Zs_lstNotUsed.ForeColor = SystemColors.WindowText;
+            this.Zs_lstNotUsed.FormattingEnabled = true;
+            this.Zs_lstNotUsed.Location = new Point(6, 219);
+            this.Zs_lstNotUsed.Name = "Zs_lstNotUsed";
+            this.Zs_lstNotUsed.Size = new Size(158, 186);
+            this.Zs_lstNotUsed.TabIndex = 2;
+            // 
+            // Zs_lstUsed
+            // 
+            this.Zs_lstUsed.BackColor = SystemColors.Window;
+            this.Zs_lstUsed.ForeColor = SystemColors.WindowText;
+            this.Zs_lstUsed.FormattingEnabled = true;
+            this.Zs_lstUsed.Location = new Point(6, 33);
+            this.Zs_lstUsed.Name = "Zs_lstUsed";
+            this.Zs_lstUsed.Size = new Size(158, 147);
+            this.Zs_lstUsed.TabIndex = 0;
+            // 
+            // TabZS_old
+            // 
+            this.TabZS_old.BackColor = SystemColors.Control;
+            this.TabZS_old.Controls.Add(this.PropsZG);
+            this.TabZS_old.Location = new Point(4, 22);
+            this.TabZS_old.Name = "TabZS_old";
+            this.TabZS_old.Padding = new Padding(3);
+            this.TabZS_old.Size = new Size(484, 489);
+            this.TabZS_old.TabIndex = 1;
+            this.TabZS_old.Text = "Zombie old";
+            // 
+            // PropsZG
+            // 
+            this.PropsZG.Location = new Point(6, 3);
+            this.PropsZG.Name = "PropsZG";
+            this.PropsZG.Size = new Size(456, 464);
+            this.PropsZG.TabIndex = 42;
+            this.PropsZG.ToolbarVisible = false;
+            // 
+            // TabCTF
+            // 
+            this.TabCTF.BackColor = SystemColors.Control;
+            this.TabCTF.Controls.Add(this.Ctf_grpControls);
+            this.TabCTF.Controls.Add(this.Ctf_grpSettings);
+            this.TabCTF.Controls.Add(this.Ctf_grpMaps);
+            this.TabCTF.Location = new Point(4, 22);
+            this.TabCTF.Name = "TabCTF";
+            this.TabCTF.Size = new Size(484, 489);
+            this.TabCTF.TabIndex = 3;
+            this.TabCTF.Text = "CTF";
+            // 
+            // Ctf_grpControls
+            // 
+            this.Ctf_grpControls.Controls.Add(this.Ctf_btnEnd);
+            this.Ctf_grpControls.Controls.Add(this.Ctf_btnStop);
+            this.Ctf_grpControls.Controls.Add(this.Ctf_btnStart);
+            this.Ctf_grpControls.Location = new Point(110, 5);
+            this.Ctf_grpControls.Name = "Ctf_grpControls";
+            this.Ctf_grpControls.Size = new Size(279, 51);
+            this.Ctf_grpControls.TabIndex = 7;
+            this.Ctf_grpControls.TabStop = false;
+            this.Ctf_grpControls.Text = "Controls";
+            // 
+            // Ctf_btnEnd
+            // 
+            this.Ctf_btnEnd.Location = new Point(190, 19);
+            this.Ctf_btnEnd.Name = "Ctf_btnEnd";
+            this.Ctf_btnEnd.Size = new Size(80, 23);
+            this.Ctf_btnEnd.TabIndex = 2;
+            this.Ctf_btnEnd.Text = "End Round";
+            this.Ctf_btnEnd.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_btnStop
+            // 
+            this.Ctf_btnStop.Location = new Point(100, 19);
+            this.Ctf_btnStop.Name = "Ctf_btnStop";
+            this.Ctf_btnStop.Size = new Size(80, 23);
+            this.Ctf_btnStop.TabIndex = 1;
+            this.Ctf_btnStop.Text = "Stop Game";
+            this.Ctf_btnStop.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_btnStart
+            // 
+            this.Ctf_btnStart.Location = new Point(10, 19);
+            this.Ctf_btnStart.Name = "Ctf_btnStart";
+            this.Ctf_btnStart.Size = new Size(80, 23);
+            this.Ctf_btnStart.TabIndex = 0;
+            this.Ctf_btnStart.Text = "Start Game";
+            this.Ctf_btnStart.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_grpSettings
+            // 
+            this.Ctf_grpSettings.Controls.Add(this.Ctf_cbMain);
+            this.Ctf_grpSettings.Controls.Add(this.Ctf_cbMap);
+            this.Ctf_grpSettings.Controls.Add(this.Ctf_cbStart);
+            this.Ctf_grpSettings.Location = new Point(182, 59);
+            this.Ctf_grpSettings.Name = "Ctf_grpSettings";
+            this.Ctf_grpSettings.Size = new Size(296, 89);
+            this.Ctf_grpSettings.TabIndex = 6;
+            this.Ctf_grpSettings.TabStop = false;
+            this.Ctf_grpSettings.Text = "Settings";
+            // 
+            // Ctf_cbMain
+            // 
+            this.Ctf_cbMain.AutoSize = true;
+            this.Ctf_cbMain.Location = new Point(11, 66);
+            this.Ctf_cbMain.Name = "Ctf_cbMain";
+            this.Ctf_cbMain.Size = new Size(112, 17);
+            this.Ctf_cbMain.TabIndex = 24;
+            this.Ctf_cbMain.Text = "Change main level";
+            this.Ctf_cbMain.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_cbMap
+            // 
+            this.Ctf_cbMap.AutoSize = true;
+            this.Ctf_cbMap.Location = new Point(11, 43);
+            this.Ctf_cbMap.Name = "Ctf_cbMap";
+            this.Ctf_cbMap.Size = new Size(136, 17);
+            this.Ctf_cbMap.TabIndex = 23;
+            this.Ctf_cbMap.Text = "Map name in server list";
+            this.Ctf_cbMap.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_cbStart
+            // 
+            this.Ctf_cbStart.AutoSize = true;
+            this.Ctf_cbStart.Location = new Point(11, 20);
+            this.Ctf_cbStart.Name = "Ctf_cbStart";
+            this.Ctf_cbStart.Size = new Size(139, 17);
+            this.Ctf_cbStart.TabIndex = 22;
+            this.Ctf_cbStart.Text = "Start when server starts";
+            this.Ctf_cbStart.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_grpMaps
+            // 
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_lblNotUsed);
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_lblUsed);
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_btnAdd);
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_btnRemove);
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_lstNotUsed);
+            this.Ctf_grpMaps.Controls.Add(this.Ctf_lstUsed);
+            this.Ctf_grpMaps.Location = new Point(6, 59);
+            this.Ctf_grpMaps.Name = "Ctf_grpMaps";
+            this.Ctf_grpMaps.Size = new Size(170, 412);
+            this.Ctf_grpMaps.TabIndex = 5;
+            this.Ctf_grpMaps.TabStop = false;
+            this.Ctf_grpMaps.Text = "Maps";
+            // 
+            // Ctf_lblNotUsed
+            // 
+            this.Ctf_lblNotUsed.AutoSize = true;
+            this.Ctf_lblNotUsed.Location = new Point(187, 17);
+            this.Ctf_lblNotUsed.Name = "Ctf_lblNotUsed";
+            this.Ctf_lblNotUsed.Size = new Size(83, 13);
+            this.Ctf_lblNotUsed.TabIndex = 6;
+            this.Ctf_lblNotUsed.Text = "Maps Not In Use";
+            // 
+            // Ctf_lblUsed
+            // 
+            this.Ctf_lblUsed.AutoSize = true;
+            this.Ctf_lblUsed.Location = new Point(6, 17);
+            this.Ctf_lblUsed.Name = "Ctf_lblUsed";
+            this.Ctf_lblUsed.Size = new Size(38, 13);
+            this.Ctf_lblUsed.TabIndex = 5;
+            this.Ctf_lblUsed.Text = "In use:";
+            // 
+            // Ctf_btnAdd
+            // 
+            this.Ctf_btnAdd.Location = new Point(6, 188);
+            this.Ctf_btnAdd.Name = "Ctf_btnAdd";
+            this.Ctf_btnAdd.Size = new Size(77, 23);
+            this.Ctf_btnAdd.TabIndex = 4;
+            this.Ctf_btnAdd.Text = "<< Add";
+            this.Ctf_btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_btnRemove
+            // 
+            this.Ctf_btnRemove.Location = new Point(89, 188);
+            this.Ctf_btnRemove.Name = "Ctf_btnRemove";
+            this.Ctf_btnRemove.Size = new Size(75, 23);
+            this.Ctf_btnRemove.TabIndex = 3;
+            this.Ctf_btnRemove.Text = "Remove >>";
+            this.Ctf_btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // Ctf_lstNotUsed
+            // 
+            this.Ctf_lstNotUsed.BackColor = SystemColors.Window;
+            this.Ctf_lstNotUsed.ForeColor = SystemColors.WindowText;
+            this.Ctf_lstNotUsed.FormattingEnabled = true;
+            this.Ctf_lstNotUsed.Location = new Point(6, 219);
+            this.Ctf_lstNotUsed.Name = "Ctf_lstNotUsed";
+            this.Ctf_lstNotUsed.Size = new Size(158, 186);
+            this.Ctf_lstNotUsed.TabIndex = 2;
+            // 
+            // Ctf_lstUsed
+            // 
+            this.Ctf_lstUsed.BackColor = SystemColors.Window;
+            this.Ctf_lstUsed.ForeColor = SystemColors.WindowText;
+            this.Ctf_lstUsed.FormattingEnabled = true;
+            this.Ctf_lstUsed.Location = new Point(6, 33);
+            this.Ctf_lstUsed.Name = "Ctf_lstUsed";
+            this.Ctf_lstUsed.Size = new Size(158, 147);
+            this.Ctf_lstUsed.TabIndex = 0;
+            // 
+            // TabTW
+            // 
+            this.TabTW.BackColor = SystemColors.Control;
+            this.TabTW.Controls.Add(this.Tw_grpControls);
+            this.TabTW.Controls.Add(this.Tw_grpMapSettings);
+            this.TabTW.Controls.Add(this.Tw_grpSettings);
+            this.TabTW.Controls.Add(this.Tw_gbMaps);
+            this.TabTW.Location = new Point(4, 22);
+            this.TabTW.Name = "TabTW";
+            this.TabTW.Size = new Size(484, 489);
+            this.TabTW.TabIndex = 4;
+            this.TabTW.Text = "TNT Wars";
+            // 
+            // Tw_grpControls
+            // 
+            this.Tw_grpControls.Controls.Add(this.Tw_btnEnd);
+            this.Tw_grpControls.Controls.Add(this.Tw_btnStop);
+            this.Tw_grpControls.Controls.Add(this.Tw_btnStart);
+            this.Tw_grpControls.Location = new Point(110, 5);
+            this.Tw_grpControls.Name = "Tw_grpControls";
+            this.Tw_grpControls.Size = new Size(279, 51);
+            this.Tw_grpControls.TabIndex = 8;
+            this.Tw_grpControls.TabStop = false;
+            this.Tw_grpControls.Text = "Controls";
+            // 
+            // Tw_btnEnd
+            // 
+            this.Tw_btnEnd.Location = new Point(190, 19);
+            this.Tw_btnEnd.Name = "Tw_btnEnd";
+            this.Tw_btnEnd.Size = new Size(80, 23);
+            this.Tw_btnEnd.TabIndex = 2;
+            this.Tw_btnEnd.Text = "End Round";
+            this.Tw_btnEnd.UseVisualStyleBackColor = true;
+            // 
+            // Tw_btnStop
+            // 
+            this.Tw_btnStop.Location = new Point(100, 19);
+            this.Tw_btnStop.Name = "Tw_btnStop";
+            this.Tw_btnStop.Size = new Size(80, 23);
+            this.Tw_btnStop.TabIndex = 1;
+            this.Tw_btnStop.Text = "Stop Game";
+            this.Tw_btnStop.UseVisualStyleBackColor = true;
+            // 
+            // Tw_btnStart
+            // 
+            this.Tw_btnStart.Location = new Point(10, 19);
+            this.Tw_btnStart.Name = "Tw_btnStart";
+            this.Tw_btnStart.Size = new Size(80, 23);
+            this.Tw_btnStart.TabIndex = 0;
+            this.Tw_btnStart.Text = "Start Game";
+            this.Tw_btnStart.UseVisualStyleBackColor = true;
+            // 
+            // Tw_grpMapSettings
+            // 
+            this.Tw_grpMapSettings.Controls.Add(this.Tw_grpTeams);
+            this.Tw_grpMapSettings.Controls.Add(this.Tw_grpGrace);
+            this.Tw_grpMapSettings.Controls.Add(this.Tw_grpScores);
+            this.Tw_grpMapSettings.Enabled = false;
+            this.Tw_grpMapSettings.Location = new Point(182, 213);
+            this.Tw_grpMapSettings.Name = "Tw_grpMapSettings";
+            this.Tw_grpMapSettings.Size = new Size(296, 207);
+            this.Tw_grpMapSettings.TabIndex = 7;
+            this.Tw_grpMapSettings.TabStop = false;
+            this.Tw_grpMapSettings.Text = "Map Settings";
+            // 
+            // Tw_grpTeams
+            // 
+            this.Tw_grpTeams.Controls.Add(this.Tw_cbKills);
+            this.Tw_grpTeams.Controls.Add(this.Tw_cbBalance);
+            this.Tw_grpTeams.Location = new Point(172, 125);
+            this.Tw_grpTeams.Name = "Tw_grpTeams";
+            this.Tw_grpTeams.Size = new Size(118, 73);
+            this.Tw_grpTeams.TabIndex = 8;
+            this.Tw_grpTeams.TabStop = false;
+            this.Tw_grpTeams.Text = "Teams:";
+            // 
+            // Tw_cbKills
+            // 
+            this.Tw_cbKills.AutoSize = true;
+            this.Tw_cbKills.Location = new Point(6, 43);
+            this.Tw_cbKills.Name = "Tw_cbKills";
+            this.Tw_cbKills.Size = new Size(81, 17);
+            this.Tw_cbKills.TabIndex = 2;
+            this.Tw_cbKills.Text = "Team killing";
+            this.Tw_cbKills.UseVisualStyleBackColor = true;
+            // 
+            // Tw_cbBalance
+            // 
+            this.Tw_cbBalance.AutoSize = true;
+            this.Tw_cbBalance.Checked = true;
+            this.Tw_cbBalance.CheckState = CheckState.Checked;
+            this.Tw_cbBalance.Location = new Point(6, 20);
+            this.Tw_cbBalance.Name = "Tw_cbBalance";
+            this.Tw_cbBalance.Size = new Size(96, 17);
+            this.Tw_cbBalance.TabIndex = 1;
+            this.Tw_cbBalance.Text = "Balance teams";
+            this.Tw_cbBalance.UseVisualStyleBackColor = true;
+            // 
+            // Tw_grpGrace
+            // 
+            this.Tw_grpGrace.Controls.Add(this.Tw_numGrace);
+            this.Tw_grpGrace.Controls.Add(this.Tw_lblGrace);
+            this.Tw_grpGrace.Controls.Add(this.Tw_cbGrace);
+            this.Tw_grpGrace.Location = new Point(6, 125);
+            this.Tw_grpGrace.Name = "Tw_grpGrace";
+            this.Tw_grpGrace.Size = new Size(160, 73);
+            this.Tw_grpGrace.TabIndex = 7;
+            this.Tw_grpGrace.TabStop = false;
+            this.Tw_grpGrace.Text = "Grace Period";
+            // 
+            // Tw_numGrace
+            // 
+            this.Tw_numGrace.BackColor = SystemColors.Window;
+            this.Tw_numGrace.Location = new Point(59, 41);
+            this.Tw_numGrace.Name = "Tw_numGrace";
+            this.Tw_numGrace.Seconds = ((long)(30));
+            this.Tw_numGrace.Size = new Size(66, 21);
+            this.Tw_numGrace.TabIndex = 35;
+            this.Tw_numGrace.Text = "30s";
+            this.Tw_numGrace.Value = TimeSpan.Parse("00:00:30");
+            // 
+            // Tw_lblGrace
+            // 
+            this.Tw_lblGrace.AutoSize = true;
+            this.Tw_lblGrace.Location = new Point(23, 44);
+            this.Tw_lblGrace.Name = "Tw_lblGrace";
+            this.Tw_lblGrace.Size = new Size(33, 13);
+            this.Tw_lblGrace.TabIndex = 2;
+            this.Tw_lblGrace.Text = "Time:";
+            // 
+            // Tw_cbGrace
+            // 
+            this.Tw_cbGrace.AutoSize = true;
+            this.Tw_cbGrace.Checked = true;
+            this.Tw_cbGrace.CheckState = CheckState.Checked;
+            this.Tw_cbGrace.Location = new Point(6, 20);
+            this.Tw_cbGrace.Name = "Tw_cbGrace";
+            this.Tw_cbGrace.Size = new Size(64, 17);
+            this.Tw_cbGrace.TabIndex = 0;
+            this.Tw_cbGrace.Text = "Enabled";
+            this.Tw_cbGrace.UseVisualStyleBackColor = true;
+            // 
+            // Tw_grpScores
+            // 
+            this.Tw_grpScores.Controls.Add(this.Tw_lblMulti);
+            this.Tw_grpScores.Controls.Add(this.Tw_lblAssist);
+            this.Tw_grpScores.Controls.Add(this.Tw_cbStreaks);
+            this.Tw_grpScores.Controls.Add(this.Tw_numMultiKills);
+            this.Tw_grpScores.Controls.Add(this.Tw_numScoreAssists);
+            this.Tw_grpScores.Controls.Add(this.Tw_lblScorePerKill);
+            this.Tw_grpScores.Controls.Add(this.Tw_numScorePerKill);
+            this.Tw_grpScores.Controls.Add(this.Tw_lblScoreLimit);
+            this.Tw_grpScores.Controls.Add(this.Tw_numScoreLimit);
+            this.Tw_grpScores.Location = new Point(6, 20);
+            this.Tw_grpScores.Name = "Tw_grpScores";
+            this.Tw_grpScores.Size = new Size(284, 99);
+            this.Tw_grpScores.TabIndex = 6;
+            this.Tw_grpScores.TabStop = false;
+            this.Tw_grpScores.Text = "Scores";
+            // 
+            // Tw_lblMulti
+            // 
+            this.Tw_lblMulti.AutoSize = true;
+            this.Tw_lblMulti.Location = new Point(157, 47);
+            this.Tw_lblMulti.Name = "Tw_lblMulti";
+            this.Tw_lblMulti.Size = new Size(79, 13);
+            this.Tw_lblMulti.TabIndex = 10;
+            this.Tw_lblMulti.Text = "Multikill bonus:";
+            // 
+            // Tw_lblAssist
+            // 
+            this.Tw_lblAssist.AutoSize = true;
+            this.Tw_lblAssist.Location = new Point(168, 20);
+            this.Tw_lblAssist.Name = "Tw_lblAssist";
+            this.Tw_lblAssist.Size = new Size(69, 13);
+            this.Tw_lblAssist.TabIndex = 9;
+            this.Tw_lblAssist.Text = "Assist bonus:";
+            // 
+            // Tw_cbStreaks
+            // 
+            this.Tw_cbStreaks.AutoSize = true;
+            this.Tw_cbStreaks.Checked = true;
+            this.Tw_cbStreaks.CheckState = CheckState.Checked;
+            this.Tw_cbStreaks.Location = new Point(11, 72);
+            this.Tw_cbStreaks.Name = "Tw_cbStreaks";
+            this.Tw_cbStreaks.Size = new Size(61, 17);
+            this.Tw_cbStreaks.TabIndex = 0;
+            this.Tw_cbStreaks.Text = "Streaks";
+            this.Tw_cbStreaks.UseVisualStyleBackColor = true;
+            // 
+            // Tw_numMultiKills
+            // 
+            this.Tw_numMultiKills.BackColor = SystemColors.Window;
+            this.Tw_numMultiKills.Location = new Point(240, 44);
+            this.Tw_numMultiKills.Maximum = new decimal(new int[] {
                                     100000,
                                     0,
                                     0,
                                     0});
-            this.tw_numMultiKills.Name = "tw_numMultiKills";
-            this.tw_numMultiKills.Size = new System.Drawing.Size(38, 21);
-            this.tw_numMultiKills.TabIndex = 7;
-            this.tw_numMultiKills.Value = new decimal(new int[] {
+            this.Tw_numMultiKills.Name = "Tw_numMultiKills";
+            this.Tw_numMultiKills.Size = new Size(38, 21);
+            this.Tw_numMultiKills.TabIndex = 7;
+            this.Tw_numMultiKills.Value = new decimal(new int[] {
                                     5,
                                     0,
                                     0,
                                     0});
             // 
-            // tw_numScoreAssists
+            // Tw_numScoreAssists
             // 
-            this.tw_numScoreAssists.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_numScoreAssists.Location = new System.Drawing.Point(240, 17);
-            this.tw_numScoreAssists.Maximum = new decimal(new int[] {
+            this.Tw_numScoreAssists.BackColor = SystemColors.Window;
+            this.Tw_numScoreAssists.Location = new Point(240, 17);
+            this.Tw_numScoreAssists.Maximum = new decimal(new int[] {
                                     100000,
                                     0,
                                     0,
                                     0});
-            this.tw_numScoreAssists.Name = "tw_numScoreAssists";
-            this.tw_numScoreAssists.Size = new System.Drawing.Size(38, 21);
-            this.tw_numScoreAssists.TabIndex = 4;
-            this.tw_numScoreAssists.Value = new decimal(new int[] {
+            this.Tw_numScoreAssists.Name = "Tw_numScoreAssists";
+            this.Tw_numScoreAssists.Size = new Size(38, 21);
+            this.Tw_numScoreAssists.TabIndex = 4;
+            this.Tw_numScoreAssists.Value = new decimal(new int[] {
                                     5,
                                     0,
                                     0,
                                     0});
             // 
-            // tw_lblScorePerKill
+            // Tw_lblScorePerKill
             // 
-            this.tw_lblScorePerKill.AutoSize = true;
-            this.tw_lblScorePerKill.Location = new System.Drawing.Point(9, 46);
-            this.tw_lblScorePerKill.Name = "tw_lblScorePerKill";
-            this.tw_lblScorePerKill.Size = new System.Drawing.Size(70, 13);
-            this.tw_lblScorePerKill.TabIndex = 3;
-            this.tw_lblScorePerKill.Text = "Score per kill:";
+            this.Tw_lblScorePerKill.AutoSize = true;
+            this.Tw_lblScorePerKill.Location = new Point(9, 46);
+            this.Tw_lblScorePerKill.Name = "Tw_lblScorePerKill";
+            this.Tw_lblScorePerKill.Size = new Size(70, 13);
+            this.Tw_lblScorePerKill.TabIndex = 3;
+            this.Tw_lblScorePerKill.Text = "Score per kill:";
             // 
-            // tw_numScorePerKill
+            // Tw_numScorePerKill
             // 
-            this.tw_numScorePerKill.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_numScorePerKill.Location = new System.Drawing.Point(82, 44);
-            this.tw_numScorePerKill.Maximum = new decimal(new int[] {
+            this.Tw_numScorePerKill.BackColor = SystemColors.Window;
+            this.Tw_numScorePerKill.Location = new Point(82, 44);
+            this.Tw_numScorePerKill.Maximum = new decimal(new int[] {
                                     100000,
                                     0,
                                     0,
                                     0});
-            this.tw_numScorePerKill.Name = "tw_numScorePerKill";
-            this.tw_numScorePerKill.Size = new System.Drawing.Size(50, 21);
-            this.tw_numScorePerKill.TabIndex = 2;
-            this.tw_numScorePerKill.Value = new decimal(new int[] {
+            this.Tw_numScorePerKill.Name = "Tw_numScorePerKill";
+            this.Tw_numScorePerKill.Size = new Size(50, 21);
+            this.Tw_numScorePerKill.TabIndex = 2;
+            this.Tw_numScorePerKill.Value = new decimal(new int[] {
                                     10,
                                     0,
                                     0,
                                     0});
             // 
-            // tw_lblScoreLimit
+            // Tw_lblScoreLimit
             // 
-            this.tw_lblScoreLimit.AutoSize = true;
-            this.tw_lblScoreLimit.Location = new System.Drawing.Point(5, 19);
-            this.tw_lblScoreLimit.Name = "tw_lblScoreLimit";
-            this.tw_lblScoreLimit.Size = new System.Drawing.Size(74, 13);
-            this.tw_lblScoreLimit.TabIndex = 1;
-            this.tw_lblScoreLimit.Text = "Score needed:";
+            this.Tw_lblScoreLimit.AutoSize = true;
+            this.Tw_lblScoreLimit.Location = new Point(5, 19);
+            this.Tw_lblScoreLimit.Name = "Tw_lblScoreLimit";
+            this.Tw_lblScoreLimit.Size = new Size(74, 13);
+            this.Tw_lblScoreLimit.TabIndex = 1;
+            this.Tw_lblScoreLimit.Text = "Score needed:";
             // 
-            // tw_numScoreLimit
+            // Tw_numScoreLimit
             // 
-            this.tw_numScoreLimit.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_numScoreLimit.Location = new System.Drawing.Point(82, 17);
-            this.tw_numScoreLimit.Maximum = new decimal(new int[] {
+            this.Tw_numScoreLimit.BackColor = SystemColors.Window;
+            this.Tw_numScoreLimit.Location = new Point(82, 17);
+            this.Tw_numScoreLimit.Maximum = new decimal(new int[] {
                                     100000,
                                     0,
                                     0,
                                     0});
-            this.tw_numScoreLimit.Name = "tw_numScoreLimit";
-            this.tw_numScoreLimit.Size = new System.Drawing.Size(50, 21);
-            this.tw_numScoreLimit.TabIndex = 0;
-            this.tw_numScoreLimit.Value = new decimal(new int[] {
+            this.Tw_numScoreLimit.Name = "Tw_numScoreLimit";
+            this.Tw_numScoreLimit.Size = new Size(50, 21);
+            this.Tw_numScoreLimit.TabIndex = 0;
+            this.Tw_numScoreLimit.Value = new decimal(new int[] {
                                     150,
                                     0,
                                     0,
                                     0});
             // 
-            // tw_grpSettings
+            // Tw_grpSettings
             // 
-            this.tw_grpSettings.Controls.Add(this.tw_cmbMode);
-            this.tw_grpSettings.Controls.Add(this.tw_cmbDiff);
-            this.tw_grpSettings.Controls.Add(this.tw_lblMode);
-            this.tw_grpSettings.Controls.Add(this.tw_lblDiff);
-            this.tw_grpSettings.Controls.Add(this.tw_cbMain);
-            this.tw_grpSettings.Controls.Add(this.tw_cbMap);
-            this.tw_grpSettings.Controls.Add(this.tw_cbStart);
-            this.tw_grpSettings.Location = new System.Drawing.Point(182, 59);
-            this.tw_grpSettings.Name = "tw_grpSettings";
-            this.tw_grpSettings.Size = new System.Drawing.Size(296, 148);
-            this.tw_grpSettings.TabIndex = 6;
-            this.tw_grpSettings.TabStop = false;
-            this.tw_grpSettings.Text = "Settings";
+            this.Tw_grpSettings.Controls.Add(this.Tw_cmbMode);
+            this.Tw_grpSettings.Controls.Add(this.Tw_cmbDiff);
+            this.Tw_grpSettings.Controls.Add(this.Tw_lblMode);
+            this.Tw_grpSettings.Controls.Add(this.Tw_lblDiff);
+            this.Tw_grpSettings.Controls.Add(this.Tw_cbMain);
+            this.Tw_grpSettings.Controls.Add(this.Tw_cbMap);
+            this.Tw_grpSettings.Controls.Add(this.Tw_cbStart);
+            this.Tw_grpSettings.Location = new Point(182, 59);
+            this.Tw_grpSettings.Name = "Tw_grpSettings";
+            this.Tw_grpSettings.Size = new Size(296, 148);
+            this.Tw_grpSettings.TabIndex = 6;
+            this.Tw_grpSettings.TabStop = false;
+            this.Tw_grpSettings.Text = "Settings";
             // 
-            // tw_cmbMode
+            // Tw_cmbMode
             // 
-            this.tw_cmbMode.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_cmbMode.FormattingEnabled = true;
-            this.tw_cmbMode.Items.AddRange(new object[] {
+            this.Tw_cmbMode.BackColor = SystemColors.Window;
+            this.Tw_cmbMode.FormattingEnabled = true;
+            this.Tw_cmbMode.Items.AddRange(new object[] {
                                     "FFA",
                                     "TDM"});
-            this.tw_cmbMode.Location = new System.Drawing.Point(74, 116);
-            this.tw_cmbMode.Name = "tw_cmbMode";
-            this.tw_cmbMode.Size = new System.Drawing.Size(76, 21);
-            this.tw_cmbMode.TabIndex = 29;
+            this.Tw_cmbMode.Location = new Point(74, 116);
+            this.Tw_cmbMode.Name = "Tw_cmbMode";
+            this.Tw_cmbMode.Size = new Size(76, 21);
+            this.Tw_cmbMode.TabIndex = 29;
             // 
-            // tw_cmbDiff
+            // Tw_cmbDiff
             // 
-            this.tw_cmbDiff.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_cmbDiff.FormattingEnabled = true;
-            this.tw_cmbDiff.Items.AddRange(new object[] {
+            this.Tw_cmbDiff.BackColor = SystemColors.Window;
+            this.Tw_cmbDiff.FormattingEnabled = true;
+            this.Tw_cmbDiff.Items.AddRange(new object[] {
                                     "Easy",
                                     "Normal",
                                     "Hard",
                                     "Extreme"});
-            this.tw_cmbDiff.Location = new System.Drawing.Point(74, 89);
-            this.tw_cmbDiff.Name = "tw_cmbDiff";
-            this.tw_cmbDiff.Size = new System.Drawing.Size(76, 21);
-            this.tw_cmbDiff.TabIndex = 28;
-            this.toolTip.SetToolTip(this.tw_cmbDiff, "Easy (2 Hits to die, TNT has long delay)\nNormal (2 Hits to die, TNT has normal delay)\n" +
+            this.Tw_cmbDiff.Location = new Point(74, 89);
+            this.Tw_cmbDiff.Name = "Tw_cmbDiff";
+            this.Tw_cmbDiff.Size = new Size(76, 21);
+            this.Tw_cmbDiff.TabIndex = 28;
+            this.GUIToolTip.SetToolTip(this.Tw_cmbDiff, "Easy (2 Hits to die, TNT has long delay)\nNormal (2 Hits to die, TNT has normal delay)\n" +
                                     "Hard (1 Hit to die, TNT has short delay and team kills on)\nExtreme (1 Hit to die, TNT has short delay, big explosion and team kills on)");
             // 
-            // tw_lblMode
-            // 
-            this.tw_lblMode.AutoSize = true;
-            this.tw_lblMode.Location = new System.Drawing.Point(8, 119);
-            this.tw_lblMode.Name = "tw_lblMode";
-            this.tw_lblMode.Size = new System.Drawing.Size(65, 13);
-            this.tw_lblMode.TabIndex = 27;
-            this.tw_lblMode.Text = "Gamemode:";
-            // 
-            // tw_lblDiff
-            // 
-            this.tw_lblDiff.AutoSize = true;
-            this.tw_lblDiff.Location = new System.Drawing.Point(21, 94);
-            this.tw_lblDiff.Name = "tw_lblDiff";
-            this.tw_lblDiff.Size = new System.Drawing.Size(52, 13);
-            this.tw_lblDiff.TabIndex = 26;
-            this.tw_lblDiff.Text = "Difficulty:";
-            // 
-            // tw_cbMain
-            // 
-            this.tw_cbMain.AutoSize = true;
-            this.tw_cbMain.Location = new System.Drawing.Point(11, 66);
-            this.tw_cbMain.Name = "tw_cbMain";
-            this.tw_cbMain.Size = new System.Drawing.Size(112, 17);
-            this.tw_cbMain.TabIndex = 24;
-            this.tw_cbMain.Text = "Change main level";
-            this.tw_cbMain.UseVisualStyleBackColor = true;
-            // 
-            // tw_cbMap
-            // 
-            this.tw_cbMap.AutoSize = true;
-            this.tw_cbMap.Location = new System.Drawing.Point(11, 43);
-            this.tw_cbMap.Name = "tw_cbMap";
-            this.tw_cbMap.Size = new System.Drawing.Size(136, 17);
-            this.tw_cbMap.TabIndex = 23;
-            this.tw_cbMap.Text = "Map name in server list";
-            this.tw_cbMap.UseVisualStyleBackColor = true;
-            // 
-            // tw_cbStart
-            // 
-            this.tw_cbStart.AutoSize = true;
-            this.tw_cbStart.Location = new System.Drawing.Point(11, 20);
-            this.tw_cbStart.Name = "tw_cbStart";
-            this.tw_cbStart.Size = new System.Drawing.Size(139, 17);
-            this.tw_cbStart.TabIndex = 22;
-            this.tw_cbStart.Text = "Start when server starts";
-            this.tw_cbStart.UseVisualStyleBackColor = true;
-            // 
-            // tw_gbMaps
-            // 
-            this.tw_gbMaps.Controls.Add(this.tw_lblInUse);
-            this.tw_gbMaps.Controls.Add(this.tw_btnAdd);
-            this.tw_gbMaps.Controls.Add(this.tw_btnRemove);
-            this.tw_gbMaps.Controls.Add(this.tw_lstNotUsed);
-            this.tw_gbMaps.Controls.Add(this.tw_lstUsed);
-            this.tw_gbMaps.Location = new System.Drawing.Point(6, 59);
-            this.tw_gbMaps.Name = "tw_gbMaps";
-            this.tw_gbMaps.Size = new System.Drawing.Size(170, 412);
-            this.tw_gbMaps.TabIndex = 5;
-            this.tw_gbMaps.TabStop = false;
-            this.tw_gbMaps.Text = "Maps";
-            // 
-            // tw_lblInUse
-            // 
-            this.tw_lblInUse.AutoSize = true;
-            this.tw_lblInUse.Location = new System.Drawing.Point(6, 17);
-            this.tw_lblInUse.Name = "tw_lblInUse";
-            this.tw_lblInUse.Size = new System.Drawing.Size(38, 13);
-            this.tw_lblInUse.TabIndex = 5;
-            this.tw_lblInUse.Text = "In use:";
-            // 
-            // tw_btnAdd
-            // 
-            this.tw_btnAdd.Location = new System.Drawing.Point(6, 188);
-            this.tw_btnAdd.Name = "tw_btnAdd";
-            this.tw_btnAdd.Size = new System.Drawing.Size(77, 23);
-            this.tw_btnAdd.TabIndex = 4;
-            this.tw_btnAdd.Text = "<< Add";
-            this.tw_btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // tw_btnRemove
-            // 
-            this.tw_btnRemove.Location = new System.Drawing.Point(89, 188);
-            this.tw_btnRemove.Name = "tw_btnRemove";
-            this.tw_btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.tw_btnRemove.TabIndex = 3;
-            this.tw_btnRemove.Text = "Remove >>";
-            this.tw_btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // tw_lstNotUsed
-            // 
-            this.tw_lstNotUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_lstNotUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.tw_lstNotUsed.FormattingEnabled = true;
-            this.tw_lstNotUsed.Location = new System.Drawing.Point(6, 219);
-            this.tw_lstNotUsed.Name = "tw_lstNotUsed";
-            this.tw_lstNotUsed.Size = new System.Drawing.Size(158, 186);
-            this.tw_lstNotUsed.TabIndex = 2;
-            // 
-            // tw_lstUsed
-            // 
-            this.tw_lstUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.tw_lstUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.tw_lstUsed.FormattingEnabled = true;
-            this.tw_lstUsed.Location = new System.Drawing.Point(6, 33);
-            this.tw_lstUsed.Name = "tw_lstUsed";
-            this.tw_lstUsed.Size = new System.Drawing.Size(158, 147);
-            this.tw_lstUsed.TabIndex = 0;
-            this.tw_lstUsed.SelectedIndexChanged += new System.EventHandler(this.twMapUse_SelectedIndexChanged);
-            // 
-            // tabCD
-            // 
-            this.tabCD.BackColor = System.Drawing.SystemColors.Control;
-            this.tabCD.Controls.Add(this.cd_grpControls);
-            this.tabCD.Controls.Add(this.cd_grpSettings);
-            this.tabCD.Controls.Add(this.cd_grpMaps);
-            this.tabCD.Location = new System.Drawing.Point(4, 22);
-            this.tabCD.Name = "tabCD";
-            this.tabCD.Size = new System.Drawing.Size(484, 489);
-            this.tabCD.TabIndex = 3;
-            this.tabCD.Text = "Countdown";
-            // 
-            // cd_grpControls
-            // 
-            this.cd_grpControls.Controls.Add(this.cd_btnEnd);
-            this.cd_grpControls.Controls.Add(this.cd_btnStop);
-            this.cd_grpControls.Controls.Add(this.cd_btnStart);
-            this.cd_grpControls.Location = new System.Drawing.Point(110, 5);
-            this.cd_grpControls.Name = "cd_grpControls";
-            this.cd_grpControls.Size = new System.Drawing.Size(279, 51);
-            this.cd_grpControls.TabIndex = 7;
-            this.cd_grpControls.TabStop = false;
-            this.cd_grpControls.Text = "Controls";
-            // 
-            // cd_btnEnd
-            // 
-            this.cd_btnEnd.Location = new System.Drawing.Point(190, 19);
-            this.cd_btnEnd.Name = "cd_btnEnd";
-            this.cd_btnEnd.Size = new System.Drawing.Size(80, 23);
-            this.cd_btnEnd.TabIndex = 2;
-            this.cd_btnEnd.Text = "End Round";
-            this.cd_btnEnd.UseVisualStyleBackColor = true;
-            // 
-            // cd_btnStop
-            // 
-            this.cd_btnStop.Location = new System.Drawing.Point(100, 19);
-            this.cd_btnStop.Name = "cd_btnStop";
-            this.cd_btnStop.Size = new System.Drawing.Size(80, 23);
-            this.cd_btnStop.TabIndex = 1;
-            this.cd_btnStop.Text = "Stop Game";
-            this.cd_btnStop.UseVisualStyleBackColor = true;
-            // 
-            // cd_btnStart
-            // 
-            this.cd_btnStart.Location = new System.Drawing.Point(10, 19);
-            this.cd_btnStart.Name = "cd_btnStart";
-            this.cd_btnStart.Size = new System.Drawing.Size(80, 23);
-            this.cd_btnStart.TabIndex = 0;
-            this.cd_btnStart.Text = "Start Game";
-            this.cd_btnStart.UseVisualStyleBackColor = true;
-            // 
-            // cd_grpSettings
-            // 
-            this.cd_grpSettings.Controls.Add(this.cd_cbMain);
-            this.cd_grpSettings.Controls.Add(this.cd_cbMap);
-            this.cd_grpSettings.Controls.Add(this.cd_cbStart);
-            this.cd_grpSettings.Location = new System.Drawing.Point(182, 59);
-            this.cd_grpSettings.Name = "cd_grpSettings";
-            this.cd_grpSettings.Size = new System.Drawing.Size(296, 89);
-            this.cd_grpSettings.TabIndex = 6;
-            this.cd_grpSettings.TabStop = false;
-            this.cd_grpSettings.Text = "Settings";
-            // 
-            // cd_cbMain
-            // 
-            this.cd_cbMain.AutoSize = true;
-            this.cd_cbMain.Location = new System.Drawing.Point(11, 66);
-            this.cd_cbMain.Name = "cd_cbMain";
-            this.cd_cbMain.Size = new System.Drawing.Size(112, 17);
-            this.cd_cbMain.TabIndex = 24;
-            this.cd_cbMain.Text = "Change main level";
-            this.cd_cbMain.UseVisualStyleBackColor = true;
-            // 
-            // cd_cbMap
-            // 
-            this.cd_cbMap.AutoSize = true;
-            this.cd_cbMap.Location = new System.Drawing.Point(11, 43);
-            this.cd_cbMap.Name = "cd_cbMap";
-            this.cd_cbMap.Size = new System.Drawing.Size(136, 17);
-            this.cd_cbMap.TabIndex = 23;
-            this.cd_cbMap.Text = "Map name in server list";
-            this.cd_cbMap.UseVisualStyleBackColor = true;
-            // 
-            // cd_cbStart
-            // 
-            this.cd_cbStart.AutoSize = true;
-            this.cd_cbStart.Location = new System.Drawing.Point(11, 20);
-            this.cd_cbStart.Name = "cd_cbStart";
-            this.cd_cbStart.Size = new System.Drawing.Size(139, 17);
-            this.cd_cbStart.TabIndex = 22;
-            this.cd_cbStart.Text = "Start when server starts";
-            this.cd_cbStart.UseVisualStyleBackColor = true;
-            // 
-            // cd_grpMaps
-            // 
-            this.cd_grpMaps.Controls.Add(this.cd_lblNotUsed);
-            this.cd_grpMaps.Controls.Add(this.cd_lblUsed);
-            this.cd_grpMaps.Controls.Add(this.cd_btnAdd);
-            this.cd_grpMaps.Controls.Add(this.cd_btnRemove);
-            this.cd_grpMaps.Controls.Add(this.cd_lstNotUsed);
-            this.cd_grpMaps.Controls.Add(this.cd_lstUsed);
-            this.cd_grpMaps.Location = new System.Drawing.Point(6, 59);
-            this.cd_grpMaps.Name = "cd_grpMaps";
-            this.cd_grpMaps.Size = new System.Drawing.Size(170, 412);
-            this.cd_grpMaps.TabIndex = 5;
-            this.cd_grpMaps.TabStop = false;
-            this.cd_grpMaps.Text = "Maps";
-            // 
-            // cd_lblNotUsed
-            // 
-            this.cd_lblNotUsed.AutoSize = true;
-            this.cd_lblNotUsed.Location = new System.Drawing.Point(187, 17);
-            this.cd_lblNotUsed.Name = "cd_lblNotUsed";
-            this.cd_lblNotUsed.Size = new System.Drawing.Size(83, 13);
-            this.cd_lblNotUsed.TabIndex = 6;
-            this.cd_lblNotUsed.Text = "Maps Not In Use";
-            // 
-            // cd_lblUsed
-            // 
-            this.cd_lblUsed.AutoSize = true;
-            this.cd_lblUsed.Location = new System.Drawing.Point(6, 17);
-            this.cd_lblUsed.Name = "cd_lblUsed";
-            this.cd_lblUsed.Size = new System.Drawing.Size(38, 13);
-            this.cd_lblUsed.TabIndex = 5;
-            this.cd_lblUsed.Text = "In use:";
-            // 
-            // cd_btnAdd
-            // 
-            this.cd_btnAdd.Location = new System.Drawing.Point(6, 188);
-            this.cd_btnAdd.Name = "cd_btnAdd";
-            this.cd_btnAdd.Size = new System.Drawing.Size(77, 23);
-            this.cd_btnAdd.TabIndex = 4;
-            this.cd_btnAdd.Text = "<< Add";
-            this.cd_btnAdd.UseVisualStyleBackColor = true;
-            // 
-            // cd_btnRemove
-            // 
-            this.cd_btnRemove.Location = new System.Drawing.Point(89, 188);
-            this.cd_btnRemove.Name = "cd_btnRemove";
-            this.cd_btnRemove.Size = new System.Drawing.Size(75, 23);
-            this.cd_btnRemove.TabIndex = 3;
-            this.cd_btnRemove.Text = "Remove >>";
-            this.cd_btnRemove.UseVisualStyleBackColor = true;
-            // 
-            // cd_lstNotUsed
-            // 
-            this.cd_lstNotUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.cd_lstNotUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cd_lstNotUsed.FormattingEnabled = true;
-            this.cd_lstNotUsed.Location = new System.Drawing.Point(6, 219);
-            this.cd_lstNotUsed.Name = "cd_lstNotUsed";
-            this.cd_lstNotUsed.Size = new System.Drawing.Size(158, 186);
-            this.cd_lstNotUsed.TabIndex = 2;
-            // 
-            // cd_lstUsed
-            // 
-            this.cd_lstUsed.BackColor = System.Drawing.SystemColors.Window;
-            this.cd_lstUsed.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cd_lstUsed.FormattingEnabled = true;
-            this.cd_lstUsed.Location = new System.Drawing.Point(6, 33);
-            this.cd_lstUsed.Name = "cd_lstUsed";
-            this.cd_lstUsed.Size = new System.Drawing.Size(158, 147);
-            this.cd_lstUsed.TabIndex = 0;
-            // 
-            // pageCommands
-            // 
-            this.pageCommands.AutoScroll = true;
-            this.pageCommands.Controls.Add(this.cmd_grpExtra);
-            this.pageCommands.Controls.Add(this.cmd_grpPermissions);
-            this.pageCommands.Controls.Add(this.cmd_btnCustom);
-            this.pageCommands.Controls.Add(this.cmd_btnHelp);
-            this.pageCommands.Controls.Add(this.cmd_list);
-            this.pageCommands.Location = new System.Drawing.Point(4, 22);
-            this.pageCommands.Name = "pageCommands";
-            this.pageCommands.Size = new System.Drawing.Size(498, 521);
-            this.pageCommands.TabIndex = 2;
-            this.pageCommands.Text = "Commands";
-            // 
-            // cmd_grpExtra
-            // 
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra7);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra7);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra6);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra6);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra5);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra5);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra4);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra4);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra3);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra3);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra2);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra2);
-            this.cmd_grpExtra.Controls.Add(this.cmd_cmbExtra1);
-            this.cmd_grpExtra.Controls.Add(this.cmd_lblExtra1);
-            this.cmd_grpExtra.Location = new System.Drawing.Point(133, 105);
-            this.cmd_grpExtra.Name = "cmd_grpExtra";
-            this.cmd_grpExtra.Size = new System.Drawing.Size(360, 205);
-            this.cmd_grpExtra.TabIndex = 28;
-            this.cmd_grpExtra.TabStop = false;
-            this.cmd_grpExtra.Text = "Extra permissions";
-            // 
-            // cmd_cmbExtra7
-            // 
-            this.cmd_cmbExtra7.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra7.FormattingEnabled = true;
-            this.cmd_cmbExtra7.Location = new System.Drawing.Point(10, 173);
-            this.cmd_cmbExtra7.Name = "cmd_cmbExtra7";
-            this.cmd_cmbExtra7.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra7.TabIndex = 42;
-            this.cmd_cmbExtra7.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra7
-            // 
-            this.cmd_lblExtra7.AutoSize = true;
-            this.cmd_lblExtra7.Location = new System.Drawing.Point(91, 176);
-            this.cmd_lblExtra7.Name = "cmd_lblExtra7";
-            this.cmd_lblExtra7.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra7.TabIndex = 41;
-            this.cmd_lblExtra7.Text = "+";
-            // 
-            // cmd_cmbExtra6
-            // 
-            this.cmd_cmbExtra6.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra6.FormattingEnabled = true;
-            this.cmd_cmbExtra6.Location = new System.Drawing.Point(10, 147);
-            this.cmd_cmbExtra6.Name = "cmd_cmbExtra6";
-            this.cmd_cmbExtra6.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra6.TabIndex = 40;
-            this.cmd_cmbExtra6.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra6
-            // 
-            this.cmd_lblExtra6.AutoSize = true;
-            this.cmd_lblExtra6.Location = new System.Drawing.Point(91, 150);
-            this.cmd_lblExtra6.Name = "cmd_lblExtra6";
-            this.cmd_lblExtra6.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra6.TabIndex = 39;
-            this.cmd_lblExtra6.Text = "+";
-            // 
-            // cmd_cmbExtra5
-            // 
-            this.cmd_cmbExtra5.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra5.FormattingEnabled = true;
-            this.cmd_cmbExtra5.Location = new System.Drawing.Point(10, 121);
-            this.cmd_cmbExtra5.Name = "cmd_cmbExtra5";
-            this.cmd_cmbExtra5.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra5.TabIndex = 38;
-            this.cmd_cmbExtra5.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra5
-            // 
-            this.cmd_lblExtra5.AutoSize = true;
-            this.cmd_lblExtra5.Location = new System.Drawing.Point(91, 124);
-            this.cmd_lblExtra5.Name = "cmd_lblExtra5";
-            this.cmd_lblExtra5.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra5.TabIndex = 37;
-            this.cmd_lblExtra5.Text = "+";
-            // 
-            // cmd_cmbExtra4
-            // 
-            this.cmd_cmbExtra4.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra4.FormattingEnabled = true;
-            this.cmd_cmbExtra4.Location = new System.Drawing.Point(10, 95);
-            this.cmd_cmbExtra4.Name = "cmd_cmbExtra4";
-            this.cmd_cmbExtra4.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra4.TabIndex = 36;
-            this.cmd_cmbExtra4.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra4
-            // 
-            this.cmd_lblExtra4.AutoSize = true;
-            this.cmd_lblExtra4.Location = new System.Drawing.Point(91, 98);
-            this.cmd_lblExtra4.Name = "cmd_lblExtra4";
-            this.cmd_lblExtra4.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra4.TabIndex = 35;
-            this.cmd_lblExtra4.Text = "+";
-            // 
-            // cmd_cmbExtra3
-            // 
-            this.cmd_cmbExtra3.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra3.FormattingEnabled = true;
-            this.cmd_cmbExtra3.Location = new System.Drawing.Point(10, 69);
-            this.cmd_cmbExtra3.Name = "cmd_cmbExtra3";
-            this.cmd_cmbExtra3.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra3.TabIndex = 34;
-            this.cmd_cmbExtra3.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra3
-            // 
-            this.cmd_lblExtra3.AutoSize = true;
-            this.cmd_lblExtra3.Location = new System.Drawing.Point(91, 72);
-            this.cmd_lblExtra3.Name = "cmd_lblExtra3";
-            this.cmd_lblExtra3.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra3.TabIndex = 33;
-            this.cmd_lblExtra3.Text = "+";
-            // 
-            // cmd_cmbExtra2
-            // 
-            this.cmd_cmbExtra2.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra2.FormattingEnabled = true;
-            this.cmd_cmbExtra2.Location = new System.Drawing.Point(10, 43);
-            this.cmd_cmbExtra2.Name = "cmd_cmbExtra2";
-            this.cmd_cmbExtra2.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra2.TabIndex = 32;
-            this.cmd_cmbExtra2.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra2
-            // 
-            this.cmd_lblExtra2.AutoSize = true;
-            this.cmd_lblExtra2.Location = new System.Drawing.Point(91, 46);
-            this.cmd_lblExtra2.Name = "cmd_lblExtra2";
-            this.cmd_lblExtra2.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra2.TabIndex = 31;
-            this.cmd_lblExtra2.Text = "+";
-            // 
-            // cmd_cmbExtra1
-            // 
-            this.cmd_cmbExtra1.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbExtra1.FormattingEnabled = true;
-            this.cmd_cmbExtra1.Location = new System.Drawing.Point(10, 17);
-            this.cmd_cmbExtra1.Name = "cmd_cmbExtra1";
-            this.cmd_cmbExtra1.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbExtra1.TabIndex = 30;
-            this.cmd_cmbExtra1.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbExtra_SelectedIndexChanged);
-            // 
-            // cmd_lblExtra1
-            // 
-            this.cmd_lblExtra1.AutoSize = true;
-            this.cmd_lblExtra1.Location = new System.Drawing.Point(91, 20);
-            this.cmd_lblExtra1.Name = "cmd_lblExtra1";
-            this.cmd_lblExtra1.Size = new System.Drawing.Size(12, 13);
-            this.cmd_lblExtra1.TabIndex = 29;
-            this.cmd_lblExtra1.Text = "+";
-            // 
-            // cmd_grpPermissions
-            // 
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbAlw3);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbAlw2);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbDis3);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbDis2);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbAlw1);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbDis1);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_cmbMin);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_lblMin);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_lblDisallow);
-            this.cmd_grpPermissions.Controls.Add(this.cmd_lblAllow);
-            this.cmd_grpPermissions.Location = new System.Drawing.Point(133, 6);
-            this.cmd_grpPermissions.Name = "cmd_grpPermissions";
-            this.cmd_grpPermissions.Size = new System.Drawing.Size(360, 94);
-            this.cmd_grpPermissions.TabIndex = 27;
-            this.cmd_grpPermissions.TabStop = false;
-            this.cmd_grpPermissions.Text = "Permissions";
-            // 
-            // cmd_cmbAlw3
-            // 
-            this.cmd_cmbAlw3.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbAlw3.FormattingEnabled = true;
-            this.cmd_cmbAlw3.Location = new System.Drawing.Point(274, 67);
-            this.cmd_cmbAlw3.Name = "cmd_cmbAlw3";
-            this.cmd_cmbAlw3.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbAlw3.TabIndex = 28;
-            this.cmd_cmbAlw3.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbAlw2
-            // 
-            this.cmd_cmbAlw2.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbAlw2.FormattingEnabled = true;
-            this.cmd_cmbAlw2.Location = new System.Drawing.Point(187, 67);
-            this.cmd_cmbAlw2.Name = "cmd_cmbAlw2";
-            this.cmd_cmbAlw2.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbAlw2.TabIndex = 27;
-            this.cmd_cmbAlw2.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbDis3
-            // 
-            this.cmd_cmbDis3.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbDis3.FormattingEnabled = true;
-            this.cmd_cmbDis3.Location = new System.Drawing.Point(274, 41);
-            this.cmd_cmbDis3.Name = "cmd_cmbDis3";
-            this.cmd_cmbDis3.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbDis3.TabIndex = 26;
-            this.cmd_cmbDis3.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbDis2
-            // 
-            this.cmd_cmbDis2.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbDis2.FormattingEnabled = true;
-            this.cmd_cmbDis2.Location = new System.Drawing.Point(187, 41);
-            this.cmd_cmbDis2.Name = "cmd_cmbDis2";
-            this.cmd_cmbDis2.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbDis2.TabIndex = 25;
-            this.cmd_cmbDis2.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbAlw1
-            // 
-            this.cmd_cmbAlw1.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbAlw1.FormattingEnabled = true;
-            this.cmd_cmbAlw1.Location = new System.Drawing.Point(100, 67);
-            this.cmd_cmbAlw1.Name = "cmd_cmbAlw1";
-            this.cmd_cmbAlw1.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbAlw1.TabIndex = 24;
-            this.cmd_cmbAlw1.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbDis1
-            // 
-            this.cmd_cmbDis1.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbDis1.FormattingEnabled = true;
-            this.cmd_cmbDis1.Location = new System.Drawing.Point(100, 41);
-            this.cmd_cmbDis1.Name = "cmd_cmbDis1";
-            this.cmd_cmbDis1.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbDis1.TabIndex = 23;
-            this.cmd_cmbDis1.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbSpecific_SelectedIndexChanged);
-            // 
-            // cmd_cmbMin
-            // 
-            this.cmd_cmbMin.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_cmbMin.FormattingEnabled = true;
-            this.cmd_cmbMin.Location = new System.Drawing.Point(100, 14);
-            this.cmd_cmbMin.Name = "cmd_cmbMin";
-            this.cmd_cmbMin.Size = new System.Drawing.Size(81, 21);
-            this.cmd_cmbMin.TabIndex = 22;
-            this.cmd_cmbMin.SelectedIndexChanged += new System.EventHandler(this.cmd_cmbMin_SelectedIndexChanged);
-            // 
-            // cmd_lblMin
-            // 
-            this.cmd_lblMin.AutoSize = true;
-            this.cmd_lblMin.Location = new System.Drawing.Point(10, 17);
-            this.cmd_lblMin.Name = "cmd_lblMin";
-            this.cmd_lblMin.Size = new System.Drawing.Size(89, 13);
-            this.cmd_lblMin.TabIndex = 16;
-            this.cmd_lblMin.Text = "Min rank needed:";
-            // 
-            // cmd_lblDisallow
-            // 
-            this.cmd_lblDisallow.AutoSize = true;
-            this.cmd_lblDisallow.Location = new System.Drawing.Point(10, 71);
-            this.cmd_lblDisallow.Name = "cmd_lblDisallow";
-            this.cmd_lblDisallow.Size = new System.Drawing.Size(91, 13);
-            this.cmd_lblDisallow.TabIndex = 18;
-            this.cmd_lblDisallow.Text = "Specifically allow:";
-            // 
-            // cmd_lblAllow
-            // 
-            this.cmd_lblAllow.AutoSize = true;
-            this.cmd_lblAllow.Location = new System.Drawing.Point(10, 44);
-            this.cmd_lblAllow.Name = "cmd_lblAllow";
-            this.cmd_lblAllow.Size = new System.Drawing.Size(80, 13);
-            this.cmd_lblAllow.TabIndex = 17;
-            this.cmd_lblAllow.Text = "But don\'t allow:";
-            // 
-            // cmd_btnCustom
-            // 
-            this.cmd_btnCustom.Location = new System.Drawing.Point(370, 485);
-            this.cmd_btnCustom.Name = "cmd_btnCustom";
-            this.cmd_btnCustom.Size = new System.Drawing.Size(121, 29);
-            this.cmd_btnCustom.TabIndex = 26;
-            this.cmd_btnCustom.Text = "Custom commands";
-            this.cmd_btnCustom.UseVisualStyleBackColor = true;
-            this.cmd_btnCustom.Click += new System.EventHandler(this.cmd_btnCustom_Click);
-            // 
-            // cmd_btnHelp
-            // 
-            this.cmd_btnHelp.Location = new System.Drawing.Point(6, 485);
-            this.cmd_btnHelp.Name = "cmd_btnHelp";
-            this.cmd_btnHelp.Size = new System.Drawing.Size(121, 29);
-            this.cmd_btnHelp.TabIndex = 25;
-            this.cmd_btnHelp.Text = "Help information";
-            this.cmd_btnHelp.UseVisualStyleBackColor = true;
-            this.cmd_btnHelp.Click += new System.EventHandler(this.cmd_btnHelp_Click);
-            // 
-            // cmd_list
-            // 
-            this.cmd_list.BackColor = System.Drawing.SystemColors.Window;
-            this.cmd_list.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.cmd_list.FormattingEnabled = true;
-            this.cmd_list.Location = new System.Drawing.Point(6, 6);
-            this.cmd_list.Name = "cmd_list";
-            this.cmd_list.Size = new System.Drawing.Size(121, 472);
-            this.cmd_list.TabIndex = 24;
-            this.cmd_list.SelectedIndexChanged += new System.EventHandler(this.cmd_list_SelectedIndexChanged);
-            // 
-            // pageSecurity
-            // 
-            this.pageSecurity.BackColor = System.Drawing.SystemColors.Control;
-            this.pageSecurity.Controls.Add(this.sec_grpChat);
-            this.pageSecurity.Controls.Add(this.sec_grpCmd);
-            this.pageSecurity.Controls.Add(this.sec_grpIP);
-            this.pageSecurity.Controls.Add(this.sec_grpOther);
-            this.pageSecurity.Controls.Add(this.sec_grpBlocks);
-            this.pageSecurity.Location = new System.Drawing.Point(4, 22);
-            this.pageSecurity.Name = "pageSecurity";
-            this.pageSecurity.Padding = new System.Windows.Forms.Padding(3);
-            this.pageSecurity.Size = new System.Drawing.Size(498, 521);
-            this.pageSecurity.TabIndex = 7;
-            this.pageSecurity.Text = "Security";
-            // 
-            // sec_grpChat
-            // 
-            this.sec_grpChat.Controls.Add(this.sec_cbChatAuto);
-            this.sec_grpChat.Controls.Add(this.sec_lblChatOnMute);
-            this.sec_grpChat.Controls.Add(this.sec_numChatMsgs);
-            this.sec_grpChat.Controls.Add(this.sec_lblChatOnMsgs);
-            this.sec_grpChat.Controls.Add(this.sec_numChatSecs);
-            this.sec_grpChat.Controls.Add(this.sec_lblChatForMute);
-            this.sec_grpChat.Controls.Add(this.sec_numChatMute);
-            this.sec_grpChat.Location = new System.Drawing.Point(14, 6);
-            this.sec_grpChat.Name = "sec_grpChat";
-            this.sec_grpChat.Size = new System.Drawing.Size(238, 111);
-            this.sec_grpChat.TabIndex = 1;
-            this.sec_grpChat.TabStop = false;
-            this.sec_grpChat.Text = "Chat spam control";
-            // 
-            // sec_lblChatOnMute
-            // 
-            this.sec_lblChatOnMute.AutoSize = true;
-            this.sec_lblChatOnMute.Location = new System.Drawing.Point(6, 48);
-            this.sec_lblChatOnMute.Name = "sec_lblChatOnMute";
-            this.sec_lblChatOnMute.Size = new System.Drawing.Size(46, 13);
-            this.sec_lblChatOnMute.TabIndex = 25;
-            this.sec_lblChatOnMute.Text = "Mute on";
-            // 
-            // sec_numChatMsgs
-            // 
-            this.sec_numChatMsgs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numChatMsgs.Location = new System.Drawing.Point(53, 45);
-            this.sec_numChatMsgs.Maximum = new decimal(new int[] {
+            // Tw_lblMode
+            // 
+            this.Tw_lblMode.AutoSize = true;
+            this.Tw_lblMode.Location = new Point(8, 119);
+            this.Tw_lblMode.Name = "Tw_lblMode";
+            this.Tw_lblMode.Size = new Size(65, 13);
+            this.Tw_lblMode.TabIndex = 27;
+            this.Tw_lblMode.Text = "Gamemode:";
+            // 
+            // Tw_lblDiff
+            // 
+            this.Tw_lblDiff.AutoSize = true;
+            this.Tw_lblDiff.Location = new Point(21, 94);
+            this.Tw_lblDiff.Name = "Tw_lblDiff";
+            this.Tw_lblDiff.Size = new Size(52, 13);
+            this.Tw_lblDiff.TabIndex = 26;
+            this.Tw_lblDiff.Text = "Difficulty:";
+            // 
+            // Tw_cbMain
+            // 
+            this.Tw_cbMain.AutoSize = true;
+            this.Tw_cbMain.Location = new Point(11, 66);
+            this.Tw_cbMain.Name = "Tw_cbMain";
+            this.Tw_cbMain.Size = new Size(112, 17);
+            this.Tw_cbMain.TabIndex = 24;
+            this.Tw_cbMain.Text = "Change main level";
+            this.Tw_cbMain.UseVisualStyleBackColor = true;
+            // 
+            // Tw_cbMap
+            // 
+            this.Tw_cbMap.AutoSize = true;
+            this.Tw_cbMap.Location = new Point(11, 43);
+            this.Tw_cbMap.Name = "Tw_cbMap";
+            this.Tw_cbMap.Size = new Size(136, 17);
+            this.Tw_cbMap.TabIndex = 23;
+            this.Tw_cbMap.Text = "Map name in server list";
+            this.Tw_cbMap.UseVisualStyleBackColor = true;
+            // 
+            // Tw_cbStart
+            // 
+            this.Tw_cbStart.AutoSize = true;
+            this.Tw_cbStart.Location = new Point(11, 20);
+            this.Tw_cbStart.Name = "Tw_cbStart";
+            this.Tw_cbStart.Size = new Size(139, 17);
+            this.Tw_cbStart.TabIndex = 22;
+            this.Tw_cbStart.Text = "Start when server starts";
+            this.Tw_cbStart.UseVisualStyleBackColor = true;
+            // 
+            // Tw_gbMaps
+            // 
+            this.Tw_gbMaps.Controls.Add(this.Tw_lblInUse);
+            this.Tw_gbMaps.Controls.Add(this.Tw_btnAdd);
+            this.Tw_gbMaps.Controls.Add(this.Tw_btnRemove);
+            this.Tw_gbMaps.Controls.Add(this.Tw_lstNotUsed);
+            this.Tw_gbMaps.Controls.Add(this.Tw_lstUsed);
+            this.Tw_gbMaps.Location = new Point(6, 59);
+            this.Tw_gbMaps.Name = "Tw_gbMaps";
+            this.Tw_gbMaps.Size = new Size(170, 412);
+            this.Tw_gbMaps.TabIndex = 5;
+            this.Tw_gbMaps.TabStop = false;
+            this.Tw_gbMaps.Text = "Maps";
+            // 
+            // Tw_lblInUse
+            // 
+            this.Tw_lblInUse.AutoSize = true;
+            this.Tw_lblInUse.Location = new Point(6, 17);
+            this.Tw_lblInUse.Name = "Tw_lblInUse";
+            this.Tw_lblInUse.Size = new Size(38, 13);
+            this.Tw_lblInUse.TabIndex = 5;
+            this.Tw_lblInUse.Text = "In use:";
+            // 
+            // Tw_btnAdd
+            // 
+            this.Tw_btnAdd.Location = new Point(6, 188);
+            this.Tw_btnAdd.Name = "Tw_btnAdd";
+            this.Tw_btnAdd.Size = new Size(77, 23);
+            this.Tw_btnAdd.TabIndex = 4;
+            this.Tw_btnAdd.Text = "<< Add";
+            this.Tw_btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // Tw_btnRemove
+            // 
+            this.Tw_btnRemove.Location = new Point(89, 188);
+            this.Tw_btnRemove.Name = "Tw_btnRemove";
+            this.Tw_btnRemove.Size = new Size(75, 23);
+            this.Tw_btnRemove.TabIndex = 3;
+            this.Tw_btnRemove.Text = "Remove >>";
+            this.Tw_btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // Tw_lstNotUsed
+            // 
+            this.Tw_lstNotUsed.BackColor = SystemColors.Window;
+            this.Tw_lstNotUsed.ForeColor = SystemColors.WindowText;
+            this.Tw_lstNotUsed.FormattingEnabled = true;
+            this.Tw_lstNotUsed.Location = new Point(6, 219);
+            this.Tw_lstNotUsed.Name = "Tw_lstNotUsed";
+            this.Tw_lstNotUsed.Size = new Size(158, 186);
+            this.Tw_lstNotUsed.TabIndex = 2;
+            // 
+            // Tw_lstUsed
+            // 
+            this.Tw_lstUsed.BackColor = SystemColors.Window;
+            this.Tw_lstUsed.ForeColor = SystemColors.WindowText;
+            this.Tw_lstUsed.FormattingEnabled = true;
+            this.Tw_lstUsed.Location = new Point(6, 33);
+            this.Tw_lstUsed.Name = "Tw_lstUsed";
+            this.Tw_lstUsed.Size = new Size(158, 147);
+            this.Tw_lstUsed.TabIndex = 0;
+            this.Tw_lstUsed.SelectedIndexChanged += new EventHandler(this.TwMapUse_SelectedIndexChanged);
+            // 
+            // TabCD
+            // 
+            this.TabCD.BackColor = SystemColors.Control;
+            this.TabCD.Controls.Add(this.Cd_grpControls);
+            this.TabCD.Controls.Add(this.Cd_grpSettings);
+            this.TabCD.Controls.Add(this.Cd_grpMaps);
+            this.TabCD.Location = new Point(4, 22);
+            this.TabCD.Name = "TabCD";
+            this.TabCD.Size = new Size(484, 489);
+            this.TabCD.TabIndex = 3;
+            this.TabCD.Text = "Countdown";
+            // 
+            // Cd_grpControls
+            // 
+            this.Cd_grpControls.Controls.Add(this.Cd_btnEnd);
+            this.Cd_grpControls.Controls.Add(this.Cd_btnStop);
+            this.Cd_grpControls.Controls.Add(this.Cd_btnStart);
+            this.Cd_grpControls.Location = new Point(110, 5);
+            this.Cd_grpControls.Name = "Cd_grpControls";
+            this.Cd_grpControls.Size = new Size(279, 51);
+            this.Cd_grpControls.TabIndex = 7;
+            this.Cd_grpControls.TabStop = false;
+            this.Cd_grpControls.Text = "Controls";
+            // 
+            // Cd_btnEnd
+            // 
+            this.Cd_btnEnd.Location = new Point(190, 19);
+            this.Cd_btnEnd.Name = "Cd_btnEnd";
+            this.Cd_btnEnd.Size = new Size(80, 23);
+            this.Cd_btnEnd.TabIndex = 2;
+            this.Cd_btnEnd.Text = "End Round";
+            this.Cd_btnEnd.UseVisualStyleBackColor = true;
+            // 
+            // Cd_btnStop
+            // 
+            this.Cd_btnStop.Location = new Point(100, 19);
+            this.Cd_btnStop.Name = "Cd_btnStop";
+            this.Cd_btnStop.Size = new Size(80, 23);
+            this.Cd_btnStop.TabIndex = 1;
+            this.Cd_btnStop.Text = "Stop Game";
+            this.Cd_btnStop.UseVisualStyleBackColor = true;
+            // 
+            // Cd_btnStart
+            // 
+            this.Cd_btnStart.Location = new Point(10, 19);
+            this.Cd_btnStart.Name = "Cd_btnStart";
+            this.Cd_btnStart.Size = new Size(80, 23);
+            this.Cd_btnStart.TabIndex = 0;
+            this.Cd_btnStart.Text = "Start Game";
+            this.Cd_btnStart.UseVisualStyleBackColor = true;
+            // 
+            // Cd_grpSettings
+            // 
+            this.Cd_grpSettings.Controls.Add(this.Cd_cbMain);
+            this.Cd_grpSettings.Controls.Add(this.Cd_cbMap);
+            this.Cd_grpSettings.Controls.Add(this.Cd_cbStart);
+            this.Cd_grpSettings.Location = new Point(182, 59);
+            this.Cd_grpSettings.Name = "Cd_grpSettings";
+            this.Cd_grpSettings.Size = new Size(296, 89);
+            this.Cd_grpSettings.TabIndex = 6;
+            this.Cd_grpSettings.TabStop = false;
+            this.Cd_grpSettings.Text = "Settings";
+            // 
+            // Cd_cbMain
+            // 
+            this.Cd_cbMain.AutoSize = true;
+            this.Cd_cbMain.Location = new Point(11, 66);
+            this.Cd_cbMain.Name = "Cd_cbMain";
+            this.Cd_cbMain.Size = new Size(112, 17);
+            this.Cd_cbMain.TabIndex = 24;
+            this.Cd_cbMain.Text = "Change main level";
+            this.Cd_cbMain.UseVisualStyleBackColor = true;
+            // 
+            // Cd_cbMap
+            // 
+            this.Cd_cbMap.AutoSize = true;
+            this.Cd_cbMap.Location = new Point(11, 43);
+            this.Cd_cbMap.Name = "Cd_cbMap";
+            this.Cd_cbMap.Size = new Size(136, 17);
+            this.Cd_cbMap.TabIndex = 23;
+            this.Cd_cbMap.Text = "Map name in server list";
+            this.Cd_cbMap.UseVisualStyleBackColor = true;
+            // 
+            // Cd_cbStart
+            // 
+            this.Cd_cbStart.AutoSize = true;
+            this.Cd_cbStart.Location = new Point(11, 20);
+            this.Cd_cbStart.Name = "Cd_cbStart";
+            this.Cd_cbStart.Size = new Size(139, 17);
+            this.Cd_cbStart.TabIndex = 22;
+            this.Cd_cbStart.Text = "Start when server starts";
+            this.Cd_cbStart.UseVisualStyleBackColor = true;
+            // 
+            // Cd_grpMaps
+            // 
+            this.Cd_grpMaps.Controls.Add(this.Cd_lblNotUsed);
+            this.Cd_grpMaps.Controls.Add(this.Cd_lblUsed);
+            this.Cd_grpMaps.Controls.Add(this.Cd_btnAdd);
+            this.Cd_grpMaps.Controls.Add(this.Cd_btnRemove);
+            this.Cd_grpMaps.Controls.Add(this.Cd_lstNotUsed);
+            this.Cd_grpMaps.Controls.Add(this.Cd_lstUsed);
+            this.Cd_grpMaps.Location = new Point(6, 59);
+            this.Cd_grpMaps.Name = "Cd_grpMaps";
+            this.Cd_grpMaps.Size = new Size(170, 412);
+            this.Cd_grpMaps.TabIndex = 5;
+            this.Cd_grpMaps.TabStop = false;
+            this.Cd_grpMaps.Text = "Maps";
+            // 
+            // Cd_lblNotUsed
+            // 
+            this.Cd_lblNotUsed.AutoSize = true;
+            this.Cd_lblNotUsed.Location = new Point(187, 17);
+            this.Cd_lblNotUsed.Name = "Cd_lblNotUsed";
+            this.Cd_lblNotUsed.Size = new Size(83, 13);
+            this.Cd_lblNotUsed.TabIndex = 6;
+            this.Cd_lblNotUsed.Text = "Maps Not In Use";
+            // 
+            // Cd_lblUsed
+            // 
+            this.Cd_lblUsed.AutoSize = true;
+            this.Cd_lblUsed.Location = new Point(6, 17);
+            this.Cd_lblUsed.Name = "Cd_lblUsed";
+            this.Cd_lblUsed.Size = new Size(38, 13);
+            this.Cd_lblUsed.TabIndex = 5;
+            this.Cd_lblUsed.Text = "In use:";
+            // 
+            // Cd_btnAdd
+            // 
+            this.Cd_btnAdd.Location = new Point(6, 188);
+            this.Cd_btnAdd.Name = "Cd_btnAdd";
+            this.Cd_btnAdd.Size = new Size(77, 23);
+            this.Cd_btnAdd.TabIndex = 4;
+            this.Cd_btnAdd.Text = "<< Add";
+            this.Cd_btnAdd.UseVisualStyleBackColor = true;
+            // 
+            // Cd_btnRemove
+            // 
+            this.Cd_btnRemove.Location = new Point(89, 188);
+            this.Cd_btnRemove.Name = "Cd_btnRemove";
+            this.Cd_btnRemove.Size = new Size(75, 23);
+            this.Cd_btnRemove.TabIndex = 3;
+            this.Cd_btnRemove.Text = "Remove >>";
+            this.Cd_btnRemove.UseVisualStyleBackColor = true;
+            // 
+            // Cd_lstNotUsed
+            // 
+            this.Cd_lstNotUsed.BackColor = SystemColors.Window;
+            this.Cd_lstNotUsed.ForeColor = SystemColors.WindowText;
+            this.Cd_lstNotUsed.FormattingEnabled = true;
+            this.Cd_lstNotUsed.Location = new Point(6, 219);
+            this.Cd_lstNotUsed.Name = "Cd_lstNotUsed";
+            this.Cd_lstNotUsed.Size = new Size(158, 186);
+            this.Cd_lstNotUsed.TabIndex = 2;
+            // 
+            // Cd_lstUsed
+            // 
+            this.Cd_lstUsed.BackColor = SystemColors.Window;
+            this.Cd_lstUsed.ForeColor = SystemColors.WindowText;
+            this.Cd_lstUsed.FormattingEnabled = true;
+            this.Cd_lstUsed.Location = new Point(6, 33);
+            this.Cd_lstUsed.Name = "Cd_lstUsed";
+            this.Cd_lstUsed.Size = new Size(158, 147);
+            this.Cd_lstUsed.TabIndex = 0;
+            // 
+            // PageCommands
+            // 
+            this.PageCommands.AutoScroll = true;
+            this.PageCommands.Controls.Add(this.Cmd_grpExtra);
+            this.PageCommands.Controls.Add(this.Cmd_grpPermissions);
+            this.PageCommands.Controls.Add(this.Cmd_btnCustom);
+            this.PageCommands.Controls.Add(this.Cmd_btnHelp);
+            this.PageCommands.Controls.Add(this.Cmd_list);
+            this.PageCommands.Location = new Point(4, 22);
+            this.PageCommands.Name = "PageCommands";
+            this.PageCommands.Size = new Size(498, 521);
+            this.PageCommands.TabIndex = 2;
+            this.PageCommands.Text = "Commands";
+            // 
+            // Cmd_grpExtra
+            // 
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra7);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra7);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra6);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra6);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra5);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra5);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra4);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra4);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra3);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra3);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra2);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra2);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_cmbExtra1);
+            this.Cmd_grpExtra.Controls.Add(this.Cmd_lblExtra1);
+            this.Cmd_grpExtra.Location = new Point(133, 105);
+            this.Cmd_grpExtra.Name = "Cmd_grpExtra";
+            this.Cmd_grpExtra.Size = new Size(360, 205);
+            this.Cmd_grpExtra.TabIndex = 28;
+            this.Cmd_grpExtra.TabStop = false;
+            this.Cmd_grpExtra.Text = "Extra permissions";
+            // 
+            // Cmd_cmbExtra7
+            // 
+            this.Cmd_cmbExtra7.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra7.FormattingEnabled = true;
+            this.Cmd_cmbExtra7.Location = new Point(10, 173);
+            this.Cmd_cmbExtra7.Name = "Cmd_cmbExtra7";
+            this.Cmd_cmbExtra7.Size = new Size(81, 21);
+            this.Cmd_cmbExtra7.TabIndex = 42;
+            this.Cmd_cmbExtra7.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra7
+            // 
+            this.Cmd_lblExtra7.AutoSize = true;
+            this.Cmd_lblExtra7.Location = new Point(91, 176);
+            this.Cmd_lblExtra7.Name = "Cmd_lblExtra7";
+            this.Cmd_lblExtra7.Size = new Size(12, 13);
+            this.Cmd_lblExtra7.TabIndex = 41;
+            this.Cmd_lblExtra7.Text = "+";
+            // 
+            // Cmd_cmbExtra6
+            // 
+            this.Cmd_cmbExtra6.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra6.FormattingEnabled = true;
+            this.Cmd_cmbExtra6.Location = new Point(10, 147);
+            this.Cmd_cmbExtra6.Name = "Cmd_cmbExtra6";
+            this.Cmd_cmbExtra6.Size = new Size(81, 21);
+            this.Cmd_cmbExtra6.TabIndex = 40;
+            this.Cmd_cmbExtra6.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra6
+            // 
+            this.Cmd_lblExtra6.AutoSize = true;
+            this.Cmd_lblExtra6.Location = new Point(91, 150);
+            this.Cmd_lblExtra6.Name = "Cmd_lblExtra6";
+            this.Cmd_lblExtra6.Size = new Size(12, 13);
+            this.Cmd_lblExtra6.TabIndex = 39;
+            this.Cmd_lblExtra6.Text = "+";
+            // 
+            // Cmd_cmbExtra5
+            // 
+            this.Cmd_cmbExtra5.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra5.FormattingEnabled = true;
+            this.Cmd_cmbExtra5.Location = new Point(10, 121);
+            this.Cmd_cmbExtra5.Name = "Cmd_cmbExtra5";
+            this.Cmd_cmbExtra5.Size = new Size(81, 21);
+            this.Cmd_cmbExtra5.TabIndex = 38;
+            this.Cmd_cmbExtra5.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra5
+            // 
+            this.Cmd_lblExtra5.AutoSize = true;
+            this.Cmd_lblExtra5.Location = new Point(91, 124);
+            this.Cmd_lblExtra5.Name = "Cmd_lblExtra5";
+            this.Cmd_lblExtra5.Size = new Size(12, 13);
+            this.Cmd_lblExtra5.TabIndex = 37;
+            this.Cmd_lblExtra5.Text = "+";
+            // 
+            // Cmd_cmbExtra4
+            // 
+            this.Cmd_cmbExtra4.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra4.FormattingEnabled = true;
+            this.Cmd_cmbExtra4.Location = new Point(10, 95);
+            this.Cmd_cmbExtra4.Name = "Cmd_cmbExtra4";
+            this.Cmd_cmbExtra4.Size = new Size(81, 21);
+            this.Cmd_cmbExtra4.TabIndex = 36;
+            this.Cmd_cmbExtra4.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra4
+            // 
+            this.Cmd_lblExtra4.AutoSize = true;
+            this.Cmd_lblExtra4.Location = new Point(91, 98);
+            this.Cmd_lblExtra4.Name = "Cmd_lblExtra4";
+            this.Cmd_lblExtra4.Size = new Size(12, 13);
+            this.Cmd_lblExtra4.TabIndex = 35;
+            this.Cmd_lblExtra4.Text = "+";
+            // 
+            // Cmd_cmbExtra3
+            // 
+            this.Cmd_cmbExtra3.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra3.FormattingEnabled = true;
+            this.Cmd_cmbExtra3.Location = new Point(10, 69);
+            this.Cmd_cmbExtra3.Name = "Cmd_cmbExtra3";
+            this.Cmd_cmbExtra3.Size = new Size(81, 21);
+            this.Cmd_cmbExtra3.TabIndex = 34;
+            this.Cmd_cmbExtra3.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra3
+            // 
+            this.Cmd_lblExtra3.AutoSize = true;
+            this.Cmd_lblExtra3.Location = new Point(91, 72);
+            this.Cmd_lblExtra3.Name = "Cmd_lblExtra3";
+            this.Cmd_lblExtra3.Size = new Size(12, 13);
+            this.Cmd_lblExtra3.TabIndex = 33;
+            this.Cmd_lblExtra3.Text = "+";
+            // 
+            // Cmd_cmbExtra2
+            // 
+            this.Cmd_cmbExtra2.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra2.FormattingEnabled = true;
+            this.Cmd_cmbExtra2.Location = new Point(10, 43);
+            this.Cmd_cmbExtra2.Name = "Cmd_cmbExtra2";
+            this.Cmd_cmbExtra2.Size = new Size(81, 21);
+            this.Cmd_cmbExtra2.TabIndex = 32;
+            this.Cmd_cmbExtra2.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra2
+            // 
+            this.Cmd_lblExtra2.AutoSize = true;
+            this.Cmd_lblExtra2.Location = new Point(91, 46);
+            this.Cmd_lblExtra2.Name = "Cmd_lblExtra2";
+            this.Cmd_lblExtra2.Size = new Size(12, 13);
+            this.Cmd_lblExtra2.TabIndex = 31;
+            this.Cmd_lblExtra2.Text = "+";
+            // 
+            // Cmd_cmbExtra1
+            // 
+            this.Cmd_cmbExtra1.BackColor = SystemColors.Window;
+            this.Cmd_cmbExtra1.FormattingEnabled = true;
+            this.Cmd_cmbExtra1.Location = new Point(10, 17);
+            this.Cmd_cmbExtra1.Name = "Cmd_cmbExtra1";
+            this.Cmd_cmbExtra1.Size = new Size(81, 21);
+            this.Cmd_cmbExtra1.TabIndex = 30;
+            this.Cmd_cmbExtra1.SelectedIndexChanged += new EventHandler(this.Cmd_cmbExtra_SelectedIndexChanged);
+            // 
+            // Cmd_lblExtra1
+            // 
+            this.Cmd_lblExtra1.AutoSize = true;
+            this.Cmd_lblExtra1.Location = new Point(91, 20);
+            this.Cmd_lblExtra1.Name = "Cmd_lblExtra1";
+            this.Cmd_lblExtra1.Size = new Size(12, 13);
+            this.Cmd_lblExtra1.TabIndex = 29;
+            this.Cmd_lblExtra1.Text = "+";
+            // 
+            // Cmd_grpPermissions
+            // 
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbAlw3);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbAlw2);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbDis3);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbDis2);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbAlw1);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbDis1);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_cmbMin);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_lblMin);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_lblDisallow);
+            this.Cmd_grpPermissions.Controls.Add(this.Cmd_lblAllow);
+            this.Cmd_grpPermissions.Location = new Point(133, 6);
+            this.Cmd_grpPermissions.Name = "Cmd_grpPermissions";
+            this.Cmd_grpPermissions.Size = new Size(360, 94);
+            this.Cmd_grpPermissions.TabIndex = 27;
+            this.Cmd_grpPermissions.TabStop = false;
+            this.Cmd_grpPermissions.Text = "Permissions";
+            // 
+            // Cmd_cmbAlw3
+            // 
+            this.Cmd_cmbAlw3.BackColor = SystemColors.Window;
+            this.Cmd_cmbAlw3.FormattingEnabled = true;
+            this.Cmd_cmbAlw3.Location = new Point(274, 67);
+            this.Cmd_cmbAlw3.Name = "Cmd_cmbAlw3";
+            this.Cmd_cmbAlw3.Size = new Size(81, 21);
+            this.Cmd_cmbAlw3.TabIndex = 28;
+            this.Cmd_cmbAlw3.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbAlw2
+            // 
+            this.Cmd_cmbAlw2.BackColor = SystemColors.Window;
+            this.Cmd_cmbAlw2.FormattingEnabled = true;
+            this.Cmd_cmbAlw2.Location = new Point(187, 67);
+            this.Cmd_cmbAlw2.Name = "Cmd_cmbAlw2";
+            this.Cmd_cmbAlw2.Size = new Size(81, 21);
+            this.Cmd_cmbAlw2.TabIndex = 27;
+            this.Cmd_cmbAlw2.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbDis3
+            // 
+            this.Cmd_cmbDis3.BackColor = SystemColors.Window;
+            this.Cmd_cmbDis3.FormattingEnabled = true;
+            this.Cmd_cmbDis3.Location = new Point(274, 41);
+            this.Cmd_cmbDis3.Name = "Cmd_cmbDis3";
+            this.Cmd_cmbDis3.Size = new Size(81, 21);
+            this.Cmd_cmbDis3.TabIndex = 26;
+            this.Cmd_cmbDis3.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbDis2
+            // 
+            this.Cmd_cmbDis2.BackColor = SystemColors.Window;
+            this.Cmd_cmbDis2.FormattingEnabled = true;
+            this.Cmd_cmbDis2.Location = new Point(187, 41);
+            this.Cmd_cmbDis2.Name = "Cmd_cmbDis2";
+            this.Cmd_cmbDis2.Size = new Size(81, 21);
+            this.Cmd_cmbDis2.TabIndex = 25;
+            this.Cmd_cmbDis2.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbAlw1
+            // 
+            this.Cmd_cmbAlw1.BackColor = SystemColors.Window;
+            this.Cmd_cmbAlw1.FormattingEnabled = true;
+            this.Cmd_cmbAlw1.Location = new Point(100, 67);
+            this.Cmd_cmbAlw1.Name = "Cmd_cmbAlw1";
+            this.Cmd_cmbAlw1.Size = new Size(81, 21);
+            this.Cmd_cmbAlw1.TabIndex = 24;
+            this.Cmd_cmbAlw1.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbDis1
+            // 
+            this.Cmd_cmbDis1.BackColor = SystemColors.Window;
+            this.Cmd_cmbDis1.FormattingEnabled = true;
+            this.Cmd_cmbDis1.Location = new Point(100, 41);
+            this.Cmd_cmbDis1.Name = "Cmd_cmbDis1";
+            this.Cmd_cmbDis1.Size = new Size(81, 21);
+            this.Cmd_cmbDis1.TabIndex = 23;
+            this.Cmd_cmbDis1.SelectedIndexChanged += new EventHandler(this.Cmd_cmbSpecific_SelectedIndexChanged);
+            // 
+            // Cmd_cmbMin
+            // 
+            this.Cmd_cmbMin.BackColor = SystemColors.Window;
+            this.Cmd_cmbMin.FormattingEnabled = true;
+            this.Cmd_cmbMin.Location = new Point(100, 14);
+            this.Cmd_cmbMin.Name = "Cmd_cmbMin";
+            this.Cmd_cmbMin.Size = new Size(81, 21);
+            this.Cmd_cmbMin.TabIndex = 22;
+            this.Cmd_cmbMin.SelectedIndexChanged += new EventHandler(this.Cmd_cmbMin_SelectedIndexChanged);
+            // 
+            // Cmd_lblMin
+            // 
+            this.Cmd_lblMin.AutoSize = true;
+            this.Cmd_lblMin.Location = new Point(10, 17);
+            this.Cmd_lblMin.Name = "Cmd_lblMin";
+            this.Cmd_lblMin.Size = new Size(89, 13);
+            this.Cmd_lblMin.TabIndex = 16;
+            this.Cmd_lblMin.Text = "Min rank needed:";
+            // 
+            // Cmd_lblDisallow
+            // 
+            this.Cmd_lblDisallow.AutoSize = true;
+            this.Cmd_lblDisallow.Location = new Point(10, 71);
+            this.Cmd_lblDisallow.Name = "Cmd_lblDisallow";
+            this.Cmd_lblDisallow.Size = new Size(91, 13);
+            this.Cmd_lblDisallow.TabIndex = 18;
+            this.Cmd_lblDisallow.Text = "Specifically allow:";
+            // 
+            // Cmd_lblAllow
+            // 
+            this.Cmd_lblAllow.AutoSize = true;
+            this.Cmd_lblAllow.Location = new Point(10, 44);
+            this.Cmd_lblAllow.Name = "Cmd_lblAllow";
+            this.Cmd_lblAllow.Size = new Size(80, 13);
+            this.Cmd_lblAllow.TabIndex = 17;
+            this.Cmd_lblAllow.Text = "But don\'t allow:";
+            // 
+            // Cmd_btnCustom
+            // 
+            this.Cmd_btnCustom.Location = new Point(370, 485);
+            this.Cmd_btnCustom.Name = "Cmd_btnCustom";
+            this.Cmd_btnCustom.Size = new Size(121, 29);
+            this.Cmd_btnCustom.TabIndex = 26;
+            this.Cmd_btnCustom.Text = "Custom commands";
+            this.Cmd_btnCustom.UseVisualStyleBackColor = true;
+            this.Cmd_btnCustom.Click += new EventHandler(this.Cmd_btnCustom_Click);
+            // 
+            // Cmd_btnHelp
+            // 
+            this.Cmd_btnHelp.Location = new Point(6, 485);
+            this.Cmd_btnHelp.Name = "Cmd_btnHelp";
+            this.Cmd_btnHelp.Size = new Size(121, 29);
+            this.Cmd_btnHelp.TabIndex = 25;
+            this.Cmd_btnHelp.Text = "Help information";
+            this.Cmd_btnHelp.UseVisualStyleBackColor = true;
+            this.Cmd_btnHelp.Click += new EventHandler(this.Cmd_btnHelp_Click);
+            // 
+            // Cmd_list
+            // 
+            this.Cmd_list.BackColor = SystemColors.Window;
+            this.Cmd_list.ForeColor = SystemColors.WindowText;
+            this.Cmd_list.FormattingEnabled = true;
+            this.Cmd_list.Location = new Point(6, 6);
+            this.Cmd_list.Name = "Cmd_list";
+            this.Cmd_list.Size = new Size(121, 472);
+            this.Cmd_list.TabIndex = 24;
+            this.Cmd_list.SelectedIndexChanged += new EventHandler(this.Cmd_list_SelectedIndexChanged);
+            // 
+            // PageSecurity
+            // 
+            this.PageSecurity.BackColor = SystemColors.Control;
+            this.PageSecurity.Controls.Add(this.Sec_grpChat);
+            this.PageSecurity.Controls.Add(this.Sec_grpCmd);
+            this.PageSecurity.Controls.Add(this.Sec_grpIP);
+            this.PageSecurity.Controls.Add(this.Sec_grpOther);
+            this.PageSecurity.Controls.Add(this.Sec_grpBlocks);
+            this.PageSecurity.Location = new Point(4, 22);
+            this.PageSecurity.Name = "PageSecurity";
+            this.PageSecurity.Padding = new Padding(3);
+            this.PageSecurity.Size = new Size(498, 521);
+            this.PageSecurity.TabIndex = 7;
+            this.PageSecurity.Text = "Security";
+            // 
+            // Sec_grpChat
+            // 
+            this.Sec_grpChat.Controls.Add(this.Sec_cbChatAuto);
+            this.Sec_grpChat.Controls.Add(this.Sec_lblChatOnMute);
+            this.Sec_grpChat.Controls.Add(this.Sec_numChatMsgs);
+            this.Sec_grpChat.Controls.Add(this.Sec_lblChatOnMsgs);
+            this.Sec_grpChat.Controls.Add(this.Sec_numChatSecs);
+            this.Sec_grpChat.Controls.Add(this.Sec_lblChatForMute);
+            this.Sec_grpChat.Controls.Add(this.Sec_numChatMute);
+            this.Sec_grpChat.Location = new Point(14, 6);
+            this.Sec_grpChat.Name = "Sec_grpChat";
+            this.Sec_grpChat.Size = new Size(238, 111);
+            this.Sec_grpChat.TabIndex = 1;
+            this.Sec_grpChat.TabStop = false;
+            this.Sec_grpChat.Text = "Chat spam control";
+            // 
+            // Sec_lblChatOnMute
+            // 
+            this.Sec_lblChatOnMute.AutoSize = true;
+            this.Sec_lblChatOnMute.Location = new Point(6, 48);
+            this.Sec_lblChatOnMute.Name = "Sec_lblChatOnMute";
+            this.Sec_lblChatOnMute.Size = new Size(46, 13);
+            this.Sec_lblChatOnMute.TabIndex = 25;
+            this.Sec_lblChatOnMute.Text = "Mute on";
+            // 
+            // Sec_numChatMsgs
+            // 
+            this.Sec_numChatMsgs.BackColor = SystemColors.Window;
+            this.Sec_numChatMsgs.Location = new Point(53, 45);
+            this.Sec_numChatMsgs.Maximum = new decimal(new int[] {
                                     10000,
                                     0,
                                     0,
                                     0});
-            this.sec_numChatMsgs.Name = "sec_numChatMsgs";
-            this.sec_numChatMsgs.Size = new System.Drawing.Size(37, 21);
-            this.sec_numChatMsgs.TabIndex = 30;
-            this.sec_numChatMsgs.Value = new decimal(new int[] {
+            this.Sec_numChatMsgs.Name = "Sec_numChatMsgs";
+            this.Sec_numChatMsgs.Size = new Size(37, 21);
+            this.Sec_numChatMsgs.TabIndex = 30;
+            this.Sec_numChatMsgs.Value = new decimal(new int[] {
                                     8,
                                     0,
                                     0,
                                     0});
             // 
-            // sec_lblChatOnMsgs
+            // Sec_lblChatOnMsgs
             // 
-            this.sec_lblChatOnMsgs.AutoSize = true;
-            this.sec_lblChatOnMsgs.Location = new System.Drawing.Point(91, 48);
-            this.sec_lblChatOnMsgs.Name = "sec_lblChatOnMsgs";
-            this.sec_lblChatOnMsgs.Size = new System.Drawing.Size(65, 13);
-            this.sec_lblChatOnMsgs.TabIndex = 31;
-            this.sec_lblChatOnMsgs.Text = "messages in";
+            this.Sec_lblChatOnMsgs.AutoSize = true;
+            this.Sec_lblChatOnMsgs.Location = new Point(91, 48);
+            this.Sec_lblChatOnMsgs.Name = "Sec_lblChatOnMsgs";
+            this.Sec_lblChatOnMsgs.Size = new Size(65, 13);
+            this.Sec_lblChatOnMsgs.TabIndex = 31;
+            this.Sec_lblChatOnMsgs.Text = "messages in";
             // 
-            // sec_numChatSecs
+            // Sec_numChatSecs
             // 
-            this.sec_numChatSecs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numChatSecs.Location = new System.Drawing.Point(156, 45);
-            this.sec_numChatSecs.Name = "sec_numChatSecs";
-            this.sec_numChatSecs.Seconds = ((long)(5));
-            this.sec_numChatSecs.Size = new System.Drawing.Size(62, 21);
-            this.sec_numChatSecs.TabIndex = 34;
-            this.sec_numChatSecs.Text = "5s";
-            this.sec_numChatSecs.Value = System.TimeSpan.Parse("00:00:05");
+            this.Sec_numChatSecs.BackColor = SystemColors.Window;
+            this.Sec_numChatSecs.Location = new Point(156, 45);
+            this.Sec_numChatSecs.Name = "Sec_numChatSecs";
+            this.Sec_numChatSecs.Seconds = ((long)(5));
+            this.Sec_numChatSecs.Size = new Size(62, 21);
+            this.Sec_numChatSecs.TabIndex = 34;
+            this.Sec_numChatSecs.Text = "5s";
+            this.Sec_numChatSecs.Value = TimeSpan.Parse("00:00:05");
             // 
-            // sec_lblChatForMute
+            // Sec_lblChatForMute
             // 
-            this.sec_lblChatForMute.AutoSize = true;
-            this.sec_lblChatForMute.Location = new System.Drawing.Point(6, 83);
-            this.sec_lblChatForMute.Name = "sec_lblChatForMute";
-            this.sec_lblChatForMute.Size = new System.Drawing.Size(47, 13);
-            this.sec_lblChatForMute.TabIndex = 25;
-            this.sec_lblChatForMute.Text = "Mute for";
+            this.Sec_lblChatForMute.AutoSize = true;
+            this.Sec_lblChatForMute.Location = new Point(6, 83);
+            this.Sec_lblChatForMute.Name = "Sec_lblChatForMute";
+            this.Sec_lblChatForMute.Size = new Size(47, 13);
+            this.Sec_lblChatForMute.TabIndex = 25;
+            this.Sec_lblChatForMute.Text = "Mute for";
             // 
-            // sec_numChatMute
+            // Sec_numChatMute
             // 
-            this.sec_numChatMute.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numChatMute.Location = new System.Drawing.Point(53, 79);
-            this.sec_numChatMute.Name = "sec_numChatMute";
-            this.sec_numChatMute.Seconds = ((long)(60));
-            this.sec_numChatMute.Size = new System.Drawing.Size(62, 21);
-            this.sec_numChatMute.TabIndex = 32;
-            this.sec_numChatMute.Text = "1m";
-            this.sec_numChatMute.Value = System.TimeSpan.Parse("00:01:00");
+            this.Sec_numChatMute.BackColor = SystemColors.Window;
+            this.Sec_numChatMute.Location = new Point(53, 79);
+            this.Sec_numChatMute.Name = "Sec_numChatMute";
+            this.Sec_numChatMute.Seconds = ((long)(60));
+            this.Sec_numChatMute.Size = new Size(62, 21);
+            this.Sec_numChatMute.TabIndex = 32;
+            this.Sec_numChatMute.Text = "1m";
+            this.Sec_numChatMute.Value = TimeSpan.Parse("00:01:00");
             // 
-            // sec_grpCmd
+            // Sec_grpCmd
             // 
-            this.sec_grpCmd.Controls.Add(this.sec_cbCmdAuto);
-            this.sec_grpCmd.Controls.Add(this.sec_lblCmdOnMute);
-            this.sec_grpCmd.Controls.Add(this.sec_numCmdMsgs);
-            this.sec_grpCmd.Controls.Add(this.sec_lblCmdOnMsgs);
-            this.sec_grpCmd.Controls.Add(this.sec_numCmdSecs);
-            this.sec_grpCmd.Controls.Add(this.sec_lblCmdForMute);
-            this.sec_grpCmd.Controls.Add(this.sec_numCmdMute);
-            this.sec_grpCmd.Location = new System.Drawing.Point(14, 123);
-            this.sec_grpCmd.Name = "sec_grpCmd";
-            this.sec_grpCmd.Size = new System.Drawing.Size(238, 110);
-            this.sec_grpCmd.TabIndex = 35;
-            this.sec_grpCmd.TabStop = false;
-            this.sec_grpCmd.Text = "Command spam control";
+            this.Sec_grpCmd.Controls.Add(this.Sec_cbCmdAuto);
+            this.Sec_grpCmd.Controls.Add(this.Sec_lblCmdOnMute);
+            this.Sec_grpCmd.Controls.Add(this.Sec_numCmdMsgs);
+            this.Sec_grpCmd.Controls.Add(this.Sec_lblCmdOnMsgs);
+            this.Sec_grpCmd.Controls.Add(this.Sec_numCmdSecs);
+            this.Sec_grpCmd.Controls.Add(this.Sec_lblCmdForMute);
+            this.Sec_grpCmd.Controls.Add(this.Sec_numCmdMute);
+            this.Sec_grpCmd.Location = new Point(14, 123);
+            this.Sec_grpCmd.Name = "Sec_grpCmd";
+            this.Sec_grpCmd.Size = new Size(238, 110);
+            this.Sec_grpCmd.TabIndex = 35;
+            this.Sec_grpCmd.TabStop = false;
+            this.Sec_grpCmd.Text = "Command spam control";
             // 
-            // sec_cbCmdAuto
+            // Sec_cbCmdAuto
             // 
-            this.sec_cbCmdAuto.AutoSize = true;
-            this.sec_cbCmdAuto.Location = new System.Drawing.Point(10, 20);
-            this.sec_cbCmdAuto.Name = "sec_cbCmdAuto";
-            this.sec_cbCmdAuto.Size = new System.Drawing.Size(149, 17);
-            this.sec_cbCmdAuto.TabIndex = 24;
-            this.sec_cbCmdAuto.Text = "Enable automatic blocking";
-            this.sec_cbCmdAuto.UseVisualStyleBackColor = true;
-            this.sec_cbCmdAuto.CheckedChanged += new System.EventHandler(this.sec_cbCmdAuto_Checked);
+            this.Sec_cbCmdAuto.AutoSize = true;
+            this.Sec_cbCmdAuto.Location = new Point(10, 20);
+            this.Sec_cbCmdAuto.Name = "Sec_cbCmdAuto";
+            this.Sec_cbCmdAuto.Size = new Size(149, 17);
+            this.Sec_cbCmdAuto.TabIndex = 24;
+            this.Sec_cbCmdAuto.Text = "Enable automatic blocking";
+            this.Sec_cbCmdAuto.UseVisualStyleBackColor = true;
+            this.Sec_cbCmdAuto.CheckedChanged += new EventHandler(this.Sec_cbCmdAuto_Checked);
             // 
-            // sec_lblCmdOnMute
+            // Sec_lblCmdOnMute
             // 
-            this.sec_lblCmdOnMute.AutoSize = true;
-            this.sec_lblCmdOnMute.Location = new System.Drawing.Point(6, 48);
-            this.sec_lblCmdOnMute.Name = "sec_lblCmdOnMute";
-            this.sec_lblCmdOnMute.Size = new System.Drawing.Size(46, 13);
-            this.sec_lblCmdOnMute.TabIndex = 25;
-            this.sec_lblCmdOnMute.Text = "Block on";
+            this.Sec_lblCmdOnMute.AutoSize = true;
+            this.Sec_lblCmdOnMute.Location = new Point(6, 48);
+            this.Sec_lblCmdOnMute.Name = "Sec_lblCmdOnMute";
+            this.Sec_lblCmdOnMute.Size = new Size(46, 13);
+            this.Sec_lblCmdOnMute.TabIndex = 25;
+            this.Sec_lblCmdOnMute.Text = "Block on";
             // 
-            // sec_numCmdMsgs
+            // Sec_numCmdMsgs
             // 
-            this.sec_numCmdMsgs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numCmdMsgs.Location = new System.Drawing.Point(53, 45);
-            this.sec_numCmdMsgs.Maximum = new decimal(new int[] {
+            this.Sec_numCmdMsgs.BackColor = SystemColors.Window;
+            this.Sec_numCmdMsgs.Location = new Point(53, 45);
+            this.Sec_numCmdMsgs.Maximum = new decimal(new int[] {
                                     10000,
                                     0,
                                     0,
                                     0});
-            this.sec_numCmdMsgs.Name = "sec_numCmdMsgs";
-            this.sec_numCmdMsgs.Size = new System.Drawing.Size(37, 21);
-            this.sec_numCmdMsgs.TabIndex = 30;
-            this.sec_numCmdMsgs.Value = new decimal(new int[] {
+            this.Sec_numCmdMsgs.Name = "Sec_numCmdMsgs";
+            this.Sec_numCmdMsgs.Size = new Size(37, 21);
+            this.Sec_numCmdMsgs.TabIndex = 30;
+            this.Sec_numCmdMsgs.Value = new decimal(new int[] {
                                     25,
                                     0,
                                     0,
                                     0});
             // 
-            // sec_lblCmdOnMsgs
+            // Sec_lblCmdOnMsgs
             // 
-            this.sec_lblCmdOnMsgs.AutoSize = true;
-            this.sec_lblCmdOnMsgs.Location = new System.Drawing.Point(91, 48);
-            this.sec_lblCmdOnMsgs.Name = "sec_lblCmdOnMsgs";
-            this.sec_lblCmdOnMsgs.Size = new System.Drawing.Size(70, 13);
-            this.sec_lblCmdOnMsgs.TabIndex = 31;
-            this.sec_lblCmdOnMsgs.Text = "commands in";
+            this.Sec_lblCmdOnMsgs.AutoSize = true;
+            this.Sec_lblCmdOnMsgs.Location = new Point(91, 48);
+            this.Sec_lblCmdOnMsgs.Name = "Sec_lblCmdOnMsgs";
+            this.Sec_lblCmdOnMsgs.Size = new Size(70, 13);
+            this.Sec_lblCmdOnMsgs.TabIndex = 31;
+            this.Sec_lblCmdOnMsgs.Text = "commands in";
             // 
-            // sec_numCmdSecs
+            // Sec_numCmdSecs
             // 
-            this.sec_numCmdSecs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numCmdSecs.Location = new System.Drawing.Point(161, 45);
-            this.sec_numCmdSecs.Name = "sec_numCmdSecs";
-            this.sec_numCmdSecs.Seconds = ((long)(1));
-            this.sec_numCmdSecs.Size = new System.Drawing.Size(62, 21);
-            this.sec_numCmdSecs.TabIndex = 34;
-            this.sec_numCmdSecs.Text = "1s";
-            this.sec_numCmdSecs.Value = System.TimeSpan.Parse("00:00:01");
+            this.Sec_numCmdSecs.BackColor = SystemColors.Window;
+            this.Sec_numCmdSecs.Location = new Point(161, 45);
+            this.Sec_numCmdSecs.Name = "Sec_numCmdSecs";
+            this.Sec_numCmdSecs.Seconds = ((long)(1));
+            this.Sec_numCmdSecs.Size = new Size(62, 21);
+            this.Sec_numCmdSecs.TabIndex = 34;
+            this.Sec_numCmdSecs.Text = "1s";
+            this.Sec_numCmdSecs.Value = TimeSpan.Parse("00:00:01");
             // 
-            // sec_lblCmdForMute
+            // Sec_lblCmdForMute
             // 
-            this.sec_lblCmdForMute.AutoSize = true;
-            this.sec_lblCmdForMute.Location = new System.Drawing.Point(6, 83);
-            this.sec_lblCmdForMute.Name = "sec_lblCmdForMute";
-            this.sec_lblCmdForMute.Size = new System.Drawing.Size(47, 13);
-            this.sec_lblCmdForMute.TabIndex = 25;
-            this.sec_lblCmdForMute.Text = "Block for";
+            this.Sec_lblCmdForMute.AutoSize = true;
+            this.Sec_lblCmdForMute.Location = new Point(6, 83);
+            this.Sec_lblCmdForMute.Name = "Sec_lblCmdForMute";
+            this.Sec_lblCmdForMute.Size = new Size(47, 13);
+            this.Sec_lblCmdForMute.TabIndex = 25;
+            this.Sec_lblCmdForMute.Text = "Block for";
             // 
-            // sec_numCmdMute
+            // Sec_numCmdMute
             // 
-            this.sec_numCmdMute.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numCmdMute.Location = new System.Drawing.Point(53, 79);
-            this.sec_numCmdMute.Name = "sec_numCmdMute";
-            this.sec_numCmdMute.Seconds = ((long)(60));
-            this.sec_numCmdMute.Size = new System.Drawing.Size(62, 21);
-            this.sec_numCmdMute.TabIndex = 32;
-            this.sec_numCmdMute.Text = "1m";
-            this.sec_numCmdMute.Value = System.TimeSpan.Parse("00:01:00");
+            this.Sec_numCmdMute.BackColor = SystemColors.Window;
+            this.Sec_numCmdMute.Location = new Point(53, 79);
+            this.Sec_numCmdMute.Name = "Sec_numCmdMute";
+            this.Sec_numCmdMute.Seconds = ((long)(60));
+            this.Sec_numCmdMute.Size = new Size(62, 21);
+            this.Sec_numCmdMute.TabIndex = 32;
+            this.Sec_numCmdMute.Text = "1m";
+            this.Sec_numCmdMute.Value = TimeSpan.Parse("00:01:00");
             // 
-            // sec_grpIP
+            // Sec_grpIP
             // 
-            this.sec_grpIP.Controls.Add(this.sec_cbIPAuto);
-            this.sec_grpIP.Controls.Add(this.sec_lblIPOnMute);
-            this.sec_grpIP.Controls.Add(this.sec_numIPMsgs);
-            this.sec_grpIP.Controls.Add(this.sec_lblIPOnMsgs);
-            this.sec_grpIP.Controls.Add(this.sec_numIPSecs);
-            this.sec_grpIP.Controls.Add(this.sec_lblIPForMute);
-            this.sec_grpIP.Controls.Add(this.sec_numIPMute);
-            this.sec_grpIP.Location = new System.Drawing.Point(14, 240);
-            this.sec_grpIP.Name = "sec_grpIP";
-            this.sec_grpIP.Size = new System.Drawing.Size(238, 110);
-            this.sec_grpIP.TabIndex = 37;
-            this.sec_grpIP.TabStop = false;
-            this.sec_grpIP.Text = "Connection spam control";
+            this.Sec_grpIP.Controls.Add(this.Sec_cbIPAuto);
+            this.Sec_grpIP.Controls.Add(this.Sec_lblIPOnMute);
+            this.Sec_grpIP.Controls.Add(this.Sec_numIPMsgs);
+            this.Sec_grpIP.Controls.Add(this.Sec_lblIPOnMsgs);
+            this.Sec_grpIP.Controls.Add(this.Sec_numIPSecs);
+            this.Sec_grpIP.Controls.Add(this.Sec_lblIPForMute);
+            this.Sec_grpIP.Controls.Add(this.Sec_numIPMute);
+            this.Sec_grpIP.Location = new Point(14, 240);
+            this.Sec_grpIP.Name = "Sec_grpIP";
+            this.Sec_grpIP.Size = new Size(238, 110);
+            this.Sec_grpIP.TabIndex = 37;
+            this.Sec_grpIP.TabStop = false;
+            this.Sec_grpIP.Text = "Connection spam control";
             // 
-            // sec_cbIPAuto
+            // Sec_cbIPAuto
             // 
-            this.sec_cbIPAuto.AutoSize = true;
-            this.sec_cbIPAuto.Location = new System.Drawing.Point(10, 20);
-            this.sec_cbIPAuto.Name = "sec_cbIPAuto";
-            this.sec_cbIPAuto.Size = new System.Drawing.Size(149, 17);
-            this.sec_cbIPAuto.TabIndex = 24;
-            this.sec_cbIPAuto.Text = "Enable automatic blocking";
-            this.sec_cbIPAuto.UseVisualStyleBackColor = true;
-            this.sec_cbIPAuto.CheckedChanged += new System.EventHandler(this.sec_cbIPAuto_Checked);
+            this.Sec_cbIPAuto.AutoSize = true;
+            this.Sec_cbIPAuto.Location = new Point(10, 20);
+            this.Sec_cbIPAuto.Name = "Sec_cbIPAuto";
+            this.Sec_cbIPAuto.Size = new Size(149, 17);
+            this.Sec_cbIPAuto.TabIndex = 24;
+            this.Sec_cbIPAuto.Text = "Enable automatic blocking";
+            this.Sec_cbIPAuto.UseVisualStyleBackColor = true;
+            this.Sec_cbIPAuto.CheckedChanged += new EventHandler(this.Sec_cbIPAuto_Checked);
             // 
-            // sec_lblIPOnMute
+            // Sec_lblIPOnMute
             // 
-            this.sec_lblIPOnMute.AutoSize = true;
-            this.sec_lblIPOnMute.Location = new System.Drawing.Point(6, 48);
-            this.sec_lblIPOnMute.Name = "sec_lblIPOnMute";
-            this.sec_lblIPOnMute.Size = new System.Drawing.Size(46, 13);
-            this.sec_lblIPOnMute.TabIndex = 25;
-            this.sec_lblIPOnMute.Text = "Block on";
+            this.Sec_lblIPOnMute.AutoSize = true;
+            this.Sec_lblIPOnMute.Location = new Point(6, 48);
+            this.Sec_lblIPOnMute.Name = "Sec_lblIPOnMute";
+            this.Sec_lblIPOnMute.Size = new Size(46, 13);
+            this.Sec_lblIPOnMute.TabIndex = 25;
+            this.Sec_lblIPOnMute.Text = "Block on";
             // 
-            // sec_numIPMsgs
+            // Sec_numIPMsgs
             // 
-            this.sec_numIPMsgs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numIPMsgs.Location = new System.Drawing.Point(53, 45);
-            this.sec_numIPMsgs.Maximum = new decimal(new int[] {
+            this.Sec_numIPMsgs.BackColor = SystemColors.Window;
+            this.Sec_numIPMsgs.Location = new Point(53, 45);
+            this.Sec_numIPMsgs.Maximum = new decimal(new int[] {
                                     10000,
                                     0,
                                     0,
                                     0});
-            this.sec_numIPMsgs.Name = "sec_numIPMsgs";
-            this.sec_numIPMsgs.Size = new System.Drawing.Size(37, 21);
-            this.sec_numIPMsgs.TabIndex = 30;
-            this.sec_numIPMsgs.Value = new decimal(new int[] {
+            this.Sec_numIPMsgs.Name = "Sec_numIPMsgs";
+            this.Sec_numIPMsgs.Size = new Size(37, 21);
+            this.Sec_numIPMsgs.TabIndex = 30;
+            this.Sec_numIPMsgs.Value = new decimal(new int[] {
                                     25,
                                     0,
                                     0,
                                     0});
             // 
-            // sec_lblIPOnMsgs
+            // Sec_lblIPOnMsgs
             // 
-            this.sec_lblIPOnMsgs.AutoSize = true;
-            this.sec_lblIPOnMsgs.Location = new System.Drawing.Point(91, 48);
-            this.sec_lblIPOnMsgs.Name = "sec_lblIPOnMsgs";
-            this.sec_lblIPOnMsgs.Size = new System.Drawing.Size(75, 13);
-            this.sec_lblIPOnMsgs.TabIndex = 31;
-            this.sec_lblIPOnMsgs.Text = "connections in";
+            this.Sec_lblIPOnMsgs.AutoSize = true;
+            this.Sec_lblIPOnMsgs.Location = new Point(91, 48);
+            this.Sec_lblIPOnMsgs.Name = "Sec_lblIPOnMsgs";
+            this.Sec_lblIPOnMsgs.Size = new Size(75, 13);
+            this.Sec_lblIPOnMsgs.TabIndex = 31;
+            this.Sec_lblIPOnMsgs.Text = "connections in";
             // 
-            // sec_numIPSecs
+            // Sec_numIPSecs
             // 
-            this.sec_numIPSecs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numIPSecs.Location = new System.Drawing.Point(166, 45);
-            this.sec_numIPSecs.Name = "sec_numIPSecs";
-            this.sec_numIPSecs.Seconds = ((long)(1));
-            this.sec_numIPSecs.Size = new System.Drawing.Size(62, 21);
-            this.sec_numIPSecs.TabIndex = 34;
-            this.sec_numIPSecs.Text = "1s";
-            this.sec_numIPSecs.Value = System.TimeSpan.Parse("00:00:01");
+            this.Sec_numIPSecs.BackColor = SystemColors.Window;
+            this.Sec_numIPSecs.Location = new Point(166, 45);
+            this.Sec_numIPSecs.Name = "Sec_numIPSecs";
+            this.Sec_numIPSecs.Seconds = ((long)(1));
+            this.Sec_numIPSecs.Size = new Size(62, 21);
+            this.Sec_numIPSecs.TabIndex = 34;
+            this.Sec_numIPSecs.Text = "1s";
+            this.Sec_numIPSecs.Value = TimeSpan.Parse("00:00:01");
             // 
-            // sec_lblIPForMute
+            // Sec_lblIPForMute
             // 
-            this.sec_lblIPForMute.AutoSize = true;
-            this.sec_lblIPForMute.Location = new System.Drawing.Point(6, 83);
-            this.sec_lblIPForMute.Name = "sec_lblIPForMute";
-            this.sec_lblIPForMute.Size = new System.Drawing.Size(47, 13);
-            this.sec_lblIPForMute.TabIndex = 25;
-            this.sec_lblIPForMute.Text = "Block for";
+            this.Sec_lblIPForMute.AutoSize = true;
+            this.Sec_lblIPForMute.Location = new Point(6, 83);
+            this.Sec_lblIPForMute.Name = "Sec_lblIPForMute";
+            this.Sec_lblIPForMute.Size = new Size(47, 13);
+            this.Sec_lblIPForMute.TabIndex = 25;
+            this.Sec_lblIPForMute.Text = "Block for";
             // 
-            // sec_numIPMute
+            // Sec_numIPMute
             //
-            this.sec_numIPMute.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numIPMute.Location = new System.Drawing.Point(53, 79);
-            this.sec_numIPMute.Name = "sec_numIPMute";
-            this.sec_numIPMute.Seconds = ((long)(300));
-            this.sec_numIPMute.Size = new System.Drawing.Size(62, 21);
-            this.sec_numIPMute.TabIndex = 32;
-            this.sec_numIPMute.Text = "5m";
-            this.sec_numIPMute.Value = System.TimeSpan.Parse("00:05:00");
+            this.Sec_numIPMute.BackColor = SystemColors.Window;
+            this.Sec_numIPMute.Location = new Point(53, 79);
+            this.Sec_numIPMute.Name = "Sec_numIPMute";
+            this.Sec_numIPMute.Seconds = ((long)(300));
+            this.Sec_numIPMute.Size = new Size(62, 21);
+            this.Sec_numIPMute.TabIndex = 32;
+            this.Sec_numIPMute.Text = "5m";
+            this.Sec_numIPMute.Value = TimeSpan.Parse("00:05:00");
             // 
-            // sec_grpOther
+            // Sec_grpOther
             // 
-            this.sec_grpOther.Controls.Add(this.sec_lblRank);
-            this.sec_grpOther.Controls.Add(this.sec_cbWhitelist);
-            this.sec_grpOther.Controls.Add(this.sec_cbLogNotes);
-            this.sec_grpOther.Controls.Add(this.sec_cbVerifyAdmins);
-            this.sec_grpOther.Controls.Add(this.sec_cmbVerifyRank);
-            this.sec_grpOther.Location = new System.Drawing.Point(264, 6);
-            this.sec_grpOther.Name = "sec_grpOther";
-            this.sec_grpOther.Size = new System.Drawing.Size(217, 138);
-            this.sec_grpOther.TabIndex = 2;
-            this.sec_grpOther.TabStop = false;
-            this.sec_grpOther.Text = "Other settings";
+            this.Sec_grpOther.Controls.Add(this.Sec_lblRank);
+            this.Sec_grpOther.Controls.Add(this.Sec_cbWhitelist);
+            this.Sec_grpOther.Controls.Add(this.Sec_cbLogNotes);
+            this.Sec_grpOther.Controls.Add(this.Sec_cbVerifyAdmins);
+            this.Sec_grpOther.Controls.Add(this.Sec_cmbVerifyRank);
+            this.Sec_grpOther.Location = new Point(264, 6);
+            this.Sec_grpOther.Name = "Sec_grpOther";
+            this.Sec_grpOther.Size = new Size(217, 138);
+            this.Sec_grpOther.TabIndex = 2;
+            this.Sec_grpOther.TabStop = false;
+            this.Sec_grpOther.Text = "Other settings";
             // 
-            // sec_lblRank
+            // Sec_lblRank
             // 
-            this.sec_lblRank.AutoSize = true;
-            this.sec_lblRank.Location = new System.Drawing.Point(33, 98);
-            this.sec_lblRank.Name = "sec_lblRank";
-            this.sec_lblRank.Size = new System.Drawing.Size(33, 13);
-            this.sec_lblRank.TabIndex = 24;
-            this.sec_lblRank.Text = "Rank:";
+            this.Sec_lblRank.AutoSize = true;
+            this.Sec_lblRank.Location = new Point(33, 98);
+            this.Sec_lblRank.Name = "Sec_lblRank";
+            this.Sec_lblRank.Size = new Size(33, 13);
+            this.Sec_lblRank.TabIndex = 24;
+            this.Sec_lblRank.Text = "Rank:";
             // 
-            // sec_grpBlocks
+            // Sec_grpBlocks
             // 
-            this.sec_grpBlocks.Controls.Add(this.sec_cbBlocksAuto);
-            this.sec_grpBlocks.Controls.Add(this.sec_lblBlocksOnMute);
-            this.sec_grpBlocks.Controls.Add(this.sec_numBlocksMsgs);
-            this.sec_grpBlocks.Controls.Add(this.sec_lblBlocksOnMsgs);
-            this.sec_grpBlocks.Controls.Add(this.sec_numBlocksSecs);
-            this.sec_grpBlocks.Location = new System.Drawing.Point(264, 150);
-            this.sec_grpBlocks.Name = "sec_grpBlocks";
-            this.sec_grpBlocks.Size = new System.Drawing.Size(217, 83);
-            this.sec_grpBlocks.TabIndex = 36;
-            this.sec_grpBlocks.TabStop = false;
-            this.sec_grpBlocks.Text = "Block spam control";
+            this.Sec_grpBlocks.Controls.Add(this.Sec_cbBlocksAuto);
+            this.Sec_grpBlocks.Controls.Add(this.Sec_lblBlocksOnMute);
+            this.Sec_grpBlocks.Controls.Add(this.Sec_numBlocksMsgs);
+            this.Sec_grpBlocks.Controls.Add(this.Sec_lblBlocksOnMsgs);
+            this.Sec_grpBlocks.Controls.Add(this.Sec_numBlocksSecs);
+            this.Sec_grpBlocks.Location = new Point(264, 150);
+            this.Sec_grpBlocks.Name = "Sec_grpBlocks";
+            this.Sec_grpBlocks.Size = new Size(217, 83);
+            this.Sec_grpBlocks.TabIndex = 36;
+            this.Sec_grpBlocks.TabStop = false;
+            this.Sec_grpBlocks.Text = "Block spam control";
             // 
-            // sec_cbBlocksAuto
+            // Sec_cbBlocksAuto
             // 
-            this.sec_cbBlocksAuto.AutoSize = true;
-            this.sec_cbBlocksAuto.Location = new System.Drawing.Point(10, 20);
-            this.sec_cbBlocksAuto.Name = "sec_cbBlocksAuto";
-            this.sec_cbBlocksAuto.Size = new System.Drawing.Size(142, 17);
-            this.sec_cbBlocksAuto.TabIndex = 24;
-            this.sec_cbBlocksAuto.Text = "Enable automatic kicking";
-            this.sec_cbBlocksAuto.UseVisualStyleBackColor = true;
-            this.sec_cbBlocksAuto.CheckedChanged += new System.EventHandler(this.sec_cbBlocksAuto_Checked);
+            this.Sec_cbBlocksAuto.AutoSize = true;
+            this.Sec_cbBlocksAuto.Location = new Point(10, 20);
+            this.Sec_cbBlocksAuto.Name = "Sec_cbBlocksAuto";
+            this.Sec_cbBlocksAuto.Size = new Size(142, 17);
+            this.Sec_cbBlocksAuto.TabIndex = 24;
+            this.Sec_cbBlocksAuto.Text = "Enable automatic kicking";
+            this.Sec_cbBlocksAuto.UseVisualStyleBackColor = true;
+            this.Sec_cbBlocksAuto.CheckedChanged += new EventHandler(this.Sec_cbBlocksAuto_Checked);
             // 
-            // sec_lblBlocksOnMute
+            // Sec_lblBlocksOnMute
             // 
-            this.sec_lblBlocksOnMute.AutoSize = true;
-            this.sec_lblBlocksOnMute.Location = new System.Drawing.Point(6, 48);
-            this.sec_lblBlocksOnMute.Name = "sec_lblBlocksOnMute";
-            this.sec_lblBlocksOnMute.Size = new System.Drawing.Size(40, 13);
-            this.sec_lblBlocksOnMute.TabIndex = 25;
-            this.sec_lblBlocksOnMute.Text = "Kick on";
+            this.Sec_lblBlocksOnMute.AutoSize = true;
+            this.Sec_lblBlocksOnMute.Location = new Point(6, 48);
+            this.Sec_lblBlocksOnMute.Name = "Sec_lblBlocksOnMute";
+            this.Sec_lblBlocksOnMute.Size = new Size(40, 13);
+            this.Sec_lblBlocksOnMute.TabIndex = 25;
+            this.Sec_lblBlocksOnMute.Text = "Kick on";
             // 
-            // sec_numBlocksMsgs
+            // Sec_numBlocksMsgs
             // 
-            this.sec_numBlocksMsgs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numBlocksMsgs.Location = new System.Drawing.Point(46, 45);
-            this.sec_numBlocksMsgs.Maximum = new decimal(new int[] {
+            this.Sec_numBlocksMsgs.BackColor = SystemColors.Window;
+            this.Sec_numBlocksMsgs.Location = new Point(46, 45);
+            this.Sec_numBlocksMsgs.Maximum = new decimal(new int[] {
                                     10000,
                                     0,
                                     0,
                                     0});
-            this.sec_numBlocksMsgs.Name = "sec_numBlocksMsgs";
-            this.sec_numBlocksMsgs.Size = new System.Drawing.Size(46, 21);
-            this.sec_numBlocksMsgs.TabIndex = 30;
-            this.sec_numBlocksMsgs.Value = new decimal(new int[] {
+            this.Sec_numBlocksMsgs.Name = "Sec_numBlocksMsgs";
+            this.Sec_numBlocksMsgs.Size = new Size(46, 21);
+            this.Sec_numBlocksMsgs.TabIndex = 30;
+            this.Sec_numBlocksMsgs.Value = new decimal(new int[] {
                                     200,
                                     0,
                                     0,
                                     0});
             // 
-            // sec_lblBlocksOnMsgs
+            // Sec_lblBlocksOnMsgs
             // 
-            this.sec_lblBlocksOnMsgs.AutoSize = true;
-            this.sec_lblBlocksOnMsgs.Location = new System.Drawing.Point(93, 48);
-            this.sec_lblBlocksOnMsgs.Name = "sec_lblBlocksOnMsgs";
-            this.sec_lblBlocksOnMsgs.Size = new System.Drawing.Size(48, 13);
-            this.sec_lblBlocksOnMsgs.TabIndex = 31;
-            this.sec_lblBlocksOnMsgs.Text = "blocks in";
+            this.Sec_lblBlocksOnMsgs.AutoSize = true;
+            this.Sec_lblBlocksOnMsgs.Location = new Point(93, 48);
+            this.Sec_lblBlocksOnMsgs.Name = "Sec_lblBlocksOnMsgs";
+            this.Sec_lblBlocksOnMsgs.Size = new Size(48, 13);
+            this.Sec_lblBlocksOnMsgs.TabIndex = 31;
+            this.Sec_lblBlocksOnMsgs.Text = "blocks in";
             // 
-            // sec_numBlocksSecs
+            // Sec_numBlocksSecs
             // 
-            this.sec_numBlocksSecs.BackColor = System.Drawing.SystemColors.Window;
-            this.sec_numBlocksSecs.Location = new System.Drawing.Point(142, 45);
-            this.sec_numBlocksSecs.Name = "sec_numBlocksSecs";
-            this.sec_numBlocksSecs.Seconds = ((long)(5));
-            this.sec_numBlocksSecs.Size = new System.Drawing.Size(62, 21);
-            this.sec_numBlocksSecs.TabIndex = 34;
-            this.sec_numBlocksSecs.Text = "5s";
-            this.sec_numBlocksSecs.Value = System.TimeSpan.Parse("00:00:05");
+            this.Sec_numBlocksSecs.BackColor = SystemColors.Window;
+            this.Sec_numBlocksSecs.Location = new Point(142, 45);
+            this.Sec_numBlocksSecs.Name = "Sec_numBlocksSecs";
+            this.Sec_numBlocksSecs.Seconds = ((long)(5));
+            this.Sec_numBlocksSecs.Size = new Size(62, 21);
+            this.Sec_numBlocksSecs.TabIndex = 34;
+            this.Sec_numBlocksSecs.Text = "5s";
+            this.Sec_numBlocksSecs.Value = TimeSpan.Parse("00:00:05");
             // 
             // PropertyWindow
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
             this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(507, 585);
-            this.Controls.Add(this.main_btnApply);
-            this.Controls.Add(this.main_btnDiscard);
-            this.Controls.Add(this.main_btnSave);
-            this.Controls.Add(this.tabControl);
-            this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.ClientSize = new Size(507, 585);
+            this.Controls.Add(this.Main_btnApply);
+            this.Controls.Add(this.Main_btnDiscard);
+            this.Controls.Add(this.Main_btnSave);
+            this.Controls.Add(this.TabControl);
+            this.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "PropertyWindow";
             this.Text = "Settings";
-            this.Load += new System.EventHandler(this.PropertyWindow_Load);
-            this.Disposed += new System.EventHandler(this.PropertyWindow_Unload);
-            this.pageChat.ResumeLayout(false);
-            this.dis_grp.ResumeLayout(false);
-            this.dis_grp.PerformLayout();
-            this.chat_grpTab.ResumeLayout(false);
-            this.chat_grpTab.PerformLayout();
-            this.chat_grpMessages.ResumeLayout(false);
-            this.chat_grpMessages.PerformLayout();
-            this.chat_grpOther.ResumeLayout(false);
-            this.chat_grpOther.PerformLayout();
-            this.chat_grpColors.ResumeLayout(false);
-            this.chat_grpColors.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numPort)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.irc_numPort)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numPerm)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numMaps)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numDraw)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numGen)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numCopy)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numUndo)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numWater)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFast)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFloodUp)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numLayer)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numCount)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numHeight)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.rank_numAfk)).EndInit();
-            this.pageBlocks.ResumeLayout(false);
-            this.blk_grpPhysics.ResumeLayout(false);
-            this.blk_grpBehaviour.ResumeLayout(false);
-            this.blk_grpBehaviour.PerformLayout();
-            this.blk_grpPermissions.ResumeLayout(false);
-            this.blk_grpPermissions.PerformLayout();
-            this.pageRanks.ResumeLayout(false);
-            this.rank_grpLimits.ResumeLayout(false);
-            this.rank_grpLimits.PerformLayout();
-            this.rank_grpGeneral.ResumeLayout(false);
-            this.rank_grpGeneral.PerformLayout();
-            this.rank_grpMisc.ResumeLayout(false);
-            this.rank_grpMisc.PerformLayout();
-            this.pageMisc.ResumeLayout(false);
-            this.pageMisc.PerformLayout();
-            this.grpExtra.ResumeLayout(false);
-            this.grpExtra.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.misc_numReview)).EndInit();
-            this.grpMessages.ResumeLayout(false);
-            this.grpMessages.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.hack_num)).EndInit();
-            this.grpPhysics.ResumeLayout(false);
-            this.grpPhysics.PerformLayout();
-            this.afk_grp.ResumeLayout(false);
-            this.afk_grp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.afk_numTimer)).EndInit();
-            this.bak_grp.ResumeLayout(false);
-            this.bak_grp.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bak_numTime)).EndInit();
-            this.pageRelay.ResumeLayout(false);
-            this.gb_ircSettings.ResumeLayout(false);
-            this.gb_ircSettings.PerformLayout();
-            this.sql_grp.ResumeLayout(false);
-            this.sql_grp.PerformLayout();
-            this.irc_grp.ResumeLayout(false);
-            this.irc_grp.PerformLayout();
-            this.pageServer.ResumeLayout(false);
-            this.lvl_grp.ResumeLayout(false);
-            this.lvl_grp.PerformLayout();
-            this.adv_grp.ResumeLayout(false);
-            this.adv_grp.PerformLayout();
-            this.srv_grp.ResumeLayout(false);
-            this.srv_grp.PerformLayout();
-            this.srv_grpUpdate.ResumeLayout(false);
-            this.srv_grpUpdate.PerformLayout();
+            this.Load += new EventHandler(this.PropertyWindow_Load);
+            this.Disposed += new EventHandler(this.PropertyWindow_Unload);
+            this.PageChat.ResumeLayout(false);
+            this.Dis_grp.ResumeLayout(false);
+            this.Dis_grp.PerformLayout();
+            this.Chat_grpTab.ResumeLayout(false);
+            this.Chat_grpTab.PerformLayout();
+            this.Chat_grpMessages.ResumeLayout(false);
+            this.Chat_grpMessages.PerformLayout();
+            this.Chat_grpOther.ResumeLayout(false);
+            this.Chat_grpOther.PerformLayout();
+            this.Chat_grpColors.ResumeLayout(false);
+            this.Chat_grpColors.PerformLayout();
+            ((ISupportInitialize)(this.Srv_numPort)).EndInit();
+            ((ISupportInitialize)(this.Irc_numPort)).EndInit();
+            ((ISupportInitialize)(this.Rank_numPerm)).EndInit();
+            ((ISupportInitialize)(this.Rank_numMaps)).EndInit();
+            ((ISupportInitialize)(this.Rank_numDraw)).EndInit();
+            ((ISupportInitialize)(this.Rank_numGen)).EndInit();
+            ((ISupportInitialize)(this.Rank_numCopy)).EndInit();
+            ((ISupportInitialize)(this.Rank_numUndo)).EndInit();
+            ((ISupportInitialize)(this.Ls_numMax)).EndInit();
+            ((ISupportInitialize)(this.Ls_numWater)).EndInit();
+            ((ISupportInitialize)(this.Ls_numFast)).EndInit();
+            ((ISupportInitialize)(this.Ls_numFloodUp)).EndInit();
+            ((ISupportInitialize)(this.Ls_numLayer)).EndInit();
+            ((ISupportInitialize)(this.Ls_numCount)).EndInit();
+            ((ISupportInitialize)(this.Ls_numHeight)).EndInit();
+            ((ISupportInitialize)(this.Rank_numAfk)).EndInit();
+            this.PageBlocks.ResumeLayout(false);
+            this.Blk_grpPhysics.ResumeLayout(false);
+            this.Blk_grpBehaviour.ResumeLayout(false);
+            this.Blk_grpBehaviour.PerformLayout();
+            this.Blk_grpPermissions.ResumeLayout(false);
+            this.Blk_grpPermissions.PerformLayout();
+            this.PageRanks.ResumeLayout(false);
+            this.Rank_grpLimits.ResumeLayout(false);
+            this.Rank_grpLimits.PerformLayout();
+            this.Rank_grpGeneral.ResumeLayout(false);
+            this.Rank_grpGeneral.PerformLayout();
+            this.Rank_grpMisc.ResumeLayout(false);
+            this.Rank_grpMisc.PerformLayout();
+            this.PageMisc.ResumeLayout(false);
+            this.PageMisc.PerformLayout();
+            this.GrpExtra.ResumeLayout(false);
+            this.GrpExtra.PerformLayout();
+            ((ISupportInitialize)(this.Misc_numReview)).EndInit();
+            this.GrpMessages.ResumeLayout(false);
+            this.GrpMessages.PerformLayout();
+            ((ISupportInitialize)(this.Hack_num)).EndInit();
+            this.GrpPhysics.ResumeLayout(false);
+            this.GrpPhysics.PerformLayout();
+            this.Afk_grp.ResumeLayout(false);
+            this.Afk_grp.PerformLayout();
+            ((ISupportInitialize)(this.Afk_numTimer)).EndInit();
+            this.Bak_grp.ResumeLayout(false);
+            this.Bak_grp.PerformLayout();
+            ((ISupportInitialize)(this.Bak_numTime)).EndInit();
+            this.PageRelay.ResumeLayout(false);
+            this.Gb_ircSettings.ResumeLayout(false);
+            this.Gb_ircSettings.PerformLayout();
+            this.Sql_grp.ResumeLayout(false);
+            this.Sql_grp.PerformLayout();
+            this.Irc_grp.ResumeLayout(false);
+            this.Irc_grp.PerformLayout();
+            this.PageServer.ResumeLayout(false);
+            this.Lvl_grp.ResumeLayout(false);
+            this.Lvl_grp.PerformLayout();
+            this.Adv_grp.ResumeLayout(false);
+            this.Adv_grp.PerformLayout();
+            this.Srv_grp.ResumeLayout(false);
+            this.Srv_grp.PerformLayout();
+            this.Srv_grpUpdate.ResumeLayout(false);
+            this.Srv_grpUpdate.PerformLayout();
             this.grpPlayers.ResumeLayout(false);
             this.grpPlayers.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numPlayers)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.srv_numGuests)).EndInit();
-            this.tabControl.ResumeLayout(false);
-            this.pageEco.ResumeLayout(false);
-            this.eco_gbRank.ResumeLayout(false);
-            this.eco_gbRank.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_dgvRanks)).EndInit();
-            this.eco_gbLvl.ResumeLayout(false);
-            this.eco_gbLvl.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_dgvMaps)).EndInit();
-            this.eco_gbItem.ResumeLayout(false);
-            this.eco_gbItem.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.eco_numItemPrice)).EndInit();
-            this.eco_gb.ResumeLayout(false);
-            this.eco_gb.PerformLayout();
-            this.pageGames.ResumeLayout(false);
-            this.tabGames.ResumeLayout(false);
-            this.tabLS.ResumeLayout(false);
-            this.ls_grpControls.ResumeLayout(false);
-            this.ls_grpMapSettings.ResumeLayout(false);
-            this.ls_grpTime.ResumeLayout(false);
-            this.ls_grpTime.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numFlood)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numLayerTime)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ls_numRound)).EndInit();
-            this.ls_grpLayer.ResumeLayout(false);
-            this.ls_grpLayer.PerformLayout();
-            this.ls_grpFlood.ResumeLayout(false);
-            this.ls_grpFlood.PerformLayout();
-            this.ls_grpSettings.ResumeLayout(false);
-            this.ls_grpSettings.PerformLayout();
-            this.ls_grpMaps.ResumeLayout(false);
-            this.ls_grpMaps.PerformLayout();
-            this.tabZS.ResumeLayout(false);
-            this.zs_grpControls.ResumeLayout(false);
-            this.zs_grpMap.ResumeLayout(false);
-            this.zs_grpTime.ResumeLayout(false);
-            this.zs_grpTime.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.timespanUpDown3)).EndInit();
-            this.zs_grpSettings.ResumeLayout(false);
-            this.zs_grpSettings.PerformLayout();
-            this.zs_grpZombie.ResumeLayout(false);
-            this.zs_grpZombie.PerformLayout();
-            this.zs_grpRevive.ResumeLayout(false);
-            this.zs_grpRevive.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveEff)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveLimit)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numReviveMax)).EndInit();
-            this.zs_grpInv.ResumeLayout(false);
-            this.zs_grpInv.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvZombieDur)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvHumanDur)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvZombieMax)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.zs_numInvHumanMax)).EndInit();
-            this.zs_grpMaps.ResumeLayout(false);
-            this.zs_grpMaps.PerformLayout();
-            this.tabZS_old.ResumeLayout(false);
-            this.tabCTF.ResumeLayout(false);
-            this.ctf_grpControls.ResumeLayout(false);
-            this.ctf_grpSettings.ResumeLayout(false);
-            this.ctf_grpSettings.PerformLayout();
-            this.ctf_grpMaps.ResumeLayout(false);
-            this.ctf_grpMaps.PerformLayout();
-            this.tabTW.ResumeLayout(false);
-            this.tw_grpControls.ResumeLayout(false);
-            this.tw_grpMapSettings.ResumeLayout(false);
-            this.tw_grpTeams.ResumeLayout(false);
-            this.tw_grpTeams.PerformLayout();
-            this.tw_grpGrace.ResumeLayout(false);
-            this.tw_grpGrace.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numGrace)).EndInit();
-            this.tw_grpScores.ResumeLayout(false);
-            this.tw_grpScores.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numMultiKills)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScoreAssists)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScorePerKill)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.tw_numScoreLimit)).EndInit();
-            this.tw_grpSettings.ResumeLayout(false);
-            this.tw_grpSettings.PerformLayout();
-            this.tw_gbMaps.ResumeLayout(false);
-            this.tw_gbMaps.PerformLayout();
-            this.tabCD.ResumeLayout(false);
-            this.cd_grpControls.ResumeLayout(false);
-            this.cd_grpSettings.ResumeLayout(false);
-            this.cd_grpSettings.PerformLayout();
-            this.cd_grpMaps.ResumeLayout(false);
-            this.cd_grpMaps.PerformLayout();
-            this.pageCommands.ResumeLayout(false);
-            this.cmd_grpExtra.ResumeLayout(false);
-            this.cmd_grpExtra.PerformLayout();
-            this.cmd_grpPermissions.ResumeLayout(false);
-            this.cmd_grpPermissions.PerformLayout();
-            this.pageSecurity.ResumeLayout(false);
-            this.sec_grpChat.ResumeLayout(false);
-            this.sec_grpChat.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatMsgs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatSecs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numChatMute)).EndInit();
-            this.sec_grpCmd.ResumeLayout(false);
-            this.sec_grpCmd.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdMsgs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdSecs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numCmdMute)).EndInit();
-            this.sec_grpIP.ResumeLayout(false);
-            this.sec_grpIP.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPMsgs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPSecs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numIPMute)).EndInit();
-            this.sec_grpOther.ResumeLayout(false);
-            this.sec_grpOther.PerformLayout();
-            this.sec_grpBlocks.ResumeLayout(false);
-            this.sec_grpBlocks.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numBlocksMsgs)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.sec_numBlocksSecs)).EndInit();
+            ((ISupportInitialize)(this.Srv_numPlayers)).EndInit();
+            ((ISupportInitialize)(this.Srv_numGuests)).EndInit();
+            this.TabControl.ResumeLayout(false);
+            this.PageEco.ResumeLayout(false);
+            this.Eco_gbRank.ResumeLayout(false);
+            this.Eco_gbRank.PerformLayout();
+            ((ISupportInitialize)(this.Eco_dgvRanks)).EndInit();
+            this.Eco_gbLvl.ResumeLayout(false);
+            this.Eco_gbLvl.PerformLayout();
+            ((ISupportInitialize)(this.Eco_dgvMaps)).EndInit();
+            this.Eco_gbItem.ResumeLayout(false);
+            this.Eco_gbItem.PerformLayout();
+            ((ISupportInitialize)(this.Eco_numItemPrice)).EndInit();
+            this.Eco_gb.ResumeLayout(false);
+            this.Eco_gb.PerformLayout();
+            this.PageGames.ResumeLayout(false);
+            this.TabGames.ResumeLayout(false);
+            this.TabLS.ResumeLayout(false);
+            this.Ls_grpControls.ResumeLayout(false);
+            this.Ls_grpMapSettings.ResumeLayout(false);
+            this.Ls_grpTime.ResumeLayout(false);
+            this.Ls_grpTime.PerformLayout();
+            ((ISupportInitialize)(this.Ls_numFlood)).EndInit();
+            ((ISupportInitialize)(this.Ls_numLayerTime)).EndInit();
+            ((ISupportInitialize)(this.Ls_numRound)).EndInit();
+            this.Ls_grpLayer.ResumeLayout(false);
+            this.Ls_grpLayer.PerformLayout();
+            this.Ls_grpFlood.ResumeLayout(false);
+            this.Ls_grpFlood.PerformLayout();
+            this.Ls_grpSettings.ResumeLayout(false);
+            this.Ls_grpSettings.PerformLayout();
+            this.Ls_grpMaps.ResumeLayout(false);
+            this.Ls_grpMaps.PerformLayout();
+            this.TabZS.ResumeLayout(false);
+            this.Zs_grpControls.ResumeLayout(false);
+            this.Zs_grpMap.ResumeLayout(false);
+            this.Zs_grpTime.ResumeLayout(false);
+            this.Zs_grpTime.PerformLayout();
+            ((ISupportInitialize)(this.TimespanUpDown1)).EndInit();
+            ((ISupportInitialize)(this.TimespanUpDown2)).EndInit();
+            ((ISupportInitialize)(this.TimespanUpDown3)).EndInit();
+            this.Zs_grpSettings.ResumeLayout(false);
+            this.Zs_grpSettings.PerformLayout();
+            this.Zs_grpZombie.ResumeLayout(false);
+            this.Zs_grpZombie.PerformLayout();
+            this.Zs_grpRevive.ResumeLayout(false);
+            this.Zs_grpRevive.PerformLayout();
+            ((ISupportInitialize)(this.Zs_numReviveEff)).EndInit();
+            ((ISupportInitialize)(this.Zs_numReviveLimit)).EndInit();
+            ((ISupportInitialize)(this.Zs_numReviveMax)).EndInit();
+            this.Zs_grpInv.ResumeLayout(false);
+            this.Zs_grpInv.PerformLayout();
+            ((ISupportInitialize)(this.Zs_numInvZombieDur)).EndInit();
+            ((ISupportInitialize)(this.Zs_numInvHumanDur)).EndInit();
+            ((ISupportInitialize)(this.Zs_numInvZombieMax)).EndInit();
+            ((ISupportInitialize)(this.Zs_numInvHumanMax)).EndInit();
+            this.Zs_grpMaps.ResumeLayout(false);
+            this.Zs_grpMaps.PerformLayout();
+            this.TabZS_old.ResumeLayout(false);
+            this.TabCTF.ResumeLayout(false);
+            this.Ctf_grpControls.ResumeLayout(false);
+            this.Ctf_grpSettings.ResumeLayout(false);
+            this.Ctf_grpSettings.PerformLayout();
+            this.Ctf_grpMaps.ResumeLayout(false);
+            this.Ctf_grpMaps.PerformLayout();
+            this.TabTW.ResumeLayout(false);
+            this.Tw_grpControls.ResumeLayout(false);
+            this.Tw_grpMapSettings.ResumeLayout(false);
+            this.Tw_grpTeams.ResumeLayout(false);
+            this.Tw_grpTeams.PerformLayout();
+            this.Tw_grpGrace.ResumeLayout(false);
+            this.Tw_grpGrace.PerformLayout();
+            ((ISupportInitialize)(this.Tw_numGrace)).EndInit();
+            this.Tw_grpScores.ResumeLayout(false);
+            this.Tw_grpScores.PerformLayout();
+            ((ISupportInitialize)(this.Tw_numMultiKills)).EndInit();
+            ((ISupportInitialize)(this.Tw_numScoreAssists)).EndInit();
+            ((ISupportInitialize)(this.Tw_numScorePerKill)).EndInit();
+            ((ISupportInitialize)(this.Tw_numScoreLimit)).EndInit();
+            this.Tw_grpSettings.ResumeLayout(false);
+            this.Tw_grpSettings.PerformLayout();
+            this.Tw_gbMaps.ResumeLayout(false);
+            this.Tw_gbMaps.PerformLayout();
+            this.TabCD.ResumeLayout(false);
+            this.Cd_grpControls.ResumeLayout(false);
+            this.Cd_grpSettings.ResumeLayout(false);
+            this.Cd_grpSettings.PerformLayout();
+            this.Cd_grpMaps.ResumeLayout(false);
+            this.Cd_grpMaps.PerformLayout();
+            this.PageCommands.ResumeLayout(false);
+            this.Cmd_grpExtra.ResumeLayout(false);
+            this.Cmd_grpExtra.PerformLayout();
+            this.Cmd_grpPermissions.ResumeLayout(false);
+            this.Cmd_grpPermissions.PerformLayout();
+            this.PageSecurity.ResumeLayout(false);
+            this.Sec_grpChat.ResumeLayout(false);
+            this.Sec_grpChat.PerformLayout();
+            ((ISupportInitialize)(this.Sec_numChatMsgs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numChatSecs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numChatMute)).EndInit();
+            this.Sec_grpCmd.ResumeLayout(false);
+            this.Sec_grpCmd.PerformLayout();
+            ((ISupportInitialize)(this.Sec_numCmdMsgs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numCmdSecs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numCmdMute)).EndInit();
+            this.Sec_grpIP.ResumeLayout(false);
+            this.Sec_grpIP.PerformLayout();
+            ((ISupportInitialize)(this.Sec_numIPMsgs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numIPSecs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numIPMute)).EndInit();
+            this.Sec_grpOther.ResumeLayout(false);
+            this.Sec_grpOther.PerformLayout();
+            this.Sec_grpBlocks.ResumeLayout(false);
+            this.Sec_grpBlocks.PerformLayout();
+            ((ISupportInitialize)(this.Sec_numBlocksMsgs)).EndInit();
+            ((ISupportInitialize)(this.Sec_numBlocksSecs)).EndInit();
             this.ResumeLayout(false);
         }
-        private System.Windows.Forms.TextBox zs_txtName;
-        private System.Windows.Forms.TextBox zs_txtModel;
-        private System.Windows.Forms.Label zs_lblName;
-        private System.Windows.Forms.Label zs_lblModel;
-        private System.Windows.Forms.GroupBox zs_grpZombie;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown zs_numReviveMax;
-        private System.Windows.Forms.NumericUpDown zs_numReviveLimit;
-        private System.Windows.Forms.Label zs_lblReviveLimitHdr;
-        private System.Windows.Forms.Label zs_lblReviveLimitFtr;
-        private System.Windows.Forms.GroupBox zs_grpRevive;
-        private System.Windows.Forms.ListBox zs_lstUsed;
-        private System.Windows.Forms.ListBox zs_lstNotUsed;
-        private System.Windows.Forms.Button zs_btnRemove;
-        private System.Windows.Forms.Button zs_btnAdd;
-        private System.Windows.Forms.Label zs_lblUsed;
-        private System.Windows.Forms.Label zs_lblNotUsed;
-        private System.Windows.Forms.GroupBox zs_grpMaps;
-        private System.Windows.Forms.CheckBox zs_cbStart;
-        private System.Windows.Forms.CheckBox zs_cbMap;
-        private System.Windows.Forms.CheckBox zs_cbMain;
-        private System.Windows.Forms.GroupBox zs_grpSettings;
-        private System.Windows.Forms.Label zs_lblInvHumanMax;
-        private System.Windows.Forms.Label zs_lblInvHumanDur;
-        private System.Windows.Forms.Label zs_lblInvZombieMax;
-        private System.Windows.Forms.Label zs_lblInvZombieDur;
-        private System.Windows.Forms.NumericUpDown zs_numInvHumanMax;
-        private System.Windows.Forms.NumericUpDown zs_numInvZombieMax;
-        private System.Windows.Forms.NumericUpDown zs_numInvHumanDur;
-        private System.Windows.Forms.NumericUpDown zs_numInvZombieDur;
-        private System.Windows.Forms.GroupBox zs_grpInv;
-        private System.Windows.Forms.Label zs_lblReviveEff;
-        private System.Windows.Forms.NumericUpDown zs_numReviveEff;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
-        private Flames.Gui.TimespanUpDown timespanUpDown3;
-        private Flames.Gui.TimespanUpDown timespanUpDown2;
-        private Flames.Gui.TimespanUpDown timespanUpDown1;
-        private System.Windows.Forms.GroupBox zs_grpTime;
-        private System.Windows.Forms.GroupBox zs_grpMap;
-        private System.Windows.Forms.Button zs_btnStart;
-        private System.Windows.Forms.Button zs_btnStop;
-        private System.Windows.Forms.Button zs_btnEnd;
-        private System.Windows.Forms.GroupBox zs_grpControls;
-        private System.Windows.Forms.TabPage tabZS;
-        private System.Windows.Forms.CheckBox chkPhysRestart;
-        private System.Windows.Forms.Label ls_lblRound;
-        private System.Windows.Forms.Label ls_lblFlood;
-        private System.Windows.Forms.Label ls_lblLayerTime;
-        private Flames.Gui.TimespanUpDown ls_numRound;
-        private Flames.Gui.TimespanUpDown ls_numLayerTime;
-        private Flames.Gui.TimespanUpDown ls_numFlood;
-        private Flames.Gui.TimespanUpDown misc_numReview;
-        private Flames.Gui.TimespanUpDown hack_num;
-        private Flames.Gui.TimespanUpDown afk_numTimer;
-        private System.Windows.Forms.Label tw_lblAssist;
-        private System.Windows.Forms.Label tw_lblMulti;
-        private System.Windows.Forms.Button chat_btnWarn;
-        private System.Windows.Forms.Label chat_lblWarn;
-        private System.Windows.Forms.Label tw_lblMode;
-        private System.Windows.Forms.ComboBox tw_cmbDiff;
-        private System.Windows.Forms.ComboBox tw_cmbMode;
-        private System.Windows.Forms.ListBox tw_lstUsed;
-        private System.Windows.Forms.ListBox tw_lstNotUsed;
-        private System.Windows.Forms.Button tw_btnRemove;
-        private System.Windows.Forms.Button tw_btnAdd;
-        private System.Windows.Forms.Label tw_lblInUse;
-        private System.Windows.Forms.GroupBox tw_gbMaps;
-        private System.Windows.Forms.CheckBox tw_cbStart;
-        private System.Windows.Forms.CheckBox tw_cbMap;
-        private System.Windows.Forms.CheckBox tw_cbMain;
-        private System.Windows.Forms.Label tw_lblDiff;
-        private System.Windows.Forms.GroupBox tw_grpSettings;
-        private System.Windows.Forms.GroupBox tw_grpMapSettings;
-        private System.Windows.Forms.Button tw_btnStart;
-        private System.Windows.Forms.Button tw_btnStop;
-        private System.Windows.Forms.Button tw_btnEnd;
-        private System.Windows.Forms.GroupBox tw_grpControls;
-        private System.Windows.Forms.TabPage tabTW;
-        private System.Windows.Forms.ListBox ctf_lstUsed;
-        private System.Windows.Forms.ListBox ctf_lstNotUsed;
-        private System.Windows.Forms.Button ctf_btnRemove;
-        private System.Windows.Forms.Button ctf_btnAdd;
-        private System.Windows.Forms.Label ctf_lblUsed;
-        private System.Windows.Forms.Label ctf_lblNotUsed;
-        private System.Windows.Forms.GroupBox ctf_grpMaps;
-        private System.Windows.Forms.CheckBox ctf_cbStart;
-        private System.Windows.Forms.CheckBox ctf_cbMap;
-        private System.Windows.Forms.CheckBox ctf_cbMain;
-        private System.Windows.Forms.GroupBox ctf_grpSettings;
-        private System.Windows.Forms.Button ctf_btnStart;
-        private System.Windows.Forms.Button ctf_btnStop;
-        private System.Windows.Forms.Button ctf_btnEnd;
-        private System.Windows.Forms.GroupBox ctf_grpControls;
-        private System.Windows.Forms.TabPage tabCTF;
-        private System.Windows.Forms.ListBox cd_lstUsed;
-        private System.Windows.Forms.ListBox cd_lstNotUsed;
-        private System.Windows.Forms.Button cd_btnRemove;
-        private System.Windows.Forms.Button cd_btnAdd;
-        private System.Windows.Forms.Label cd_lblUsed;
-        private System.Windows.Forms.Label cd_lblNotUsed;
-        private System.Windows.Forms.GroupBox cd_grpMaps;
-        private System.Windows.Forms.CheckBox cd_cbStart;
-        private System.Windows.Forms.CheckBox cd_cbMap;
-        private System.Windows.Forms.CheckBox cd_cbMain;
-        private System.Windows.Forms.GroupBox cd_grpSettings;
-        private System.Windows.Forms.Button cd_btnStart;
-        private System.Windows.Forms.Button cd_btnStop;
-        private System.Windows.Forms.Button cd_btnEnd;
-        private System.Windows.Forms.GroupBox cd_grpControls;
-        private System.Windows.Forms.TabPage tabCD;
-        private System.Windows.Forms.GroupBox ls_grpTime;
-        private System.Windows.Forms.Label ls_lblLayer;
-        private System.Windows.Forms.NumericUpDown ls_numLayer;
-        private System.Windows.Forms.NumericUpDown ls_numCount;
-        private System.Windows.Forms.Label ls_lblLayersEach;
-        private System.Windows.Forms.NumericUpDown ls_numHeight;
-        private System.Windows.Forms.Label ls_lblBlocksTall;
-        private System.Windows.Forms.Label ls_lblWater;
-        private System.Windows.Forms.Label ls_lblFast;
-        private System.Windows.Forms.Label ls_lblFloodUp;
-        private System.Windows.Forms.NumericUpDown ls_numWater;
-        private System.Windows.Forms.NumericUpDown ls_numFast;
-        private System.Windows.Forms.NumericUpDown ls_numFloodUp;
-        private System.Windows.Forms.GroupBox ls_grpFlood;
-        private System.Windows.Forms.GroupBox ls_grpLayer;
-        private System.Windows.Forms.CheckBox ls_cbMain;
-        private System.Windows.Forms.NumericUpDown ls_numMax;
-        private System.Windows.Forms.Label ls_lblMax;
-        private System.Windows.Forms.CheckBox ls_cbStart;
-        private System.Windows.Forms.CheckBox ls_cbMap;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colRankPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colRankName;
-        private System.Windows.Forms.DataGridView eco_dgvRanks;
-
-        private System.Windows.Forms.Label eco_lblItemRank;
-        private System.Windows.Forms.ComboBox eco_cmbItemRank;
-        private System.Windows.Forms.Label eco_lblCfg;
-        private System.Windows.Forms.ComboBox eco_cmbCfg;
-        private System.Windows.Forms.CheckBox eco_cbItem;
-        private System.Windows.Forms.Label eco_lblItemPrice;
-        private System.Windows.Forms.NumericUpDown eco_numItemPrice;
-        private System.Windows.Forms.GroupBox eco_gbItem;
-        private System.Windows.Forms.CheckBox eco_cbRank;
-        private System.Windows.Forms.GroupBox eco_gbRank;
-        private System.Windows.Forms.CheckBox eco_cbLvl;
-        private System.Windows.Forms.Button eco_btnLvlAdd;
-        private System.Windows.Forms.Button eco_btnLvlDel;
-        private System.Windows.Forms.DataGridViewComboBoxColumn eco_colLvlTheme;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colLvlZ;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colLvlY;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colLvlX;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colLvlPrice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn eco_colLvlName;
-        private System.Windows.Forms.DataGridView eco_dgvMaps;
-        private System.Windows.Forms.GroupBox eco_gbLvl;
-        private System.Windows.Forms.Label eco_lblCurrency;
-        private System.Windows.Forms.TextBox eco_txtCurrency;
-        private System.Windows.Forms.CheckBox eco_cbEnabled;
-        private System.Windows.Forms.GroupBox eco_gb;
-        private System.Windows.Forms.TabPage pageEco;
-        private System.Windows.Forms.CheckBox chkRestart;
-        private System.Windows.Forms.Label rank_lblCopy;
-        private System.Windows.Forms.NumericUpDown rank_numCopy;
-        private System.Windows.Forms.CheckBox rank_cbAfk;
-        private Flames.Gui.TimespanUpDown rank_numAfk;
-        private System.Windows.Forms.Label rank_lblUndo;
-        private Flames.Gui.TimespanUpDown rank_numUndo;
-        private System.Windows.Forms.Label rank_lblDraw;
-        private System.Windows.Forms.NumericUpDown rank_numDraw;
-        private System.Windows.Forms.NumericUpDown rank_numMaps;
-        private System.Windows.Forms.Label rank_lblMaps;
-        private System.Windows.Forms.NumericUpDown rank_numGen;
-        private System.Windows.Forms.Label rank_lblGen;
-        private System.Windows.Forms.GroupBox rank_grpLimits;
-        private System.Windows.Forms.Label irc_lblRank;
-        private System.Windows.Forms.ComboBox irc_cmbRank;
-        private System.Windows.Forms.Label irc_lblVerify;
-        private System.Windows.Forms.ComboBox irc_cmbVerify;
-        private System.Windows.Forms.Label irc_lblPrefix;
-        private System.Windows.Forms.TextBox irc_txtPrefix;
-        private System.Windows.Forms.CheckBox irc_cbAFK;
-        private System.Windows.Forms.CheckBox irc_cbWorldChanges;
-        private System.Windows.Forms.GroupBox gb_ircSettings;
-        private System.Windows.Forms.Label cmd_lblExtra1;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra1;
-        private System.Windows.Forms.Label cmd_lblExtra2;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra2;
-        private System.Windows.Forms.Label cmd_lblExtra3;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra3;
-        private System.Windows.Forms.Label cmd_lblExtra4;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra4;
-        private System.Windows.Forms.Label cmd_lblExtra5;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra5;
-        private System.Windows.Forms.Label cmd_lblExtra6;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra6;
-        private System.Windows.Forms.Label cmd_lblExtra7;
-        private System.Windows.Forms.ComboBox cmd_cmbExtra7;
-        private System.Windows.Forms.GroupBox cmd_grpExtra;
-        private System.Windows.Forms.ListBox cmd_list;
-        private System.Windows.Forms.Button cmd_btnHelp;
-        private System.Windows.Forms.Label cmd_lblAllow;
-        private System.Windows.Forms.Label cmd_lblDisallow;
-        private System.Windows.Forms.Label cmd_lblMin;
-        private System.Windows.Forms.ComboBox cmd_cmbMin;
-        private System.Windows.Forms.ComboBox cmd_cmbDis1;
-        private System.Windows.Forms.ComboBox cmd_cmbAlw1;
-        private System.Windows.Forms.ComboBox cmd_cmbDis2;
-        private System.Windows.Forms.ComboBox cmd_cmbDis3;
-        private System.Windows.Forms.ComboBox cmd_cmbAlw2;
-        private System.Windows.Forms.ComboBox cmd_cmbAlw3;
-        private System.Windows.Forms.GroupBox cmd_grpPermissions;
-        private System.Windows.Forms.Button cmd_btnCustom;
-        private System.Windows.Forms.CheckBox blk_cbLava;
-        private System.Windows.Forms.CheckBox blk_cbWater;
-        private System.Windows.Forms.CheckBox blk_cbDoor;
-        private System.Windows.Forms.CheckBox blk_cbTdoor;
-        private System.Windows.Forms.CheckBox blk_cbRails;
-        private System.Windows.Forms.CheckBox blk_cbMsgBlock;
-        private System.Windows.Forms.CheckBox blk_cbPortal;
-        private System.Windows.Forms.CheckBox blk_cbDeath;
-        private System.Windows.Forms.TextBox blk_txtDeath;
-        private System.Windows.Forms.GroupBox blk_grpBehaviour;
-        private System.Windows.Forms.GroupBox blk_grpPhysics;
-        private System.Windows.Forms.ComboBox blk_cmbMin;
-        private System.Windows.Forms.ComboBox blk_cmbDis1;
-        private System.Windows.Forms.ComboBox blk_cmbAlw1;
-        private System.Windows.Forms.ComboBox blk_cmbDis2;
-        private System.Windows.Forms.ComboBox blk_cmbDis3;
-        private System.Windows.Forms.ComboBox blk_cmbAlw2;
-        private System.Windows.Forms.ComboBox blk_cmbAlw3;
-        private System.Windows.Forms.GroupBox blk_grpPermissions;
+        public TextBox Zs_txtName;
+        public TextBox Zs_txtModel;
+        public Label Zs_lblName;
+        public Label Zs_lblModel;
+        public GroupBox Zs_grpZombie;
+        public Label Label9;
+        public NumericUpDown Zs_numReviveMax;
+        public NumericUpDown Zs_numReviveLimit;
+        public Label Zs_lblReviveLimitHdr;
+        public Label Zs_lblReviveLimitFtr;
+        public GroupBox Zs_grpRevive;
+        public ListBox Zs_lstUsed;
+        public ListBox Zs_lstNotUsed;
+        public Button Zs_btnRemove;
+        public Button Zs_btnAdd;
+        public Label Zs_lblUsed;
+        public Label Zs_lblNotUsed;
+        public GroupBox Zs_grpMaps;
+        public CheckBox Zs_cbStart;
+        public CheckBox Zs_cbMap;
+        public CheckBox Zs_cbMain;
+        public GroupBox Zs_grpSettings;
+        public Label Zs_lblInvHumanMax;
+        public Label Zs_lblInvHumanDur;
+        public Label Zs_lblInvZombieMax;
+        public Label Zs_lblInvZombieDur;
+        public NumericUpDown Zs_numInvHumanMax;
+        public NumericUpDown Zs_numInvZombieMax;
+        public NumericUpDown Zs_numInvHumanDur;
+        public NumericUpDown Zs_numInvZombieDur;
+        public GroupBox Zs_grpInv;
+        public Label Zs_lblReviveEff;
+        public NumericUpDown Zs_numReviveEff;
+        public Label Label4;
+        public Label Label3;
+        public Label Label2;
+        public Label Label1;
+        public Flames.Gui.TimespanUpDown TimespanUpDown3;
+        public Flames.Gui.TimespanUpDown TimespanUpDown2;
+        public Flames.Gui.TimespanUpDown TimespanUpDown1;
+        public GroupBox Zs_grpTime;
+        public GroupBox Zs_grpMap;
+        public Button Zs_btnStart;
+        public Button Zs_btnStop;
+        public Button Zs_btnEnd;
+        public GroupBox Zs_grpControls;
+        public TabPage TabZS;
+        public CheckBox ChkPhysRestart;
+        public Label Ls_lblRound;
+        public Label Ls_lblFlood;
+        public Label Ls_lblLayerTime;
+        public Flames.Gui.TimespanUpDown Ls_numRound;
+        public Flames.Gui.TimespanUpDown Ls_numLayerTime;
+        public Flames.Gui.TimespanUpDown Ls_numFlood;
+        public Flames.Gui.TimespanUpDown Misc_numReview;
+        public Flames.Gui.TimespanUpDown Hack_num;
+        public Flames.Gui.TimespanUpDown Afk_numTimer;
+        public Label Tw_lblAssist;
+        public Label Tw_lblMulti;
+        public Button Chat_btnWarn;
+        public Label Chat_lblWarn;
+        public Label Tw_lblMode;
+        public ComboBox Tw_cmbDiff;
+        public ComboBox Tw_cmbMode;
+        public ListBox Tw_lstUsed;
+        public ListBox Tw_lstNotUsed;
+        public Button Tw_btnRemove;
+        public Button Tw_btnAdd;
+        public Label Tw_lblInUse;
+        public GroupBox Tw_gbMaps;
+        public CheckBox Tw_cbStart;
+        public CheckBox Tw_cbMap;
+        public CheckBox Tw_cbMain;
+        public Label Tw_lblDiff;
+        public GroupBox Tw_grpSettings;
+        public GroupBox Tw_grpMapSettings;
+        public Button Tw_btnStart;
+        public Button Tw_btnStop;
+        public Button Tw_btnEnd;
+        public GroupBox Tw_grpControls;
+        public TabPage TabTW;
+        public ListBox Ctf_lstUsed;
+        public ListBox Ctf_lstNotUsed;
+        public Button Ctf_btnRemove;
+        public Button Ctf_btnAdd;
+        public Label Ctf_lblUsed;
+        public Label Ctf_lblNotUsed;
+        public GroupBox Ctf_grpMaps;
+        public CheckBox Ctf_cbStart;
+        public CheckBox Ctf_cbMap;
+        public CheckBox Ctf_cbMain;
+        public GroupBox Ctf_grpSettings;
+        public Button Ctf_btnStart;
+        public Button Ctf_btnStop;
+        public Button Ctf_btnEnd;
+        public GroupBox Ctf_grpControls;
+        public TabPage TabCTF;
+        public ListBox Cd_lstUsed;
+        public ListBox Cd_lstNotUsed;
+        public Button Cd_btnRemove;
+        public Button Cd_btnAdd;
+        public Label Cd_lblUsed;
+        public Label Cd_lblNotUsed;
+        public GroupBox Cd_grpMaps;
+        public CheckBox Cd_cbStart;
+        public CheckBox Cd_cbMap;
+        public CheckBox Cd_cbMain;
+        public GroupBox Cd_grpSettings;
+        public Button Cd_btnStart;
+        public Button Cd_btnStop;
+        public Button Cd_btnEnd;
+        public GroupBox Cd_grpControls;
+        public TabPage TabCD;
+        public GroupBox Ls_grpTime;
+        public Label Ls_lblLayer;
+        public NumericUpDown Ls_numLayer;
+        public NumericUpDown Ls_numCount;
+        public Label Ls_lblLayersEach;
+        public NumericUpDown Ls_numHeight;
+        public Label Ls_lblBlocksTall;
+        public Label Ls_lblWater;
+        public Label Ls_lblFast;
+        public Label Ls_lblFloodUp;
+        public NumericUpDown Ls_numWater;
+        public NumericUpDown Ls_numFast;
+        public NumericUpDown Ls_numFloodUp;
+        public GroupBox Ls_grpFlood;
+        public GroupBox Ls_grpLayer;
+        public CheckBox Ls_cbMain;
+        public NumericUpDown Ls_numMax;
+        public Label Ls_lblMax;
+        public CheckBox Ls_cbStart;
+        public CheckBox Ls_cbMap;
+        public DataGridViewTextBoxColumn Eco_colRankPrice;
+        public DataGridViewTextBoxColumn Eco_colRankName;
+        public DataGridView Eco_dgvRanks;
+        public Label Eco_lblItemRank;
+        public ComboBox Eco_cmbItemRank;
+        public Label Eco_lblCfg;
+        public ComboBox Eco_cmbCfg;
+        public CheckBox Eco_cbItem;
+        public Label Eco_lblItemPrice;
+        public NumericUpDown Eco_numItemPrice;
+        public GroupBox Eco_gbItem;
+        public CheckBox Eco_cbRank;
+        public GroupBox Eco_gbRank;
+        public CheckBox Eco_cbLvl;
+        public Button Eco_btnLvlAdd;
+        public Button Eco_btnLvlDel;
+        public DataGridViewComboBoxColumn Eco_colLvlTheme;
+        public DataGridViewTextBoxColumn Eco_colLvlZ;
+        public DataGridViewTextBoxColumn Eco_colLvlY;
+        public DataGridViewTextBoxColumn Eco_colLvlX;
+        public DataGridViewTextBoxColumn Eco_colLvlPrice;
+        public DataGridViewTextBoxColumn Eco_colLvlName;
+        public DataGridView Eco_dgvMaps;
+        public GroupBox Eco_gbLvl;
+        public Label Eco_lblCurrency;
+        public TextBox Eco_txtCurrency;
+        public CheckBox Eco_cbEnabled;
+        public GroupBox Eco_gb;
+        public TabPage PageEco;
+        public CheckBox ChkRestart;
+        public Label Rank_lblCopy;
+        public NumericUpDown Rank_numCopy;
+        public CheckBox Rank_cbAfk;
+        public Flames.Gui.TimespanUpDown Rank_numAfk;
+        public Label Rank_lblUndo;
+        public Flames.Gui.TimespanUpDown Rank_numUndo;
+        public Label Rank_lblDraw;
+        public NumericUpDown Rank_numDraw;
+        public NumericUpDown Rank_numMaps;
+        public Label Rank_lblMaps;
+        public NumericUpDown Rank_numGen;
+        public Label Rank_lblGen;
+        public GroupBox Rank_grpLimits;
+        public Label Irc_lblRank;
+        public ComboBox Irc_cmbRank;
+        public Label Irc_lblVerify;
+        public ComboBox Irc_cmbVerify;
+        public Label Irc_lblPrefix;
+        public TextBox Irc_txtPrefix;
+        public CheckBox Irc_cbAFK;
+        public CheckBox Irc_cbWorldChanges;
+        public GroupBox Gb_ircSettings;
+        public Label Cmd_lblExtra1;
+        public ComboBox Cmd_cmbExtra1;
+        public Label Cmd_lblExtra2;
+        public ComboBox Cmd_cmbExtra2;
+        public Label Cmd_lblExtra3;
+        public ComboBox Cmd_cmbExtra3;
+        public Label Cmd_lblExtra4;
+        public ComboBox Cmd_cmbExtra4;
+        public Label Cmd_lblExtra5;
+        public ComboBox Cmd_cmbExtra5;
+        public Label Cmd_lblExtra6;
+        public ComboBox Cmd_cmbExtra6;
+        public Label Cmd_lblExtra7;
+        public ComboBox Cmd_cmbExtra7;
+        public GroupBox Cmd_grpExtra;
+        public ListBox Cmd_list;
+        public Button Cmd_btnHelp;
+        public Label Cmd_lblAllow;
+        public Label Cmd_lblDisallow;
+        public Label Cmd_lblMin;
+        public ComboBox Cmd_cmbMin;
+        public ComboBox Cmd_cmbDis1;
+        public ComboBox Cmd_cmbAlw1;
+        public ComboBox Cmd_cmbDis2;
+        public ComboBox Cmd_cmbDis3;
+        public ComboBox Cmd_cmbAlw2;
+        public ComboBox Cmd_cmbAlw3;
+        public GroupBox Cmd_grpPermissions;
+        public Button Cmd_btnCustom;
+        public CheckBox Blk_cbLava;
+        public CheckBox Blk_cbWater;
+        public CheckBox Blk_cbDoor;
+        public CheckBox Blk_cbTdoor;
+        public CheckBox Blk_cbRails;
+        public CheckBox Blk_cbMsgBlock;
+        public CheckBox Blk_cbPortal;
+        public CheckBox Blk_cbDeath;
+        public TextBox Blk_txtDeath;
+        public GroupBox Blk_grpBehaviour;
+        public GroupBox Blk_grpPhysics;
+        public ComboBox Blk_cmbMin;
+        public ComboBox Blk_cmbDis1;
+        public ComboBox Blk_cmbAlw1;
+        public ComboBox Blk_cmbDis2;
+        public ComboBox Blk_cmbDis3;
+        public ComboBox Blk_cmbAlw2;
+        public ComboBox Blk_cmbAlw3;
+        public GroupBox Blk_grpPermissions;
         #endregion
-
-        private System.Windows.Forms.TextBox dis_txtOpChannel;
-        private System.Windows.Forms.Label dis_lblOpChannel;
-        private System.Windows.Forms.TextBox dis_txtChannel;
-        private System.Windows.Forms.Label dis_lblChannel;
-        private System.Windows.Forms.TextBox dis_txtToken;
-        private System.Windows.Forms.Label dis_lblToken;
-        private System.Windows.Forms.CheckBox dis_chkEnabled;
-        private System.Windows.Forms.CheckBox dis_chkNicks;
-        private System.Windows.Forms.GroupBox dis_grp;
-        private System.Windows.Forms.LinkLabel dis_linkHelp;
-        private System.Windows.Forms.ComboBox rank_cmbOsMap;
-        private System.Windows.Forms.Label rank_lblOsMap;
-        private System.Windows.Forms.TextBox rank_txtPrefix;
-        private System.Windows.Forms.Label rank_lblPrefix;
-        private System.Windows.Forms.Label srv_lblOwner;
-        private System.Windows.Forms.GroupBox rank_grpMisc;
-        private System.Windows.Forms.GroupBox rank_grpGeneral;
-
-        private System.Windows.Forms.TabPage pageChat;
-        private System.Windows.Forms.GroupBox chat_grpTab;
-        private System.Windows.Forms.CheckBox chat_cbTabRank;
-        private System.Windows.Forms.CheckBox chat_cbTabLevel;
-        private System.Windows.Forms.CheckBox chat_cbTabBots;
-
-        private System.Windows.Forms.GroupBox chat_grpMessages;
-        private System.Windows.Forms.GroupBox chat_grpModeration;
-        private System.Windows.Forms.Label chat_lblShutdown;
-        private System.Windows.Forms.TextBox chat_txtShutdown;
-        private System.Windows.Forms.CheckBox chat_chkCheap;
-        private System.Windows.Forms.TextBox chat_txtCheap;
-        private System.Windows.Forms.Label chat_lblBan;
-        private System.Windows.Forms.TextBox chat_txtBan;
-        private System.Windows.Forms.Label chat_lblPromote;
-        private System.Windows.Forms.TextBox chat_txtPromote;
-        private System.Windows.Forms.Label chat_lblDemote;
-        private System.Windows.Forms.TextBox chat_txtDemote;
-        private System.Windows.Forms.Label chat_lblLogin;
-        private System.Windows.Forms.TextBox chat_txtLogin;
-        private System.Windows.Forms.Label chat_lblLogout;
-        private System.Windows.Forms.TextBox chat_txtLogout;
-
-        private System.Windows.Forms.GroupBox chat_grpColors;
-        private System.Windows.Forms.Label chat_lblDefault;
-        private System.Windows.Forms.Button chat_btnDefault;
-        private System.Windows.Forms.Label chat_lblIRC;
-        private System.Windows.Forms.Button chat_btnIRC;
-        private System.Windows.Forms.Label chat_lblSyntax;
-        private System.Windows.Forms.Button chat_btnSyntax;
-        private System.Windows.Forms.Label chat_lblDesc;
-        private System.Windows.Forms.Button chat_btnDesc;
-
-        private System.Windows.Forms.GroupBox chat_grpOther;
-        private System.Windows.Forms.Label chat_lblConsole;
-        private System.Windows.Forms.TextBox chat_txtConsole;
-
-
-        private System.Windows.Forms.TabPage pageSecurity;
-        private System.Windows.Forms.GroupBox sec_grpChat;
-        private System.Windows.Forms.CheckBox sec_cbChatAuto;
-        private System.Windows.Forms.Label sec_lblChatForMute;
-        private Flames.Gui.TimespanUpDown sec_numChatMute;
-        private System.Windows.Forms.Label sec_lblChatOnMsgs;
-        private System.Windows.Forms.NumericUpDown sec_numChatMsgs;
-        private System.Windows.Forms.Label sec_lblChatOnMute;
-        private Flames.Gui.TimespanUpDown sec_numChatSecs;
-
-        private System.Windows.Forms.GroupBox sec_grpCmd;
-        private System.Windows.Forms.CheckBox sec_cbCmdAuto;
-        private Flames.Gui.TimespanUpDown sec_numCmdMute;
-        private System.Windows.Forms.Label sec_lblCmdForMute;
-        private Flames.Gui.TimespanUpDown sec_numCmdSecs;
-        private System.Windows.Forms.Label sec_lblCmdOnMsgs;
-        private System.Windows.Forms.NumericUpDown sec_numCmdMsgs;
-        private System.Windows.Forms.Label sec_lblCmdOnMute;
-
-        private System.Windows.Forms.GroupBox sec_grpIP;
-        private System.Windows.Forms.CheckBox sec_cbIPAuto;
-        private Flames.Gui.TimespanUpDown sec_numIPMute;
-        private System.Windows.Forms.Label sec_lblIPForMute;
-        private Flames.Gui.TimespanUpDown sec_numIPSecs;
-        private System.Windows.Forms.Label sec_lblIPOnMsgs;
-        private System.Windows.Forms.NumericUpDown sec_numIPMsgs;
-        private System.Windows.Forms.Label sec_lblIPOnMute;
-
-        private System.Windows.Forms.GroupBox sec_grpOther;
-        private System.Windows.Forms.CheckBox sec_cbLogNotes;
-        private System.Windows.Forms.CheckBox sec_cbWhitelist;
-        private System.Windows.Forms.CheckBox sec_cbVerifyAdmins;
-        private System.Windows.Forms.Label sec_lblRank;
-        private System.Windows.Forms.ComboBox sec_cmbVerifyRank;
-
-        private System.Windows.Forms.GroupBox sec_grpBlocks;
-        private System.Windows.Forms.CheckBox sec_cbBlocksAuto;
-        private Flames.Gui.TimespanUpDown sec_numBlocksSecs;
-        private System.Windows.Forms.Label sec_lblBlocksOnMsgs;
-        private System.Windows.Forms.NumericUpDown sec_numBlocksMsgs;
-        private System.Windows.Forms.Label sec_lblBlocksOnMute;
-
-        private System.Windows.Forms.Button main_btnSave;
-        private System.Windows.Forms.Button main_btnDiscard;
-        private System.Windows.Forms.Button main_btnApply;
-        private System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.TabPage pageBlocks;
-        private System.Windows.Forms.Button blk_btnHelp;
-        private System.Windows.Forms.Label blk_lblAllow;
-        private System.Windows.Forms.Label blk_lblDisallow;
-        private System.Windows.Forms.Label blk_lblMin;
-        private System.Windows.Forms.ListBox blk_list;
-        private System.Windows.Forms.TabPage pageCommands;
-        private System.Windows.Forms.TabPage pageRanks;
-        private System.Windows.Forms.Button rank_btnColor;
-        private System.Windows.Forms.Label rank_lblColor;
-        private System.Windows.Forms.NumericUpDown rank_numPerm;
-        private System.Windows.Forms.TextBox rank_txtName;
-        private System.Windows.Forms.Label rank_lblPerm;
-        private System.Windows.Forms.Label rank_lblName;
-        private System.Windows.Forms.Button rank_btnDel;
-        private System.Windows.Forms.Button rank_btnAdd;
-        private System.Windows.Forms.ListBox rank_list;
-        private System.Windows.Forms.TabPage pageMisc;
-        private System.Windows.Forms.TextBox txtNormRp;
-        private System.Windows.Forms.TextBox txtRP;
-        private Flames.Gui.TimespanUpDown bak_numTime;
-        private System.Windows.Forms.TextBox bak_txtLocation;
-        private System.Windows.Forms.CheckBox hack_lbl;
-        private System.Windows.Forms.CheckBox chat_chkFilter;
-        private System.Windows.Forms.CheckBox chkRepeatMessages;
-        private System.Windows.Forms.CheckBox chkDeath;
-        private System.Windows.Forms.CheckBox chk17Dollar;
-        private System.Windows.Forms.CheckBox chkSmile;
-        private System.Windows.Forms.Label chkRpNorm;
-        private System.Windows.Forms.Label chkRpLimit;
-        private System.Windows.Forms.Label afk_lblTimer;
-        private System.Windows.Forms.Label bak_lblTime;
-        private System.Windows.Forms.Label bak_lblLocation;
-        private System.Windows.Forms.TabPage pageRelay;
-        private System.Windows.Forms.TextBox irc_txtOpChannel;
-        private System.Windows.Forms.TextBox irc_txtChannel;
-        private System.Windows.Forms.TextBox irc_txtServer;
-        private System.Windows.Forms.TextBox irc_txtNick;
-        private System.Windows.Forms.Label irc_lblOpChannel;
-        private System.Windows.Forms.CheckBox irc_chkEnabled;
-        private System.Windows.Forms.Label irc_lblChannel;
-        private System.Windows.Forms.Label irc_lblServer;
-        private System.Windows.Forms.Label irc_lblNick;
-        private System.Windows.Forms.TabPage pageServer;
-        private System.Windows.Forms.NumericUpDown srv_numPlayers;
-        private System.Windows.Forms.NumericUpDown srv_numGuests;
-        private System.Windows.Forms.Label srv_lblGuests;
-        private System.Windows.Forms.TextBox lvl_txtMain;
-        private System.Windows.Forms.NumericUpDown srv_numPort;
-        private System.Windows.Forms.TextBox srv_txtMOTD;
-        private System.Windows.Forms.TextBox srv_txtName;
-        private System.Windows.Forms.Button srv_btnPort;
-        private System.Windows.Forms.ComboBox rank_cmbDefault;
-        private System.Windows.Forms.Label rank_lblDefault;
-        private System.Windows.Forms.CheckBox adv_chkCPE;
-        private System.Windows.Forms.CheckBox srv_chkPublic;
-        private System.Windows.Forms.CheckBox lvl_chkAutoload;
-        private System.Windows.Forms.CheckBox lvl_chkWorld;
-        private System.Windows.Forms.CheckBox chkUpdates;
-        private System.Windows.Forms.CheckBox adv_chkVerify;
-        private System.Windows.Forms.Label lvl_lblMain;
-        private System.Windows.Forms.Label srv_lblPlayers;
-        private System.Windows.Forms.Label srv_lblPort;
-        private System.Windows.Forms.Label srv_lblMotd;
-        private System.Windows.Forms.Label srv_lblName;
-        private System.Windows.Forms.TabControl tabControl;
-        private System.Windows.Forms.CheckBox srv_cbMustAgree;
-        private System.Windows.Forms.CheckBox rank_cbSilentAdmins;
-        private System.Windows.Forms.Button adv_btnEditTexts;
-        private System.Windows.Forms.CheckBox rank_cbTPHigher;
-        private System.Windows.Forms.GroupBox irc_grp;
-        private System.Windows.Forms.GroupBox srv_grp;
-        private System.Windows.Forms.GroupBox adv_grp;
-        private System.Windows.Forms.GroupBox grpPlayers;
-        private System.Windows.Forms.GroupBox lvl_grp;
-        private System.Windows.Forms.TextBox srv_txtOwner;
-        private System.Windows.Forms.GroupBox grpExtra;
-        private System.Windows.Forms.GroupBox grpMessages;
-        private System.Windows.Forms.GroupBox grpPhysics;
-        private System.Windows.Forms.GroupBox afk_grp;
-        private System.Windows.Forms.GroupBox bak_grp;
-        private System.Windows.Forms.GroupBox sql_grp;
-        private System.Windows.Forms.LinkLabel sql_linkDownload;
-        private System.Windows.Forms.TextBox sql_txtHost;
-        private System.Windows.Forms.Label sql_lblHost;
-        private System.Windows.Forms.TextBox sql_txtDBName;
-        private System.Windows.Forms.Label sql_lblDBName;
-        private System.Windows.Forms.Label sql_lblPass;
-        private System.Windows.Forms.Label sql_lblUser;
-        private System.Windows.Forms.TextBox sql_txtPass;
-        private System.Windows.Forms.TextBox sql_txtUser;
-        private System.Windows.Forms.CheckBox sql_chkUseSQL;
-        private System.Windows.Forms.TabPage pageGames;
-        private System.Windows.Forms.TabControl tabGames;
-        private System.Windows.Forms.TabPage tabZS_old;
-        private System.Windows.Forms.TabPage tabLS;
-        private System.Windows.Forms.TextBox irc_txtPass;
-        private System.Windows.Forms.CheckBox irc_chkPass;
-        private System.Windows.Forms.CheckBox irc_cbTitles;
-        private System.Windows.Forms.Label irc_lblPort;
-        private System.Windows.Forms.NumericUpDown irc_numPort;
-        private System.Windows.Forms.CheckBox rank_cbEmpty;
-        private System.Windows.Forms.GroupBox ls_grpMaps;
-        private System.Windows.Forms.Label ls_lblNotUsed;
-        private System.Windows.Forms.Label ls_lblUsed;
-        private System.Windows.Forms.Button ls_btnAdd;
-        private System.Windows.Forms.Button ls_btnRemove;
-        private System.Windows.Forms.ListBox ls_lstNotUsed;
-        private System.Windows.Forms.ListBox ls_lstUsed;
-        private System.Windows.Forms.GroupBox ls_grpSettings;
-        private System.Windows.Forms.GroupBox ls_grpMapSettings;
-        private System.Windows.Forms.GroupBox ls_grpControls;
-        private System.Windows.Forms.Button ls_btnEnd;
-        private System.Windows.Forms.Button ls_btnStop;
-        private System.Windows.Forms.Button ls_btnStart;
-        private System.Windows.Forms.TextBox sql_txtPort;
-        private System.Windows.Forms.Label sql_lblPort;
-        private System.Windows.Forms.GroupBox srv_grpUpdate;
-        private System.Windows.Forms.Button srv_btnForceUpdate;
-        private System.Windows.Forms.CheckBox chkGuestLimitNotify;
-        private System.Windows.Forms.Label misc_lblReview;
-        private System.Windows.Forms.Label rank_lblMOTD;
-        private System.Windows.Forms.TextBox rank_txtMOTD;
-        private System.Windows.Forms.GroupBox tw_grpScores;
-        private System.Windows.Forms.NumericUpDown tw_numScoreAssists;
-        private System.Windows.Forms.Label tw_lblScorePerKill;
-        private System.Windows.Forms.NumericUpDown tw_numScorePerKill;
-        private System.Windows.Forms.Label tw_lblScoreLimit;
-        private System.Windows.Forms.NumericUpDown tw_numScoreLimit;
-        private System.Windows.Forms.NumericUpDown tw_numMultiKills;
-        private System.Windows.Forms.GroupBox tw_grpGrace;
-        private System.Windows.Forms.Label tw_lblGrace;
-        private Flames.Gui.TimespanUpDown tw_numGrace;
-        private System.Windows.Forms.GroupBox tw_grpTeams;
-        private System.Windows.Forms.CheckBox tw_cbKills;
-        private System.Windows.Forms.CheckBox tw_cbBalance;
-        private System.Windows.Forms.CheckBox tw_cbGrace;
-        private System.Windows.Forms.CheckBox tw_cbStreaks;
-        private System.Windows.Forms.PropertyGrid propsZG;
+        public TextBox Dis_txtOpChannel;
+        public Label Dis_lblOpChannel;
+        public TextBox Dis_txtChannel;
+        public Label Dis_lblChannel;
+        public TextBox Dis_txtToken;
+        public Label Dis_lblToken;
+        public CheckBox Dis_chkEnabled;
+        public CheckBox Dis_chkNicks;
+        public GroupBox Dis_grp;
+        public LinkLabel Dis_linkHelp;
+        public ComboBox Rank_cmbOsMap;
+        public Label Rank_lblOsMap;
+        public TextBox Rank_txtPrefix;
+        public Label Rank_lblPrefix;
+        public Label Srv_lblOwner;
+        public GroupBox Rank_grpMisc;
+        public GroupBox Rank_grpGeneral;
+        public TabPage PageChat;
+        public GroupBox Chat_grpTab;
+        public CheckBox Chat_cbTabRank;
+        public CheckBox Chat_cbTabLevel;
+        public CheckBox Chat_cbTabBots;
+        public GroupBox Chat_grpMessages;
+        public GroupBox Chat_grpModeration;
+        public Label Chat_lblShutdown;
+        public TextBox Chat_txtShutdown;
+        public CheckBox Chat_chkCheap;
+        public TextBox Chat_txtCheap;
+        public Label Chat_lblBan;
+        public TextBox Chat_txtBan;
+        public Label Chat_lblPromote;
+        public TextBox Chat_txtPromote;
+        public Label Chat_lblDemote;
+        public TextBox Chat_txtDemote;
+        public Label Chat_lblLogin;
+        public TextBox Chat_txtLogin;
+        public Label Chat_lblLogout;
+        public TextBox Chat_txtLogout;
+        public GroupBox Chat_grpColors;
+        public Label Chat_lblDefault;
+        public Button Chat_btnDefault;
+        public Label Chat_lblIRC;
+        public Button Chat_btnIRC;
+        public Label Chat_lblSyntax;
+        public Button Chat_btnSyntax;
+        public Label Chat_lblDesc;
+        public Button Chat_btnDesc;
+        public GroupBox Chat_grpOther;
+        public Label Chat_lblConsole;
+        public TextBox Chat_txtConsole;
+        public TabPage PageSecurity;
+        public GroupBox Sec_grpChat;
+        public CheckBox Sec_cbChatAuto;
+        public Label Sec_lblChatForMute;
+        public Flames.Gui.TimespanUpDown Sec_numChatMute;
+        public Label Sec_lblChatOnMsgs;
+        public NumericUpDown Sec_numChatMsgs;
+        public Label Sec_lblChatOnMute;
+        public Flames.Gui.TimespanUpDown Sec_numChatSecs;
+        public GroupBox Sec_grpCmd;
+        public CheckBox Sec_cbCmdAuto;
+        public Flames.Gui.TimespanUpDown Sec_numCmdMute;
+        public Label Sec_lblCmdForMute;
+        public Flames.Gui.TimespanUpDown Sec_numCmdSecs;
+        public Label Sec_lblCmdOnMsgs;
+        public NumericUpDown Sec_numCmdMsgs;
+        public Label Sec_lblCmdOnMute;
+        public GroupBox Sec_grpIP;
+        public CheckBox Sec_cbIPAuto;
+        public Flames.Gui.TimespanUpDown Sec_numIPMute;
+        public Label Sec_lblIPForMute;
+        public Flames.Gui.TimespanUpDown Sec_numIPSecs;
+        public Label Sec_lblIPOnMsgs;
+        public NumericUpDown Sec_numIPMsgs;
+        public Label Sec_lblIPOnMute;
+        public GroupBox Sec_grpOther;
+        public CheckBox Sec_cbLogNotes;
+        public CheckBox Sec_cbWhitelist;
+        public CheckBox Sec_cbVerifyAdmins;
+        public Label Sec_lblRank;
+        public ComboBox Sec_cmbVerifyRank;
+        public GroupBox Sec_grpBlocks;
+        public CheckBox Sec_cbBlocksAuto;
+        public Flames.Gui.TimespanUpDown Sec_numBlocksSecs;
+        public Label Sec_lblBlocksOnMsgs;
+        public NumericUpDown Sec_numBlocksMsgs;
+        public Label Sec_lblBlocksOnMute;
+        public Button Main_btnSave;
+        public Button Main_btnDiscard;
+        public Button Main_btnApply;
+        public ToolTip GUIToolTip;
+        public TabPage PageBlocks;
+        public Button Blk_btnHelp;
+        public Label Blk_lblAllow;
+        public Label Blk_lblDisallow;
+        public Label Blk_lblMin;
+        public ListBox Blk_list;
+        public TabPage PageCommands;
+        public TabPage PageRanks;
+        public Button Rank_btnColor;
+        public Label Rank_lblColor;
+        public NumericUpDown Rank_numPerm;
+        public TextBox Rank_txtName;
+        public Label Rank_lblPerm;
+        public Label Rank_lblName;
+        public Button Rank_btnDel;
+        public Button Rank_btnAdd;
+        public ListBox Rank_list;
+        public TabPage PageMisc;
+        public TextBox TxtNormRp;
+        public TextBox TxtRP;
+        public Flames.Gui.TimespanUpDown Bak_numTime;
+        public TextBox Bak_txtLocation;
+        public CheckBox Hack_lbl;
+        public CheckBox Chat_chkFilter;
+        public CheckBox ChkRepeatMessages;
+        public CheckBox ChkDeath;
+        public CheckBox Chk17Dollar;
+        public CheckBox ChkSmile;
+        public Label ChkRpNorm;
+        public Label ChkRpLimit;
+        public Label Afk_lblTimer;
+        public Label Bak_lblTime;
+        public Label Bak_lblLocation;
+        public TabPage PageRelay;
+        public TextBox Irc_txtOpChannel;
+        public TextBox Irc_txtChannel;
+        public TextBox Irc_txtServer;
+        public TextBox Irc_txtNick;
+        public Label Irc_lblOpChannel;
+        public CheckBox Irc_chkEnabled;
+        public Label Irc_lblChannel;
+        public Label Irc_lblServer;
+        public Label Irc_lblNick;
+        public TabPage PageServer;
+        public NumericUpDown Srv_numPlayers;
+        public NumericUpDown Srv_numGuests;
+        public Label Srv_lblGuests;
+        public TextBox Lvl_txtMain;
+        public NumericUpDown Srv_numPort;
+        public TextBox Srv_txtMOTD;
+        public TextBox Srv_txtName;
+        public Button Srv_btnPort;
+        public ComboBox Rank_cmbDefault;
+        public Label Rank_lblDefault;
+        public CheckBox Adv_chkCPE;
+        public CheckBox Srv_chkPublic;
+        public CheckBox Lvl_chkAutoload;
+        public CheckBox Lvl_chkWorld;
+        public CheckBox ChkUpdates;
+        public CheckBox Adv_chkVerify;
+        public Label Lvl_lblMain;
+        public Label Srv_lblPlayers;
+        public Label Srv_lblPort;
+        public Label Srv_lblMotd;
+        public Label Srv_lblName;
+        public TabControl TabControl;
+        public CheckBox Srv_cbMustAgree;
+        public CheckBox Rank_cbSilentAdmins;
+        public Button Adv_btnEditTexts;
+        public CheckBox Rank_cbTPHigher;
+        public GroupBox Irc_grp;
+        public GroupBox Srv_grp;
+        public GroupBox Adv_grp;
+        public GroupBox grpPlayers;
+        public GroupBox Lvl_grp;
+        public TextBox Srv_txtOwner;
+        public GroupBox GrpExtra;
+        public GroupBox GrpMessages;
+        public GroupBox GrpPhysics;
+        public GroupBox Afk_grp;
+        public GroupBox Bak_grp;
+        public GroupBox Sql_grp;
+        public LinkLabel Sql_linkDownload;
+        public TextBox Sql_txtHost;
+        public Label Sql_lblHost;
+        public TextBox Sql_txtDBName;
+        public Label Sql_lblDBName;
+        public Label Sql_lblPass;
+        public Label Sql_lblUser;
+        public TextBox Sql_txtPass;
+        public TextBox Sql_txtUser;
+        public CheckBox Sql_chkUseSQL;
+        public TabPage PageGames;
+        public TabControl TabGames;
+        public TabPage TabZS_old;
+        public TabPage TabLS;
+        public TextBox Irc_txtPass;
+        public CheckBox Irc_chkPass;
+        public CheckBox Irc_cbTitles;
+        public Label Irc_lblPort;
+        public NumericUpDown Irc_numPort;
+        public CheckBox Rank_cbEmpty;
+        public GroupBox Ls_grpMaps;
+        public Label Ls_lblNotUsed;
+        public Label Ls_lblUsed;
+        public Button Ls_btnAdd;
+        public Button Ls_btnRemove;
+        public ListBox Ls_lstNotUsed;
+        public ListBox Ls_lstUsed;
+        public GroupBox Ls_grpSettings;
+        public GroupBox Ls_grpMapSettings;
+        public GroupBox Ls_grpControls;
+        public Button Ls_btnEnd;
+        public Button Ls_btnStop;
+        public Button Ls_btnStart;
+        public TextBox Sql_txtPort;
+        public Label Sql_lblPort;
+        public GroupBox Srv_grpUpdate;
+        public Button Srv_btnForceUpdate;
+        public CheckBox ChkGuestLimitNotify;
+        public Label Misc_lblReview;
+        public Label Rank_lblMOTD;
+        public TextBox Rank_txtMOTD;
+        public GroupBox Tw_grpScores;
+        public NumericUpDown Tw_numScoreAssists;
+        public Label Tw_lblScorePerKill;
+        public NumericUpDown Tw_numScorePerKill;
+        public Label Tw_lblScoreLimit;
+        public NumericUpDown Tw_numScoreLimit;
+        public NumericUpDown Tw_numMultiKills;
+        public GroupBox Tw_grpGrace;
+        public Label Tw_lblGrace;
+        public Flames.Gui.TimespanUpDown Tw_numGrace;
+        public GroupBox Tw_grpTeams;
+        public CheckBox Tw_cbKills;
+        public CheckBox Tw_cbBalance;
+        public CheckBox Tw_cbGrace;
+        public CheckBox Tw_cbStreaks;
+        public PropertyGrid PropsZG;
     }
 }

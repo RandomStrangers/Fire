@@ -80,7 +80,14 @@ namespace Flames
             agreed = PlayerList.Load("ranks/agreed.txt");
             invalidIds = PlayerList.Load("extra/invalidids.txt");
             Player.Flame.DatabaseID = NameConverter.InvalidNameID("(flames)");
+            Player.Console.DatabaseID = NameConverter.InvalidNameID("(console)");
 
+#if CORE
+            Player.Sparks.DatabaseID = NameConverter.InvalidNameID("&e(&6S&ep&6a&er&6k&ei&6e)");
+            Player.Sparkie.DatabaseID = NameConverter.InvalidNameID("&e(&6S&ep&6a&er&6k&ei&6e)");
+            Player.Nova.DatabaseID = NameConverter.InvalidNameID("(&5N&do&5v&da)");
+            Player.Random.DatabaseID = NameConverter.InvalidNameID("(&4Ran&5dom&6Str&0ang&8ers)");
+#endif
             hidden = PlayerList.Load("ranks/hidden.txt");
             vip = PlayerList.Load("text/vip.txt");
             noEmotes = PlayerList.Load("text/emotelist.txt");

@@ -20,35 +20,42 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using Flames.UI;
-
 namespace Flames.Cli
 {
     public static class Program
     {
-
         [STAThread]
         public static void Main(string[] args)
         {
             SetCurrentDirectory();
-
             // If Flames_.dll is missing, a FileNotFoundException will get thrown for Flames dll
             try
             {
                 EnableCLIMode();
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
-                Console.WriteLine("Cannot start server as Flames_.dll is missing from " + Environment.CurrentDirectory);
+                Console.WriteLine("Cannot start server as {0} is missing from {1}",
+                                  GetFilename(ex.FileName), Environment.CurrentDirectory); 
                 Console.WriteLine("Download from " + Updater.UploadsURL);
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadKey(true);
                 return;
             }
-
             // separate method, in case Flames_.dll is missing
             StartCLI();
         }
-
+        public static string GetFilename(string rawName)
+        {
+            try
+            {
+                return new AssemblyName(rawName).Name + ".dll";
+            }
+            catch
+            {
+                return rawName;
+            }
+        }
         public static void SetCurrentDirectory()
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -66,37 +73,31 @@ namespace Flames.Cli
                 Console.WriteLine("Failed to set working directory to '{0}', running in current directory..", path);
             }
         }
-
         public static void EnableCLIMode()
         {
             try
             {
                 Server.CLIMode = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.LogError(ex);
                 // in case user is running CLI with older Flames dll which lacked CLIMode field
             }
             Server.RestartPath = Assembly.GetEntryAssembly().Location;
         }
-
-
         public static void StartCLI()
         {
             FileLogger.Init();
             AppDomain.CurrentDomain.UnhandledException += GlobalExHandler;
-
             try
             {
                 Logger.LogHandler += LogMessage;
                 Updater.NewerVersionDetected += LogNewerVersionDetected;
-
                 EnableCLIMode();
                 Server.Start();
                 Console.Title = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
                 Console.CancelKeyPress += OnCancelKeyPress;
-
                 CheckNameVerification();
                 ConsoleLoop();
             }
@@ -106,7 +107,6 @@ namespace Flames.Cli
                 FileLogger.Flush(null);
             }
         }
-
         public static void OnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
             switch (e.SpecialKey)
@@ -117,7 +117,6 @@ namespace Flames.Cli
                     Thread stopThread = Server.Stop(false, Server.Config.DefaultShutdownMessage);
                     stopThread.Join();
                     break;
-
                 case ConsoleSpecialKey.ControlC:
                     e.Cancel = true;
                     Write("&e-- Server shutdown (Ctrl+C) --");
@@ -125,12 +124,10 @@ namespace Flames.Cli
                     break;
             }
         }
-
         public static void LogAndRestart(Exception ex)
         {
             Logger.LogError(ex);
             FileLogger.Flush(null);
-
             Thread.Sleep(500);
             if (Server.Config.restartOnError)
             {
@@ -138,22 +135,20 @@ namespace Flames.Cli
                 stopThread.Join();
             }
         }
-
         public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e)
         {
             LogAndRestart((Exception)e.ExceptionObject);
         }
-
-
         public static string CurrentDate() 
         { 
             return DateTime.Now.ToString("(HH:mm:ss) "); 
         }
-
         public static void LogMessage(LogType type, string message)
         {
-            if (!Server.Config.FlameLogging[(int)type]) return;
-
+            if (!Server.Config.FlameLogging[(int)type])
+            {
+                return;
+            }
             switch (type)
             {
                 case LogType.Error:
@@ -171,8 +166,7 @@ namespace Flames.Cli
                     break;
             }
         }
-
-        public static string msgPrefix = Environment.NewLine + "Message: ";
+        public static string MsgPrefix = Environment.NewLine + "Message: ";
         public static string ExtractErrorMessage(string raw)
         {
             // Error messages are usually structured like so:
@@ -180,28 +174,31 @@ namespace Flames.Cli
             //   Message: whatever
             //   Something: whatever
             // this code extracts the Message line from the raw message
-            int beg = raw.IndexOf(msgPrefix);
-            if (beg == -1) return "";
-
-            beg += msgPrefix.Length;
+            int beg = raw.IndexOf(MsgPrefix);
+            if (beg == -1)
+            {
+                return "";
+            }
+            beg += MsgPrefix.Length;
             int end = raw.IndexOf(Environment.NewLine, beg);
-            if (end == -1) return "";
-
+            if (end == -1)
+            {
+                return "";
+            }
             return " (" + raw.Substring(beg, end - beg) + ")";
         }
-
-
         public static void CheckNameVerification()
         {
-            if (Server.Config.VerifyNames) return;
+            if (Server.Config.VerifyNames)
+            {
+                return;
+            }
             Write("&eWARNING: Name verification is disabled! This means players can login as anyone, including YOU");
         }
-
         public static void LogNewerVersionDetected(object sender, EventArgs e)
         {
             Write(Colors.Strip(Server.SoftwareName) + " &cupdate available! Update by replacing with the files from " + Updater.UploadsURL);
         }
-
         public static void ConsoleLoop()
         {
             int eofs = 0;
@@ -225,7 +222,6 @@ namespace Flames.Cli
                         }
                         continue;
                     }
-
                     msg = msg.Trim();
                     if (msg == "/")
                     {
@@ -250,21 +246,17 @@ namespace Flames.Cli
                 }
             }
         }
-
         public static void Write(string message)
         {
             int index = 0;
             char col = 'S';
             message = UIHelpers.Format(message);
-
             while (index < message.Length)
             {
                 char curCol = col;
                 string part = UIHelpers.OutputPart(ref col, ref index, message);
-
                 if (part.Length == 0) continue;
                 ConsoleColor color = GetConsoleColor(curCol);
-
                 if (color == ConsoleColor.White)
                 {
                     // show in user's preferred console text color
@@ -276,37 +268,55 @@ namespace Flames.Cli
                 }
                 Console.Write(part);
             }
-
             Console.ResetColor();
             Console.WriteLine();
         }
-
         public static ConsoleColor GetConsoleColor(char c)
         {
-            if (c == 'S') return ConsoleColor.White;
+            if (c == 'S')
+            {
+                return ConsoleColor.White;
+            }
             Colors.Map(ref c);
-
             switch (c)
             {
-                case '0': return ConsoleColor.DarkGray; // black text on black background is unreadable
-                case '1': return ConsoleColor.DarkBlue;
-                case '2': return ConsoleColor.DarkGreen;
-                case '3': return ConsoleColor.DarkCyan;
-                case '4': return ConsoleColor.DarkRed;
-                case '5': return ConsoleColor.DarkMagenta;
-                case '6': return ConsoleColor.DarkYellow;
-                case '7': return ConsoleColor.Gray;
-                case '8': return ConsoleColor.DarkGray;
-                case '9': return ConsoleColor.Blue;
-                case 'a': return ConsoleColor.Green;
-                case 'b': return ConsoleColor.Cyan;
-                case 'c': return ConsoleColor.Red;
-                case 'd': return ConsoleColor.Magenta;
-                case 'e': return ConsoleColor.Yellow;
-                case 'f': return ConsoleColor.White;
-
+                case '0': 
+                    return ConsoleColor.DarkGray; // black text on black background is unreadable
+                case '1': 
+                    return ConsoleColor.DarkBlue;
+                case '2':
+                    return ConsoleColor.DarkGreen;
+                case '3': 
+                    return ConsoleColor.DarkCyan;
+                case '4': 
+                    return ConsoleColor.DarkRed;
+                case '5': 
+                    return ConsoleColor.DarkMagenta;
+                case '6': 
+                    return ConsoleColor.DarkYellow;
+                case '7': 
+                    return ConsoleColor.Gray;
+                case '8': 
+                    return ConsoleColor.DarkGray;
+                case '9': 
+                    return ConsoleColor.Blue;
+                case 'a': 
+                    return ConsoleColor.Green;
+                case 'b': 
+                    return ConsoleColor.Cyan;
+                case 'c': 
+                    return ConsoleColor.Red;
+                case 'd': 
+                    return ConsoleColor.Magenta;
+                case 'e': 
+                    return ConsoleColor.Yellow;
+                case 'f': 
+                    return ConsoleColor.White;
                 default:
-                    if (!Colors.IsDefined(c)) return ConsoleColor.White;
+                    if (!Colors.IsDefined(c))
+                    {
+                        return ConsoleColor.White;
+                    }
                     return GetConsoleColor(Colors.Get(c).Fallback);
             }
         }

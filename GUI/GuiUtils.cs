@@ -24,7 +24,6 @@ namespace Flames.Gui
 {
     // NET 2.0 doesn't include the "Action delegate without parameters" type
     public delegate void UIAction();
-
     /// <summary> Shortcuts for MessageBox.Show </summary>
     public static class Popup
     {
@@ -32,35 +31,45 @@ namespace Flames.Gui
         {
             MessageBox.Show(message, title);
         }
-
+        public static void Message(string message, string title, object arg0, object arg1)
+        {
+            if (string.IsNullOrEmpty(title))
+            {
+                title = "";
+            }
+            message = message.Replace("{0}", (string)arg0);
+            message = message.Replace("{1}", (string)arg1);
+            MessageBox.Show(message, title);
+        }
         public static void Error(string message)
         {
             MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
+        public static void Error(string message, object arg0, object arg1)
+        {
+            message = message.Replace("{0}", (string)arg0);
+            message = message.Replace("{1}", (string)arg1);
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         public static void Warning(string message)
         {
             MessageBox.Show(message, "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
-
         public static bool OKCancel(string message, string title)
         {
             return MessageBox.Show(message, title, MessageBoxButtons.OKCancel,
                                   MessageBoxIcon.Warning) == DialogResult.OK;
         }
-
         public static bool YesNo(string message, string title)
         {
             return MessageBox.Show(message, title, MessageBoxButtons.YesNo,
                                    MessageBoxIcon.Question) == DialogResult.Yes;
         }
     }
-
     public static class GuiUtils
     {
-        /// <summary> Flames window icon (shared) </summary>
+        /// <summary> GUI window icon (shared) </summary>
         public static Icon WinIcon;
-
         public static void SetIcon(Form form)
         {
             try 
@@ -72,7 +81,6 @@ namespace Flames.Gui
                 Logger.LogError(ex);
             }
         }
-
         /// <summary> Opens the given url in the system's default web browser </summary>
         /// <remarks> Catches and logs any unhandled errors </remarks>
         public static void OpenBrowser(string url)
@@ -88,7 +96,6 @@ namespace Flames.Gui
             }
         }
     }
-
     public static class ColorUtils
     {
         public struct RGB 
@@ -99,20 +106,16 @@ namespace Flames.Gui
         { 
             public double H, S, V; 
         }
-
-
         /// <summary> Returns black or white color depending on brightness of the given color </summary>
         public static Color CalcBackgroundColor(Color color)
         {
             // https://stackoverflow.com/questions/596216/formula-to-determine-perceived-brightness-of-rgb-color
-            RGB c = sRGBToLinear(color);
+            RGB c = SRGBToLinear(color);
             double L = 0.2126 * c.R + 0.7152 * c.G + 0.0722 * c.B;
             return L > 0.179 ? Color.Black : Color.White;
         }
-
-
         /// <summary> Converts gamma corrected RGB to linear RGB </summary>
-        public static RGB sRGBToLinear(Color c)
+        public static RGB SRGBToLinear(Color c)
         {
             RGB rgb;
             rgb.R = Linear(c.R);
@@ -120,12 +123,14 @@ namespace Flames.Gui
             rgb.B = Linear(c.B);
             return rgb;
         }
-
         /// <summary> Converts gamma corrected value to linear value </summary>
         public static double Linear(double c)
         {
             c /= 255.0;
-            if (c <= 0.03928) return c / 12.92;
+            if (c <= 0.03928)
+            {
+                return c / 12.92;
+            }
             return Math.Pow((c + 0.055) / 1.055, 2.4);
         }
     }

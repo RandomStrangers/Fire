@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 using Flames.Games;
-
 namespace Flames.Gui
 {
     public class GamesHelper
@@ -27,7 +26,6 @@ namespace Flames.Gui
         public CheckBox cbStart, cbMap, cbMain;
         public Button btnStart, btnStop, btnEnd, btnAdd, btnDel;
         public ListBox lbUsed, lbNotUsed;
-
         public RoundsGame game;
         public GamesHelper(RoundsGame game,
                            CheckBox start_, CheckBox map, CheckBox main,
@@ -45,34 +43,28 @@ namespace Flames.Gui
             btnDel = del; 
             lbUsed = used; 
             lbNotUsed = notUsed;
-
             start.Click += StartGame_Click;
             stop.Click += StopGame_Click;
             end.Click += EndRound_Click;
-
             add.Click += AddMap_Click;
             del.Click += DelMap_Click;
         }
-
         public void Load(string[] allMaps)
         {
             RoundsGameConfig cfg = game.GetConfig();
             cbStart.Checked = cfg.StartImmediately;
             cbMap.Checked = cfg.MapInHeartbeat;
             cbMain.Checked = cfg.SetMainLevel;
-
             UpdateButtons();
             UpdateUsedMaps();
             UpdateNotUsedMaps(allMaps);
         }
-
         public void Save()
         {
             RoundsGameConfig cfg = game.GetConfig();
             cfg.StartImmediately = cbStart.Checked;
             cfg.MapInHeartbeat = cbMap.Checked;
             cfg.SetMainLevel = cbMain.Checked;
-
             try
             {
                 cfg.Save();
@@ -82,33 +74,36 @@ namespace Flames.Gui
                 Logger.LogError("Error saving " + game.GameName + " settings", ex);
             }
         }
-
         public void UpdateButtons()
         {
             btnStart.Enabled = !game.Running;
             btnStop.Enabled = game.Running;
             btnEnd.Enabled = game.Running; // && game.RoundInProgress;
         }
-
         public void StartGame_Click(object sender, EventArgs e)
         {
-            if (!game.Running) game.Start(Player.Flame, "", int.MaxValue);
+            if (!game.Running)
+            {
+                game.Start(Player.Flame, "", int.MaxValue);
+            }
             UpdateButtons();
         }
-
         public void StopGame_Click(object sender, EventArgs e)
         {
-            if (game.Running) game.End();
+            if (game.Running)
+            {
+                game.End();
+            }
             UpdateButtons();
         }
-
         public void EndRound_Click(object sender, EventArgs e)
         {
-            if (game.RoundInProgress) game.EndRound();
+            if (game.RoundInProgress)
+            {
+                game.EndRound();
+            }
             UpdateButtons();
         }
-
-
         public void AddMap_Click(object sender, EventArgs e)
         {
             try
@@ -120,7 +115,6 @@ namespace Flames.Gui
                     return; 
                 }
                 string map = (string)selected;
-
                 LevelConfig lvlCfg = LevelInfo.GetConfig(map);
                 RoundsGameConfig.AddMap(Player.Flame, map, lvlCfg, game);
             }
@@ -129,7 +123,6 @@ namespace Flames.Gui
                 Logger.LogError("Error adding map to game", ex);
             }
         }
-
         public void DelMap_Click(object sender, EventArgs e)
         {
             try
@@ -141,7 +134,6 @@ namespace Flames.Gui
                     return; 
                 }
                 string map = (string)selected;
-
                 LevelConfig lvlCfg = LevelInfo.GetConfig(map);
                 RoundsGameConfig.RemoveMap(Player.Flame, map, lvlCfg, game);
             }
@@ -150,8 +142,6 @@ namespace Flames.Gui
                 Logger.LogError("Error removing map from game", ex);
             }
         }
-
-
         public void UpdateMapConfig(string map)
         {
             if (game.Running && game.Map.name == map)
@@ -159,50 +149,45 @@ namespace Flames.Gui
                 game.UpdateMapConfig();
             }
         }
-
         public void UpdateMaps()
         {
             UpdateUsedMaps();
             UpdateNotUsedMaps(null);
         }
-
         public void UpdateUsedMaps()
         {
             lbUsed.SelectedIndex = -1;
             object selected = lbUsed.SelectedItem;
             lbUsed.Items.Clear();
-
             List<string> maps = game.GetConfig().Maps;
             foreach (string map in maps)
             {
                 lbUsed.Items.Add(map);
             }
-
             Reselect(lbUsed, selected);
         }
-
         public void UpdateNotUsedMaps(string[] allMaps)
         {
             lbNotUsed.SelectedIndex = -1;
             object selected = lbNotUsed.SelectedItem;
             lbNotUsed.Items.Clear();
-
             // relatively expensive, so avoid if possible
-            if (allMaps == null) allMaps = LevelInfo.AllMapNames();
+            allMaps ??= LevelInfo.AllMapNames();
             List<string> maps = game.GetConfig().Maps;
             foreach (string map in allMaps)
             {
                 if (maps.CaselessContains(map)) continue;
                 lbNotUsed.Items.Add(map);
             }
-
             Reselect(lbNotUsed, selected);
         }
-
         public void Reselect(ListBox box, object selected)
         {
             int i = -1;
-            if (selected != null) i = box.Items.IndexOf(selected);
+            if (selected != null)
+            {
+                i = box.Items.IndexOf(selected);
+            }
             box.SelectedIndex = i;
         }
     }

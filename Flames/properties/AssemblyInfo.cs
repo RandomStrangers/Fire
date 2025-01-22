@@ -16,7 +16,6 @@
     permissions and limitations under the Licenses.
 */
 using System.Reflection;
-
 [assembly: AssemblyTitle("Flames")]
 [assembly: AssemblyDescription("ClassiCube Server Software")]
 [assembly: AssemblyProduct("Flames")]

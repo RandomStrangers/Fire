@@ -26,7 +26,7 @@ namespace Flames.Gui
     public static class Program
     {
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
             SetCurrentDirectory();
 
@@ -35,15 +35,26 @@ namespace Flames.Gui
             {
                 StartGUI();
             }
-            catch (FileNotFoundException)
+            catch (FileNotFoundException ex)
             {
                 // If Flames_.dll is missing, a FileNotFoundException will get thrown for Flames dll
-                Popup.Error("Cannot start server as Flames_.dll is missing from " + Environment.CurrentDirectory
-                            + "\n\nDownload it from " + Updater.UploadsURL);
+                Popup.Error("Cannot start server as {0} is missing from {1}",
+                  GetFilename(ex.FileName), Environment.CurrentDirectory
+                  + "\n\nDownload it from " + Updater.UploadsURL);
                 return;
             }
         }
-
+        public static string GetFilename(string rawName)
+        {
+            try
+            {
+                return new AssemblyName(rawName).Name + ".dll";
+            }
+            catch
+            {
+                return rawName;
+            }
+        }
         public static void SetCurrentDirectory()
         {
             string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

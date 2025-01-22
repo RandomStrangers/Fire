@@ -17,10 +17,8 @@
 */
 using System.Collections.Generic;
 using System.ComponentModel;
-
 namespace Flames.Gui
 {
-
     public class ColorConverter : StringConverter
     {
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
@@ -31,7 +29,6 @@ namespace Flames.Gui
         { 
             return true;
         }
-
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             List<string> colors = new List<string>();
@@ -43,7 +40,6 @@ namespace Flames.Gui
             return new StandardValuesCollection(colors);
         }
     }
-
     public class RankConverter : StringConverter
     {
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
@@ -54,7 +50,6 @@ namespace Flames.Gui
         {
             return true; 
         }
-
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             List<string> ranks = new List<string>();
@@ -66,7 +61,6 @@ namespace Flames.Gui
             return new StandardValuesCollection(ranks);
         }
     }
-
     public class LevelConverter : StringConverter
     {
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context) 
@@ -77,13 +71,14 @@ namespace Flames.Gui
         { 
             return true; 
         }
-
         public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
             List<string> levels = new List<string>();
             Level[] loaded = LevelInfo.Loaded.Items;
             foreach (Level lvl in loaded)
+            {
                 levels.Add(lvl.name);
+            }
             return new StandardValuesCollection(levels);
         }
     }

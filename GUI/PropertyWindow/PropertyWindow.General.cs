@@ -15,94 +15,83 @@ permissions and limitations under the Licenses.
 using System;
 using System.Windows.Forms;
 using Flames.Gui.Popups;
-
 namespace Flames.Gui
 {
 
     public partial class PropertyWindow : Form
     {
-        public bool warnDisabledVerification = true;
-
+        public bool WarnDisabledVerification = true;
         public void LoadGeneralProps()
         {
-            srv_txtName.Text = Server.Config.Name;
-            srv_txtMOTD.Text = Server.Config.MOTD;
-            srv_numPort.Value = Server.Config.Port;
-            srv_txtOwner.Text = Server.Config.OwnerName;
-            srv_chkPublic.Checked = Server.Config.Public;
-
-            srv_numPlayers.Value = Server.Config.MaxPlayers;
-            srv_numGuests.Value = Server.Config.MaxGuests;
-            srv_numGuests.Maximum = srv_numPlayers.Value;
-            srv_cbMustAgree.Checked = Server.Config.AgreeToRulesOnEntry;
-
-            lvl_txtMain.Text = Server.Config.MainLevel;
-            lvl_chkAutoload.Checked = Server.Config.AutoLoadMaps;
-            lvl_chkWorld.Checked = Server.Config.ServerWideChat;
-
-            warnDisabledVerification = false;
-            adv_chkVerify.Checked = Server.Config.VerifyNames;
-            warnDisabledVerification = true;
-            adv_chkCPE.Checked = Server.Config.EnableCPE;
-            chkUpdates.Checked = Server.Config.CheckForUpdates;
+            Srv_txtName.Text = Server.Config.Name;
+            Srv_txtMOTD.Text = Server.Config.MOTD;
+            Srv_numPort.Value = Server.Config.Port;
+            Srv_txtOwner.Text = Server.Config.OwnerName;
+            Srv_chkPublic.Checked = Server.Config.Public;
+            Srv_numPlayers.Value = Server.Config.MaxPlayers;
+            Srv_numGuests.Value = Server.Config.MaxGuests;
+            Srv_numGuests.Maximum = Srv_numPlayers.Value;
+            Srv_cbMustAgree.Checked = Server.Config.AgreeToRulesOnEntry;
+            Lvl_txtMain.Text = Server.Config.MainLevel;
+            Lvl_chkAutoload.Checked = Server.Config.AutoLoadMaps;
+            Lvl_chkWorld.Checked = Server.Config.ServerWideChat;
+            WarnDisabledVerification = false;
+            Adv_chkVerify.Checked = Server.Config.VerifyNames;
+            WarnDisabledVerification = true;
+            Adv_chkCPE.Checked = Server.Config.EnableCPE;
+            ChkUpdates.Checked = Server.Config.CheckForUpdates;
         }
-
         public void ApplyGeneralProps()
         {
-            Server.Config.Name = srv_txtName.Text;
-            Server.Config.MOTD = srv_txtMOTD.Text;
-            Server.Config.Port = (int)srv_numPort.Value;
-            Server.Config.OwnerName = srv_txtOwner.Text;
-            Server.Config.Public = srv_chkPublic.Checked;
-
-            Server.Config.MaxPlayers = (int)srv_numPlayers.Value;
-            Server.Config.MaxGuests = (int)srv_numGuests.Value;
-            Server.Config.AgreeToRulesOnEntry = srv_cbMustAgree.Checked;
-
-            Server.Config.MainLevel = lvl_txtMain.Text;
-            Server.Config.AutoLoadMaps = lvl_chkAutoload.Checked;
-            Server.Config.ServerWideChat = lvl_chkWorld.Checked;
-
-            Server.Config.VerifyNames = adv_chkVerify.Checked;
-            Server.Config.EnableCPE = adv_chkCPE.Checked;
-            Server.Config.CheckForUpdates = chkUpdates.Checked;
+            Server.Config.Name = Srv_txtName.Text;
+            Server.Config.MOTD = Srv_txtMOTD.Text;
+            Server.Config.Port = (int)Srv_numPort.Value;
+            Server.Config.OwnerName = Srv_txtOwner.Text;
+            Server.Config.Public = Srv_chkPublic.Checked;
+            Server.Config.MaxPlayers = (int)Srv_numPlayers.Value;
+            Server.Config.MaxGuests = (int)Srv_numGuests.Value;
+            Server.Config.AgreeToRulesOnEntry = Srv_cbMustAgree.Checked;
+            Server.Config.MainLevel = Lvl_txtMain.Text;
+            Server.Config.AutoLoadMaps = Lvl_chkAutoload.Checked;
+            Server.Config.ServerWideChat = Lvl_chkWorld.Checked;
+            Server.Config.VerifyNames = Adv_chkVerify.Checked;
+            Server.Config.EnableCPE = Adv_chkCPE.Checked;
+            Server.Config.CheckForUpdates = ChkUpdates.Checked;
             //Server.Config.reportBack = ;  //No setting for this?                
         }
-
-
-        public const string warnMsg = "Disabling name verification means players\ncan login as anyone, including YOU\n\n" +
+        public const string WarnMsg = "Disabling name verification means players\ncan login as anyone, including YOU\n\n" +
             "Are you sure you want to disable name verification?";
-        public void chkVerify_CheckedChanged(object sender, EventArgs e)
+        public void ChkVerify_CheckedChanged(object sender, EventArgs e)
         {
-            if (!warnDisabledVerification || adv_chkVerify.Checked) return;
-            if (Popup.OKCancel(warnMsg, "Security warning")) return;
-            adv_chkVerify.Checked = true;
+            if (!WarnDisabledVerification || Adv_chkVerify.Checked)
+            {
+                return;
+            }
+            if (Popup.OKCancel(WarnMsg, "Security warning"))
+            {
+                return;
+            }
+            Adv_chkVerify.Checked = true;
         }
-
-        public void numPlayers_ValueChanged(object sender, EventArgs e)
+        public void NumPlayers_ValueChanged(object sender, EventArgs e)
         {
             // Ensure that number of guests is never more than number of players
-            if (srv_numGuests.Value > srv_numPlayers.Value)
+            if (Srv_numGuests.Value > Srv_numPlayers.Value)
             {
-                srv_numGuests.Value = srv_numPlayers.Value;
+                Srv_numGuests.Value = Srv_numPlayers.Value;
             }
-            srv_numGuests.Maximum = srv_numPlayers.Value;
+            Srv_numGuests.Maximum = Srv_numPlayers.Value;
         }
-
         public void ChkPort_Click(object sender, EventArgs e)
         {
-            int port = (int)srv_numPort.Value;
-            using (PortTools form = new PortTools(port))
-            {
-                form.ShowDialog();
-            }
+            int port = (int)Srv_numPort.Value;
+            using PortTools form = new PortTools(port);
+            form.ShowDialog();
         }
-
-        public void forceUpdateBtn_Click(object sender, EventArgs e)
+        public void ForceUpdateBtn_Click(object sender, EventArgs e)
         {
-            srv_btnForceUpdate.Enabled = false;
+            Srv_btnForceUpdate.Enabled = false;
             string msg = "Would you like to force update " + Colors.Strip(Server.SoftwareName) + " now?";
-
             if (Popup.YesNo(msg, "Force update"))
             {
                 SaveChanges();
@@ -111,7 +100,7 @@ namespace Flames.Gui
             }
             else
             {
-                srv_btnForceUpdate.Enabled = true;
+                Srv_btnForceUpdate.Enabled = true;
             }
         }
     }

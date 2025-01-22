@@ -17,7 +17,8 @@
 */
 using System;
 using System.Windows.Forms;
-
+using System.ComponentModel;
+using System.Drawing;
 namespace Flames.Gui
 {
     public partial class Window
@@ -25,7 +26,7 @@ namespace Flames.Gui
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
+        public IContainer Components = null;
 
         /// <summary>
         /// Clean up any resources being used.
@@ -33,9 +34,9 @@ namespace Flames.Gui
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Components != null))
             {
-                components.Dispose();
+                Components.Dispose();
             }
             base.Dispose(disposing);
         }
@@ -46,966 +47,966 @@ namespace Flames.Gui
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.tsMap = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsMap_physicsMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics0 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_physics5 = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_actionsMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_Save = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_Reload = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_Unload = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_moveAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsMap_separator = new System.Windows.Forms.ToolStripSeparator();
-            this.tsMap_info = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsPlayer_whois = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_kick = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_ban = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_voice = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_clones = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_promote = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsPlayer_demote = new System.Windows.Forms.ToolStripMenuItem();
-            this.icon_context = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.icon_separator = new System.Windows.Forms.ToolStripSeparator();
-            this.icon_hideWindow = new System.Windows.Forms.ToolStripMenuItem();
-            this.icon_openConsole = new System.Windows.Forms.ToolStripMenuItem();
-            this.icon_shutdown = new System.Windows.Forms.ToolStripMenuItem();
-            this.icon_restart = new System.Windows.Forms.ToolStripMenuItem();
-            this.main_btnProps = new System.Windows.Forms.Button();
-            this.main_btnClose = new System.Windows.Forms.Button();
-            this.main_btnRestart = new System.Windows.Forms.Button();
-            this.logs_tp = new System.Windows.Forms.TabPage();
-            this.logs_tab = new System.Windows.Forms.TabControl();
-            this.logs_tabErr = new System.Windows.Forms.TabPage();
-            this.logs_txtError = new System.Windows.Forms.TextBox();
-            this.logs_tabGen = new System.Windows.Forms.TabPage();
-            this.logs_lblGeneral = new System.Windows.Forms.Label();
-            this.logs_dateGeneral = new System.Windows.Forms.DateTimePicker();
-            this.logs_txtGeneral = new System.Windows.Forms.RichTextBox();
-            this.tabLog_Sys = new System.Windows.Forms.TabPage();
-            this.logs_txtSystem = new System.Windows.Forms.TextBox();
-            this.tp_Main = new System.Windows.Forms.TabPage();
-            this.main_btnUnloadEmpty = new System.Windows.Forms.Button();
-            this.main_btnKillPhysics = new System.Windows.Forms.Button();
-            this.main_btnSaveAll = new System.Windows.Forms.Button();
-            this.main_colLvlName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_colLvlPlayers = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_colLvlPhysics = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_Maps = new System.Windows.Forms.DataGridView();
-            this.main_txtLog = new Flames.Gui.Components.ColoredTextBox();
-            this.tsLog_Menu = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.tsLog_night = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_Colored = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_dateStamp = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_autoScroll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_separator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsLog_copySelected = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_copyAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsLog_separator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsLog_clear = new System.Windows.Forms.ToolStripMenuItem();
-            this.main_txtInput = new System.Windows.Forms.TextBox();
-            this.main_txtUrl = new System.Windows.Forms.TextBox();
-            this.main_colPlName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_colPlMap = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_colPlRank = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.main_Players = new System.Windows.Forms.DataGridView();
-            this.tabs = new System.Windows.Forms.TabControl();
-            this.tp_Maps = new System.Windows.Forms.TabPage();
-            this.map_gbProps = new System.Windows.Forms.GroupBox();
-            this.map_pgProps = new Flames.Gui.HackyPropertyGrid();
-            this.map_gbLoaded = new System.Windows.Forms.GroupBox();
-            this.map_lbLoaded = new System.Windows.Forms.ListBox();
-            this.map_gbUnloaded = new System.Windows.Forms.GroupBox();
-            this.map_btnLoad = new System.Windows.Forms.Button();
-            this.map_lbUnloaded = new System.Windows.Forms.ListBox();
-            this.map_gbNew = new System.Windows.Forms.GroupBox();
-            this.map_btnGen = new System.Windows.Forms.Button();
-            this.map_lblType = new System.Windows.Forms.Label();
-            this.map_lblSeed = new System.Windows.Forms.Label();
-            this.map_lblZ = new System.Windows.Forms.Label();
-            this.map_lblX = new System.Windows.Forms.Label();
-            this.map_lblY = new System.Windows.Forms.Label();
-            this.map_txtSeed = new System.Windows.Forms.TextBox();
-            this.map_cmbType = new System.Windows.Forms.ComboBox();
-            this.map_cmbZ = new System.Windows.Forms.ComboBox();
-            this.map_cmbY = new System.Windows.Forms.ComboBox();
-            this.map_cmbX = new System.Windows.Forms.ComboBox();
-            this.map_lblName = new System.Windows.Forms.Label();
-            this.map_txtName = new System.Windows.Forms.TextBox();
-            this.tp_Players = new System.Windows.Forms.TabPage();
-            this.pl_gbProps = new System.Windows.Forms.GroupBox();
-            this.pl_pgProps = new Flames.Gui.HackyPropertyGrid();
-            this.pl_gbOther = new System.Windows.Forms.GroupBox();
-            this.pl_txtSendCommand = new System.Windows.Forms.TextBox();
-            this.pl_btnSendCommand = new System.Windows.Forms.Button();
-            this.pl_txtMessage = new System.Windows.Forms.TextBox();
-            this.pl_btnMessage = new System.Windows.Forms.Button();
-            this.pl_gbActions = new System.Windows.Forms.GroupBox();
-            this.pl_btnKill = new System.Windows.Forms.Button();
-            this.pl_numUndo = new Flames.Gui.TimespanUpDown();
-            this.pl_btnWarn = new System.Windows.Forms.Button();
-            this.pl_btnRules = new System.Windows.Forms.Button();
-            this.pl_btnKick = new System.Windows.Forms.Button();
-            this.pl_btnBanIP = new System.Windows.Forms.Button();
-            this.pl_btnUndo = new System.Windows.Forms.Button();
-            this.pl_btnMute = new System.Windows.Forms.Button();
-            this.pl_btnBan = new System.Windows.Forms.Button();
-            this.pl_btnFreeze = new System.Windows.Forms.Button();
-            this.pl_statusBox = new System.Windows.Forms.TextBox();
-            this.pl_listBox = new System.Windows.Forms.ListBox();
-            this.pl_lblOnline = new System.Windows.Forms.Label();
-            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tsMap.SuspendLayout();
-            this.tsPlayer.SuspendLayout();
-            this.icon_context.SuspendLayout();
-            this.logs_tp.SuspendLayout();
-            this.logs_tab.SuspendLayout();
-            this.logs_tabErr.SuspendLayout();
-            this.logs_tabGen.SuspendLayout();
-            this.tabLog_Sys.SuspendLayout();
-            this.tp_Main.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.main_Maps)).BeginInit();
-            this.tsLog_Menu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.main_Players)).BeginInit();
-            this.tabs.SuspendLayout();
-            this.tp_Maps.SuspendLayout();
-            this.map_gbProps.SuspendLayout();
-            this.map_gbLoaded.SuspendLayout();
-            this.map_gbUnloaded.SuspendLayout();
-            this.map_gbNew.SuspendLayout();
-            this.tp_Players.SuspendLayout();
-            this.pl_gbProps.SuspendLayout();
-            this.pl_gbOther.SuspendLayout();
-            this.pl_gbActions.SuspendLayout();
+            this.Components = new Container();
+            this.TsMap = new ContextMenuStrip(this.Components);
+            this.TsMap_physicsMenu = new ToolStripMenuItem();
+            this.TsMap_physics0 = new ToolStripMenuItem();
+            this.TsMap_physics1 = new ToolStripMenuItem();
+            this.TsMap_physics2 = new ToolStripMenuItem();
+            this.TsMap_physics3 = new ToolStripMenuItem();
+            this.TsMap_physics4 = new ToolStripMenuItem();
+            this.TsMap_physics5 = new ToolStripMenuItem();
+            this.TsMap_actionsMenu = new ToolStripMenuItem();
+            this.TsMap_Save = new ToolStripMenuItem();
+            this.TsMap_Reload = new ToolStripMenuItem();
+            this.TsMap_Unload = new ToolStripMenuItem();
+            this.TsMap_moveAll = new ToolStripMenuItem();
+            this.TsMap_separator = new ToolStripSeparator();
+            this.TsMap_info = new ToolStripMenuItem();
+            this.TsPlayer = new ContextMenuStrip(this.Components);
+            this.TsPlayer_whois = new ToolStripMenuItem();
+            this.TsPlayer_kick = new ToolStripMenuItem();
+            this.TsPlayer_ban = new ToolStripMenuItem();
+            this.TsPlayer_voice = new ToolStripMenuItem();
+            this.TsPlayer_clones = new ToolStripMenuItem();
+            this.TsPlayer_promote = new ToolStripMenuItem();
+            this.TsPlayer_demote = new ToolStripMenuItem();
+            this.Icon_context = new ContextMenuStrip(this.Components);
+            this.Icon_separator = new ToolStripSeparator();
+            this.Icon_hideWindow = new ToolStripMenuItem();
+            this.Icon_openConsole = new ToolStripMenuItem();
+            this.Icon_shutdown = new ToolStripMenuItem();
+            this.Icon_restart = new ToolStripMenuItem();
+            this.Main_btnProps = new Button();
+            this.Main_btnClose = new Button();
+            this.Main_btnRestart = new Button();
+            this.Logs_tp = new TabPage();
+            this.Logs_tab = new TabControl();
+            this.Logs_tabErr = new TabPage();
+            this.Logs_txtError = new TextBox();
+            this.Logs_tabGen = new TabPage();
+            this.Logs_lblGeneral = new Label();
+            this.Logs_dateGeneral = new DateTimePicker();
+            this.Logs_txtGeneral = new RichTextBox();
+            this.TabLog_Sys = new TabPage();
+            this.Logs_txtSystem = new TextBox();
+            this.Tp_Main = new TabPage();
+            this.Main_btnUnloadEmpty = new Button();
+            this.Main_btnKillPhysics = new Button();
+            this.Main_btnSaveAll = new Button();
+            this.Main_colLvlName = new DataGridViewTextBoxColumn();
+            this.Main_colLvlPlayers = new DataGridViewTextBoxColumn();
+            this.Main_colLvlPhysics = new DataGridViewTextBoxColumn();
+            this.Main_Maps = new DataGridView();
+            this.Main_txtLog = new Flames.Gui.Components.ColoredTextBox();
+            this.TsLog_Menu = new ContextMenuStrip(this.Components);
+            this.TsLog_night = new ToolStripMenuItem();
+            this.TsLog_Colored = new ToolStripMenuItem();
+            this.TsLog_dateStamp = new ToolStripMenuItem();
+            this.TsLog_autoScroll = new ToolStripMenuItem();
+            this.TsLog_separator1 = new ToolStripSeparator();
+            this.TsLog_copySelected = new ToolStripMenuItem();
+            this.TsLog_copyAll = new ToolStripMenuItem();
+            this.TsLog_separator2 = new ToolStripSeparator();
+            this.TsLog_clear = new ToolStripMenuItem();
+            this.Main_txtInput = new TextBox();
+            this.Main_txtUrl = new TextBox();
+            this.Main_colPlName = new DataGridViewTextBoxColumn();
+            this.Main_colPlMap = new DataGridViewTextBoxColumn();
+            this.Main_colPlRank = new DataGridViewTextBoxColumn();
+            this.Main_Players = new DataGridView();
+            this.Tabs = new TabControl();
+            this.Tp_Maps = new TabPage();
+            this.Map_gbProps = new GroupBox();
+            this.Map_pgProps = new Flames.Gui.HackyPropertyGrid();
+            this.Map_gbLoaded = new GroupBox();
+            this.Map_lbLoaded = new ListBox();
+            this.Map_gbUnloaded = new GroupBox();
+            this.Map_btnLoad = new Button();
+            this.Map_lbUnloaded = new ListBox();
+            this.Map_gbNew = new GroupBox();
+            this.Map_btnGen = new Button();
+            this.Map_lblType = new Label();
+            this.Map_lblSeed = new Label();
+            this.Map_lblZ = new Label();
+            this.Map_lblX = new Label();
+            this.Map_lblY = new Label();
+            this.Map_txtSeed = new TextBox();
+            this.Map_cmbType = new ComboBox();
+            this.Map_cmbZ = new ComboBox();
+            this.Map_cmbY = new ComboBox();
+            this.Map_cmbX = new ComboBox();
+            this.Map_lblName = new Label();
+            this.Map_txtName = new TextBox();
+            this.Tp_Players = new TabPage();
+            this.Pl_gbProps = new GroupBox();
+            this.Pl_pgProps = new Flames.Gui.HackyPropertyGrid();
+            this.Pl_gbOther = new GroupBox();
+            this.Pl_txtSendCommand = new TextBox();
+            this.Pl_btnSendCommand = new Button();
+            this.Pl_txtMessage = new TextBox();
+            this.Pl_btnMessage = new Button();
+            this.Pl_gbActions = new GroupBox();
+            this.Pl_btnKill = new Button();
+            this.Pl_numUndo = new Flames.Gui.TimespanUpDown();
+            this.Pl_btnWarn = new Button();
+            this.Pl_btnRules = new Button();
+            this.Pl_btnKick = new Button();
+            this.Pl_btnBanIP = new Button();
+            this.Pl_btnUndo = new Button();
+            this.Pl_btnMute = new Button();
+            this.Pl_btnBan = new Button();
+            this.Pl_btnFreeze = new Button();
+            this.Pl_statusBox = new TextBox();
+            this.Pl_listBox = new ListBox();
+            this.Pl_lblOnline = new Label();
+            this.GUIToolTip = new ToolTip(this.Components);
+            this.TsMap.SuspendLayout();
+            this.TsPlayer.SuspendLayout();
+            this.Icon_context.SuspendLayout();
+            this.Logs_tp.SuspendLayout();
+            this.Logs_tab.SuspendLayout();
+            this.Logs_tabErr.SuspendLayout();
+            this.Logs_tabGen.SuspendLayout();
+            this.TabLog_Sys.SuspendLayout();
+            this.Tp_Main.SuspendLayout();
+            ((ISupportInitialize)(this.Main_Maps)).BeginInit();
+            this.TsLog_Menu.SuspendLayout();
+            ((ISupportInitialize)(this.Main_Players)).BeginInit();
+            this.Tabs.SuspendLayout();
+            this.Tp_Maps.SuspendLayout();
+            this.Map_gbProps.SuspendLayout();
+            this.Map_gbLoaded.SuspendLayout();
+            this.Map_gbUnloaded.SuspendLayout();
+            this.Map_gbNew.SuspendLayout();
+            this.Tp_Players.SuspendLayout();
+            this.Pl_gbProps.SuspendLayout();
+            this.Pl_gbOther.SuspendLayout();
+            this.Pl_gbActions.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tsMap
-            // 
-            this.tsMap.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.tsMap_physicsMenu,
-                                    this.tsMap_actionsMenu,
-                                    this.tsMap_separator,
-                                    this.tsMap_info});
-            this.tsMap.Name = "mapsStrip";
-            this.tsMap.Size = new System.Drawing.Size(138, 76);
+            // TsMap
+            // 
+            this.TsMap.Items.AddRange(new ToolStripItem[] {
+                                    this.TsMap_physicsMenu,
+                                    this.TsMap_actionsMenu,
+                                    this.TsMap_separator,
+                                    this.TsMap_info});
+            this.TsMap.Name = "mapsStrip";
+            this.TsMap.Size = new Size(138, 76);
             // 
-            // tsMap_physicsMenu
+            // TsMap_physicsMenu
             // 
-            this.tsMap_physicsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.tsMap_physics0,
-                                    this.tsMap_physics1,
-                                    this.tsMap_physics2,
-                                    this.tsMap_physics3,
-                                    this.tsMap_physics4,
-                                    this.tsMap_physics5});
-            this.tsMap_physicsMenu.Name = "tsMap_physicsMenu";
-            this.tsMap_physicsMenu.Size = new System.Drawing.Size(137, 22);
-            this.tsMap_physicsMenu.Text = "Physics Level";
+            this.TsMap_physicsMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                                    this.TsMap_physics0,
+                                    this.TsMap_physics1,
+                                    this.TsMap_physics2,
+                                    this.TsMap_physics3,
+                                    this.TsMap_physics4,
+                                    this.TsMap_physics5});
+            this.TsMap_physicsMenu.Name = "TsMap_physicsMenu";
+            this.TsMap_physicsMenu.Size = new Size(137, 22);
+            this.TsMap_physicsMenu.Text = "Physics Level";
             // 
-            // tsMap_physics0
+            // TsMap_physics0
             // 
-            this.tsMap_physics0.Name = "tsMap_physics0";
-            this.tsMap_physics0.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics0.Text = "Off";
-            this.tsMap_physics0.Click += new System.EventHandler(this.tsMap_Physics0_Click);
-            // 
-            // tsMap_physics1
+            this.TsMap_physics0.Name = "TsMap_physics0";
+            this.TsMap_physics0.Size = new Size(152, 22);
+            this.TsMap_physics0.Text = "Off";
+            this.TsMap_physics0.Click += new EventHandler(this.TsMap_Physics0_Click);
+            // 
+            // TsMap_physics1
             // 
-            this.tsMap_physics1.Name = "tsMap_physics1";
-            this.tsMap_physics1.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics1.Text = "Normal";
-            this.tsMap_physics1.Click += new System.EventHandler(this.tsMap_Physics1_Click);
+            this.TsMap_physics1.Name = "TsMap_physics1";
+            this.TsMap_physics1.Size = new Size(152, 22);
+            this.TsMap_physics1.Text = "Normal";
+            this.TsMap_physics1.Click += new EventHandler(this.TsMap_Physics1_Click);
             // 
-            // tsMap_physics2
+            // TsMap_physics2
             // 
-            this.tsMap_physics2.Name = "tsMap_physics2";
-            this.tsMap_physics2.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics2.Text = "Advanced";
-            this.tsMap_physics2.Click += new System.EventHandler(this.tsMap_Physics2_Click);
+            this.TsMap_physics2.Name = "TsMap_physics2";
+            this.TsMap_physics2.Size = new Size(152, 22);
+            this.TsMap_physics2.Text = "Advanced";
+            this.TsMap_physics2.Click += new EventHandler(this.TsMap_Physics2_Click);
             // 
-            // tsMap_physics3
+            // TsMap_physics3
             // 
-            this.tsMap_physics3.Name = "tsMap_physics3";
-            this.tsMap_physics3.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics3.Text = "Hardcore";
-            this.tsMap_physics3.Click += new System.EventHandler(this.tsMap_Physics3_Click);
+            this.TsMap_physics3.Name = "TsMap_physics3";
+            this.TsMap_physics3.Size = new Size(152, 22);
+            this.TsMap_physics3.Text = "Hardcore";
+            this.TsMap_physics3.Click += new EventHandler(this.TsMap_Physics3_Click);
             // 
-            // tsMap_physics4
+            // TsMap_physics4
             // 
-            this.tsMap_physics4.Name = "tsMap_physics4";
-            this.tsMap_physics4.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics4.Text = "Instant";
-            this.tsMap_physics4.Click += new System.EventHandler(this.tsMap_Physics4_Click);
+            this.TsMap_physics4.Name = "TsMap_physics4";
+            this.TsMap_physics4.Size = new Size(152, 22);
+            this.TsMap_physics4.Text = "Instant";
+            this.TsMap_physics4.Click += new EventHandler(this.TsMap_Physics4_Click);
             // 
-            // tsMap_physics5
+            // TsMap_physics5
             // 
-            this.tsMap_physics5.Name = "tsMap_physics5";
-            this.tsMap_physics5.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_physics5.Text = "Doors-Only";
-            this.tsMap_physics5.Click += new System.EventHandler(this.tsMap_Physics5_Click);
+            this.TsMap_physics5.Name = "TsMap_physics5";
+            this.TsMap_physics5.Size = new Size(152, 22);
+            this.TsMap_physics5.Text = "Doors-Only";
+            this.TsMap_physics5.Click += new EventHandler(this.TsMap_Physics5_Click);
             // 
-            // tsMap_actionsMenu
+            // TsMap_actionsMenu
             // 
-            this.tsMap_actionsMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.tsMap_Save,
-                                    this.tsMap_Reload,
-                                    this.tsMap_Unload,
-                                    this.tsMap_moveAll});
-            this.tsMap_actionsMenu.Name = "tsMap_actionsMenu";
-            this.tsMap_actionsMenu.Size = new System.Drawing.Size(137, 22);
-            this.tsMap_actionsMenu.Text = "Actions";
+            this.TsMap_actionsMenu.DropDownItems.AddRange(new ToolStripItem[] {
+                                    this.TsMap_Save,
+                                    this.TsMap_Reload,
+                                    this.TsMap_Unload,
+                                    this.TsMap_moveAll});
+            this.TsMap_actionsMenu.Name = "TsMap_actionsMenu";
+            this.TsMap_actionsMenu.Size = new Size(137, 22);
+            this.TsMap_actionsMenu.Text = "Actions";
             // 
-            // tsMap_Save
+            // TsMap_Save
             // 
-            this.tsMap_Save.Name = "tsMap_Save";
-            this.tsMap_Save.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_Save.Text = "Save";
-            this.tsMap_Save.Click += new System.EventHandler(this.tsMap_Save_Click);
+            this.TsMap_Save.Name = "TsMap_Save";
+            this.TsMap_Save.Size = new Size(152, 22);
+            this.TsMap_Save.Text = "Save";
+            this.TsMap_Save.Click += new EventHandler(this.TsMap_Save_Click);
             // 
-            // tsMap_Reload
+            // TsMap_Reload
             // 
-            this.tsMap_Reload.Name = "tsMap_Reload";
-            this.tsMap_Reload.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_Reload.Text = "Reload";
-            this.tsMap_Reload.Click += new System.EventHandler(this.tsMap_Reload_Click);
+            this.TsMap_Reload.Name = "TsMap_Reload";
+            this.TsMap_Reload.Size = new Size(152, 22);
+            this.TsMap_Reload.Text = "Reload";
+            this.TsMap_Reload.Click += new EventHandler(this.TsMap_Reload_Click);
             // 
-            // tsMap_Unload
+            // TsMap_Unload
             // 
-            this.tsMap_Unload.Name = "tsMap_Unload";
-            this.tsMap_Unload.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_Unload.Text = "Unload";
-            this.tsMap_Unload.Click += new System.EventHandler(this.tsMap_Unload_Click);
+            this.TsMap_Unload.Name = "TsMap_Unload";
+            this.TsMap_Unload.Size = new Size(152, 22);
+            this.TsMap_Unload.Text = "Unload";
+            this.TsMap_Unload.Click += new EventHandler(this.TsMap_Unload_Click);
             // 
-            // tsMap_moveAll
+            // TsMap_moveAll
             // 
-            this.tsMap_moveAll.Name = "tsMap_moveAll";
-            this.tsMap_moveAll.Size = new System.Drawing.Size(152, 22);
-            this.tsMap_moveAll.Text = "Move All";
-            this.tsMap_moveAll.Click += new System.EventHandler(this.tsMap_MoveAll_Click);
+            this.TsMap_moveAll.Name = "TsMap_moveAll";
+            this.TsMap_moveAll.Size = new Size(152, 22);
+            this.TsMap_moveAll.Text = "Move All";
+            this.TsMap_moveAll.Click += new EventHandler(this.TsMap_MoveAll_Click);
             // 
-            // tsMap_separator
+            // TsMap_separator
             // 
-            this.tsMap_separator.Name = "tsMap_separator";
-            this.tsMap_separator.Size = new System.Drawing.Size(134, 6);
+            this.TsMap_separator.Name = "TsMap_separator";
+            this.TsMap_separator.Size = new Size(134, 6);
             // 
-            // tsMap_info
+            // TsMap_info
             // 
-            this.tsMap_info.Name = "tsMap_info";
-            this.tsMap_info.Size = new System.Drawing.Size(137, 22);
-            this.tsMap_info.Text = "Info";
-            this.tsMap_info.Click += new System.EventHandler(this.tsMap_Info_Click);
+            this.TsMap_info.Name = "TsMap_info";
+            this.TsMap_info.Size = new Size(137, 22);
+            this.TsMap_info.Text = "Info";
+            this.TsMap_info.Click += new EventHandler(this.TsMap_Info_Click);
             // 
-            // tsPlayer
+            // TsPlayer
             // 
-            this.tsPlayer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.tsPlayer_whois,
-                                    this.tsPlayer_kick,
-                                    this.tsPlayer_ban,
-                                    this.tsPlayer_voice,
-                                    this.tsPlayer_clones,
-                                    this.tsPlayer_promote,
-                                    this.tsPlayer_demote});
-            this.tsPlayer.Name = "playerStrip";
-            this.tsPlayer.Size = new System.Drawing.Size(115, 158);
+            this.TsPlayer.Items.AddRange(new ToolStripItem[] {
+                                    this.TsPlayer_whois,
+                                    this.TsPlayer_kick,
+                                    this.TsPlayer_ban,
+                                    this.TsPlayer_voice,
+                                    this.TsPlayer_clones,
+                                    this.TsPlayer_promote,
+                                    this.TsPlayer_demote});
+            this.TsPlayer.Name = "playerStrip";
+            this.TsPlayer.Size = new Size(115, 158);
             // 
-            // tsPlayer_whois
+            // TsPlayer_whois
             // 
-            this.tsPlayer_whois.Name = "tsPlayer_whois";
-            this.tsPlayer_whois.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_whois.Text = "Whois";
-            this.tsPlayer_whois.Click += new System.EventHandler(this.tsPlayer_Whois_Click);
+            this.TsPlayer_whois.Name = "TsPlayer_whois";
+            this.TsPlayer_whois.Size = new Size(114, 22);
+            this.TsPlayer_whois.Text = "Whois";
+            this.TsPlayer_whois.Click += new EventHandler(this.TsPlayer_Whois_Click);
             // 
-            // tsPlayer_kick
+            // TsPlayer_kick
             // 
-            this.tsPlayer_kick.Name = "tsPlayer_kick";
-            this.tsPlayer_kick.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_kick.Text = "Kick";
-            this.tsPlayer_kick.Click += new System.EventHandler(this.tsPlayer_Kick_Click);
+            this.TsPlayer_kick.Name = "TsPlayer_kick";
+            this.TsPlayer_kick.Size = new Size(114, 22);
+            this.TsPlayer_kick.Text = "Kick";
+            this.TsPlayer_kick.Click += new EventHandler(this.TsPlayer_Kick_Click);
             // 
-            // tsPlayer_ban
+            // TsPlayer_ban
             // 
-            this.tsPlayer_ban.Name = "tsPlayer_ban";
-            this.tsPlayer_ban.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_ban.Text = "Ban";
-            this.tsPlayer_ban.Click += new System.EventHandler(this.tsPlayer_Ban_Click);
+            this.TsPlayer_ban.Name = "TsPlayer_ban";
+            this.TsPlayer_ban.Size = new Size(114, 22);
+            this.TsPlayer_ban.Text = "Ban";
+            this.TsPlayer_ban.Click += new EventHandler(this.TsPlayer_Ban_Click);
             // 
-            // tsPlayer_voice
+            // TsPlayer_voice
             // 
-            this.tsPlayer_voice.Name = "tsPlayer_voice";
-            this.tsPlayer_voice.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_voice.Text = "Voice";
-            this.tsPlayer_voice.Click += new System.EventHandler(this.tsPlayer_Voice_Click);
-            // 
-            // tsPlayer_clones
-            // 
-            this.tsPlayer_clones.Name = "tsPlayer_clones";
-            this.tsPlayer_clones.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_clones.Text = "Clones";
-            this.tsPlayer_clones.Click += new System.EventHandler(this.tsPlayer_Clones_Click);
-            // 
-            // tsPlayer_promote
-            // 
-            this.tsPlayer_promote.Name = "tsPlayer_promote";
-            this.tsPlayer_promote.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_promote.Text = "Promote";
-            this.tsPlayer_promote.Click += new System.EventHandler(this.tsPlayer_Promote_Click);
-            // 
-            // tsPlayer_demote
-            // 
-            this.tsPlayer_demote.Name = "tsPlayer_demote";
-            this.tsPlayer_demote.Size = new System.Drawing.Size(114, 22);
-            this.tsPlayer_demote.Text = "Demote";
-            this.tsPlayer_demote.Click += new System.EventHandler(this.tsPlayer_Demote_Click);
-            // 
-            // icon_context
-            // 
-            this.icon_context.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.icon_hideWindow,
-                                    this.icon_separator,
-                                    this.icon_openConsole,
-                                    this.icon_shutdown,
-                                    this.icon_restart});
-            this.icon_context.Name = "iconContext";
-            this.icon_context.Size = new System.Drawing.Size(158, 70);
-            // 
-            // icon_separator
-            // 
-            this.icon_separator.Name = "icon_separator";
-            this.icon_separator.Size = new System.Drawing.Size(157, 6);
-            // 
-            // icon_hideWindow
-            // 
-            this.icon_hideWindow.Name = "icon_hideWindow";
-            this.icon_hideWindow.Size = new System.Drawing.Size(157, 22);
-            this.icon_hideWindow.Text = "Hide from taskbar";
-            this.icon_hideWindow.Click += new System.EventHandler(this.icon_HideWindow_Click);
-            // 
-            // icon_openConsole
-            // 
-            this.icon_openConsole.Name = "icon_openConsole";
-            this.icon_openConsole.Size = new System.Drawing.Size(157, 22);
-            this.icon_openConsole.Text = "Open console";
-            this.icon_openConsole.Click += new System.EventHandler(this.icon_OpenConsole_Click);
-            // 
-            // icon_shutdown
-            // 
-            this.icon_shutdown.Name = "icon_shutdown";
-            this.icon_shutdown.Size = new System.Drawing.Size(157, 22);
-            this.icon_shutdown.Text = "Shutdown server";
-            this.icon_shutdown.Click += new System.EventHandler(this.icon_Shutdown_Click);
-            // 
-            // icon_restart
-            // 
-            this.icon_restart.Name = "icon_restart";
-            this.icon_restart.Size = new System.Drawing.Size(157, 22);
-            this.icon_restart.Text = "Restart server";
-            this.icon_restart.Click += new System.EventHandler(this.icon_restart_Click);
-            // 
-            // main_btnProps
-            // 
-            this.main_btnProps.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnProps.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnProps.Location = new System.Drawing.Point(501, 5);
-            this.main_btnProps.Name = "main_btnProps";
-            this.main_btnProps.Size = new System.Drawing.Size(80, 23);
-            this.main_btnProps.TabIndex = 34;
-            this.main_btnProps.Text = "Settings";
-            this.main_btnProps.UseVisualStyleBackColor = true;
-            this.main_btnProps.Enabled = false;
-            this.main_btnProps.Click += new System.EventHandler(this.btnProperties_Click);
-            // 
-            // main_btnClose
-            // 
-            this.main_btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnClose.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnClose.Location = new System.Drawing.Point(675, 5);
-            this.main_btnClose.Name = "main_btnClose";
-            this.main_btnClose.Size = new System.Drawing.Size(88, 23);
-            this.main_btnClose.TabIndex = 35;
-            this.main_btnClose.Text = "Close";
-            this.main_btnClose.UseVisualStyleBackColor = true;
-            this.main_btnClose.Click += new System.EventHandler(this.btnClose_Click);
-            // 
-            // main_btnRestart
-            // 
-            this.main_btnRestart.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnRestart.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnRestart.Location = new System.Drawing.Point(584, 5);
-            this.main_btnRestart.Name = "main_btnRestart";
-            this.main_btnRestart.Size = new System.Drawing.Size(88, 23);
-            this.main_btnRestart.TabIndex = 36;
-            this.main_btnRestart.Text = "Restart";
-            this.main_btnRestart.UseVisualStyleBackColor = true;
-            this.main_btnRestart.Click += new System.EventHandler(this.main_BtnRestart_Click);
-            // 
-            // logs_tp
-            // 
-            this.logs_tp.BackColor = System.Drawing.SystemColors.Control;
-            this.logs_tp.Controls.Add(this.logs_tab);
-            this.logs_tp.Location = new System.Drawing.Point(4, 22);
-            this.logs_tp.Name = "logs_tp";
-            this.logs_tp.Padding = new System.Windows.Forms.Padding(3);
-            this.logs_tp.Size = new System.Drawing.Size(767, 488);
-            this.logs_tp.TabIndex = 4;
-            this.logs_tp.Text = "Logs";
-            // 
-            // logs_tab
-            // 
-            this.logs_tab.Controls.Add(this.logs_tabErr);
-            this.logs_tab.Controls.Add(this.logs_tabGen);
-            this.logs_tab.Controls.Add(this.tabLog_Sys);
-            this.logs_tab.Location = new System.Drawing.Point(-1, 1);
-            this.logs_tab.Name = "logs_tab";
-            this.logs_tab.SelectedIndex = 0;
-            this.logs_tab.Size = new System.Drawing.Size(775, 491);
-            this.logs_tab.TabIndex = 0;
-            // 
-            // logs_tabErr
-            // 
-            this.logs_tabErr.Controls.Add(this.logs_txtError);
-            this.logs_tabErr.Location = new System.Drawing.Point(4, 22);
-            this.logs_tabErr.Name = "logs_tabErr";
-            this.logs_tabErr.Size = new System.Drawing.Size(767, 465);
-            this.logs_tabErr.TabIndex = 2;
-            this.logs_tabErr.Text = "Errors";
-            this.logs_tabErr.UseVisualStyleBackColor = true;
-            // 
-            // logs_txtError
-            // 
-            this.logs_txtError.BackColor = System.Drawing.SystemColors.Window;
-            this.logs_txtError.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.logs_txtError.Location = new System.Drawing.Point(-2, 0);
-            this.logs_txtError.Multiline = true;
-            this.logs_txtError.Name = "logs_txtError";
-            this.logs_txtError.ReadOnly = true;
-            this.logs_txtError.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logs_txtError.Size = new System.Drawing.Size(765, 465);
-            this.logs_txtError.TabIndex = 2;
-            // 
-            // logs_tabGen
-            // 
-            this.logs_tabGen.Controls.Add(this.logs_lblGeneral);
-            this.logs_tabGen.Controls.Add(this.logs_dateGeneral);
-            this.logs_tabGen.Controls.Add(this.logs_txtGeneral);
-            this.logs_tabGen.Location = new System.Drawing.Point(4, 22);
-            this.logs_tabGen.Name = "logs_tabGen";
-            this.logs_tabGen.Padding = new System.Windows.Forms.Padding(3);
-            this.logs_tabGen.Size = new System.Drawing.Size(767, 465);
-            this.logs_tabGen.TabIndex = 0;
-            this.logs_tabGen.Text = "General";
-            this.logs_tabGen.UseVisualStyleBackColor = true;
-            // 
-            // logs_lblGeneral
-            // 
-            this.logs_lblGeneral.AutoSize = true;
-            this.logs_lblGeneral.Location = new System.Drawing.Point(3, 9);
-            this.logs_lblGeneral.Name = "logs_lblGeneral";
-            this.logs_lblGeneral.Size = new System.Drawing.Size(78, 13);
-            this.logs_lblGeneral.TabIndex = 6;
-            this.logs_lblGeneral.Text = "View logs from:";
-            // 
-            // logs_dateGeneral
-            // 
-            this.logs_dateGeneral.Location = new System.Drawing.Point(87, 4);
-            this.logs_dateGeneral.CalendarForeColor = System.Drawing.SystemColors.WindowText;
-            this.logs_dateGeneral.Name = "logs_dateGeneral";
-            this.logs_dateGeneral.Size = new System.Drawing.Size(200, 21);
-            this.logs_dateGeneral.TabIndex = 5;
-            this.logs_dateGeneral.Value = new System.DateTime(2011, 7, 20, 18, 31, 50, 0);
-            this.logs_dateGeneral.ValueChanged += new System.EventHandler(this.logs_dateGeneral_Changed);
-            // 
-            // logs_txtGeneral
-            // 
-            this.logs_txtGeneral.BackColor = System.Drawing.SystemColors.Window;
-            this.logs_txtGeneral.Location = new System.Drawing.Point(-2, 30);
-            this.logs_txtGeneral.Name = "logs_txtGeneral";
-            this.logs_txtGeneral.ReadOnly = true;
-            this.logs_txtGeneral.Size = new System.Drawing.Size(765, 436);
-            this.logs_txtGeneral.TabIndex = 4;
-            this.logs_txtGeneral.Text = "";
-            // 
-            // tabLog_Sys
-            // 
-            this.tabLog_Sys.Controls.Add(this.logs_txtSystem);
-            this.tabLog_Sys.Location = new System.Drawing.Point(4, 22);
-            this.tabLog_Sys.Name = "tabLog_Sys";
-            this.tabLog_Sys.Padding = new System.Windows.Forms.Padding(3);
-            this.tabLog_Sys.Size = new System.Drawing.Size(767, 465);
-            this.tabLog_Sys.TabIndex = 1;
-            this.tabLog_Sys.Text = "System";
-            this.tabLog_Sys.UseVisualStyleBackColor = true;
-            // 
-            // logs_txtSystem
-            // 
-            this.logs_txtSystem.BackColor = System.Drawing.SystemColors.Window;
-            this.logs_txtSystem.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.logs_txtSystem.Location = new System.Drawing.Point(-2, 0);
-            this.logs_txtSystem.Multiline = true;
-            this.logs_txtSystem.Name = "logs_txtSystem";
-            this.logs_txtSystem.ReadOnly = true;
-            this.logs_txtSystem.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logs_txtSystem.Size = new System.Drawing.Size(765, 465);
-            this.logs_txtSystem.TabIndex = 2;
-            // 
-            // tp_Main
-            // 
-            this.tp_Main.BackColor = System.Drawing.SystemColors.Control;
-            this.tp_Main.Controls.Add(this.main_btnUnloadEmpty);
-            this.tp_Main.Controls.Add(this.main_btnKillPhysics);
-            this.tp_Main.Controls.Add(this.main_btnSaveAll);
-            this.tp_Main.Controls.Add(this.main_Maps);
-            this.tp_Main.Controls.Add(this.main_txtLog);
-            this.tp_Main.Controls.Add(this.main_txtInput);
-            this.tp_Main.Controls.Add(this.main_txtUrl);
-            this.tp_Main.Controls.Add(this.main_Players);
-            this.tp_Main.Location = new System.Drawing.Point(4, 22);
-            this.tp_Main.Name = "tp_Main";
-            this.tp_Main.Padding = new System.Windows.Forms.Padding(3);
-            this.tp_Main.Size = new System.Drawing.Size(767, 488);
-            this.tp_Main.TabIndex = 0;
-            this.tp_Main.Text = "Main";
-            // 
-            // main_btnUnloadEmpty
-            // 
-            this.main_btnUnloadEmpty.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnUnloadEmpty.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnUnloadEmpty.Location = new System.Drawing.Point(676, 263);
-            this.main_btnUnloadEmpty.Name = "main_btnUnloadEmpty";
-            this.main_btnUnloadEmpty.Size = new System.Drawing.Size(81, 23);
-            this.main_btnUnloadEmpty.TabIndex = 41;
-            this.main_btnUnloadEmpty.Text = "Unload Empty";
-            this.main_btnUnloadEmpty.UseVisualStyleBackColor = true;
-            this.main_btnUnloadEmpty.Click += new System.EventHandler(this.main_BtnUnloadEmpty_Click);
-            // 
-            // main_btnKillPhysics
-            // 
-            this.main_btnKillPhysics.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnKillPhysics.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnKillPhysics.Location = new System.Drawing.Point(582, 263);
-            this.main_btnKillPhysics.Name = "main_btnKillPhysics";
-            this.main_btnKillPhysics.Size = new System.Drawing.Size(88, 23);
-            this.main_btnKillPhysics.TabIndex = 40;
-            this.main_btnKillPhysics.Text = "Kill All Physics";
-            this.main_btnKillPhysics.UseVisualStyleBackColor = true;
-            this.main_btnKillPhysics.Click += new System.EventHandler(this.main_BtnKillPhysics_Click);
-            // 
-            // main_btnSaveAll
-            // 
-            this.main_btnSaveAll.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.main_btnSaveAll.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_btnSaveAll.Location = new System.Drawing.Point(513, 263);
-            this.main_btnSaveAll.Name = "main_btnSaveAll";
-            this.main_btnSaveAll.Size = new System.Drawing.Size(63, 23);
-            this.main_btnSaveAll.TabIndex = 39;
-            this.main_btnSaveAll.Text = "Save All";
-            this.main_btnSaveAll.UseVisualStyleBackColor = true;
-            this.main_btnSaveAll.Click += new System.EventHandler(this.main_BtnSaveAll_Click);
-            // 
-            // main_colLvlName
-            // 
-            this.main_colLvlName.HeaderText = "Name";
-            this.main_colLvlName.Name = "main_colLvlName";
-            this.main_colLvlName.ReadOnly = true;
-            // 
-            // main_colLvlPlayers
-            // 
-            this.main_colLvlPlayers.FillWeight = 70F;
-            this.main_colLvlPlayers.HeaderText = "Players";
-            this.main_colLvlPlayers.Name = "main_colLvlPlayers";
-            this.main_colLvlPlayers.ReadOnly = true;
-            // 
-            // main_colLvlPhysics
-            // 
-            this.main_colLvlPhysics.FillWeight = 70F;
-            this.main_colLvlPhysics.HeaderText = "Physics";
-            this.main_colLvlPhysics.Name = "main_colLvlPhysics";
-            this.main_colLvlPhysics.ReadOnly = true;
-            // 
-            // main_Maps
-            // 
-            this.main_Maps.AllowUserToAddRows = false;
-            this.main_Maps.AllowUserToDeleteRows = false;
-            this.main_Maps.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.main_Maps.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.main_Maps.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.main_Maps.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.main_Maps.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-        	        	        	this.main_colLvlName,
-        	        	        	this.main_colLvlPlayers,
-        	        	        	this.main_colLvlPhysics});
-            this.main_Maps.ContextMenuStrip = this.tsMap;
-            this.main_Maps.Location = new System.Drawing.Point(512, 292);
-            this.main_Maps.MultiSelect = false;
-            this.main_Maps.Name = "main_Maps";
-            this.main_Maps.ReadOnly = true;
-            this.main_Maps.RowHeadersVisible = false;
-            this.main_Maps.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.main_Maps.Size = new System.Drawing.Size(246, 150);
-            this.main_Maps.TabIndex = 38;
-            // 
-            // main_txtLog
-            // 
-            this.main_txtLog.BackColor = System.Drawing.SystemColors.Window;
-            this.main_txtLog.ContextMenuStrip = this.tsLog_Menu;
-            this.main_txtLog.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_txtLog.Location = new System.Drawing.Point(8, 38);
-            this.main_txtLog.Name = "main_txtLog";
-            this.main_txtLog.ReadOnly = true;
-            this.main_txtLog.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.ForcedVertical;
-            this.main_txtLog.Size = new System.Drawing.Size(498, 404);
-            this.main_txtLog.TabIndex = 0;
-            this.main_txtLog.Text = "";
-            // 
-            // tsLog_Menu
-            // 
-            this.tsLog_Menu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-                                    this.tsLog_night,
-                                    this.tsLog_Colored,
-                                    this.tsLog_dateStamp,
-                                    this.tsLog_autoScroll,
-                                    this.tsLog_separator1,
-                                    this.tsLog_copySelected,
-                                    this.tsLog_copyAll,
-                                    this.tsLog_separator2,
-                                    this.tsLog_clear});
-            this.tsLog_Menu.Name = "txtLogMenuStrip";
-            this.tsLog_Menu.Size = new System.Drawing.Size(144, 170);
-            // 
-            // tsLog_night
-            // 
-            this.tsLog_night.Name = "tsLog_night";
-            this.tsLog_night.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_night.Text = "Night Theme";
-            this.tsLog_night.Click += new System.EventHandler(this.tsLog_Night_Click);
-            // 
-            // tsLog_Colored
-            // 
-            this.tsLog_Colored.Checked = true;
-            this.tsLog_Colored.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsLog_Colored.Name = "tsLog_Colored";
-            this.tsLog_Colored.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_Colored.Text = "Colors";
-            this.tsLog_Colored.Click += new System.EventHandler(this.tsLog_Colored_Click);
-            // 
-            // tsLog_dateStamp
-            // 
-            this.tsLog_dateStamp.Checked = true;
-            this.tsLog_dateStamp.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsLog_dateStamp.Name = "tsLog_dateStamp";
-            this.tsLog_dateStamp.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_dateStamp.Text = "Date Stamp";
-            this.tsLog_dateStamp.Click += new System.EventHandler(this.tsLog_DateStamp_Click);
-            // 
-            // tsLog_autoScroll
-            // 
-            this.tsLog_autoScroll.Checked = true;
-            this.tsLog_autoScroll.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.tsLog_autoScroll.Name = "tsLog_autoScroll";
-            this.tsLog_autoScroll.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_autoScroll.Text = "Auto Scroll";
-            this.tsLog_autoScroll.Click += new System.EventHandler(this.tsLog_AutoScroll_Click);
-            // 
-            // tsLog_separator1
-            // 
-            this.tsLog_separator1.Name = "tsLog_separator1";
-            this.tsLog_separator1.Size = new System.Drawing.Size(140, 6);
+            this.TsPlayer_voice.Name = "TsPlayer_voice";
+            this.TsPlayer_voice.Size = new Size(114, 22);
+            this.TsPlayer_voice.Text = "Voice";
+            this.TsPlayer_voice.Click += new EventHandler(this.TsPlayer_Voice_Click);
+            // 
+            // TsPlayer_clones
+            // 
+            this.TsPlayer_clones.Name = "TsPlayer_clones";
+            this.TsPlayer_clones.Size = new Size(114, 22);
+            this.TsPlayer_clones.Text = "Clones";
+            this.TsPlayer_clones.Click += new EventHandler(this.TsPlayer_Clones_Click);
+            // 
+            // TsPlayer_promote
+            // 
+            this.TsPlayer_promote.Name = "TsPlayer_promote";
+            this.TsPlayer_promote.Size = new Size(114, 22);
+            this.TsPlayer_promote.Text = "Promote";
+            this.TsPlayer_promote.Click += new EventHandler(this.TsPlayer_Promote_Click);
+            // 
+            // TsPlayer_demote
+            // 
+            this.TsPlayer_demote.Name = "TsPlayer_demote";
+            this.TsPlayer_demote.Size = new Size(114, 22);
+            this.TsPlayer_demote.Text = "Demote";
+            this.TsPlayer_demote.Click += new EventHandler(this.TsPlayer_Demote_Click);
+            // 
+            // Icon_context
+            // 
+            this.Icon_context.Items.AddRange(new ToolStripItem[] {
+                                    this.Icon_hideWindow,
+                                    this.Icon_separator,
+                                    this.Icon_openConsole,
+                                    this.Icon_shutdown,
+                                    this.Icon_restart});
+            this.Icon_context.Name = "iconContext";
+            this.Icon_context.Size = new Size(158, 70);
+            // 
+            // Icon_separator
+            // 
+            this.Icon_separator.Name = "Icon_separator";
+            this.Icon_separator.Size = new Size(157, 6);
+            // 
+            // Icon_hideWindow
+            // 
+            this.Icon_hideWindow.Name = "Icon_hideWindow";
+            this.Icon_hideWindow.Size = new Size(157, 22);
+            this.Icon_hideWindow.Text = "Hide from taskbar";
+            this.Icon_hideWindow.Click += new EventHandler(this.Icon_HideWindow_Click);
+            // 
+            // Icon_openConsole
+            // 
+            this.Icon_openConsole.Name = "Icon_openConsole";
+            this.Icon_openConsole.Size = new Size(157, 22);
+            this.Icon_openConsole.Text = "Open console";
+            this.Icon_openConsole.Click += new EventHandler(this.Icon_OpenConsole_Click);
+            // 
+            // Icon_shutdown
+            // 
+            this.Icon_shutdown.Name = "Icon_shutdown";
+            this.Icon_shutdown.Size = new Size(157, 22);
+            this.Icon_shutdown.Text = "Shutdown server";
+            this.Icon_shutdown.Click += new EventHandler(this.Icon_Shutdown_Click);
+            // 
+            // Icon_restart
+            // 
+            this.Icon_restart.Name = "Icon_restart";
+            this.Icon_restart.Size = new Size(157, 22);
+            this.Icon_restart.Text = "Restart server";
+            this.Icon_restart.Click += new EventHandler(this.Icon_restart_Click);
+            // 
+            // Main_btnProps
+            // 
+            this.Main_btnProps.Cursor = Cursors.Hand;
+            this.Main_btnProps.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnProps.Location = new Point(501, 5);
+            this.Main_btnProps.Name = "Main_btnProps";
+            this.Main_btnProps.Size = new Size(80, 23);
+            this.Main_btnProps.TabIndex = 34;
+            this.Main_btnProps.Text = "Settings";
+            this.Main_btnProps.UseVisualStyleBackColor = true;
+            this.Main_btnProps.Enabled = false;
+            this.Main_btnProps.Click += new EventHandler(this.BtnProperties_Click);
+            // 
+            // Main_btnClose
+            // 
+            this.Main_btnClose.Cursor = Cursors.Hand;
+            this.Main_btnClose.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnClose.Location = new Point(675, 5);
+            this.Main_btnClose.Name = "Main_btnClose";
+            this.Main_btnClose.Size = new Size(88, 23);
+            this.Main_btnClose.TabIndex = 35;
+            this.Main_btnClose.Text = "Close";
+            this.Main_btnClose.UseVisualStyleBackColor = true;
+            this.Main_btnClose.Click += new EventHandler(this.BtnClose_Click);
+            // 
+            // Main_btnRestart
+            // 
+            this.Main_btnRestart.Cursor = Cursors.Hand;
+            this.Main_btnRestart.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnRestart.Location = new Point(584, 5);
+            this.Main_btnRestart.Name = "Main_btnRestart";
+            this.Main_btnRestart.Size = new Size(88, 23);
+            this.Main_btnRestart.TabIndex = 36;
+            this.Main_btnRestart.Text = "Restart";
+            this.Main_btnRestart.UseVisualStyleBackColor = true;
+            this.Main_btnRestart.Click += new EventHandler(this.Main_BtnRestart_Click);
+            // 
+            // Logs_tp
+            // 
+            this.Logs_tp.BackColor = SystemColors.Control;
+            this.Logs_tp.Controls.Add(this.Logs_tab);
+            this.Logs_tp.Location = new Point(4, 22);
+            this.Logs_tp.Name = "Logs_tp";
+            this.Logs_tp.Padding = new Padding(3);
+            this.Logs_tp.Size = new Size(767, 488);
+            this.Logs_tp.TabIndex = 4;
+            this.Logs_tp.Text = "Logs";
+            // 
+            // Logs_tab
+            // 
+            this.Logs_tab.Controls.Add(this.Logs_tabErr);
+            this.Logs_tab.Controls.Add(this.Logs_tabGen);
+            this.Logs_tab.Controls.Add(this.TabLog_Sys);
+            this.Logs_tab.Location = new Point(-1, 1);
+            this.Logs_tab.Name = "Logs_tab";
+            this.Logs_tab.SelectedIndex = 0;
+            this.Logs_tab.Size = new Size(775, 491);
+            this.Logs_tab.TabIndex = 0;
+            // 
+            // Logs_tabErr
+            // 
+            this.Logs_tabErr.Controls.Add(this.Logs_txtError);
+            this.Logs_tabErr.Location = new Point(4, 22);
+            this.Logs_tabErr.Name = "Logs_tabErr";
+            this.Logs_tabErr.Size = new Size(767, 465);
+            this.Logs_tabErr.TabIndex = 2;
+            this.Logs_tabErr.Text = "Errors";
+            this.Logs_tabErr.UseVisualStyleBackColor = true;
+            // 
+            // Logs_txtError
+            // 
+            this.Logs_txtError.BackColor = SystemColors.Window;
+            this.Logs_txtError.Cursor = Cursors.Arrow;
+            this.Logs_txtError.Location = new Point(-2, 0);
+            this.Logs_txtError.Multiline = true;
+            this.Logs_txtError.Name = "Logs_txtError";
+            this.Logs_txtError.ReadOnly = true;
+            this.Logs_txtError.ScrollBars = ScrollBars.Vertical;
+            this.Logs_txtError.Size = new Size(765, 465);
+            this.Logs_txtError.TabIndex = 2;
+            // 
+            // Logs_tabGen
+            // 
+            this.Logs_tabGen.Controls.Add(this.Logs_lblGeneral);
+            this.Logs_tabGen.Controls.Add(this.Logs_dateGeneral);
+            this.Logs_tabGen.Controls.Add(this.Logs_txtGeneral);
+            this.Logs_tabGen.Location = new Point(4, 22);
+            this.Logs_tabGen.Name = "Logs_tabGen";
+            this.Logs_tabGen.Padding = new Padding(3);
+            this.Logs_tabGen.Size = new Size(767, 465);
+            this.Logs_tabGen.TabIndex = 0;
+            this.Logs_tabGen.Text = "General";
+            this.Logs_tabGen.UseVisualStyleBackColor = true;
+            // 
+            // Logs_lblGeneral
+            // 
+            this.Logs_lblGeneral.AutoSize = true;
+            this.Logs_lblGeneral.Location = new Point(3, 9);
+            this.Logs_lblGeneral.Name = "Logs_lblGeneral";
+            this.Logs_lblGeneral.Size = new Size(78, 13);
+            this.Logs_lblGeneral.TabIndex = 6;
+            this.Logs_lblGeneral.Text = "View logs from:";
+            // 
+            // Logs_dateGeneral
+            // 
+            this.Logs_dateGeneral.Location = new Point(87, 4);
+            this.Logs_dateGeneral.CalendarForeColor = SystemColors.WindowText;
+            this.Logs_dateGeneral.Name = "Logs_dateGeneral";
+            this.Logs_dateGeneral.Size = new Size(200, 21);
+            this.Logs_dateGeneral.TabIndex = 5;
+            this.Logs_dateGeneral.Value = new DateTime(2011, 7, 20, 18, 31, 50, 0);
+            this.Logs_dateGeneral.ValueChanged += new EventHandler(this.logs_dateGeneral_Changed);
+            // 
+            // Logs_txtGeneral
+            // 
+            this.Logs_txtGeneral.BackColor = SystemColors.Window;
+            this.Logs_txtGeneral.Location = new Point(-2, 30);
+            this.Logs_txtGeneral.Name = "Logs_txtGeneral";
+            this.Logs_txtGeneral.ReadOnly = true;
+            this.Logs_txtGeneral.Size = new Size(765, 436);
+            this.Logs_txtGeneral.TabIndex = 4;
+            this.Logs_txtGeneral.Text = "";
+            // 
+            // TabLog_Sys
+            // 
+            this.TabLog_Sys.Controls.Add(this.Logs_txtSystem);
+            this.TabLog_Sys.Location = new Point(4, 22);
+            this.TabLog_Sys.Name = "TabLog_Sys";
+            this.TabLog_Sys.Padding = new Padding(3);
+            this.TabLog_Sys.Size = new Size(767, 465);
+            this.TabLog_Sys.TabIndex = 1;
+            this.TabLog_Sys.Text = "System";
+            this.TabLog_Sys.UseVisualStyleBackColor = true;
+            // 
+            // Logs_txtSystem
+            // 
+            this.Logs_txtSystem.BackColor = SystemColors.Window;
+            this.Logs_txtSystem.Cursor = Cursors.Arrow;
+            this.Logs_txtSystem.Location = new Point(-2, 0);
+            this.Logs_txtSystem.Multiline = true;
+            this.Logs_txtSystem.Name = "Logs_txtSystem";
+            this.Logs_txtSystem.ReadOnly = true;
+            this.Logs_txtSystem.ScrollBars = ScrollBars.Vertical;
+            this.Logs_txtSystem.Size = new Size(765, 465);
+            this.Logs_txtSystem.TabIndex = 2;
+            // 
+            // Tp_Main
+            // 
+            this.Tp_Main.BackColor = SystemColors.Control;
+            this.Tp_Main.Controls.Add(this.Main_btnUnloadEmpty);
+            this.Tp_Main.Controls.Add(this.Main_btnKillPhysics);
+            this.Tp_Main.Controls.Add(this.Main_btnSaveAll);
+            this.Tp_Main.Controls.Add(this.Main_Maps);
+            this.Tp_Main.Controls.Add(this.Main_txtLog);
+            this.Tp_Main.Controls.Add(this.Main_txtInput);
+            this.Tp_Main.Controls.Add(this.Main_txtUrl);
+            this.Tp_Main.Controls.Add(this.Main_Players);
+            this.Tp_Main.Location = new Point(4, 22);
+            this.Tp_Main.Name = "Tp_Main";
+            this.Tp_Main.Padding = new Padding(3);
+            this.Tp_Main.Size = new Size(767, 488);
+            this.Tp_Main.TabIndex = 0;
+            this.Tp_Main.Text = "Main";
+            // 
+            // Main_btnUnloadEmpty
+            // 
+            this.Main_btnUnloadEmpty.Cursor = Cursors.Hand;
+            this.Main_btnUnloadEmpty.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnUnloadEmpty.Location = new Point(676, 263);
+            this.Main_btnUnloadEmpty.Name = "Main_btnUnloadEmpty";
+            this.Main_btnUnloadEmpty.Size = new Size(81, 23);
+            this.Main_btnUnloadEmpty.TabIndex = 41;
+            this.Main_btnUnloadEmpty.Text = "Unload Empty";
+            this.Main_btnUnloadEmpty.UseVisualStyleBackColor = true;
+            this.Main_btnUnloadEmpty.Click += new EventHandler(this.Main_BtnUnloadEmpty_Click);
+            // 
+            // Main_btnKillPhysics
+            // 
+            this.Main_btnKillPhysics.Cursor = Cursors.Hand;
+            this.Main_btnKillPhysics.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnKillPhysics.Location = new Point(582, 263);
+            this.Main_btnKillPhysics.Name = "Main_btnKillPhysics";
+            this.Main_btnKillPhysics.Size = new Size(88, 23);
+            this.Main_btnKillPhysics.TabIndex = 40;
+            this.Main_btnKillPhysics.Text = "Kill All Physics";
+            this.Main_btnKillPhysics.UseVisualStyleBackColor = true;
+            this.Main_btnKillPhysics.Click += new EventHandler(this.Main_BtnKillPhysics_Click);
+            // 
+            // Main_btnSaveAll
+            // 
+            this.Main_btnSaveAll.Cursor = Cursors.Hand;
+            this.Main_btnSaveAll.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_btnSaveAll.Location = new Point(513, 263);
+            this.Main_btnSaveAll.Name = "Main_btnSaveAll";
+            this.Main_btnSaveAll.Size = new Size(63, 23);
+            this.Main_btnSaveAll.TabIndex = 39;
+            this.Main_btnSaveAll.Text = "Save All";
+            this.Main_btnSaveAll.UseVisualStyleBackColor = true;
+            this.Main_btnSaveAll.Click += new EventHandler(this.Main_BtnSaveAll_Click);
+            // 
+            // Main_colLvlName
+            // 
+            this.Main_colLvlName.HeaderText = "Name";
+            this.Main_colLvlName.Name = "Main_colLvlName";
+            this.Main_colLvlName.ReadOnly = true;
+            // 
+            // Main_colLvlPlayers
+            // 
+            this.Main_colLvlPlayers.FillWeight = 70F;
+            this.Main_colLvlPlayers.HeaderText = "Players";
+            this.Main_colLvlPlayers.Name = "Main_colLvlPlayers";
+            this.Main_colLvlPlayers.ReadOnly = true;
+            // 
+            // Main_colLvlPhysics
+            // 
+            this.Main_colLvlPhysics.FillWeight = 70F;
+            this.Main_colLvlPhysics.HeaderText = "Physics";
+            this.Main_colLvlPhysics.Name = "Main_colLvlPhysics";
+            this.Main_colLvlPhysics.ReadOnly = true;
+            // 
+            // Main_Maps
+            // 
+            this.Main_Maps.AllowUserToAddRows = false;
+            this.Main_Maps.AllowUserToDeleteRows = false;
+            this.Main_Maps.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            this.Main_Maps.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            this.Main_Maps.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            this.Main_Maps.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Main_Maps.Columns.AddRange(new DataGridViewColumn[] {
+        	        	        	this.Main_colLvlName,
+        	        	        	this.Main_colLvlPlayers,
+        	        	        	this.Main_colLvlPhysics});
+            this.Main_Maps.ContextMenuStrip = this.TsMap;
+            this.Main_Maps.Location = new Point(512, 292);
+            this.Main_Maps.MultiSelect = false;
+            this.Main_Maps.Name = "Main_Maps";
+            this.Main_Maps.ReadOnly = true;
+            this.Main_Maps.RowHeadersVisible = false;
+            this.Main_Maps.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.Main_Maps.Size = new Size(246, 150);
+            this.Main_Maps.TabIndex = 38;
+            // 
+            // Main_txtLog
+            // 
+            this.Main_txtLog.BackColor = SystemColors.Window;
+            this.Main_txtLog.ContextMenuStrip = this.TsLog_Menu;
+            this.Main_txtLog.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_txtLog.Location = new Point(8, 38);
+            this.Main_txtLog.Name = "Main_txtLog";
+            this.Main_txtLog.ReadOnly = true;
+            this.Main_txtLog.ScrollBars = RichTextBoxScrollBars.ForcedVertical;
+            this.Main_txtLog.Size = new Size(498, 404);
+            this.Main_txtLog.TabIndex = 0;
+            this.Main_txtLog.Text = "";
+            // 
+            // TsLog_Menu
+            // 
+            this.TsLog_Menu.Items.AddRange(new ToolStripItem[] {
+                                    this.TsLog_night,
+                                    this.TsLog_Colored,
+                                    this.TsLog_dateStamp,
+                                    this.TsLog_autoScroll,
+                                    this.TsLog_separator1,
+                                    this.TsLog_copySelected,
+                                    this.TsLog_copyAll,
+                                    this.TsLog_separator2,
+                                    this.TsLog_clear});
+            this.TsLog_Menu.Name = "txtLogMenuStrip";
+            this.TsLog_Menu.Size = new Size(144, 170);
+            // 
+            // TsLog_night
+            // 
+            this.TsLog_night.Name = "TsLog_night";
+            this.TsLog_night.Size = new Size(143, 22);
+            this.TsLog_night.Text = "Night Theme";
+            this.TsLog_night.Click += new EventHandler(this.TsLog_Night_Click);
+            // 
+            // TsLog_Colored
+            // 
+            this.TsLog_Colored.Checked = true;
+            this.TsLog_Colored.CheckState = CheckState.Checked;
+            this.TsLog_Colored.Name = "TsLog_Colored";
+            this.TsLog_Colored.Size = new Size(143, 22);
+            this.TsLog_Colored.Text = "Colors";
+            this.TsLog_Colored.Click += new EventHandler(this.TsLog_Colored_Click);
+            // 
+            // TsLog_dateStamp
+            // 
+            this.TsLog_dateStamp.Checked = true;
+            this.TsLog_dateStamp.CheckState = CheckState.Checked;
+            this.TsLog_dateStamp.Name = "TsLog_dateStamp";
+            this.TsLog_dateStamp.Size = new Size(143, 22);
+            this.TsLog_dateStamp.Text = "Date Stamp";
+            this.TsLog_dateStamp.Click += new EventHandler(this.TsLog_DateStamp_Click);
+            // 
+            // TsLog_autoScroll
+            // 
+            this.TsLog_autoScroll.Checked = true;
+            this.TsLog_autoScroll.CheckState = CheckState.Checked;
+            this.TsLog_autoScroll.Name = "TsLog_autoScroll";
+            this.TsLog_autoScroll.Size = new Size(143, 22);
+            this.TsLog_autoScroll.Text = "Auto Scroll";
+            this.TsLog_autoScroll.Click += new EventHandler(this.TsLog_AutoScroll_Click);
+            // 
+            // TsLog_separator1
+            // 
+            this.TsLog_separator1.Name = "TsLog_separator1";
+            this.TsLog_separator1.Size = new Size(140, 6);
             // 
             // tsPlayer_copySelected
             // 
-            this.tsLog_copySelected.Name = "tsLog_copySelected";
-            this.tsLog_copySelected.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_copySelected.Text = "Copy Selected";
-            this.tsLog_copySelected.Click += new System.EventHandler(this.tsLog_CopySelected_Click);
+            this.TsLog_copySelected.Name = "TsLog_copySelected";
+            this.TsLog_copySelected.Size = new Size(143, 22);
+            this.TsLog_copySelected.Text = "Copy Selected";
+            this.TsLog_copySelected.Click += new EventHandler(this.TsLog_CopySelected_Click);
             // 
-            // tsLog_copyAll
+            // TsLog_copyAll
             // 
-            this.tsLog_copyAll.Name = "tsLog_copyAll";
-            this.tsLog_copyAll.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_copyAll.Text = "Copy All";
-            this.tsLog_copyAll.Click += new System.EventHandler(this.tsLog_CopyAll_Click);
+            this.TsLog_copyAll.Name = "TsLog_copyAll";
+            this.TsLog_copyAll.Size = new Size(143, 22);
+            this.TsLog_copyAll.Text = "Copy All";
+            this.TsLog_copyAll.Click += new EventHandler(this.TsLog_CopyAll_Click);
             // 
-            // tsLog_separator2
+            // TsLog_separator2
             // 
-            this.tsLog_separator2.Name = "tsLog_separator2";
-            this.tsLog_separator2.Size = new System.Drawing.Size(140, 6);
+            this.TsLog_separator2.Name = "TsLog_separator2";
+            this.TsLog_separator2.Size = new Size(140, 6);
             // 
-            // tsLog_clear
+            // TsLog_clear
             // 
-            this.tsLog_clear.Name = "tsLog_clear";
-            this.tsLog_clear.Size = new System.Drawing.Size(143, 22);
-            this.tsLog_clear.Text = "Clear";
-            this.tsLog_clear.Click += new System.EventHandler(this.tsLog_Clear_Click);
+            this.TsLog_clear.Name = "TsLog_clear";
+            this.TsLog_clear.Size = new Size(143, 22);
+            this.TsLog_clear.Text = "Clear";
+            this.TsLog_clear.Click += new EventHandler(this.TsLog_Clear_Click);
             // 
-            // main_txtInput
+            // Main_txtInput
             // 
-            this.main_txtInput.BackColor = System.Drawing.SystemColors.Window;
-            this.main_txtInput.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_txtInput.Location = new System.Drawing.Point(8, 454);
-            this.main_txtInput.Name = "main_txtInput";
-            this.main_txtInput.Size = new System.Drawing.Size(750, 21);
-            this.main_txtInput.TabIndex = 27;
-            this.toolTip.SetToolTip(this.main_txtInput, "To send chat to players, just type the message in.\nTo enter a command, put a / be" +
+            this.Main_txtInput.BackColor = SystemColors.Window;
+            this.Main_txtInput.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_txtInput.Location = new Point(8, 454);
+            this.Main_txtInput.Name = "Main_txtInput";
+            this.Main_txtInput.Size = new Size(750, 21);
+            this.Main_txtInput.TabIndex = 27;
+            this.GUIToolTip.SetToolTip(this.Main_txtInput, "To send chat to players, just type the message in.\nTo enter a command, put a / be" +
                         "fore it. (e.g. /help commands)");
-            this.main_txtInput.KeyDown += new System.Windows.Forms.KeyEventHandler(this.main_TxtInput_KeyDown);
+            this.Main_txtInput.KeyDown += new KeyEventHandler(this.Main_TxtInput_KeyDown);
             // 
-            // main_txtUrl
+            // Main_txtUrl
             // 
-            this.main_txtUrl.Cursor = System.Windows.Forms.Cursors.Default;
-            this.main_txtUrl.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.main_txtUrl.Location = new System.Drawing.Point(8, 7);
-            this.main_txtUrl.Name = "main_txtUrl";
-            this.main_txtUrl.ReadOnly = true;
-            this.main_txtUrl.Size = new System.Drawing.Size(498, 21);
-            this.main_txtUrl.TabIndex = 25;
-            this.main_txtUrl.Text = "Starting server..";
-            this.main_txtUrl.DoubleClick += new System.EventHandler(this.main_TxtUrl_DoubleClick);
+            this.Main_txtUrl.Cursor = Cursors.Default;
+            this.Main_txtUrl.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Main_txtUrl.Location = new Point(8, 7);
+            this.Main_txtUrl.Name = "Main_txtUrl";
+            this.Main_txtUrl.ReadOnly = true;
+            this.Main_txtUrl.Size = new Size(498, 21);
+            this.Main_txtUrl.TabIndex = 25;
+            this.Main_txtUrl.Text = "Starting server..";
+            this.Main_txtUrl.DoubleClick += new EventHandler(this.Main_TxtUrl_DoubleClick);
             // 
-            // main_colPlName
+            // Main_colPlName
             // 
-            this.main_colPlName.HeaderText = "Name";
-            this.main_colPlName.Name = "main_colPlName";
-            this.main_colPlName.ReadOnly = true;
+            this.Main_colPlName.HeaderText = "Name";
+            this.Main_colPlName.Name = "Main_colPlName";
+            this.Main_colPlName.ReadOnly = true;
             // 
-            // main_colPlMap
+            // Main_colPlMap
             // 
-            this.main_colPlMap.HeaderText = "Map";
-            this.main_colPlMap.Name = "main_colPlMap";
-            this.main_colPlMap.ReadOnly = true;
+            this.Main_colPlMap.HeaderText = "Map";
+            this.Main_colPlMap.Name = "Main_colPlMap";
+            this.Main_colPlMap.ReadOnly = true;
             // 
-            // main_colPlRank
+            // Main_colPlRank
             // 
-            this.main_colPlRank.HeaderText = "Rank";
-            this.main_colPlRank.Name = "main_colPlRank";
-            this.main_colPlRank.ReadOnly = true;
+            this.Main_colPlRank.HeaderText = "Rank";
+            this.Main_colPlRank.Name = "Main_colPlRank";
+            this.Main_colPlRank.ReadOnly = true;
             // 
-            // main_Players
+            // Main_Players
             // 
-            this.main_Players.AllowUserToAddRows = false;
-            this.main_Players.AllowUserToDeleteRows = false;
-            this.main_Players.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.main_Players.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.main_Players.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.main_Players.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-        	        	        	this.main_colPlName,
-        	        	        	this.main_colPlMap,
-        	        	        	this.main_colPlRank});
-            this.main_Players.ContextMenuStrip = this.tsPlayer;
-            this.main_Players.Location = new System.Drawing.Point(512, 7);
-            this.main_Players.MultiSelect = false;
-            this.main_Players.Name = "main_Players";
-            this.main_Players.ReadOnly = true;
-            this.main_Players.RowHeadersVisible = false;
-            this.main_Players.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.main_Players.Size = new System.Drawing.Size(246, 250);
-            this.main_Players.TabIndex = 37;
-            this.main_Players.RowPrePaint += new System.Windows.Forms.DataGridViewRowPrePaintEventHandler(this.main_players_RowPrePaint);
+            this.Main_Players.AllowUserToAddRows = false;
+            this.Main_Players.AllowUserToDeleteRows = false;
+            this.Main_Players.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            this.Main_Players.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            this.Main_Players.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.Main_Players.Columns.AddRange(new DataGridViewColumn[] {
+        	        	        	this.Main_colPlName,
+        	        	        	this.Main_colPlMap,
+        	        	        	this.Main_colPlRank});
+            this.Main_Players.ContextMenuStrip = this.TsPlayer;
+            this.Main_Players.Location = new Point(512, 7);
+            this.Main_Players.MultiSelect = false;
+            this.Main_Players.Name = "Main_Players";
+            this.Main_Players.ReadOnly = true;
+            this.Main_Players.RowHeadersVisible = false;
+            this.Main_Players.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            this.Main_Players.Size = new Size(246, 250);
+            this.Main_Players.TabIndex = 37;
+            this.Main_Players.RowPrePaint += new DataGridViewRowPrePaintEventHandler(this.Main_players_RowPrePaint);
             // 
-            // tabs
+            // Tabs
             // 
-            this.tabs.Controls.Add(this.tp_Main);
-            this.tabs.Controls.Add(this.logs_tp);
-            this.tabs.Controls.Add(this.tp_Maps);
-            this.tabs.Controls.Add(this.tp_Players);
-            this.tabs.Cursor = System.Windows.Forms.Cursors.Default;
-            this.tabs.Font = new System.Drawing.Font("Calibri", 8.25F);
-            this.tabs.Location = new System.Drawing.Point(1, 11);
-            this.tabs.Name = "tabs";
-            this.tabs.SelectedIndex = 0;
-            this.tabs.Size = new System.Drawing.Size(775, 514);
-            this.tabs.TabIndex = 2;
-            this.tabs.Click += new System.EventHandler(this.tabs_Click);
+            this.Tabs.Controls.Add(this.Tp_Main);
+            this.Tabs.Controls.Add(this.Logs_tp);
+            this.Tabs.Controls.Add(this.Tp_Maps);
+            this.Tabs.Controls.Add(this.Tp_Players);
+            this.Tabs.Cursor = Cursors.Default;
+            this.Tabs.Font = new Font("Calibri", 8.25F);
+            this.Tabs.Location = new Point(1, 11);
+            this.Tabs.Name = "Tabs";
+            this.Tabs.SelectedIndex = 0;
+            this.Tabs.Size = new Size(775, 514);
+            this.Tabs.TabIndex = 2;
+            this.Tabs.Click += new EventHandler(this.Tabs_Click);
             // 
-            // tp_Maps
+            // Tp_Maps
             // 
-            this.tp_Maps.BackColor = System.Drawing.SystemColors.Control;
-            this.tp_Maps.Controls.Add(this.map_gbProps);
-            this.tp_Maps.Controls.Add(this.map_gbLoaded);
-            this.tp_Maps.Controls.Add(this.map_gbUnloaded);
-            this.tp_Maps.Controls.Add(this.map_gbNew);
-            this.tp_Maps.Location = new System.Drawing.Point(4, 22);
-            this.tp_Maps.Name = "tp_Maps";
-            this.tp_Maps.Size = new System.Drawing.Size(767, 488);
-            this.tp_Maps.TabIndex = 9;
-            this.tp_Maps.Text = "Maps";
+            this.Tp_Maps.BackColor = SystemColors.Control;
+            this.Tp_Maps.Controls.Add(this.Map_gbProps);
+            this.Tp_Maps.Controls.Add(this.Map_gbLoaded);
+            this.Tp_Maps.Controls.Add(this.Map_gbUnloaded);
+            this.Tp_Maps.Controls.Add(this.Map_gbNew);
+            this.Tp_Maps.Location = new Point(4, 22);
+            this.Tp_Maps.Name = "Tp_Maps";
+            this.Tp_Maps.Size = new Size(767, 488);
+            this.Tp_Maps.TabIndex = 9;
+            this.Tp_Maps.Text = "Maps";
             // 
-            // map_gbProps
+            // Map_gbProps
             // 
-            this.map_gbProps.Controls.Add(this.map_pgProps);
-            this.map_gbProps.Location = new System.Drawing.Point(415, 3);
-            this.map_gbProps.Name = "map_gbProps";
-            this.map_gbProps.Size = new System.Drawing.Size(343, 349);
-            this.map_gbProps.TabIndex = 5;
-            this.map_gbProps.TabStop = false;
-            this.map_gbProps.Text = "Properties for (none selected)";
+            this.Map_gbProps.Controls.Add(this.Map_pgProps);
+            this.Map_gbProps.Location = new Point(415, 3);
+            this.Map_gbProps.Name = "Map_gbProps";
+            this.Map_gbProps.Size = new Size(343, 349);
+            this.Map_gbProps.TabIndex = 5;
+            this.Map_gbProps.TabStop = false;
+            this.Map_gbProps.Text = "Properties for (none selected)";
             // 
-            // map_pgProps
+            // Map_pgProps
             // 
-            this.map_pgProps.Location = new System.Drawing.Point(7, 20);
-            this.map_pgProps.Name = "map_pgProps";
-            this.map_pgProps.Size = new System.Drawing.Size(330, 323);
-            this.map_pgProps.TabIndex = 0;
-            this.map_pgProps.ToolbarVisible = false;
+            this.Map_pgProps.Location = new Point(7, 20);
+            this.Map_pgProps.Name = "Map_pgProps";
+            this.Map_pgProps.Size = new Size(330, 323);
+            this.Map_pgProps.TabIndex = 0;
+            this.Map_pgProps.ToolbarVisible = false;
             // 
-            // map_gbLoaded
+            // Map_gbLoaded
             // 
-            this.map_gbLoaded.Controls.Add(this.map_lbLoaded);
-            this.map_gbLoaded.Location = new System.Drawing.Point(7, 3);
-            this.map_gbLoaded.Name = "map_gbLoaded";
-            this.map_gbLoaded.Size = new System.Drawing.Size(390, 221);
-            this.map_gbLoaded.TabIndex = 4;
-            this.map_gbLoaded.TabStop = false;
-            this.map_gbLoaded.Text = "Loaded levels";
+            this.Map_gbLoaded.Controls.Add(this.Map_lbLoaded);
+            this.Map_gbLoaded.Location = new Point(7, 3);
+            this.Map_gbLoaded.Name = "Map_gbLoaded";
+            this.Map_gbLoaded.Size = new Size(390, 221);
+            this.Map_gbLoaded.TabIndex = 4;
+            this.Map_gbLoaded.TabStop = false;
+            this.Map_gbLoaded.Text = "Loaded levels";
             // 
-            // map_lbLoaded
+            // Map_lbLoaded
             // 
-            this.map_lbLoaded.BackColor = System.Drawing.SystemColors.Window;
-            this.map_lbLoaded.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.map_lbLoaded.FormattingEnabled = true;
-            this.map_lbLoaded.Location = new System.Drawing.Point(5, 15);
-            this.map_lbLoaded.MultiColumn = true;
-            this.map_lbLoaded.Name = "map_lbLoaded";
-            this.map_lbLoaded.Size = new System.Drawing.Size(379, 199);
-            this.map_lbLoaded.TabIndex = 0;
-            this.map_lbLoaded.SelectedIndexChanged += new System.EventHandler(this.Map_UpdateSelected);
+            this.Map_lbLoaded.BackColor = SystemColors.Window;
+            this.Map_lbLoaded.ForeColor = SystemColors.WindowText;
+            this.Map_lbLoaded.FormattingEnabled = true;
+            this.Map_lbLoaded.Location = new Point(5, 15);
+            this.Map_lbLoaded.MultiColumn = true;
+            this.Map_lbLoaded.Name = "Map_lbLoaded";
+            this.Map_lbLoaded.Size = new Size(379, 199);
+            this.Map_lbLoaded.TabIndex = 0;
+            this.Map_lbLoaded.SelectedIndexChanged += new EventHandler(this.Map_UpdateSelected);
             // 
-            // map_gbUnloaded
+            // Map_gbUnloaded
             // 
-            this.map_gbUnloaded.Controls.Add(this.map_btnLoad);
-            this.map_gbUnloaded.Controls.Add(this.map_lbUnloaded);
-            this.map_gbUnloaded.Location = new System.Drawing.Point(7, 227);
-            this.map_gbUnloaded.Name = "map_gbUnloaded";
-            this.map_gbUnloaded.Size = new System.Drawing.Size(390, 258);
-            this.map_gbUnloaded.TabIndex = 3;
-            this.map_gbUnloaded.TabStop = false;
-            this.map_gbUnloaded.Text = "Unloaded levels";
+            this.Map_gbUnloaded.Controls.Add(this.Map_btnLoad);
+            this.Map_gbUnloaded.Controls.Add(this.Map_lbUnloaded);
+            this.Map_gbUnloaded.Location = new Point(7, 227);
+            this.Map_gbUnloaded.Name = "Map_gbUnloaded";
+            this.Map_gbUnloaded.Size = new Size(390, 258);
+            this.Map_gbUnloaded.TabIndex = 3;
+            this.Map_gbUnloaded.TabStop = false;
+            this.Map_gbUnloaded.Text = "Unloaded levels";
             // 
-            // map_btnLoad
+            // Map_btnLoad
             // 
-            this.map_btnLoad.Location = new System.Drawing.Point(150, 230);
-            this.map_btnLoad.Name = "map_btnLoad";
-            this.map_btnLoad.Size = new System.Drawing.Size(75, 23);
-            this.map_btnLoad.TabIndex = 1;
-            this.map_btnLoad.Text = "Load map";
-            this.map_btnLoad.UseVisualStyleBackColor = true;
-            this.map_btnLoad.Click += new System.EventHandler(this.map_BtnLoad_Click);
+            this.Map_btnLoad.Location = new Point(150, 230);
+            this.Map_btnLoad.Name = "Map_btnLoad";
+            this.Map_btnLoad.Size = new Size(75, 23);
+            this.Map_btnLoad.TabIndex = 1;
+            this.Map_btnLoad.Text = "Load map";
+            this.Map_btnLoad.UseVisualStyleBackColor = true;
+            this.Map_btnLoad.Click += new EventHandler(this.Map_BtnLoad_Click);
             // 
-            // map_lbUnloaded
+            // Map_lbUnloaded
             // 
-            this.map_lbUnloaded.BackColor = System.Drawing.SystemColors.Window;
-            this.map_lbUnloaded.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.map_lbUnloaded.FormattingEnabled = true;
-            this.map_lbUnloaded.Location = new System.Drawing.Point(5, 15);
-            this.map_lbUnloaded.MultiColumn = true;
-            this.map_lbUnloaded.Name = "map_lbUnloaded";
-            this.map_lbUnloaded.Size = new System.Drawing.Size(379, 212);
-            this.map_lbUnloaded.TabIndex = 0;
+            this.Map_lbUnloaded.BackColor = SystemColors.Window;
+            this.Map_lbUnloaded.ForeColor = SystemColors.WindowText;
+            this.Map_lbUnloaded.FormattingEnabled = true;
+            this.Map_lbUnloaded.Location = new Point(5, 15);
+            this.Map_lbUnloaded.MultiColumn = true;
+            this.Map_lbUnloaded.Name = "Map_lbUnloaded";
+            this.Map_lbUnloaded.Size = new Size(379, 212);
+            this.Map_lbUnloaded.TabIndex = 0;
             // 
-            // map_gbNew
+            // Map_gbNew
             // 
-            this.map_gbNew.Controls.Add(this.map_btnGen);
-            this.map_gbNew.Controls.Add(this.map_lblType);
-            this.map_gbNew.Controls.Add(this.map_lblSeed);
-            this.map_gbNew.Controls.Add(this.map_lblZ);
-            this.map_gbNew.Controls.Add(this.map_lblX);
-            this.map_gbNew.Controls.Add(this.map_lblY);
-            this.map_gbNew.Controls.Add(this.map_txtSeed);
-            this.map_gbNew.Controls.Add(this.map_cmbType);
-            this.map_gbNew.Controls.Add(this.map_cmbZ);
-            this.map_gbNew.Controls.Add(this.map_cmbY);
-            this.map_gbNew.Controls.Add(this.map_cmbX);
-            this.map_gbNew.Controls.Add(this.map_lblName);
-            this.map_gbNew.Controls.Add(this.map_txtName);
-            this.map_gbNew.Location = new System.Drawing.Point(415, 358);
-            this.map_gbNew.Name = "map_gbNew";
-            this.map_gbNew.Size = new System.Drawing.Size(343, 127);
-            this.map_gbNew.TabIndex = 0;
-            this.map_gbNew.TabStop = false;
-            this.map_gbNew.Text = "Create new map";
+            this.Map_gbNew.Controls.Add(this.Map_btnGen);
+            this.Map_gbNew.Controls.Add(this.Map_lblType);
+            this.Map_gbNew.Controls.Add(this.Map_lblSeed);
+            this.Map_gbNew.Controls.Add(this.Map_lblZ);
+            this.Map_gbNew.Controls.Add(this.Map_lblX);
+            this.Map_gbNew.Controls.Add(this.Map_lblY);
+            this.Map_gbNew.Controls.Add(this.Map_txtSeed);
+            this.Map_gbNew.Controls.Add(this.Map_cmbType);
+            this.Map_gbNew.Controls.Add(this.Map_cmbZ);
+            this.Map_gbNew.Controls.Add(this.Map_cmbY);
+            this.Map_gbNew.Controls.Add(this.Map_cmbX);
+            this.Map_gbNew.Controls.Add(this.Map_lblName);
+            this.Map_gbNew.Controls.Add(this.Map_txtName);
+            this.Map_gbNew.Location = new Point(415, 358);
+            this.Map_gbNew.Name = "Map_gbNew";
+            this.Map_gbNew.Size = new Size(343, 127);
+            this.Map_gbNew.TabIndex = 0;
+            this.Map_gbNew.TabStop = false;
+            this.Map_gbNew.Text = "Create new map";
             // 
-            // map_btnGen
+            // Map_btnGen
             // 
-            this.map_btnGen.Location = new System.Drawing.Point(150, 99);
-            this.map_btnGen.Name = "map_btnGen";
-            this.map_btnGen.Size = new System.Drawing.Size(75, 23);
-            this.map_btnGen.TabIndex = 17;
-            this.map_btnGen.Text = "Generate";
-            this.map_btnGen.UseVisualStyleBackColor = true;
-            this.map_btnGen.Click += new System.EventHandler(this.map_BtnGen_Click);
+            this.Map_btnGen.Location = new Point(150, 99);
+            this.Map_btnGen.Name = "Map_btnGen";
+            this.Map_btnGen.Size = new Size(75, 23);
+            this.Map_btnGen.TabIndex = 17;
+            this.Map_btnGen.Text = "Generate";
+            this.Map_btnGen.UseVisualStyleBackColor = true;
+            this.Map_btnGen.Click += new EventHandler(this.Map_BtnGen_Click);
             // 
-            // map_lblType
+            // Map_lblType
             // 
-            this.map_lblType.AutoSize = true;
-            this.map_lblType.Location = new System.Drawing.Point(13, 78);
-            this.map_lblType.Name = "map_lblType";
-            this.map_lblType.Size = new System.Drawing.Size(32, 13);
-            this.map_lblType.TabIndex = 16;
-            this.map_lblType.Text = "Type:";
+            this.Map_lblType.AutoSize = true;
+            this.Map_lblType.Location = new Point(13, 78);
+            this.Map_lblType.Name = "Map_lblType";
+            this.Map_lblType.Size = new Size(32, 13);
+            this.Map_lblType.TabIndex = 16;
+            this.Map_lblType.Text = "Type:";
             // 
-            // map_lblSeed
+            // Map_lblSeed
             // 
-            this.map_lblSeed.AutoSize = true;
-            this.map_lblSeed.Location = new System.Drawing.Point(192, 78);
-            this.map_lblSeed.Name = "map_lblSeed";
-            this.map_lblSeed.Size = new System.Drawing.Size(33, 13);
-            this.map_lblSeed.TabIndex = 15;
-            this.map_lblSeed.Text = "Seed:";
+            this.Map_lblSeed.AutoSize = true;
+            this.Map_lblSeed.Location = new Point(192, 78);
+            this.Map_lblSeed.Name = "Map_lblSeed";
+            this.Map_lblSeed.Size = new Size(33, 13);
+            this.Map_lblSeed.TabIndex = 15;
+            this.Map_lblSeed.Text = "Seed:";
             // 
-            // map_lblZ
+            // Map_lblZ
             // 
-            this.map_lblZ.AutoSize = true;
-            this.map_lblZ.Location = new System.Drawing.Point(231, 51);
-            this.map_lblZ.Name = "map_lblZ";
-            this.map_lblZ.Size = new System.Drawing.Size(42, 13);
-            this.map_lblZ.TabIndex = 14;
-            this.map_lblZ.Text = "Length:";
+            this.Map_lblZ.AutoSize = true;
+            this.Map_lblZ.Location = new Point(231, 51);
+            this.Map_lblZ.Name = "Map_lblZ";
+            this.Map_lblZ.Size = new Size(42, 13);
+            this.Map_lblZ.TabIndex = 14;
+            this.Map_lblZ.Text = "Length:";
             // 
-            // map_lblX
+            // Map_lblX
             // 
-            this.map_lblX.AutoSize = true;
-            this.map_lblX.Location = new System.Drawing.Point(7, 51);
-            this.map_lblX.Name = "map_lblX";
-            this.map_lblX.Size = new System.Drawing.Size(39, 13);
-            this.map_lblX.TabIndex = 13;
-            this.map_lblX.Text = "Width:";
+            this.Map_lblX.AutoSize = true;
+            this.Map_lblX.Location = new Point(7, 51);
+            this.Map_lblX.Name = "Map_lblX";
+            this.Map_lblX.Size = new Size(39, 13);
+            this.Map_lblX.TabIndex = 13;
+            this.Map_lblX.Text = "Width:";
             // 
-            // map_lblY
+            // Map_lblY
             // 
-            this.map_lblY.AutoSize = true;
-            this.map_lblY.Location = new System.Drawing.Point(118, 51);
-            this.map_lblY.Name = "map_lblY";
-            this.map_lblY.Size = new System.Drawing.Size(41, 13);
-            this.map_lblY.TabIndex = 12;
-            this.map_lblY.Text = "Height:";
+            this.Map_lblY.AutoSize = true;
+            this.Map_lblY.Location = new Point(118, 51);
+            this.Map_lblY.Name = "Map_lblY";
+            this.Map_lblY.Size = new Size(41, 13);
+            this.Map_lblY.TabIndex = 12;
+            this.Map_lblY.Text = "Height:";
             // 
-            // map_txtSeed
+            // Map_txtSeed
             // 
-            this.map_txtSeed.BackColor = System.Drawing.SystemColors.Window;
-            this.map_txtSeed.Location = new System.Drawing.Point(231, 75);
-            this.map_txtSeed.Name = "map_txtSeed";
-            this.map_txtSeed.Size = new System.Drawing.Size(107, 21);
-            this.map_txtSeed.TabIndex = 11;
+            this.Map_txtSeed.BackColor = SystemColors.Window;
+            this.Map_txtSeed.Location = new Point(231, 75);
+            this.Map_txtSeed.Name = "Map_txtSeed";
+            this.Map_txtSeed.Size = new Size(107, 21);
+            this.Map_txtSeed.TabIndex = 11;
             // 
-            // map_cmbType
+            // Map_cmbType
             // 
-            this.map_cmbType.BackColor = System.Drawing.SystemColors.Window;
-            this.map_cmbType.FormattingEnabled = true;
-            this.map_cmbType.Location = new System.Drawing.Point(51, 75);
-            this.map_cmbType.Name = "map_cmbType";
-            this.map_cmbType.Size = new System.Drawing.Size(121, 21);
-            this.map_cmbType.TabIndex = 10;
+            this.Map_cmbType.BackColor = SystemColors.Window;
+            this.Map_cmbType.FormattingEnabled = true;
+            this.Map_cmbType.Location = new Point(51, 75);
+            this.Map_cmbType.Name = "Map_cmbType";
+            this.Map_cmbType.Size = new Size(121, 21);
+            this.Map_cmbType.TabIndex = 10;
             // 
-            // map_cmbZ
+            // Map_cmbZ
             // 
-            this.map_cmbZ.BackColor = System.Drawing.SystemColors.Window;
-            this.map_cmbZ.FormattingEnabled = true;
-            this.map_cmbZ.Items.AddRange(new object[] {
+            this.Map_cmbZ.BackColor = SystemColors.Window;
+            this.Map_cmbZ.FormattingEnabled = true;
+            this.Map_cmbZ.Items.AddRange(new object[] {
                                     "16",
                                     "32",
                                     "64",
@@ -1013,16 +1014,16 @@ namespace Flames.Gui
                                     "256",
                                     "512",
                                     "1024"});
-            this.map_cmbZ.Location = new System.Drawing.Point(279, 48);
-            this.map_cmbZ.Name = "map_cmbZ";
-            this.map_cmbZ.Size = new System.Drawing.Size(60, 21);
-            this.map_cmbZ.TabIndex = 9;
+            this.Map_cmbZ.Location = new Point(279, 48);
+            this.Map_cmbZ.Name = "Map_cmbZ";
+            this.Map_cmbZ.Size = new Size(60, 21);
+            this.Map_cmbZ.TabIndex = 9;
             // 
-            // map_cmbY
+            // Map_cmbY
             // 
-            this.map_cmbY.BackColor = System.Drawing.SystemColors.Window;
-            this.map_cmbY.FormattingEnabled = true;
-            this.map_cmbY.Items.AddRange(new object[] {
+            this.Map_cmbY.BackColor = SystemColors.Window;
+            this.Map_cmbY.FormattingEnabled = true;
+            this.Map_cmbY.Items.AddRange(new object[] {
                                     "16",
                                     "32",
                                     "64",
@@ -1030,16 +1031,16 @@ namespace Flames.Gui
                                     "256",
                                     "512",
                                     "1024"});
-            this.map_cmbY.Location = new System.Drawing.Point(165, 48);
-            this.map_cmbY.Name = "map_cmbY";
-            this.map_cmbY.Size = new System.Drawing.Size(60, 21);
-            this.map_cmbY.TabIndex = 8;
+            this.Map_cmbY.Location = new Point(165, 48);
+            this.Map_cmbY.Name = "Map_cmbY";
+            this.Map_cmbY.Size = new Size(60, 21);
+            this.Map_cmbY.TabIndex = 8;
             // 
-            // map_cmbX
+            // Map_cmbX
             // 
-            this.map_cmbX.BackColor = System.Drawing.SystemColors.Window;
-            this.map_cmbX.FormattingEnabled = true;
-            this.map_cmbX.Items.AddRange(new object[] {
+            this.Map_cmbX.BackColor = SystemColors.Window;
+            this.Map_cmbX.FormattingEnabled = true;
+            this.Map_cmbX.Items.AddRange(new object[] {
                                     "16",
                                     "32",
                                     "64",
@@ -1047,438 +1048,438 @@ namespace Flames.Gui
                                     "256",
                                     "512",
                                     "1024"});
-            this.map_cmbX.Location = new System.Drawing.Point(52, 48);
-            this.map_cmbX.Name = "map_cmbX";
-            this.map_cmbX.Size = new System.Drawing.Size(60, 21);
-            this.map_cmbX.TabIndex = 7;
+            this.Map_cmbX.Location = new Point(52, 48);
+            this.Map_cmbX.Name = "Map_cmbX";
+            this.Map_cmbX.Size = new Size(60, 21);
+            this.Map_cmbX.TabIndex = 7;
             // 
-            // map_lblName
+            // Map_lblName
             // 
-            this.map_lblName.AutoSize = true;
-            this.map_lblName.Location = new System.Drawing.Point(7, 24);
-            this.map_lblName.Name = "map_lblName";
-            this.map_lblName.Size = new System.Drawing.Size(38, 13);
-            this.map_lblName.TabIndex = 6;
-            this.map_lblName.Text = "Name:";
+            this.Map_lblName.AutoSize = true;
+            this.Map_lblName.Location = new Point(7, 24);
+            this.Map_lblName.Name = "Map_lblName";
+            this.Map_lblName.Size = new Size(38, 13);
+            this.Map_lblName.TabIndex = 6;
+            this.Map_lblName.Text = "Name:";
             // 
-            // map_txtName
+            // Map_txtName
             // 
-            this.map_txtName.BackColor = System.Drawing.SystemColors.Window;
-            this.map_txtName.Location = new System.Drawing.Point(51, 21);
-            this.map_txtName.Name = "map_txtName";
-            this.map_txtName.Size = new System.Drawing.Size(287, 21);
-            this.map_txtName.TabIndex = 0;
+            this.Map_txtName.BackColor = SystemColors.Window;
+            this.Map_txtName.Location = new Point(51, 21);
+            this.Map_txtName.Name = "Map_txtName";
+            this.Map_txtName.Size = new Size(287, 21);
+            this.Map_txtName.TabIndex = 0;
             // 
-            // tp_Players
+            // Tp_Players
             // 
-            this.tp_Players.Controls.Add(this.pl_lblOnline);
-            this.tp_Players.Controls.Add(this.pl_gbProps);
-            this.tp_Players.Controls.Add(this.pl_gbOther);
-            this.tp_Players.Controls.Add(this.pl_gbActions);
-            this.tp_Players.Controls.Add(this.pl_statusBox);
-            this.tp_Players.Controls.Add(this.pl_listBox);
-            this.tp_Players.Location = new System.Drawing.Point(4, 22);
-            this.tp_Players.Name = "tp_Players";
-            this.tp_Players.Padding = new System.Windows.Forms.Padding(3);
-            this.tp_Players.Size = new System.Drawing.Size(767, 488);
-            this.tp_Players.TabIndex = 7;
-            this.tp_Players.Text = "Players";
+            this.Tp_Players.Controls.Add(this.Pl_lblOnline);
+            this.Tp_Players.Controls.Add(this.Pl_gbProps);
+            this.Tp_Players.Controls.Add(this.Pl_gbOther);
+            this.Tp_Players.Controls.Add(this.Pl_gbActions);
+            this.Tp_Players.Controls.Add(this.Pl_statusBox);
+            this.Tp_Players.Controls.Add(this.Pl_listBox);
+            this.Tp_Players.Location = new Point(4, 22);
+            this.Tp_Players.Name = "Tp_Players";
+            this.Tp_Players.Padding = new Padding(3);
+            this.Tp_Players.Size = new Size(767, 488);
+            this.Tp_Players.TabIndex = 7;
+            this.Tp_Players.Text = "Players";
             // 
-            // pl_lblOnline
+            // Pl_lblOnline
             // 
-            this.pl_lblOnline.AutoSize = true;
-            this.pl_lblOnline.Location = new System.Drawing.Point(8, 9);
-            this.pl_lblOnline.Name = "pl_lblOnline";
-            this.pl_lblOnline.Size = new System.Drawing.Size(78, 13);
-            this.pl_lblOnline.TabIndex = 68;
-            this.pl_lblOnline.Text = "Online players:";
+            this.Pl_lblOnline.AutoSize = true;
+            this.Pl_lblOnline.Location = new Point(8, 9);
+            this.Pl_lblOnline.Name = "Pl_lblOnline";
+            this.Pl_lblOnline.Size = new Size(78, 13);
+            this.Pl_lblOnline.TabIndex = 68;
+            this.Pl_lblOnline.Text = "Online players:";
             // 
-            // pl_gbProps
+            // Pl_gbProps
             // 
-            this.pl_gbProps.Controls.Add(this.pl_pgProps);
-            this.pl_gbProps.Location = new System.Drawing.Point(147, 9);
-            this.pl_gbProps.Name = "pl_gbProps";
-            this.pl_gbProps.Size = new System.Drawing.Size(363, 380);
-            this.pl_gbProps.TabIndex = 67;
-            this.pl_gbProps.TabStop = false;
-            this.pl_gbProps.Text = "Properties for (none selected)";
+            this.Pl_gbProps.Controls.Add(this.Pl_pgProps);
+            this.Pl_gbProps.Location = new Point(147, 9);
+            this.Pl_gbProps.Name = "Pl_gbProps";
+            this.Pl_gbProps.Size = new Size(363, 380);
+            this.Pl_gbProps.TabIndex = 67;
+            this.Pl_gbProps.TabStop = false;
+            this.Pl_gbProps.Text = "Properties for (none selected)";
             // 
-            // pl_pgProps
+            // Pl_pgProps
             // 
-            this.pl_pgProps.HelpVisible = false;
-            this.pl_pgProps.Location = new System.Drawing.Point(6, 18);
-            this.pl_pgProps.Name = "pl_pgProps";
-            this.pl_pgProps.Size = new System.Drawing.Size(351, 356);
-            this.pl_pgProps.TabIndex = 64;
-            this.pl_pgProps.ToolbarVisible = false;
+            this.Pl_pgProps.HelpVisible = false;
+            this.Pl_pgProps.Location = new Point(6, 18);
+            this.Pl_pgProps.Name = "Pl_pgProps";
+            this.Pl_pgProps.Size = new Size(351, 356);
+            this.Pl_pgProps.TabIndex = 64;
+            this.Pl_pgProps.ToolbarVisible = false;
             // 
-            // pl_gbOther
+            // Pl_gbOther
             // 
-            this.pl_gbOther.Controls.Add(this.pl_txtSendCommand);
-            this.pl_gbOther.Controls.Add(this.pl_btnSendCommand);
-            this.pl_gbOther.Controls.Add(this.pl_txtMessage);
-            this.pl_gbOther.Controls.Add(this.pl_btnMessage);
-            this.pl_gbOther.Location = new System.Drawing.Point(147, 395);
-            this.pl_gbOther.Name = "pl_gbOther";
-            this.pl_gbOther.Size = new System.Drawing.Size(614, 78);
-            this.pl_gbOther.TabIndex = 66;
-            this.pl_gbOther.TabStop = false;
-            this.pl_gbOther.Text = "Other";
+            this.Pl_gbOther.Controls.Add(this.Pl_txtSendCommand);
+            this.Pl_gbOther.Controls.Add(this.Pl_btnSendCommand);
+            this.Pl_gbOther.Controls.Add(this.Pl_txtMessage);
+            this.Pl_gbOther.Controls.Add(this.Pl_btnMessage);
+            this.Pl_gbOther.Location = new Point(147, 395);
+            this.Pl_gbOther.Name = "Pl_gbOther";
+            this.Pl_gbOther.Size = new Size(614, 78);
+            this.Pl_gbOther.TabIndex = 66;
+            this.Pl_gbOther.TabStop = false;
+            this.Pl_gbOther.Text = "Other";
             // 
-            // pl_txtSendCommand
+            // Pl_txtSendCommand
             // 
-            this.pl_txtSendCommand.BackColor = System.Drawing.SystemColors.Window;
-            this.pl_txtSendCommand.Location = new System.Drawing.Point(115, 50);
-            this.pl_txtSendCommand.Name = "pl_txtSendCommand";
-            this.pl_txtSendCommand.Size = new System.Drawing.Size(485, 21);
-            this.pl_txtSendCommand.TabIndex = 38;
-            this.pl_txtSendCommand.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pl_txtSendCommand_KeyDown);
+            this.Pl_txtSendCommand.BackColor = SystemColors.Window;
+            this.Pl_txtSendCommand.Location = new Point(115, 50);
+            this.Pl_txtSendCommand.Name = "Pl_txtSendCommand";
+            this.Pl_txtSendCommand.Size = new Size(485, 21);
+            this.Pl_txtSendCommand.TabIndex = 38;
+            this.Pl_txtSendCommand.KeyDown += new KeyEventHandler(this.Pl_txtSendCommand_KeyDown);
             // 
             // pl_btnImpersonate
             // 
-            this.pl_btnSendCommand.Location = new System.Drawing.Point(6, 48);
-            this.pl_btnSendCommand.Name = "pl_btnImpersonate";
-            this.pl_btnSendCommand.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnSendCommand.TabIndex = 37;
-            this.pl_btnSendCommand.Text = "Do command:";
-            this.pl_btnSendCommand.UseVisualStyleBackColor = true;
-            this.pl_btnSendCommand.Click += new System.EventHandler(this.pl_BtnSendCommand_Click);
+            this.Pl_btnSendCommand.Location = new Point(6, 48);
+            this.Pl_btnSendCommand.Name = "pl_btnImpersonate";
+            this.Pl_btnSendCommand.Size = new Size(98, 23);
+            this.Pl_btnSendCommand.TabIndex = 37;
+            this.Pl_btnSendCommand.Text = "Do command:";
+            this.Pl_btnSendCommand.UseVisualStyleBackColor = true;
+            this.Pl_btnSendCommand.Click += new EventHandler(this.Pl_BtnSendCommand_Click);
             // 
-            // pl_txtMessage
+            // Pl_txtMessage
             // 
-            this.pl_txtMessage.BackColor = System.Drawing.SystemColors.Window;
-            this.pl_txtMessage.Location = new System.Drawing.Point(115, 18);
-            this.pl_txtMessage.Name = "pl_txtMessage";
-            this.pl_txtMessage.Size = new System.Drawing.Size(485, 21);
-            this.pl_txtMessage.TabIndex = 8;
-            this.pl_txtMessage.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pl_txtMessage_KeyDown);
+            this.Pl_txtMessage.BackColor = SystemColors.Window;
+            this.Pl_txtMessage.Location = new Point(115, 18);
+            this.Pl_txtMessage.Name = "Pl_txtMessage";
+            this.Pl_txtMessage.Size = new Size(485, 21);
+            this.Pl_txtMessage.TabIndex = 8;
+            this.Pl_txtMessage.KeyDown += new KeyEventHandler(this.Pl_txtMessage_KeyDown);
             // 
-            // pl_btnMessage
+            // Pl_btnMessage
             // 
-            this.pl_btnMessage.Location = new System.Drawing.Point(6, 16);
-            this.pl_btnMessage.Name = "pl_btnMessage";
-            this.pl_btnMessage.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnMessage.TabIndex = 9;
-            this.pl_btnMessage.Text = "Send message:";
-            this.pl_btnMessage.UseVisualStyleBackColor = true;
-            this.pl_btnMessage.Click += new System.EventHandler(this.pl_BtnMessage_Click);
+            this.Pl_btnMessage.Location = new Point(6, 16);
+            this.Pl_btnMessage.Name = "Pl_btnMessage";
+            this.Pl_btnMessage.Size = new Size(98, 23);
+            this.Pl_btnMessage.TabIndex = 9;
+            this.Pl_btnMessage.Text = "Send message:";
+            this.Pl_btnMessage.UseVisualStyleBackColor = true;
+            this.Pl_btnMessage.Click += new EventHandler(this.Pl_BtnMessage_Click);
             // 
-            // pl_gbActions
+            // Pl_gbActions
             // 
-            this.pl_gbActions.Controls.Add(this.pl_btnKill);
-            this.pl_gbActions.Controls.Add(this.pl_numUndo);
-            this.pl_gbActions.Controls.Add(this.pl_btnWarn);
-            this.pl_gbActions.Controls.Add(this.pl_btnRules);
-            this.pl_gbActions.Controls.Add(this.pl_btnKick);
-            this.pl_gbActions.Controls.Add(this.pl_btnBanIP);
-            this.pl_gbActions.Controls.Add(this.pl_btnUndo);
-            this.pl_gbActions.Controls.Add(this.pl_btnMute);
-            this.pl_gbActions.Controls.Add(this.pl_btnBan);
-            this.pl_gbActions.Controls.Add(this.pl_btnFreeze);
-            this.pl_gbActions.Location = new System.Drawing.Point(529, 9);
-            this.pl_gbActions.Name = "pl_gbActions";
-            this.pl_gbActions.Size = new System.Drawing.Size(228, 186);
-            this.pl_gbActions.TabIndex = 65;
-            this.pl_gbActions.TabStop = false;
-            this.pl_gbActions.Text = "Actions";
+            this.Pl_gbActions.Controls.Add(this.Pl_btnKill);
+            this.Pl_gbActions.Controls.Add(this.Pl_numUndo);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnWarn);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnRules);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnKick);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnBanIP);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnUndo);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnMute);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnBan);
+            this.Pl_gbActions.Controls.Add(this.Pl_btnFreeze);
+            this.Pl_gbActions.Location = new Point(529, 9);
+            this.Pl_gbActions.Name = "Pl_gbActions";
+            this.Pl_gbActions.Size = new Size(228, 186);
+            this.Pl_gbActions.TabIndex = 65;
+            this.Pl_gbActions.TabStop = false;
+            this.Pl_gbActions.Text = "Actions";
             // 
-            // pl_btnKill
+            // Pl_btnKill
             // 
-            this.pl_btnKill.Location = new System.Drawing.Point(8, 105);
-            this.pl_btnKill.Name = "pl_btnKill";
-            this.pl_btnKill.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnKill.TabIndex = 43;
-            this.pl_btnKill.Text = "Kill";
-            this.pl_btnKill.UseVisualStyleBackColor = true;
-            this.pl_btnKill.Click += new System.EventHandler(this.pl_BtnKill_Click);
+            this.Pl_btnKill.Location = new Point(8, 105);
+            this.Pl_btnKill.Name = "Pl_btnKill";
+            this.Pl_btnKill.Size = new Size(98, 23);
+            this.Pl_btnKill.TabIndex = 43;
+            this.Pl_btnKill.Text = "Kill";
+            this.Pl_btnKill.UseVisualStyleBackColor = true;
+            this.Pl_btnKill.Click += new EventHandler(this.Pl_BtnKill_Click);
             // 
-            // pl_numUndo
+            // Pl_numUndo
             // 
-            this.pl_numUndo.BackColor = System.Drawing.SystemColors.Window;
-            this.pl_numUndo.Location = new System.Drawing.Point(122, 149);
-            this.pl_numUndo.Name = "pl_numUndo";
-            this.pl_numUndo.Size = new System.Drawing.Size(98, 21);
-            this.pl_numUndo.TabIndex = 42;
-            this.pl_numUndo.Seconds = ((long)(1800));
-            this.pl_numUndo.Text = "30m";
-            this.pl_numUndo.Value = System.TimeSpan.Parse("00:30:00");
-            this.pl_numUndo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.pl_numUndo_KeyDown);
+            this.Pl_numUndo.BackColor = SystemColors.Window;
+            this.Pl_numUndo.Location = new Point(122, 149);
+            this.Pl_numUndo.Name = "Pl_numUndo";
+            this.Pl_numUndo.Size = new Size(98, 21);
+            this.Pl_numUndo.TabIndex = 42;
+            this.Pl_numUndo.Seconds = ((long)(1800));
+            this.Pl_numUndo.Text = "30m";
+            this.Pl_numUndo.Value = TimeSpan.Parse("00:30:00");
+            this.Pl_numUndo.KeyDown += new KeyEventHandler(this.Pl_numUndo_KeyDown);
             // 
-            // pl_btnWarn
+            // Pl_btnWarn
             // 
-            this.pl_btnWarn.Location = new System.Drawing.Point(8, 18);
-            this.pl_btnWarn.Name = "pl_btnWarn";
-            this.pl_btnWarn.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnWarn.TabIndex = 10;
-            this.pl_btnWarn.Text = "Warn";
-            this.pl_btnWarn.UseVisualStyleBackColor = true;
-            this.pl_btnWarn.Click += new System.EventHandler(this.pl_BtnWarn_Click);
+            this.Pl_btnWarn.Location = new Point(8, 18);
+            this.Pl_btnWarn.Name = "Pl_btnWarn";
+            this.Pl_btnWarn.Size = new Size(98, 23);
+            this.Pl_btnWarn.TabIndex = 10;
+            this.Pl_btnWarn.Text = "Warn";
+            this.Pl_btnWarn.UseVisualStyleBackColor = true;
+            this.Pl_btnWarn.Click += new EventHandler(this.Pl_BtnWarn_Click);
             // 
-            // pl_btnRules
+            // Pl_btnRules
             // 
-            this.pl_btnRules.Location = new System.Drawing.Point(122, 105);
-            this.pl_btnRules.Name = "pl_btnRules";
-            this.pl_btnRules.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnRules.TabIndex = 39;
-            this.pl_btnRules.Text = "Send Rules";
-            this.pl_btnRules.UseVisualStyleBackColor = true;
-            this.pl_btnRules.Click += new System.EventHandler(this.pl_BtnRules_Click);
+            this.Pl_btnRules.Location = new Point(122, 105);
+            this.Pl_btnRules.Name = "Pl_btnRules";
+            this.Pl_btnRules.Size = new Size(98, 23);
+            this.Pl_btnRules.TabIndex = 39;
+            this.Pl_btnRules.Text = "Send Rules";
+            this.Pl_btnRules.UseVisualStyleBackColor = true;
+            this.Pl_btnRules.Click += new EventHandler(this.Pl_BtnRules_Click);
             // 
-            // pl_btnKick
+            // Pl_btnKick
             // 
-            this.pl_btnKick.Location = new System.Drawing.Point(122, 18);
-            this.pl_btnKick.Name = "pl_btnKick";
-            this.pl_btnKick.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnKick.TabIndex = 4;
-            this.pl_btnKick.Text = "Kick";
-            this.pl_btnKick.UseVisualStyleBackColor = true;
-            this.pl_btnKick.Click += new System.EventHandler(this.pl_BtnKick_Click);
+            this.Pl_btnKick.Location = new Point(122, 18);
+            this.Pl_btnKick.Name = "Pl_btnKick";
+            this.Pl_btnKick.Size = new Size(98, 23);
+            this.Pl_btnKick.TabIndex = 4;
+            this.Pl_btnKick.Text = "Kick";
+            this.Pl_btnKick.UseVisualStyleBackColor = true;
+            this.Pl_btnKick.Click += new EventHandler(this.Pl_BtnKick_Click);
             // 
-            // pl_btnBanIP
+            // Pl_btnBanIP
             // 
-            this.pl_btnBanIP.Location = new System.Drawing.Point(122, 47);
-            this.pl_btnBanIP.Name = "pl_btnBanIP";
-            this.pl_btnBanIP.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnBanIP.TabIndex = 6;
-            this.pl_btnBanIP.Text = "IP Ban";
-            this.pl_btnBanIP.UseVisualStyleBackColor = true;
-            this.pl_btnBanIP.Click += new System.EventHandler(this.pl_BtnIPBan_Click);
+            this.Pl_btnBanIP.Location = new Point(122, 47);
+            this.Pl_btnBanIP.Name = "Pl_btnBanIP";
+            this.Pl_btnBanIP.Size = new Size(98, 23);
+            this.Pl_btnBanIP.TabIndex = 6;
+            this.Pl_btnBanIP.Text = "IP Ban";
+            this.Pl_btnBanIP.UseVisualStyleBackColor = true;
+            this.Pl_btnBanIP.Click += new EventHandler(this.Pl_BtnIPBan_Click);
             // 
-            // pl_btnUndo
+            // Pl_btnUndo
             // 
-            this.pl_btnUndo.Location = new System.Drawing.Point(8, 148);
-            this.pl_btnUndo.Name = "pl_btnUndo";
-            this.pl_btnUndo.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnUndo.TabIndex = 41;
-            this.pl_btnUndo.Text = "Undo:";
-            this.pl_btnUndo.UseVisualStyleBackColor = true;
-            this.pl_btnUndo.Click += new System.EventHandler(this.pl_BtnUndo_Click);
+            this.Pl_btnUndo.Location = new Point(8, 148);
+            this.Pl_btnUndo.Name = "Pl_btnUndo";
+            this.Pl_btnUndo.Size = new Size(98, 23);
+            this.Pl_btnUndo.TabIndex = 41;
+            this.Pl_btnUndo.Text = "Undo:";
+            this.Pl_btnUndo.UseVisualStyleBackColor = true;
+            this.Pl_btnUndo.Click += new EventHandler(this.Pl_BtnUndo_Click);
             // 
-            // pl_btnMute
+            // Pl_btnMute
             // 
-            this.pl_btnMute.Location = new System.Drawing.Point(8, 76);
-            this.pl_btnMute.Name = "pl_btnMute";
-            this.pl_btnMute.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnMute.TabIndex = 40;
-            this.pl_btnMute.Text = "Mute";
-            this.pl_btnMute.UseVisualStyleBackColor = true;
-            this.pl_btnMute.Click += new System.EventHandler(this.pl_BtnMute_Click);
+            this.Pl_btnMute.Location = new Point(8, 76);
+            this.Pl_btnMute.Name = "Pl_btnMute";
+            this.Pl_btnMute.Size = new Size(98, 23);
+            this.Pl_btnMute.TabIndex = 40;
+            this.Pl_btnMute.Text = "Mute";
+            this.Pl_btnMute.UseVisualStyleBackColor = true;
+            this.Pl_btnMute.Click += new EventHandler(this.Pl_BtnMute_Click);
             // 
-            // pl_btnBan
+            // Pl_btnBan
             // 
-            this.pl_btnBan.Location = new System.Drawing.Point(8, 47);
-            this.pl_btnBan.Name = "pl_btnBan";
-            this.pl_btnBan.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnBan.TabIndex = 5;
-            this.pl_btnBan.Text = "Ban";
-            this.pl_btnBan.UseVisualStyleBackColor = true;
-            this.pl_btnBan.Click += new System.EventHandler(this.pl_BtnBan_Click);
+            this.Pl_btnBan.Location = new Point(8, 47);
+            this.Pl_btnBan.Name = "Pl_btnBan";
+            this.Pl_btnBan.Size = new Size(98, 23);
+            this.Pl_btnBan.TabIndex = 5;
+            this.Pl_btnBan.Text = "Ban";
+            this.Pl_btnBan.UseVisualStyleBackColor = true;
+            this.Pl_btnBan.Click += new EventHandler(this.Pl_BtnBan_Click);
             // 
-            // pl_btnFreeze
+            // Pl_btnFreeze
             // 
-            this.pl_btnFreeze.Location = new System.Drawing.Point(122, 76);
-            this.pl_btnFreeze.Name = "pl_btnFreeze";
-            this.pl_btnFreeze.Size = new System.Drawing.Size(98, 23);
-            this.pl_btnFreeze.TabIndex = 36;
-            this.pl_btnFreeze.Text = "Freeze";
-            this.pl_btnFreeze.UseVisualStyleBackColor = true;
-            this.pl_btnFreeze.Click += new System.EventHandler(this.pl_BtnFreeze_Click);
+            this.Pl_btnFreeze.Location = new Point(122, 76);
+            this.Pl_btnFreeze.Name = "Pl_btnFreeze";
+            this.Pl_btnFreeze.Size = new Size(98, 23);
+            this.Pl_btnFreeze.TabIndex = 36;
+            this.Pl_btnFreeze.Text = "Freeze";
+            this.Pl_btnFreeze.UseVisualStyleBackColor = true;
+            this.Pl_btnFreeze.Click += new EventHandler(this.Pl_BtnFreeze_Click);
             // 
-            // pl_statusBox
+            // Pl_statusBox
             // 
-            this.pl_statusBox.BackColor = System.Drawing.SystemColors.Window;
-            this.pl_statusBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.pl_statusBox.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.pl_statusBox.Location = new System.Drawing.Point(529, 201);
-            this.pl_statusBox.Multiline = true;
-            this.pl_statusBox.Name = "pl_statusBox";
-            this.pl_statusBox.ReadOnly = true;
-            this.pl_statusBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.pl_statusBox.Size = new System.Drawing.Size(232, 188);
-            this.pl_statusBox.TabIndex = 63;
+            this.Pl_statusBox.BackColor = SystemColors.Window;
+            this.Pl_statusBox.Cursor = Cursors.Default;
+            this.Pl_statusBox.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.Pl_statusBox.Location = new Point(529, 201);
+            this.Pl_statusBox.Multiline = true;
+            this.Pl_statusBox.Name = "Pl_statusBox";
+            this.Pl_statusBox.ReadOnly = true;
+            this.Pl_statusBox.ScrollBars = ScrollBars.Both;
+            this.Pl_statusBox.Size = new Size(232, 188);
+            this.Pl_statusBox.TabIndex = 63;
             // 
-            // pl_listBox
+            // Pl_listBox
             // 
-            this.pl_listBox.BackColor = System.Drawing.SystemColors.Window;
-            this.pl_listBox.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.pl_listBox.FormattingEnabled = true;
-            this.pl_listBox.Location = new System.Drawing.Point(8, 27);
-            this.pl_listBox.Name = "pl_listBox";
-            this.pl_listBox.Size = new System.Drawing.Size(123, 446);
-            this.pl_listBox.TabIndex = 62;
-            this.pl_listBox.Click += new System.EventHandler(this.pl_listBox_Click);
+            this.Pl_listBox.BackColor = SystemColors.Window;
+            this.Pl_listBox.ForeColor = SystemColors.WindowText;
+            this.Pl_listBox.FormattingEnabled = true;
+            this.Pl_listBox.Location = new Point(8, 27);
+            this.Pl_listBox.Name = "Pl_listBox";
+            this.Pl_listBox.Size = new Size(123, 446);
+            this.Pl_listBox.TabIndex = 62;
+            this.Pl_listBox.Click += new EventHandler(this.Pl_listBox_Click);
             // 
-            // toolTip
+            // TokenToolTip
             // 
-            this.toolTip.AutoPopDelay = 8000;
-            this.toolTip.InitialDelay = 500;
-            this.toolTip.IsBalloon = true;
-            this.toolTip.ReshowDelay = 100;
-            this.toolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.toolTip.ToolTipTitle = "Information";
+            this.GUIToolTip.AutoPopDelay = 8000;
+            this.GUIToolTip.InitialDelay = 500;
+            this.GUIToolTip.IsBalloon = true;
+            this.GUIToolTip.ReshowDelay = 100;
+            this.GUIToolTip.ToolTipIcon = ToolTipIcon.Info;
+            this.GUIToolTip.ToolTipTitle = "Information";
             // 
             // Window
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(775, 523);
-            this.Controls.Add(this.main_btnClose);
-            this.Controls.Add(this.main_btnProps);
-            this.Controls.Add(this.main_btnRestart);
-            this.Controls.Add(this.tabs);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(775, 523);
+            this.Controls.Add(this.Main_btnClose);
+            this.Controls.Add(this.Main_btnProps);
+            this.Controls.Add(this.Main_btnRestart);
+            this.Controls.Add(this.Tabs);
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.Name = "Window";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Window_FormClosing);
-            this.Load += new System.EventHandler(this.Window_Load);
-            this.Resize += new System.EventHandler(this.Window_Resize);
-            this.tsMap.ResumeLayout(false);
-            this.tsPlayer.ResumeLayout(false);
-            this.icon_context.ResumeLayout(false);
-            this.logs_tp.ResumeLayout(false);
-            this.logs_tab.ResumeLayout(false);
-            this.logs_tabErr.ResumeLayout(false);
-            this.logs_tabErr.PerformLayout();
-            this.logs_tabGen.ResumeLayout(false);
-            this.logs_tabGen.PerformLayout();
-            this.tabLog_Sys.ResumeLayout(false);
-            this.tabLog_Sys.PerformLayout();
-            this.tp_Main.ResumeLayout(false);
-            this.tp_Main.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.main_Maps)).EndInit();
-            this.tsLog_Menu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.main_Players)).EndInit();
-            this.tabs.ResumeLayout(false);
-            this.tp_Maps.ResumeLayout(false);
-            this.map_gbProps.ResumeLayout(false);
-            this.map_gbLoaded.ResumeLayout(false);
-            this.map_gbUnloaded.ResumeLayout(false);
-            this.map_gbNew.ResumeLayout(false);
-            this.map_gbNew.PerformLayout();
-            this.tp_Players.ResumeLayout(false);
-            this.tp_Players.PerformLayout();
-            this.pl_gbProps.ResumeLayout(false);
-            this.pl_gbOther.ResumeLayout(false);
-            this.pl_gbOther.PerformLayout();
-            this.pl_gbActions.ResumeLayout(false);
-            this.pl_gbActions.PerformLayout();
+            this.FormClosing += new FormClosingEventHandler(this.Window_FormClosing);
+            this.Load += new EventHandler(this.Window_Load);
+            this.Resize += new EventHandler(this.Window_Resize);
+            this.TsMap.ResumeLayout(false);
+            this.TsPlayer.ResumeLayout(false);
+            this.Icon_context.ResumeLayout(false);
+            this.Logs_tp.ResumeLayout(false);
+            this.Logs_tab.ResumeLayout(false);
+            this.Logs_tabErr.ResumeLayout(false);
+            this.Logs_tabErr.PerformLayout();
+            this.Logs_tabGen.ResumeLayout(false);
+            this.Logs_tabGen.PerformLayout();
+            this.TabLog_Sys.ResumeLayout(false);
+            this.TabLog_Sys.PerformLayout();
+            this.Tp_Main.ResumeLayout(false);
+            this.Tp_Main.PerformLayout();
+            ((ISupportInitialize)(this.Main_Maps)).EndInit();
+            this.TsLog_Menu.ResumeLayout(false);
+            ((ISupportInitialize)(this.Main_Players)).EndInit();
+            this.Tabs.ResumeLayout(false);
+            this.Tp_Maps.ResumeLayout(false);
+            this.Map_gbProps.ResumeLayout(false);
+            this.Map_gbLoaded.ResumeLayout(false);
+            this.Map_gbUnloaded.ResumeLayout(false);
+            this.Map_gbNew.ResumeLayout(false);
+            this.Map_gbNew.PerformLayout();
+            this.Tp_Players.ResumeLayout(false);
+            this.Tp_Players.PerformLayout();
+            this.Pl_gbProps.ResumeLayout(false);
+            this.Pl_gbOther.ResumeLayout(false);
+            this.Pl_gbOther.PerformLayout();
+            this.Pl_gbActions.ResumeLayout(false);
+            this.Pl_gbActions.PerformLayout();
             this.ResumeLayout(false);
         }
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colPlName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colPlMap;
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colPlRank;
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colLvlPhysics;
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colLvlPlayers;
-        private System.Windows.Forms.DataGridViewTextBoxColumn main_colLvlName;
-        private System.Windows.Forms.Label pl_lblOnline;
-        private System.Windows.Forms.GroupBox pl_gbProps;
-        private System.Windows.Forms.GroupBox pl_gbActions;
-        private System.Windows.Forms.GroupBox pl_gbOther;
-        private System.Windows.Forms.PropertyGrid pl_pgProps;
-        private System.Windows.Forms.TextBox map_txtName;
-        private System.Windows.Forms.Label map_lblName;
-        private System.Windows.Forms.ComboBox map_cmbX;
-        private System.Windows.Forms.ComboBox map_cmbY;
-        private System.Windows.Forms.ComboBox map_cmbZ;
-        private System.Windows.Forms.ComboBox map_cmbType;
-        private System.Windows.Forms.TextBox map_txtSeed;
-        private System.Windows.Forms.Label map_lblY;
-        private System.Windows.Forms.Label map_lblX;
-        private System.Windows.Forms.Label map_lblZ;
-        private System.Windows.Forms.Label map_lblSeed;
-        private System.Windows.Forms.Label map_lblType;
-        private System.Windows.Forms.Button map_btnGen;
-        private System.Windows.Forms.GroupBox map_gbNew;
-        private System.Windows.Forms.ListBox map_lbUnloaded;
-        private System.Windows.Forms.Button map_btnLoad;
-        private System.Windows.Forms.GroupBox map_gbUnloaded;
-        private System.Windows.Forms.ListBox map_lbLoaded;
-        private System.Windows.Forms.GroupBox map_gbLoaded;
-        private System.Windows.Forms.PropertyGrid map_pgProps;
-        private System.Windows.Forms.GroupBox map_gbProps;
-        private System.Windows.Forms.TabPage tp_Main;
-        private System.Windows.Forms.TabPage tabLog_Sys;
-        private System.Windows.Forms.TabPage logs_tabErr;
-        private System.Windows.Forms.TabPage logs_tabGen;
-        private System.Windows.Forms.TabControl logs_tab;
+        public DataGridViewTextBoxColumn Main_colPlName;
+        public DataGridViewTextBoxColumn Main_colPlMap;
+        public DataGridViewTextBoxColumn Main_colPlRank;
+        public DataGridViewTextBoxColumn Main_colLvlPhysics;
+        public DataGridViewTextBoxColumn Main_colLvlPlayers;
+        public DataGridViewTextBoxColumn Main_colLvlName;
+        public Label Pl_lblOnline;
+        public GroupBox Pl_gbProps;
+        public GroupBox Pl_gbActions;
+        public GroupBox Pl_gbOther;
+        public PropertyGrid Pl_pgProps;
+        public TextBox Map_txtName;
+        public Label Map_lblName;
+        public ComboBox Map_cmbX;
+        public ComboBox Map_cmbY;
+        public ComboBox Map_cmbZ;
+        public ComboBox Map_cmbType;
+        public TextBox Map_txtSeed;
+        public Label Map_lblY;
+        public Label Map_lblX;
+        public Label Map_lblZ;
+        public Label Map_lblSeed;
+        public Label Map_lblType;
+        public Button Map_btnGen;
+        public GroupBox Map_gbNew;
+        public ListBox Map_lbUnloaded;
+        public Button Map_btnLoad;
+        public GroupBox Map_gbUnloaded;
+        public ListBox Map_lbLoaded;
+        public GroupBox Map_gbLoaded;
+        public PropertyGrid Map_pgProps;
+        public GroupBox Map_gbProps;
+        public TabPage Tp_Main;
+        public TabPage TabLog_Sys;
+        public TabPage Logs_tabErr;
+        public TabPage Logs_tabGen;
+        public TabControl Logs_tab;
 
         #endregion
 
-        private Button main_btnClose;
-        private ContextMenuStrip icon_context;
-        private ToolStripMenuItem icon_hideWindow;
-        private ToolStripSeparator icon_separator;
-        private ToolStripMenuItem icon_openConsole;
-        private ToolStripMenuItem icon_shutdown;
-        private ContextMenuStrip tsPlayer;
-        private ToolStripMenuItem tsPlayer_whois;
-        private ToolStripMenuItem tsPlayer_kick;
-        private ToolStripMenuItem tsPlayer_ban;
-        private ToolStripMenuItem tsPlayer_voice;
-        private ContextMenuStrip tsMap;
-        private ToolStripMenuItem tsPlayer_clones;
-        private Button main_btnRestart;
-        private ToolStripMenuItem icon_restart;
-        private TabPage logs_tp;
-        private Label logs_lblGeneral;
-        private TextBox logs_txtError;
-        private TextBox logs_txtSystem;
-        private TabPage tp_Maps;
-        private DataGridView main_Maps;
-        private TextBox main_txtInput;
-        private TextBox main_txtUrl;
-        private DataGridView main_Players;
-        private TabControl tabs;
-        private ToolStripMenuItem tsPlayer_promote;
-        private ToolStripMenuItem tsPlayer_demote;
-        private TabPage tp_Players;
-        private RichTextBox logs_txtGeneral;
-        private DateTimePicker logs_dateGeneral;
-        private Button pl_btnBanIP;
-        private Button pl_btnBan;
-        private Button pl_btnKick;
-        private Button pl_btnMessage;
-        private TextBox pl_txtMessage;
-        private Button pl_btnWarn;
-        private Button pl_btnFreeze;
-        private TextBox pl_txtSendCommand;
-        private Button pl_btnSendCommand;
-        private Button pl_btnKill;
-        private Flames.Gui.TimespanUpDown pl_numUndo;
-        private Button pl_btnUndo;
-        private Button pl_btnMute;
-        private Button pl_btnRules;
-        private TextBox pl_statusBox;
-        private ListBox pl_listBox;
-        private Button main_btnSaveAll;
-        private Button main_btnUnloadEmpty;
-        private Button main_btnKillPhysics;
-        private ToolStripMenuItem tsMap_info;
-        private ToolStripMenuItem tsMap_actionsMenu;
-        private ToolStripMenuItem tsMap_Save;
-        private ToolStripMenuItem tsMap_Unload;
-        private ToolStripMenuItem tsMap_moveAll;
-        private ToolStripMenuItem tsMap_Reload;
-        private ToolStripMenuItem tsMap_physicsMenu;
-        private ToolStripMenuItem tsMap_physics0;
-        private ToolStripMenuItem tsMap_physics1;
-        private ToolStripMenuItem tsMap_physics2;
-        private ToolStripMenuItem tsMap_physics3;
-        private ToolStripMenuItem tsMap_physics4;
-        private ToolStripMenuItem tsMap_physics5;
-        private ToolStripSeparator tsMap_separator;
-        private Components.ColoredTextBox main_txtLog;
-        private ContextMenuStrip tsLog_Menu;
-        private ToolStripMenuItem tsLog_night;
-        private ToolStripMenuItem tsLog_Colored;
-        private ToolStripSeparator tsLog_separator1;
-        private ToolStripMenuItem tsLog_copySelected;
-        private ToolStripMenuItem tsLog_copyAll;
-        private ToolStripSeparator tsLog_separator2;
-        private ToolStripMenuItem tsLog_clear;
-        private ToolStripMenuItem tsLog_dateStamp;
-        private ToolStripMenuItem tsLog_autoScroll;
-        private Button main_btnProps;
-        private System.Windows.Forms.ToolTip toolTip;
+        public Button Main_btnClose;
+        public ContextMenuStrip Icon_context;
+        public ToolStripMenuItem Icon_hideWindow;
+        public ToolStripSeparator Icon_separator;
+        public ToolStripMenuItem Icon_openConsole;
+        public ToolStripMenuItem Icon_shutdown;
+        public ContextMenuStrip TsPlayer;
+        public ToolStripMenuItem TsPlayer_whois;
+        public ToolStripMenuItem TsPlayer_kick;
+        public ToolStripMenuItem TsPlayer_ban;
+        public ToolStripMenuItem TsPlayer_voice;
+        public ContextMenuStrip TsMap;
+        public ToolStripMenuItem TsPlayer_clones;
+        public Button Main_btnRestart;
+        public ToolStripMenuItem Icon_restart;
+        public TabPage Logs_tp;
+        public Label Logs_lblGeneral;
+        public TextBox Logs_txtError;
+        public TextBox Logs_txtSystem;
+        public TabPage Tp_Maps;
+        public DataGridView Main_Maps;
+        public TextBox Main_txtInput;
+        public TextBox Main_txtUrl;
+        public DataGridView Main_Players;
+        public TabControl Tabs;
+        public ToolStripMenuItem TsPlayer_promote;
+        public ToolStripMenuItem TsPlayer_demote;
+        public TabPage Tp_Players;
+        public RichTextBox Logs_txtGeneral;
+        public DateTimePicker Logs_dateGeneral;
+        public Button Pl_btnBanIP;
+        public Button Pl_btnBan;
+        public Button Pl_btnKick;
+        public Button Pl_btnMessage;
+        public TextBox Pl_txtMessage;
+        public Button Pl_btnWarn;
+        public Button Pl_btnFreeze;
+        public TextBox Pl_txtSendCommand;
+        public Button Pl_btnSendCommand;
+        public Button Pl_btnKill;
+        public Flames.Gui.TimespanUpDown Pl_numUndo;
+        public Button Pl_btnUndo;
+        public Button Pl_btnMute;
+        public Button Pl_btnRules;
+        public TextBox Pl_statusBox;
+        public ListBox Pl_listBox;
+        public Button Main_btnSaveAll;
+        public Button Main_btnUnloadEmpty;
+        public Button Main_btnKillPhysics;
+        public ToolStripMenuItem TsMap_info;
+        public ToolStripMenuItem TsMap_actionsMenu;
+        public ToolStripMenuItem TsMap_Save;
+        public ToolStripMenuItem TsMap_Unload;
+        public ToolStripMenuItem TsMap_moveAll;
+        public ToolStripMenuItem TsMap_Reload;
+        public ToolStripMenuItem TsMap_physicsMenu;
+        public ToolStripMenuItem TsMap_physics0;
+        public ToolStripMenuItem TsMap_physics1;
+        public ToolStripMenuItem TsMap_physics2;
+        public ToolStripMenuItem TsMap_physics3;
+        public ToolStripMenuItem TsMap_physics4;
+        public ToolStripMenuItem TsMap_physics5;
+        public ToolStripSeparator TsMap_separator;
+        public Components.ColoredTextBox Main_txtLog;
+        public ContextMenuStrip TsLog_Menu;
+        public ToolStripMenuItem TsLog_night;
+        public ToolStripMenuItem TsLog_Colored;
+        public ToolStripSeparator TsLog_separator1;
+        public ToolStripMenuItem TsLog_copySelected;
+        public ToolStripMenuItem TsLog_copyAll;
+        public ToolStripSeparator TsLog_separator2;
+        public ToolStripMenuItem TsLog_clear;
+        public ToolStripMenuItem TsLog_dateStamp;
+        public ToolStripMenuItem TsLog_autoScroll;
+        public Button Main_btnProps;
+        public ToolTip GUIToolTip;
     }
 }

@@ -20,142 +20,157 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using Flames.UI;
-
 namespace Flames.Gui
 {
     public partial class Window : Form
     {
-
         public Player GetSelectedPlayer()
         {
-            string name = GetSelected(main_Players);
-            if (name == null) return null;
+            string name = GetSelected(Main_Players);
+            if (name == null)
+            {
+                return null;
+            }
             return PlayerInfo.FindExact(name);
         }
-
         public void PlayerCmd(string command)
         {
             Player player = GetSelectedPlayer();
-            if (player == null) return;
+            if (player == null)
+            {
+                return;
+            }
             UIHelpers.HandleCommand(command + " " + player.name);
         }
-
         public void PlayerCmd(string command, string prefix, string suffix)
         {
             Player player = GetSelectedPlayer();
-            if (player == null) return;
+            if (player == null)
+            {
+                return;
+            }
             UIHelpers.HandleCommand(command + " " + prefix + player.name + suffix);
         }
-
-        public void tsPlayer_Clones_Click(object sender, EventArgs e) 
+        public void TsPlayer_Clones_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("Clones"); 
         }
-        public void tsPlayer_Voice_Click(object sender, EventArgs e) 
+        public void TsPlayer_Voice_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("Voice");
         }
-        public void tsPlayer_Whois_Click(object sender, EventArgs e) 
+        public void TsPlayer_Whois_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("WhoIs"); 
         }
-        public void tsPlayer_Ban_Click(object sender, EventArgs e) 
+        public void TsPlayer_Ban_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("Ban"); 
         }
-        public void tsPlayer_Kick_Click(object sender, EventArgs e) 
+        public void TsPlayer_Kick_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("Kick"); 
         }
-        public void tsPlayer_Promote_Click(object sender, EventArgs e) 
+        public void TsPlayer_Promote_Click(object sender, EventArgs e) 
         {
             PlayerCmd("SetRank", "+up ", "");
         }
-        public void tsPlayer_Demote_Click(object sender, EventArgs e) 
+        public void TsPlayer_Demote_Click(object sender, EventArgs e) 
         { 
             PlayerCmd("SetRank", "-down ", ""); 
         }
-
-
-
         public Level GetSelectedLevel()
         {
-            string name = GetSelected(main_Maps);
-            if (name == null) return null;
+            string name = GetSelected(Main_Maps);
+            if (name == null)
+            {
+                return null;
+            }
             return LevelInfo.FindExact(name);
         }
-
         public void LevelCmd(string command)
         {
             Level level = GetSelectedLevel();
-            if (level == null) return;
+            if (level == null)
+            {
+                return;
+            }
             UIHelpers.HandleCommand(command + " " + level.name);
         }
-
         public void LevelCmd(string command, string prefix, string suffix)
         {
             Level level = GetSelectedLevel();
-            if (level == null) return;
+            if (level == null)
+            {
+                return;
+            }
             UIHelpers.HandleCommand(command + " " + prefix + level.name + suffix);
         }
-
-        public void tsMap_Info_Click(object sender, EventArgs e) 
-        { LevelCmd("Map"); LevelCmd("MapInfo"); }
-        public void tsMap_MoveAll_Click(object sender, EventArgs e) 
-        { LevelCmd("MoveAll"); }
-        public void tsMap_Physics0_Click(object sender, EventArgs e)
+        public void TsMap_Info_Click(object sender, EventArgs e) 
+        { 
+            LevelCmd("Map"); 
+            LevelCmd("MapInfo"); 
+        }
+        public void TsMap_MoveAll_Click(object sender, EventArgs e) 
+        { 
+            LevelCmd("MoveAll"); 
+        }
+        public void TsMap_Physics0_Click(object sender, EventArgs e)
         { 
             LevelCmd("Physics", "", " 0"); 
         }
-        public void tsMap_Physics1_Click(object sender, EventArgs e) 
+        public void TsMap_Physics1_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Physics", "", " 1"); 
         }
-        public void tsMap_Physics2_Click(object sender, EventArgs e)
+        public void TsMap_Physics2_Click(object sender, EventArgs e)
         { 
             LevelCmd("Physics", "", " 2"); 
         }
-        public void tsMap_Physics3_Click(object sender, EventArgs e) 
+        public void TsMap_Physics3_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Physics", "", " 3"); 
         }
-        public void tsMap_Physics4_Click(object sender, EventArgs e) 
+        public void TsMap_Physics4_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Physics", "", " 4"); 
         }
-        public void tsMap_Physics5_Click(object sender, EventArgs e) 
+        public void TsMap_Physics5_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Physics", "", " 5"); 
         }
-        public void tsMap_Save_Click(object sender, EventArgs e) 
+        public void TsMap_Save_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Save"); 
         }
-        public void tsMap_Unload_Click(object sender, EventArgs e) 
+        public void TsMap_Unload_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Unload"); 
         }
-        public void tsMap_Reload_Click(object sender, EventArgs e) 
+        public void TsMap_Reload_Click(object sender, EventArgs e) 
         { 
             LevelCmd("Reload"); 
         }
+        public List<string> InputLog = new List<string>(21);
+        public int InputIndex = -1;
 
-
-
-        public List<string> inputLog = new List<string>(21);
-        public int inputIndex = -1;
-
-        public void main_TxtInput_KeyDown(object sender, KeyEventArgs e)
+        public void Main_TxtInput_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Up)
             {
-                inputIndex = Math.Min(inputIndex + 1, inputLog.Count - 1);
-                if (inputIndex > -1) SetInputText();
+                InputIndex = Math.Min(InputIndex + 1, InputLog.Count - 1);
+                if (InputIndex > -1)
+                {
+                    SetInputText();
+                }
             }
             else if (e.KeyCode == Keys.Down)
             {
-                inputIndex = Math.Max(inputIndex - 1, -1);
-                if (inputIndex > -1) SetInputText();
+                InputIndex = Math.Max(InputIndex - 1, -1);
+                if (InputIndex > -1)
+                {
+                    SetInputText();
+                }
             }
             else if (e.KeyCode == Keys.Enter)
             {
@@ -163,38 +178,43 @@ namespace Flames.Gui
             }
             else
             {
-                inputIndex = -1; 
+                InputIndex = -1; 
                 return;
             }
             e.Handled = true;
             e.SuppressKeyPress = true;
         }
-
         public void SetInputText()
         {
-            if (inputIndex == -1) return;
-            main_txtInput.Text = inputLog[inputIndex];
-            main_txtInput.SelectionLength = 0;
-            main_txtInput.SelectionStart = main_txtInput.Text.Length;
+            if (InputIndex == -1)
+            {
+                return;
+            }
+            Main_txtInput.Text = InputLog[InputIndex];
+            Main_txtInput.SelectionLength = 0;
+            Main_txtInput.SelectionStart = Main_txtInput.Text.Length;
         }
-
         public void AddInputLog(string text)
         {
             // Simplify navigating through input history by not logging duplicate entries
-            if (inputLog.Count > 0 && text == inputLog[0]) return;
-
-            inputLog.Insert(0, text);
-            if (inputLog.Count > 20)
-                inputLog.RemoveAt(20);
+            if (InputLog.Count > 0 && text == InputLog[0])
+            {
+                return;
+            }
+            InputLog.Insert(0, text);
+            if (InputLog.Count > 20)
+            {
+                InputLog.RemoveAt(20);
+            }
         }
-
         public void InputText()
         {
-            string text = main_txtInput.Text;
-            if (text.Length == 0) return;
+            string text = Main_txtInput.Text;
+            if (text.Length == 0)
+            {
+                return;
+            }
             AddInputLog(text);
-
-
             if (text == "/")
             {
                 UIHelpers.RepeatCommand();
@@ -211,149 +231,137 @@ namespace Flames.Gui
             {
                 UIHelpers.HandleChat(text);
             }
-            main_txtInput.Clear();
+            Main_txtInput.Clear();
         }
-
-        public void main_BtnRestart_Click(object sender, EventArgs e)
+        public void Main_BtnRestart_Click(object sender, EventArgs e)
         {
             if (Popup.OKCancel("Are you sure you want to restart?", "Restart"))
             {
                 Server.Stop(true, Server.Config.DefaultRestartMessage);
             }
         }
-
-        public void main_TxtUrl_DoubleClick(object sender, EventArgs e)
+        public void Main_TxtUrl_DoubleClick(object sender, EventArgs e)
         {
-            if (!Main_IsUsingUrl()) return;
-            GuiUtils.OpenBrowser(main_txtUrl.Text);
+            if (!Main_IsUsingUrl())
+            {
+                return;
+            }
+            GuiUtils.OpenBrowser(Main_txtUrl.Text);
         }
-
-        public void main_BtnSaveAll_Click(object sender, EventArgs e)
+        public void Main_BtnSaveAll_Click(object sender, EventArgs e)
         {
             UIHelpers.HandleCommand("Save all");
         }
-
-        public void main_BtnKillPhysics_Click(object sender, EventArgs e)
+        public void Main_BtnKillPhysics_Click(object sender, EventArgs e)
         {
             UIHelpers.HandleCommand("Physics kill");
         }
-
-        public void main_BtnUnloadEmpty_Click(object sender, EventArgs e)
+        public void Main_BtnUnloadEmpty_Click(object sender, EventArgs e)
         {
             UIHelpers.HandleCommand("Unload empty");
         }
-
-
-
-        public void tsLog_Night_Click(object sender, EventArgs e)
+        public void TsLog_Night_Click(object sender, EventArgs e)
         {
-            main_txtLog.NightMode = tsLog_night.Checked;
-            tsLog_night.Checked = !tsLog_night.Checked;
+            Main_txtLog.NightMode = TsLog_night.Checked;
+            TsLog_night.Checked = !TsLog_night.Checked;
         }
-
-        public void tsLog_Colored_Click(object sender, EventArgs e)
+        public void TsLog_Colored_Click(object sender, EventArgs e)
         {
-            main_txtLog.Colorize = !tsLog_Colored.Checked;
-            tsLog_Colored.Checked = !tsLog_Colored.Checked;
+            Main_txtLog.Colorize = !TsLog_Colored.Checked;
+            TsLog_Colored.Checked = !TsLog_Colored.Checked;
         }
-
-        public void tsLog_DateStamp_Click(object sender, EventArgs e)
+        public void TsLog_DateStamp_Click(object sender, EventArgs e)
         {
-            main_txtLog.DateStamp = !tsLog_dateStamp.Checked;
-            tsLog_dateStamp.Checked = !tsLog_dateStamp.Checked;
+            Main_txtLog.DateStamp = !TsLog_dateStamp.Checked;
+            TsLog_dateStamp.Checked = !TsLog_dateStamp.Checked;
         }
-
-        public void tsLog_AutoScroll_Click(object sender, EventArgs e)
+        public void TsLog_AutoScroll_Click(object sender, EventArgs e)
         {
-            main_txtLog.AutoScroll = !tsLog_autoScroll.Checked;
-            tsLog_autoScroll.Checked = !tsLog_autoScroll.Checked;
+            Main_txtLog.AutoScroll = !TsLog_autoScroll.Checked;
+            TsLog_autoScroll.Checked = !TsLog_autoScroll.Checked;
         }
-
-        public void tsLog_CopySelected_Click(object sender, EventArgs e)
+        public void TsLog_CopySelected_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(main_txtLog.SelectedText)) return;
-            Clipboard.SetText(main_txtLog.SelectedText, TextDataFormat.Text);
+            if (string.IsNullOrEmpty(Main_txtLog.SelectedText))
+            {
+                return;
+            }
+            Clipboard.SetText(Main_txtLog.SelectedText, TextDataFormat.Text);
         }
-
-        public void tsLog_CopyAll_Click(object sender, EventArgs e)
+        public void TsLog_CopyAll_Click(object sender, EventArgs e)
         {
-            Clipboard.SetText(main_txtLog.Text, TextDataFormat.Text);
+            Clipboard.SetText(Main_txtLog.Text, TextDataFormat.Text);
         }
-
-        public void tsLog_Clear_Click(object sender, EventArgs e)
+        public void TsLog_Clear_Click(object sender, EventArgs e)
         {
             if (Popup.OKCancel("Are you sure you want to clear logs?", "Clear logs"))
             {
-                main_txtLog.ClearLog();
+                Main_txtLog.ClearLog();
             }
         }
-
-
         public bool Main_IsUsingUrl()
         {
-            Uri uri;
-            return Uri.TryCreate(main_txtUrl.Text, UriKind.Absolute, out uri);
+            return Uri.TryCreate(Main_txtUrl.Text, UriKind.Absolute, out Uri uri);
         }
 
         public void Main_UpdateUrl(string s)
         {
-            main_txtUrl.Text = s;
+            Main_txtUrl.Text = s;
             bool isUrl = Main_IsUsingUrl();
             Color linkCol = Color.FromArgb(255, 0, 102, 204);
-
             // https://stackoverflow.com/questions/20688408/how-do-you-change-the-text-color-of-a-readonly-textbox
-            main_txtUrl.BackColor = main_txtUrl.BackColor;
-            main_txtUrl.ForeColor = isUrl ? linkCol : SystemColors.WindowText;
-            main_txtUrl.Font = new Font(main_txtUrl.Font,
+            Main_txtUrl.BackColor = Main_txtUrl.BackColor;
+            Main_txtUrl.ForeColor = isUrl ? linkCol : SystemColors.WindowText;
+            Main_txtUrl.Font = new Font(Main_txtUrl.Font,
                                              isUrl ? FontStyle.Underline : FontStyle.Regular);
         }
-
         public void Main_UpdateMapList()
         {
             Level[] loaded = LevelInfo.Loaded.Items;
-            string selected = GetSelected(main_Maps);
-
-            main_Maps.Rows.Clear();
+            string selected = GetSelected(Main_Maps);
+            Main_Maps.Rows.Clear();
             foreach (Level lvl in loaded)
             {
-                main_Maps.Rows.Add(lvl.name, lvl.players.Count, lvl.physics);
+                Main_Maps.Rows.Add(lvl.name, lvl.players.Count, lvl.physics);
             }
-
-            Reselect(main_Maps, selected);
-            main_Maps.Refresh();
+            Reselect(Main_Maps, selected);
+            Main_Maps.Refresh();
         }
-
         public void Main_UpdatePlayersList()
         {
             UpdateNotifyIconText();
             Player[] players = PlayerInfo.Online.Items;
-            string selected = GetSelected(main_Players);
-
-            main_Players.Rows.Clear();
+            string selected = GetSelected(Main_Players);
+            Main_Players.Rows.Clear();
             foreach (Player pl in players)
             {
-                main_Players.Rows.Add(pl.truename, pl.level.name, pl.group.Name);
+                Main_Players.Rows.Add(pl.truename, pl.level.name, pl.group.Name);
             }
-
-            Reselect(main_Players, selected);
-            main_Players.Refresh();
+            Reselect(Main_Players, selected);
+            Main_Players.Refresh();
         }
-
         public static string GetSelected(DataGridView view)
         {
             DataGridViewSelectedRowCollection selected = view.SelectedRows;
-            if (selected.Count <= 0) return null;
+            if (selected.Count <= 0)
+            {
+                return null;
+            }
             return (string)selected[0].Cells[0].Value;
         }
-
         public static void Reselect(DataGridView view, string selected)
         {
-            if (selected == null) return;
-
+            if (selected == null)
+            {
+                return;
+            }
             foreach (DataGridViewRow row in view.Rows)
             {
                 string name = (string)row.Cells[0].Value;
-                if (name.CaselessEq(selected)) row.Selected = true;
+                if (name.CaselessEq(selected))
+                {
+                    row.Selected = true;
+                }
             }
         }
     }

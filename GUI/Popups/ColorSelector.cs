@@ -8,10 +8,9 @@ namespace Flames.Gui.Popups
     public partial class ColorSelector : Form
     {
         public char ColorCode;
-
         public static Color LookupColor(char colCode, out Color textCol)
         {
-            Color rgb = default(Color);
+            Color rgb;
             ColorDesc col = Colors.Get(colCode);
 
             if (col.Undefined)
@@ -22,12 +21,9 @@ namespace Flames.Gui.Popups
             {
                 rgb = Color.FromArgb(col.R, col.G, col.B);
             }
-
             textCol = ColorUtils.CalcBackgroundColor(rgb);
             return rgb;
         }
-
-
         public ColorSelector(string title, char oldColorCode)
         {
             ColorCode = oldColorCode;
@@ -44,29 +40,23 @@ namespace Flames.Gui.Popups
             UpdateBaseLayout();
             ResumeLayout(false);
         }
-
         public void ColorSelector_Load(object sender, EventArgs e)
         {
             GuiUtils.SetIcon(this);
         }
-
-
         public const int btnWidth = 130, btnHeight = 40, btnsPerCol = 8;
         public int index = 0;
         public void MakeButton(char colCode)
         {
             int row = index / btnsPerCol, col = index % btnsPerCol;
             index++;
-
             Button btn = new Button();
-            Color textCol;
-            btn.BackColor = LookupColor(colCode, out textCol);
+            btn.BackColor = LookupColor(colCode, out Color textCol);
             btn.ForeColor = textCol;
             btn.Location = new Point(9 + row * btnWidth, 7 + col * btnHeight);
             btn.Size = new Size(btnWidth, btnHeight);
             btn.Name = "b" + index;
             btn.TabIndex = index;
-
             btn.Text = Colors.Name(colCode) + " - " + colCode;
             btn.Click += delegate 
             { 
@@ -79,14 +69,14 @@ namespace Flames.Gui.Popups
             btn.Font = new Font("Microsoft Sans Serif", 9.5F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Controls.Add(btn);
         }
-
-
         public void UpdateBaseLayout()
         {
             int rows = index / btnsPerCol;
-            if ((index % btnsPerCol) != 0) rows++; // round up
-
-            int x = 0;
+            if ((index % btnsPerCol) != 0)
+            {
+                rows++;
+            }// round up
+            int x;
             // Centre if even count, align under row if odd count
             if ((rows & 1) == 0)
             {
@@ -96,8 +86,7 @@ namespace Flames.Gui.Popups
             {
                 x = (rows / 2 * btnWidth) + (btnWidth - 100) / 2;
             }
-
-            btnCancel.Location = new Point(8 + x, 12 + btnHeight * btnsPerCol);
+            BtnCancel.Location = new Point(8 + x, 12 + btnHeight * btnsPerCol);
             ClientSize = new Size(18 + btnWidth * rows, 47 + btnHeight * btnsPerCol);
         }
     }

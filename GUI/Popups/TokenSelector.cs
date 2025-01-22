@@ -48,7 +48,7 @@ namespace Flames.Gui.Popups
                 Name = "b" + index,
                 TabIndex = index
             };
-            toolTip.SetToolTip(btn, token.Description);
+            TokenToolTip.SetToolTip(btn, token.Description);
 
             btn.Text = token.Trigger;
             btn.Click += delegate 
@@ -81,7 +81,7 @@ namespace Flames.Gui.Popups
                 x = (rows / 2 * btnWidth) + (btnWidth - 100) / 2;
             }
 
-            btnCancel.Location = new Point(8 + x, 12 + btnHeight * btnsPerCol);
+            BtnCancel.Location = new Point(8 + x, 12 + btnHeight * btnsPerCol);
             ClientSize = new Size(18 + btnWidth * rows, 47 + btnHeight * btnsPerCol);
         }
     }

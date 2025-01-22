@@ -1,120 +1,119 @@
+using System;
+using System.ComponentModel;
+using System.Drawing;
+using System.Windows.Forms;
 namespace Flames.Gui.Popups
 {
-    partial class EditText
+    public partial class EditText
     {
         /// <summary>
         /// Required designer variable.
         /// </summary>
-        private System.ComponentModel.IContainer components = null;
-
+        public IContainer Components = null;
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null))
+            if (disposing && (Components != null))
             {
-                components.Dispose();
+                Components.Dispose();
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent()
+        public void InitializeComponent()
         {
-        	this.cmbList = new System.Windows.Forms.ComboBox();
-        	this.txtEdit = new System.Windows.Forms.TextBox();
-        	this.btnColor = new System.Windows.Forms.Button();
-        	this.btnToken = new System.Windows.Forms.Button();
-        	this.btnSave = new System.Windows.Forms.Button();
-        	this.SuspendLayout();
-        	// 
-        	// cmbList
-        	// 
-        	this.cmbList.BackColor = System.Drawing.SystemColors.Window;
-        	this.cmbList.FormattingEnabled = true;
-        	this.cmbList.Location = new System.Drawing.Point(392, 10);
-        	this.cmbList.Name = "cmbList";
-        	this.cmbList.Size = new System.Drawing.Size(108, 21);
-        	this.cmbList.TabIndex = 0;
-        	this.cmbList.SelectedIndexChanged += new System.EventHandler(this.cmbList_SelectedIndexChanged);
-        	// 
-        	// txtEdit
-        	// 
-        	this.txtEdit.BackColor = System.Drawing.SystemColors.Window;
-        	this.txtEdit.Location = new System.Drawing.Point(7, 39);
-        	this.txtEdit.Multiline = true;
-        	this.txtEdit.Name = "txtEdit";
-        	this.txtEdit.Size = new System.Drawing.Size(493, 282);
-        	this.txtEdit.TabIndex = 2;
-        	this.txtEdit.WordWrap = false;
-        	// 
-        	// btnColor
-        	// 
-        	this.btnColor.Location = new System.Drawing.Point(7, 9);
-        	this.btnColor.Name = "btnColor";
-        	this.btnColor.Size = new System.Drawing.Size(75, 23);
-        	this.btnColor.TabIndex = 3;
-        	this.btnColor.Text = "Insert color";
-        	this.btnColor.UseVisualStyleBackColor = true;
-        	this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
-        	// 
-        	// btnToken
-        	// 
-        	this.btnToken.Location = new System.Drawing.Point(90, 9);
-        	this.btnToken.Name = "btnToken";
-        	this.btnToken.Size = new System.Drawing.Size(75, 23);
-        	this.btnToken.TabIndex = 4;
-        	this.btnToken.Text = "Insert token";
-        	this.btnToken.UseVisualStyleBackColor = true;
-        	this.btnToken.Click += new System.EventHandler(this.btnToken_Click);
-        	// 
-        	// btnSave
-        	// 
-        	this.btnSave.Location = new System.Drawing.Point(321, 9);
-        	this.btnSave.Name = "btnSave";
-        	this.btnSave.Size = new System.Drawing.Size(65, 23);
-        	this.btnSave.TabIndex = 5;
-        	this.btnSave.Text = "Save";
-        	this.btnSave.UseVisualStyleBackColor = true;
-        	this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-        	// 
-        	// EditText
-        	// 
-        	this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-        	this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-        	this.ClientSize = new System.Drawing.Size(507, 328);
-        	this.Controls.Add(this.btnSave);
-        	this.Controls.Add(this.btnToken);
-        	this.Controls.Add(this.btnColor);
-        	this.Controls.Add(this.txtEdit);
-        	this.Controls.Add(this.cmbList);
-        	this.Font = new System.Drawing.Font("Calibri", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-        	this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-        	this.Load += new System.EventHandler(this.EditText_Load);
-        	this.MaximizeBox = false;
-        	this.MinimizeBox = false;
-        	this.Name = "EditText";
-        	this.ShowIcon = false;
-        	this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-        	this.Text = "Editing (none)";
-        	this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.EditTxt_Unload);
-        	this.ResumeLayout(false);
-        	this.PerformLayout();
+            this.CmbList = new ComboBox();
+            this.TxtEdit = new TextBox();
+            this.BtnColor = new Button();
+            this.BtnToken = new Button();
+            this.BtnSave = new Button();
+            this.SuspendLayout();
+            // 
+            // CmbList
+            // 
+            this.CmbList.BackColor = SystemColors.Window;
+            this.CmbList.FormattingEnabled = true;
+            this.CmbList.Location = new Point(392, 10);
+            this.CmbList.Name = "CmbList";
+            this.CmbList.Size = new Size(108, 21);
+            this.CmbList.TabIndex = 0;
+            this.CmbList.SelectedIndexChanged += new EventHandler(this.cmbList_SelectedIndexChanged);
+            // 
+            // TxtEdit
+            // 
+            this.TxtEdit.BackColor = SystemColors.Window;
+            this.TxtEdit.Location = new Point(7, 39);
+            this.TxtEdit.Multiline = true;
+            this.TxtEdit.Name = "TxtEdit";
+            this.TxtEdit.Size = new Size(493, 282);
+            this.TxtEdit.TabIndex = 2;
+            this.TxtEdit.WordWrap = false;
+            // 
+            // BtnColor
+            // 
+            this.BtnColor.Location = new Point(7, 9);
+            this.BtnColor.Name = "BtnColor";
+            this.BtnColor.Size = new Size(75, 23);
+            this.BtnColor.TabIndex = 3;
+            this.BtnColor.Text = "Insert color";
+            this.BtnColor.UseVisualStyleBackColor = true;
+            this.BtnColor.Click += new EventHandler(this.btnColor_Click);
+            // 
+            // BtnToken
+            // 
+            this.BtnToken.Location = new Point(90, 9);
+            this.BtnToken.Name = "BtnToken";
+            this.BtnToken.Size = new Size(75, 23);
+            this.BtnToken.TabIndex = 4;
+            this.BtnToken.Text = "Insert token";
+            this.BtnToken.UseVisualStyleBackColor = true;
+            this.BtnToken.Click += new EventHandler(this.btnToken_Click);
+            // 
+            // BtnSave
+            // 
+            this.BtnSave.Location = new Point(321, 9);
+            this.BtnSave.Name = "BtnSave";
+            this.BtnSave.Size = new Size(65, 23);
+            this.BtnSave.TabIndex = 5;
+            this.BtnSave.Text = "Save";
+            this.BtnSave.UseVisualStyleBackColor = true;
+            this.BtnSave.Click += new EventHandler(this.btnSave_Click);
+            // 
+            // EditText
+            // 
+            this.AutoScaleDimensions = new SizeF(6F, 13F);
+            this.AutoScaleMode = AutoScaleMode.Font;
+            this.ClientSize = new Size(507, 328);
+            this.Controls.Add(this.BtnSave);
+            this.Controls.Add(this.BtnToken);
+            this.Controls.Add(this.BtnColor);
+            this.Controls.Add(this.TxtEdit);
+            this.Controls.Add(this.CmbList);
+            this.Font = new Font("Calibri", 8.25F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.Load += new EventHandler(this.EditText_Load);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "EditText";
+            this.ShowIcon = false;
+            this.StartPosition = FormStartPosition.CenterParent;
+            this.Text = "Editing (none)";
+            this.FormClosing += new FormClosingEventHandler(this.EditTxt_Unload);
+            this.ResumeLayout(false);
+            this.PerformLayout();
         }
-        private System.Windows.Forms.Button btnSave;
-        private System.Windows.Forms.Button btnToken;
-        private System.Windows.Forms.Button btnColor;
-
+        public Button BtnSave;
+        public Button BtnToken;
+        public Button BtnColor;
         #endregion
-
-        private System.Windows.Forms.ComboBox cmbList;
-        private System.Windows.Forms.TextBox txtEdit;
+        public ComboBox CmbList;
+        public TextBox TxtEdit;
     }
 }

@@ -16,38 +16,31 @@ using System;
 using System.Windows.Forms;
 using Flames.Eco;
 using Flames.Events.GameEvents;
-
 namespace Flames.Gui
 {
     public partial class PropertyWindow : Form
     {
-        public ZombieProperties zsSettings = new ZombieProperties();
-
+        public ZombieProperties ZsSettings = new ZombieProperties();
         public PropertyWindow()
         {
             InitializeComponent();
-            zsSettings.LoadFromServer();
-            propsZG.SelectedObject = zsSettings;
+            ZsSettings.LoadFromServer();
+            PropsZG.SelectedObject = ZsSettings;
         }
-
         public void RunOnUI_Async(UIAction act) 
         { 
             BeginInvoke(act); 
         }
-
         public void PropertyWindow_Load(object sender, EventArgs e)
         {
             // try to use same icon as main window
             // must be done in OnLoad, otherwise icon doesn't show on Mono
             GuiUtils.SetIcon(this);
-
             OnMapsChangedEvent.Register(HandleMapsChanged, Priority.Low);
             OnStateChangedEvent.Register(HandleStateChanged, Priority.Low);
             GuiPerms.UpdateRanks();
-
-            GuiPerms.SetRanks(blk_cmbMin);
-            GuiPerms.SetRanks(cmd_cmbMin);
-
+            GuiPerms.SetRanks(Blk_cmbMin);
+            GuiPerms.SetRanks(Cmd_cmbMin);
             //Load server stuff
             LoadProperties();
             LoadRanks();
@@ -60,17 +53,14 @@ namespace Flames.Gui
             {
                 Logger.LogError("Error loading commands and blocks", ex);
             }
-
             LoadGameProps();
         }
-
         public void PropertyWindow_Unload(object sender, EventArgs e)
         {
             OnMapsChangedEvent.Unregister(HandleMapsChanged);
             OnStateChangedEvent.Unregister(HandleStateChanged);
-            Window.hasPropsForm = false;
+            Window.HasPropsForm = false;
         }
-
         public void LoadProperties()
         {
             SrvProperties.Load();
@@ -82,9 +72,8 @@ namespace Flames.Gui
             LoadMiscProps();
             LoadRankProps();
             LoadSecurityProps();
-            zsSettings.LoadFromServer();
+            ZsSettings.LoadFromServer();
         }
-
         public void SaveProperties()
         {
             try
@@ -97,8 +86,7 @@ namespace Flames.Gui
                 ApplyMiscProps();
                 ApplyRankProps();
                 ApplySecurityProps();
-
-                zsSettings.ApplyToServer();
+                ZsSettings.ApplyToServer();
                 SrvProperties.Save();
                 Economy.Save();
             }
@@ -109,17 +97,15 @@ namespace Flames.Gui
             }
             SaveDiscordProps();
         }
-
-        public void btnSave_Click(object sender, EventArgs e) 
+        public void BtnSave_Click(object sender, EventArgs e) 
         { 
             SaveChanges(); 
             Dispose(); 
         }
-        public void btnApply_Click(object sender, EventArgs e) 
+        public void BtnApply_Click(object sender, EventArgs e) 
         { 
             SaveChanges(); 
         }
-
         public void SaveChanges()
         {
             SaveProperties();
@@ -127,15 +113,12 @@ namespace Flames.Gui
             SaveCommands();
             SaveBlocks();
             SaveGameProps();
-
             SrvProperties.ApplyChanges();
         }
-
-        public void btnDiscard_Click(object sender, EventArgs e) 
+        public void BtnDiscard_Click(object sender, EventArgs e) 
         {
             Dispose(); 
         }
-
         public void GetHelp(string toHelp)
         {
             FlamesHelpPlayer p = new FlamesHelpPlayer();
@@ -143,17 +126,14 @@ namespace Flames.Gui
             Popup.Message(Colors.StripUsed(p.Messages), "Help for /" + toHelp);
         }
     }
-
     public class FlamesHelpPlayer : Player
     {
         public string Messages = "";
-
         public FlamesHelpPlayer() : base("(Flames)")
         {
             group = Group.FireRank;
             SuperName = "&S&4F&cl&4a&cm&4e&cs&S";
         }
-
         public override void Message(string message)
         {
             message = Chat.Format(message, this);

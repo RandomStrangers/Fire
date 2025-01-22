@@ -20,7 +20,6 @@ using System.Text;
 using System.Windows.Forms;
 using Flames.Scripting;
 using Flames.Modules.Compiling;
-
 namespace Flames.Gui.Popups
 {
     public partial class CustomCommands : Form
@@ -34,7 +33,7 @@ namespace Flames.Gui.Popups
             //Sigh. I wish there were SOME event to help me.
             foreach (Command cmd in Command.allCmds)
             {
-                if (!Command.IsCore(cmd)) lstCommands.Items.Add(cmd.name);
+                if (!Command.IsCore(cmd)) LstCommands.Items.Add(cmd.name);
             }
         }
 
@@ -47,7 +46,7 @@ namespace Flames.Gui.Popups
         {
             Button[] buttons = 
             { 
-                btnCreate1, btnCreate2, btnCreate3, btnCreate4, btnCreate5 
+                BtnCreate1, BtnCreate2, BtnCreate3, BtnCreate4, BtnCreate5 
             };
             List<ICompiler> compilers = ICompiler.Compilers;
             int i;
@@ -71,7 +70,7 @@ namespace Flames.Gui.Popups
 
         public void CreateCommand(ICompiler compiler)
         {
-            string cmdName = txtCmdName.Text.Trim();
+            string cmdName = TxtCmdName.Text.Trim();
             if (cmdName.Length == 0)
             {
                 Popup.Warning("Command must have a name"); 
@@ -128,22 +127,22 @@ namespace Flames.Gui.Popups
 
         public void btnUnload_Click(object sender, EventArgs e)
         {
-            string cmdName = lstCommands.SelectedItem.ToString();
+            string cmdName = LstCommands.SelectedItem.ToString();
             Command cmd = Command.Find(cmdName);
             if (cmd == null)
             {
-                Popup.Warning("Command " + cmdName + " is not loaded."); 
+                Popup.Warning("Command " + cmdName + " is not Loaded."); 
                 return;
             }
 
-            lstCommands.Items.Remove(cmd.name);
+            LstCommands.Items.Remove(cmd.name);
             Command.Unregister(cmd);
             Popup.Message("Command successfully unloaded.");
         }
 
         public void lstCommands_SelectedIndexChanged(object sender, EventArgs e)
         {
-            btnUnload.Enabled = lstCommands.SelectedIndex != -1;
+            BtnUnload.Enabled = LstCommands.SelectedIndex != -1;
         }
 
 
@@ -157,13 +156,13 @@ namespace Flames.Gui.Popups
             {
                 Command cmd = commands[i];
 
-                if (lstCommands.Items.Contains(cmd.name))
+                if (LstCommands.Items.Contains(cmd.name))
                 {
-                    Popup.Warning("Command " + cmd.name + " already exists, so was not loaded");
+                    Popup.Warning("Command " + cmd.name + " already exists, so was not Loaded");
                     continue;
                 }
 
-                lstCommands.Items.Add(cmd.name);
+                LstCommands.Items.Add(cmd.name);
                 Command.Register(cmd);
                 Logger.Log(LogType.SystemActivity, "Added /" + cmd.name + " to commands");
             }

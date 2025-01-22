@@ -19,7 +19,6 @@ using System;
 using System.ComponentModel;
 using System.Media;
 using System.Windows.Forms;
-
 namespace Flames.Gui
 {
     [DefaultBindingProperty("Seconds"), DefaultEvent("ValueChanged"), DefaultProperty("Seconds")]
@@ -27,34 +26,44 @@ namespace Flames.Gui
     {
         public long totalSecs;
         public bool initialising;
-
         public event EventHandler ValueChanged;
-
         [Bindable(true)]
         public long Seconds
         {
             get
             {
-                if (UserEdit) ValidateEditText();
+                if (UserEdit)
+                {
+                    ValidateEditText();
+                }
                 return totalSecs;
             }
             set
             {
-                if (value == totalSecs) return;
-                if (value < 0) value = 0;
-
+                if (value == totalSecs) 
+                {
+                    return; 
+                }
+                if (value < 0)
+                {
+                    value = 0;
+                }
                 totalSecs = value;
                 ValueChanged?.Invoke(this, EventArgs.Empty);
                 UpdateEditText();
             }
         }
-
         public TimeSpan Value
         {
-            get { return TimeSpan.FromSeconds(Seconds); }
-            set { Seconds = (long)value.TotalSeconds; }
+            get 
+            { 
+                return TimeSpan.FromSeconds(Seconds); 
+            }
+            set 
+            { 
+                Seconds = (long)value.TotalSeconds; 
+            }
         }
-
         public TimespanUpDown() 
         { 
             Text = "0s"; 
@@ -63,7 +72,6 @@ namespace Flames.Gui
         { 
             initialising = true; 
         }
-
         public void EndInit()
         {
             initialising = false;
@@ -75,10 +83,15 @@ namespace Flames.Gui
         {
             base.OnTextBoxKeyPress(source, e);
             // don't intercept ctrl+A, ctrl+C etc
-            if ((ModifierKeys & (Keys.Control | Keys.Alt)) != Keys.None) return;
+            if ((ModifierKeys & (Keys.Control | Keys.Alt)) != Keys.None)
+            {
+                return;
+            }
             // always allowed to input numbers
-            if (e.KeyChar == '\b' || char.IsDigit(e.KeyChar)) return;
-
+            if (e.KeyChar == '\b' || char.IsDigit(e.KeyChar))
+            {
+                return;
+            }
             try
             {
                 (Text + e.KeyChar.ToString()).ParseShort("s");
@@ -90,27 +103,38 @@ namespace Flames.Gui
                 SystemSounds.Beep.Play();
             }
         }
-
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
-            if (UserEdit) UpdateEditText();
+            if (UserEdit)
+            {
+                UpdateEditText();
+            }
         }
-
         public override void DownButton()
         {
-            if (UserEdit) ParseEditText();
-            if (totalSecs <= 0) totalSecs = 1;
+            if (UserEdit)
+            {
+                ParseEditText();
+            }
+            if (totalSecs <= 0)
+            {
+                totalSecs = 1;
+            }
             Seconds = totalSecs - 1;
         }
-
         public override void UpButton()
         {
-            if (UserEdit) ParseEditText();
-            if (totalSecs == long.MaxValue) return;
+            if (UserEdit)
+            {
+                ParseEditText();
+            }
+            if (totalSecs == long.MaxValue)
+            {
+                return;
+            }
             Seconds = totalSecs + 1;
         }
-
         public void ParseEditText()
         {
             try
@@ -126,14 +150,18 @@ namespace Flames.Gui
                 UserEdit = false;
             }
         }
-
         protected override void UpdateEditText()
         {
-            if (initialising) return;
-            if (UserEdit) ParseEditText();
+            if (initialising)
+            {
+                return;
+            }
+            if (UserEdit)
+            {
+                ParseEditText();
+            }
             Text = TimeSpan.FromSeconds(totalSecs).Shorten(true, true);
         }
-
         protected override void ValidateEditText()
         {
             ParseEditText();
