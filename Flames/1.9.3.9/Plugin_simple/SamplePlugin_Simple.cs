@@ -1,4 +1,6 @@
-﻿namespace Flames.Scripting.Plugin_simple
+#if !F_DOTNET
+
+namespace Flames.Scripting.Plugin_simple
 {
     public class SamplePlugin_Simple 
     {
@@ -41,3 +43,4 @@ End Namespace";
         }
     }
 }
+#endif
