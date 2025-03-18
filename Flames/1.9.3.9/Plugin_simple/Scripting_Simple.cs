@@ -17,6 +17,8 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+#if !F_DOTNET
+
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
@@ -387,3 +389,4 @@ namespace Flames.Scripting
         }
     }
 }
+#endif
