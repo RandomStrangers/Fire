@@ -26,7 +26,7 @@ using Flames.Tasks;
 
 namespace Flames.Modules.Security
 {
-    public class IPThrottler : NewPlugin
+    public class IPThrottler : Plugin
     {
         public override string name { get { return "IPThrottler"; } }
 
