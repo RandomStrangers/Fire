@@ -20,8 +20,11 @@ using System.Collections.Generic;
 using System.Reflection;
 using Flames.Commands;
 using Flames.Maths;
+#if !F_DOTNET
 using Flames.Scripting;
-
+#else
+using Flames.NewScripting;
+#endif
 namespace Flames
 {
     public abstract partial class Command
