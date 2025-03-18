@@ -114,13 +114,14 @@ namespace Flames
             EnsureFilesExist();
 #if !F_DOTNET
             Scripting.IScripting.Init();
+            Critical.QueueOnce(LoadAllPlugins);
+            Critical.QueueOnce(LoadAllSimplePlugins);
 #endif
             NewScripting.IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
             Economy.LoadDatabase();
-            Critical.QueueOnce(LoadAllPlugins);
-            Critical.QueueOnce(LoadAllSimplePlugins);
+            Critical.QueueOnce(LoadAllNewPlugins);
             Background.QueueOnce(LoadMainLevel);
             Background.QueueOnce(LoadAutoloadMaps);
             Background.QueueOnce(UpgradeTasks.UpgradeOldTempranks);
