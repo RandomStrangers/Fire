@@ -17,6 +17,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+#if !F_DOTNET
 using Flames.Modules.Compiling;
 using System.CodeDom.Compiler;
 
@@ -365,3 +366,4 @@ class {0} extends Plugin
         }
     }
 }
+#endif
