@@ -17,6 +17,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+#if !F_DOTNET
 using System.IO;
 
 namespace Flames.Modules.Compiling
@@ -118,3 +119,4 @@ namespace Flames.Modules.Compiling
         }
     }
 }
+#endif
