@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using Flames.Scripting;
+#if !F_DOTNET
 
 namespace Flames
 {
@@ -127,3 +128,4 @@ namespace Flames
         }
     }
 }
+#endif
