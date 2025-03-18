@@ -4,7 +4,7 @@ using Flames.Tasks;
 
 namespace Flames.Core
 {
-    public class ServerURLSender : NewPlugin
+    public class ServerURLSender : Plugin
     {
         public override string name { get { return "Say URL"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName) + " team"; } }
