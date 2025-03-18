@@ -20,7 +20,7 @@ using Flames.Events;
 
 namespace Flames.Modules.Moderation.Notes
 {
-    public class NotesPlugin : NewPlugin
+    public class NotesPlugin : Plugin
     {
         public override string name { get { return "Notes"; } }
 
