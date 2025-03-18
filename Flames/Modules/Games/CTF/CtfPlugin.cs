@@ -19,7 +19,7 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.CTF
 {
-    public class CTFPlugin : Plugin
+    public class CTFPlugin : NewPlugin
     {
         public override string name { get { return "CTF"; } }
         public static Command cmdCTF = new CmdCTF();
