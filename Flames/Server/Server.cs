@@ -112,7 +112,9 @@ namespace Flames
             SQLiteBackend.Instance.LoadDependencies();
             MySQLBackend.Instance.LoadDependencies();
             EnsureFilesExist();
+#if !F_DOTNET
             Scripting.IScripting.Init();
+#endif
             NewScripting.IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
