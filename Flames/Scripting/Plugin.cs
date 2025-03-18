@@ -173,17 +173,6 @@ namespace Flames
 
         public static void LoadAll()
         {
-            LoadCorePlugin(new CorePlugin());
-            LoadCorePlugin(new NotesPlugin());
-            LoadCorePlugin(new DiscordPlugin());
-            LoadCorePlugin(new IRCPlugin());
-            LoadCorePlugin(new IPThrottler());
-            LoadCorePlugin(new ServerURLSender());
-            LoadCorePlugin(new CountdownPlugin());
-            LoadCorePlugin(new CTFPlugin());
-            LoadCorePlugin(new LSPlugin());
-            LoadCorePlugin(new TWPlugin());
-            LoadCorePlugin(new ZSPlugin());
             LoadCorePlugin(new CompilerPlugin());
 #if CORE
             LoadCorePlugin(new GoldenSparksPluginLoader());
