@@ -21,9 +21,18 @@ using Flames.NewScripting;
 using Flames.Modules.NewCompiling;
 using Flames.Tasks;
 using Flames.Events.ServerEvents;
+using Flames.Modules.Games.Countdown;
+using Flames.Modules.Games.CTF;
+using Flames.Modules.Games.LS;
+using Flames.Modules.Games.TW;
+using Flames.Modules.Games.ZS;
+using Flames.Modules.Moderation.Notes;
+using Flames.Modules.NewCompiling;
+using Flames.Modules.Relay.Discord;
+using Flames.Modules.Relay.IRC;
 namespace Flames.Core
 {
-    public class NewPluginLoader : Plugin
+    public class NewPluginLoader : NewPlugin
     {
         public override string name { get { return "NewPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
@@ -179,6 +188,17 @@ namespace Flames
         }
         public static void LoadAll()
         {
+            LoadCoreNewPlugin(new CorePlugin());
+            LoadCoreNewPlugin(new NotesPlugin());
+            LoadCoreNewPlugin(new DiscordPlugin());
+            LoadCoreNewPlugin(new IRCPlugin());
+            LoadCoreNewPlugin(new IPThrottler());
+            LoadCoreNewPlugin(new ServerURLSender());
+            LoadCoreNewPlugin(new CountdownPlugin());
+            LoadCoreNewPlugin(new CTFPlugin());
+            LoadCoreNewPlugin(new LSPlugin());
+            LoadCoreNewPlugin(new TWPlugin());
+            LoadCoreNewPlugin(new ZSPlugin());
             LoadCoreNewPlugin(new NewCompilerPlugin());
             IScripting.AutoloadNewPlugins();
         }
