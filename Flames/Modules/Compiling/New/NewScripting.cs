@@ -36,6 +36,10 @@ namespace Flames.NewScripting
     /// <summary> Utility methods for loading assemblies, and new plugins </summary>
     public static class IScripting
     {
+#if F_DOTNET
+        public const string COMMANDS_DLL_DIR = "extra/commands/dll/";
+        public static string CommandPath(string name) { return COMMANDS_DLL_DIR + "Cmd" + name + ".dll"; }
+#endif
         public static string GetExePath(string path)
         {
             return path;
@@ -57,6 +61,9 @@ namespace Flames.NewScripting
 
         public static void Init()
         {
+            #if F_DOTNET
+            Directory.CreateDirectory(COMMANDS_DLL_DIR);
+            #endif
             Directory.CreateDirectory(NEW_PLUGINS_DLL_DIR);
             AppDomain.CurrentDomain.AssemblyResolve += ResolveNewPluginAssembly;
         }
@@ -119,8 +126,46 @@ namespace Flames.NewScripting
             byte[] data = File.ReadAllBytes(path);
             return Assembly.Load(data);
         }
-
-
+        #if F_DOTNET
+        public static void AutoloadCommands() {
+            string[] files = FileIO.TryGetFiles(COMMANDS_DLL_DIR, "*.dll");
+            if (files == null) return;
+            
+            foreach (string path in files) { AutoloadCommands(path); }
+        }
+        
+        static void AutoloadCommands(string path) {
+            List<Command> cmds;
+            
+            try {
+                cmds = LoadCommands(path);
+            } catch (Exception ex) {
+                Logger.LogError("Error loading commands from " + path, ex);
+                return;
+            }
+            
+            Logger.Log(LogType.SystemActivity, "AUTOLOAD: Loaded {0} from {1}",
+                       cmds.Join(c => "/" + c.name), Path.GetFileName(path));
+        }
+        
+        /// <summary> Loads and registers all the commands from the given .dll path </summary>
+        public static List<Command> LoadCommands(string path) {
+            Assembly lib = LoadAssembly(path);
+            List<Command> commands = LoadTypes<Command>(lib);
+            
+            if (commands.Count == 0)
+                throw new InvalidOperationException("No commands in " + path);
+            
+            foreach (Command cmd in commands)
+            {
+                if (Command.Find(cmd.name) != null)
+                    throw new AlreadyLoadedException("/" + cmd.name + " is already loaded");
+                
+                Command.Register(cmd);
+            }
+            return commands;
+        }
+#endif
         public static string DescribeLoadError(string path, Exception ex)
         {
             string file = Path.GetFileName(path);
