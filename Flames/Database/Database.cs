@@ -252,7 +252,7 @@ namespace Flames.SQL
 
         public static void UpdateActiveBackend()
         {
-#if F_STANDALONE
+#if F_DOTNET
             Backend = SQLiteBackend.Instance;
 #else
             Backend = Server.Config.UseMySQL ? MySQLBackend.Instance : SQLiteBackend.Instance;
