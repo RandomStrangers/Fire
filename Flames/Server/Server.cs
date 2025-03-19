@@ -108,9 +108,10 @@ namespace Flames
             ServicePointManager.Expect100Continue = false;
             ForceEnableTLS();
             ExtraAuthenticator.SetActive(new DefaultPassAuthenticator());
-
             SQLiteBackend.Instance.LoadDependencies();
+#if !F_STANDALONE
             MySQLBackend.Instance.LoadDependencies();
+#endif
             EnsureFilesExist();
 #if !F_DOTNET
             Scripting.IScripting.Init();
@@ -341,9 +342,16 @@ namespace Flames
 
         public static string GetServerDLLPath()
         {
+#if F_STANDALONE
+            return GetRuntimeExePath();
+#else
             return Assembly.GetExecutingAssembly().Location;
+#endif
         }
-
+        public static string GetRuntimeExePath() 
+        {
+            return Process.GetCurrentProcess().MainModule.FileName;
+        }
         public static string GetRestartPath()
         {
             return RestartPath;
