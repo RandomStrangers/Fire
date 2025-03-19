@@ -31,6 +31,7 @@ using Flames.Modules.NewCompiling;
 using Flames.Modules.Relay.Discord;
 using Flames.Modules.Relay.IRC;
 using Flames.Core;
+using Flames.Modules.Security;
 namespace Flames.Core
 {
     public class NewPluginLoader : NewPlugin
