@@ -38,7 +38,10 @@ namespace Flames.NewScripting
     {
 #if F_DOTNET
         public const string COMMANDS_DLL_DIR = "extra/commands/dll/";
-        public static string CommandPath(string name) { return COMMANDS_DLL_DIR + "Cmd" + name + ".dll"; }
+        public static string CommandPath(string name) 
+        { 
+            return COMMANDS_DLL_DIR + "Cmd" + name + ".dll"; 
+        }
 #endif
         public static string GetExePath(string path)
         {
@@ -127,19 +130,27 @@ namespace Flames.NewScripting
             return Assembly.Load(data);
         }
         #if F_DOTNET
-        public static void AutoloadCommands() {
-            string[] files = FileIO.TryGetFiles(COMMANDS_DLL_DIR, "*.dll");
+        public static void AutoloadCommands() 
+        {
+            string[] files = AtomicIO.TryGetFiles(COMMANDS_DLL_DIR, "*.dll");
             if (files == null) return;
             
-            foreach (string path in files) { AutoloadCommands(path); }
+            foreach (string path in files) 
+            {
+                AutoloadCommands(path); 
+            }
         }
         
-        static void AutoloadCommands(string path) {
+        public static void AutoloadCommands(string path) 
+        {
             List<Command> cmds;
             
-            try {
+            try 
+            {
                 cmds = LoadCommands(path);
-            } catch (Exception ex) {
+            } 
+            catch (Exception ex) 
+            {
                 Logger.LogError("Error loading commands from " + path, ex);
                 return;
             }
@@ -149,7 +160,8 @@ namespace Flames.NewScripting
         }
         
         /// <summary> Loads and registers all the commands from the given .dll path </summary>
-        public static List<Command> LoadCommands(string path) {
+        public static List<Command> LoadCommands(string path) 
+        {
             Assembly lib = LoadAssembly(path);
             List<Command> commands = LoadTypes<Command>(lib);
             
