@@ -15,6 +15,7 @@
    or implied. See the Licenses for the specific language governing
    permissions and limitations under the Licenses.
 */
+#if !F_DOTNET
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -383,3 +384,4 @@ namespace Flames.SQL
         }
     }
 }
+#endif
