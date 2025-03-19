@@ -109,7 +109,7 @@ namespace Flames
             ForceEnableTLS();
             ExtraAuthenticator.SetActive(new DefaultPassAuthenticator());
             SQLiteBackend.Instance.LoadDependencies();
-#if !F_STANDALONE
+#if !F_DOTNET
             MySQLBackend.Instance.LoadDependencies();
 #endif
             EnsureFilesExist();
@@ -342,7 +342,7 @@ namespace Flames
 
         public static string GetServerDLLPath()
         {
-#if F_STANDALONE
+#if F_DOTNET
             return GetRuntimeExePath();
 #else
             return Assembly.GetExecutingAssembly().Location;
