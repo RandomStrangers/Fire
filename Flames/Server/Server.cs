@@ -276,8 +276,11 @@ namespace Flames
             }
 
             OnShuttingDownEvent.Call(restarting, msg);
+#if !F_DOTNET
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
+#endif
+            NewPlugin.UnloadAll();
 
             try
             {
