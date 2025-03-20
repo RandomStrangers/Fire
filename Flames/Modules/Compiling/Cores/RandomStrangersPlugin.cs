@@ -978,7 +978,7 @@ namespace Flames.RandomStrangersScripting
 
 namespace Flames
 {
-    public class RandomStrangersPluginLoader : Plugin
+    public class RandomStrangersPluginLoader : NewPlugin
     {
         public override string name { get { return "RandomStrangersPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
