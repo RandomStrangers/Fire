@@ -979,7 +979,7 @@ namespace Flames.GoldenSparksScripting
 
 namespace Flames
 {
-    public class GoldenSparksPluginLoader : Plugin
+    public class GoldenSparksPluginLoader : NewPlugin
     {
         public override string name { get { return "GoldenSparksPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
