@@ -174,12 +174,6 @@ namespace Flames
         public static void LoadAll()
         {
             LoadCorePlugin(new CompilerPlugin());
-#if CORE
-            LoadCorePlugin(new GoldenSparksPluginLoader());
-            LoadCorePlugin(new SuperNovaPluginLoader());
-            LoadCorePlugin(new DeadNovaPluginLoader());
-            LoadCorePlugin(new RandomStrangersPluginLoader());
-#endif
             IScripting.AutoloadPlugins();
         }
         public static void LoadCorePlugin(Plugin plugin)
