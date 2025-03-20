@@ -88,6 +88,17 @@ namespace Flames
         public virtual string Flames_Version { get { return "9.0.4.8"; } }
         /// <summary> Work on backwards compatibility with MCGalaxy </summary>
         public virtual string MCGalaxy_Version { get { return null; } }
+#if CORE
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string GoldenSparks_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string SuperNova_Version { get { return null; } }
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string DeadNova_Version { get { return null; } }
+
+        /// <summary> Work on backwards compatibility with other cores </summary>
+        public virtual string RandomStrangers_Version { get { return null; } }
+#endif
         /// <summary> Version of this new plugin. </summary>
         public virtual int build { get { return 0; } }
         /// <summary> Message to display once this new plugin is loaded. </summary>
@@ -202,6 +213,12 @@ namespace Flames
             LoadCoreNewPlugin(new TWPlugin());
             LoadCoreNewPlugin(new ZSPlugin());
             LoadCoreNewPlugin(new NewCompilerPlugin());
+#if CORE
+            LoadCoreNewPlugin(new GoldenSparksPluginLoader());
+            LoadCoreNewPlugin(new SuperNovaPluginLoader());
+            LoadCoreNewPlugin(new DeadNovaPluginLoader());
+            LoadCoreNewPlugin(new RandomStrangersPluginLoader());
+#endif
             IScripting.AutoloadNewPlugins();
         }
         public static void LoadCoreNewPlugin(NewPlugin newplugin)
