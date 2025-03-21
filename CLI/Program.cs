@@ -143,11 +143,11 @@ namespace Flames.Cli
             Logger.LogError(ex);
             FileLogger.Flush(null);
             Thread.Sleep(500);
-            if (Server.Config.restartOnError)
-            {
-                Thread stopThread = Server.Stop(true, "Server restart - unhandled error");
-                stopThread.Join();
-            }
+            //if (Server.Config.restartOnError)
+            //{
+            Thread stopThread = Server.Stop(true, "Server restart - unhandled error");
+            stopThread.Join();
+            //}
         }
         public static void GlobalExHandler(object sender, UnhandledExceptionEventArgs e)
         {
