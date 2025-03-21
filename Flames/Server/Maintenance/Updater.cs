@@ -27,14 +27,20 @@ namespace Flames
     public static class Updater
     {
 
-        public static string SourceURL = "https://github.com/RandomStrangers/Fire/";
-        public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/debug/";
-        public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/debug/Uploads";
-        public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/debug/Uploads/";
+        public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/";
+        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/debug/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/debug/Uploads";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";
         public const string dllURL = UpdatesURL + "Flames_dev.dll";
+#elif CORE && F_DOTNET_DEV
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_core_dev.dll";
+#elif F_DOTNET_DEV
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_dev.dll";
 #else
         public const string CurrentVersionURL = UpdatesURL + "current.txt";
         public const string dllURL = UpdatesURL + "Flames_.dll";

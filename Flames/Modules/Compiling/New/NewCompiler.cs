@@ -19,7 +19,9 @@
  */
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using Flames;
 using Flames.NewScripting;
 
 namespace Flames.Modules.NewCompiling
@@ -27,8 +29,9 @@ namespace Flames.Modules.NewCompiling
     /// <summary> Compiles source code files for a particular programming language into a .dll </summary>
     public abstract class ICompiler
     {
+        public const string COMMANDS_SOURCE_DIR = "extra/commands/source/";
         public const string NEW_PLUGINS_SOURCE_DIR = "newplugins/";
-        public const string ERROR_LOG_PATH = "logs/errors/compiler_new.log";
+        public const string ERROR_LOG_PATH = "logs/errors/compiler.log";
 
         /// <summary> Default file extension used for source code files </summary>
         /// <example> .cs, .vb </example>
@@ -39,16 +42,15 @@ namespace Flames.Modules.NewCompiling
         /// <summary> The full name of this programming language </summary>
         /// <example> CSharp, Visual Basic </example>
         public abstract string FullName { get; }
-        /// <summary> Returns source code for an example new plugin </summary>
+        /// <summary> Returns source code for an example Command </summary>
+        public abstract string CommandSkeleton { get; }
+        /// <summary> Returns source code for an example Plugin </summary>
         public abstract string NewPluginSkeleton { get; }
 
-        public string NewPluginPath(string name)
-        {
-            return NEW_PLUGINS_SOURCE_DIR + name + FileExtension;
-        }
+        public string CommandPath(string name) { return COMMANDS_SOURCE_DIR + "Cmd" + name + FileExtension; }
+        public string NewPluginPath(string name) { return NEW_PLUGINS_SOURCE_DIR + name + FileExtension; }
 
-        public static List<ICompiler> Compilers = new List<ICompiler>() 
-        {
+        public static List<ICompiler> Compilers = new List<ICompiler>() {
             new CSCompiler()
         };
 
@@ -61,11 +63,19 @@ namespace Flames.Modules.NewCompiling
             return string.Format(source, args);
         }
 
+        /// <summary> Generates source code for an example command, 
+        /// preformatted with the given command name </summary>
+        public string GenExampleCommand(string cmdName)
+        {
+            cmdName = cmdName.ToLower().Capitalize();
+            return FormatSource(CommandSkeleton, cmdName);
+        }
+
         /// <summary> Generates source code for an example new plugin, 
         /// preformatted with the given name and creator </summary>
-        public string GenExampleNewPlugin(string newplugin, string creator)
+        public string GenExampleNewPlugin(string plugin, string creator)
         {
-            return FormatSource(NewPluginSkeleton, newplugin, creator, Server.Version);
+            return FormatSource(NewPluginSkeleton, plugin, creator, Server.Version);
         }
 
 
@@ -146,7 +156,6 @@ namespace Flames.Modules.NewCompiling
             {
                 string refPrefix = commentPrefix + "reference ";
                 string plgPrefix = commentPrefix + "pluginref ";
-                string newplgPrefix = commentPrefix + "newpluginref ";
                 string line;
 
                 while ((line = r.ReadLine()) != null)
@@ -160,11 +169,6 @@ namespace Flames.Modules.NewCompiling
                         path = Path.Combine(IScripting.NEW_PLUGINS_DLL_DIR, GetDLL(line));
                         referenced.Add(Path.GetFullPath(path));
                     }
-                    else if (line.CaselessStarts(newplgPrefix))
-                    {
-                        path = Path.Combine(IScripting.NEW_PLUGINS_DLL_DIR, GetDLL(line));
-                        referenced.Add(Path.GetFullPath(path));
-                    }
                     else
                     {
                         ProcessInputLine(line, referenced);
@@ -173,9 +177,7 @@ namespace Flames.Modules.NewCompiling
             }
         }
 
-        public virtual void ProcessInputLine(string line, List<string> referenced) 
-        { 
-        }
+        public virtual void ProcessInputLine(string line, List<string> referenced) { }
 
         public static string GetDLL(string line)
         {
