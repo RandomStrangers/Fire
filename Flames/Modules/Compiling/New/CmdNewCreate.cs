@@ -16,52 +16,42 @@
     permissions and limitations under the Licenses.
  */
 #if !F_DOTNET
+using System;
 using Flames.Commands;
 
-namespace Flames.Modules.Compiling
+namespace Flames.Modules.NewCompiling
 {
-    public class CmdCmdCreate : CmdCompile
+    public sealed class CmdCmdCreate : CmdCompile 
     {
         public override string name { get { return "CmdCreate"; } }
         public override string shortcut { get { return ""; } }
-        public override CommandAlias[] Aliases
-        {
-            get { return new[] { new CommandAlias("PCreate", "plugin") }; }
+        public override CommandAlias[] Aliases {
+            get { return new[] { new CommandAlias("newPCreate", "newplugin") }; }
         }
 
-        public override void CompileCommand(Player p, string[] paths, ICompiler compiler)
-        {
-            if (compiler == null) 
-            { 
-                compiler = new CSCompiler(); 
+        public void CompileCommand(Player p, string[] paths, ICompiler compiler) {
+            string dstPath = IScripting.CommandPath(paths[0]);
+            
+            for (int i = 0; i < paths.Length; i++) 
+            {
+                 paths[i] = compiler.CommandPath(paths[i]);
             }
-
+            CompilerOperations.Compile(p, compiler, "Command", paths, dstPath);
+        }
+        
+        public override void CompileNewPlugin(Player p, string[] paths, ICompiler compiler) {
             foreach (string cmd in paths)
             {
-                CompilerOperations.CreateCommand(p, cmd, compiler);
+                CompilerOperations.CreateNewPlugin(p, cmd, compiler);
             }
         }
 
-        public override void CompilePlugin(Player p, string[] paths, ICompiler compiler)
-        {
-            foreach (string cmd in paths)
-            {
-                CompilerOperations.CreatePlugin(p, cmd, compiler);
-            }
-        }
-
-        public override void Help(Player p)
-        {
+        public override void Help(Player p) {
             p.Message("&T/CmdCreate [name]");
             p.Message("&HCreates an example C# command named Cmd[name]");
             p.Message("&H  This can be used as the basis for creating a new command");
-            p.Message("&T/CmdCreate plugin [name]");
-            p.Message("&HCreate a example C# plugin named [name]");
-            p.Message("&T/CmdCreate [name] vb");
-            p.Message("&HCreates an example Visual Basic command named Cmd[name]");
-            p.Message("&H  This can be used as the basis for creating a new command");
-            p.Message("&T/CmdCreate plugin [name] vb");
-            p.Message("&HCreate a example Visual Basic plugin named [name]");
+            p.Message("&T/CmdCreate newplugin [name]");
+            p.Message("&HCreate a new example C# plugin named [name]");
         }
     }
 }

@@ -28,9 +28,9 @@ namespace Flames
     {
 
         public static string SourceURL = "https://github.com/RandomStrangers/Fire/";
-        public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/Flame/";
-        public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/Flame/Uploads";
-        public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
+        public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/debug/";
+        public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/debug/Uploads";
+        public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/debug/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";
@@ -140,7 +140,10 @@ namespace Flames
 
         public static void DeleteFiles(params string[] paths)
         {
-            foreach (string path in paths) { AtomicIO.TryDelete(path); }
+            foreach (string path in paths) 
+            {
+                AtomicIO.TryDelete(path);
+            }
         }
     }
 }

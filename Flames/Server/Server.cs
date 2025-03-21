@@ -108,17 +108,21 @@ namespace Flames
             ServicePointManager.Expect100Continue = false;
             ForceEnableTLS();
             ExtraAuthenticator.SetActive(new DefaultPassAuthenticator());
-
             SQLiteBackend.Instance.LoadDependencies();
+#if !F_DOTNET
             MySQLBackend.Instance.LoadDependencies();
+#endif
             EnsureFilesExist();
+#if !F_DOTNET
             Scripting.IScripting.Init();
+            Critical.QueueOnce(LoadAllPlugins);
+            Critical.QueueOnce(LoadAllSimplePlugins);
+#endif
             NewScripting.IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
             Economy.LoadDatabase();
-            Critical.QueueOnce(LoadAllPlugins);
-            Critical.QueueOnce(LoadAllSimplePlugins);
+            Critical.QueueOnce(LoadAllNewPlugins);
             Background.QueueOnce(LoadMainLevel);
             Background.QueueOnce(LoadAutoloadMaps);
             Background.QueueOnce(UpgradeTasks.UpgradeOldTempranks);
@@ -237,9 +241,10 @@ namespace Flames
 
         public static void ShutdownThread(bool restarting, string msg)
         {
+            
             try
             {
-                Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);
+                Logger.Log(LogType.SystemActivity, "Server restarting ({0})", msg);
             }
             catch { }
 
@@ -272,9 +277,12 @@ namespace Flames
                 Logger.LogError(ex); 
             }
 
-            OnShuttingDownEvent.Call(restarting, msg);
+            OnShuttingDownEvent.Call(true, msg);
+#if !F_DOTNET
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
+#endif
+            NewPlugin.UnloadAll();
 
             try
             {
@@ -291,7 +299,7 @@ namespace Flames
 
             try
             {
-                Logger.Log(LogType.SystemActivity, "Server shutdown completed");
+                Logger.Log(LogType.SystemActivity, "Server restarting...");
             }
             catch 
             { 
@@ -304,12 +312,12 @@ namespace Flames
             { 
             }
 
-            if (restarting)
-            {
-                IOperatingSystem.DetectOS().RestartProcess();
+            //if (restarting)
+            //{
+            IOperatingSystem.DetectOS().RestartProcess();
                 // TODO: FileLogger.Flush again maybe for if execvp fails?
-            }
-            Environment.Exit(0);
+            //}
+            //Environment.Exit(0);
         }
 
         public static string SaveAllLevels()
@@ -335,9 +343,16 @@ namespace Flames
 
         public static string GetServerDLLPath()
         {
+#if F_DOTNET
+            return GetRuntimeExePath();
+#else
             return Assembly.GetExecutingAssembly().Location;
+#endif
         }
-
+        public static string GetRuntimeExePath() 
+        {
+            return Process.GetCurrentProcess().MainModule.FileName;
+        }
         public static string GetRestartPath()
         {
             return RestartPath;

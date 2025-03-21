@@ -96,7 +96,7 @@ namespace Flames.Modules.Relay.Discord
         Playing = 0, Listening = 2, Watching = 3, Competing = 5 
     }
 
-    public class DiscordPlugin : Plugin
+    public class DiscordPlugin : NewPlugin
     {
         public override string name { get { return "DiscordRelay"; } }
 

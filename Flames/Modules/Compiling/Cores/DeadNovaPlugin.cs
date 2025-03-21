@@ -981,7 +981,7 @@ namespace Flames.DeadNovaScripting
 
 namespace Flames
 {
-    public class DeadNovaPluginLoader : Plugin
+    public class DeadNovaPluginLoader : NewPlugin
     {
         public override string name { get { return "DeadNovaPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }

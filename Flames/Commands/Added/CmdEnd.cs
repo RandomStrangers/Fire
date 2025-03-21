@@ -19,7 +19,8 @@ namespace Flames.Commands.Chatting
                 p.Message("Only the Flames or the Server Owner can end the server."); 
                 return;
             }
-            Environment.Exit(0);
+            p.Message("Command disabled in this branch.");
+            //Environment.Exit(0);
         }
         public static bool CheckPerms(Player p)
         {

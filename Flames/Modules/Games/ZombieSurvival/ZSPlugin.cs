@@ -19,7 +19,7 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.ZS
 {
-    public class ZSPlugin : Plugin
+    public class ZSPlugin : NewPlugin
     {
         public override string name { get { return "ZS"; } }
         public static Command cmdZS = new CmdZombieSurvival();

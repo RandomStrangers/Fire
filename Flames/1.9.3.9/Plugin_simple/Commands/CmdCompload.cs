@@ -15,6 +15,8 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
+#if !F_DOTNET
+
 namespace Flames.Commands.Scripting
 {
     public class CmdCompLoad_Simple : Command2
@@ -64,3 +66,4 @@ namespace Flames.Commands.Scripting
         }
     }
 }
+#endif

@@ -1,10 +1,10 @@
-name: Build Dev
+name: Build dotnet dev2
 on:
   push:
   workflow_dispatch:
 
 concurrency:
-  group: ${{ github.ref }}-Dev
+  group: ${{ github.ref }}-dotnet_dev
   cancel-in-progress: true
 
 jobs:
@@ -12,24 +12,24 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Compile Flames Dev build using mono
+      - name: Compile Flames dotnet Dev build using mono
         shell: bash
         id: compile
         run: |
           msbuild Flames.sln /p:Configuration=Release
-          cp -R bin/Release bin/Release_dev
-          msbuild Flames/Flames.csproj /p:Configuration=Release /p:DefineConstants="CORE"
+          cp -R bin/Release bin/Release_dev_dotnet
+          msbuild Flames/Flames.csproj /p:Configuration=Release /p:DefineConstants="CORE%3BF_STANDALONE%3BF_DOTNET%3BF_DOTNET_DEV"
 
       - uses: ./.github/actions/notify_failure_harmony
         if: ${{ always() && steps.compile.outcome == 'failure' }}
         with:
-          NOTIFY_MESSAGE: 'Failed to compile Flames .NET Dev build! <@999409543001931788>'
+          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet Dev build! <@999409543001931788>'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
       - uses: ./.github/actions/notify_success_harmony
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
-          SOURCE_FILE: 'bin/Release_dev'
+          SOURCE_FILE: 'bin/Release_dev_dotnet'
           DEST_NAME: 'Harmony'
-          NOTIFY_MESSAGE: 'Successfully compiled Flames .NET Dev build.'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone Dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'

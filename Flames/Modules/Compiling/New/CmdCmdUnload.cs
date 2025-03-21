@@ -15,36 +15,42 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
-#if !F_DOTNET
-using Flames.Scripting;
+#if F_DOTNET
+using Flames.NewScripting;
 
-namespace Flames.Commands.Scripting
+namespace Flames.Commands.Scripting 
 {
-    public class CmdCmdLoad : Command
+    public sealed class CmdCmdUnload : Command2 
     {
-        public override string name { get { return "CmdLoad"; } }
+        public override string name { get { return "CmdUnload"; } }
         public override string type { get { return CommandTypes.Other; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
-
-        public override void Use(Player p, string cmdName)
+        
+        public override void Use(Player p, string cmdName, CommandData data) 
         {
             if (cmdName.Length == 0) 
             { 
                 Help(p); 
                 return; 
             }
-            if (!Formatter.ValidFilename(p, cmdName)) return;
-
-            string path = IScripting.CommandPath(cmdName);
-            ScriptingOperations.LoadCommands(p, path);
+            
+            string cmdArgs = "";
+            Command.Search(ref cmdName, ref cmdArgs);
+            Command cmd = Command.Find(cmdName);
+            
+            if (cmd == null) 
+            {
+                p.Message("\"{0}\" is not a valid or loaded command.", cmdName); 
+                return;
+            }           
+            ScriptingOperations.UnloadCommand(p, cmd);
         }
 
-        public override void Help(Player p)
+        public override void Help(Player p) 
         {
-            p.Message("&T/CmdLoad [command name]");
-            p.Message("&HLoads a compiled command into the server for use.");
-            p.Message("&H  Loads both C# and Visual Basic compiled commands.");
+            p.Message("&T/CmdUnload [command]");
+            p.Message("&HUnloads a command from the server.");
         }
     }
 }

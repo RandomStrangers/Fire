@@ -19,7 +19,7 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.TW
 {
-    public class TWPlugin : Plugin
+    public class TWPlugin : NewPlugin
     {
         public override string name { get { return "TW"; } }
         public static Command cmdTW = new CmdTntWars();

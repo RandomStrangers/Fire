@@ -978,7 +978,7 @@ namespace Flames.SuperNovaScripting
 
 namespace Flames
 {
-    public class SuperNovaPluginLoader : Plugin
+    public class SuperNovaPluginLoader : NewPlugin
     {
         public override string name { get { return "SuperNovaPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }

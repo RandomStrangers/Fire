@@ -15,6 +15,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
+#if !F_DOTNET
 using System;
 using System.Collections.Generic;
 using Flames.Core;
@@ -172,24 +173,7 @@ namespace Flames
 
         public static void LoadAll()
         {
-            LoadCorePlugin(new CorePlugin());
-            LoadCorePlugin(new NotesPlugin());
-            LoadCorePlugin(new DiscordPlugin());
-            LoadCorePlugin(new IRCPlugin());
-            LoadCorePlugin(new IPThrottler());
-            LoadCorePlugin(new ServerURLSender());
-            LoadCorePlugin(new CountdownPlugin());
-            LoadCorePlugin(new CTFPlugin());
-            LoadCorePlugin(new LSPlugin());
-            LoadCorePlugin(new TWPlugin());
-            LoadCorePlugin(new ZSPlugin());
             LoadCorePlugin(new CompilerPlugin());
-#if CORE
-            LoadCorePlugin(new GoldenSparksPluginLoader());
-            LoadCorePlugin(new SuperNovaPluginLoader());
-            LoadCorePlugin(new DeadNovaPluginLoader());
-            LoadCorePlugin(new RandomStrangersPluginLoader());
-#endif
             IScripting.AutoloadPlugins();
         }
         public static void LoadCorePlugin(Plugin plugin)
@@ -202,3 +186,4 @@ namespace Flames
         }
     }
 }
+#endif

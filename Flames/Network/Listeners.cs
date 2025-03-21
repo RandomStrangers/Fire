@@ -32,6 +32,10 @@ namespace Flames.Network
         /// <summary> Begins listening for connections on the given IP and port </summary>
         /// <remarks> Client connections are asynchronously accepted </remarks>
         public abstract void Listen(IPAddress ip, int port);
+        public virtual void Listen2(IPAddress ip, int port)
+        {
+            Listen(ip, port);
+        }
 
         /// <summary> Closes this network listener </summary>
         public abstract void Close();
@@ -81,6 +85,40 @@ namespace Flames.Network
                 // not really a critical issue if this fails to work
             }
         }
+        public override void Listen2(IPAddress ip, int port)
+        {
+            if (IP == ip && Port == port) return;
+            Close();
+            IP = ip; 
+            Port = port;
+
+            try
+            {
+                socket = new Socket(ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                DisableIPV6OnlyListener();
+                EnableAddressReuse();
+
+                socket.Bind(new IPEndPoint(ip, port));
+                socket.Listen((int)SocketOptionName.MaxConnections);
+                AcceptNextAsync();
+            }
+            catch (Exception ex)
+            {
+                
+                Logger.LogError(ex);
+                Logger.Log(LogType.Warning, "Failed to start listening on port {0} ({1})", port, ex.Message);
+
+                string msg = string.Format("Failed to start listening. Is another server or instance of {0} already running on port {1}?",
+                                           Server.SoftwareName, port);
+                Server.UpdateUrl(msg);
+                socket = null;
+                Logger.Log(LogType.Warning, "Retrying..");
+                Listen(ip, port);
+                //return;
+            }
+            Listening = true;
+            Logger.Log(LogType.SystemActivity, "Started listening on port {0}... ", port);
+        }
 
         public override void Listen(IPAddress ip, int port)
         {
@@ -101,14 +139,17 @@ namespace Flames.Network
             }
             catch (Exception ex)
             {
+                
                 Logger.LogError(ex);
                 Logger.Log(LogType.Warning, "Failed to start listening on port {0} ({1})", port, ex.Message);
 
                 string msg = string.Format("Failed to start listening. Is another server or instance of {0} already running on port {1}?",
                                            Server.SoftwareName, port);
                 Server.UpdateUrl(msg);
-                socket = null; 
-                return;
+                socket = null;
+                Logger.Log(LogType.Warning, "Retrying..");
+                Listen2(ip, port);
+                //return;
             }
             Listening = true;
             Logger.Log(LogType.SystemActivity, "Started listening on port {0}... ", port);

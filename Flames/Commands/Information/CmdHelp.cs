@@ -267,14 +267,19 @@ namespace Flames.Commands.Info
 
         public bool ParsePlugin(Player p, string message)
         {
+            #if !F_DOTNET
             Plugin pl = Plugin.FindCustom(message);
             if (pl == null) return false;
 
             pl.Help(p);
             return true;
+            #else
+            return false;
+            #endif
         }
         public bool ParseSimplePlugin(Player p, string message)
         {
+            #if !F_DOTNET
             foreach (Plugin_Simple simpleplugin in Plugin_Simple.all)
             {
                 if (Colors.Strip(simpleplugin.name).CaselessEq(message))
@@ -284,6 +289,9 @@ namespace Flames.Commands.Info
                 }
             }
             return false;
+            #else
+            return false;
+            #endif
         }
         public bool ParseNewPlugin(Player p, string message)
         {
