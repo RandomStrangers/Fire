@@ -16,7 +16,12 @@
     permissions and limitations under the Licenses.
  */
 using System;
+
 #if !F_DOTNET
+using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+#elif F_DOTNET_DEV
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -56,6 +61,8 @@ namespace Flames.Util
         public abstract void Dispose();
 
 #if !F_DOTNET
+        public static IBitmap2D Create() { return new GDIPlusBitmap(); }
+#elif F_DOTNET_DEV
         public static IBitmap2D Create() { return new GDIPlusBitmap(); }
 #else
         public static IBitmap2D Create() { return new ImageSharpBitmap(); }
@@ -103,6 +110,126 @@ namespace Flames.Util
 
 #if !F_DOTNET
     public unsafe sealed class GDIPlusBitmap : IBitmap2D
+    {
+        public Image img;
+        public Bitmap bmp;
+        public BitmapData data;
+        public byte* scan0;
+        public int stride;
+        
+        public override object RawImage { get { return bmp; } }
+
+        public override void Decode(byte[] data) 
+        {
+            Image tmp = Image.FromStream(new MemoryStream(data));
+            SetBitmap(tmp);
+        }
+
+        public override void Resize(int width, int height, bool hq) 
+        {
+            Bitmap resized = new Bitmap(width, height);
+            // https://photosauce.net/blog/post/image-scaling-with-gdi-part-3-drawimage-and-the-settings-that-affect-it
+            using (Graphics g = Graphics.FromImage(resized)) 
+            {
+                g.InterpolationMode = hq ? InterpolationMode.HighQualityBicubic : InterpolationMode.NearestNeighbor;
+                g.PixelOffsetMode   = hq ? PixelOffsetMode.HighQuality          : PixelOffsetMode.None;
+                g.DrawImage(bmp, 0, 0, width, height);
+            }
+
+            Dispose();
+            SetBitmap(resized);
+        }
+
+        public void SetBitmap(Image src) 
+        {
+            img = src;
+            // although rare, possible src might actually be a Metafile instead
+            bmp = (Bitmap)src;
+
+            // NOTE: sometimes Mono will return an invalid bitmap instance that
+            //  throws ArgumentNullException when trying to access Width/Height
+            Width  = src.Width;
+            Height = src.Height;
+        }
+
+        public override void Dispose() 
+        {
+            UnlockBits();
+            if (img != null) img.Dispose();
+
+            img = null;
+            bmp = null;
+        }
+
+
+        public override void LockBits() 
+        {
+            bool fastPath = bmp.PixelFormat == PixelFormat.Format32bppRgb
+                         || bmp.PixelFormat == PixelFormat.Format32bppArgb
+                         || bmp.PixelFormat == PixelFormat.Format24bppRgb;
+            
+            Get = GetGenericPixel;
+            Set = SetGenericPixel;
+            if (!fastPath) return;
+            // We can only use the fast path for 24bpp or 32bpp bitmaps
+            
+            Rectangle r = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            data   = bmp.LockBits(r, ImageLockMode.ReadOnly, bmp.PixelFormat);
+            scan0  = (byte*)data.Scan0;
+            stride = data.Stride;
+            
+            if (bmp.PixelFormat == PixelFormat.Format24bppRgb) 
+            {
+                Get = Get24BppPixel;
+            } 
+            else 
+            {
+                Get = Get32BppPixel;
+            }
+        }
+
+        public override void UnlockBits() 
+        {
+            if (data != null) bmp.UnlockBits(data);
+            data = null;
+        }
+        
+        
+        Pixel GetGenericPixel(int x, int y) 
+        {
+            Pixel p;
+            int argb = bmp.GetPixel(x, y).ToArgb(); // R/G/B properties incur overhead  
+            
+            p.A = (byte)(argb >> 24);
+            p.R = (byte)(argb >> 16);
+            p.G = (byte)(argb >> 8);
+            p.B = (byte)argb;
+            return p;
+        }
+        
+        public void SetGenericPixel(int x, int y, Pixel p) 
+        {
+            bmp.SetPixel(x, y, Color.FromArgb(p.A, p.R, p.G, p.B));
+        }
+        
+        Pixel Get24BppPixel(int x, int y) 
+        {
+            Pixel p;
+            byte* ptr = (scan0 + y * stride) + (x * 3);
+            p.B = ptr[0]; p.G = ptr[1]; p.R = ptr[2]; p.A = 255;
+            return p;
+        }
+        
+        Pixel Get32BppPixel(int x, int y) 
+        {
+            Pixel p;
+            byte* ptr = (scan0 + y * stride) + (x * 4);            
+            p.B = ptr[0]; p.G = ptr[1]; p.R = ptr[2]; p.A = ptr[3];
+            return p;
+        }
+    }
+#elif F_DOTNET_DEV
+ public unsafe sealed class GDIPlusBitmap : IBitmap2D
     {
         public Image img;
         public Bitmap bmp;
