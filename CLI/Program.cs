@@ -18,12 +18,24 @@
 using System;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading;
 using Flames.UI;
 namespace Flames.Cli
 {
     public static class Program
     {
+        public delegate bool ConsoleEventDelegate(int eventType);
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetConsoleCtrlHandler(ConsoleEventDelegate callback, bool add);
+        public static ConsoleEventDelegate handler;
+        public static bool ConsoleEventCallback(int eventType)
+        {
+            Write("&e-- Server shutdown requested --");
+            Write("&eRestarting server...");
+            Server.Stop(true, Server.Config.DefaultShutdownMessage);
+            return false;
+        }
         [STAThread]
         public static void Main(string[] args)
         {
@@ -98,6 +110,8 @@ namespace Flames.Cli
                 Server.Start();
                 Console.Title = Colors.Strip(Server.Config.Name) + " - " + Colors.Strip(Server.SoftwareNameVersioned);
                 Console.CancelKeyPress += OnCancelKeyPress;
+                handler = new ConsoleEventDelegate(ConsoleEventCallback);
+                SetConsoleCtrlHandler(handler, true);
                 CheckNameVerification();
                 ConsoleLoop();
             }
@@ -114,13 +128,13 @@ namespace Flames.Cli
                 case ConsoleSpecialKey.ControlBreak:
                     // Cannot set e.Cancel for this one
                     Write("&e-- Server shutdown (Ctrl+Break) --");
-                    Thread stopThread = Server.Stop(false, Server.Config.DefaultShutdownMessage);
+                    Thread stopThread = Server.Stop(true, Server.Config.DefaultShutdownMessage);
                     stopThread.Join();
                     break;
                 case ConsoleSpecialKey.ControlC:
                     e.Cancel = true;
                     Write("&e-- Server shutdown (Ctrl+C) --");
-                    Server.Stop(false, Server.Config.DefaultShutdownMessage);
+                    Server.Stop(true, Server.Config.DefaultShutdownMessage);
                     break;
             }
         }
