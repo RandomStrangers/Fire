@@ -241,9 +241,10 @@ namespace Flames
 
         public static void ShutdownThread(bool restarting, string msg)
         {
+            
             try
             {
-                Logger.Log(LogType.SystemActivity, "Server shutting down ({0})", msg);
+                Logger.Log(LogType.SystemActivity, "Server restarting ({0})", msg);
             }
             catch { }
 
@@ -276,7 +277,7 @@ namespace Flames
                 Logger.LogError(ex); 
             }
 
-            OnShuttingDownEvent.Call(restarting, msg);
+            OnShuttingDownEvent.Call(true, msg);
 #if !F_DOTNET
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
@@ -298,7 +299,7 @@ namespace Flames
 
             try
             {
-                Logger.Log(LogType.SystemActivity, "Server shutdown completed");
+                Logger.Log(LogType.SystemActivity, "Server restarting...");
             }
             catch 
             { 
@@ -311,12 +312,12 @@ namespace Flames
             { 
             }
 
-            if (restarting)
-            {
-                IOperatingSystem.DetectOS().RestartProcess();
+            //if (restarting)
+            //{
+            IOperatingSystem.DetectOS().RestartProcess();
                 // TODO: FileLogger.Flush again maybe for if execvp fails?
-            }
-            Environment.Exit(0);
+            //}
+            //Environment.Exit(0);
         }
 
         public static string SaveAllLevels()
