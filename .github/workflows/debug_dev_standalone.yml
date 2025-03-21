@@ -18,7 +18,7 @@ jobs:
         run: |
           msbuild Flames.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_dev_dotnet
-          msbuild Flames/Flames.csproj /p:Configuration=Release /p:DefineConstants="CORE,F_STANDALONE,F_DOTNET"
+          msbuild Flames/Flames.csproj /p:Configuration=Release "/p:DefineConstants=`"CORE;F_STANDALONE;F_DOTNET`""
 
       - uses: ./.github/actions/notify_failure_harmony
         if: ${{ always() && steps.compile.outcome == 'failure' }}
