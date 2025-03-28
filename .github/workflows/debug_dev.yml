@@ -5,7 +5,9 @@ on:
     branches:
       - debug
   workflow_dispatch:
-
+  schedule:
+    # Every day at 12am
+    - cron: '0 0 * * *'
 concurrency:
   group: ${{ github.ref }}-dev
   cancel-in-progress: true
@@ -43,6 +45,7 @@ jobs:
           DEST_NAME: 'Flames-net6.0'
           NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
           
       # publish standalone windows binaries
       - name: Publish-win64
@@ -55,6 +58,7 @@ jobs:
           DEST_NAME: 'Flames-win64-standalone'
           NOTIFY_MESSAGE: 'Successfully compiled Flames Windows 64-bit standalone dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
 
           
       # publish standalone linux binaries
@@ -68,3 +72,4 @@ jobs:
           DEST_NAME: 'Flames-linux64-standalone'
           NOTIFY_MESSAGE: 'Successfully compiled Flames Linux 64-bit standalone dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
