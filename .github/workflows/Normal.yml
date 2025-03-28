@@ -2,12 +2,26 @@ name: Build Normal
 on:
   push:
   workflow_dispatch:
+  schedule:
+    # Every day at 12am
+    - cron: '0 0 * * *'
 
 concurrency:
   group: ${{ github.ref }}-Normal
   cancel-in-progress: true
 
 jobs:
+  remove-old-artifacts:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Clean all artifacts
+        uses: c-hive/gha-remove-artifacts@v4
+        with:
+          age: '60 seconds' # '<number> <unit>', e.g. 5 days, 2 years, 90 seconds, parsed by Moment.js
+          # Optional inputs
+          # skip-tags: true
+          # skip-recent: 5
   build:
     runs-on: ubuntu-22.04
     steps:
