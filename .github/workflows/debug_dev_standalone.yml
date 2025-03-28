@@ -2,7 +2,9 @@ name: Build dotnet dev2
 on:
   push:
   workflow_dispatch:
-
+  schedule:
+    # Every day at 12am
+    - cron: '0 0 * * *'
 concurrency:
   group: ${{ github.ref }}-dotnet_dev
   cancel-in-progress: true
@@ -33,3 +35,4 @@ jobs:
           DEST_NAME: 'Harmony'
           NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone Dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
