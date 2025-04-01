@@ -83,7 +83,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Flames\Flames.csproj">
+    <ProjectReference Include="..\Flames\Flames_TLI.csproj">
       <Project>{12597DB0-7C34-4DE1-88EA-9250FF3372EB}</Project>
       <Name>Flames</Name>
     </ProjectReference>
