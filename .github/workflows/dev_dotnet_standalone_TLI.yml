@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
-      - name: Compile Flames dotnet Dev TLI build using mono
+      - name: Compile Flames dotnet standalone Dev TLI build using mono
         shell: bash
         id: compile
         run: |
