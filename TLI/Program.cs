@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Threading;
-using Flames.Added;
 using Flames.Added.UI;
 using Terminal = System.Console;
 using TerminalColor = System.ConsoleColor;
@@ -194,11 +193,11 @@ namespace Flames.TerminalLineInterface
                     msg = msg.Trim();
                     if (msg == "/")
                     {
-                        UIHelpers.RepeatRequest();
+                        UIHelpers.RepeatOrder();
                     }
                     else if (msg.Length > 0 && msg[0] == '/')
                     {
-                        UIHelpers.HandleRequest(msg.Substring(1));
+                        UIHelpers.HandleOrder(msg.Substring(1));
                     }
                     else
                     {

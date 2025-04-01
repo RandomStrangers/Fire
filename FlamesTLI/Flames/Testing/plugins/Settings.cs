@@ -1,0 +1,114 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+namespace Flames
+{
+    public class ServerSettingsPlugin : Plugin
+    {
+        public override string name { get { return "ServerSettingsPlugin"; } }
+        public override string creator { get { return "icanttellyou"; } }
+        public override string Flames_Version { get { return Server.Version; } }
+
+
+        public override void Load(bool auto)
+        {
+            Command.Register(new CmdChangeServerSettings());
+            Command.Register(new CmdViewServerSettings());
+        }
+
+        public override void Unload(bool auto)
+        {
+            Command.Unregister(Command.Find("ChangeServerSettings"));
+            Command.Unregister(Command.Find("ViewServerSettings"));
+        }
+
+        public static T GetStaticValue<T>(Type type, string field)
+        {
+            object value = type.GetField(field, BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            return value != null ? (T)value : default(T);
+        }
+    }
+
+    public class CmdChangeServerSettings : Command
+    {
+        public override string name { get { return "ChangeServerSettings"; } }
+        public override string type { get { return CommandTypes.Added; } }
+        public override string shortcut { get { return "css"; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
+
+        public override void Use(Player p, string message)
+        {
+            string[] parts = message.SplitSpaces(2);
+            if (parts.Length < 2) 
+            { 
+                Help(p);
+                return; 
+            }
+
+            string setting = parts[0];
+            string value = parts[1];
+            ConfigElement[] serverConfig = ServerSettingsPlugin.GetStaticValue<ConfigElement[]>(typeof(Server), "serverConfig");
+            int elemI = Array.FindIndex(serverConfig, e => e.Attrib.Name.CaselessEq(setting));
+            if (elemI != -1)
+            {
+                ConfigElement elem = serverConfig[elemI];
+                elem.Field.SetValue(Server.Config, elem.Attrib.Parse(value));
+                SrvProperties.Save();
+                p.Message("Changed setting &T{0} &Sto &T{1}", setting, value);
+                p.Message("&WYou may need to check the server logs if the setting changed properly!");
+                Find("ccheartbeat").Use(p, "");
+            }
+            else
+            {
+                p.Message("&W{0} is not a valid server setting!", setting);
+            }
+        }
+
+        public override void Help(Player p)
+        {
+            p.Message("&T/ChangeServerSetting [setting] [value]");
+            p.Message("&HChanges values in server config.");
+            p.Message("&WWarning: &HFeedback on values provided is only output to the logs due to limitations");
+            p.Message("&HTo view all server properties use &T/ViewServerSettings");
+        }
+    }
+
+    public class CmdViewServerSettings : Command
+    {
+        public override string name { get { return "ViewServerSettings"; } }
+        public override string type { get { return CommandTypes.Added; } }
+        public override string shortcut { get { return "vss"; } }
+        public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
+
+        public override void Use(Player p, string message)
+        {
+            ConfigElement[] serverConfig = ServerSettingsPlugin.GetStaticValue<ConfigElement[]>(typeof(Server), "serverConfig");
+            Dictionary<string, List<ConfigElement>> sections = new Dictionary<string, List<ConfigElement>>();
+
+            foreach (ConfigElement elem in serverConfig)
+            {
+                if (!sections.TryGetValue(elem.Attrib.Section, out List<ConfigElement> members))
+                {
+                    members = new List<ConfigElement>();
+                    sections[elem.Attrib.Section] = members;
+                }
+                members.Add(elem);
+            }
+
+            foreach (var kvp in sections)
+            {
+                p.Message("{0} settings:", kvp.Key);
+                foreach (ConfigElement elem in kvp.Value)
+                {
+                    p.Message("&T{0}&S: {1}", elem.Attrib.Name, elem.Attrib.Serialise(elem.Field.GetValue(Server.Config)));
+                }
+            }
+        }
+
+        public override void Help(Player p)
+        {
+            p.Message("&T/ViewServerSettings");
+            p.Message("&HOutputs all server settings, based on category, and the values of the settings");
+        }
+    }
+}

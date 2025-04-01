@@ -83,13 +83,13 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Flames\Flames_TLI.csproj">
-      <Project>{12597DB0-7C34-4DE1-88EA-9250FF3372EB}</Project>
-      <Name>Flames</Name>
-    </ProjectReference>
+    <Content Include="..\CLI\Flames.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\CLI\Flames.ico" />
+    <ProjectReference Include="..\FlamesTLI\Flames_TLI.csproj">
+      <Project>{12597db0-7c34-4de1-88ea-9250ff3372eb}</Project>
+      <Name>Flames_TLI</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

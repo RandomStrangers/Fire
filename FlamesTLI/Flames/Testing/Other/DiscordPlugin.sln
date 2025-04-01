@@ -1,0 +1,19 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33213.308
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A1A5B886-2D0A-4D2A-AE13-409560D5227C}") = "DiscordPlugin", "DiscordPlugin.csproj", "{A1A5B886-2D0A-4D2A-AE13-409560D5227C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A1A5B886-2D0A-4D2A-AE13-409560D5227C}.Debug|x86.ActiveCfg = Debug|x86
+		{A1A5B886-2D0A-4D2A-AE13-409560D5227C}.Debug|x86.Build.0 = Debug|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
