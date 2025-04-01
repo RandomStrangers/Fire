@@ -2,14 +2,12 @@ name: Build dotnet dev
 # trigger via either push to selected branches or on manual run
 on:
   push:
-    branches:
-      - debug
   workflow_dispatch:
   schedule:
     # Every day at 12am
     - cron: '0 0 * * *'
 concurrency:
-  group: ${{ github.ref }}-dev
+  group: ${{ github.ref }}-dotnet-dev
   cancel-in-progress: true
 
 jobs:
@@ -42,7 +40,7 @@ jobs:
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0'
-          DEST_NAME: 'Flames-net6.0'
+          DEST_NAME: 'Harmony-net6.0'
           NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           DELETE_AFTER: '1'
@@ -55,7 +53,7 @@ jobs:
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0/win-x64/publish'
-          DEST_NAME: 'Flames-win64-standalone'
+          DEST_NAME: 'Harmony-win64-standalone'
           NOTIFY_MESSAGE: 'Successfully compiled Flames Windows 64-bit standalone dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           DELETE_AFTER: '1'
@@ -64,12 +62,12 @@ jobs:
       # publish standalone linux binaries
       - name: Publish-linux64
         run: dotnet publish CLI/FlamesCLI_standalone6_dev.csproj -r linux-x64 --self-contained
-          
+        
       - uses: ./.github/actions/notify_success_harmony
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
           SOURCE_FILE: 'CLI/bin/Debug/net6.0/linux-x64/publish'
-          DEST_NAME: 'Flames-linux64-standalone'
+          DEST_NAME: 'Harmony-linux64-standalone'
           NOTIFY_MESSAGE: 'Successfully compiled Flames Linux 64-bit standalone dev build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           DELETE_AFTER: '1'
