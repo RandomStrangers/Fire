@@ -1,4 +1,4 @@
-name: Build dotnet dev TLI
+name: Build dotnet standalone dev TLI
 on:
   push:
   workflow_dispatch:
@@ -6,7 +6,7 @@ on:
     # Every day at 12am
     - cron: '0 0 * * *'
 concurrency:
-  group: ${{ github.ref }}-dotnet_dev_TLI
+  group: ${{ github.ref }}-dotnet_standalone_dev_TLI
   cancel-in-progress: true
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
         id: compile
         run: |
           msbuild FlamesTLI.sln /p:Configuration=Release
-          cp -R bin/Release bin/Release_dev_dotnet_TLI
+          cp -R bin/Release bin/Release_dotnet_standalone_dev_TLI
           msbuild Flames/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="CORE%3BF_STANDALONE%3BF_DOTNET%3BF_DOTNET_DEV%3BFLAMES_TLI"
 
       - uses: ./.github/actions/notify_failure_harmony
@@ -31,7 +31,7 @@ jobs:
       - uses: ./.github/actions/notify_success_harmony
         if: ${{ always() && steps.compile.outcome == 'success' }}
         with:
-          SOURCE_FILE: 'bin/Release_dev_dotnet_TLI'
+          SOURCE_FILE: 'bin/Release_dotnet_standalone_dev_TLI'
           DEST_NAME: 'Harmony'
           NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone Dev TLI build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
