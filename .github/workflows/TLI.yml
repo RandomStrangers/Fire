@@ -19,7 +19,7 @@ jobs:
         shell: bash
         id: compile
         run: |
-          msbuild FlamesTLI.csproj /p:Configuration=Release
+          msbuild FlamesTLI.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_TLI
           rm bin/Release/Flames_.dll
           msbuild Flames/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="FLAMES_TLI"
