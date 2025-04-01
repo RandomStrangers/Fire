@@ -21,7 +21,7 @@ jobs:
         run: |
           msbuild FlamesTLI.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_TLI
-          rm bin/Release/Flames_.dll
+          rm bin/Release/FlamesTLI_.dll
           msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="FLAMES_TLI"
 
       - uses: ./.github/actions/notify_failure

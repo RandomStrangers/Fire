@@ -21,7 +21,7 @@ jobs:
         run: |
           msbuild FlamesTLI.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_dev_TLI
-          rm bin/Release/Flames_.dll
+          rm bin/Release/FlamesTLI_.dll
           msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="CORE%3BFLAMES_TLI"
 
       - uses: ./.github/actions/notify_failure_harmony
