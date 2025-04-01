@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
-    <DefineConstants>$(DefineConstants);F_STANDALONE</DefineConstants>
+    <DefineConstants>$(DefineConstants);F_STANDALONE;FLAMES_TLI</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>
