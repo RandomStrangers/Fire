@@ -56,7 +56,7 @@
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>..\CLI\Flames.ico</ApplicationIcon>
+    <ApplicationIcon>Flames.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
@@ -83,7 +83,7 @@
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\CLI\Flames.ico" />
+    <Content Include="Flames.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlamesTLI\Flames_TLI.csproj">
