@@ -27,21 +27,16 @@ using Flames.Modules.Games.LS;
 using Flames.Modules.Games.TW;
 using Flames.Modules.Games.ZS;
 using Flames.Modules.Moderation.Notes;
-using Flames.Modules.NewCompiling;
 using Flames.Modules.Relay.Discord;
 using Flames.Modules.Relay.IRC;
 using Flames.Core;
 using Flames.Modules.Security;
 using Flames.Events.PlayerEvents;
-using Flames.Maths;
-using System.Linq;
-using Flames;
 using Flames.Commands;
 using Flames.DB;
 using Flames.Blocks;
-using System.IO;
-using Flames.Commands.Chatting;
 using System.Text.RegularExpressions;
+using Flames.Added;
 namespace Flames.Core
 {
     public class NewPluginLoader : NewPlugin
@@ -50,7 +45,7 @@ namespace Flames.Core
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
         public static void LoadAllNewPlugins(SchedulerTask task)
         {
-            NewPlugin.LoadAll();
+            LoadAll();
         }
         public override void Load(bool startup)
         {
@@ -59,7 +54,7 @@ namespace Flames.Core
         }
         public void OnShutdown(bool restarting, string message)
         {
-            NewPlugin.UnloadAll();
+            UnloadAll();
         }
         public override void Unload(bool shutdown)
         {
@@ -223,6 +218,7 @@ namespace Flames
             LoadCoreNewPlugin(new TWPlugin());
             LoadCoreNewPlugin(new ZSPlugin());
             LoadCoreNewPlugin(new NewCompilerPlugin());
+            LoadCoreNewPlugin(new AddonLoader());
             LoadNewPlugin(new Commands_Plugins());
 #if CORE
             LoadCoreNewPlugin(new GoldenSparksPluginLoader());
@@ -330,10 +326,10 @@ namespace Flames
             }
         	string reason = args.Length < 2 ? "" :  "&c" + args[1];
         	string target = PlayerInfo.FindMatchesPreferOnline(p, args[0]);
-  		    Command.Find("warn").Use(p, target + " &fBlacklisted from the collab map for: " + reason);
-		    Command.Find("send").Use(p, target + " &fYou have been blacklisted from the collab map for: " + reason);
-            Command.Find("perbuild").Use(p, "collab " + "-" + target);
-            Command.Find("UndoPlayer").Use(p, target + " all", data);
+  		    Find("warn").Use(p, target + " &fBlacklisted from the collab map for: " + reason);
+		    Find("send").Use(p, target + " &fYou have been blacklisted from the collab map for: " + reason);
+            Find("perbuild").Use(p, "collab " + "-" + target);
+            Find("UndoPlayer").Use(p, target + " all", data);
         }
 		
        public override void Help(Player p) 

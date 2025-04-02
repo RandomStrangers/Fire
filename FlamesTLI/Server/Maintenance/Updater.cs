@@ -33,20 +33,19 @@ namespace Flames
         public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
-        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
-        public const string dllURL = UpdatesURL + "Flames_dev.dll";
+        public const string CurrentVersionURL = UpdatesURL + "dev_TLI.txt";
+        public const string dllURL = UpdatesURL + "FlamesTLI_dev.dll";
 #elif CORE && F_DOTNET_DEV
-        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
-        public const string dllURL = UpdatesURL + "Flames_dotnet_core_dev.dll";
+        public const string CurrentVersionURL = UpdatesURL + "dev_TLI.txt";
+        public const string dllURL = UpdatesURL + "FlamesTLI_dotnet_core_dev.dll";
 #elif F_DOTNET_DEV
-        public const string CurrentVersionURL = UpdatesURL + "current.txt";
-        public const string dllURL = UpdatesURL + "Flames_dotnet_dev.dll";
+        public const string CurrentVersionURL = UpdatesURL + "current_TLI.txt";
+        public const string dllURL = UpdatesURL + "FlamesTLI_dotnet_dev.dll";
 #else
-        public const string CurrentVersionURL = UpdatesURL + "current.txt";
-        public const string dllURL = UpdatesURL + "Flames_.dll";
+        public const string CurrentVersionURL = UpdatesURL + "current_TLI.txt";
+        public const string dllURL = UpdatesURL + "FlamesTLI_.dll";
 #endif
-        public const string guiURL = UpdatesURL + "Flames.exe";
-        public const string cliURL = UpdatesURL + "FlamesCLI.exe";
+        public const string TLIURL = UpdatesURL + "FlamesTLI.exe";
 
         public static event EventHandler NewerVersionDetected;
 
@@ -90,16 +89,12 @@ namespace Flames
         }
         public static void PerformUpdate()
         {
-            PerformUpdate(true);
-        }
-        public static void PerformUpdate(bool GUI)
-        {
             try
             {
                 try
                 {
-                    DeleteFiles("Flames_.update", "Flames.update", "FlamesCLI.update",
-                    "prev_Flames_.dll", "prev_Flames.exe", "prev_FlamesCLI.exe");
+                    DeleteFiles("FlamesTLI_.update", "FlamesTLI.update",
+                    "prev_FlamesTLI_.dll", "prev_FlamesTLI.exe");
                 }
                 catch (Exception ex)
                 {
@@ -108,11 +103,7 @@ namespace Flames
 
                 WebClient client = HttpUtil.CreateWebClient();
                 client.DownloadFile(dllURL, "Flames_.update");
-                if (GUI)
-                {
-                    client.DownloadFile(guiURL, "Flames.update");
-                }
-                client.DownloadFile(cliURL, "FlamesCLI.update");
+                client.DownloadFile(TLIURL, "FlamesTLI.update");
 
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
@@ -127,15 +118,10 @@ namespace Flames
 
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
-                AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
-                if (GUI)
-                {
-                    AtomicIO.TryMove("Flames.exe", "prev_Flames.exe");
-                    File.Move("Flames.update", "Flames.exe");
-                }
-                AtomicIO.TryMove("FlamesCLI.exe", "prev_FlamesCLI.exe");
-                File.Move("FlamesCLI.update", "FlamesCLI.exe");
-                File.Move("Flames_.update", "Flames_.dll");
+                AtomicIO.TryMove("FlamesTLI_.dll", "prev_FlamesTLI_.dll");
+                AtomicIO.TryMove("FlamesTLI.exe", "prev_FlamesTLI.exe");
+                File.Move("FlamesTLI.update", "FlamesTLI.exe");
+                File.Move("FlamesTLI_.update", "FlamesTLI_.dll");
                 Server.Stop(true, "Updating server.");
             }
             catch (Exception ex)
@@ -143,7 +129,6 @@ namespace Flames
                 Logger.LogError("Error performing update", ex);
             }
         }
-
         public static void DeleteFiles(params string[] paths)
         {
             foreach (string path in paths) 

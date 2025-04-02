@@ -34,7 +34,7 @@ namespace Flames
             return cancelorder;
         }
     }
-    public class AddonLoader : Plugin
+    public class AddonLoader : NewPlugin
     {
         public override string name { get { return "AddonLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }

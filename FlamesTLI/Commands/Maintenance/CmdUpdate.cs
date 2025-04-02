@@ -34,24 +34,17 @@ namespace Flames.Commands.Maintenance
             }
             else
             {
-                if (Server.RunningOnMono())
-                {
-                    DoUpdate(p, false);
-                }
-                else
-                {
-                    DoUpdate(p, true);
-                }
+                DoUpdate(p);
             }
         }
-        public static void DoUpdate(Player p, bool GUI)
+        public static void DoUpdate(Player p)
         {
             if (!CheckPerms(p))
             {
                 p.Message("Only the Flames or the Server Owner can update the server."); 
                 return;
             }
-            Updater.PerformUpdate(GUI);
+            Updater.PerformUpdate();
         }
 
         public static bool CheckPerms(Player p)

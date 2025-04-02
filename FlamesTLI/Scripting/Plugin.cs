@@ -18,18 +18,7 @@
 #if !F_DOTNET
 using System;
 using System.Collections.Generic;
-using Flames.Core;
 using Flames.Modules.Compiling;
-using Flames.Modules.Games.Countdown;
-using Flames.Modules.Games.CTF;
-using Flames.Modules.Games.LS;
-using Flames.Modules.Games.TW;
-using Flames.Modules.Games.ZS;
-using Flames.Modules.Moderation.Notes;
-using Flames.Modules.NewCompiling;
-using Flames.Modules.Relay.Discord;
-using Flames.Modules.Relay.IRC;
-using Flames.Modules.Security;
 using Flames.Scripting;
 
 namespace Flames

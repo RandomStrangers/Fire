@@ -207,11 +207,7 @@ namespace Flames
 
         public static Command Find(string name)
         {
-            foreach (Command cmd in allCmds)
-            {
-                if (cmd.name.CaselessEq(name)) return cmd;
-            }
-            return null;
+            return FindCMD(name);
         }
 
         public static void Search(ref string cmdName, ref string cmdArgs)
