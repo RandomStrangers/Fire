@@ -15,13 +15,13 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
-#if !F_DOTNET
 using System;
 using Flames.Commands;
+using Flames.NewScripting;
 
 namespace Flames.Modules.NewCompiling
 {
-    public sealed class CmdCmdCreate : CmdCompile 
+    public sealed class CmdCmdCreate : CmdNewPluginCompile
     {
         public override string name { get { return "CmdCreate"; } }
         public override string shortcut { get { return ""; } }
@@ -55,4 +55,3 @@ namespace Flames.Modules.NewCompiling
         }
     }
 }
-#endif

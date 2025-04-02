@@ -10,10 +10,14 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
+using Context = System.Environment;
 namespace Flames
 {
     public static partial class Paths
@@ -1716,284 +1720,6 @@ namespace Flames.Added.Compiling
             p.Message("&HCompiles and loads (or reloads) a C# addon into the server");
         }
     }
-    public abstract class ICompiler
-    {
-        public const string ORDERS_SOURCE_DIR = "orders/";
-        public const string ADDONS_SOURCE_DIR = "addons/";
-        public const string ERROR_LOG_PATH = "logs/errors/addedcompiler.log";
-        public virtual string FileExtension
-        {
-            get
-            {
-                return ".cs";
-            }
-        }
-        public virtual string ShortName { get { return "C#"; } }
-        public virtual string FullName { get { return "CSharp"; } }
-        public virtual string OrderSkeleton
-        {
-            get
-            {
-                return @"//\tAuto-generated order skeleton class
-//\tUse this as a basis for custom Flames orders
-//\tNaming should be kept consistent (e.g. /update order should have a class name of 'OrdUpdate' and a filename of 'OrdUpdate.cs')
-// As a note, Flames is designed for .NET 4.8
-
-// To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
-//   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
-
-// Add any other using statements you need after this
-using System;
-using Flames.Added;
-using Flames;
-
-public class Ord{0} : Order
-{{
-\t// The order's name (what you put after a slash to use this order)
-\tpublic override string Name {{ get {{ return ""{0}""; }} }}
-\t// Order's shortcut, can be left blank (e.g. ""/Copy"" has a shortcut of ""o"")
-\tpublic override string Shortcut {{ get {{ return """"; }} }}
-\t// Which submenu this order displays in under /Help
-\tpublic override string Type {{ get {{ return ""other""; }} }}
-\t// Whether or not this order can be used in a museum. Block/map altering req should return false to avoid errors.
-\tpublic override bool MuseumUsable {{ get {{ return true; }} }}
-\t// The default rank required to use this order. Valid values are:
-\t//   LevelPermission.Guest, LevelPermission.Builder, LevelPermission.AdvBuilder,
-\t//   LevelPermission.Operator, LevelPermission.Admin, LevelPermission.Owner
-\tpublic override LevelPermission DefaultRank {{ get {{ return LevelPermission.Guest; }} }}
-\t// This is for when a player executes this order by doing /{0}
-\t//   p is the player object for the player executing the order. 
-\t//   message is the arguments given to the order. (e.g. for '/{0} this', message is ""this"")
-\tpublic override void Use(Player p, string message)
-\t{{
-\t\tp.Message(""Hello World!"");
-\t}}
-\t// This is for when a player does /Help {0}
-\tpublic override void Help(Player p)
-\t{{
-\t\tp.Message(""/{0} - Does stuff. Example order."");
-\t}}
-}}";
-            }
-        }
-        public virtual string AddonSkeleton
-        {
-            get
-            {
-                return @"//\tAuto-generated addon skeleton class
-//\tUse this as a basis for custom Flames addons
-// To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
-//   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
-// Add any other using statements you need after this
-using System;
-using Flames;
-namespace Flames.Added
-{{
-\tpublic class {0} : Addon
-\t{{
-\t\t// The addon's name (i.e what shows in /Addons)
-\t\tpublic override string Name {{ get {{ return ""{0}""; }} }}
-\t\t// The oldest version of Flames this addon is compatible with
-\t\tpublic override string Flames_Version {{ get {{ return ""{2}""; }} }}
-\t\t// Message displayed in server logs when this addon is loaded
-\t\tpublic override string Welcome {{ get {{ return ""Loaded Message!""; }} }}
-\t\t// Who created/authored this addon
-\t\tpublic override string Creator {{ get {{ return ""{1}""; }} }}
-\t\t// Called when this addon is being loaded (e.g. on server startup)
-\t\tpublic override void Load()
-\t\t{{
-\t\t\t//code to hook into events, load state/resources etc goes here
-\t\t}}
-\t\t// Called when this addon is being unloaded (e.g. on server shutdown)
-\t\tpublic override void Unload()
-\t\t{{
-\t\t\t//code to unhook from events, dispose of state/resources etc goes here
-\t\t}}
-\t\t// Displays help for or information about this addon
-\t\tpublic override void Help(Player p)
-\t\t{{
-\t\t\tp.Message(""No help is available for this addon."");
-\t\t}}
-\t}}
-}}";
-            }
-        }
-        public string OrderPath(string name)
-        {
-            return ORDERS_SOURCE_DIR + "Ord" + name + FileExtension;
-        }
-        public string AddonPath(string name)
-        {
-            return ADDONS_SOURCE_DIR + name + FileExtension;
-        }
-
-        public static List<ICompiler> Compilers = new List<ICompiler>()
-        {
-            new CSCompiler()
-        };
-        public static string FormatSource(string source, params string[] args)
-        {
-            source = source.Replace(@"\t", "\t");
-            source = source.Replace("\n", "\r\n");
-            return string.Format(source, args);
-        }
-        public string GenExampleOrder(string ordName)
-        {
-            ordName = ordName.ToLower().Capitalize();
-            return FormatSource(OrderSkeleton, ordName);
-        }
-        public string GenExampleAddon(string addon, string creator)
-        {
-            return FormatSource(AddonSkeleton, addon, creator, Server.Version);
-        }
-        public ICompilerErrors Compile(string[] srcPaths, string dstPath, bool logErrors)
-        {
-            ICompilerErrors errors = DoCompile(srcPaths, dstPath);
-            if (!errors.HasErrors || !logErrors)
-            {
-                return errors;
-            }
-            SourceMap sources = new SourceMap(srcPaths);
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine("############################################################");
-            sb.AppendLine("Errors when compiling " + srcPaths.Join());
-            sb.AppendLine("############################################################");
-            sb.AppendLine();
-            foreach (ICompilerError err in errors)
-            {
-                string type = err.IsWarning ? "Warning" : "Error";
-                sb.AppendLine(DescribeError(err, srcPaths, "") + ":");
-                if (err.Line > 0)
-                {
-                    sb.AppendLine(sources.Get(err.FileName, err.Line - 1));
-                }
-                if (err.Column > 0)
-                {
-                    sb.Append(' ', err.Column - 1);
-                }
-                sb.AppendLine("^-- " + type + " #" + err.ErrorNumber + " - " + err.ErrorText);
-                sb.AppendLine();
-                sb.AppendLine("-------------------------");
-                sb.AppendLine();
-            }
-            using (StreamWriter w = new StreamWriter(ERROR_LOG_PATH, true))
-            {
-                w.Write(sb.ToString());
-            }
-            return errors;
-        }
-        public static string DescribeError(ICompilerError err, string[] srcs, string text)
-        {
-            string type = err.IsWarning ? "Warning" : "Error";
-            string file = Path.GetFileName(err.FileName);
-            return string.Format("{0}{1}{2}{3}", type, text,
-                                 err.Line > 0 ? " on line " + err.Line : "",
-                                 srcs.Length > 1 ? " in " + file : "");
-        }
-        public abstract ICompilerErrors DoCompile(string[] srcPaths, string dstPath);
-        public static List<string> ProcessInput(string[] srcPaths, string commentPrefix)
-        {
-            List<string> referenced = new List<string>();
-            for (int i = 0; i < srcPaths.Length; i++)
-            {
-                string path = Path.GetFullPath(srcPaths[i]);
-                AddReferences(path, commentPrefix, referenced);
-                srcPaths[i] = path;
-            }
-            referenced.Add(Server.GetServerDLLPath());
-            return referenced;
-        }
-        public static void AddReferences(string path, string commentPrefix, List<string> referenced)
-        {
-            using (StreamReader r = new StreamReader(path))
-            {
-                string refPrefix = commentPrefix + "reference ";
-                string addPrefix = commentPrefix + "addonref ";
-                string line;
-
-                while ((line = r.ReadLine()) != null)
-                {
-                    if (line.CaselessStarts(refPrefix))
-                    {
-                        referenced.Add(GetDLL(line));
-                    }
-                    else if (line.CaselessStarts(addPrefix))
-                    {
-                        path = Path.Combine(IScripting.ADDONS_DLL_DIR, GetDLL(line));
-                        referenced.Add(Path.GetFullPath(path));
-                    }
-                    else
-                    {
-                        continue;
-                    }
-                }
-            }
-        }
-        public static string GetDLL(string line)
-        {
-            int index = line.IndexOf(' ') + 1;
-            return line.Substring(index).Replace(";", "");
-        }
-    }
-    public class ICompilerErrors : List<ICompilerError>
-    {
-        public bool HasErrors
-        {
-            get
-            {
-                return FindIndex(ce => !ce.IsWarning) >= 0;
-            }
-        }
-    }
-    public class ICompilerError
-    {
-        public int Line, Column;
-        public string ErrorNumber, ErrorText, FileName;
-        public bool IsWarning;
-    }
-    public class SourceMap
-    {
-        public string[] files;
-        public List<string>[] sources;
-        public SourceMap(string[] paths)
-        {
-            files = paths;
-            sources = new List<string>[paths.Length];
-        }
-        public int FindFile(string file)
-        {
-            for (int i = 0; i < files.Length; i++)
-            {
-                if (file.CaselessEq(files[i]))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }
-        public string Get(string file, int line)
-        {
-            int i = FindFile(file);
-            if (i == -1)
-            {
-                return "";
-            }
-            List<string> source = sources[i];
-            if (source == null)
-            {
-                try
-                {
-                    source = Utils.ReadAllLinesList(file);
-                }
-                catch
-                {
-                    source = new List<string>();
-                }
-                sources[i] = source;
-            }
-            return line < source.Count ? source[line] : "";
-        }
-    }
     public class CompilerAddon : Addon
     {
         public override string Name
@@ -2014,56 +1740,199 @@ namespace Flames.Added
             Order.UnregisterOrders();
         }
     }
-    public static class ICodeDomCompiler
+    /// <summary> Compiles C# source files into a .dll by invoking a compiler executable directly </summary>
+    public abstract class CommandLineCompiler
     {
-        public static CompilerParameters PrepareInput(string[] srcPaths, string dstPath, string commentPrefix)
+        public ICompilerErrors Compile(string[] srcPaths, string dstPath, List<string> referenced)
         {
-            CompilerParameters args = new CompilerParameters
-            {
-                GenerateExecutable = false,
-                IncludeDebugInformation = false,
-                OutputAssembly = dstPath
-            };
-            List<string> referenced = ICompiler.ProcessInput(srcPaths, commentPrefix);
-            foreach (string assembly in referenced)
-            {
-                args.ReferencedAssemblies.Add(assembly);
-            }
-            return args;
-        }
-        public static void InitCompiler(ICompiler c, string language, ref CodeDomProvider compiler)
-        {
-            if (compiler != null)
-            {
-                return;
-            }
-            compiler = CodeDomProvider.CreateProvider(language);
-            if (compiler != null)
-            {
-                return;
-            }
-            Logger.Log(LogType.Warning,
-                       "WARNING: {0} compiler is missing, you will be unable to compile {1} files.",
-                       c.FullName, c.FileExtension);
-        }
-        public static ICompilerErrors Compile(CompilerParameters args, string[] srcPaths, CodeDomProvider compiler)
-        {
-            CompilerResults results = compiler.CompileAssemblyFromFile(args, srcPaths);
+            string args = GetCommandLineArguments(srcPaths, dstPath, referenced);
+            string exe = GetExecutable();
+
             ICompilerErrors errors = new ICompilerErrors();
-            foreach (CompilerError error in results.Errors)
+            List<string> output = new List<string>();
+            int retValue = Compile(exe, GetCompilerArgs(exe, args), output);
+
+            // Only look for errors/warnings if the compile failed
+            // TODO still log warnings anyways error when success?
+            if (retValue != 0)
             {
-                ICompilerError ce = new ICompilerError
+                foreach (string line in output)
                 {
-                    Line = error.Line,
-                    Column = error.Column,
-                    ErrorNumber = error.ErrorNumber,
-                    ErrorText = error.ErrorText,
-                    IsWarning = error.IsWarning,
-                    FileName = error.FileName
-                };
-                errors.Add(ce);
+                    ProcessCompilerOutputLine(errors, line);
+                }
             }
             return errors;
+        }
+
+
+        public virtual string GetCommandLineArguments(string[] srcPaths, string dstPath,
+                                                         List<string> referencedAssemblies)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("/t:library ");
+
+            sb.Append("/utf8output /noconfig /fullpaths ");
+
+            AddCoreAssembly(sb);
+            AddReferencedAssemblies(sb, referencedAssemblies);
+            sb.AppendFormat("/out:{0} ", Quote(dstPath));
+            sb.Append("/optimize- ");
+            sb.Append("/warnaserror- /unsafe ");
+
+            foreach (string path in srcPaths)
+            {
+                sb.AppendFormat("{0} ", Quote(path));
+            }
+            return sb.ToString();
+        }
+
+        public virtual void AddCoreAssembly(StringBuilder sb)
+        {
+            string coreAssemblyFileName = typeof(object).Assembly.Location;
+
+            if (!string.IsNullOrEmpty(coreAssemblyFileName))
+            {
+                sb.Append("/nostdlib+ ");
+                sb.AppendFormat("/R:{0} ", Quote(coreAssemblyFileName));
+            }
+        }
+
+        public abstract void AddReferencedAssemblies(StringBuilder sb, List<string> referenced);
+
+        public static string Quote(string value)
+        {
+            return "\"" + value.Trim() + "\"";
+        }
+
+        public abstract string GetExecutable();
+        public abstract string GetCompilerArgs(string exe, string args);
+
+
+        public static int Compile(string path, string args, List<string> output)
+        {
+            // https://stackoverflow.com/questions/285760/how-to-spawn-a-process-and-capture-its-stdout-in-net
+            ProcessStartInfo psi = CreateStartInfo(path, args);
+
+            using (Process p = new Process())
+            {
+                p.OutputDataReceived += (s, e) => { if (e.Data != null) output.Add(e.Data); };
+                p.ErrorDataReceived += (s, e) => { }; // swallow stderr output
+
+                p.StartInfo = psi;
+                p.Start();
+
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
+
+                if (!p.WaitForExit(120 * 1000))
+                    throw new InvalidOperationException("C# compiler ran for over two minutes! Giving up..");
+
+                return p.ExitCode;
+            }
+        }
+
+        public static ProcessStartInfo CreateStartInfo(string path, string args)
+        {
+            ProcessStartInfo psi = new ProcessStartInfo(path, args)
+            {
+                WorkingDirectory = Context.CurrentDirectory,
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true
+            };
+            return psi;
+        }
+
+
+        public static Regex outputRegWithFileAndLine;
+        public static Regex outputRegSimple;
+
+        public static void ProcessCompilerOutputLine(ICompilerErrors errors, string line)
+        {
+            if (outputRegSimple == null)
+            {
+                outputRegWithFileAndLine =
+                    new Regex(@"(^(.*)(\(([0-9]+),([0-9]+)\)): )(error|warning) ([A-Z]+[0-9]+) ?: (.*)");
+                outputRegSimple =
+                    new Regex(@"(error|warning) ([A-Z]+[0-9]+) ?: (.*)");
+            }
+
+            //First look for full file info
+            Match m = outputRegWithFileAndLine.Match(line);
+            bool full;
+            if (m.Success)
+            {
+                full = true;
+            }
+            else
+            {
+                m = outputRegSimple.Match(line);
+                full = false;
+            }
+
+            if (!m.Success) return;
+            ICompilerError ce = new ICompilerError();
+
+            if (full)
+            {
+                ce.FileName = m.Groups[2].Value;
+                ce.Line = NumberUtils.ParseInt32(m.Groups[4].Value);
+                ce.Column = NumberUtils.ParseInt32(m.Groups[5].Value);
+            }
+
+            ce.IsWarning = m.Groups[full ? 6 : 1].Value.CaselessEq("warning");
+            ce.ErrorNumber = m.Groups[full ? 7 : 2].Value;
+            ce.ErrorText = m.Groups[full ? 8 : 3].Value;
+            errors.Add(ce);
+        }
+    }
+
+    public class ClassicCSharpCompiler : CommandLineCompiler
+    {
+        public override void AddCoreAssembly(StringBuilder sb)
+        {
+            string coreAssemblyFileName = typeof(object).Assembly.Location;
+
+            if (!string.IsNullOrEmpty(coreAssemblyFileName))
+            {
+                sb.Append("/nostdlib+ ");
+                sb.AppendFormat("/R:{0} ", Quote(coreAssemblyFileName));
+            }
+        }
+
+        public override void AddReferencedAssemblies(StringBuilder sb, List<string> referenced)
+        {
+            foreach (string path in referenced)
+            {
+                sb.AppendFormat("/R:{0} ", Quote(path));
+            }
+        }
+
+
+        public override string GetExecutable()
+        {
+            string root = RuntimeEnvironment.GetRuntimeDirectory();
+
+            string[] paths = new string[] {
+                // First try new C# compiler
+                Path.Combine(root, "csc.exe"),
+                // Then fallback to old Mono C# compiler
+                Path.Combine(root, @"../../../bin/mcs"),
+                Path.Combine(root, "mcs.exe"),
+                "/usr/bin/mcs",
+            };
+
+            foreach (string path in paths)
+            {
+                if (File.Exists(path)) return path;
+            }
+            return paths[0];
+        }
+
+        public override string GetCompilerArgs(string exe, string args)
+        {
+            return args;
         }
     }
     public class CSCompiler : ICompiler
@@ -2071,13 +1940,13 @@ namespace Flames.Added
         public override string FileExtension { get { return ".cs"; } }
         public override string ShortName { get { return "C#"; } }
         public override string FullName { get { return "CSharp"; } }
-        public CodeDomProvider compiler;
+
         public override ICompilerErrors DoCompile(string[] srcPaths, string dstPath)
         {
-            CompilerParameters args = ICodeDomCompiler.PrepareInput(srcPaths, dstPath, "//");
-            args.CompilerOptions += " /unsafe";
-            ICodeDomCompiler.InitCompiler(this, "CSharp", ref compiler);
-            return ICodeDomCompiler.Compile(args, srcPaths, compiler);
+            List<string> referenced = ProcessInput(srcPaths, "//");
+
+            CommandLineCompiler compiler = new ClassicCSharpCompiler();
+            return compiler.Compile(srcPaths, dstPath, referenced);
         }
         public override string OrderSkeleton
         {
@@ -2087,26 +1956,33 @@ namespace Flames.Added
 //\tUse this as a basis for custom Flames orders
 //\tNaming should be kept consistent (e.g. /update order should have a class name of 'OrdUpdate' and a filename of 'OrdUpdate.cs')
 // As a note, Flames is designed for .NET 4.8
+
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
 //   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
+
 // Add any other using statements you need after this
 using System;
-using Flames;
 using Flames.Added;
+
 public class Ord{0} : Order
 {{
 \t// The order's name (what you put after a slash to use this order)
 \tpublic override string Name {{ get {{ return ""{0}""; }} }}
-\t// Order's shortcut, can be left blank (e.g. ""/Copy"" has a shortcut of ""o"")
+
+\t// Order's shortcut, can be left blank (e.g. ""/Copy"" has a shortcut of ""c"")
 \tpublic override string Shortcut {{ get {{ return """"; }} }}
+
 \t// Which submenu this order displays in under /Help
-\tpublic override string Type {{ get {{ return ""other""; }} }}
-\t// Whether or not this order can be used in a museum. Block/map altering order should return false to avoid errors.
+\tpublic override string Type {{ get {{ return ""order""; }} }}
+
+\t// Whether or not this order can be used in a museum. Block/map altering orders should return false to avoid errors.
 \tpublic override bool MuseumUsable {{ get {{ return true; }} }}
+
 \t// The default rank required to use this order. Valid values are:
 \t//   LevelPermission.Guest, LevelPermission.Builder, LevelPermission.AdvBuilder,
 \t//   LevelPermission.Operator, LevelPermission.Admin, LevelPermission.Owner
 \tpublic override LevelPermission DefaultRank {{ get {{ return LevelPermission.Guest; }} }}
+
 \t// This is for when a player executes this order by doing /{0}
 \t//   p is the player object for the player executing the order. 
 \t//   message is the arguments given to the order. (e.g. for '/{0} this', message is ""this"")
@@ -2114,6 +1990,7 @@ public class Ord{0} : Order
 \t{{
 \t\tp.Message(""Hello World!"");
 \t}}
+
 \t// This is for when a player does /Help {0}
 \tpublic override void Help(Player p)
 \t{{
@@ -2126,35 +2003,43 @@ public class Ord{0} : Order
         {
             get
             {
-                return @"//\tAuto-generated experiment skeleton class
-//\tUse this as a basis for custom Flames experiments
+                return @"//\tAuto-generated addon skeleton class
+//\tUse this as a basis for custom Flames addons
+
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
 //   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
+
 // Add any other using statements you need after this
 using System;
-using Flames;
+
 namespace Flames.Added
 {{
 \tpublic class {0} : Addon
 \t{{
 \t\t// The addon's name (i.e what shows in /Addons)
-\t\tpublic override string Name {{ get {{ return ""{0}""; }} }}
+\t\tpublic override string name {{ get {{ return ""{0}""; }} }}
+
 \t\t// The oldest version of Flames this addon is compatible with
 \t\tpublic override string Flames_Version {{ get {{ return ""{2}""; }} }}
+
 \t\t// Message displayed in server logs when this addon is loaded
 \t\tpublic override string Welcome {{ get {{ return ""Loaded Message!""; }} }}
+
 \t\t// Who created/authored this addon
 \t\tpublic override string Creator {{ get {{ return ""{1}""; }} }}
+
 \t\t// Called when this addon is being loaded (e.g. on server startup)
 \t\tpublic override void Load()
 \t\t{{
 \t\t\t//code to hook into events, load state/resources etc goes here
 \t\t}}
+
 \t\t// Called when this addon is being unloaded (e.g. on server shutdown)
 \t\tpublic override void Unload()
 \t\t{{
 \t\t\t//code to unhook from events, dispose of state/resources etc goes here
 \t\t}}
+
 \t\t// Displays help for or information about this addon
 \t\tpublic override void Help(Player p)
 \t\t{{
@@ -2169,17 +2054,13 @@ namespace Flames.Added
     {
         public static ICompiler GetCompiler(Player p, string name)
         {
-            if (name.Length == 0)
-            {
-                return ICompiler.Compilers[0];
-            }
+            if (name.Length == 0) return ICompiler.Compilers[0];
+
             foreach (ICompiler comp in ICompiler.Compilers)
             {
-                if (comp.ShortName.CaselessEq(name))
-                {
-                    return comp;
-                }
+                if (comp.ShortName.CaselessEq(name)) return comp;
             }
+
             p.Message("&WUnknown language \"{0}\"", name);
             p.Message("&HAvailable languages: &f{0}",
                       ICompiler.Compilers.Join(c => c.ShortName + " (" + c.FullName + ")"));
@@ -2189,15 +2070,18 @@ namespace Flames.Added
         {
             string path = compiler.OrderPath(name);
             string source = compiler.GenExampleOrder(name);
+
             return CreateFile(p, name, path, "order &fOrd", source);
         }
         public static bool CreateAddon(Player p, string name, ICompiler compiler)
         {
             string path = compiler.AddonPath(name);
-            string creator = p.IsSuper ? Server.Config.Name : p.truename;
+            string creator = p.IsSuper ? Colors.Strip(Server.Config.Name) : p.truename;
             string source = compiler.GenExampleAddon(name, creator);
+
             return CreateFile(p, name, path, "addon &f", source);
         }
+
         public static bool CreateFile(Player p, string name, string path, string type, string source)
         {
             if (File.Exists(path))
@@ -2205,21 +2089,29 @@ namespace Flames.Added
                 p.Message("File {0} already exists. Choose another name.", path);
                 return false;
             }
+
             File.WriteAllText(path, source);
             p.Message("Successfully saved example {2}{0} &Sto {1}", name, path, type);
             return true;
         }
+
+
+        /// <summary> Attempts to compile the given source code files into a .dll </summary>
+        /// <param name="p"> Player to send messages to </param>
+        /// <param name="type"> Type of files being compiled (e.g. Addon) </param>
+        /// <param name="srcs"> Path of the source code files </param>
+        /// <param name="dst"> Path to the destination .dll </param>
+        /// <returns> Whether compilation succeeded </returns>
         public static bool Compile(Player p, ICompiler compiler, string type, string[] srcs, string dst)
         {
             foreach (string path in srcs)
             {
-                if (File.Exists(path))
-                {
-                    continue;
-                }
+                if (File.Exists(path)) continue;
+
                 p.Message("File &9{0} &Snot found.", path);
                 return false;
             }
+
             ICompilerErrors errors = compiler.Compile(srcs, dst, true);
             if (!errors.HasErrors)
             {
@@ -2227,9 +2119,11 @@ namespace Flames.Added
                         type, srcs.Join(file => Path.GetFileName(file)));
                 return true;
             }
+
             SummariseErrors(errors, srcs, p);
             return false;
         }
+
         public const int MAX_LOG = 5;
         public static void SummariseErrors(ICompilerErrors errors, string[] srcs, Player p)
         {
@@ -2239,16 +2133,234 @@ namespace Flames.Added
                 p.Message("&W{1} - {0}", err.ErrorText,
                           ICompiler.DescribeError(err, srcs, " #" + err.ErrorNumber));
                 logged++;
-                if (logged >= MAX_LOG)
-                {
-                    break;
-                }
+                if (logged >= MAX_LOG) break;
             }
+
             if (logged < errors.Count)
             {
                 p.Message(" &W.. and {0} more", errors.Count - logged);
             }
             p.Message("&WCompiling failed. See " + ICompiler.ERROR_LOG_PATH + " for more detail");
+        }
+    }
+    /// <summary> Compiles source code files for a particular programming language into a .dll </summary>
+    public abstract class ICompiler
+    {
+        public const string ORDERS_SOURCE_DIR = "orders/";
+        public const string ADDONS_SOURCE_DIR = "addons/";
+        public const string ERROR_LOG_PATH = "logs/errors/compiler.log";
+
+        /// <summary> Default file extension used for source code files </summary>
+        /// <example> .cs, .vb </example>
+        public abstract string FileExtension { get; }
+        /// <summary> The short name of this programming language </summary>
+        /// <example> C#, VB </example>
+        public abstract string ShortName { get; }
+        /// <summary> The full name of this programming language </summary>
+        /// <example> CSharp, Visual Basic </example>
+        public abstract string FullName { get; }
+        /// <summary> Returns source code for an example Order </summary>
+        public abstract string OrderSkeleton { get; }
+        /// <summary> Returns source code for an example Addon </summary>
+        public abstract string AddonSkeleton { get; }
+
+        public string OrderPath(string name) { return ORDERS_SOURCE_DIR + "Ord" + name + FileExtension; }
+        public string AddonPath(string name) { return ADDONS_SOURCE_DIR + name + FileExtension; }
+
+        public static List<ICompiler> Compilers = new List<ICompiler>() {
+            new CSCompiler()
+        };
+
+
+        public static string FormatSource(string source, params string[] args)
+        {
+            // Always use \r\n line endings so it looks correct in Notepad
+            source = source.Replace(@"\t", "\t");
+            source = source.Replace("\n", "\r\n");
+            return string.Format(source, args);
+        }
+
+        /// <summary> Generates source code for an example order, 
+        /// preformatted with the given order name </summary>
+        public string GenExampleOrder(string ordName)
+        {
+            ordName = ordName.ToLower().Capitalize();
+            return FormatSource(OrderSkeleton, ordName);
+        }
+
+        /// <summary> Generates source code for an example addon, 
+        /// preformatted with the given name and creator </summary>
+        public string GenExampleAddon(string addon, string creator)
+        {
+            return FormatSource(AddonSkeleton, addon, creator, Server.Version);
+        }
+
+
+        /// <summary> Attempts to compile the given source code files to a .dll file. </summary>
+        /// <param name="logErrors"> Whether to log compile errors to ERROR_LOG_PATH </param>
+        public ICompilerErrors Compile(string[] srcPaths, string dstPath, bool logErrors)
+        {
+            ICompilerErrors errors = DoCompile(srcPaths, dstPath);
+            if (!errors.HasErrors || !logErrors) return errors;
+
+            SourceMap sources = new SourceMap(srcPaths);
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("############################################################");
+            sb.AppendLine("Errors when compiling " + srcPaths.Join());
+            sb.AppendLine("############################################################");
+            sb.AppendLine();
+
+            foreach (ICompilerError err in errors)
+            {
+                string type = err.IsWarning ? "Warning" : "Error";
+                sb.AppendLine(DescribeError(err, srcPaths, "") + ":");
+
+                if (err.Line > 0) sb.AppendLine(sources.Get(err.FileName, err.Line - 1));
+                if (err.Column > 0) sb.Append(' ', err.Column - 1);
+                sb.AppendLine("^-- " + type + " #" + err.ErrorNumber + " - " + err.ErrorText);
+
+                sb.AppendLine();
+                sb.AppendLine("-------------------------");
+                sb.AppendLine();
+            }
+
+            using (StreamWriter w = new StreamWriter(ERROR_LOG_PATH, true))
+            {
+                w.Write(sb.ToString());
+            }
+            return errors;
+        }
+
+        public static string DescribeError(ICompilerError err, string[] srcs, string text)
+        {
+            string type = err.IsWarning ? "Warning" : "Error";
+            string file = Path.GetFileName(err.FileName);
+
+            // Include filename if compiling multiple source code files
+            return string.Format("{0}{1}{2}{3}", type, text,
+                                 err.Line > 0 ? " on line " + err.Line : "",
+                                 srcs.Length > 1 ? " in " + file : "");
+        }
+
+
+        /// <summary> Compiles the given source code. </summary>
+        public abstract ICompilerErrors DoCompile(string[] srcPaths, string dstPath);
+
+
+        /// <summary> Converts source file paths to full paths, 
+        /// then returns list of parsed referenced assemblies </summary>
+        public List<string> ProcessInput(string[] srcPaths, string commentPrefix)
+        {
+            List<string> referenced = new List<string>();
+
+            for (int i = 0; i < srcPaths.Length; i++)
+            {
+                // CodeDomProvider doesn't work properly with relative paths
+                string path = Path.GetFullPath(srcPaths[i]);
+
+                AddReferences(path, commentPrefix, referenced);
+                srcPaths[i] = path;
+            }
+
+            referenced.Add(Server.GetServerDLLPath());
+            return referenced;
+        }
+
+        public void AddReferences(string path, string commentPrefix, List<string> referenced)
+        {
+            // Allow referencing other assemblies using '//reference [assembly name]' at top of the file
+            using (StreamReader r = new StreamReader(path))
+            {
+                string refPrefix = commentPrefix + "reference ";
+                string addPrefix = commentPrefix + "addonref ";
+                string line;
+
+                while ((line = r.ReadLine()) != null)
+                {
+                    if (line.CaselessStarts(refPrefix))
+                    {
+                        referenced.Add(GetDLL(line));
+                    }
+                    else if (line.CaselessStarts(addPrefix))
+                    {
+                        path = Path.Combine(IScripting.ADDONS_DLL_DIR, GetDLL(line));
+                        referenced.Add(Path.GetFullPath(path));
+                    }
+                    else
+                    {
+                        ProcessInputLine(line, referenced);
+                    }
+                }
+            }
+        }
+
+        public virtual void ProcessInputLine(string line, List<string> referenced) { }
+
+        public static string GetDLL(string line)
+        {
+            int index = line.IndexOf(' ') + 1;
+            // For consistency with C#, treat '//reference X.dll;' as '//reference X.dll'
+            return line.Substring(index).Replace(";", "");
+        }
+    }
+
+    public class ICompilerErrors : List<ICompilerError>
+    {
+        public bool HasErrors
+        {
+            get { return FindIndex(ce => !ce.IsWarning) >= 0; }
+        }
+    }
+
+    public class ICompilerError
+    {
+        public int Line, Column;
+        public string ErrorNumber, ErrorText;
+        public bool IsWarning;
+        public string FileName;
+    }
+
+
+    public class SourceMap
+    {
+        public string[] files;
+        public List<string>[] sources;
+
+        public SourceMap(string[] paths)
+        {
+            files = paths;
+            sources = new List<string>[paths.Length];
+        }
+
+        public int FindFile(string file)
+        {
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (file.CaselessEq(files[i])) return i;
+            }
+            return -1;
+        }
+
+        /// <summary> Returns the given line in the given source code file </summary>
+        public string Get(string file, int line)
+        {
+            int i = FindFile(file);
+            if (i == -1) return "";
+
+            List<string> source = sources[i];
+            if (source == null)
+            {
+                try
+                {
+                    source = Utils.ReadAllLinesList(file);
+                }
+                catch
+                {
+                    source = new List<string>();
+                }
+                sources[i] = source;
+            }
+            return line < source.Count ? source[line] : "";
         }
     }
 }
