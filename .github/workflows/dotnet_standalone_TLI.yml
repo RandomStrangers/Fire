@@ -20,7 +20,7 @@ jobs:
         run: |
           msbuild FlamesTLI.sln /p:Configuration=Release
           cp -R bin/Release bin/Release_dotnet_standalone_TLI
-          msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="F_STANDALONE%3BF_DOTNET"
+          msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="F_STANDALONE%3BF_DOTNET%3BF_DOTNET_DEV"
 
       - uses: ./.github/actions/notify_failure
         if: ${{ always() && steps.compile.outcome == 'failure' }}
