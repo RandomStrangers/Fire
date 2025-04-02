@@ -7,6 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Flames\Flames_dotnet_TLI.csproj" />
+    <ProjectReference Include="..\FlamesTLI\Flames_dotnet_TLI.csproj" />
   </ItemGroup>
 </Project>

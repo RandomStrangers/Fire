@@ -8,6 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Flames\Flames_standalone_TLI.csproj" />
+    <ProjectReference Include="..\FlamesTLI\Flames_standalone_TLI.csproj" />
   </ItemGroup>
 </Project>
