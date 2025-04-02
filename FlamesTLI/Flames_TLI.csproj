@@ -721,7 +721,6 @@
     <Compile Include="Modules\Compiling\Cores\GoldenSparksPlugin.cs" />
     <Compile Include="Modules\Compiling\Cores\RandomStrangersPlugin.cs" />
     <Compile Include="Modules\Compiling\Cores\SuperNovaPlugin.cs" />
-    <Compile Include="Testing\unused\simple plugins\DNDiscord.cs" />
     <Compile Include="util\CountryUtils.cs" />
     <Compile Include="util\Formatting\Wildcard.cs" />
     <Compile Include="util\ImageUtils.cs" />
