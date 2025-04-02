@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DefineConstants>$(DefineConstants);F_DOTNET;F_STANDALONE;FLAMES_TLI;CORE</DefineConstants>
+    <DefineConstants>$(DefineConstants);F_DOTNET;F_STANDALONE;FLAMES_TLI;CORE;F_DOTNET_DEV</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="2.1.10" />

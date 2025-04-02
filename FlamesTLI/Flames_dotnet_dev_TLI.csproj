@@ -3,7 +3,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <DefineConstants>$(DefineConstants);F_DOTNET;CORE;FLAMES_TLI</DefineConstants>
+    <DefineConstants>$(DefineConstants);F_DOTNET;CORE;FLAMES_TLI;F_DOTNET_DEV</DefineConstants>
     <AssemblyName>FlamesTLI_</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
