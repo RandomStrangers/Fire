@@ -1,0 +1,38 @@
+name: Build dotnet standalone dev TLI
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Every day at 12am
+    - cron: '0 0 * * *'
+concurrency:
+  group: ${{ github.ref }}-dotnet_standalone_dev_TLI
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Flames dotnet standalone Dev TLI build using mono
+        shell: bash
+        id: compile
+        run: |
+          msbuild FlamesTLI.sln /p:Configuration=Release
+          cp -R bin/Release bin/Release_dotnet_standalone_dev_TLI
+          msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="CORE%3BF_STANDALONE%3BF_DOTNET%3BF_DOTNET_DEV"
+
+      - uses: ./.github/actions/notify_failure_harmony
+        if: ${{ always() && steps.compile.outcome == 'failure' }}
+        with:
+          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet standalone Dev TLI build! <@999409543001931788>'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          
+      - uses: ./.github/actions/notify_success_harmony
+        if: ${{ always() && steps.compile.outcome == 'success' }}
+        with:
+          SOURCE_FILE: 'bin/Release_dotnet_standalone_dev_TLI'
+          DEST_NAME: 'Harmony'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone Dev TLI build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
