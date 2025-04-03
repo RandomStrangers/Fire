@@ -27,7 +27,6 @@ using Flames.Events.PlayerEvents;
 using Flames.Generator;
 using Flames.Gui.Popups;
 using Flames.Tasks;
-using Flames.Added;
 namespace Flames.Gui
 {
     public partial class Window : Form
