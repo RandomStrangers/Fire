@@ -284,17 +284,17 @@ namespace Flames.Added
 
 
         /// <summary> Find the permissions for the given order. (case insensitive) </summary>
-        public static OrderPerms Find(string cmd)
+        public static OrderPerms Find(string ord)
         {
             foreach (OrderPerms perms in List)
             {
-                if (perms.OrdName.CaselessEq(cmd)) return perms;
+                if (perms.OrdName.CaselessEq(ord)) return perms;
             }
             return null;
         }
 
 
-        /// <summary> Gets or adds permissions for the given command. </summary>
+        /// <summary> Gets or adds permissions for the given order. </summary>
         public static OrderPerms GetOrAdd(string ord, LevelPermission min)
         {
             OrderPerms perms = Find(ord);
@@ -1178,7 +1178,6 @@ namespace Flames.Added
         {
         }
         public virtual OrderDesignation[] Designations { get { return null; } }
-
         public virtual void Execute(Player p, string message, OrderData data)
         {
             Execute(p, message);
@@ -1213,7 +1212,7 @@ namespace Flames.Added
         {
             Command.InitAll();
             allOrds.Clear();
-            Alias.aliases.Clear();
+            Designation.designations.Clear();
             Type[] types = Assembly.GetExecutingAssembly().GetTypes();
             for (int i = 0; i < types.Length; i++)
             {
@@ -1226,6 +1225,10 @@ namespace Flames.Added
                 RegisterORD(ord);
             }
             IScripting.AutoloadOrders();
+        }
+        public static void Register(Order ord)
+        {
+            RegisterORD(ord);
         }
         public static void RegisterORD(Order ord)
         {
@@ -1266,6 +1269,10 @@ namespace Flames.Added
                 Unregister(ord);
             }
         }
+        public static Order Find(string name)
+        {
+            return FindORD(name);
+        }
         public static Order FindORD(string name)
         {
             foreach (Order ord in allOrds)
@@ -1294,8 +1301,8 @@ namespace Flames.Added
             {
                 return;
             }
-            Alias alias = Alias.Find(ordName);
-            if (alias == null)
+            Designation designation = Designation.Find(ordName);
+            if (designation == null)
             {
                 foreach (Order ord in allOrds)
                 {
@@ -1308,8 +1315,8 @@ namespace Flames.Added
                 }
                 return;
             }
-            ordName = alias.Target;
-            string format = alias.Format;
+            ordName = designation.Target;
+            string format = designation.Format;
             if (format == null)
             {
                 return;

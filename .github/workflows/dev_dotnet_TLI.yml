@@ -4,8 +4,8 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    # Every day at 12am
-    - cron: '0 0 * * *'
+    # Every day at 1am
+    - cron: '0 1 * * *'
 concurrency:
   group: ${{ github.ref }}-dotnet-dev-TLI
   cancel-in-progress: true
@@ -33,7 +33,7 @@ jobs:
       - uses: ./.github/actions/notify_failure_harmony
         if: ${{ always() && steps.compile.outcome == 'failure' }}
         with:
-          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet dev TLI build!'
+          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet dev TLI build! <@999409543001931788>'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
       - uses: ./.github/actions/notify_success_harmony

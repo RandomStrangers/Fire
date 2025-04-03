@@ -23,7 +23,6 @@ namespace Flames.Commands.Maintenance
         public override string shortcut { get { return ""; } }
         public override string type { get { return CommandTypes.Moderation; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
-
         public override void Use(Player p, string message)
         {
             if (message.CaselessEq("check"))
@@ -34,28 +33,53 @@ namespace Flames.Commands.Maintenance
             }
             else
             {
-                DoUpdate(p);
+                if (message.CaselessEq("gui"))
+                {
+                    DoUpdate(p, true);
+                }
+                else 
+                {
+                    if (Server.RunningOnMono())
+                    {
+                        DoUpdate(p, false);
+                    }
+                    else
+                    {
+                        DoUpdate(p, true);
+                    }
+                }
             }
         }
-        public static void DoUpdate(Player p)
+        public static void DoUpdate(Player p, bool GUI)
         {
             if (!CheckPerms(p))
             {
                 p.Message("Only the Flames or the Server Owner can update the server."); 
                 return;
             }
-            Updater.PerformUpdate();
+            Updater.PerformUpdate(GUI);
         }
-
         public static bool CheckPerms(Player p)
         {
 #if CORE 
-            if (p.IsNull) return true;
+            if (p.IsNull) 
+            {
+                return true;
+            }
 #else
-            if (p.IsFire) return true;
-            else if (p.IsConsole) return true;
+            if (p.IsFire) 
+            {
+                return true;
+            }
+            else if (p.IsConsole)
+            {
+                return true;
+            }
 #endif
-            if (Server.Config.OwnerName.CaselessEq("Notch")) return false;
+            if (Server.Config.OwnerName.CaselessEq("Notch")) 
+            {
+                return false;
+            }
             return p.name.CaselessEq(Server.Config.OwnerName);
         }
         public override void Help(Player p)
@@ -63,6 +87,7 @@ namespace Flames.Commands.Maintenance
             p.Message("&T/Update check");
             p.Message("&HChecks whether the server needs updating");
             p.Message("&T/Update &H- Force updates the server");
+            p.Message("&T/Update gui &H- Force updates the server and its GUI.");
         }
     }
 }

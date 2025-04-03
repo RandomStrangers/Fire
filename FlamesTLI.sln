@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamesTLI_GUI", "GUI_TLI\FlamesTLI_GUI.csproj", "{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flames", "FlamesTLI\Flames_TLI.csproj", "{12597DB0-7C34-4DE1-88EA-9250FF3372EB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlamesTLI", "TLI\FlamesTLI.csproj", "{A1A5B886-2D0A-4D2A-AE13-409560D5227C}"
@@ -15,6 +17,14 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Debug|x64.ActiveCfg = Debug|x64
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Debug|x64.Build.0 = Debug|x64
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Debug|x86.ActiveCfg = Debug|x86
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Debug|x86.Build.0 = Debug|x86
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Release|x64.ActiveCfg = Release|x64
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Release|x64.Build.0 = Release|x64
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Release|x86.ActiveCfg = Release|x86
+		{63DCBB31-92CD-4464-A86C-A7E51A5FE9FE}.Release|x86.Build.0 = Release|x86
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Debug|x64.ActiveCfg = Debug|x64
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Debug|x64.Build.0 = Debug|x64
 		{12597DB0-7C34-4DE1-88EA-9250FF3372EB}.Debug|x86.ActiveCfg = Debug|x86

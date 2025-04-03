@@ -20,17 +20,15 @@ using System.IO;
 using System.Net;
 using Flames.Network;
 using Flames.Tasks;
-
 namespace Flames
 {
     /// <summary> Checks for and applies software updates. </summary>
     public static class Updater
     {
-
         public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/";
-        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/debug/";
-        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/debug/Uploads";
-        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/";
+        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/GUI/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/GUI/Uploads";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/GUI/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
         public const string CurrentVersionURL = UpdatesURL + "dev_TLI.txt";
@@ -46,9 +44,8 @@ namespace Flames
         public const string dllURL = UpdatesURL + "FlamesTLI_.dll";
 #endif
         public const string TLIURL = UpdatesURL + "FlamesTLI.exe";
-
+        public const string GUIURL = UpdatesURL + "FlamesGUI.exe";
         public static event EventHandler NewerVersionDetected;
-
         public static void UpdaterTask(SchedulerTask task)
         {
             UpdateCheck();
@@ -56,9 +53,11 @@ namespace Flames
         }
         public static void UpdateCheck()
         {
-            if (!Server.Config.CheckForUpdates) return;
+            if (!Server.Config.CheckForUpdates) 
+            {
+                return;
+            }
             WebClient client = HttpUtil.CreateWebClient();
-
             try
             {
                 string latest = client.DownloadString(CurrentVersionURL);
@@ -89,39 +88,52 @@ namespace Flames
         }
         public static void PerformUpdate()
         {
+            PerformUpdate(true);
+        }
+        public static void PerformUpdate(bool gui)
+        {
             try
             {
                 try
                 {
                     DeleteFiles("FlamesTLI_.update", "FlamesTLI.update",
-                    "prev_FlamesTLI_.dll", "prev_FlamesTLI.exe");
+                    "prev_FlamesTLI_.dll", "prev_FlamesTLI.exe", 
+                    "FlamesGUI.update", "prev_FlamesGUI.exe");
                 }
                 catch (Exception ex)
                 {
                     Logger.LogError("Error deleting files", ex);
                 }
-
                 WebClient client = HttpUtil.CreateWebClient();
                 client.DownloadFile(dllURL, "Flames_.update");
                 client.DownloadFile(TLIURL, "FlamesTLI.update");
-
+                if (gui)
+                {
+                    client.DownloadFile(GUIURL, "FlamesGUI.update");
+                }
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
                 {
-                    if (!lvl.SaveChanges) continue;
+                    if (!lvl.SaveChanges) 
+                    {
+                        continue;
+                    }
                     lvl.Save();
                     lvl.SaveBlockDBChanges();
                 }
-
                 Player[] players = PlayerInfo.Online.Items;
                 foreach (Player pl in players) pl.SaveStats();
-
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
                 AtomicIO.TryMove("FlamesTLI_.dll", "prev_FlamesTLI_.dll");
                 AtomicIO.TryMove("FlamesTLI.exe", "prev_FlamesTLI.exe");
+                AtomicIO.TryMove("FlamesGUI.exe", "prev_FlamesGUI.exe");
                 File.Move("FlamesTLI.update", "FlamesTLI.exe");
                 File.Move("FlamesTLI_.update", "FlamesTLI_.dll");
+                if (gui)
+                {
+                    File.Move("FlamesGUI.update", "FlamesGUI.exe");
+                }
                 Server.Stop(true, "Updating server.");
             }
             catch (Exception ex)
