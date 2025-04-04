@@ -620,7 +620,7 @@ namespace Flames
 
         public void SetBaseTotalModified(ulong modified)
         {
-            ulong adjust = modified - TotalModified;
+            long adjust = modified - TotalModified;
             TotalModified = modified;
             // adjust so that SessionModified is unaffected
             startModified += adjust;
