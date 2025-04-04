@@ -618,7 +618,7 @@ namespace Flames
             spamChecker?.CheckChatSpam();
         }
 
-        public void SetBaseTotalModified(ulong modified)
+        public void SetBaseTotalModified(long modified)
         {
             long adjust = modified - TotalModified;
             TotalModified = modified;
