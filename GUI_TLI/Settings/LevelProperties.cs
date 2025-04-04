@@ -313,7 +313,7 @@ namespace Flames.Gui
             {
                 string args = raw == null ? "" : raw.ToString();
                 string ordArgs = args.Length == 0 ? Lvl.name : Lvl.name + " " + args;
-                Order.Find(ord).Use(Player.Flame, ordArgs);
+                Order.Find(ord).Execute(Player.Flame, ordArgs);
             }
             catch (Exception ex)
             {

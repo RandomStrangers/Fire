@@ -26,20 +26,22 @@ namespace Flames
             this.p = p;
             blockLog = new List<DateTime>(Server.Config.BlockSpamCount);
             chatLog = new List<DateTime>(Server.Config.ChatSpamCount);
-            cmdLog = new List<DateTime>(Server.Config.CmdSpamCount);
+            ordLog = new List<DateTime>(Server.Config.OrdSpamCount);
+            cmdLog = ordLog;
         }
 
         public Player p;
-        public object chatLock = new object(), cmdLock = new object();
-        public List<DateTime> blockLog, chatLog, cmdLog;
+        public object chatLock = new object(), ordLock = new object();
+        public object cmdLock = ordLock;
+        public List<DateTime> blockLog, chatLog, ordLog, cmdLog;
 
         public void Clear()
         {
             blockLog.Clear();
             lock (chatLock)
                 chatLog.Clear();
-            lock (cmdLock)
-                cmdLog.Clear();
+            lock (ordLock)
+                ordLog.Clear();
         }
 
         public bool CheckBlockSpam()
@@ -74,20 +76,23 @@ namespace Flames
                 return true;
             }
         }
-
         public bool CheckCommandSpam()
         {
-            if (!Server.Config.CmdSpamCheck || p.IsSuper) return false;
+            return CheckOrderSpam();
+        }
+        public bool CheckOrderSpam()
+        {
+            if (!Server.Config.OrdSpamCheck || p.IsSuper) return false;
 
-            lock (cmdLock)
+            lock (ordLock)
             {
-                if (cmdLog.AddSpamEntry(Server.Config.CmdSpamCount, Server.Config.CmdSpamInterval))
+                if (ordLog.AddSpamEntry(Server.Config.OrdSpamCount, Server.Config.OrdSpamInterval))
                     return false;
 
-                string blockTime = Server.Config.CmdSpamBlockTime.Shorten(true, true);
-                p.Message("You have been blocked from using commands for "
+                string blockTime = Server.Config.OrdSpamBlockTime.Shorten(true, true);
+                p.Message("You have been blocked from issuing orders for "
                           + blockTime + " due to spamming");
-                p.cmdUnblocked = DateTime.UtcNow.Add(Server.Config.CmdSpamBlockTime);
+                p.ordUnblocked = DateTime.UtcNow.Add(Server.Config.OrdSpamBlockTime);
                 return true;
             }
         }

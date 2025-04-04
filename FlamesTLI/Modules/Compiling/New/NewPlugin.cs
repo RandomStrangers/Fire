@@ -218,7 +218,6 @@ namespace Flames
             LoadCoreNewPlugin(new TWPlugin());
             LoadCoreNewPlugin(new ZSPlugin());
             LoadCoreNewPlugin(new NewCompilerPlugin());
-            LoadCoreNewPlugin(new AddonLoader());
             LoadNewPlugin(new Commands_Plugins());
 #if CORE
             LoadCoreNewPlugin(new GoldenSparksPluginLoader());

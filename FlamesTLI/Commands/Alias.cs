@@ -17,10 +17,10 @@
 */
 using System.Collections.Generic;
 using System.IO;
-
+using Flames.Added;
 namespace Flames.Commands
 {
-    public class Alias
+    public class Alias : Designation
     {
         public static List<Alias> coreAliases = new List<Alias>();
         public static List<Alias> aliases = new List<Alias>();
@@ -103,7 +103,7 @@ namespace Flames.Commands
             {
                 if (alias.Trigger.CaselessEq(cmd)) return alias;
             }
-            return null;
+            return Designation.DesignationToAlias(Designation.Find(cmd));
         }
 
         /// <summary> Registers default aliases specified by a command. </summary>

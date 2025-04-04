@@ -19,6 +19,7 @@ using System;
 using System.Threading;
 using System.Windows.Forms;
 using Flames.Added.UI;
+using Flames.Added;
 namespace Flames.Gui
 {
     public partial class Window : Form

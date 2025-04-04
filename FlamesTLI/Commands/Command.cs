@@ -63,10 +63,10 @@ namespace Flames
         }
         public virtual void Use(Player p, string message)
         {
+            Use(p, message, p.DefaultCmdData);
         }
         public virtual void Use(Player p, string message, CommandData data) 
         {
-            Use(p, message); 
         }
         public override void OrderHelp(Player p)
         {

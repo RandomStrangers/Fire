@@ -16,6 +16,7 @@ using System;
 using System.Windows.Forms;
 using Flames.Eco;
 using Flames.Events.GameEvents;
+using Flames.Added;
 namespace Flames.Gui
 {
     public partial class PropertyWindow : Form

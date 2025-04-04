@@ -153,7 +153,7 @@ namespace Flames
             if (Nicks) p.Message("&cCustom player nicks do not show in chat");
 
             if (EightBall) p.Message("&cIgnoring &T/8ball");
-            if (DrawOutput) p.Message("&cIgnoring draw command output");
+            if (DrawOutput) p.Message("&cIgnoring draw order output");
             if (WorldChanges) p.Message("&cIgnoring world change messages");
         }
     }

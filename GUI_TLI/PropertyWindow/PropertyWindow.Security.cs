@@ -59,7 +59,7 @@ namespace Flames.Gui
             Server.Config.OrdSpamCheck = Sec_cbOrdAuto.Checked;
             Server.Config.OrdSpamCount = (int)Sec_numOrdMsgs.Value;
             Server.Config.OrdSpamInterval = Sec_numOrdSecs.Value;
-            Server.Config.OrdSpamBlockTime = Sec_numOrdute.Value;
+            Server.Config.OrdSpamBlockTime = Sec_numOrdMute.Value;
             Server.Config.BlockSpamCheck = Sec_cbBlocksAuto.Checked;
             Server.Config.BlockSpamCount = (int)Sec_numBlocksMsgs.Value;
             Server.Config.BlockSpamInterval = Sec_numBlocksSecs.Value;

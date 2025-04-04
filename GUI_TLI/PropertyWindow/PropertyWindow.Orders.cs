@@ -156,7 +156,7 @@ namespace Flames.Gui
                 OrderExtraBoxes[i].Visible = false;
                 OrderExtraLabels[i].Visible = false;
             }
-            if (Ord.ExtraPerms == null)
+            if (Ord.OrdExtraPerms == null)
             {
                 ExtraPermsList.Clear();
             }

@@ -132,12 +132,12 @@ namespace Flames
         public bool AllowBuild = true;
 
         public int money;
-        public long TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
+        public ulong TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
         public int TimesVisited, TimesBeenKicked, TimesDied;
         public int TotalMessagesSent;
 
-        public long startModified;
-        public long SessionModified { get { return TotalModified - startModified; } }
+        public ulong startModified;
+        public ulong SessionModified { get { return TotalModified - startModified; } }
 
         public DateTime startTime;
         public TimeSpan TotalTime
@@ -167,10 +167,11 @@ namespace Flames
             get
             {
                 CommandData data = default;
-                data.Rank = Rank; return data;
+                data.Rank = Rank; 
+                return data;
             }
         }
-        public OrderData DefaultCrdData
+        public OrderData DefaultOrdData
         {
             get
             {

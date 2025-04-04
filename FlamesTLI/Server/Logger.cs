@@ -48,8 +48,8 @@ namespace Flames
         /// <summary> Handled or unhandled exception occurs. </summary>
         Error,
 
-        /// <summary> Command used by a player. </summary>
-        CommandUsage,
+        /// <summary> Order used by a player. </summary>
+        OrderUsage,
 
         /// <summary> Chat globally or only on player's level. </summary>
         PlayerChat,
@@ -71,13 +71,13 @@ namespace Flames
 
         /// <summary> Debug messages. </summary>
         Debug,
-
         /// <summary> Message shown to the Flames. </summary>
         FlameMessage,
+        TerminalMessage,
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        ConsoleMessage,
-        /// <summary> Order used by a player. </summary>
-        OrderUsage = CommandUsage,
+        ConsoleMessage = TerminalMessage,
+        /// <summary> Command used by a player. </summary>
+        CommandUsage = OrderUsage,
 
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>

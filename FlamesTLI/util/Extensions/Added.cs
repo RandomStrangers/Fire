@@ -31,36 +31,13 @@ namespace Flames
         public static bool TLIMode, cancelorder;
         public delegate void OnFlameOrder(string ord, string message);
         public static event OnFlameOrder FlameOrder;
+        public delegate void OnTerminalOrder(string ord, string message);
+        public static event OnTerminalOrder TerminalOrder; 
         public static bool CheckOrders(string ord, string message)
         {
             FlameOrder?.Invoke(ord, message);
+            TerminalOrder?.Invoke(ord, message);
             return cancelorder;
-        }
-    }
-    public class AddonLoader : NewPlugin
-    {
-        public override string name { get { return "AddonLoader"; } }
-        public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
-        public static void LoadAllAddons(SchedulerTask task)
-        {
-            Addon.LoadAll();
-        }
-        public override void Load(bool startup)
-        {
-            OnShuttingDownEvent.Register(OnShutdown, Priority.Critical);
-            Server.Critical.QueueOnce(LoadAllAddons);
-        }
-        public void OnShutdown(bool restarting, string message)
-        {
-            Addon.UnloadAll();
-        }
-        public override void Unload(bool shutdown)
-        {
-            OnShuttingDownEvent.Unregister(OnShutdown);
-        }
-        public override void Help(Player p)
-        {
-            p.Message("");
         }
     }
 }
@@ -375,7 +352,7 @@ namespace Flames.Added
             OrderPerms perms;
             string line;
 
-            while ((line = r.ReadLine()) != null)
+            while ((line = .ReadLine()) != null)
             {
                 if (line.IsCommentLine()) continue;
                 // Format - Name : Lowest : Disallow : Allow
@@ -417,30 +394,30 @@ namespace Flames.Added
                 p.Message("{0}) {1} {2}", extra.Num, extra.Describe(), extra.Desc);
             }
         }
-        public static void PrintAliases(Player p, Order ord)
+        public static void PrintDesignations(Player p, Order ord)
         {
             StringBuilder dst = new StringBuilder("Shortcuts: &T");
             if (!string.IsNullOrEmpty(ord.Shortcut))
             {
                 dst.Append('/').Append(ord.Shortcut).Append(", ");
             }
-            FindAliases(Alias.aliases, ord, dst);
+            FindDesignations(Designation.designations, ord, dst);
             if (dst.Length == "Shortcuts: &T".Length)
             {
                 return;
             }
             p.Message(dst.ToString(0, dst.Length - 2));
         }
-        public static void FindAliases(List<Alias> aliases, Order ord, StringBuilder dst)
+        public static void FindDesignations(List<Designation> designations, Order ord, StringBuilder dst)
         {
-            foreach (Alias a in aliases)
+            foreach (Designation d in designations)
             {
-                if (!a.Target.CaselessEq(ord.Name))
+                if (!d.Target.CaselessEq(ord.Name))
                 {
                     continue;
                 }
-                dst.Append('/').Append(a.Trigger);
-                if (a.Format == null)
+                dst.Append('/').Append(d.Trigger);
+                if (d.Format == null)
                 {
                     dst.Append(", ");
                     continue;
@@ -450,7 +427,7 @@ namespace Flames.Added
                 {
                     name = ord.Name;
                 }
-                string args = a.Format.Replace("{args}", "[args]");
+                string args = d.Format.Replace("{args}", "[args]");
                 dst.Append(" for /").Append(name + " " + args);
                 dst.Append(", ");
             }
@@ -593,6 +570,18 @@ namespace Flames.Added
             }
             return cmdAliases;
         }
+        public static CommandAlias ORDToSingleCMD(params OrderDesignation[] designations)
+        {
+            CommandAlias cmdAlias = new CommandAlias();
+            foreach (OrderDesignation designation in designations)
+            {
+                cmdAlias.Trigger = designation.Trigger;
+                cmdAlias.Target = designation.Target;
+                cmdAlias.Format = designation.Format;
+                return cmdAlias;
+            }
+            return cmdAlias;
+        }
         public static OrderDesignation[] CMDToORD(params CommandAlias[] aliases)
         {
             OrderDesignation[] ordDesignations = new OrderDesignation[]
@@ -606,6 +595,7 @@ namespace Flames.Added
             {
                 OrderDesignation ordDesignation = new OrderDesignation();
                 ordDesignation.Trigger = alias.Trigger;
+                ordDesignation.Target = alias.Target;
                 ordDesignation.Format = alias.Format;
                 ordDesignations = new OrderDesignation[]
                 {
@@ -614,6 +604,24 @@ namespace Flames.Added
                 return ordDesignations;
             }
             return ordDesignations;
+        }
+        public static Designation AliasToDesignation(Alias alias)
+        {
+            if (alias == null)
+            {
+                return null;
+            }
+            Designation designation = new Designation(alias.Trigger, alias.Target, alias.Format);
+            return designation;
+        }
+        public static Alias DesignationToAlias(Designation designation)
+        {
+            if (designation == null)
+            {
+                return null;
+            }
+            Alias alias = new Alias(designation.Trigger, designation.Target, designation.Format);
+            return alias;
         }
         public static List<Designation> coreDesignations = new List<Designation>();
         public static List<Designation> designations = new List<Designation>();
@@ -664,7 +672,7 @@ namespace Flames.Added
         {
             using (StreamWriter sw = new StreamWriter(Paths.DesignationsFile))
             {
-                sw.WriteLine("# Aliases can be in one of three formats:");
+                sw.WriteLine("# Designations can be in one of three formats:");
                 sw.WriteLine("# trigger : order");
                 sw.WriteLine("#    e.g. \"xyz : help\" means /xyz is treated as /help <args given by user>");
                 sw.WriteLine("# trigger : order [prefix]");
@@ -698,7 +706,6 @@ namespace Flames.Added
             }
             return null;
         }
-
         /// <summary> Registers default designations specified by an order. </summary>
         public static void RegisterDefaults(Order ord)
         {
@@ -891,15 +898,15 @@ namespace Flames.Added
         {
             type = type.ToLower();
             // convert old category/type names
-            if (type == "add") return CommandTypes.Added;
-            if (type == "build") return CommandTypes.Building;
-            if (type == "chat") return CommandTypes.Chat;
-            if (type == "economy") return CommandTypes.Economy;
-            if (type == "game") return CommandTypes.Games;
-            if (type == "mod") return CommandTypes.Moderation;
-            if (type == "other") return CommandTypes.Other;
-            if (type == "world") return CommandTypes.World;
-            if (type == "information") return CommandTypes.Information;
+            if (type == "add") return OrderTypes.Added;
+            if (type == "build") return OrderTypes.Building;
+            if (type == "chat") return OrderTypes.Chat;
+            if (type == "economy") return OrderTypes.Economy;
+            if (type == "game") return OrderTypes.Games;
+            if (type == "mod") return OrderTypes.Moderation;
+            if (type == "other") return OrderTypes.Other;
+            if (type == "world") return OrderTypes.World;
+            if (type == "information") return OrderTypes.Information;
             if (type == "order") return OrderTypes.Order;
             return type;
         }
@@ -1166,6 +1173,10 @@ namespace Flames.Added
             LevelPermission perm = ord.Permissions.MinRank;
             return Group.GetColor(perm) + ord.Name;
         }
+        public static bool IsCore(Order ord)
+        {
+            return ord.GetType().Assembly == Assembly.GetExecutingAssembly(); // TODO common method
+        }
         public OrderPerms Permissions;
         public virtual OrderPerm[] OrdExtraPerms { get { return null; } }
         public virtual string Name { get; set; }
@@ -1176,11 +1187,11 @@ namespace Flames.Added
         public virtual LevelPermission DefaultRank { get { return LevelPermission.Guest; } }
         public virtual void Execute(Player p, string message)
         {
+            Execute(p, message, (OrderData)p.DefaultCmdData);
         }
         public virtual OrderDesignation[] Designations { get { return null; } }
         public virtual void Execute(Player p, string message, OrderData data)
         {
-            Execute(p, message);
         }
         public virtual void OrderHelp(Player p)
         {
@@ -1330,6 +1341,305 @@ namespace Flames.Added
                 ordArgs = format + " " + ordArgs;
             }
             ordArgs = ordArgs.Trim();
+        }
+    }
+    public static class OrderParser
+    {
+        /// <summary> Attempts to parse the given argument as a boolean. </summary>
+        public static bool GetBool(Player p, string input, ref bool result)
+        {
+            if (input.CaselessEq("1") || input.CaselessEq("true")
+                || input.CaselessEq("yes") || input.CaselessEq("on"))
+            {
+                result = true; 
+                return true;
+            }
+
+            if (input.CaselessEq("0") || input.CaselessEq("false")
+                || input.CaselessEq("no") || input.CaselessEq("off"))
+            {
+                result = false; 
+                return true;
+            }
+
+            p.Message("&W\"{0}\" is not a valid boolean.", input);
+            p.Message("&WValue must be either 1/yes/on or 0/no/off");
+            return false;
+        }
+
+        /// <summary> Attempts to parse the given argument as an enumeration member. </summary>
+        public static bool GetEnum<TEnum>(Player p, string input, string argName,
+                                          ref TEnum result) where TEnum : struct
+        {
+            try
+            {
+                result = (TEnum)Enum.Parse(typeof(TEnum), input, true);
+                if (Enum.IsDefined(typeof(TEnum), result)) return true;
+            }
+            catch
+            {
+            }
+
+            string[] names = Enum.GetNames(typeof(TEnum));
+            p.Message(argName + " must be one of the following: &f" + names.Join());
+            return false;
+        }
+
+        /// <summary> Attempts to parse the given argument as an timespan in short form. </summary>
+        public static bool GetTimespan(Player p, string input, ref TimeSpan span,
+                                       string action, string defUnit)
+        {
+            try
+            {
+                span = input.ParseShort(defUnit);
+                // Typically span gets added to current time, so check span isn't too big here
+                DateTime.UtcNow.Add(span).AddYears(1);
+                return true;
+            }
+            catch (OverflowException)
+            {
+                p.Message("&WTimespan given is too big");
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                p.Message("&WTimespan given is too big");
+            }
+            catch (FormatException ex)
+            {
+                p.Message("&W{0} is not a valid quantifier.", ex.Message);
+                p.Message(TimespanHelp, action);
+            }
+            return false;
+        }
+        public const string TimespanHelp = "For example, to {0} 25 and a half hours, use \"1d1h30m\".";
+
+
+        /// <summary> Returns whether the given value lies within the given range </summary>
+        /// <remarks> If given value is not in range, messages the player the valid range of values </remarks>
+        public static bool CheckRange(Player p, int value, string argName, int min, int max)
+        {
+            if (value >= min && value <= max) return true;
+
+            // Try to provide more helpful range messages
+            if (max == int.MaxValue)
+            {
+                p.Message("&W{0} must be {1} or greater", argName, min);
+            }
+            else if (min == int.MinValue)
+            {
+                p.Message("&W{0} must be {1} or less", argName, max);
+            }
+            else
+            {
+                p.Message("&W{0} must be between {1} and {2}", argName, min, max);
+            }
+            return false;
+        }
+
+        /// <summary> Attempts to parse the given argument as an integer. </summary>
+        public static bool GetInt(Player p, string input, string argName, ref int result,
+                                  int min = int.MinValue, int max = int.MaxValue)
+        {
+            if (!int.TryParse(input, out int value))
+            {
+                p.Message("&W\"{0}\" is not a valid integer.", input);
+                return false;
+            }
+
+            if (!CheckRange(p, value, argName, min, max)) return false;
+            result = value; 
+            return true;
+        }
+
+        /// <summary> Attempts to parse the given argument as a real number. </summary>
+        public static bool GetReal(Player p, string input, string argName, ref float result,
+                                   float min = float.NegativeInfinity, float max = float.MaxValue)
+        {
+            if (!Utils.TryParseSingle(input, out float value))
+            {
+                p.Message("&W\"{0}\" is not a valid number.", input);
+                return false;
+            }
+
+            if (value < min || value > max)
+            {
+                p.Message("&W{0} must be between {1} and {2}", argName,
+                               min.ToString("F4"), max.ToString("F4"));
+                return false;
+            }
+            result = value; 
+            return true;
+        }
+
+
+        /// <summary> Attempts to parse the given argument as an byte. </summary>
+        public static bool GetByte(Player p, string input, string argName, ref byte result,
+                                   byte min = byte.MinValue, byte max = byte.MaxValue)
+        {
+            int temp = 0;
+            if (!GetInt(p, input, argName, ref temp, min, max)) return false;
+
+            result = (byte)temp; 
+            return true;
+        }
+
+        /// <summary> Attempts to parse the given argument as a ushort. </summary>
+        public static bool GetUShort(Player p, string input, string argName, ref ushort result,
+                                     ushort min = ushort.MinValue, ushort max = ushort.MaxValue)
+        {
+            int temp = 0;
+            if (!GetInt(p, input, argName, ref temp, min, max)) return false;
+
+            result = (ushort)temp; 
+            return true;
+        }
+
+
+        /// <summary> Attempts to parse the given argument as a hex color. </summary>
+        public static bool GetHex(Player p, string input, ref ColorDesc col)
+        {
+            if (!Colors.TryParseHex(input, out ColorDesc tmp))
+            {
+                p.Message("&W\"#{0}\" is not a valid HEX color.", input);
+                return false;
+            }
+            col = tmp; 
+            return true;
+        }
+
+        /// <summary> Attempts to parse the 3 given arguments as coordinates. </summary>
+        public static bool GetCoords(Player p, string[] args, int argsOffset, ref Vec3S32 P)
+        {
+            return
+                GetCoordInt(p, args[argsOffset + 0], "X coordinate", ref P.X) &&
+                GetCoordInt(p, args[argsOffset + 1], "Y coordinate", ref P.Y) &&
+                GetCoordInt(p, args[argsOffset + 2], "Z coordinate", ref P.Z);
+        }
+
+        public static bool ParseRelative(ref string arg)
+        {
+            // ~ is preferred for compatibility with modern minecraft command syntax
+            // # is also accepted since ~ cannot be typed in original minecraft classic
+            bool relative = arg.Length > 0 && (arg[0] == '~' || arg[0] == '#');
+            if (relative) arg = arg.Substring(1);
+            return relative;
+        }
+
+        /// <summary> Attempts to parse the given argument as a coordinate integer. </summary>
+        public static bool GetCoordInt(Player p, string arg, string argName, ref int value)
+        {
+            bool relative = ParseRelative(ref arg);
+            // ~ should work as ~0
+            if (relative && arg.Length == 0) return true;
+            int cur = value;
+
+            if (!GetInt(p, arg, argName, ref value)) return false;
+            if (relative) value += cur;
+            return true;
+        }
+
+        /// <summary> Attempts to parse the given argument as a coordinate real number. </summary>
+        public static bool GetCoordFloat(Player p, string arg, string argName, ref float value)
+        {
+            bool relative = ParseRelative(ref arg);
+            // ~ should work as ~0
+            if (relative && arg.Length == 0) return true;
+            float cur = value;
+
+            if (!GetReal(p, arg, argName, ref value)) return false;
+            if (relative) value += cur;
+            return true;
+        }
+
+
+        public static bool IsSkipBlock(string input, out ushort block)
+        {
+            // Skip/None block for draw operations
+            if (input.CaselessEq("skip") || input.CaselessEq("none"))
+            {
+                block = Block.Invalid; 
+                return true;
+            }
+            else
+            {
+                block = Block.Air; 
+                return false;
+            }
+        }
+
+        /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
+        /// <remarks> Also ensures the player is allowed to place the given block. </remarks>
+        public static bool GetBlockIfAllowed(Player p, string input, string action,
+                                             out ushort block, bool allowSkip = false)
+        {
+            if (allowSkip && IsSkipBlock(input, out block)) return true;
+
+            return GetBlock(p, input, out block) && IsBlockAllowed(p, action, block);
+        }
+
+        /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
+        public static bool GetBlock(Player p, string input, out ushort block, bool allowSkip = false)
+        {
+            if (allowSkip && IsSkipBlock(input, out block)) return true;
+
+            block = Block.Parse(p, input);
+            if (block == Block.Invalid) p.Message("&WThere is no block \"{0}\".", input);
+            return block != Block.Invalid;
+        }
+
+        /// <summary> Returns whether the player is allowed to place/modify/delete the given block. </summary>
+        /// <remarks> Outputs information of which ranks can modify the block if not. </remarks>
+        public static bool IsBlockAllowed(Player p, string action, ushort block)
+        {
+            if (p.group.Blocks[block]) return true;
+            BlockPerms.Find(block).MessageCannotUse(p, action);
+            return false;
+        }
+
+
+        public static int GetBlocks(Player p, string input,
+                                    List<ushort> blocks, bool allowSkip)
+        {
+            if (!IsRawBlockRange(input, out string[] bits))
+            {
+
+                if (!allowSkip || !IsSkipBlock(input, out ushort block))
+                {
+                    if (!GetBlock(p, input, out block)) return 0;
+                }
+
+                blocks.Add(block);
+                return 1;
+            }
+
+            ushort min = 0, max = 0;
+            if (!GetUShort(p, bits[0], "Raw block ID", ref min, Block.Air, Block.MaxRaw)) return 0;
+            if (!GetUShort(p, bits[1], "Raw block ID", ref max, Block.Air, Block.MaxRaw)) return 0;
+
+            int count = 0;
+            for (ushort raw = min; raw <= max; raw++)
+            {
+                ushort b = Block.FromRaw(raw);
+                if (!Block.ExistsFor(p, b)) continue;
+
+                blocks.Add(b);
+                count++;
+            }
+
+            if (count > 0) return count;
+            p.Message("&WNo usable blocks exist in the range from {0} to {1}",
+                      min, max);
+            return 0;
+        }
+
+        public static bool IsRawBlockRange(string input, out string[] bits)
+        {
+            bits = null;
+            if (input.IndexOf('-') == -1) return false;
+            bits = input.Split(new char[] { '-' }, 2);
+
+            return int.TryParse(bits[0], out int tmp)
+                && int.TryParse(bits[1], out tmp);
         }
     }
     public class OrderTypes
@@ -1992,7 +2302,7 @@ public class Ord{0} : Order
 
 \t// This is for when a player executes this order by doing /{0}
 \t//   p is the player object for the player executing the order. 
-\t//   message is the arguments given to the order. (e.g. for '/{0} this', message is ""this"")
+\t//   message is the arguments given to the order. (e.g. for '/{0} this', message is ""ths"")
 \tpublic override void Use(Player p, string message)
 \t{{
 \t\tp.Message(""Hello World!"");

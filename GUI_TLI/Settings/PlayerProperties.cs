@@ -18,6 +18,7 @@
 using System;
 using System.ComponentModel;
 using Flames.DB;
+using Flames.Added;
 namespace Flames.Gui
 {
     public class PlayerProperties

@@ -18,6 +18,7 @@
 using System;
 using System.Windows.Forms;
 using Flames.Added.UI;
+using Flames.Added;
 using Context = System.Environment;
 namespace Flames.Gui
 {
@@ -79,7 +80,7 @@ namespace Flames.Gui
             }
             string[] args = text.SplitSpaces(2);
             string ordName = args[0], ordArgs = args.Length > 1 ? args[1] : "";
-            OrderData data = default;
+            OrderData data = default(OrderData);
             data.Rank = LevelPermission.Flames;
             data.Context = OrderContext.SendOrd;
             CurPlayer.HandleOrder(ordName, ordArgs, data);

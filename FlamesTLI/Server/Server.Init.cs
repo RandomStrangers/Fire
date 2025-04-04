@@ -22,7 +22,7 @@ using Flames.DB;
 using Flames.Generator;
 using Flames.Network;
 using Flames.Tasks;
-
+using Flames.Added;
 namespace Flames
 {
     public partial class Server
@@ -60,6 +60,10 @@ namespace Flames
             Plugin_Simple.LoadAll();
         }
 #endif
+        public static void LoadAllAddons(SchedulerTask task)
+        {
+            Addon.LoadAll();
+        }
         public static void LoadAllNewPlugins(SchedulerTask task)
         {
             NewPlugin.LoadAll();
@@ -85,7 +89,7 @@ namespace Flames
             agreed = PlayerList.Load("ranks/agreed.txt");
             invalidIds = PlayerList.Load("extra/invalidids.txt");
             Player.Flame.DatabaseID = NameConverter.InvalidNameID("(flames)");
-            Player.Console.DatabaseID = NameConverter.InvalidNameID("(console)");
+            Player.Terminal.DatabaseID = NameConverter.InvalidNameID("(terminal)");
 
 #if CORE
             Player.Sparks.DatabaseID = NameConverter.InvalidNameID("&e(&6S&ep&6a&er&6k&ei&6e)");
