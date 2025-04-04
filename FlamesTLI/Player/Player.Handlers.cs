@@ -793,7 +793,6 @@ namespace Flames
         public Order GetOrder(ref string ordName, ref string ordArgs, OrderData data)
         {
             if (!CheckOrder(ordName)) return null;
-
             string bound;
             byte bindIndex;
             if (OrdBindings.TryGetValue(ordName, out bound))
