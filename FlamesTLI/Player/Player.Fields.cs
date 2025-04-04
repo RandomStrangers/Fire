@@ -235,7 +235,7 @@ namespace Flames
         public string lastORD = "";
         public string lastCMD = lastORD;
         public DateTime lastOrdTime;
-        public lastCmdTime = lastOrdTime;
+        public DateTime lastCmdTime = lastOrdTime;
         public sbyte c4circuitNumber = -1;
 
         public Level level;
