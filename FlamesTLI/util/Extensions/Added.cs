@@ -352,7 +352,7 @@ namespace Flames.Added
             OrderPerms perms;
             string line;
 
-            while ((line = .ReadLine()) != null)
+            while ((line = r.ReadLine()) != null)
             {
                 if (line.IsCommentLine()) continue;
                 // Format - Name : Lowest : Disallow : Allow
