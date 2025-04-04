@@ -853,7 +853,7 @@ namespace Flames
         }
         public bool UseCommand(Order command, string args, CommandData data)
         {
-            return UseOrder(command, args, (OrderData)data)
+            return UseOrder(command, args, (OrderData)data);
         }
         public bool UseOrder(Order order, string args, OrderData data)
         {
