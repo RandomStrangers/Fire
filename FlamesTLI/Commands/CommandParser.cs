@@ -122,7 +122,7 @@ namespace Flames.Commands
         public static bool GetBlockIfAllowed(Player p, string input, string action,
                                              out ushort block, bool allowSkip = false)
         {
-           return OrderParser.GetBlockIfAllowed(p, input, action, out block, allowSkip)
+           return OrderParser.GetBlockIfAllowed(p, input, action, out block, allowSkip);
         }
 
         /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
