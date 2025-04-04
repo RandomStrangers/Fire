@@ -366,7 +366,7 @@ namespace Flames
         [ConfigBoolArray("Nova-logging", "Logging", true, 17)]
         public bool[] NovaLogging = defLogLevels;
 #endif
-        /*public bool CmdSpamCheck = Server.Config.OrdSpamCheck;
+        public bool CmdSpamCheck = Server.Config.OrdSpamCheck;
         public int CmdSpamCount = Server.Config.OrdSpamCount;
         public TimeSpan CmdSpamBlockTime = Server.Config.OrdSpamBlockTime;
         public TimeSpan CmdSpamInterval = Server.Config.OrdSpamInterval;
@@ -375,6 +375,6 @@ namespace Flames
         public List<string> DisabledCommands = Server.Config.DisabledOrders;
         public string IRCCommandPrefix = Server.Config.IRCOrderPrefix;
         public string ConsoleName = Server.Config.TerminalName;
-        public bool[] ConsoleLogging = Server.Config.TerminalLogging;*/
+        public bool[] ConsoleLogging = Server.Config.TerminalLogging;
     }
 }

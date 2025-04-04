@@ -47,7 +47,7 @@ namespace Flames.DB
         public string Name, Color, Title, TitleColor, IP;
         public DateTime FirstLogin, LastLogin;
         public int DatabaseID, Money, Deaths, Logins, Kicks, Messages;
-        public ulong TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
+        public long TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
         public TimeSpan TotalTime;
 
         public static void Create(Player p)
@@ -60,7 +60,7 @@ namespace Flames.DB
             string now = DateTime.Now.ToString(Database.DateFormat);
             Database.AddRow("Players", "Name, IP, FirstLogin, LastLogin, totalLogin, Title, " +
                             "totalDeaths, Money, totalBlocks, totalKicked, Messages, TimeSpent",
-                            p.name, p.ip, now, now, 1, "", 0, 0, 0, 0, 0, (ulong)p.TotalTime.TotalSeconds);
+                            p.name, p.ip, now, now, 1, "", 0, 0, 0, 0, 0, (long)p.TotalTime.TotalSeconds);
 
             int id = -200;
             Database.ReadRows("Players", "ID",
@@ -138,12 +138,12 @@ namespace Flames.DB
             data.Kicks = record.GetInt(ColumnKicked);
             data.Messages = record.GetInt(ColumnMessages);
 
-            ulong blocks = record.GetLong(ColumnBlocks);
-            ulong drawn = record.GetLong(ColumnDrawn);
-            data.TotalModified = UnpackULo(blocks);
-            data.TotalPlaced = UnpackUHi(blocks);
-            data.TotalDrawn = UnpackULo(drawn);
-            data.TotalDeleted = UnpackUHi(drawn);
+            long blocks = record.GetLong(ColumnBlocks);
+            long drawn = record.GetLong(ColumnDrawn);
+            data.TotalModified = UnpackLo(blocks);
+            data.TotalPlaced = UnpackHi(blocks);
+            data.TotalDrawn = UnpackLo(drawn);
+            data.TotalDeleted = UnpackHi(drawn);
             return data;
         }
 
@@ -151,10 +151,7 @@ namespace Flames.DB
         {
             return (value.Length == 0 || value.CaselessEq("null")) ? 0 : long.Parse(value);
         }
-        public static ulong ParseUlong(string value)
-        {
-            return (value.Length == 0 || value.CaselessEq("null")) ? 0 : ulong.Parse(value);
-        }
+
         public static int ParseInt(string value)
         {
             return (value.Length == 0 || value.CaselessEq("null")) ? 0 : int.Parse(value);
@@ -206,23 +203,8 @@ namespace Flames.DB
         {
             return hi << HiBitsShift | lo;
         }
-        public static ulong UnpackUHi(ulong value)
-        {
-            return (value >> UHiBitsShift) & UHiBitsMask;
-        }
-        public static ulong UnpackULo(ulong value)
-        {
-            return value & ULoBitsMask;
-        }
-        public static ulong Pack(ulong hi, ulong lo)
-        {
-            return hi << UHiBitsShift | lo;
-        }
+
         public const int HiBitsShift = 38;
-        public const ulong ULoBitsMask = (1L << HiBitsShift) - 1;
-        // convert negative to positive after shifting
-        public const uint UHiBitsShift = 38;
-        public const ulong UHiBitsMask = (1L << 26) - 1;
         public const long LoBitsMask = (1L << HiBitsShift) - 1;
         // convert negative to positive after shifting
         public const long HiBitsMask = (1L << 26) - 1;

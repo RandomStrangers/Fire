@@ -93,7 +93,9 @@ namespace Flames
         /// <summary> Whether this player is the Flames player instance. </summary>
         public bool IsFire { get { return this == Flame; } }
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public bool IsConsole { get { return this == Console; } }
+        public bool IsTerminal { get { return this == Terminal; } }
+        public bool IsConsole { get { return IsTerminal; } }
+
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public bool IsSparkie { get { return this == Sparks || this == Sparkie; } }
@@ -132,12 +134,12 @@ namespace Flames
         public bool AllowBuild = true;
 
         public int money;
-        public ulong TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
+        public long TotalModified, TotalDrawn, TotalPlaced, TotalDeleted;
         public int TimesVisited, TimesBeenKicked, TimesDied;
         public int TotalMessagesSent;
 
-        public ulong startModified;
-        public ulong SessionModified { get { return TotalModified - startModified; } }
+        public long startModified;
+        public long SessionModified { get { return TotalModified - startModified; } }
 
         public DateTime startTime;
         public TimeSpan TotalTime
@@ -148,7 +150,7 @@ namespace Flames
         public DateTime SessionStartTime;
         public DateTime FirstLogin, LastLogin;
 
-        public bool staticCommands;
+        public bool staticOrders;
         public DateTime lastAccessStatus;
         public VolatileArray<SchedulerTask> CriticalTasks = new VolatileArray<SchedulerTask>();
 
@@ -228,10 +230,12 @@ namespace Flames
         /// <remarks> This ignores /bind and /mode. GetHeldBlock() is usually preferred. </remarks>
         public ushort ClientHeldBlock = Block.Stone;
         public ushort[] BlockBindings = new ushort[Block.SUPPORTED_COUNT];
-        public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
-        public string lastCMD = "";
-        public DateTime lastCmdTime;
+        public Dictionary<string, string> OrdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, string> CmdBindings = OrdBindings;
+        public string lastORD = "";
+        public string lastCMD = lastORD;
+        public DateTime lastOrdTime;
+        public lastCmdTime = lastOrdTime;
         public sbyte c4circuitNumber = -1;
 
         public Level level;
@@ -246,11 +250,12 @@ namespace Flames
         public string summonedMap;
         public Position _tempPos;
 
-        // Extra storage for custom commands
+        // Extra storage for custom orders
         public ExtrasCollection Extras = new ExtrasCollection();
 
         public SpamChecker spamChecker;
-        public DateTime cmdUnblocked;
+        public DateTime ordUnblocked;
+        public DateTime cmdUnblocked = ordUnblocked;
         public List<DateTime> partialLog;
 
         public WarpList Waypoints = new WarpList();
@@ -266,11 +271,13 @@ namespace Flames
         public bool gotSQLData;
 
 
-        public bool cancelcommand, cancelchat;
+        public bool cancelorder, cancelchat;
         public bool cancellogin, cancelconnecting;
-
-        public Queue<SerialOrder> serialCmds = new Queue<SerialOrder>();
-        public object serialCmdsLock = new object();
+        public bool cancelcommand = cancelorder;
+        public Queue<SerialOrder> serialOrds = new Queue<SerialOrder>();
+        public Queue<SerialOrder> serialCmds = serialOrds;
+        public object serialOrdsLock = new object();
+        public object serialCmdsLock = serialOrdsLock;
         public static SerialCommand[] ORDToCMD(params SerialOrder[] sords)
         {
             SerialCommand[] scmds = new SerialCommand[]
