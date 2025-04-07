@@ -32,7 +32,7 @@ namespace Flames
 
         public Player p;
         public object chatLock = new object(), ordLock = new object();
-        public object cmdLock = ordLock;
+        public object cmdLock = new object();
         public List<DateTime> blockLog, chatLog, ordLog, cmdLog;
 
         public void Clear()
