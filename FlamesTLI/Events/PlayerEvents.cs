@@ -17,7 +17,7 @@
  */
 using System;
 using System.Collections.Generic;
-
+using Flames.Added;
 namespace Flames.Events.PlayerEvents
 {
     public enum PlayerAction 
@@ -107,19 +107,19 @@ namespace Flames.Events.PlayerEvents
             }
         }
     }
-    public delegate void OnPlayerCommand(Player p, string cmd, string args, CommandData data);
-    /// <summary> Called whenever a player uses a command </summary>
-    /// <remarks> You must cancel this event to prevent "Unknown command!" being shown. </remarks>
-    public class OnPlayerCommandEvent : IEvent<OnPlayerCommand>
+    public delegate void OnPlayerOrder(Player p, string ord, string args, OrderData data);
+    /// <summary> Called whenever a player issues an order </summary>
+    /// <remarks> You must cancel this event to prevent "Unknown order!" being shown. </remarks>
+    public class OnPlayerOrderEvent : IEvent<OnPlayerOrder>
     {
-        public static void Call(Player p, string cmd, string args, CommandData data)
+        public static void Call(Player p, string ord, string args, OrderData data)
         {
-            IEvent<OnPlayerCommand>[] items = handlers.Items;
+            IEvent<OnPlayerOrder>[] items = handlers.Items;
             for (int i = 0; i < items.Length; i++)
             {
                 try 
                 { 
-                    items[i].method(p, cmd, args, data); 
+                    items[i].method(p, ord, args, data); 
                 }
                 catch (Exception ex) 
                 { 
@@ -128,7 +128,16 @@ namespace Flames.Events.PlayerEvents
             }
         }
     }
-
+    public delegate void OnPlayerCommand(Player p, string cmd, string args, CommandData data);
+    /// <summary> Called whenever a player uses a command </summary>
+    /// <remarks> You must cancel this event to prevent "Unknown command!" being shown. </remarks>
+    public class OnPlayerCommandEvent : IEvent<OnPlayerCommand>
+    {
+        public static void Call(Player p, string cmd, string args, CommandData data)
+        {
+            OnPlayerOrderEvent.Call(p, cmd, args, (OrderData)data);
+        }
+    }
     public delegate void OnPlayerConnect(Player p);
     /// <summary> Called whenever a player connects to the server </summary>
     public class OnPlayerConnectEvent : IEvent<OnPlayerConnect>

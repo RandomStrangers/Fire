@@ -798,7 +798,7 @@ namespace Flames
             if (OrdBindings.TryGetValue(ordName, out bound))
             {
                 // user defined command shortcuts take priority
-                bound.Separate(' ', out ordName, out cmdArgs);
+                bound.Separate(' ', out ordName, out ordArgs);
             }
             else if (byte.TryParse(ordName, out bindIndex) && bindIndex < 10)
             {

@@ -231,11 +231,11 @@ namespace Flames
         public ushort ClientHeldBlock = Block.Stone;
         public ushort[] BlockBindings = new ushort[Block.SUPPORTED_COUNT];
         public Dictionary<string, string> OrdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<string, string> CmdBindings = OrdBindings;
+        public Dictionary<string, string> CmdBindings = this.OrdBindings;
         public string lastORD = "";
-        public string lastCMD = lastORD;
+        public string lastCMD = this.lastORD;
         public DateTime lastOrdTime;
-        public DateTime lastCmdTime = lastOrdTime;
+        public DateTime lastCmdTime = this.lastOrdTime;
         public sbyte c4circuitNumber = -1;
 
         public Level level;
@@ -255,7 +255,7 @@ namespace Flames
 
         public SpamChecker spamChecker;
         public DateTime ordUnblocked;
-        public DateTime cmdUnblocked = ordUnblocked;
+        public DateTime cmdUnblocked = this.ordUnblocked;
         public List<DateTime> partialLog;
 
         public WarpList Waypoints = new WarpList();
@@ -273,11 +273,11 @@ namespace Flames
 
         public bool cancelorder, cancelchat;
         public bool cancellogin, cancelconnecting;
-        public bool cancelcommand = cancelorder;
+        public bool cancelcommand = this.cancelorder;
         public Queue<SerialOrder> serialOrds = new Queue<SerialOrder>();
-        public Queue<SerialOrder> serialCmds = serialOrds;
+        public Queue<SerialOrder> serialCmds = this.serialOrds;
         public object serialOrdsLock = new object();
-        public object serialCmdsLock = serialOrdsLock;
+        public object serialCmdsLock = this.serialOrdsLock;
         public static SerialCommand[] ORDToCMD(params SerialOrder[] sords)
         {
             SerialCommand[] scmds = new SerialCommand[]
