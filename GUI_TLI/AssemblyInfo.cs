@@ -17,8 +17,8 @@
 */
 using System.Reflection;
 
-[assembly: AssemblyTitle("FlamesTLI")]
+[assembly: AssemblyTitle("FlamesGUI (TLI)")]
 [assembly: AssemblyDescription("ClassiCube Server Software")]
-[assembly: AssemblyProduct("FlamesTLI")]
+[assembly: AssemblyProduct("FlamesGUI (TLI)")]
 [assembly: AssemblyCopyright("MCGalaxy Copyright © 2015-2024")]
 [assembly: AssemblyVersion(Flames.Server.InternalVersion)]
