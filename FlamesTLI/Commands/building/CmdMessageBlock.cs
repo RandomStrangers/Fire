@@ -117,7 +117,7 @@ namespace Flames.Commands.Building
                 p.level.UpdateBlock(p, x, y, z, args.Block);
                 UpdateDatabase(p, args, x, y, z);
                 p.Message("Message block created.");
-                if (!p.staticCommands)
+                if (!p.staticOrders)
                 {
                     p.Message("To delete message blocks, toggle &T/delete &Smode.");
                 }

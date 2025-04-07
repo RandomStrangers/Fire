@@ -28,7 +28,7 @@ namespace Flames.Commands.Misc
 
         public override void Use(Player p, string message)
         {
-            if (p.cmdTimer)
+            if (p.ordTimer)
             {
                 p.Message("Can only have one timer at a time. Use /abort to cancel your previous timer.");
                 return;
@@ -63,7 +63,7 @@ namespace Flames.Commands.Misc
                 Player = p
             };
 
-            p.cmdTimer = true;
+            p.ordTimer = true;
             p.level.Message("Timer lasting for " + TotalTime + " seconds has started.");
             p.level.Message(args.Message);
             Server.MainScheduler.QueueRepeat(TimerCallback, args, TimeSpan.FromSeconds(5));
@@ -82,10 +82,10 @@ namespace Flames.Commands.Misc
             Player p = args.Player;
 
             args.Repeats--;
-            if (args.Repeats == 0 || !p.cmdTimer)
+            if (args.Repeats == 0 || !p.ordTimer)
             {
                 p.Message("Timer ended.");
-                p.cmdTimer = false;
+                p.ordTimer = false;
                 task.Repeating = false;
             }
             else

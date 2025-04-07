@@ -18,6 +18,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Context = System.Environment;
+using Flames.Blocks;
 namespace Flames
 {
     public static partial class Paths
@@ -78,12 +79,12 @@ namespace Flames.Added
             return null;
         }
 
-        public static List<OrderExtraPerms> FindAll(string cmd)
+        public static List<OrderExtraPerms> FindAll(string ord)
         {
             List<OrderExtraPerms> all = new List<OrderExtraPerms>();
             foreach (OrderExtraPerms perms in list)
             {
-                if (perms.OrdName.CaselessEq(cmd) && perms.Desc.Length > 0) all.Add(perms);
+                if (perms.OrdName.CaselessEq(ord) && perms.Desc.Length > 0) all.Add(perms);
             }
             return all;
         }
@@ -378,7 +379,7 @@ namespace Flames.Added
         public static void PrintOrderInfo(Player p, Order ord)
         {
             p.Message("Usable by: " + ord.Permissions.Describe());
-            PrintAliases(p, ord);
+            PrintDesignations(p, ord);
             List<OrderExtraPerms> extraPerms = OrderExtraPerms.FindAll(ord.Name);
             if (ord.OrdExtraPerms == null)
             {
@@ -576,7 +577,6 @@ namespace Flames.Added
             foreach (OrderDesignation designation in designations)
             {
                 cmdAlias.Trigger = designation.Trigger;
-                cmdAlias.Target = designation.Target;
                 cmdAlias.Format = designation.Format;
                 return cmdAlias;
             }
@@ -595,7 +595,6 @@ namespace Flames.Added
             {
                 OrderDesignation ordDesignation = new OrderDesignation();
                 ordDesignation.Trigger = alias.Trigger;
-                ordDesignation.Target = alias.Target;
                 ordDesignation.Format = alias.Format;
                 ordDesignations = new OrderDesignation[]
                 {
@@ -1187,7 +1186,7 @@ namespace Flames.Added
         public virtual LevelPermission DefaultRank { get { return LevelPermission.Guest; } }
         public virtual void Execute(Player p, string message)
         {
-            Execute(p, message, (OrderData)p.DefaultCmdData);
+            Execute(p, message, p.DefaultOrdData);
         }
         public virtual OrderDesignation[] Designations { get { return null; } }
         public virtual void Execute(Player p, string message, OrderData data)

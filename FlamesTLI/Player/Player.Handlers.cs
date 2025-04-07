@@ -652,7 +652,7 @@ namespace Flames
             Random rnd = new Random();
             return lines.Length > 0 ? lines[rnd.Next(lines.Length)] : text;
         }
-        public void HandelCommand(string cmd, string args, CommandData data)
+        public void HandleCommand(string cmd, string args, CommandData data)
         {
             HandleOrder(cmd, args, (OrderData)data);
         }
@@ -690,7 +690,7 @@ namespace Flames
                 Message("&WOrder failed");
             }
         }
-        public void HandelCommands(List<string> cmds, CommandData data)
+        public void HandleCommands(List<string> cmds, CommandData data)
         {
             HandleOrders(cmds, (OrderData)data);
         }

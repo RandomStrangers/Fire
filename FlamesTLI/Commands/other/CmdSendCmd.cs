@@ -17,6 +17,7 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
  */
+ using Flames.Added;
 namespace Flames.Commands.Misc
 {
 
@@ -39,19 +40,19 @@ namespace Flames.Commands.Misc
                 return; 
             }
 
-            string cmdName = args[1], cmdArgs = args.Length > 2 ? args[2] : "";
-            Search(ref cmdName, ref cmdArgs);
+            string ordName = args[1], ordArgs = args.Length > 2 ? args[2] : "";
+            Order.Search(ref ordName, ref ordArgs);
 
-            Command cmd = Find(cmdName);
-            if (cmd == null)
+            Order ord = Find(ordName);
+            if (ord == null)
             {
-                p.Message("Unknown command \"{0}\".", cmdName); 
+                p.Message("Unknown command \"{0}\".", ordName); 
                 return;
             }
 
             data.Context = CommandContext.SendCmd;
             data.Rank = p.Rank;
-            cmd.Use(target, cmdArgs, data);
+            ord.Execute(target, ordArgs, (OrderData)data);
         }
 
         public override void Help(Player p)
