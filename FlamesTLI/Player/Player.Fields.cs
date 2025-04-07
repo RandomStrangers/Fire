@@ -52,7 +52,7 @@ namespace Flames
 
         public DateTime LastAction, AFKCooldown;
         public bool IsAfk, AutoAfk;
-        public bool cmdTimer;
+        public bool ordTimer;
         public bool UsingWom;
         public string BrushName = "Normal", DefaultBrushArgs = "";
         public Transform Transform = NoTransform.Instance;
@@ -92,8 +92,8 @@ namespace Flames
         public bool IsSuper;
         /// <summary> Whether this player is the Flames player instance. </summary>
         public bool IsFire { get { return this == Flame; } }
-        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
         public bool IsTerminal { get { return this == Terminal; } }
+        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
         public bool IsConsole { get { return IsTerminal; } }
 
 #if CORE
@@ -231,11 +231,28 @@ namespace Flames
         public ushort ClientHeldBlock = Block.Stone;
         public ushort[] BlockBindings = new ushort[Block.SUPPORTED_COUNT];
         public Dictionary<string, string> OrdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        public Dictionary<string, string> CmdBindings = this.OrdBindings;
         public string lastORD = "";
-        public string lastCMD = this.lastORD;
         public DateTime lastOrdTime;
-        public DateTime lastCmdTime = this.lastOrdTime;
+        [Obsolete("Use lastOrd instead."), true]
+        public string lastCMD = "";
+        [Obsolete("Use lastOrdTime instead."), true]
+        public DateTime lastCmdTime;
+        [Obsolete("Use OrdBindings instead."), true]
+        public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        [Obsolete("Use ordUnblocked instead."), true]
+        public DateTime cmdUnblocked;
+        [Obsolete("Use serialOrds instead."), true]
+        public Queue<SerialCommand> serialCmds = new Queue<SerialCommand>();
+        [Obsolete("Use serialOrdsLock instead."), true]
+        public object serialCmdsLock = new object();
+        [Obsolete("Use cancelorder instead."), true]
+        public bool cancelcommand;
+        [Obsolete("Use staticOrders instead."), true]
+        public bool staticCommands;
+        [Obsolete("Use ordTimer instead."), true]
+        public bool cmdTimer;
+
+
         public sbyte c4circuitNumber = -1;
 
         public Level level;
@@ -255,7 +272,6 @@ namespace Flames
 
         public SpamChecker spamChecker;
         public DateTime ordUnblocked;
-        public DateTime cmdUnblocked = this.ordUnblocked;
         public List<DateTime> partialLog;
 
         public WarpList Waypoints = new WarpList();
@@ -273,11 +289,8 @@ namespace Flames
 
         public bool cancelorder, cancelchat;
         public bool cancellogin, cancelconnecting;
-        public bool cancelcommand = this.cancelorder;
         public Queue<SerialOrder> serialOrds = new Queue<SerialOrder>();
-        public Queue<SerialOrder> serialCmds = this.serialOrds;
         public object serialOrdsLock = new object();
-        public object serialCmdsLock = this.serialOrdsLock;
         public static SerialCommand[] ORDToCMD(params SerialOrder[] sords)
         {
             SerialCommand[] scmds = new SerialCommand[]
