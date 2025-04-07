@@ -127,7 +127,7 @@ namespace Flames
         public static List<Command> allCmds = new List<Command>();
         public static bool IsCore(Command cmd)
         {
-            return cmd.GetType().Assembly == Assembly.GetExecutingAssembly(); // TODO common method
+            return base.IsCore(cmd);
         }
 
         public static List<Command> CopyAll()
@@ -205,9 +205,9 @@ namespace Flames
             return Group.GetColor(perm) + cmd.name;
         }
 
-        public static Command Find(string name)
+        public static Order Find(string name)
         {
-            return FindCMD(name);
+            return base.Find(name);
         }
 
         public static void Search(ref string cmdName, ref string cmdArgs)

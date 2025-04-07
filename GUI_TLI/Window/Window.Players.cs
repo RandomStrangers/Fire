@@ -81,8 +81,8 @@ namespace Flames.Gui
             string[] args = text.SplitSpaces(2);
             string ordName = args[0], ordArgs = args.Length > 1 ? args[1] : "";
             OrderData data = default(OrderData);
-            data.Rank = LevelPermission.Flames;
-            data.Context = OrderContext.SendOrd;
+            data.OrderRank = LevelPermission.Flames;
+            data.orderContext = OrderContext.SendOrd;
             CurPlayer.HandleOrder(ordName, ordArgs, data);
             if (args.Length > 1)
             {

@@ -76,7 +76,7 @@ namespace Flames.Added
             {
                 if (perms.OrdName.CaselessEq(ord) && perms.Num == num) return perms;
             }
-            return null;
+            return CommandExtraPerms.Find(ord, num);
         }
 
         public static List<OrderExtraPerms> FindAll(string ord)
@@ -268,7 +268,7 @@ namespace Flames.Added
             {
                 if (perms.OrdName.CaselessEq(ord)) return perms;
             }
-            return null;
+            return CommandPerms.Find(ord);
         }
 
 
@@ -703,7 +703,7 @@ namespace Flames.Added
             {
                 if (designation.Trigger.CaselessEq(ord)) return designation;
             }
-            return null;
+            return AliasToDesignation(Alias.Find(ord));
         }
         /// <summary> Registers default designations specified by an order. </summary>
         public static void RegisterDefaults(Order ord)
@@ -1340,6 +1340,53 @@ namespace Flames.Added
                 ordArgs = format + " " + ordArgs;
             }
             ordArgs = ordArgs.Trim();
+        }
+
+        public static bool CheckRank(Player p, OrderData data, Player target,
+                                                 string action, bool canAffectOwnRank)
+        {
+            return CheckRank(p, data, target.name, target.Rank, action, canAffectOwnRank);
+        }
+
+        public static bool CheckRank(Player p, OrderData data,
+                                                 string plName, LevelPermission plRank,
+                                                 string action, bool canAffectOwnRank)
+        {
+            if (p.name.CaselessEq(plName)) return true;
+#if CORE
+            if (p.IsNull || plRank < data.OrderRank) return true;
+#else
+            if (p.IsFire || p.IsConsole || plRank < data.OrderRank) return true;
+#endif
+            if (canAffectOwnRank && plRank == data.OrderRank) return true;
+
+            if (canAffectOwnRank)
+            {
+                p.Message("Can only {0} players ranked {1} &Sor below", action, p.group.ColoredName);
+            }
+            else
+            {
+                p.Message("Can only {0} players ranked below {1}", action, p.group.ColoredName);
+            }
+            return false;
+        }
+        public bool HasExtraPerm(Player p, string ord, LevelPermission plRank, int num)
+        {
+            return OrderExtraPerms.Find(ord, num).UsableBy(plRank);
+        }
+
+        public bool HasExtraPerm(Player p, LevelPermission plRank, int num)
+        {
+            return HasExtraPerm(p, name, plRank, num);
+        }
+
+        public bool CheckExtraPerm(Player p, OrderData data, int num)
+        {
+            if (HasExtraPerm(p, data.Rank, num)) return true;
+
+            OrderExtraPerms perms = OrderExtraPerms.Find(name, num);
+            perms.MessageCannotUse(p);
+            return false;
         }
     }
     public static class OrderParser

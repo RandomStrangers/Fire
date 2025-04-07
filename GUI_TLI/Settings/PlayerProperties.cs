@@ -259,7 +259,7 @@ namespace Flames.Gui
             try
             {
                 string ordArgs = args.Length == 0 ? P.name : P.name + " " + args;
-                Order.Find(ord).Use(Player.Flame, ordArgs);
+                Order.Find(ord).Execute(Player.Flame, ordArgs);
             }
             catch (Exception ex)
             {

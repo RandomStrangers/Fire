@@ -74,7 +74,7 @@ namespace Flames.Gui
             Mapgen = true;
             try
             {
-                Order.Find("NewLvl").Use(Player.Flame, args);
+                Order.Find("NewLvl").Execute(Player.Flame, args);
             }
             catch (Exception ex)
             {
