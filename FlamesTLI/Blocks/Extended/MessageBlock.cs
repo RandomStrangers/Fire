@@ -46,19 +46,19 @@ namespace Flames.Blocks.Extended
             List<string> cmds = GetParts(message, out string text);
             if (text != null) p.Message(text);
 
-            CommandData data = p.DefaultCmdData;
-            data.Context = CommandContext.MessageBlock;
-            data.MBCoords = mbCoords;
+            OrderData data = p.DefaultOrdData;
+            data.orderContext = OrderContext.MessageBlock;
+            data.OrderMBCoords = mbCoords;
 
             if (cmds.Count == 1)
             {
                 string[] parts = cmds[0].SplitSpaces(2);
                 string args = parts.Length > 1 ? parts[1] : "";
-                p.HandleOrder(parts[0], args, (OrderData)data);
+                p.HandleOrder(parts[0], args, data);
             }
             else if (cmds.Count > 0)
             {
-                p.HandleCommands(cmds, data);
+                p.HandleOrders(cmds, data);
             }
             p.prevMsg = message;
         }

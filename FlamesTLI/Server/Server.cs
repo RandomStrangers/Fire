@@ -319,7 +319,7 @@ namespace Flames
                 IOperatingSystem.DetectOS().RestartProcess();
                 // TODO: FileLogger.Flush again maybe for if execvp fails?
             }
-            Environment.Exit(0);
+            Context.Exit(0);
         }
 
         public static string SaveAllLevels()

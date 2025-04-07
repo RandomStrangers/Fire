@@ -1,13 +1,9 @@
-using Flames.Added;
 using Flames.Added.Compiling;
 using Flames.Added.Scripting;
 using Flames.Commands;
-using Flames.Events.ServerEvents;
 using Flames.Maths;
 using Flames.SQL;
-using Flames.Tasks;
 using System;
-using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,6 +36,19 @@ namespace Flames
             TerminalOrder?.Invoke(ord, message);
             return cancelorder;
         }
+    }
+    public partial class ServerConfig
+    {
+        public bool CmdSpamCheck;
+        public int CmdSpamCount;
+        public TimeSpan CmdSpamBlockTime;
+        public TimeSpan CmdSpamInterval;
+        public bool CoreSecretCommands;
+        public bool MCLawlSecretCommands;
+        public List<string> DisabledCommands;
+        public string IRCCommandPrefix;
+        public string ConsoleName;
+        public bool[] ConsoleLogging;
     }
 }
 namespace Flames.Added
@@ -512,23 +521,13 @@ namespace Flames.Added
         }
     }
 
-    public struct OrderDesignation : IEnumerable<OrderDesignation>
+    public struct OrderDesignation
     {
         public string Trigger, Format;
         public OrderDesignation(string ord, string format = null)
         {
             Trigger = ord;
             Format = format;
-        }
-        public IEnumerator<OrderDesignation> GetEnumerator()
-        {
-            Order ord = new Order();
-            return ord.designations.Values.GetEnumerator();
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            Order ord = new Order();
-            return ord.designations.Values.GetEnumerator();
         }
         public static bool operator ==(OrderDesignation a, CommandAlias[] permB)
         {
@@ -1137,7 +1136,7 @@ namespace Flames.Added
             return orderData;
         }
     }
-    public partial class Order 
+    public abstract partial class Order 
     {
         public Dictionary<string, OrderDesignation> designations = new Dictionary<string, OrderDesignation>();
 
@@ -1184,13 +1183,11 @@ namespace Flames.Added
         public virtual bool MuseumUsable { get { return true; } }
         public virtual bool ShowOrderInfo { get { return true; } }
         public virtual LevelPermission DefaultRank { get { return LevelPermission.Guest; } }
-        public virtual void Execute(Player p, string message)
-        {
-            Execute(p, message, p.DefaultOrdData);
-        }
+        public abstract void Execute(Player p, string message);
         public virtual OrderDesignation[] Designations { get { return null; } }
         public virtual void Execute(Player p, string message, OrderData data)
         {
+            Execute(p, message);
         }
         public virtual void OrderHelp(Player p)
         {
@@ -1377,14 +1374,14 @@ namespace Flames.Added
 
         public bool HasExtraPerm(Player p, LevelPermission plRank, int num)
         {
-            return HasExtraPerm(p, name, plRank, num);
+            return HasExtraPerm(p, Name, plRank, num);
         }
 
         public bool CheckExtraPerm(Player p, OrderData data, int num)
         {
-            if (HasExtraPerm(p, data.Rank, num)) return true;
+            if (HasExtraPerm(p, data.OrderRank, num)) return true;
 
-            OrderExtraPerms perms = OrderExtraPerms.Find(name, num);
+            OrderExtraPerms perms = OrderExtraPerms.Find(Name, num);
             perms.MessageCannotUse(p);
             return false;
         }

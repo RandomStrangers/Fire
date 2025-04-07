@@ -291,44 +291,6 @@ namespace Flames
         public bool cancellogin, cancelconnecting;
         public Queue<SerialOrder> serialOrds = new Queue<SerialOrder>();
         public object serialOrdsLock = new object();
-        public static SerialCommand[] ORDToCMD(params SerialOrder[] sords)
-        {
-            SerialCommand[] scmds = new SerialCommand[]
-            {
-            };
-            foreach (SerialOrder sord in sords)
-            {
-                SerialCommand scmd = new SerialCommand();
-                scmd.cmd = (Command)sord.ord;
-                scmd.args = sord.args;
-                scmd.data = (CommandData)sord.data;
-                scmds = new SerialCommand[]
-                {
-                    scmd
-                };
-                return scmds;
-            }
-            return scmds;
-        }
-        public static SerialOrder[] CMDToORD(params SerialCommand[] scmds)
-        {
-            SerialOrder[] sords = new SerialOrder[]
-            {
-            };
-            foreach (SerialCommand scmd in scmds)
-            {
-                SerialOrder sord = new SerialOrder();
-                sord.ord = scmd.cmd;
-                sord.args = scmd.args;
-                sord.data = (OrderData)scmd.data;
-                sords = new SerialOrder[]
-                {
-                    sord
-                };
-                return sords;
-            }
-            return sords;
-        }
         public struct SerialCommand
         {
             public Command cmd;

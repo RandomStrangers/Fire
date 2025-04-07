@@ -103,7 +103,7 @@ namespace Flames.Commands
             {
                 if (alias.Trigger.CaselessEq(cmd)) return alias;
             }
-            return Designation.DesignationToAlias(Designation.Find(cmd));
+            return null;
         }
 
         /// <summary> Registers default aliases specified by a command. </summary>

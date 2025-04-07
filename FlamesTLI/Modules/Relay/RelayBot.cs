@@ -535,15 +535,15 @@ namespace Flames.Modules.Relay
         /// <summary> Outputs the list of online players to the given user </summary>
         public virtual void MessagePlayers(RelayPlayer p)
         {
-            Command.Find("Players").Use(p, "", p.DefaultCmdData);
+            Command.Find("Players").Use(p, "", (CommandData)p.DefaultOrdData);
         }
         public virtual void MessageLogo(RelayPlayer p)
         {
-            Command.Find("ServerLogo").Use(p, "", p.DefaultCmdData);
+            Command.Find("ServerLogo").Use(p, "", (CommandData)p.DefaultOrdData);
         }
         public virtual void MessageURL(RelayPlayer p)
         {
-            Command.Find("ServerUrl").Use(p, "", p.DefaultCmdData);
+            Command.Find("ServerUrl").Use(p, "", (CommandData)p.DefaultOrdData);
         }
 
         public bool HandleCommand(RelayUser user, string channel, string message, string[] parts)

@@ -46,7 +46,7 @@ namespace Flames
 
         public bool CheckExtraPerm(Player p, CommandData data, int num)
         {
-            return Order.CheckExtraPerm(p, (OrderData)data, num);
+            return CheckExtraPerm(p, (OrderData)data, num);
         }
 
         public static bool CheckRank(Player p, CommandData data, Player target,

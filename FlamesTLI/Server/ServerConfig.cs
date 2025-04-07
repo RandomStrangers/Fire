@@ -20,11 +20,10 @@ using System.Collections.Generic;
 using Flames.Config;
 using Flames.Generator;
 using Flames.Modules.Relay.IRC;
-using Flames.Added;
 namespace Flames
 {
 
-    public class ServerConfig : EnvConfig
+    public partial class ServerConfig : EnvConfig
     {
 #if CORE
         public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
@@ -366,15 +365,5 @@ namespace Flames
         [ConfigBoolArray("Nova-logging", "Logging", true, 17)]
         public bool[] NovaLogging = defLogLevels;
 #endif
-        public bool CmdSpamCheck = Server.Config.OrdSpamCheck;
-        public int CmdSpamCount = Server.Config.OrdSpamCount;
-        public TimeSpan CmdSpamBlockTime = Server.Config.OrdSpamBlockTime;
-        public TimeSpan CmdSpamInterval = Server.Config.OrdSpamInterval;
-        public bool CoreSecretCommands = Server.Config.CoreSecretOrders;
-        public bool MCLawlSecretCommands = Server.Config.MCLawlSecretOrders;
-        public List<string> DisabledCommands = Server.Config.DisabledOrders;
-        public string IRCCommandPrefix = Server.Config.IRCOrderPrefix;
-        public string ConsoleName = Server.Config.TerminalName;
-        public bool[] ConsoleLogging = Server.Config.TerminalLogging;
     }
 }

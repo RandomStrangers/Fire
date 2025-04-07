@@ -29,7 +29,7 @@ using Flames.NewScripting;
 #endif
 namespace Flames
 {
-    public partial class Command : Order
+    public abstract partial class Command : Order
     {
         public Dictionary<string, CommandAlias[]> aliases = new Dictionary<string, CommandAlias[]>();
         public override string Name { get { return name; } }
@@ -55,18 +55,16 @@ namespace Flames
         public virtual LevelPermission defaultRank { get { return LevelPermission.Guest; } }
         public override void Execute(Player p, string message)
         {
-            Use(p, message);
+            Execute(p, message, p.DefaultOrdData);
         }
         public override void Execute(Player p, string message, OrderData data)
         {
             Use(p, message, (CommandData)data);
         }
-        public virtual void Use(Player p, string message)
+        public abstract void Use(Player p, string message);
+        public virtual void Use(Player p, string message, CommandData data)
         {
-            Use(p, message, p.DefaultCmdData);
-        }
-        public virtual void Use(Player p, string message, CommandData data) 
-        {
+            Use(p, message);
         }
         public override void OrderHelp(Player p)
         {
@@ -127,7 +125,7 @@ namespace Flames
         public static List<Command> allCmds = new List<Command>();
         public static bool IsCore(Command cmd)
         {
-            return base.IsCore(cmd);
+            return Order.IsCore(cmd);
         }
 
         public static List<Command> CopyAll()
@@ -205,9 +203,9 @@ namespace Flames
             return Group.GetColor(perm) + cmd.name;
         }
 
-        public static Order Find(string name)
+        public static Command Find(string name)
         {
-            return base.Find(name);
+            return FindCMD(name);
         }
 
         public static void Search(ref string cmdName, ref string cmdArgs)
@@ -268,7 +266,7 @@ namespace Flames
     {
         public override void Use(Player p, string message)
         {
-            Use(p, message, p.DefaultCmdData);
+            Use(p, message, (CommandData)p.DefaultOrdData);
         }
     }
 
@@ -357,7 +355,7 @@ namespace Flames.Commands
         }
     }
 
-    public struct CommandAlias : IEnumerable<CommandAlias[]>
+    public struct CommandAlias
     {
         public string Trigger, Format;
 
@@ -365,16 +363,6 @@ namespace Flames.Commands
         {
             Trigger = cmd;
             Format = format;
-        }
-        public IEnumerator<CommandAlias[]> GetEnumerator()
-        {
-            Command cmd = new Command();
-            return cmd.aliases.Values.GetEnumerator();
-        }
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            Command cmd = new Command();
-            return cmd.aliases.Values.GetEnumerator();
         }
         public static bool operator ==(CommandAlias a, OrderDesignation[] permB)
         {

@@ -41,7 +41,7 @@ namespace Flames.Commands.Misc
             }
 
             string ordName = args[1], ordArgs = args.Length > 2 ? args[2] : "";
-            Order.Search(ref ordName, ref ordArgs);
+            Search(ref ordName, ref ordArgs);
 
             Order ord = Find(ordName);
             if (ord == null)
@@ -49,10 +49,10 @@ namespace Flames.Commands.Misc
                 p.Message("Unknown command \"{0}\".", ordName); 
                 return;
             }
-
-            data.Context = CommandContext.SendCmd;
-            data.Rank = p.Rank;
-            ord.Execute(target, ordArgs, (OrderData)data);
+            OrderData orderData = new OrderData();
+            orderData.orderContext = OrderContext.SendOrd;
+            orderData.OrderRank = p.Rank;
+            ord.Execute(target, ordArgs, orderData);
         }
 
         public override void Help(Player p)
