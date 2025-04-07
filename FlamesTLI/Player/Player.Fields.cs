@@ -233,23 +233,23 @@ namespace Flames
         public Dictionary<string, string> OrdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         public string lastORD = "";
         public DateTime lastOrdTime;
-        [Obsolete("Use lastOrd instead."), true]
+        [Obsolete("Use lastOrd instead.", true)]
         public string lastCMD = "";
-        [Obsolete("Use lastOrdTime instead."), true]
+        [Obsolete("Use lastOrdTime instead.", true)]
         public DateTime lastCmdTime;
-        [Obsolete("Use OrdBindings instead."), true]
+        [Obsolete("Use OrdBindings instead.", true)]
         public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-        [Obsolete("Use ordUnblocked instead."), true]
+        [Obsolete("Use ordUnblocked instead.", true)]
         public DateTime cmdUnblocked;
-        [Obsolete("Use serialOrds instead."), true]
+        [Obsolete("Use serialOrds instead.", true)]
         public Queue<SerialCommand> serialCmds = new Queue<SerialCommand>();
-        [Obsolete("Use serialOrdsLock instead."), true]
+        [Obsolete("Use serialOrdsLock instead.", true)]
         public object serialCmdsLock = new object();
-        [Obsolete("Use cancelorder instead."), true]
+        [Obsolete("Use cancelorder instead.", true)]
         public bool cancelcommand;
-        [Obsolete("Use staticOrders instead."), true]
+        [Obsolete("Use staticOrders instead.", true)]
         public bool staticCommands;
-        [Obsolete("Use ordTimer instead."), true]
+        [Obsolete("Use ordTimer instead.", true)]
         public bool cmdTimer;
 
 
