@@ -53,6 +53,17 @@ namespace Flames.Tasks
 
         public static void TickPlayer(Player p)
         {
+            p.lastCMD = p.lastORD;
+            p.lastCmdTime = p.lastOrdTime;
+            p.CmdBindings = p.OrdBindings;
+            p.cmdUnblocked = p.ordUnblocked;
+            p.serialCmds = p.serialOrds;
+            p.serialCmdsLock = p.serialOrdsLock;
+            p.cancelcommand = p.cancelorder;
+            p.staticCommands = p.staticOrders;
+            p.cmdTimer = p.ordTimer;
+            p.spamChecker.cmdLog = p.spamChecker.ordLog;
+            p.spamChecker.cmdLock = p.spamChecker.ordLock;
             if (p.following.Length > 0)
             {
                 Player who = PlayerInfo.FindExact(p.following);

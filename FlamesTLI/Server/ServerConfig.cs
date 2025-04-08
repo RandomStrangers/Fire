@@ -23,7 +23,7 @@ using Flames.Modules.Relay.IRC;
 namespace Flames
 {
 
-    public class ServerConfig : EnvConfig
+    public partial class ServerConfig : EnvConfig
     {
 #if CORE
         public const string Software = "&4H&6a&5r&0m&7o&2n&dy&a";
@@ -91,10 +91,10 @@ namespace Flames
 
         [ConfigString("HeartbeatURL", "Other", "http://www.classicube.net/heartbeat.jsp", false, ":/.,")]
         public string HeartbeatURL = "http://www.classicube.net/heartbeat.jsp";
-        [ConfigBool("core-secret-commands", "Other", true)]
-        public bool CoreSecretCommands = true;
-        [ConfigBool("MCLawl-secret-commands", "Other", true)]
-        public bool MCLawlSecretCommands = true;
+        [ConfigBool("core-secret-orders", "Other", true)]
+        public bool CoreSecretOrders = true;
+        [ConfigBool("MCLawl-secret-orders", "Other", true)]
+        public bool MCLawlSecretOrders = true;
         [ConfigBool("restart-on-error", "Error handling", true)]
         public bool restartOnError = true;
         [ConfigBool("software-staff-prefixes", "Other", true)]
@@ -175,8 +175,8 @@ namespace Flames
         //  this option needs changing to server's IP (0.0.0.0 = listen on all network interfaces)
         [ConfigString("listen-ip", "Other", "0.0.0.0")]
         public string ListenIP = "0.0.0.0";
-        [ConfigStringList("disabled-commands", "Other")]
-        public List<string> DisabledCommands = new List<string>();
+        [ConfigStringList("disabled-orders", "Other")]
+        public List<string> DisabledOrders = new List<string>();
         [ConfigStringList("disabled-modules", "Other")]
         public List<string> DisabledModules = new List<string>();
 
@@ -234,8 +234,8 @@ namespace Flames
         public bool IRCShowWorldChanges = false;
         [ConfigBool("irc-show-afk", "IRC bot", false)]
         public bool IRCShowAFK = false;
-        [ConfigString("irc-command-prefix", "IRC bot", ".x", true)]
-        public string IRCCommandPrefix = ".x";
+        [ConfigString("irc-order-prefix", "IRC bot", ".x", true)]
+        public string IRCOrderPrefix = ".x";
         [ConfigEnum("irc-controller-verify", "IRC bot", IRCControllerVerify.HalfOp, typeof(IRCControllerVerify))]
         public IRCControllerVerify IRCVerify = IRCControllerVerify.HalfOp;
         [ConfigPerm("irc-controller-rank", "IRC bot", LevelPermission.Admin)]
@@ -324,15 +324,14 @@ namespace Flames
         [ConfigTimespan("spam-counter-reset-time", "Spam control", 5, false)]
         public TimeSpan ChatSpamInterval = TimeSpan.FromSeconds(5);
 
-        [ConfigBool("cmd-spam-check", "Spam control", true)]
-        public bool CmdSpamCheck = true;
-        [ConfigInt("cmd-spam-count", "Spam control", 25, 0, 10000)]
-        public int CmdSpamCount = 25;
-        [ConfigTimespan("cmd-spam-block-time", "Spam control", 30, false)]
-        public TimeSpan CmdSpamBlockTime = TimeSpan.FromSeconds(30);
-        [ConfigTimespan("cmd-spam-interval", "Spam control", 1, false)]
-        public TimeSpan CmdSpamInterval = TimeSpan.FromSeconds(1);
-
+        [ConfigBool("ord-spam-check", "Spam control", true)]
+        public bool OrdSpamCheck = true;
+        [ConfigInt("ord-spam-count", "Spam control", 25, 0, 10000)]
+        public int OrdSpamCount = 25;
+        [ConfigTimespan("ord-spam-block-time", "Spam control", 30, false)]
+        public TimeSpan OrdSpamBlockTime = TimeSpan.FromSeconds(30);
+        [ConfigTimespan("ord-spam-interval", "Spam control", 1, false)]
+        public TimeSpan OrdSpamInterval = TimeSpan.FromSeconds(1);
         [ConfigBool("block-spam-check", "Spam control", true)]
         public bool BlockSpamCheck = true;
         [ConfigInt("block-spam-count", "Spam control", 200, 0, 10000)]
@@ -348,12 +347,10 @@ namespace Flames
         public TimeSpan IPSpamBlockTime = TimeSpan.FromSeconds(180);
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
-        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
         [ConfigString("host-state", "Chat", "Burning")]
-        public string ConsoleName = "Burning";
-        /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        [ConfigBoolArray("console-logging", "Logging", true, 17)]
-        public bool[] ConsoleLogging = defLogLevels;
+        public string TerminalName = "Burning";
+        [ConfigBoolArray("terminal-logging", "Logging", true, 17)]
+        public bool[] TerminalLogging = defLogLevels;
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         [ConfigString("Core-State", "Chat", "Burning")]

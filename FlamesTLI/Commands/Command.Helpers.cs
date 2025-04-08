@@ -36,7 +36,7 @@ namespace Flames
 
         public bool HasExtraPerm(Player p, string cmd, LevelPermission plRank, int num)
         {
-            return CommandExtraPerms.Find(cmd, num).UsableBy(plRank);
+            return OrderExtraPerms.Find(cmd, num).UsableBy(plRank);
         }
 
         public bool HasExtraPerm(Player p, LevelPermission plRank, int num)
@@ -46,11 +46,7 @@ namespace Flames
 
         public bool CheckExtraPerm(Player p, CommandData data, int num)
         {
-            if (HasExtraPerm(p, data.Rank, num)) return true;
-
-            CommandExtraPerms perms = CommandExtraPerms.Find(name, num);
-            perms.MessageCannotUse(p);
-            return false;
+            return CheckExtraPerm(p, (OrderData)data, num);
         }
 
         public static bool CheckRank(Player p, CommandData data, Player target,
@@ -63,23 +59,7 @@ namespace Flames
                                                  string plName, LevelPermission plRank,
                                                  string action, bool canAffectOwnRank)
         {
-            if (p.name.CaselessEq(plName)) return true;
-#if CORE
-            if (p.IsNull || plRank < data.Rank) return true;
-#else
-            if (p.IsFire || p.IsConsole || plRank < data.Rank) return true;
-#endif
-            if (canAffectOwnRank && plRank == data.Rank) return true;
-
-            if (canAffectOwnRank)
-            {
-                p.Message("Can only {0} players ranked {1} &Sor below", action, p.group.ColoredName);
-            }
-            else
-            {
-                p.Message("Can only {0} players ranked below {1}", action, p.group.ColoredName);
-            }
-            return false;
+            return Order.CheckRank(p, (OrderData)data, plName, plRank, action, canAffectOwnRank);
         }
 
         public string CheckOwn(Player p, string name, string type)

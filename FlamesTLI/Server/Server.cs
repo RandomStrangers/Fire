@@ -39,7 +39,7 @@ using Flames.Util;
 using Flames.Modules.Awards;
 using Context = System.Environment;
 using Flames.Added;
-
+using Flames.Added.Scripting;
 namespace Flames
 {
     public partial class Server
@@ -48,9 +48,8 @@ namespace Flames
         { 
             s = this; 
         }
-
         //True = cancel event
-        //Fale = don't cancel event
+        //False = don't cancel event
         public static bool Check(string cmd, string message)
         {
             FlameCommand?.Invoke(cmd, message);
@@ -60,7 +59,7 @@ namespace Flames
             NovaCommand?.Invoke(cmd, message);
 #endif
             ConsoleCommand?.Invoke(cmd, message);
-            return cancelcommand;
+            return CheckOrders(cmd, message);
         }
 
         public void Log(string message) 
@@ -121,10 +120,12 @@ namespace Flames
             Critical.QueueOnce(LoadAllSimplePlugins);
 #endif
             NewScripting.IScripting.Init();
+            IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
             Economy.LoadDatabase();
             Critical.QueueOnce(LoadAllNewPlugins);
+            Critical.QueueOnce(LoadAllAddons);
             Background.QueueOnce(LoadMainLevel);
             Background.QueueOnce(LoadAutoloadMaps);
             Background.QueueOnce(UpgradeTasks.UpgradeOldTempranks);
@@ -169,7 +170,6 @@ namespace Flames
             RankInfo.EnsureExists();
             Ban.EnsureExists();
             PlayerDB.EnsureDirectoriesExist();
-
             EnsureDirectoryExists("extra");
             EnsureDirectoryExists(Paths.WaypointsDir);
             EnsureDirectoryExists("extra/bots");
@@ -188,18 +188,18 @@ namespace Flames
         }
 
         // TODO rethink this
-        public static void LoadAllSettings(bool commands)
+        public static void LoadAllSettings(bool orders)
         {
             Colors.Load();
-            Alias.LoadCustom();
+            Designation.LoadCustom();
             BlockDefinition.LoadGlobal();
             ImagePalette.Load();
             SrvProperties.Load();
-            if (commands) Order.InitAll();
+            if (orders) Order.InitAll();
             AuthService.UpdateList();
             Heartbeat.ReloadDefault();
             Group.LoadAll();
-            CommandPerms.Load();
+            OrderPerms.Load();
             Block.SetBlocks();
             BlockPerms.Load();
             AwardsList.Load();
@@ -228,7 +228,7 @@ namespace Flames
         {
             if (Config.SayBye)
             {
-                Command.Find("say").Use(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
+                Order.Find("say").Execute(Player.Flame, Colors.Strip(SoftwareNameVersioned) + " &Sshutting down!");
             }
             Logger.Log(LogType.Warning, "&fServer is shutting down!");
             shuttingDown = true;
@@ -284,6 +284,7 @@ namespace Flames
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
 #endif
+            Addon.UnloadAll();
             NewPlugin.UnloadAll();
 
             try
@@ -313,13 +314,12 @@ namespace Flames
             } catch 
             { 
             }
-
-            //if (restarting)
-            //{
-            IOperatingSystem.DetectOS().RestartProcess();
+            if (restarting)
+            {
+                IOperatingSystem.DetectOS().RestartProcess();
                 // TODO: FileLogger.Flush again maybe for if execvp fails?
-            //}
-            //Environment.Exit(0);
+            }
+            Context.Exit(0);
         }
 
         public static string SaveAllLevels()

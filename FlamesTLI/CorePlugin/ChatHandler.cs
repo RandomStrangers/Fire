@@ -17,7 +17,7 @@
  */
 using Flames.Commands.Chatting;
 using Flames.Maths;
-
+using Flames.Added;
 namespace Flames.Core
 {
 
@@ -44,98 +44,102 @@ namespace Flames.Core
         // Need to find a better way to do this
         public static void HandleCommand(Player p, string cmd, string args, CommandData data)
         {
+            HandleOrder(p, cmd, args, (OrderData)data);
+        }
+        public static void HandleOrder(Player p, string ord, string args, OrderData data)
+        {
             // Really clunky design, but it works
             Level lvl = p.level;
-            Command command = Command.Find(cmd);
-            if (command != null)
+            Order order = Order.Find(ord);
+            if (order != null)
             {
-                bool IsDrawingCmd = command.type.CaselessEq(CommandTypes.Building);
+                bool IsDrawingOrd = order.Type.CaselessEq(OrderTypes.Building);
 
-                if (IsDrawingCmd && (lvl.IsMuseum || !lvl.Config.Drawing))
+                if (IsDrawingOrd && (lvl.IsMuseum || !lvl.Config.Drawing))
                 {
                     if (lvl.IsMuseum)
                     {
-                        p.Message("Drawing commands are disabled in museums.");
+                        p.Message("Drawing orders are disabled in museums.");
                     }
                     else
                     {
-                        p.Message("Drawing commands are turned off on this map.");
+                        p.Message("Drawing orders are turned off on this map.");
                     }
-                    p.cancelcommand = true;
+                    p.cancelorder = true;
                     Vec3S32 pos = p.Pos.BlockCoords;
                     p.RevertBlock((ushort)pos.X, (ushort)pos.Y, (ushort)pos.Z);
                 }
             }
-            if (!Server.Config.CoreSecretCommands) return;
+            if (!Server.Config.CoreSecretOrders) return;
             // DO NOT REMOVE THE TWO COMMANDS BELOW, /PONY AND /RAINBOWDASHLIKESCOOLTHINGS. -EricKilla
-            if (cmd.ToLower() == "pony")
+            if (ord.ToLower() == "pony")
             {
-                p.cancelcommand = true;
-                if (!MessageCmd.CanSpeak(p, cmd)) return;
+                p.cancelorder = true;
+                if (!MessageCmd.CanSpeak(p, ord)) return;
                 int used = p.Extras.GetInt("F_PONY");
 
                 if (used < 2)
                 {
                     Chat.MessageFrom(p, "λNICK &Sjust so happens to be a proud brony! Everyone give λNICK &Sa brohoof!");
-                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, cmd);
+                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, ord);
                 }
                 else
                 {
-                    p.Message("You have used this command 2 times. You cannot use it anymore! Sorry, Brony!");
+                    p.Message("You have issued this order 2 times. You cannot use it anymore! Sorry, Brony!");
                 }
 
                 p.Extras["F_PONY"] = used + 1;
             }
-            else if (cmd.ToLower() == "rainbowdashlikescoolthings")
+            else if (ord.ToLower() == "rainbowdashlikescoolthings")
             {
-                p.cancelcommand = true;
-                if (!MessageCmd.CanSpeak(p, cmd)) return;
+                p.cancelorder = true;
+                if (!MessageCmd.CanSpeak(p, ord)) return;
                 int used = p.Extras.GetInt("F_RD");
 
                 if (used < 2)
                 {
                     Chat.MessageGlobal("&4T&6H&eI&aS&3 S&9E&1R&4V&6E&eR &aJ&3U&9S&1T &4G&6O&eT &a2&30 &9P&1E&4R&6C&eE&aN&3T &9C&1O&4O&6L&eE&aR&3!");
-                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, cmd);
+                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, ord);
                 }
                 else
                 {
-                    p.Message("You have used this command 2 times. You cannot use it anymore! Sorry, Brony!");
+                    p.Message("You have issued this order 2 times. You cannot use it anymore! Sorry, Brony!");
                 }
 
                 p.Extras["F_RD"] = used + 1;
             }
-            if (!Server.Config.MCLawlSecretCommands) return;
-            if (cmd.ToLower() == "care")
+            if (!Server.Config.MCLawlSecretOrders) return;
+            if (ord.ToLower() == "care")
             {
-                p.cancelcommand = true;
+                p.cancelorder = true;
                 int used = p.Extras.GetInt("F_CARE");
 
                 if (used < 2)
                 {
                     Chat.MessageFrom(p, "λNICK is now loved by Harmony with all her heart.");
                     p.Message("Harmony now loves you with all her heart. ");
-                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, cmd);
+                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, ord);
                 }
                 else
                 {
-                    p.Message("You have used this command 2 times. You cannot use it anymore!");
+                    p.Message("You have issued this order 2 times. You cannot use it anymore!");
                 }
 
                 p.Extras["F_CARE"] = used + 1;
             }
-            else if (cmd.ToLower() == "facepalm")
+            else if (ord.ToLower() == "facepalm")
             {
-                p.cancelcommand = true;
+                p.cancelorder= true;
                 int used = p.Extras.GetInt("F_FACEPALM");
 
                 if (used < 2)
                 {
-                    p.Message("Harmony's bot army just simultaneously facepalm'd at your use of this command.");
-                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, cmd);
+                    p.Message("Harmony's bot army just simultaneously facepalm'd at your issue of this order.");
+                    Logger.Log(LogType.OrderUsage, "{0} used /{1}", p.name, ord);
                 }
                 else
                 {
-                    p.Message("You have used this command 2 times. You cannot use it anymore!");
+                    p.Message("You have issued this order 2 times. You cannot use it anymore!");
                 }
 
                 p.Extras["F_FACEPALM"] = used + 1;

@@ -34,11 +34,11 @@ namespace Flames.Commands.Building
 
         public override void Use(Player p, string message, CommandData data)
         {
-            p.staticCommands = !p.staticCommands;
+            p.staticOrders = !p.staticOrders;
             p.ClearBlockchange();
 
-            p.Message("Static mode: &a" + p.staticCommands);
-            if (message.Length == 0 || !p.staticCommands) return;
+            p.Message("Static mode: &a" + p.staticOrders);
+            if (message.Length == 0 || !p.staticOrders) return;
             data.Context = CommandContext.Static;
 
             string[] parts = message.SplitSpaces(2);

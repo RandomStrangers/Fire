@@ -143,7 +143,7 @@ namespace Flames
             {
                 result = DeleteBlock(old, x, y, z);
             }
-            else if (!CommandParser.IsBlockAllowed(this, "place", block))
+            else if (!OrderParser.IsBlockAllowed(this, "place", block))
             {
                 // Not allowed to place new block
                 result = ChangeResult.Unchanged;
@@ -504,11 +504,11 @@ namespace Flames
             if (text != "/afk" && IsAfk)
                 CmdAfk.ToggleAfk(this, "");
 
-            bool isCommand;
-            text = Chat.ParseInput(text, out isCommand);
-            if (isCommand) 
+            bool isOrder;
+            text = Chat.ParseInput(text, out isOrder);
+            if (isOrder) 
             { 
-                DoCommand(text); 
+                DoOrder(text); 
                 return; 
             }
 
@@ -517,7 +517,7 @@ namespace Flames
             { 
                 Message("You are muted.");
                 return; 
-            } //Muted: Only allow commands
+            } //Muted: Only allow orders
 
             if (Server.voting)
             {
@@ -616,14 +616,16 @@ namespace Flames
             SendRawMessage("&3Partial message: &f" + partialMessage);
             LimitPartialMessage();
         }
-
-
         public void DoCommand(string text)
         {
-            // Typing / repeats last command executed
+            DoOrder(text);
+        }
+        public void DoOrder(string text)
+        {
+            // Typing / repeats last order executed
             if (text.Length == 0)
             {
-                text = lastCMD;
+                text = lastORD;
                 if (text.Length == 0)
                 {
                     Message("Cannot repeat order - no orders issued yet.");
@@ -632,9 +634,9 @@ namespace Flames
                 Message("Repeating &T/" + text);
             }
 
-            string cmd, args;
-            text.Separate(' ', out cmd, out args);
-            HandleOrder(cmd, args, (OrderData)DefaultCmdData);
+            string ord, args;
+            text.Separate(' ', out ord, out args);
+            HandleOrder(ord, args, DefaultOrdData);
         }
 
         public string HandleJoker(string text)
@@ -650,81 +652,90 @@ namespace Flames
             Random rnd = new Random();
             return lines.Length > 0 ? lines[rnd.Next(lines.Length)] : text;
         }
-
+        public void HandleCommand(string cmd, string args, CommandData data)
+        {
+            HandleOrder(cmd, args, (OrderData)data);
+        }
         public void HandleOrder(string ord, string args, OrderData data)
         {
             ord = ord.ToLower();
-            if (!Server.Config.CmdSpamCheck && !CheckMBRecursion((CommandData)data)) return;
+            if (!Server.Config.OrdSpamCheck && !CheckMBRecursion(data)) return;
 
             try
             {
-                Order command = GetOrder(ref ord, ref args, (CommandData)data);
-                if (command == null) return;
+                Order order = GetOrder(ref ord, ref args, data);
+                if (order == null) return;
 
-                bool parallel = command.OrdParallelism == (OrderParallelism)CommandParallelism.Yes
-                                    || data.orderContext == (OrderContext)CommandContext.MessageBlock;
-                if (!parallel && !EnqueueSerialCommand(command, args, (CommandData)data)) return;
+                bool parallel = order.OrdParallelism == OrderParallelism.Yes
+                                    || data.orderContext == OrderContext.MessageBlock;
+                if (!parallel && !EnqueueSerialOrder(order, args, data)) return;
 
                 ThreadStart callback;
                 if (parallel)
                 {
-                    callback = () => UseCommand(command, args, (CommandData)data);
+                    callback = () => UseOrder(order, args, data);
                 }
                 else
                 {
-                    callback = ExecuteSerialCommands;
+                    callback = ExecuteSerialOrders;
                 }
 
                 Thread thread;
-                Server.StartThread(out thread, "CMD_ " + ord, callback);
+                Server.StartThread(out thread, "ORD_ " + ord, callback);
                 Utils.SetBackgroundMode(thread);
             }
             catch (Exception e)
             {
                 Logger.LogError(e);
-                Message("&WCommand failed");
+                Message("&WOrder failed");
             }
         }
-
         public void HandleCommands(List<string> cmds, CommandData data)
         {
-            List<string> messages = new List<string>(cmds.Count);
-            List<Order> commands = new List<Order>(cmds.Count);
-            if (!Server.Config.CmdSpamCheck && !CheckMBRecursion(data)) return;
+            HandleOrders(cmds, (OrderData)data);
+        }
+        public void HandleOrders(List<string> ords, OrderData data)
+        {
+            List<string> messages = new List<string>(ords.Count);
+            List<Order> orders = new List<Order>(ords.Count);
+            if (!Server.Config.OrdSpamCheck && !CheckMBRecursion(data)) return;
 
             try
             {
-                foreach (string raw in cmds)
+                foreach (string raw in ords)
                 {
                     string[] parts = raw.SplitSpaces(2);
-                    string cmd = parts[0].ToLower();
+                    string ord = parts[0].ToLower();
                     string args = parts.Length > 1 ? parts[1] : "";
 
-                    Order command = GetOrder(ref cmd, ref args, data);
-                    if (command == null) return;
+                    Order order = GetOrder(ref ord, ref args, data);
+                    if (order == null) return;
 
                     messages.Add(args); 
-                    commands.Add(command);
+                    orders.Add(order);
                 }
 
                 Thread thread;
-                Server.StartThread(out thread, "CMDS_",
-                                   () => UseCommands(commands, messages, data));
+                Server.StartThread(out thread, "ORDS_",
+                                   () => UseOrders(orders, messages, data));
                 Utils.SetBackgroundMode(thread);
             }
             catch (Exception e)
             {
                 Logger.LogError(e);
-                Message("&WCommand failed.");
+                Message("&WOrder failed.");
             }
         }
-
         public bool CheckMBRecursion(CommandData data)
         {
-            if (data.Context == CommandContext.MessageBlock)
+            return CheckMBRecursion((OrderData)data);
+        }
+        public bool CheckMBRecursion(OrderData data)
+        {
+            if (data.orderContext == OrderContext.MessageBlock)
             {
                 mbRecursion++;
-                // failsafe for when server has turned off command spam checking
+                // failsafe for when server has turned off order spam checking
                 if (mbRecursion >= 100)
                 {
                     mbRecursion = 0;
@@ -732,13 +743,17 @@ namespace Flames
                     return false;
                 }
             }
-            else if (data.Context == CommandContext.Normal)
+            else if (data.orderContext == OrderContext.Normal)
             {
                 mbRecursion = 0;
             }
             return true;
         }
 
+        public bool CheckCommand(string cmd)
+        {
+            return CheckOrder(cmd);
+        }
         public bool CheckOrder(string ord)
         {
             if (ord.Length == 0) 
@@ -762,182 +777,199 @@ namespace Flames
                 return false;
             }
 
-            TimeSpan delta = cmdUnblocked - DateTime.UtcNow;
+            TimeSpan delta = ordUnblocked - DateTime.UtcNow;
             if (delta.TotalSeconds > 0)
             {
                 int secs = (int)Math.Ceiling(delta.TotalSeconds);
-                Message("Blocked from using commands for another " + secs + " seconds"); 
+                Message("Blocked from issuing orders for another " + secs + " seconds"); 
                 return false;
             }
             return true;
         }
-
-        public Order GetOrder(ref string ordName, ref string cmdArgs, CommandData data)
+        public Order GetCommand(ref string cmdName, ref string cmdArgs, CommandData data)
+        {
+            return GetOrder(ref cmdName, ref cmdArgs, (OrderData)data);
+        }
+        public Order GetOrder(ref string ordName, ref string ordArgs, OrderData data)
         {
             if (!CheckOrder(ordName)) return null;
-
             string bound;
             byte bindIndex;
-            if (CmdBindings.TryGetValue(ordName, out bound))
+            if (OrdBindings.TryGetValue(ordName, out bound))
             {
                 // user defined command shortcuts take priority
-                bound.Separate(' ', out ordName, out cmdArgs);
+                bound.Separate(' ', out ordName, out ordArgs);
             }
             else if (byte.TryParse(ordName, out bindIndex) && bindIndex < 10)
             {
                 // backwards compatibility for old /cmdbind behaviour
-                Message("No command is bound to: &T/" + ordName);
+                Message("No order is bound to: &T/" + ordName);
                 return null;
             }
 
-            Order.Search(ref ordName, ref cmdArgs);
-            OnPlayerCommandEvent.Call(this, ordName, cmdArgs, data);
-            if (cancelcommand) 
+            Order.Search(ref ordName, ref ordArgs);
+            OnPlayerOrderEvent.Call(this, ordName, ordArgs, data);
+            if (cancelorder) 
             { 
-                cancelcommand = false; 
+                cancelorder = false; 
                 return null; 
             }
 
-            Order command = Order.FindORD(ordName);
-            if (command == null)
+            Order order = Order.FindORD(ordName);
+            if (order == null)
             {
                 if (Block.Parse(this, ordName) != Block.Invalid)
                 {
-                    cmdArgs = ordName; 
+                    ordArgs = ordName; 
                     ordName = "mode";
-                    command = Order.FindCMD("Mode");
+                    order = Order.FindORD("Mode");
                 }
                 else
                 {
-                    Logger.Log(LogType.OrderUsage, "{0} tried to use unknown command: /{1} {2}", name, ordName, cmdArgs);
-                    Message("Unknown command \"{0}\".", ordName); 
+                    Logger.Log(LogType.OrderUsage, "{0} tried to use unknown order: /{1} {2}", name, ordName, ordArgs);
+                    Message("Unknown order \"{0}\".", ordName); 
                     return null;
                 }
             }
 
-            if (!CanUse(command))
+            if (!CanUse(order))
             {
-                command.Permissions.MessageCannotUse(this);
+                order.Permissions.MessageCannotUse(this);
                 return null;
             }
 
-            if (level != null && level.IsMuseum && !command.MuseumUsable)
+            if (level != null && level.IsMuseum && !order.MuseumUsable)
             {
-                Message("Cannot use &T/{0} &Swhile in a museum.", command.Name); 
+                Message("Cannot use &T/{0} &Swhile in a museum.", order.Name); 
                 return null;
             }
-            if (frozen && !command.OrderUseableWhenFrozen)
+            if (frozen && !order.OrderUseableWhenFrozen)
             {
-                Message("Cannot use &T/{0} &Swhile frozen.", command.Name); 
+                Message("Cannot use &T/{0} &Swhile frozen.", order.Name); 
                 return null;
             }
-            return command;
+            return order;
         }
-
         public bool UseCommand(Order command, string args, CommandData data)
         {
-            string cmd = command.Name;
-            if (command.UpdatesLastOrd)
+            return UseOrder(command, args, (OrderData)data);
+        }
+        public bool UseOrder(Order order, string args, OrderData data)
+        {
+            string ord = order.Name;
+            if (order.UpdatesLastOrd)
             {
-                lastCMD = args.Length == 0 ? cmd : cmd + " " + args;
-                lastCmdTime = DateTime.UtcNow;
+                lastORD = args.Length == 0 ? ord : ord + " " + args;
+                lastOrdTime = DateTime.UtcNow;
             }
-            if (command.OrderLogUsage) Logger.Log(LogType.OrderUsage, "{0} used /{1} {2}", name, cmd, args);
+            if (order.OrderLogUsage) Logger.Log(LogType.OrderUsage, "{0} used /{1} {2}", name, ord, args);
 
             try
             { //opstats patch (since MCForge 5.5.11)
-                if (Server.Opstats.CaselessContains(cmd) || (cmd.CaselessEq("review") && args.CaselessEq("next") && Server.reviewlist.Count > 0))
+                if (Server.Opstats.CaselessContains(ord) || (ord.CaselessEq("review") && args.CaselessEq("next") && Server.reviewlist.Count > 0))
                 {
-                    Database.AddRow("Opstats", "Time, Name, Cmd, Cmdmsg",
-                                    DateTime.Now.ToString(Database.DateFormat), name, cmd, args);
+                    Database.AddRow("Opstats", "Time, Name, Ord, Ordmsg",
+                                    DateTime.Now.ToString(Database.DateFormat), name, ord, args);
                 }
             }
             catch { }
 
             try
             {
-                command.Execute(this, args, (OrderData)data);
+                order.Execute(this, args, data);
             }
             catch (Exception e)
             {
                 Logger.LogError(e);
-                Message("&WAn error occured when using the order!");
+                Message("&WAn error occured when issuing the order!");
                 Message(e.GetType() + ": " + e.Message);
                 return false;
             }
-            if (spamChecker != null && spamChecker.CheckCommandSpam()) return false;
+            if (spamChecker != null && spamChecker.CheckOrderSpam()) return false;
             return true;
         }
-
         public bool UseCommands(List<Order> commands, List<string> messages, CommandData data)
+        {
+            return UseOrders(commands, messages, (OrderData)data);
+        }
+        public bool UseOrders(List<Order> orders, List<string> messages, OrderData data)
         {
             for (int i = 0; i < messages.Count; i++)
             {
-                if (!UseCommand(commands[i], messages[i], data)) return false;
+                if (!UseOrder(orders[i], messages[i], data)) return false;
 
-                // No point running commands after disconnected
+                // No point running orders after disconnected
                 if (leftServer) return false;
             }
             return true;
         }
 
-
         public bool EnqueueSerialCommand(Order cmd, string args, CommandData data)
         {
+            return EnqueueSerialOrder(cmd, args, (OrderData)data);
+        }
+        public bool EnqueueSerialOrder(Order ord, string args, OrderData data)
+        {
             SerialOrder head = default;
-            SerialOrder scmd;
+            SerialOrder sord;
 
-            scmd.ord = cmd;
-            scmd.args = args;
-            scmd.data = (OrderData)data;
+            sord.ord = ord;
+            sord.args = args;
+            sord.data = data;
 
-            lock (serialCmdsLock)
+            lock (serialOrdsLock)
             {
-                if (serialCmds.Count > 0)
-                    head = serialCmds.Peek();
+                if (serialOrds.Count > 0)
+                    head = serialOrds.Peek();
 
-                serialCmds.Enqueue(scmd);
+                serialOrds.Enqueue(sord);
             }
             if (head.ord == null) return true;
 
-            if (cmd.OrdParallelism == (OrderParallelism)CommandParallelism.NoAndWarn)
+            if (ord.OrdParallelism == OrderParallelism.NoAndWarn)
             {
                 Message("Waiting for &T/{0} {1} &Sto finish first before running &T/{2} {3}",
-                        head.ord.Name, head.args, cmd.Name, args);
+                        head.ord.Name, head.args, ord.Name, args);
             }
 
-            // Overly punish triggering forced serial execution of commands
-            spamChecker.CheckCommandSpam();
+            // Overly punish triggering forced serial execution of orders
+            spamChecker.CheckOrderSpam();
             return false;
         }
-
         public void ExecuteSerialCommands()
+        {
+            ExecuteSerialOrders();
+        }
+        public void ExecuteSerialOrders()
         {
             for (; ; )
             {
-                SerialOrder scmd;
+                SerialOrder sord;
 
-                lock (serialCmdsLock)
+                lock (serialOrdsLock)
                 {
-                    if (serialCmds.Count == 0) return;
-                    scmd = serialCmds.Peek();
+                    if (serialOrds.Count == 0) return;
+                    sord = serialOrds.Peek();
                 }
-                UseCommand(scmd.ord, scmd.args, (CommandData)scmd.data);
+                UseOrder(sord.ord, sord.args, sord.data);
 
-                // only dequeue AFTER finished (for long running commands)
-                lock (serialCmdsLock)
+                // only dequeue AFTER finished (for long running orders)
+                lock (serialOrdsLock)
                 {
-                    if (serialCmds.Count == 0) return;
-                    serialCmds.Dequeue();
+                    if (serialOrds.Count == 0) return;
+                    serialOrds.Dequeue();
                 }
             }
         }
-
         public void ClearSerialCommands()
         {
-            lock (serialCmdsLock) 
+            ClearSerialOrders();
+        } 
+        public void ClearSerialOrders()
+        {
+            lock (serialOrdsLock) 
             { 
-                serialCmds.Clear(); 
+                serialOrds.Clear(); 
             }
         }
     }

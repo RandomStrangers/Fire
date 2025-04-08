@@ -218,7 +218,6 @@ namespace Flames
             LoadCoreNewPlugin(new TWPlugin());
             LoadCoreNewPlugin(new ZSPlugin());
             LoadCoreNewPlugin(new NewCompilerPlugin());
-            LoadCoreNewPlugin(new AddonLoader());
             LoadNewPlugin(new Commands_Plugins());
 #if CORE
             LoadCoreNewPlugin(new GoldenSparksPluginLoader());
@@ -528,7 +527,7 @@ namespace Flames
 		    uint minLength = 3;
         	if (args[0] == "") 
             { 
-                Command.Find("Nick").Use(p, "-own"); 
+                Find("Nick").Use(p, "-own"); 
                 return; 
             }
             //edit text/ValidFlairs.txt to change the flairs you can use. Note that ValidFlairs.txt must be saved in UTF-8 encoding
@@ -548,7 +547,7 @@ namespace Flames
                 {
                     if (UncoloredNick.Length >= minLength) 
                     {
-                        Command.Find("Nick").Use(p, "-own " + flair + " " + nick);
+                        Find("Nick").Use(p, "-own " + flair + " " + nick);
                     }
      	            else 
                     {
@@ -570,7 +569,7 @@ namespace Flames
 
                     if (UncoloredNick.Length >= 3)
                     {
-                        Command.Find("Nick").Use(p, "-own " + nick);
+                        Find("Nick").Use(p, "-own " + nick);
                     }
      	            else 
                     {
@@ -599,29 +598,29 @@ namespace Flames
         public override void Load(bool startup)
         {
             Command.Register(new CmdDrawCollab());
-            OnPlayerCommandEvent.Register(HandleCommand, Priority.Critical);
+            OnPlayerOrderEvent.Register(HandleOrder, Priority.Critical);
             OnGettingMotdEvent.Register(HandleMotd, Priority.Critical);
         }
 
         public override void Unload(bool shutdown)
         {
             Command.Unregister(Command.Find("DrawCollab"));
-            OnPlayerCommandEvent.Unregister(HandleCommand);
+            OnPlayerOrderEvent.Unregister(HandleOrder);
             OnGettingMotdEvent.Unregister(HandleMotd);
 
         }
-        public static void HandleCommand(Player p, string cmd, string args, CommandData data)
+        public static void HandleOrder(Player p, string ord, string args, OrderData data)
         {
-            Command command = Command.Find(cmd);
-            if (command != null && p != null)
+            Order order = Order.Find(ord);
+            if (order != null && p != null)
             {
                 Level lvl = p.level;
-                bool IsPaintCmd = command.name.CaselessContains("paint");
+                bool IsPaintOrd = order.Name.CaselessContains("paint");
 
-                if (IsPaintCmd && lvl.Config.MOTD.CaselessContains("+collab"))
+                if (IsPaintOrd && lvl.Config.MOTD.CaselessContains("+collab"))
                 {
                     p.Message("Cannot disable painting mode on this map.");
-                    p.cancelcommand = true;
+                    p.cancelorder = true;
                 }
             }
         }
@@ -713,7 +712,6 @@ namespace Flames
         public override void Load(bool startup) 
         {
             CmdMakeBase.Load();
-            
             Command.Register(makeCommand);
             Command.Register(makeGBCommand);
         }

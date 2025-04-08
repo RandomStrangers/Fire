@@ -17,16 +17,16 @@
 */
 using System.Collections.Generic;
 using System.IO;
-
+using Flames.Added;
 namespace Flames.Commands
 {
-    public class Alias
+    public class Alias : Designation
     {
         public static List<Alias> coreAliases = new List<Alias>();
         public static List<Alias> aliases = new List<Alias>();
         public string Trigger, Target, Format;
 
-        public Alias(string trigger, string target)
+        public Alias(string trigger, string target) : base(trigger, target)
         {
             Trigger = trigger;
             target = target.Trim();
@@ -43,7 +43,7 @@ namespace Flames.Commands
             }
         }
 
-        public Alias(string trigger, string target, string format)
+        public Alias(string trigger, string target, string format) : base(trigger, target, format)
         {
             Trigger = trigger; 
             Target = target; 

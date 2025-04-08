@@ -31,8 +31,8 @@ namespace Flames.Commands.Building
             p.ClearBlockchange();
             p.painting = false;
             p.checkingBotInfo = false;
-            p.cmdTimer = false;
-            p.staticCommands = false;
+            p.ordTimer = false;
+            p.staticOrders = false;
             p.deleteMode = false;
             p.ModeBlock = Block.Invalid;
             p.onTrain = false;

@@ -51,7 +51,7 @@ namespace Flames.Tasks
 
         public static void TemprankCallback(string[] args)
         {
-            CmdTempRank.Delete(Player.Flame, args[0], Player.Flame.DefaultCmdData);
+            CmdTempRank.Delete(Player.Flame, args[0], (CommandData)Player.Flame.DefaultOrdData);
             // Handle case of old rank no longer existing
             if (Server.tempRanks.Remove(args[0]))
             {

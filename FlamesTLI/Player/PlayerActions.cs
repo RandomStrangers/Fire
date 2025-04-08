@@ -17,7 +17,7 @@
  */
 using System.Threading;
 using Flames.Events.PlayerEvents;
-
+using Flames.Added;
 namespace Flames
 {
     public static class PlayerActions
@@ -77,7 +77,7 @@ namespace Flames
                 if (lvl == null)
                 {
                     p.Message("There is no level \"{0}\" loaded. Did you mean..", name);
-                    Command.Find("Search").Use(p, "levels " + name);
+                    Order.Find("Search").Execute(p, "levels " + name);
                     return false;
                 }
                 return GotoLevel(p, lvl);

@@ -19,7 +19,7 @@ using System;
 using System.Collections.Generic;
 using Flames.Blocks;
 using Flames.Maths;
-
+using Flames.Added;
 namespace Flames.Commands
 {
     /// <summary> Provides helper methods for parsing arguments for commands. </summary>
@@ -28,127 +28,42 @@ namespace Flames.Commands
         /// <summary> Attempts to parse the given argument as a boolean. </summary>
         public static bool GetBool(Player p, string input, ref bool result)
         {
-            if (input.CaselessEq("1") || input.CaselessEq("true")
-                || input.CaselessEq("yes") || input.CaselessEq("on"))
-            {
-                result = true; 
-                return true;
-            }
-
-            if (input.CaselessEq("0") || input.CaselessEq("false")
-                || input.CaselessEq("no") || input.CaselessEq("off"))
-            {
-                result = false; 
-                return true;
-            }
-
-            p.Message("&W\"{0}\" is not a valid boolean.", input);
-            p.Message("&WValue must be either 1/yes/on or 0/no/off");
-            return false;
+            return OrderParser.GetBool(p, input, ref result);
         }
 
         /// <summary> Attempts to parse the given argument as an enumeration member. </summary>
         public static bool GetEnum<TEnum>(Player p, string input, string argName,
                                           ref TEnum result) where TEnum : struct
         {
-            try
-            {
-                result = (TEnum)Enum.Parse(typeof(TEnum), input, true);
-                if (Enum.IsDefined(typeof(TEnum), result)) return true;
-            }
-            catch
-            {
-            }
-
-            string[] names = Enum.GetNames(typeof(TEnum));
-            p.Message(argName + " must be one of the following: &f" + names.Join());
-            return false;
+            return OrderParser.GetEnum(p, input, argName, ref result);
         }
 
         /// <summary> Attempts to parse the given argument as an timespan in short form. </summary>
         public static bool GetTimespan(Player p, string input, ref TimeSpan span,
                                        string action, string defUnit)
         {
-            try
-            {
-                span = input.ParseShort(defUnit);
-                // Typically span gets added to current time, so check span isn't too big here
-                DateTime.UtcNow.Add(span).AddYears(1);
-                return true;
-            }
-            catch (OverflowException)
-            {
-                p.Message("&WTimespan given is too big");
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                p.Message("&WTimespan given is too big");
-            }
-            catch (FormatException ex)
-            {
-                p.Message("&W{0} is not a valid quantifier.", ex.Message);
-                p.Message(TimespanHelp, action);
-            }
-            return false;
+            return OrderParser.GetTimespan(p, input, ref span, action, defUnit);
         }
         public const string TimespanHelp = "For example, to {0} 25 and a half hours, use \"1d1h30m\".";
-
-
         /// <summary> Returns whether the given value lies within the given range </summary>
         /// <remarks> If given value is not in range, messages the player the valid range of values </remarks>
         public static bool CheckRange(Player p, int value, string argName, int min, int max)
         {
-            if (value >= min && value <= max) return true;
-
-            // Try to provide more helpful range messages
-            if (max == int.MaxValue)
-            {
-                p.Message("&W{0} must be {1} or greater", argName, min);
-            }
-            else if (min == int.MinValue)
-            {
-                p.Message("&W{0} must be {1} or less", argName, max);
-            }
-            else
-            {
-                p.Message("&W{0} must be between {1} and {2}", argName, min, max);
-            }
-            return false;
+            return OrderParser.CheckRange(p, value, argName, min, max);
         }
 
         /// <summary> Attempts to parse the given argument as an integer. </summary>
         public static bool GetInt(Player p, string input, string argName, ref int result,
                                   int min = int.MinValue, int max = int.MaxValue)
         {
-            if (!int.TryParse(input, out int value))
-            {
-                p.Message("&W\"{0}\" is not a valid integer.", input);
-                return false;
-            }
-
-            if (!CheckRange(p, value, argName, min, max)) return false;
-            result = value; 
-            return true;
+            return OrderParser.GetInt(p, input, argName, ref result, min, max);
         }
 
         /// <summary> Attempts to parse the given argument as a real number. </summary>
         public static bool GetReal(Player p, string input, string argName, ref float result,
                                    float min = float.NegativeInfinity, float max = float.MaxValue)
         {
-            if (!Utils.TryParseSingle(input, out float value))
-            {
-                p.Message("&W\"{0}\" is not a valid number.", input);
-                return false;
-            }
-
-            if (value < min || value > max)
-            {
-                p.Message("&W{0} must be between {1} and {2}", argName,
-                               min.ToString("F4"), max.ToString("F4"));
-                return false;
-            }
-            result = value; 
-            return true;
+            return OrderParser.GetReal(p, input, argName, ref result, min, max);
         }
 
 
@@ -156,95 +71,50 @@ namespace Flames.Commands
         public static bool GetByte(Player p, string input, string argName, ref byte result,
                                    byte min = byte.MinValue, byte max = byte.MaxValue)
         {
-            int temp = 0;
-            if (!GetInt(p, input, argName, ref temp, min, max)) return false;
-
-            result = (byte)temp; 
-            return true;
+            return OrderParser.GetByte(p, input, argName, ref result, min, max);
         }
 
         /// <summary> Attempts to parse the given argument as a ushort. </summary>
         public static bool GetUShort(Player p, string input, string argName, ref ushort result,
                                      ushort min = ushort.MinValue, ushort max = ushort.MaxValue)
         {
-            int temp = 0;
-            if (!GetInt(p, input, argName, ref temp, min, max)) return false;
-
-            result = (ushort)temp; 
-            return true;
+            return OrderParser.GetUShort(p, input, argName, ref result, min, max);
         }
 
 
         /// <summary> Attempts to parse the given argument as a hex color. </summary>
         public static bool GetHex(Player p, string input, ref ColorDesc col)
         {
-            if (!Colors.TryParseHex(input, out ColorDesc tmp))
-            {
-                p.Message("&W\"#{0}\" is not a valid HEX color.", input);
-                return false;
-            }
-            col = tmp; 
-            return true;
+            return OrderParser.GetHex(p, input, ref col);
         }
 
         /// <summary> Attempts to parse the 3 given arguments as coordinates. </summary>
         public static bool GetCoords(Player p, string[] args, int argsOffset, ref Vec3S32 P)
         {
-            return
-                GetCoordInt(p, args[argsOffset + 0], "X coordinate", ref P.X) &&
-                GetCoordInt(p, args[argsOffset + 1], "Y coordinate", ref P.Y) &&
-                GetCoordInt(p, args[argsOffset + 2], "Z coordinate", ref P.Z);
+            return OrderParser.GetCoords(p, args, argsOffset, ref P);
         }
 
         public static bool ParseRelative(ref string arg)
         {
-            // ~ is preferred for compatibility with modern minecraft command syntax
-            // # is also accepted since ~ cannot be typed in original minecraft classic
-            bool relative = arg.Length > 0 && (arg[0] == '~' || arg[0] == '#');
-            if (relative) arg = arg.Substring(1);
-            return relative;
+            return OrderParser.ParseRelative(ref arg);
         }
 
         /// <summary> Attempts to parse the given argument as a coordinate integer. </summary>
         public static bool GetCoordInt(Player p, string arg, string argName, ref int value)
         {
-            bool relative = ParseRelative(ref arg);
-            // ~ should work as ~0
-            if (relative && arg.Length == 0) return true;
-            int cur = value;
-
-            if (!GetInt(p, arg, argName, ref value)) return false;
-            if (relative) value += cur;
-            return true;
+           return OrderParser.GetCoordInt(p, arg, argName, ref value);
         }
 
         /// <summary> Attempts to parse the given argument as a coordinate real number. </summary>
         public static bool GetCoordFloat(Player p, string arg, string argName, ref float value)
         {
-            bool relative = ParseRelative(ref arg);
-            // ~ should work as ~0
-            if (relative && arg.Length == 0) return true;
-            float cur = value;
-
-            if (!GetReal(p, arg, argName, ref value)) return false;
-            if (relative) value += cur;
-            return true;
+            return OrderParser.GetCoordFloat(p, arg, argName, ref value);
         }
 
 
         public static bool IsSkipBlock(string input, out ushort block)
         {
-            // Skip/None block for draw operations
-            if (input.CaselessEq("skip") || input.CaselessEq("none"))
-            {
-                block = Block.Invalid; 
-                return true;
-            }
-            else
-            {
-                block = Block.Air; 
-                return false;
-            }
+            return OrderParser.IsSkipBlock(input, out block);
         }
 
         /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
@@ -252,74 +122,32 @@ namespace Flames.Commands
         public static bool GetBlockIfAllowed(Player p, string input, string action,
                                              out ushort block, bool allowSkip = false)
         {
-            if (allowSkip && IsSkipBlock(input, out block)) return true;
-
-            return GetBlock(p, input, out block) && IsBlockAllowed(p, action, block);
+           return OrderParser.GetBlockIfAllowed(p, input, action, out block, allowSkip);
         }
 
         /// <summary> Attempts to parse the given argument as either a block name or a block ID. </summary>
         public static bool GetBlock(Player p, string input, out ushort block, bool allowSkip = false)
         {
-            if (allowSkip && IsSkipBlock(input, out block)) return true;
-
-            block = Block.Parse(p, input);
-            if (block == Block.Invalid) p.Message("&WThere is no block \"{0}\".", input);
-            return block != Block.Invalid;
+            return OrderParser.GetBlock(p, input, out block, allowSkip);
         }
 
         /// <summary> Returns whether the player is allowed to place/modify/delete the given block. </summary>
         /// <remarks> Outputs information of which ranks can modify the block if not. </remarks>
         public static bool IsBlockAllowed(Player p, string action, ushort block)
         {
-            if (p.group.Blocks[block]) return true;
-            BlockPerms.Find(block).MessageCannotUse(p, action);
-            return false;
+            return OrderParser.IsBlockAllowed(p, action, block);
         }
 
 
         public static int GetBlocks(Player p, string input,
                                     List<ushort> blocks, bool allowSkip)
         {
-            if (!IsRawBlockRange(input, out string[] bits))
-            {
-
-                if (!allowSkip || !IsSkipBlock(input, out ushort block))
-                {
-                    if (!GetBlock(p, input, out block)) return 0;
-                }
-
-                blocks.Add(block);
-                return 1;
-            }
-
-            ushort min = 0, max = 0;
-            if (!GetUShort(p, bits[0], "Raw block ID", ref min, Block.Air, Block.MaxRaw)) return 0;
-            if (!GetUShort(p, bits[1], "Raw block ID", ref max, Block.Air, Block.MaxRaw)) return 0;
-
-            int count = 0;
-            for (ushort raw = min; raw <= max; raw++)
-            {
-                ushort b = Block.FromRaw(raw);
-                if (!Block.ExistsFor(p, b)) continue;
-
-                blocks.Add(b);
-                count++;
-            }
-
-            if (count > 0) return count;
-            p.Message("&WNo usable blocks exist in the range from {0} to {1}",
-                      min, max);
-            return 0;
+            return OrderParser.GetBlocks(p, input, blocks, allowSkip);
         }
 
         public static bool IsRawBlockRange(string input, out string[] bits)
         {
-            bits = null;
-            if (input.IndexOf('-') == -1) return false;
-            bits = input.Split(new char[] { '-' }, 2);
-
-            return int.TryParse(bits[0], out int tmp)
-                && int.TryParse(bits[1], out tmp);
+            return OrderParser.IsRawBlockRange(input, out bits);
         }
     }
 }

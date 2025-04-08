@@ -46,16 +46,16 @@ namespace Flames.Commands.Info
 
         public static void ShowLastCommand(Player p, Player target)
         {
-            if (target.lastCMD.Length == 0)
+            if (target.lastORD.Length == 0)
             {
                 p.Message("{0} &Shas not used any commands yet.",
                           p.FormatNick(target));
             }
             else
             {
-                TimeSpan delta = DateTime.UtcNow - target.lastCmdTime;
+                TimeSpan delta = DateTime.UtcNow - target.lastOrdTime;
                 p.Message("{0} &Slast used \"{1}\" {2} ago",
-                          p.FormatNick(target), target.lastCMD, delta.Shorten(true));
+                          p.FormatNick(target), target.lastORD, delta.Shorten(true));
             }
         }
 

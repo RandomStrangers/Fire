@@ -50,9 +50,28 @@ namespace Flames
             Logger.Log(LogType.FlameMessage, message);
         }
     }
-    public class ConsolePlayer : Player
+    public class TerminalPlayer : Player
     {
-        public ConsolePlayer() : base("(console)")
+        public TerminalPlayer() : base("(terminal)")
+        {
+            group = Group.TerminalRank;
+            color = "&S";
+            SuperName = "Terminal";
+        }
+
+        public override string FullName
+        {
+            get { return "Terminal [&a" + Server.Config.TerminalName + "&S]"; }
+        }
+        public override bool IsNull { get { return true; } }
+        public override void Message(string message)
+        {
+            Logger.Log(LogType.TerminalMessage, message);
+        }
+    }
+    public class ConsolePlayer : TerminalPlayer
+    {
+        public ConsolePlayer() : base()
         {
             group = Group.ConsoleRank;
             color = "&S";
@@ -142,6 +161,7 @@ namespace Flames
     {
         public static int sessionCounter;
         public static Player Flame = new FlamePlayer();
+        public static Player Terminal = new TerminalPlayer();
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
         public static Player Console = new ConsolePlayer();
 #if CORE
@@ -314,8 +334,8 @@ namespace Flames
         }
         public bool CanUse(string ordName)
         {
-            Order cmd = Order.FindORD(ordName);
-            return cmd != null && CanUse(cmd);
+            Order ord = Order.FindORD(ordName);
+            return ord != null && CanUse(ord);
         }
 
         public bool MarkPossessed(string marker = "")
@@ -474,7 +494,7 @@ namespace Flames
 
             DrawOps.Clear();
             spamChecker?.Clear();
-            ClearSerialCommands();
+            ClearSerialOrders();
         }
 
         #endregion
@@ -494,7 +514,7 @@ namespace Flames
 #if CORE
             return IsNull || (!muted && !Unverified && (voice || !Server.chatmod));
 #else
-            return IsFire || IsConsole || (!muted && !Unverified && (voice || !Server.chatmod));
+            return IsFire || IsTerminal || (!muted && !Unverified && (voice || !Server.chatmod));
 #endif
         }
         public bool CheckCanSpeak(string action)
@@ -503,7 +523,7 @@ namespace Flames
             if (IsNull) return true;
 #else
             if (IsFire) return true;
-            else if (IsConsole) return true;
+            else if (IsTerminal) return true;
 #endif
             if (muted)
             {
@@ -512,7 +532,8 @@ namespace Flames
             }
             if (Server.chatmod && !voice)
             {
-                Message("Cannot {0} &Swhile chat moderation is on without &T/Voice&S", action); return false;
+                Message("Cannot {0} &Swhile chat moderation is on without &T/Voice&S", action); 
+                return false;
             }
             if (Unverified)
             {
@@ -681,7 +702,7 @@ namespace Flames
                 block = p.BlockBindings[block];
                 bool canRepeat = callback(this, selMarks, state, block);
 
-                if (canRepeat && staticCommands)
+                if (canRepeat && staticOrders)
                 {
                     MakeSelection(selIndex, title, state, callback, markCallback);
                 }

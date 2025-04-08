@@ -32,8 +32,9 @@ namespace Flames
         public static Group DefaultRank;
         public static Group NobodyRank { get { return Find(LevelPermission.Nobody); } }
         public static Group FireRank = new Group(LevelPermission.Flames, int.MaxValue, 21024000, "&4F&cl&4a&cm&4e&cs", "&4", int.MaxValue, 512);
+        public static Group TerminalRank { get { return Find(LevelPermission.Terminal); } }
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public static Group ConsoleRank { get { return Find(LevelPermission.Console); } }
+        public static Group ConsoleRank { get { return TerminalRank; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public static Group GoldenRank { get { return Find(LevelPermission.Sparkie); } }

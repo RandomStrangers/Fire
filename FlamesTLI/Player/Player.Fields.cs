@@ -52,7 +52,7 @@ namespace Flames
 
         public DateTime LastAction, AFKCooldown;
         public bool IsAfk, AutoAfk;
-        public bool cmdTimer;
+        public bool ordTimer;
         public bool UsingWom;
         public string BrushName = "Normal", DefaultBrushArgs = "";
         public Transform Transform = NoTransform.Instance;
@@ -92,8 +92,10 @@ namespace Flames
         public bool IsSuper;
         /// <summary> Whether this player is the Flames player instance. </summary>
         public bool IsFire { get { return this == Flame; } }
+        public bool IsTerminal { get { return this == Terminal; } }
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        public bool IsConsole { get { return this == Console; } }
+        public bool IsConsole { get { return IsTerminal; } }
+
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public bool IsSparkie { get { return this == Sparks || this == Sparkie; } }
@@ -148,7 +150,7 @@ namespace Flames
         public DateTime SessionStartTime;
         public DateTime FirstLogin, LastLogin;
 
-        public bool staticCommands;
+        public bool staticOrders;
         public DateTime lastAccessStatus;
         public VolatileArray<SchedulerTask> CriticalTasks = new VolatileArray<SchedulerTask>();
 
@@ -167,10 +169,11 @@ namespace Flames
             get
             {
                 CommandData data = default;
-                data.Rank = Rank; return data;
+                data.Rank = Rank; 
+                return data;
             }
         }
-        public OrderData DefaultCrdData
+        public OrderData DefaultOrdData
         {
             get
             {
@@ -227,10 +230,29 @@ namespace Flames
         /// <remarks> This ignores /bind and /mode. GetHeldBlock() is usually preferred. </remarks>
         public ushort ClientHeldBlock = Block.Stone;
         public ushort[] BlockBindings = new ushort[Block.SUPPORTED_COUNT];
-        public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-
+        public Dictionary<string, string> OrdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        public string lastORD = "";
+        public DateTime lastOrdTime;
+        [Obsolete("Use lastOrd instead.")]
         public string lastCMD = "";
+        [Obsolete("Use lastOrdTime instead.")]
         public DateTime lastCmdTime;
+        [Obsolete("Use OrdBindings instead.")]
+        public Dictionary<string, string> CmdBindings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        [Obsolete("Use ordUnblocked instead.")]
+        public DateTime cmdUnblocked;
+        [Obsolete("Use serialOrds instead.")]
+        public Queue<SerialOrder> serialCmds = new Queue<SerialOrder>();
+        [Obsolete("Use serialOrdsLock instead.")]
+        public object serialCmdsLock = new object();
+        [Obsolete("Use cancelorder instead.")]
+        public bool cancelcommand;
+        [Obsolete("Use staticOrders instead.")]
+        public bool staticCommands;
+        [Obsolete("Use ordTimer instead.")]
+        public bool cmdTimer;
+
+
         public sbyte c4circuitNumber = -1;
 
         public Level level;
@@ -245,11 +267,11 @@ namespace Flames
         public string summonedMap;
         public Position _tempPos;
 
-        // Extra storage for custom commands
+        // Extra storage for custom orders
         public ExtrasCollection Extras = new ExtrasCollection();
 
         public SpamChecker spamChecker;
-        public DateTime cmdUnblocked;
+        public DateTime ordUnblocked;
         public List<DateTime> partialLog;
 
         public WarpList Waypoints = new WarpList();
@@ -265,49 +287,10 @@ namespace Flames
         public bool gotSQLData;
 
 
-        public bool cancelcommand, cancelchat;
+        public bool cancelorder, cancelchat;
         public bool cancellogin, cancelconnecting;
-
-        public Queue<SerialOrder> serialCmds = new Queue<SerialOrder>();
-        public object serialCmdsLock = new object();
-        public static SerialCommand[] ORDToCMD(params SerialOrder[] sords)
-        {
-            SerialCommand[] scmds = new SerialCommand[]
-            {
-            };
-            foreach (SerialOrder sord in sords)
-            {
-                SerialCommand scmd = new SerialCommand();
-                scmd.cmd = (Command)sord.ord;
-                scmd.args = sord.args;
-                scmd.data = (CommandData)sord.data;
-                scmds = new SerialCommand[]
-                {
-                    scmd
-                };
-                return scmds;
-            }
-            return scmds;
-        }
-        public static SerialOrder[] CMDToORD(params SerialCommand[] scmds)
-        {
-            SerialOrder[] sords = new SerialOrder[]
-            {
-            };
-            foreach (SerialCommand scmd in scmds)
-            {
-                SerialOrder sord = new SerialOrder();
-                sord.ord = scmd.cmd;
-                sord.args = scmd.args;
-                sord.data = (OrderData)scmd.data;
-                sords = new SerialOrder[]
-                {
-                    sord
-                };
-                return sords;
-            }
-            return sords;
-        }
+        public Queue<SerialOrder> serialOrds = new Queue<SerialOrder>();
+        public object serialOrdsLock = new object();
         public struct SerialCommand
         {
             public Command cmd;

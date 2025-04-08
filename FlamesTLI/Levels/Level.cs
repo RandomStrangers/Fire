@@ -41,7 +41,8 @@ namespace Flames
         /// <summary> Work on backwards compatibility with other cores </summary>
         Sparkie = 127,
 #endif
-        Null = 150, Nobody = 120, Console = 127// backwards compatibility
+        Null = 150, Nobody = 120, Terminal = 127,
+        Console = Terminal, // backwards compatibility
     }
 
     public enum BuildType 
@@ -142,7 +143,7 @@ namespace Flames
             if (p.IsNull || this == Server.mainLevel) return true;
 
 #else
-            if (p.IsFire || p.IsConsole || this == Server.mainLevel) return true;
+            if (p.IsFire || p.IsTerminal || this == Server.mainLevel) return true;
 #endif
             bool skip = p.summonedMap != null && p.summonedMap.CaselessEq(name);
             LevelPermission plRank = skip ? LevelPermission.Flames : p.Rank;

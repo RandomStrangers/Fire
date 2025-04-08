@@ -92,7 +92,7 @@ namespace Flames.Commands.World
             string[] genArgs = (level + " " + message.TrimEnd()).SplitSpaces(6);
 
             CmdNewLvl newLvl = (CmdNewLvl)Command.Find("NewLvl"); // TODO: this is a nasty hack, find a better way
-            Level lvl = newLvl.GenerateMap(p, genArgs, p.DefaultCmdData);
+            Level lvl = newLvl.GenerateMap(p, genArgs, (CommandData)p.DefaultOrdData);
             if (lvl == null) return;
 
             MapGen.SetRealmPerms(p, lvl);
@@ -271,7 +271,7 @@ namespace Flames.Commands.World
         };
         public static void HandleLevelBlock(Player p, string lbArgs)
         {
-            CustomBlockCommand.Execute(p, lbArgs, p.DefaultCmdData, false, "/os lb");
+            CustomBlockCommand.Execute(p, lbArgs, (CommandData)p.DefaultOrdData, false, "/os lb");
         }
 
         public static string[] mapHelp = new string[]
@@ -385,7 +385,7 @@ namespace Flames.Commands.World
             }
 
             bool needConfirm;
-            if (CmdResizeLvl.DoResize(p, args, p.DefaultCmdData, out needConfirm)) return;
+            if (CmdResizeLvl.DoResize(p, args, (CommandData)p.DefaultOrdData, out needConfirm)) return;
 
             if (!needConfirm) return;
             p.Message("Type &T/{0} resize {1} {2} {3} confirm &Sif you're sure.",

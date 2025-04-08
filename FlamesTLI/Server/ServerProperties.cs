@@ -24,13 +24,29 @@ namespace Flames
 {
     public static class SrvProperties
     {
+        public static void UpdateOld()
+        {
+            if (Server.Config != null)
+            {
+                Server.Config.CmdSpamCheck = Server.Config.OrdSpamCheck;
+                Server.Config.CmdSpamCount = Server.Config.OrdSpamCount;
+                Server.Config.CmdSpamBlockTime = Server.Config.OrdSpamBlockTime;
+                Server.Config.CmdSpamInterval = Server.Config.OrdSpamInterval;
+                Server.Config.CoreSecretCommands = Server.Config.CoreSecretOrders;
+                Server.Config.MCLawlSecretCommands = Server.Config.MCLawlSecretOrders;
+                Server.Config.DisabledCommands = Server.Config.DisabledOrders;
+                Server.Config.IRCCommandPrefix = Server.Config.IRCOrderPrefix;
+                Server.Config.ConsoleName = Server.Config.TerminalName;
+                Server.Config.ConsoleLogging = Server.Config.TerminalLogging;
+            }
+        }
         public static void Load()
         {
             old = new OldPerms();
             PropertiesFile.Read(Paths.ServerPropsFile, ref old, LineProcessor);
-
             ApplyChanges();
             Save();
+            UpdateOld();
         }
 
         public static void ApplyChanges()
