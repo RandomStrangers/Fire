@@ -29,8 +29,8 @@ namespace Flames
 
         public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/";
         public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/debug/";
-        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/debug/Uploads";
-        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/debug/Uploads/Normal";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/Normal/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";

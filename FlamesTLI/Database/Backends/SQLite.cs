@@ -160,6 +160,6 @@ namespace Flames.SQL
     public class FSQLiteConnection : SQLiteConnection
     {
         public override bool ConnectionPooling { get { return Server.Config.DatabasePooling; } }
-        public override string DBPath { get { return "Flames.db"; } }
+        public override string DBPath { get { return "FlamesTLI.db"; } }
     }
 }

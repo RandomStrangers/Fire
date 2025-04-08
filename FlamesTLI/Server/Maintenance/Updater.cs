@@ -26,21 +26,21 @@ namespace Flames
     public static class Updater
     {
         public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/";
-        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/GUI/";
-        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/GUI/Uploads";
-        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/GUI/Uploads/";
+        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/debug/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/debug/Uploads/TLI";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/debug/Uploads/TLI/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE
-        public const string CurrentVersionURL = UpdatesURL + "dev_TLI.txt";
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
         public const string dllURL = UpdatesURL + "FlamesTLI_dev.dll";
 #elif CORE && F_DOTNET_DEV
-        public const string CurrentVersionURL = UpdatesURL + "dev_TLI.txt";
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
         public const string dllURL = UpdatesURL + "FlamesTLI_dotnet_core_dev.dll";
 #elif F_DOTNET_DEV
-        public const string CurrentVersionURL = UpdatesURL + "current_TLI.txt";
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
         public const string dllURL = UpdatesURL + "FlamesTLI_dotnet_dev.dll";
 #else
-        public const string CurrentVersionURL = UpdatesURL + "current_TLI.txt";
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
         public const string dllURL = UpdatesURL + "FlamesTLI_.dll";
 #endif
         public const string TLIURL = UpdatesURL + "FlamesTLI.exe";
