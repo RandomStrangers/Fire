@@ -16,8 +16,8 @@
     permissions and limitations under the Licenses.
 */
 using System.Reflection;
-[assembly: AssemblyTitle("Flames")]
+[assembly: AssemblyTitle("FlamesTLI")]
 [assembly: AssemblyDescription("ClassiCube Server Software")]
-[assembly: AssemblyProduct("Flames")]
-[assembly: AssemblyCopyright("Copyright © 2015-2022")]
+[assembly: AssemblyProduct("FlamesTLI")]
+[assembly: AssemblyCopyright("MCGalaxy Copyright © 2015-2024")]
 [assembly: AssemblyVersion(Flames.Server.InternalVersion)]

@@ -17,7 +17,7 @@ namespace Flames.Modules.RandomStrangersCompiling
     {
         public override string name { get { return "RandomStrangersPluginCompile"; } }
         public override string shortcut { get { return "RSPCompile"; } }
-        public override string type { get { return CommandTypes.Other; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override void Use(Player p, string message)
@@ -53,7 +53,7 @@ namespace Flames.Modules.RandomStrangersCompiling
         {
             ICompiler compiler = ICompiler.Compilers[0];
             p.Message("&T/RandomStrangersPluginCompile [plugin name]");
-            p.Message("&HCompiles a .cs file containing a  C# RandomStrangers plugin into a DLL");
+            p.Message("&HCompiles a .cs file containing a C# RandomStrangers plugin into a DLL");
             p.Message("&H  Compiles from &f{0}", compiler.RandomStrangersPluginPath("&H<name>&f"));
         }
     }
@@ -150,7 +150,7 @@ namespace Flames.Modules.RandomStrangersCompiling
         {
             int matches;
             RandomStrangersPlugin RandomStrangersplugin = Matcher.Find(p, name, out matches, RandomStrangersPlugin.CustomRandomStrangersPlugins,
-                                         null, pln => pln.name, "randomstrangersplugins");
+                                         null, rspln => rspln.name, "randomstrangersplugins");
             if (RandomStrangersplugin == null) return;
             ScriptingOperations.UnloadRandomStrangersPlugin(p, RandomStrangersplugin);
         }
@@ -795,7 +795,7 @@ namespace Flames.RandomStrangersScripting
                 List<RandomStrangersPlugin> RandomStrangersplugins = IScripting.LoadRandomStrangersPlugin(path, false);
 
                 p.Message("RandomStrangers plugin {0} loaded successfully",
-                          RandomStrangersplugins.Join(pl => pl.name));
+                          RandomStrangersplugins.Join(rspl => rspl.name));
                 return true;
             }
             catch (AlreadyLoadedException ex)
@@ -912,7 +912,7 @@ namespace Flames.RandomStrangersScripting
             return instances;
         }
 
-        /// <summary> Loads the given assembly from disc (and associated .pdb debug data) </summary>
+        /// <summary> Loads the given assembly from disc </summary>
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
@@ -964,12 +964,12 @@ namespace Flames.RandomStrangersScripting
             Assembly lib = LoadAssembly(path);
             List<RandomStrangersPlugin> RandomStrangersplugins = LoadTypes<RandomStrangersPlugin>(lib);
 
-            foreach (RandomStrangersPlugin pl in RandomStrangersplugins)
+            foreach (RandomStrangersPlugin rspl in RandomStrangersplugins)
             {
-                if (RandomStrangersPlugin.FindRandomStrangersCustom(pl.name) != null)
-                    throw new AlreadyLoadedException("RandomStrangers plugin " + pl.name + " is already loaded");
+                if (RandomStrangersPlugin.FindRandomStrangersCustom(rspl.name) != null)
+                    throw new AlreadyLoadedException("RandomStrangers plugin " + rspl.name + " is already loaded");
 
-                RandomStrangersPlugin.Load(pl, auto);
+                RandomStrangersPlugin.Load(rspl, auto);
             }
             return RandomStrangersplugins;
         }
@@ -978,7 +978,7 @@ namespace Flames.RandomStrangersScripting
 
 namespace Flames
 {
-    public class RandomStrangersPluginLoader : Plugin
+    public class RandomStrangersPluginLoader : NewPlugin
     {
         public override string name { get { return "RandomStrangersPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
@@ -1007,8 +1007,7 @@ namespace Flames
 }
 namespace Flames
 {
-    /// <summary> This class provides for more advanced modification to Flames 
-    /// using MCGalaxy's newer compiler plugin </summary>
+    /// <summary> Work on backwards compatibility with other cores </summary>
     public abstract class RandomStrangersPlugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
@@ -1058,66 +1057,66 @@ namespace Flames
             return null;
         }
 
-        public static void Load(RandomStrangersPlugin pl, bool auto)
+        public static void Load(RandomStrangersPlugin rspl, bool auto)
         {
-            string ver = pl.Flames_Version;
+            string ver = rspl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for RandomStrangers plugins
             string CurrentVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(rspl.MCGalaxy_Version) && new Version(rspl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("RandomStrangers plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("RandomStrangers plugin '{0}' cannot be loaded on this version of {1}!", rspl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
             {
-                string msg = string.Format("RandomStrangers plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("RandomStrangers plugin '{0}' requires a more recent version of {1}!", rspl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
 
             try
             {
-                CustomRandomStrangersPlugins.Add(pl);
+                CustomRandomStrangersPlugins.Add(rspl);
 
-                if (pl.LoadAtStartup || !auto)
+                if (rspl.LoadAtStartup || !auto)
                 {
-                    pl.Load(auto);
-                    Logger.Log(LogType.SystemActivity, "RandomStrangers plugin {0} loaded...build: {1}", pl.name, pl.build);
+                    rspl.Load(auto);
+                    Logger.Log(LogType.SystemActivity, "RandomStrangers plugin {0} loaded...build: {1}", rspl.name, rspl.build);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "RandomStrangers plugin {0} was not loaded, you can load it with /rspload", pl.name);
+                    Logger.Log(LogType.SystemActivity, "RandomStrangers plugin {0} was not loaded, you can load it with /rspload", rspl.name);
                 }
 
-                if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
+                if (!string.IsNullOrEmpty(rspl.welcome)) Logger.Log(LogType.SystemActivity, rspl.welcome);
             }
             catch
             {
-                if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
+                if (!string.IsNullOrEmpty(rspl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", rspl.creator, rspl.name);
                 throw;
             }
         }
-        public static bool Unload(RandomStrangersPlugin pl)
+        public static bool Unload(RandomStrangersPlugin rspl)
         {
-            bool success = UnloadRandomStrangersPlugin(pl, false);
+            bool success = UnloadRandomStrangersPlugin(rspl, false);
 
             // TODO only remove if successful?
-            CustomRandomStrangersPlugins.Remove(pl);
-            CoreRandomStrangersPlugins.Remove(pl);
+            CustomRandomStrangersPlugins.Remove(rspl);
+            CoreRandomStrangersPlugins.Remove(rspl);
             return success;
         }
 
-        public static bool UnloadRandomStrangersPlugin(RandomStrangersPlugin pl, bool auto)
+        public static bool UnloadRandomStrangersPlugin(RandomStrangersPlugin rspl, bool auto)
         {
             try
             {
-                pl.Unload(auto);
+                rspl.Unload(auto);
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading RandomStrangers plugin " + pl.name, ex);
+                Logger.LogError("Error unloading RandomStrangers plugin " + rspl.name, ex);
                 return false;
             }
         }

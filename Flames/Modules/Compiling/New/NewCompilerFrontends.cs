@@ -34,7 +34,57 @@ namespace Flames.Modules.NewCompiling
             CommandLineCompiler compiler = new ClassicCSharpCompiler();
             return compiler.Compile(srcPaths, dstPath, referenced);
         }
+        public override string CommandSkeleton
+        {
+            get
+            {
+                return @"//\tAuto-generated command skeleton class
+//\tUse this as a basis for custom Flames commands
+//\tNaming should be kept consistent (e.g. /update command should have a class name of 'CmdUpdate' and a filename of 'CmdUpdate.cs')
+// As a note, Flames is designed for .NET 4.8
 
+// To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
+//   e.g. to reference the System.Data assembly, put ""//reference System.Data.dll""
+
+// Add any other using statements you need after this
+using System;
+using Flames;
+
+public class Cmd{0} : Command
+{{
+\t// The command's name (what you put after a slash to use this command)
+\tpublic override string name {{ get {{ return ""{0}""; }} }}
+
+\t// Command's shortcut, can be left blank (e.g. ""/Copy"" has a shortcut of ""c"")
+\tpublic override string shortcut {{ get {{ return """"; }} }}
+
+\t// Which submenu this command displays in under /Help
+\tpublic override string type {{ get {{ return ""other""; }} }}
+
+\t// Whether or not this command can be used in a museum. Block/map altering commands should return false to avoid errors.
+\tpublic override bool museumUsable {{ get {{ return true; }} }}
+
+\t// The default rank required to use this command. Valid values are:
+\t//   LevelPermission.Guest, LevelPermission.Builder, LevelPermission.AdvBuilder,
+\t//   LevelPermission.Operator, LevelPermission.Admin, LevelPermission.Owner
+\tpublic override LevelPermission defaultRank {{ get {{ return LevelPermission.Guest; }} }}
+
+\t// This is for when a player executes this command by doing /{0}
+\t//   p is the player object for the player executing the command. 
+\t//   message is the arguments given to the command. (e.g. for '/{0} this', message is ""this"")
+\tpublic override void Use(Player p, string message)
+\t{{
+\t\tp.Message(""Hello World!"");
+\t}}
+
+\t// This is for when a player does /Help {0}
+\tpublic override void Help(Player p)
+\t{{
+\t\tp.Message(""/{0} - Does stuff. Example command."");
+\t}}
+}}";
+            }
+        }
         public override string NewPluginSkeleton
         {
             get

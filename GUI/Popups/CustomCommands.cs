@@ -18,8 +18,8 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using Flames.Scripting;
-using Flames.Modules.Compiling;
+using Flames.NewScripting;
+using Flames.Modules.NewCompiling;
 namespace Flames.Gui.Popups
 {
     public partial class CustomCommands : Form

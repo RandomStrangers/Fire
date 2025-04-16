@@ -110,15 +110,18 @@ namespace Flames
             ExtraAuthenticator.SetActive(new DefaultPassAuthenticator());
 
             SQLiteBackend.Instance.LoadDependencies();
-            MySQLBackend.Instance.LoadDependencies();
             EnsureFilesExist();
-            Scripting.IScripting.Init();
             NewScripting.IScripting.Init();
             LoadAllSettings(true);
             InitDatabase();
             Economy.LoadDatabase();
+#if !F_DOTNET
+            MySQLBackend.Instance.LoadDependencies();
+            Scripting.IScripting.Init();
             Critical.QueueOnce(LoadAllPlugins);
             Critical.QueueOnce(LoadAllSimplePlugins);
+#endif
+            Critical.QueueOnce(LoadAllNewPlugins);
             Background.QueueOnce(LoadMainLevel);
             Background.QueueOnce(LoadAutoloadMaps);
             Background.QueueOnce(UpgradeTasks.UpgradeOldTempranks);
@@ -273,8 +276,11 @@ namespace Flames
             }
 
             OnShuttingDownEvent.Call(restarting, msg);
+#if !F_DOTNET
             Plugin.UnloadAll();
             Plugin_Simple.UnloadAll();
+#endif
+            NewPlugin.UnloadAll();
 
             try
             {

@@ -17,7 +17,7 @@ namespace Flames.Modules.SuperNovaCompiling
     {
         public override string name { get { return "SuperNovaPluginCompile"; } }
         public override string shortcut { get { return "SNPCompile"; } }
-        public override string type { get { return CommandTypes.Other; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override void Use(Player p, string message)
@@ -53,7 +53,7 @@ namespace Flames.Modules.SuperNovaCompiling
         {
             ICompiler compiler = ICompiler.Compilers[0];
             p.Message("&T/SuperNovaPluginCompile [plugin name]");
-            p.Message("&HCompiles a .cs file containing a  C# SuperNova plugin into a DLL");
+            p.Message("&HCompiles a .cs file containing a C# SuperNova plugin into a DLL");
             p.Message("&H  Compiles from &f{0}", compiler.SuperNovaPluginPath("&H<name>&f"));
         }
     }
@@ -113,7 +113,7 @@ namespace Flames.Modules.SuperNovaCompiling
                 string modifier = args.Length > 1 ? args[1] : "";
 
                 p.Message("Loaded SuperNova plugins:");
-                Paginator.Output(p, SuperNovaPlugin.CustomSuperNovaPlugins, pl => pl.name,
+                Paginator.Output(p, SuperNovaPlugin.CustomSuperNovaPlugins, snpl => snpl.name,
                                  "SuperNova", "supernovaplugins", modifier);
                 return;
             }
@@ -150,7 +150,7 @@ namespace Flames.Modules.SuperNovaCompiling
         {
             int matches;
             SuperNovaPlugin SuperNovaplugin = Matcher.Find(p, name, out matches, SuperNovaPlugin.CustomSuperNovaPlugins,
-                                         null, pln => pln.name, "supernovaplugins");
+                                         null, snpln => snpln.name, "supernovaplugins");
             if (SuperNovaplugin == null) return;
             ScriptingOperations.UnloadSuperNovaPlugin(p, SuperNovaplugin);
         }
@@ -795,7 +795,7 @@ namespace Flames.SuperNovaScripting
                 List<SuperNovaPlugin> SuperNovaplugins = IScripting.LoadSuperNovaPlugin(path, false);
 
                 p.Message("SuperNova plugin {0} loaded successfully",
-                          SuperNovaplugins.Join(pl => pl.name));
+                          SuperNovaplugins.Join(snpl => snpl.name));
                 return true;
             }
             catch (AlreadyLoadedException ex)
@@ -912,7 +912,7 @@ namespace Flames.SuperNovaScripting
             return instances;
         }
 
-        /// <summary> Loads the given assembly from disc (and associated .pdb debug data) </summary>
+        /// <summary> Loads the given assembly from disc </summary>
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
@@ -964,12 +964,12 @@ namespace Flames.SuperNovaScripting
             Assembly lib = LoadAssembly(path);
             List<SuperNovaPlugin> SuperNovaplugins = LoadTypes<SuperNovaPlugin>(lib);
 
-            foreach (SuperNovaPlugin pl in SuperNovaplugins)
+            foreach (SuperNovaPlugin snpl in SuperNovaplugins)
             {
-                if (SuperNovaPlugin.FindSuperNovaCustom(pl.name) != null)
-                    throw new AlreadyLoadedException("SuperNova plugin " + pl.name + " is already loaded");
+                if (SuperNovaPlugin.FindSuperNovaCustom(snpl.name) != null)
+                    throw new AlreadyLoadedException("SuperNova plugin " + snpl.name + " is already loaded");
 
-                SuperNovaPlugin.Load(pl, auto);
+                SuperNovaPlugin.Load(snpl, auto);
             }
             return SuperNovaplugins;
         }
@@ -978,7 +978,7 @@ namespace Flames.SuperNovaScripting
 
 namespace Flames
 {
-    public class SuperNovaPluginLoader : Plugin
+    public class SuperNovaPluginLoader : NewPlugin
     {
         public override string name { get { return "SuperNovaPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
@@ -1007,8 +1007,7 @@ namespace Flames
 }
 namespace Flames
 {
-    /// <summary> This class provides for more advanced modification to Flames 
-    /// using MCGalaxy's newer compiler plugin </summary>
+    /// <summary> Work on backwards compatibility with other cores </summary>
     public abstract class SuperNovaPlugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
@@ -1058,66 +1057,66 @@ namespace Flames
             return null;
         }
 
-        public static void Load(SuperNovaPlugin pl, bool auto)
+        public static void Load(SuperNovaPlugin snpl, bool auto)
         {
-            string ver = pl.Flames_Version;
+            string ver = snpl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for SuperNova plugins
             string CurrentVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(snpl.MCGalaxy_Version) && new Version(snpl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("SuperNova plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("SuperNova plugin '{0}' cannot be loaded on this version of {1}!", snpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
             {
-                string msg = string.Format("SuperNova plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("SuperNova plugin '{0}' requires a more recent version of {1}!", snpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
 
             try
             {
-                CustomSuperNovaPlugins.Add(pl);
+                CustomSuperNovaPlugins.Add(snpl);
 
-                if (pl.LoadAtStartup || !auto)
+                if (snpl.LoadAtStartup || !auto)
                 {
-                    pl.Load(auto);
-                    Logger.Log(LogType.SystemActivity, "SuperNova plugin {0} loaded...build: {1}", pl.name, pl.build);
+                    snpl.Load(auto);
+                    Logger.Log(LogType.SystemActivity, "SuperNova plugin {0} loaded...build: {1}", snpl.name, snpl.build);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "SuperNova plugin {0} was not loaded, you can load it with /snpload", pl.name);
+                    Logger.Log(LogType.SystemActivity, "SuperNova plugin {0} was not loaded, you can load it with /snpload", snpl.name);
                 }
 
-                if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
+                if (!string.IsNullOrEmpty(snpl.welcome)) Logger.Log(LogType.SystemActivity, snpl.welcome);
             }
             catch
             {
-                if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
+                if (!string.IsNullOrEmpty(snpl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", snpl.creator, snpl.name);
                 throw;
             }
         }
-        public static bool Unload(SuperNovaPlugin pl)
+        public static bool Unload(SuperNovaPlugin snpl)
         {
-            bool success = UnloadSuperNovaPlugin(pl, false);
+            bool success = UnloadSuperNovaPlugin(snpl, false);
 
             // TODO only remove if successful?
-            CustomSuperNovaPlugins.Remove(pl);
-            CoreSuperNovaPlugins.Remove(pl);
+            CustomSuperNovaPlugins.Remove(snpl);
+            CoreSuperNovaPlugins.Remove(snpl);
             return success;
         }
 
-        public static bool UnloadSuperNovaPlugin(SuperNovaPlugin pl, bool auto)
+        public static bool UnloadSuperNovaPlugin(SuperNovaPlugin snpl, bool auto)
         {
             try
             {
-                pl.Unload(auto);
+                snpl.Unload(auto);
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading SuperNova plugin " + pl.name, ex);
+                Logger.LogError("Error unloading SuperNova plugin " + snpl.name, ex);
                 return false;
             }
         }

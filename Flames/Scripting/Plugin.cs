@@ -15,67 +15,57 @@
     or implied. See the Licenses for the specific language governing
     permissions and limitations under the Licenses.
 */
+#if !F_DOTNET
 using System;
 using System.Collections.Generic;
-using Flames.Core;
 using Flames.Modules.Compiling;
-using Flames.Modules.Games.Countdown;
-using Flames.Modules.Games.CTF;
-using Flames.Modules.Games.LS;
-using Flames.Modules.Games.TW;
-using Flames.Modules.Games.ZS;
-using Flames.Modules.Moderation.Notes;
-using Flames.Modules.NewCompiling;
-using Flames.Modules.Relay.Discord;
-using Flames.Modules.Relay.IRC;
-using Flames.Modules.Security;
 using Flames.Scripting;
 
 namespace Flames
 {
     /// <summary> This class provides for more advanced modification to Flames </summary>
-    public abstract class Plugin
+    public abstract class Plugin : NewPlugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
         /// <param name="auto"> True if plugin is being automatically loaded (e.g. on server startup), false if manually. </param>
-        public abstract void Load(bool auto);
+        public override void Load(bool auto) { }
 
         /// <summary> Unhooks from events and disposes of state/resources etc </summary>
         /// <param name="auto"> True if plugin is being auto unloaded (e.g. on server shutdown), false if manually. </param>
-        public abstract void Unload(bool auto);
+        public override void Unload(bool auto) { }
 
         /// <summary> Called when a player does /Help on the plugin. Typically tells the player what this plugin is about. </summary>
         /// <param name="p"> Player who is doing /Help. </param>
-        public virtual void Help(Player p)
+        public override void Help(Player p)
         {
             p.Message("No help is available for this plugin.");
         }
 
         /// <summary> Name of the plugin. </summary>
-        public abstract string name { get; }
+        public override string name { get; }
         /// <summary> The oldest version of Flames this plugin is compatible with. </summary>
-        public virtual string Flames_Version { get { return null; } }
+        public override string Flames_Version { get { return Server.Version; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public virtual string GoldenSparks_Version { get { return null; } }
+        public override string GoldenSparks_Version { get { return null; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public virtual string SuperNova_Version { get { return null; } }
+        public override string SuperNova_Version { get { return null; } }
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public virtual string DeadNova_Version { get { return null; } }
+        public override string DeadNova_Version { get { return null; } }
 
         /// <summary> Work on backwards compatibility with other cores </summary>
-        public virtual string RandomStrangers_Version { get { return null; } }
+        public override string RandomStrangers_Version { get { return null; } }
 #endif
         /// <summary> Work on backwards compatibility with MCGalaxy </summary>
-        public virtual string MCGalaxy_Version { get { return null; } }
+        public override string MCGalaxy_Version { get { return "1.9.4.9"; } }
         /// <summary> Version of this plugin. </summary>
-        public virtual int build { get { return 0; } }
+        public override int build { get { return 0; } }
         /// <summary> Message to display once this plugin is loaded. </summary>
-        public virtual string welcome { get { return ""; } }
+        public override string welcome { get { return ""; } }
         /// <summary> The creator/author of this plugin. (Your name) </summary>
-        public virtual string creator { get { return ""; } }
+        public override string creator { get { return ""; } }
         /// <summary> Whether or not to auto load this plugin on server startup. </summary>
-        public virtual bool LoadAtStartup { get { return true; } }
+        public override bool LoadAtStartup { get { return true; } }
 
 
         /// <summary> List of plugins/modules included in the server software </summary>
@@ -172,24 +162,7 @@ namespace Flames
 
         public static void LoadAll()
         {
-            LoadCorePlugin(new CorePlugin());
-            LoadCorePlugin(new NotesPlugin());
-            LoadCorePlugin(new DiscordPlugin());
-            LoadCorePlugin(new IRCPlugin());
-            LoadCorePlugin(new IPThrottler());
-            LoadCorePlugin(new ServerURLSender());
-            LoadCorePlugin(new CountdownPlugin());
-            LoadCorePlugin(new CTFPlugin());
-            LoadCorePlugin(new LSPlugin());
-            LoadCorePlugin(new TWPlugin());
-            LoadCorePlugin(new ZSPlugin());
             LoadCorePlugin(new CompilerPlugin());
-#if CORE
-            LoadCorePlugin(new GoldenSparksPluginLoader());
-            LoadCorePlugin(new SuperNovaPluginLoader());
-            LoadCorePlugin(new DeadNovaPluginLoader());
-            LoadCorePlugin(new RandomStrangersPluginLoader());
-#endif
             IScripting.AutoloadPlugins();
         }
         public static void LoadCorePlugin(Plugin plugin)
@@ -202,3 +175,4 @@ namespace Flames
         }
     }
 }
+#endif

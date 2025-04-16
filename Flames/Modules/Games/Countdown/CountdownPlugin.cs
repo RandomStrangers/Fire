@@ -19,7 +19,7 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Games.Countdown
 {
-    public class CountdownPlugin : Plugin
+    public class CountdownPlugin : NewPlugin
     {
         public override string name { get { return "Countdown"; } }
         public static Command cmdCD = new CmdCountdown();

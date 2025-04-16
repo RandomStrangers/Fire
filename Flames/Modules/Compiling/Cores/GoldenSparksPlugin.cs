@@ -17,7 +17,7 @@ namespace Flames.Modules.GoldenSparksCompiling
     {
         public override string name { get { return "GoldenSparksPluginCompile"; } }
         public override string shortcut { get { return "GSPCompile"; } }
-        public override string type { get { return CommandTypes.Other; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override void Use(Player p, string message)
@@ -53,7 +53,7 @@ namespace Flames.Modules.GoldenSparksCompiling
         {
             ICompiler compiler = ICompiler.Compilers[0];
             p.Message("&T/GoldenSparksPluginCompile [plugin name]");
-            p.Message("&HCompiles a .cs file containing a  C# GoldenSparks plugin into a DLL");
+            p.Message("&HCompiles a .cs file containing a C# GoldenSparks plugin into a DLL");
             p.Message("&H  Compiles from &f{0}", compiler.GoldenSparksPluginPath("&H<name>&f"));
         }
     }
@@ -113,7 +113,7 @@ namespace Flames.Modules.GoldenSparksCompiling
                 string modifier = args.Length > 1 ? args[1] : "";
 
                 p.Message("Loaded GoldenSparks plugins:");
-                Paginator.Output(p, GoldenSparksPlugin.CustomGoldenSparksPlugins, pl => pl.name,
+                Paginator.Output(p, GoldenSparksPlugin.CustomGoldenSparksPlugins, gspl => gspl.name,
                                  "GoldenSparks", "goldensparksplugins", modifier);
                 return;
             }
@@ -150,7 +150,7 @@ namespace Flames.Modules.GoldenSparksCompiling
         {
             int matches;
             GoldenSparksPlugin GoldenSparksplugin = Matcher.Find(p, name, out matches, GoldenSparksPlugin.CustomGoldenSparksPlugins,
-                                         null, pln => pln.name, "goldensparksplugins");
+                                         null, gspln => gspln.name, "goldensparksplugins");
             if (GoldenSparksplugin == null) return;
             ScriptingOperations.UnloadGoldenSparksPlugin(p, GoldenSparksplugin);
         }
@@ -795,7 +795,7 @@ namespace Flames.GoldenSparksScripting
                 List<GoldenSparksPlugin> GoldenSparksplugins = IScripting.LoadGoldenSparksPlugin(path, false);
 
                 p.Message("GoldenSparks plugin {0} loaded successfully",
-                          GoldenSparksplugins.Join(pl => pl.name));
+                          GoldenSparksplugins.Join(gspl => gspl.name));
                 return true;
             }
             catch (AlreadyLoadedException ex)
@@ -912,7 +912,7 @@ namespace Flames.GoldenSparksScripting
             return instances;
         }
 
-        /// <summary> Loads the given assembly from disc (and associated .pdb debug data) </summary>
+        /// <summary> Loads the given assembly from disc </summary>
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
@@ -965,12 +965,12 @@ namespace Flames.GoldenSparksScripting
             Assembly lib = LoadAssembly(path);
             List<GoldenSparksPlugin> GoldenSparksplugins = LoadTypes<GoldenSparksPlugin>(lib);
 
-            foreach (GoldenSparksPlugin pl in GoldenSparksplugins)
+            foreach (GoldenSparksPlugin gspl in GoldenSparksplugins)
             {
-                if (GoldenSparksPlugin.FindGoldenSparksCustom(pl.name) != null)
-                    throw new AlreadyLoadedException("GoldenSparks plugin " + pl.name + " is already loaded");
+                if (GoldenSparksPlugin.FindGoldenSparksCustom(gspl.name) != null)
+                    throw new AlreadyLoadedException("GoldenSparks plugin " + gspl.name + " is already loaded");
 
-                GoldenSparksPlugin.Load(pl, auto);
+                GoldenSparksPlugin.Load(gspl, auto);
             }
             return GoldenSparksplugins;
         }
@@ -979,7 +979,7 @@ namespace Flames.GoldenSparksScripting
 
 namespace Flames
 {
-    public class GoldenSparksPluginLoader : Plugin
+    public class GoldenSparksPluginLoader : NewPlugin
     {
         public override string name { get { return "GoldenSparksPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
@@ -1008,8 +1008,7 @@ namespace Flames
 }
 namespace Flames
 {
-    /// <summary> This class provides for more advanced modification to Flames 
-    /// using MCGalaxy's newer compiler plugin </summary>
+    /// <summary> Work on backwards compatibility with other cores </summary>
     public abstract class GoldenSparksPlugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
@@ -1059,66 +1058,66 @@ namespace Flames
             return null;
         }
 
-        public static void Load(GoldenSparksPlugin pl, bool auto)
+        public static void Load(GoldenSparksPlugin gspl, bool auto)
         {
-            string ver = pl.Flames_Version;
+            string ver = gspl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for GoldenSparks plugins
             string CurrentVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(gspl.MCGalaxy_Version) && new Version(gspl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("GoldenSparks plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("GoldenSparks plugin '{0}' cannot be loaded on this version of {1}!", gspl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
             {
-                string msg = string.Format("GoldenSparks plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("GoldenSparks plugin '{0}' requires a more recent version of {1}!", gspl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
 
             try
             {
-                CustomGoldenSparksPlugins.Add(pl);
+                CustomGoldenSparksPlugins.Add(gspl);
 
-                if (pl.LoadAtStartup || !auto)
+                if (gspl.LoadAtStartup || !auto)
                 {
-                    pl.Load(auto);
-                    Logger.Log(LogType.SystemActivity, "GoldenSparks plugin {0} loaded...build: {1}", pl.name, pl.build);
+                    gspl.Load(auto);
+                    Logger.Log(LogType.SystemActivity, "GoldenSparks plugin {0} loaded...build: {1}", gspl.name, gspl.build);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "GoldenSparks plugin {0} was not loaded, you can load it with /gspload", pl.name);
+                    Logger.Log(LogType.SystemActivity, "GoldenSparks plugin {0} was not loaded, you can load it with /gspload", gspl.name);
                 }
 
-                if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
+                if (!string.IsNullOrEmpty(gspl.welcome)) Logger.Log(LogType.SystemActivity, gspl.welcome);
             }
             catch
             {
-                if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
+                if (!string.IsNullOrEmpty(gspl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", gspl.creator, gspl.name);
                 throw;
             }
         }
-        public static bool Unload(GoldenSparksPlugin pl)
+        public static bool Unload(GoldenSparksPlugin gspl)
         {
-            bool success = UnloadGoldenSparksPlugin(pl, false);
+            bool success = UnloadGoldenSparksPlugin(gspl, false);
 
             // TODO only remove if successful?
-            CustomGoldenSparksPlugins.Remove(pl);
-            CoreGoldenSparksPlugins.Remove(pl);
+            CustomGoldenSparksPlugins.Remove(gspl);
+            CoreGoldenSparksPlugins.Remove(gspl);
             return success;
         }
 
-        public static bool UnloadGoldenSparksPlugin(GoldenSparksPlugin pl, bool auto)
+        public static bool UnloadGoldenSparksPlugin(GoldenSparksPlugin gspl, bool auto)
         {
             try
             {
-                pl.Unload(auto);
+                gspl.Unload(auto);
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading GoldenSparks plugin " + pl.name, ex);
+                Logger.LogError("Error unloading GoldenSparks plugin " + gspl.name, ex);
                 return false;
             }
         }

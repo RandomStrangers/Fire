@@ -40,7 +40,7 @@ namespace Flames.Commands.NewScripting
                 string modifier = args.Length > 1 ? args[1] : "";
 
                 p.Message("Loaded new plugins:");
-                Paginator.Output(p, NewPlugin.CustomNewPlugins, pl => pl.name,
+                Paginator.Output(p, NewPlugin.CustomNewPlugins, npl => npl.name,
                                  "NewPlugins", "newplugins", modifier);
                 return;
             }
@@ -77,7 +77,7 @@ namespace Flames.Commands.NewScripting
         {
             int matches;
             NewPlugin newplugin = Matcher.Find(p, name, out matches, NewPlugin.CustomNewPlugins,
-                                         null, pln => pln.name, "newplugins");
+                                         null, npln => npln.name, "newplugins");
             if (newplugin == null) return;
             ScriptingOperations.UnloadNewPlugin(p, newplugin);
         }

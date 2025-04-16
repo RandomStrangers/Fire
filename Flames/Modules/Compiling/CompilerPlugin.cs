@@ -15,7 +15,7 @@
    or implied. See the Licenses for the specific language governing
    permissions and limitations under the Licenses.
 */
-
+#if !F_DOTNET
 namespace Flames.Modules.Compiling
 {
     public class CompilerPlugin : Plugin
@@ -38,3 +38,4 @@ namespace Flames.Modules.Compiling
         }
     }
 }
+#endif

@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 
+#if !F_DOTNET
 
 namespace Flames.Commands.Scripting {
     public sealed class CmdPlugin_simpleLoad : Command2 {
@@ -45,3 +46,4 @@ namespace Flames.Commands.Scripting {
         }
     }
 }
+#endif

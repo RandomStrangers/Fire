@@ -50,7 +50,7 @@ namespace Flames
             Level.LoadMetadata(mainLevel);
             LevelInfo.Add(mainLevel);
         }
-
+#if !F_DOTNET
         public static void LoadAllPlugins(SchedulerTask task)
         {
             Plugin.LoadAll();
@@ -59,7 +59,11 @@ namespace Flames
         {
             Plugin_Simple.LoadAll();
         }
-
+#endif
+        public static void LoadAllNewPlugins(SchedulerTask task)
+        {
+            NewPlugin.LoadAll();
+        }
         public static void InitPlayerLists(SchedulerTask task)
         {
             try

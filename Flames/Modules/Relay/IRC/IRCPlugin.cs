@@ -20,7 +20,7 @@ using Flames.Events.ServerEvents;
 
 namespace Flames.Modules.Relay.IRC
 {
-    public class IRCPlugin : Plugin
+    public class IRCPlugin : NewPlugin
     {
         public override string name { get { return "IRCRelay"; } }
 

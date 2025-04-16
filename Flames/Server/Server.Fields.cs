@@ -49,14 +49,14 @@ namespace Flames
         public static PlayerMetaList Notes = new PlayerMetaList("text/notes.txt");
 #if CORE
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
-        public const string InternalVersion = "1.0.4.3";
+        public const string InternalVersion = "1.0.4.4";
         public static string SoftwareName = "&4H&6a&5r&0m&7o&2n&dy&a";
 #else
         /// <summary> *** DO NOT USE THIS! *** Use VersionString, as this field is a constant and is inlined if used. </summary>
         public const string InternalVersion = FlamesVersion;
         public static string SoftwareName = "&4F&cl&4a&cm&4e&cs";
 #endif
-        public const string FlamesVersion = "9.0.6.7";
+        public const string FlamesVersion = "9.0.6.8";
         public static string Version { get { return InternalVersion; } }
         public static string fullName;
         public static string SoftwareNameVersioned
@@ -78,7 +78,6 @@ namespace Flames
             "sethbatman05", "sethbatman2005", "jackstage1", "Pattykaki45",
             "jaketheidiot", "RandomStrangers", "ArgenteaeLunae", "Argenteae",
             "HarmonyNetwork" , "krowteNynomraH", "UserTaken123", "UserNotFree",
-            "onedez"
         };
         public static readonly List<string> Opstats = new List<string>() 
         { 

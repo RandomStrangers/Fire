@@ -23,7 +23,7 @@ namespace Flames.Modules.NewCompiling
     {
         public override string name { get { return "NewPluginCompile"; } }
         public override string shortcut { get { return "NewPCompile"; } }
-        public override string type { get { return CommandTypes.Other; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override void Use(Player p, string message)
@@ -59,7 +59,7 @@ namespace Flames.Modules.NewCompiling
         {
             ICompiler compiler = ICompiler.Compilers[0];
             p.Message("&T/NewPluginCompile [plugin name]");
-            p.Message("&HCompiles a .cs file containing a  C# new plugin into a DLL");
+            p.Message("&HCompiles a .cs file containing a C# new plugin into a DLL");
             p.Message("&H  Compiles from &f{0}", compiler.NewPluginPath("&H<name>&f"));
         }
     }

@@ -17,7 +17,7 @@ namespace Flames.Modules.DeadNovaCompiling
     {
         public override string name { get { return "DeadNovaPluginCompile"; } }
         public override string shortcut { get { return "DNPCompile"; } }
-        public override string type { get { return CommandTypes.Other; } }
+        public override string type { get { return CommandTypes.Added; } }
         public override LevelPermission defaultRank { get { return LevelPermission.Owner; } }
         public override bool MessageBlockRestricted { get { return true; } }
         public override void Use(Player p, string message)
@@ -53,7 +53,7 @@ namespace Flames.Modules.DeadNovaCompiling
         {
             ICompiler compiler = ICompiler.Compilers[0];
             p.Message("&T/DeadNovaPluginCompile [plugin name]");
-            p.Message("&HCompiles a .cs file containing a  C# DeadNova plugin into a DLL");
+            p.Message("&HCompiles a .cs file containing a C# DeadNova plugin into a DLL");
             p.Message("&H  Compiles from &f{0}", compiler.DeadNovaPluginPath("&H<name>&f"));
         }
     }
@@ -150,7 +150,7 @@ namespace Flames.Modules.DeadNovaCompiling
         {
             int matches;
             DeadNovaPlugin DeadNovaplugin = Matcher.Find(p, name, out matches, DeadNovaPlugin.CustomDeadNovaPlugins,
-                                         null, pln => pln.name, "deadnovaplugins");
+                                         null, dnpln => dnpln.name, "deadnovaplugins");
             if (DeadNovaplugin == null) return;
             ScriptingOperations.UnloadDeadNovaPlugin(p, DeadNovaplugin);
         }
@@ -796,7 +796,7 @@ namespace Flames.DeadNovaScripting
                 List<DeadNovaPlugin> DeadNovaplugins = IScripting.LoadDeadNovaPlugin(path, false);
 
                 p.Message("DeadNova plugin {0} loaded successfully",
-                          DeadNovaplugins.Join(pl => pl.name));
+                          DeadNovaplugins.Join(dnpl => dnpl.name));
                 return true;
             }
             catch (AlreadyLoadedException ex)
@@ -913,7 +913,7 @@ namespace Flames.DeadNovaScripting
             return instances;
         }
 
-        /// <summary> Loads the given assembly from disc (and associated .pdb debug data) </summary>
+        /// <summary> Loads the given assembly from disc </summary>
         public static Assembly LoadAssembly(string path)
         {
             byte[] data = File.ReadAllBytes(path);
@@ -967,12 +967,12 @@ namespace Flames.DeadNovaScripting
             Assembly lib = LoadAssembly(path);
             List<DeadNovaPlugin> DeadNovaplugins = LoadTypes<DeadNovaPlugin>(lib);
 
-            foreach (DeadNovaPlugin pl in DeadNovaplugins)
+            foreach (DeadNovaPlugin dnpl in DeadNovaplugins)
             {
-                if (DeadNovaPlugin.FindDeadNovaCustom(pl.name) != null)
-                    throw new AlreadyLoadedException("DeadNova plugin " + pl.name + " is already loaded");
+                if (DeadNovaPlugin.FindDeadNovaCustom(dnpl.name) != null)
+                    throw new AlreadyLoadedException("DeadNova plugin " + dnpl.name + " is already loaded");
 
-                DeadNovaPlugin.Load(pl, auto);
+                DeadNovaPlugin.Load(dnpl, auto);
             }
             return DeadNovaplugins;
         }
@@ -981,7 +981,7 @@ namespace Flames.DeadNovaScripting
 
 namespace Flames
 {
-    public class DeadNovaPluginLoader : Plugin
+    public class DeadNovaPluginLoader : NewPlugin
     {
         public override string name { get { return "DeadNovaPluginLoader"; } }
         public override string creator { get { return Colors.Strip(Server.SoftwareName + " team"); } }
@@ -1010,8 +1010,7 @@ namespace Flames
 }
 namespace Flames
 {
-    /// <summary> This class provides for more advanced modification to Flames 
-    /// using MCGalaxy's newer compiler plugin </summary>
+    /// <summary> Work on backwards compatibility with other cores </summary>
     public abstract class DeadNovaPlugin
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
@@ -1061,66 +1060,66 @@ namespace Flames
             return null;
         }
 
-        public static void Load(DeadNovaPlugin pl, bool auto)
+        public static void Load(DeadNovaPlugin dnpl, bool auto)
         {
-            string ver = pl.Flames_Version;
+            string ver = dnpl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
             // Version different in Dev build, use normal for DeadNova plugins
             string CurrentVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(dnpl.MCGalaxy_Version) && new Version(dnpl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("DeadNova plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("DeadNova plugin '{0}' cannot be loaded on this version of {1}!", dnpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
             if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
             {
-                string msg = string.Format("DeadNova plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("DeadNova plugin '{0}' requires a more recent version of {1}!", dnpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
 
             try
             {
-                CustomDeadNovaPlugins.Add(pl);
+                CustomDeadNovaPlugins.Add(dnpl);
 
-                if (pl.LoadAtStartup || !auto)
+                if (dnpl.LoadAtStartup || !auto)
                 {
-                    pl.Load(auto);
-                    Logger.Log(LogType.SystemActivity, "DeadNova plugin {0} loaded...build: {1}", pl.name, pl.build);
+                    dnpl.Load(auto);
+                    Logger.Log(LogType.SystemActivity, "DeadNova plugin {0} loaded...build: {1}", dnpl.name, dnpl.build);
                 }
                 else
                 {
-                    Logger.Log(LogType.SystemActivity, "DeadNova plugin {0} was not loaded, you can load it with /dnpload", pl.name);
+                    Logger.Log(LogType.SystemActivity, "DeadNova plugin {0} was not loaded, you can load it with /dnpload", dnpl.name);
                 }
 
-                if (!string.IsNullOrEmpty(pl.welcome)) Logger.Log(LogType.SystemActivity, pl.welcome);
+                if (!string.IsNullOrEmpty(dnpl.welcome)) Logger.Log(LogType.SystemActivity, dnpl.welcome);
             }
             catch
             {
-                if (!string.IsNullOrEmpty(pl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", pl.creator, pl.name);
+                if (!string.IsNullOrEmpty(dnpl.creator)) Logger.Log(LogType.Warning, "You can go bug {0} about {1} failing to load.", dnpl.creator, dnpl.name);
                 throw;
             }
         }
-        public static bool Unload(DeadNovaPlugin pl)
+        public static bool Unload(DeadNovaPlugin dnpl)
         {
-            bool success = UnloadDeadNovaPlugin(pl, false);
+            bool success = UnloadDeadNovaPlugin(dnpl, false);
 
             // TODO only remove if successful?
-            CustomDeadNovaPlugins.Remove(pl);
-            CoreDeadNovaPlugins.Remove(pl);
+            CustomDeadNovaPlugins.Remove(dnpl);
+            CoreDeadNovaPlugins.Remove(dnpl);
             return success;
         }
 
-        public static bool UnloadDeadNovaPlugin(DeadNovaPlugin pl, bool auto)
+        public static bool UnloadDeadNovaPlugin(DeadNovaPlugin dnpl, bool auto)
         {
             try
             {
-                pl.Unload(auto);
+                dnpl.Unload(auto);
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.LogError("Error unloading DeadNova plugin " + pl.name, ex);
+                Logger.LogError("Error unloading DeadNova plugin " + dnpl.name, ex);
                 return false;
             }
         }

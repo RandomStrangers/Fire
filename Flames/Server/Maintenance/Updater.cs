@@ -32,7 +32,19 @@ namespace Flames
         public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/Flame/Uploads";
         public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
-#if CORE
+#if CORE && F_DOTNET_DEV && F_STANDALONE
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_core_dev_standalone.dll";
+#elif CORE && F_DOTNET_DEV
+        public const string CurrentVersionURL = UpdatesURL + "dev.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_core_dev.dll";
+#elif F_DOTNET_DEV && F_STANDALONE
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_dev_standalone.dll";
+#elif F_DOTNET_DEV
+        public const string CurrentVersionURL = UpdatesURL + "current.txt";
+        public const string dllURL = UpdatesURL + "Flames_dotnet_dev.dll";
+#elif CORE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";
         public const string dllURL = UpdatesURL + "Flames_dev.dll";
 #else
