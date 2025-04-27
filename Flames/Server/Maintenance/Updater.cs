@@ -27,10 +27,10 @@ namespace Flames
     public static class Updater
     {
 
-        public static string SourceURL = "https://github.com/RandomStrangers/Fire/";
-        public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/Flame/";
-        public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/Flame/Uploads";
-        public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
+        public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/Rework";
+        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/Rework/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/Rework/Uploads";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/Rework/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE && F_DOTNET_DEV && F_STANDALONE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";
