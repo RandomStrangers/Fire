@@ -97,6 +97,10 @@ namespace Flames
         public static ConfigElement[] serverConfig, levelConfig, zoneConfig;
         public static void Start()
         {
+            if (File.Exists(Paths.OldServerPropsFile) && !File.Exists(Paths.ServerPropsFile))
+            {
+                File.Move(Paths.OldServerPropsFile, Paths.ServerPropsFile);
+            }
             serverConfig = ConfigElement.GetAll(typeof(ServerConfig));
             levelConfig = ConfigElement.GetAll(typeof(LevelConfig));
             zoneConfig = ConfigElement.GetAll(typeof(ZoneConfig));
