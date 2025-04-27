@@ -41,7 +41,8 @@ namespace Flames
         public const string CmdPermsFile = "properties/command.properties";
         public const string CmdExtraPermsFile = "properties/ExtraCommandPermissions.properties";
         public const string EconomyPropsFile = "properties/economy.properties";
-        public const string ServerPropsFile = "properties/server.properties";
+        public const string OldServerPropsFile = "properties/server.properties";
+        public const string ServerPropsFile = "server.properties";
         public const string RankPropsFile = "properties/ranks.properties";
         public const string AuthServicesFile = "properties/authservices.properties";
         public const string CPEDisabledFile = "properties/cpe.properties";
