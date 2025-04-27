@@ -57,7 +57,7 @@ namespace Flames
         // TODO: support loading other map files eventually
         public static string[] AllMapFiles()
         {
-            return Directory.GetFiles("levels", "*.lvl");
+            return Directory.GetFiles("levels", "*.flvl");
         }
 
         public static string[] AllMapNames()
@@ -78,7 +78,7 @@ namespace Flames
         /// <summary> Relative path of a level's map file </summary>
         public static string MapPath(string name)
         {
-            return "levels/" + name.ToLower() + ".lvl";
+            return "levels/" + name.ToLower() + ".flvl";
         }
 
 
@@ -97,7 +97,7 @@ namespace Flames
         /// <summary> Relative path of a level's backup map file </summary>
         public static string BackupFilePath(string name, string backup)
         {
-            return BackupDirPath(name, backup) + "/" + name + ".lvl";
+            return BackupDirPath(name, backup) + "/" + name + ".flvl";
         }
 
         public static string BackupNameFrom(string path)
