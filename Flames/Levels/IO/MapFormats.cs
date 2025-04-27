@@ -79,7 +79,7 @@ namespace Flames.Levels.IO
         public static List<IMapImporter> Formats = new List<IMapImporter>() 
         {
             new LvlImporter(), new CwImporter(), new FcmImporter(), new McfImporter(),
-            new DatImporter(), new McLevelImporter(),
+            new DatImporter(), new McLevelImporter(), new FLvlImporter(),
         };
 
         /// <summary> Returns an IMapImporter capable of decoding the given level file </summary>
@@ -119,7 +119,7 @@ namespace Flames.Levels.IO
 
         public static List<IMapExporter> Formats = new List<IMapExporter>() 
         {
-            new LvlExporter()
+            new LvlExporter(), new FLvlExporter()
         };
     }
 }
