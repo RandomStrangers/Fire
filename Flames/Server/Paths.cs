@@ -65,13 +65,13 @@ namespace Flames
         /// <summary> Relative path of a deleted level's map file. </summary>
         public static string DeletedMapFile(string map) 
         { 
-            return "levels/deleted/" + map + ".lvl"; 
+            return "levels/deleted/" + map + ".flvl"; 
         }
 
         /// <summary> Relative path of a level's previous save map file. </summary>
         public static string PrevMapFile(string map) 
         { 
-            return "levels/prev/" + map.ToLower() + ".lvl.prev"; 
+            return "levels/prev/" + map.ToLower() + ".flvl.prev"; 
         }
 
         /// <summary> Relative path of a block properties file. </summary>     
