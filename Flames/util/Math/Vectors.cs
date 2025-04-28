@@ -297,27 +297,27 @@ namespace Flames.Maths
 
         public static Vec3S8 operator +(Vec3S8 a, Vec3S8 b)
         {
-            return new Vec3S8(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+            return new Vec3S8((sbyte)(a.X + b.X), (sbyte)(a.Y + b.Y), (sbyte)(a.Z + b.Z));
         }
 
         public static Vec3S8 operator -(Vec3S8 a, Vec3S8 b)
         {
-            return new Vec3S8(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+            return new Vec3S8((sbyte)(a.X - b.X), (sbyte)(a.Y - b.Y), (sbyte)(a.Z - b.Z));
         }
 
         public static Vec3S8 operator *(Vec3S8 a, sbyte b)
         {
-            return new Vec3S8(a.X * b, a.Y * b, a.Z * b);
+            return new Vec3S8((sbyte)(a.X * b), (sbyte)(a.Y * b), (sbyte)(a.Z * b));
         }
 
         public static Vec3S8 operator /(Vec3S8 a, sbyte b)
         {
-            return new Vec3S8(a.X / b, a.Y / b, a.Z / b);
+            return new Vec3S8((sbyte)(a.X / b), (sbyte)(a.Y / b), (sbyte)(a.Z / b));
         }
 
         public static Vec3S8 operator *(Vec3S8 a, float b)
         {
-            return new Vec3S8((a.X * b), (a.Y * b), (a.Z * b));
+            return new Vec3S8((sbyte)(a.X * b), (sbyte)(a.Y * b), (sbyte)(a.Z * b));
         }
 
 
@@ -456,22 +456,22 @@ namespace Flames.Maths
 
         public static Vec3S16 operator +(Vec3S16 a, Vec3S16 b)
         {
-            return new Vec3S16(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+            return new Vec3S16((short)(a.X + b.X), (short)(a.Y + b.Y), (short)(a.Z + b.Z));
         }
 
         public static Vec3S16 operator -(Vec3S16 a, Vec3S16 b)
         {
-            return new Vec3S16(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+            return new Vec3S16((short)(a.X - b.X), (short)(a.Y - b.Y), (short)(a.Z - b.Z));
         }
 
         public static Vec3S16 operator *(Vec3S16 a, short b)
         {
-            return new Vec3S16(a.X * b, a.Y * b, a.Z * b);
+            return new Vec3S16((short)(a.X * b), (short)(a.Y * b), (short)(a.Z * b));
         }
 
         public static Vec3S16 operator /(Vec3S16 a, short b)
         {
-            return new Vec3S16(a.X / b, a.Y / b, a.Z / b);
+            return new Vec3S16((short)(a.X / b), (short)(a.Y / b), (short)(a.Z / b));
         }
 
         public static Vec3S16 operator *(Vec3S16 a, float b)
