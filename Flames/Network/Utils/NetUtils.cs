@@ -26,13 +26,13 @@ namespace Flames
         /// <summary> Reads a signed 8 bit big endian integer. </summary>
         public static sbyte ReadI8(byte[] array, int offset)
         {
-            return (sbyte)(array[offset] << 8 | array[offset + 1]);
+            return (sbyte)(array[offset] | array[offset + 1]);
         }
 
         /// <summary> Reads an unsigned 8 bit big endian integer. </summary>
         public static byte ReadU8(byte[] array, int offset)
         {
-            return (byte)(array[offset] << 8 | array[offset + 1]);
+            return (byte)(array[offset] | array[offset + 1]);
         }
         /// <summary> Reads a signed 16 bit big endian integer. </summary>
         public static short ReadI16(byte[] array, int offset)
@@ -53,7 +53,15 @@ namespace Flames
                 | array[offset + 2] << 8 | array[offset + 3];
         }
 
+        public static void WriteI8(sbyte value, byte[] array, int index)
+        {
+            array[index++] = (byte)value;
+        }
 
+        public static void WriteU8(byte value, byte[] array, int index)
+        {
+            array[index++] = (byte)(value);
+        }
         public static void WriteI16(short value, byte[] array, int index)
         {
             array[index++] = (byte)(value >> 8);
