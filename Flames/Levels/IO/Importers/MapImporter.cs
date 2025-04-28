@@ -201,7 +201,7 @@ namespace Flames.Levels.IO
 
         public static short TryRead_I16(byte[] buffer, Stream gs)
         {
-            short read = gs.Read(buffer, 0, sizeof(short));
+            int read = gs.Read(buffer, 0, sizeof(short));
             if (read < sizeof(short)) return 0;
             return NetUtils.ReadI16(buffer, 0);
         }
