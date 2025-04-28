@@ -117,6 +117,10 @@ namespace Flames.Maths
             return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
         }
 
+        public static explicit operator Vec3U16(Vec3U8 a)
+        {
+            return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
+        }
         public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
