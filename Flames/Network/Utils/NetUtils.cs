@@ -23,7 +23,17 @@ namespace Flames
     public static class NetUtils
     {
         public const int StringSize = 64;
+        /// <summary> Reads a signed 8 bit big endian integer. </summary>
+        public static sbyte ReadI8(byte[] array, int offset)
+        {
+            return (sbyte)(array[offset] << 8 | array[offset + 1]);
+        }
 
+        /// <summary> Reads an unsigned 8 bit big endian integer. </summary>
+        public static byte ReadU8(byte[] array, int offset)
+        {
+            return (byte)(array[offset] << 8 | array[offset + 1]);
+        }
         /// <summary> Reads a signed 16 bit big endian integer. </summary>
         public static short ReadI16(byte[] array, int offset)
         {
