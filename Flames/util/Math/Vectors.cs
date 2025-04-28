@@ -333,7 +333,7 @@ namespace Flames.Maths
 
         public override int GetHashCode()
         {
-            sbyte hashCode = 0;
+            int hashCode = 0;
             hashCode += 1000000007 * X;
             hashCode += 1000000009 * Y;
             hashCode += 1000000021 * Z;
@@ -492,7 +492,7 @@ namespace Flames.Maths
 
         public override int GetHashCode()
         {
-            short hashCode = 0;
+            int hashCode = 0;
             hashCode += 1000000007 * X;
             hashCode += 1000000009 * Y;
             hashCode += 1000000021 * Z;
