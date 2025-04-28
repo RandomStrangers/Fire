@@ -355,7 +355,165 @@ namespace Flames.Maths
             return X + ", " + Y + ", " + Z;
         }
     }
-    
+       /// <summary> 3 component vector (signed 64 bit integer) </summary>
+    public struct Vec3S16 : IEquatable<Vec3S16>
+    {
+        public short X, Y, Z;
+        public static Vec3S16 Zero = new Vec3S16(0);
+
+        public Vec3S16(short x, short y, short z)
+        {
+            X = x; 
+            Y = y; 
+            Z = z;
+        }
+
+        public Vec3S16(short value)
+        {
+            X = value; 
+            Y = value; 
+            Z = value;
+        }
+
+
+        public short LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+
+        public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
+
+
+        public short this[short index]
+        {
+            get
+            {
+                if (index == 0) 
+                { 
+                    return X; 
+                }
+                else if (index == 1)
+                { 
+                    return Y; 
+                }
+                else 
+                { 
+                    return Z; 
+                }
+            }
+            set
+            {
+                if (index == 0) 
+                {
+                    X = value; 
+                }
+                else if (index == 1) 
+                { 
+                    Y = value; 
+                }
+                else 
+                { 
+                    Z = value; 
+                }
+            }
+        }
+
+
+        public static Vec3S16 Max(Vec3S16 a, Vec3S16 b)
+        {
+            return new Vec3S16(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y), Math.Max(a.Z, b.Z));
+        }
+
+        public static Vec3S16 Min(Vec3S16 a, Vec3S16 b)
+        {
+            return new Vec3S16(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
+        }
+        public static implicit operator Vec3S16(Vec3S64 a)
+        {
+            return new Vec3S16((short)a.X, (short)a.Y, (short)a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3U64 a)
+        {
+            return new Vec3S16((short)a.X, (short)a.Y, (short)a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3S32 a)
+        {
+            return new Vec3S16((short)a.X, (short)a.Y, (short)a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3U32 a)
+        {
+            return new Vec3S16((short)a.X, (short)a.Y, (short)a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3U16 a)
+        {
+            return new Vec3S16((short)a.X, (short)a.Y, (short)a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3S8 a)
+        {
+            return new Vec3S16(a.X, a.Y, a.Z);
+        }
+        public static implicit operator Vec3S16(Vec3U8 a)
+        {
+            return new Vec3S16(a.X, a.Y, a.Z);
+        }
+
+        public static Vec3S16 operator +(Vec3S16 a, Vec3S16 b)
+        {
+            return new Vec3S16(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+
+        public static Vec3S16 operator -(Vec3S16 a, Vec3S16 b)
+        {
+            return new Vec3S16(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+        }
+
+        public static Vec3S16 operator *(Vec3S16 a, short b)
+        {
+            return new Vec3S16(a.X * b, a.Y * b, a.Z * b);
+        }
+
+        public static Vec3S16 operator /(Vec3S16 a, short b)
+        {
+            return new Vec3S16(a.X / b, a.Y / b, a.Z / b);
+        }
+
+        public static Vec3S16 operator *(Vec3S16 a, float b)
+        {
+            return new Vec3S16((short)(a.X * b), (short)(a.Y * b), (short)(a.Z * b));
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vec3S16) && Equals((Vec3S16)obj);
+        }
+
+        public bool Equals(Vec3S16 other)
+        {
+            return X == other.X & Y == other.Y && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            short hashCode = 0;
+            hashCode += 1000000007 * X;
+            hashCode += 1000000009 * Y;
+            hashCode += 1000000021 * Z;
+            return hashCode;
+        }
+
+        public static bool operator ==(Vec3S16 a, Vec3S16 b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+        }
+
+        public static bool operator !=(Vec3S16 a, Vec3S16 b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
+        public override string ToString()
+        {
+            return X + ", " + Y + ", " + Z;
+        }
+    }
     /// <summary> 3 component vector (signed 64 bit integer) </summary>
     public struct Vec3S64 : IEquatable<Vec3S64>
     {
