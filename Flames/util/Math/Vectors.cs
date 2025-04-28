@@ -217,7 +217,7 @@ namespace Flames.Maths
         }
 
 
-        public sbyte LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
@@ -376,7 +376,7 @@ namespace Flames.Maths
         }
 
 
-        public short LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
@@ -723,7 +723,7 @@ namespace Flames.Maths
             return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
         }
 
-        public byte LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
@@ -810,7 +810,7 @@ namespace Flames.Maths
         {
             return new Vec3U16(a.X, a.Y, a.Z);
         }
-        public ushort LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
