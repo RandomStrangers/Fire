@@ -19,6 +19,313 @@ using System;
 
 namespace Flames.Maths
 {
+       /// <summary> 3 component vector (unsigned 32 bit integer) </summary>
+    public struct Vec3U32 : IEquatable<Vec3U32>
+    {
+        public uint X, Y, Z;
+        public static Vec3U64 Zero = new Vec3U64(0);
+        public static Vec3U32 MinVal = new Vec3U64(uint.MinValue);
+        public static Vec3U32 MaxVal = new Vec3U64(uint.MaxValue);
+
+        public Vec3U32(uint x, uint y, uint z)
+        {
+            X = x; 
+            Y = y;
+            Z = z;
+        }
+
+        public Vec3U32(uint value)
+        {
+            X = value; 
+            Y = value; 
+            Z = value;
+        }
+
+        public static explicit operator Vec3U32(Vec3S64 a)
+        {
+            return new Vec3U32((uint)a.X, (uint)a.Y, (uint)a.Z);
+        }
+        public static explicit operator Vec3U32(Vec3S32 a)
+        {
+            return new Vec3U32((uint)a.X, (uint)a.Y, (uint)a.Z);
+        }
+        public static explicit operator Vec3U32(Vec3U64 a)
+        {
+            return new Vec3U32((uint)a.X, (uint)a.Y, (uint)a.Z);
+        }
+        public static explicit operator Vec3U32(Vec3U16 a)
+        {
+            return new Vec3U32(a.X, a.Y, a.Z);
+        }
+        public static explicit operator Vec3U32(Vec3U8 a)
+        {
+            return new Vec3U32(a.X, a.Y, a.Z);
+        }
+        public uint LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+
+        public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vec3U32) && Equals((Vec3U32)obj);
+        }
+
+        public bool Equals(Vec3U32 other)
+        {
+            return X == other.X & Y == other.Y && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            uiny hashCode = 0;
+            hashCode += 1000000007 * X;
+            hashCode += 1000000009 * Y;
+            hashCode += 1000000021 * Z;
+            return (int)hashCode;
+        }
+
+        public static bool operator ==(Vec3U32 a, Vec3U32 b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+        }
+
+        public static bool operator !=(Vec3U32 a, Vec3U32 b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
+        public override string ToString() 
+        { 
+            return X + ", " + Y + ", " + Z; 
+        }
+    }
+    /// <summary> 3 component vector (unsigned 64 bit integer) </summary>
+    public struct Vec3U64 : IEquatable<Vec3U64>
+    {
+        public ulong X, Y, Z;
+        public static Vec3U64 Zero = new Vec3U64(0);
+        public static Vec3U64 MinVal = new Vec3U64(ulong.MinValue);
+        public static Vec3U64 MaxVal = new Vec3U64(ulong.MaxValue);
+
+        public Vec3U64(ulong x, ulong y, ulong z)
+        {
+            X = x; 
+            Y = y;
+            Z = z;
+        }
+
+        public Vec3U64(ulong value)
+        {
+            X = value; 
+            Y = value; 
+            Z = value;
+        }
+
+        public static explicit operator Vec3U64(Vec3S64 a)
+        {
+            return new Vec3U64((ulong)a.X, (ulong)a.Y, (ulong)a.Z);
+        }
+        public static explicit operator Vec3U64(Vec3S32 a)
+        {
+            return new Vec3U64((ulong)a.X, (ulong)a.Y, (ulong)a.Z);
+        }
+        public static explicit operator Vec3U64(Vec3U32 a)
+        {
+            return new Vec3U64((ulong)a.X, (ulong)a.Y, (ulong)a.Z);
+        }
+        public static explicit operator Vec3U64(Vec3U16 a)
+        {
+            return new Vec3U64(a.X, a.Y, a.Z);
+        }
+        public static explicit operator Vec3U64(Vec3U8 a)
+        {
+            return new Vec3U64(a.X, a.Y, a.Z);
+        }
+        public ulong LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+
+        public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vec3U64) && Equals((Vec3U64)obj);
+        }
+
+        public bool Equals(Vec3U64 other)
+        {
+            return X == other.X & Y == other.Y && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            ulong hashCode = 0;
+            hashCode += 1000000007 * X;
+            hashCode += 1000000009 * Y;
+            hashCode += 1000000021 * Z;
+            return (int)hashCode;
+        }
+
+        public static bool operator ==(Vec3U64 a, Vec3U64 b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+        }
+
+        public static bool operator !=(Vec3U64 a, Vec3U64 b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
+        public override string ToString() 
+        { 
+            return X + ", " + Y + ", " + Z; 
+        }
+    }
+    /// <summary> 3 component vector (signed 64 bit integer) </summary>
+    public struct Vec3S64 : IEquatable<Vec3S64>
+    {
+        public long X, Y, Z;
+        public static Vec3S64 Zero = new Vec3S64(0);
+
+        public Vec3S64(long x, long y, long z)
+        {
+            X = x; 
+            Y = y; 
+            Z = z;
+        }
+
+        public Vec3S64(long value)
+        {
+            X = value; 
+            Y = value; 
+            Z = value;
+        }
+
+
+        public long LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+
+        public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
+
+
+        public long this[long index]
+        {
+            get
+            {
+                if (index == 0) 
+                { 
+                    return X; 
+                }
+                else if (index == 1)
+                { 
+                    return Y; 
+                }
+                else 
+                { 
+                    return Z; 
+                }
+            }
+            set
+            {
+                if (index == 0) 
+                {
+                    X = value; 
+                }
+                else if (index == 1) 
+                { 
+                    Y = value; 
+                }
+                else 
+                { 
+                    Z = value; 
+                }
+            }
+        }
+
+
+        public static Vec3S64 Max(Vec3S64 a, Vec3S64 b)
+        {
+            return new Vec3S64(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y), Math.Max(a.Z, b.Z));
+        }
+
+        public static Vec3S64 Min(Vec3S64 a, Vec3S64 b)
+        {
+            return new Vec3S64(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
+        }
+        public static implicit operator Vec3S64(Vec3U64 a)
+        {
+            return new Vec3S64((long)a.X, (long)a.Y, (long)a.Z);
+        }
+        public static implicit operator Vec3S64(Vec3S32 a)
+        {
+            return new Vec3S64(a.X, a.Y, a.Z);
+        }
+        public static implicit operator Vec3S64(Vec3U16 a)
+        {
+            return new Vec3S64(a.X, a.Y, a.Z);
+        }
+        public static implicit operator Vec3S64(Vec3U8 a)
+        {
+            return new Vec3S64(a.X, a.Y, a.Z);
+        }
+
+        public static Vec3S64 operator +(Vec3S64 a, Vec3S64 b)
+        {
+            return new Vec3S64(a.X + b.X, a.Y + b.Y, a.Z + b.Z);
+        }
+
+        public static Vec3S64 operator -(Vec3S64 a, Vec3S64 b)
+        {
+            return new Vec3S64(a.X - b.X, a.Y - b.Y, a.Z - b.Z);
+        }
+
+        public static Vec3S64 operator *(Vec3S64 a, long b)
+        {
+            return new Vec3S64(a.X * b, a.Y * b, a.Z * b);
+        }
+
+        public static Vec3S64 operator /(Vec3S64 a, long b)
+        {
+            return new Vec3S64(a.X / b, a.Y / b, a.Z / b);
+        }
+
+        public static Vec3S64 operator *(Vec3S64 a, float b)
+        {
+            return new Vec3S64((long)(a.X * b), (long)(a.Y * b), (long)(a.Z * b));
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vec3S64) && Equals((Vec3S64)obj);
+        }
+
+        public bool Equals(Vec3S64 other)
+        {
+            return X == other.X & Y == other.Y && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            long hashCode = 0;
+            hashCode += 1000000007 * X;
+            hashCode += 1000000009 * Y;
+            hashCode += 1000000021 * Z;
+            return (int)hashCode;
+        }
+
+        public static bool operator ==(Vec3S64 a, Vec3S64 b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+        }
+
+        public static bool operator !=(Vec3S64 a, Vec3S64 b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
+        public override string ToString()
+        {
+            return X + ", " + Y + ", " + Z;
+        }
+    }
     /// <summary> 3 component vector (unsigned 8 bit integer) </summary>
     public struct Vec3U8 : IEquatable<Vec3U8>
     {
@@ -40,8 +347,14 @@ namespace Flames.Maths
             Y = value; 
             Z = value;
         }
-
-
+        public static explicit operator Vec3U8(Vec3S64 a)
+        {
+            return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
+        }
+        public static explicit operator Vec3U8(Vec3U64 a)
+        {
+            return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
+        }
         public static explicit operator Vec3U8(Vec3U16 a)
         {
             return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
@@ -50,7 +363,10 @@ namespace Flames.Maths
         {
             return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
         }
-
+        public static explicit operator Vec3U8(Vec3S64 a)
+        {
+            return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
+        }
         public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
@@ -110,8 +426,18 @@ namespace Flames.Maths
             Y = value; 
             Z = value;
         }
-
-
+        public static explicit operator Vec3U16(Vec3U64 a)
+        {
+            return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
+        }
+        public static explicit operator Vec3U16(Vec3U64 a)
+        {
+            return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
+        }
+        public static explicit operator Vec3U16(Vec3S64 a)
+        {
+            return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
+        }
         public static explicit operator Vec3U16(Vec3S32 a)
         {
             return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
@@ -119,7 +445,7 @@ namespace Flames.Maths
 
         public static explicit operator Vec3U16(Vec3U8 a)
         {
-            return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
+            return new Vec3U16(a.X, a.Y, a.Z);
         }
         public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
@@ -230,7 +556,10 @@ namespace Flames.Maths
         {
             return new Vec3S32(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
         }
-
+        public static implicit operator Vec3S32(Vec3S64 a)
+        {
+            return new Vec3S32((int)a.X, (int)a.Y, (int)a.Z);
+        }
         public static implicit operator Vec3S32(Vec3U16 a)
         {
             return new Vec3S32(a.X, a.Y, a.Z);
@@ -300,7 +629,6 @@ namespace Flames.Maths
             return X + ", " + Y + ", " + Z;
         }
     }
-
     /// <summary> 3 component vector (32 bit floating point) </summary>
     public struct Vec3F32 : IEquatable<Vec3F32>
     {
