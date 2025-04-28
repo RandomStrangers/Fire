@@ -19,6 +19,76 @@ using System;
 
 namespace Flames.Maths
 {
+    /// <summary> 3 component vector (unsigned 8 bit integer) </summary>
+    public struct Vec3U8 : IEquatable<Vec3U8>
+    {
+        public byte X, Y, Z;
+        public static Vec3U8 Zero = new Vec3U8(0);
+        public static Vec3U8 MinVal = new Vec3U8(byte.MinValue);
+        public static Vec3U8 MaxVal = new Vec3U8(byte.MaxValue);
+
+        public Vec3U8(byte x, byte y, byte z)
+        {
+            X = x; 
+            Y = y;
+            Z = z;
+        }
+
+        public Vec3U8(byte value)
+        {
+            X = value; 
+            Y = value; 
+            Z = value;
+        }
+
+
+        public static explicit operator Vec3U8(Vec3U16 a)
+        {
+            return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
+        }
+        public static explicit operator Vec3U8(Vec3S32 a)
+        {
+            return new Vec3U8((byte)a.X, (byte)a.Y, (byte)a.Z);
+        }
+
+        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+
+        public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
+
+        public override bool Equals(object obj)
+        {
+            return (obj is Vec3U8) && Equals((Vec3U8)obj);
+        }
+
+        public bool Equals(Vec3U8 other)
+        {
+            return X == other.X & Y == other.Y && Z == other.Z;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = 0;
+            hashCode += 1000000007 * X;
+            hashCode += 1000000009 * Y;
+            hashCode += 1000000021 * Z;
+            return hashCode;
+        }
+
+        public static bool operator ==(Vec3U8 a, Vec3U8 b)
+        {
+            return a.X == b.X && a.Y == b.Y && a.Z == b.Z;
+        }
+
+        public static bool operator !=(Vec3U8 a, Vec3U8 b)
+        {
+            return a.X != b.X || a.Y != b.Y || a.Z != b.Z;
+        }
+
+        public override string ToString() 
+        { 
+            return X + ", " + Y + ", " + Z; 
+        }
+    }
     /// <summary> 3 component vector (unsigned 16 bit integer) </summary>
     public struct Vec3U16 : IEquatable<Vec3U16>
     {
@@ -161,7 +231,10 @@ namespace Flames.Maths
         {
             return new Vec3S32(a.X, a.Y, a.Z);
         }
-
+        public static implicit operator Vec3S32(Vec3U8 a)
+        {
+            return new Vec3S32(a.X, a.Y, a.Z);
+        }
 
         public static Vec3S32 operator +(Vec3S32 a, Vec3S32 b)
         {
