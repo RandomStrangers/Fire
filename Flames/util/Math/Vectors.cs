@@ -151,7 +151,7 @@ namespace Flames.Maths
         }
         public static explicit operator Vec3U64(Vec3S8 a)
         {
-            return new Vec3U64(a.X, a.Y, a.Z);
+            return new Vec3U64((ulong)a.X, (ulong)a.Y, (ulong)a.Z);
         }
         public static explicit operator Vec3U64(Vec3U8 a)
         {
@@ -323,7 +323,7 @@ namespace Flames.Maths
 
         public override bool Equals(object obj)
         {
-            return (obj is Vec3S64) && Equals((Vec3S8)obj);
+            return (obj is Vec3S8) && Equals((Vec3S8)obj);
         }
 
         public bool Equals(Vec3S8 other)
@@ -355,7 +355,7 @@ namespace Flames.Maths
             return X + ", " + Y + ", " + Z;
         }
     }
-       /// <summary> 3 component vector (signed 64 bit integer) </summary>
+       /// <summary> 3 component vector (signed 16 bit integer) </summary>
     public struct Vec3S16 : IEquatable<Vec3S16>
     {
         public short X, Y, Z;
@@ -418,12 +418,12 @@ namespace Flames.Maths
 
         public static Vec3S16 Max(Vec3S16 a, Vec3S16 b)
         {
-            return new Vec3S16(Math.Max(a.X, b.X), Math.Max(a.Y, b.Y), Math.Max(a.Z, b.Z));
+            return new Vec3S16((short)Math.Max(a.X, b.X), (short)Math.Max(a.Y, b.Y), (short)Math.Max(a.Z, b.Z));
         }
 
         public static Vec3S16 Min(Vec3S16 a, Vec3S16 b)
         {
-            return new Vec3S16(Math.Min(a.X, b.X), Math.Min(a.Y, b.Y), Math.Min(a.Z, b.Z));
+            return new Vec3S16((short)Math.Min(a.X, b.X), (short)Math.Min(a.Y, b.Y), (short)Math.Min(a.Z, b.Z));
         }
         public static implicit operator Vec3S16(Vec3S64 a)
         {
@@ -782,11 +782,11 @@ namespace Flames.Maths
             Y = value; 
             Z = value;
         }
-        public static explicit operator Vec3U16(Vec3U64 a)
+        public static explicit operator Vec3U16(Vec3S64 a)
         {
             return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
         }
-        public static explicit operator Vec3U16(Vec3S64 a)
+        public static explicit operator Vec3U16(Vec3U64 a)
         {
             return new Vec3U16((ushort)a.X, (ushort)a.Y, (ushort)a.Z);
         }
@@ -810,7 +810,7 @@ namespace Flames.Maths
         {
             return new Vec3U16(a.X, a.Y, a.Z);
         }
-        public int LengthSquared { get { return X * X + Y * Y + Z * Z; } }
+        public ushort LengthSquared { get { return X * X + Y * Y + Z * Z; } }
 
         public float Length { get { return (float)Math.Sqrt(X * X + Y * Y + Z * Z); } }
 
