@@ -268,7 +268,7 @@ namespace Flames.Maths
         }
         public static implicit operator Vec3S8(Vec3S64 a)
         {
-            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte_a.Z);
+            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte)a.Z);
         }
         public static implicit operator Vec3S8(Vec3U64 a)
         {
@@ -284,11 +284,11 @@ namespace Flames.Maths
         }
         public static implicit operator Vec3S8(Vec3S16 a)
         {
-            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte_a.Z);
+            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte)a.Z);
         }
         public static implicit operator Vec3S8(Vec3U16 a)
         {
-            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte_a.Z);
+            return new Vec3S8((sbyte)a.X, (sbyte)a.Y, (sbyte)a.Z);
         }
         public static implicit operator Vec3S8(Vec3U8 a)
         {
