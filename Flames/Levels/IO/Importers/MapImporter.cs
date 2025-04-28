@@ -86,9 +86,8 @@ namespace Flames.Levels.IO
         {
             ReadFully(gs, header, HEADER_SIZE);
             int signature = BitConverter.ToUInt16(header, 0);
-            if (signature != 1874)
+            if (signature != 255)
                 throw new InvalidDataException("Invalid .map map signature");
-
             Vec3U8 dims;
             dims.X = (byte)BitConverter.ToUInt16(header, 2);
             dims.Z = (byte)BitConverter.ToUInt16(header, 4);
@@ -176,9 +175,12 @@ namespace Flames.Levels.IO
         public static void ParseZone(Level lvl, ref byte[] buffer, Stream gs)
         {
             Zone z = new Zone();
-            z.MinX = Read_U8(buffer, gs); z.MaxX = Read_U8(buffer, gs);
-            z.MinY = Read_U8(buffer, gs); z.MaxY = Read_U8(buffer, gs);
-            z.MinZ = Read_U8(buffer, gs); z.MaxZ = Read_U8(buffer, gs);
+            z.MinX = Read_U8(buffer, gs); 
+            z.MaxX = Read_U8(buffer, gs);
+            z.MinY = Read_U8(buffer, gs); 
+            z.MaxY = Read_U8(buffer, gs);
+            z.MinZ = Read_U8(buffer, gs); 
+            z.MaxZ = Read_U8(buffer, gs);
 
             int metaCount = TryRead_I16(buffer, gs);
             ConfigElement[] elems = Server.zoneConfig;
