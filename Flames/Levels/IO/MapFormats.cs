@@ -134,7 +134,7 @@ namespace Flames.Levels.IO
         }
 
         /// <summary> Decodes the given level file into a Level instance </summary>
-        public static Level Encode(string path, Level lvl)
+        public static void Encode(string path, Level lvl)
         {
             IMapExporter exp = GetFor(path) ?? Formats[1];
             return exp.Write(path, lvl);
