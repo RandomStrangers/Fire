@@ -61,8 +61,8 @@ namespace Flames
             List<string> files = new List<string>()
             {
             };
-            List<string> lvlFilesList = Directory.GetFiles("levels", "*.lvl");
-            List<string> fLvlFilesList = Directory.GetFiles("levels", "*.flvl");
+            List<string> lvlFilesList = Directory.GetFiles("levels", "*.lvl").ToList<string>();
+            List<string> fLvlFilesList = Directory.GetFiles("levels", "*.flvl").ToList<string>();
             string[] lvlFiles = lvlFilesList.ToArray();
             string[] fLvlFiles = fLvlFilesList.ToArray();
             files.AddRange(lvlFiles);
