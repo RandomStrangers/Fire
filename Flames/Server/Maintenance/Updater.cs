@@ -65,7 +65,7 @@ namespace Flames
             }
             try
             {
-                if (!NeedsUpating())
+                if (!NeedsUpdating())
                 {
                     Logger.Log(LogType.SystemActivity, "No update found!");
                 }
