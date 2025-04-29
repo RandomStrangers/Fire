@@ -58,11 +58,16 @@ namespace Flames
         // TODO: support loading other map files eventually
         public static string[] AllMapFiles()
         {
-            string[] lvlFiles = Directory.GetFiles("levels", "*.lvl");
-            List<string> lvlFilesList = lvlFiles.ToList();
-            string[] fLvlFiles = Directory.GetFiles("levels", "*.flvl");
-            List<string> fLvlFilesList = fLvlFiles.ToList();
-            string[] allFiles = fLvlFilesList.AddRange(lvlFilesList).ToArray();
+            List<string> files = new List<string>()
+            {
+            };
+            List<string> lvlFilesList = Directory.GetFiles("levels", "*.lvl");
+            List<string> fLvlFilesList = Directory.GetFiles("levels", "*.flvl");
+            string[] lvlFiles = lvlFilesList.ToArray();
+            string[] lvlFiles = fLvlFilesList.ToArray();
+            files.AddRange(lvlFiles);
+            files.AddRange(fLvlFiles);
+            string[] allFiles = files.ToArray();
             return allFiles;
         }
 
