@@ -61,10 +61,8 @@ namespace Flames
             List<string> files = new List<string>()
             {
             };
-            string[] lvlFiles = Directory.GetFiles("levels", "*.lvl");
-            string[] fLvlFiles = Directory.GetFiles("levels", "*.flvl");
-            files.AddRange(lvlFiles);
-            files.AddRange(fLvlFiles);
+            string[] allMapFiles = Directory.GetFiles("levels", "");
+            files.AddRange(allMapFiles);
             string[] allFiles = files.ToArray();
             return allFiles;
         }
@@ -126,7 +124,6 @@ namespace Flames
             foreach (string file in files)
             {
                 string ext = Path.GetExtension(file);
-                string lvlPath = "levels/" + name.ToLower() + ext;
                 return BackupDirPath(name, backup) + "/" + name + ext;
             }
             return null;
