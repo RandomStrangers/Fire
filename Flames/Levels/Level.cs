@@ -341,6 +341,9 @@ namespace Flames
 
         public static Level Load(string name, string path)
         {
+            string ext = Path.GetExtension(path);
+            string extNoPeriod = ext.Replace(".", "");
+            name = name.Replace("(" + extNoPeriod + ")", "");
             bool cancel = false;
             OnLevelLoadEvent.Call(name, path, ref cancel);
             if (cancel) return null;
