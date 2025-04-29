@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Flames.DB;
 using Flames.Events.LevelEvents;
@@ -57,7 +58,12 @@ namespace Flames
         // TODO: support loading other map files eventually
         public static string[] AllMapFiles()
         {
-            return Directory.GetFiles("levels", "*.flvl");
+            List<string[]> files = new List<string[]>() 
+            {
+                Directory.GetFiles("levels", "*.lvl"),
+                Directory.GetFiles("levels", "*.flvl")
+            };
+            return files.ToArray();
         }
 
         public static string[] AllMapNames()
@@ -78,7 +84,16 @@ namespace Flames
         /// <summary> Relative path of a level's map file </summary>
         public static string MapPath(string name)
         {
-            return "levels/" + name.ToLower() + ".flvl";
+            string fLvlPath = "levels/" + name.ToLower() + ".flvl";
+            bool isFlvl = File.Exists(fLvlPath);
+            if (isFlvl)
+            {
+                return fLvlPath;
+            }
+            else
+            {
+                return "levels/" + name.ToLower() + ".lvl";
+            }
         }
 
 
@@ -97,7 +112,16 @@ namespace Flames
         /// <summary> Relative path of a level's backup map file </summary>
         public static string BackupFilePath(string name, string backup)
         {
-            return BackupDirPath(name, backup) + "/" + name + ".flvl";
+            string fLvlPath = "levels/" + name.ToLower() + ".flvl";
+            bool isFlvl = File.Exists(fLvlPath);
+            if (isFlvl)
+            {
+                return BackupDirPath(name, backup) + "/" + name + ".flvl";;
+            }
+            else
+            {
+                return BackupDirPath(name, backup) + "/" + name + ".lvl";
+            }
         }
 
         public static string BackupNameFrom(string path)
