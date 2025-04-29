@@ -96,16 +96,14 @@ namespace Flames
         /// <summary> Relative path of a level's map file </summary>
         public static string MapPath(string name)
         {
-            string fLvlPath = "levels/" + name.ToLower() + ".flvl";
-            bool isFlvl = File.Exists(fLvlPath);
-            if (isFlvl)
+            string[] files = AllMapFiles();
+            foreach (string file in files)
             {
-                return fLvlPath;
+                string ext = Path.GetExtension(file);
+                string lvlPath = "levels/" + name.ToLower() + ext;
+                return lvlPath;
             }
-            else
-            {
-                return "levels/" + name.ToLower() + ".lvl";
-            }
+            return null;
         }
 
 
@@ -124,16 +122,14 @@ namespace Flames
         /// <summary> Relative path of a level's backup map file </summary>
         public static string BackupFilePath(string name, string backup)
         {
-            string fLvlPath = "levels/" + name.ToLower() + ".flvl";
-            bool isFlvl = File.Exists(fLvlPath);
-            if (isFlvl)
+            string[] files = AllMapFiles();
+            foreach (string file in files)
             {
-                return BackupDirPath(name, backup) + "/" + name + ".flvl";;
+                string ext = Path.GetExtension(file);
+                string lvlPath = "levels/" + name.ToLower() + ext;
+                return BackupDirPath(name, backup) + "/" + name + ext;
             }
-            else
-            {
-                return BackupDirPath(name, backup) + "/" + name + ".lvl";
-            }
+            return null;
         }
 
         public static string BackupNameFrom(string path)
