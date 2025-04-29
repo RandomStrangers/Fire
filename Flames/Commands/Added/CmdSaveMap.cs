@@ -124,7 +124,7 @@ namespace Flames.Commands.World
 
                 if (lvl.Changed || force || !File.Exists(path))
                 {
-                    lock (lvl.saveLock) SaveCoreMap(path);
+                    lock (lvl.saveLock) SaveCoreMap(lvl, path);
                 }
                 else
                 {
