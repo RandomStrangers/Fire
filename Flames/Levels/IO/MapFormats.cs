@@ -121,5 +121,23 @@ namespace Flames.Levels.IO
         {
             new LvlExporter(), new FLvlExporter(), new MapExporter(),
         };
+         /// <summary> Returns an IMapExporter capable of encoding the given level file </summary>
+        /// <remarks> Determines exporter suitability by comparing file extensions </remarks>
+        /// <remarks> A suitable IMapExporter, or null if no suitable exporter is found </remarks>
+        public static IMapExporter GetFor(string path)
+        {
+            foreach (IMapExporter exp in Formats)
+            {
+                if (path.CaselessEnds(exp.Extension)) return exp;
+            }
+            return null;
+        }
+
+        /// <summary> Decodes the given level file into a Level instance </summary>
+        public static Level Encode(string path, Level lvl)
+        {
+            IMapExporter exp = GetFor(path) ?? Formats[1];
+            return exp.Write(path, lvl);
+        }
     }
 }
