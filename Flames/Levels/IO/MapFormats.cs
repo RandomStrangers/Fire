@@ -137,7 +137,7 @@ namespace Flames.Levels.IO
         public static void Encode(string path, Level lvl)
         {
             IMapExporter exp = GetFor(path) ?? Formats[1];
-            return exp.Write(path, lvl);
+            exp.Write(path, lvl);
         }
     }
 }
