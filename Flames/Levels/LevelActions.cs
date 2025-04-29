@@ -45,8 +45,8 @@ namespace Flames
             if (!Directory.Exists(basePath)) Directory.CreateDirectory(basePath);
             string path = Path.Combine(basePath, backupName);
             Directory.CreateDirectory(path);
-
-            bool lvl = DoAction(LevelInfo.MapPath(map), Path.Combine(path, map + ".flvl"), action_copy);
+            string ext = Path.GetExtension(path);
+            bool lvl = DoAction(LevelInfo.MapPath(map), Path.Combine(path, map + ext), action_copy);
             bool props = DoAction(LevelInfo.PropsPath(map), Path.Combine(path, "map.properties"), action_copy);
             bool defs = DoAction(Paths.MapBlockDefs(map), Path.Combine(path, "blockdefs.json"), action_copy);
             bool blkOld = DoAction(BlockPropsOldPath(map), Path.Combine(path, "blockprops.txt"), action_copy);
@@ -524,7 +524,7 @@ namespace Flames
                 res.Zones = lvl.Zones;
                 lvl.Zones = new VolatileArray<Zone>(false);
 
-                IMapExporter.Formats[1].Write(LevelInfo.MapPath(lvl.name), res);
+                IMapExporter.Encode(LevelInfo.MapPath(lvl.name), res);
                 lvl.SaveChanges = false;
             }
 
