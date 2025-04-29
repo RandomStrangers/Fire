@@ -98,6 +98,8 @@ namespace Flames
             foreach (string file in files)
             {
                 string ext = Path.GetExtension(file);
+                string extNoPeriod = ext.Replace(".", "");
+                name = name.Replace("(" + extNoPeriod + ")", "");
                 string lvlPath = "levels/" + name.ToLower() + ext;
                 return lvlPath;
             }
