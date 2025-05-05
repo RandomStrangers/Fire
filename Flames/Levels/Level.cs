@@ -341,7 +341,7 @@ namespace Flames
                                 }
                                 else
                                 {
-                                    if (Block.SaveConvert(blocks[i]) != Block.Air)
+                                    if (Block.Convert(blocks[i]) != Block.Air)
                                         blockVal = (ushort)Block.Convert(blocks[i]);
                                 }
                                 bl[i*2] = (byte)blockVal;
