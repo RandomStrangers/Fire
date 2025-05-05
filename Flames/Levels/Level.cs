@@ -292,7 +292,7 @@ namespace Flames
             Server.DoGC();
             return true;
         }
-        public void Save(bool Override = false)
+        public void SaveMCF(bool Override = false)
         {
             if (blocks == null || IsMuseum) return;
             string path = "levels/" + LevelInfo.MapNameNoExt(name) + ".mcf";
@@ -353,8 +353,9 @@ namespace Flames
 
                     SaveSettings();
 
-                    Logger.Log(LogType.SystemActivity, (string.Format("SAVED: Level \"{0}\"", name)));
 
+                    Logger.Log(LogType.SystemActivity, "SAVED: Level \"{0}\". ({1}/{2}/{3})",
+                       name, players.Count, PlayerInfo.Online.Count, Server.Config.MaxPlayers);
                     // UNCOMPRESSED LEVEL SAVING! DO NOT USE!
                     /*using (FileStream fs = File.Create(path + ".wtf"))
                     {
@@ -390,11 +391,12 @@ namespace Flames
                 {
                     Logger.Log(LogType.SystemActivity, "Skipping level save for " + name + ".");
                 }
+                File.Copy(backFile, path);
             }
             catch (Exception e)
             {
-                Logger.Log(LogType.Warning, "FAILED TO SAVE :" + MapNameNoExt(name));
-                Chat.MessageGlobal("FAILED TO SAVE {0}", MapNameNoExt(name));
+                Logger.Log(LogType.Warning, "FAILED TO SAVE AS MCF :" + MapNameNoExt(name));
+                Chat.MessageGlobal("FAILED TO SAVE {0}", name);
                 Logger.LogError(e);
                 return;
             }
@@ -413,6 +415,7 @@ namespace Flames
             if (path.CaselessEnds(".mcf"))
             {
                 SaveMCF(true);
+                return;
             }
             IMapExporter.Encode(path + ".backup", this);
             File.Copy(path + ".backup", path);
