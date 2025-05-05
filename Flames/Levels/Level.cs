@@ -26,7 +26,8 @@ using Flames.DB;
 using Flames.Events.LevelEvents;
 using Flames.Levels.IO;
 using Flames.Util;
-
+using System.IO.Compression;
+using System.Text;
 namespace Flames
 {
     public enum LevelPermission
@@ -317,17 +318,17 @@ namespace Flames
                             BitConverter.GetBytes(1874).CopyTo(header, 0);
                             gs.Write(header, 0, 2);
 
-                            BitConverter.GetBytes(width).CopyTo(header, 0);
-                            BitConverter.GetBytes(height).CopyTo(header, 2);
-                            BitConverter.GetBytes(depth).CopyTo(header, 4);
+                            BitConverter.GetBytes(Width).CopyTo(header, 0);
+                            BitConverter.GetBytes(Length).CopyTo(header, 2);
+                            BitConverter.GetBytes(Height).CopyTo(header, 4);
                     	    changed = false;
                             BitConverter.GetBytes(spawnx).CopyTo(header, 6);
                             BitConverter.GetBytes(spawnz).CopyTo(header, 8);
                             BitConverter.GetBytes(spawny).CopyTo(header, 10);
                             header[12] = rotx;
                             header[13] = roty;
-                            header[14] = (byte)permissionvisit;
-                            header[15] = (byte)permissionbuild;
+                            header[14] = (byte)VisitAccess.Min;
+                            header[15] = (byte)BuildAccess.Min;
                             gs.Write(header, 0, header.Length);
                             var bl = new byte[blocks.Length * 2];
                             for (int i = 0; i < blocks.Length; ++i)
@@ -370,8 +371,8 @@ namespace Flames
                         BitConverter.GetBytes(spawnz).CopyTo(header, 8);
                         BitConverter.GetBytes(spawny).CopyTo(header, 10);
                         header[12] = rotx; header[13] = roty;
-                        header[14] = (byte)permissionvisit;
-                        header[15] = (byte)permissionbuild;
+                        header[14] = (byte)VisitAccess.Min;
+                        header[15] = (byte)BuildAccess.Min;
                         fs.Write(header, 0, header.Length);
                         byte[] level = new byte[blocks.Length];
                         for (int i = 0; i < blocks.Length; ++i)
