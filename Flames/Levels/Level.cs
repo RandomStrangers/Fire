@@ -386,16 +386,16 @@ namespace Flames
                             }
                         } fs.Write(level, 0, level.Length); fs.Close();
                     }*/
+                    File.Copy(backFile, path);
                 }
                 else
                 {
                     Logger.Log(LogType.SystemActivity, "Skipping level save for " + name + ".");
                 }
-                File.Copy(backFile, path);
             }
             catch (Exception e)
             {
-                Logger.Log(LogType.Warning, "FAILED TO SAVE AS MCF :" + MapNameNoExt(name));
+                Logger.Log(LogType.Warning, "FAILED TO SAVE AS MCF :" + LevelInfo.MapNameNoExt(name));
                 Chat.MessageGlobal("FAILED TO SAVE {0}", name);
                 Logger.LogError(e);
                 return;
