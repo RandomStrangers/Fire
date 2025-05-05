@@ -299,7 +299,7 @@ namespace Flames
             string path = "levels/" + LevelInfo.MapNameNoExt(name) + ".mcf";
             bool cancel = false;
             OnLevelSaveEvent.Call(this, ref cancel);
-            if (cancel) return false;
+            if (cancel) return;
             try
             {
                 if (!Directory.Exists("levels")) Directory.CreateDirectory("levels");
@@ -321,7 +321,7 @@ namespace Flames
                             BitConverter.GetBytes(Width).CopyTo(header, 0);
                             BitConverter.GetBytes(Length).CopyTo(header, 2);
                             BitConverter.GetBytes(Height).CopyTo(header, 4);
-                    	    changed = false;
+                    	    Changed = false;
                             BitConverter.GetBytes(spawnx).CopyTo(header, 6);
                             BitConverter.GetBytes(spawnz).CopyTo(header, 8);
                             BitConverter.GetBytes(spawny).CopyTo(header, 10);
