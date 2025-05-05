@@ -62,7 +62,13 @@ namespace Flames
             {
             };
             string[] allMapFiles = Directory.GetFiles("levels", "");
-            files.AddRange(allMapFiles);
+            foreach (string file in allMapFiles)
+            {
+                if (!file.CaselessEnds(".backup"))
+                {
+                    files.Add(file);
+                }
+            }
             string[] allFiles = files.ToArray();
             return allFiles;
         }
@@ -72,38 +78,85 @@ namespace Flames
             string[] files = AllMapFiles();
             for (int i = 0; i < files.Length; i++)
             {
-                if (!files[i].CaselessEnds(".lvl") && !files[i].CaselessEnds(".flvl"))
-                {
-                    string ext = Path.GetExtension(files[i]);
-                    ext = ext.Replace(".", "");
-                    files[i] = Path.GetFileNameWithoutExtension(files[i]) + "(" + ext + ")";
-                }
-                else
-                {
-                    files[i] = Path.GetFileNameWithoutExtension(files[i]);
-                }
+                files[i] = MapNameExt(files[i];
             }
             return files;
         }
 
         public static bool MapExists(string name)
         {
-            return File.Exists(MapPath(name));
+            return LevelExists(name);
         }
-
+        public static string MapNameNoExt(string name)
+        {
+            if (name.CaselessContains("("))
+            {
+                string[] array = name.Split('(');
+                string a = array[0].Replace("(", "").Replace(")", "");
+                string lvlPath = a.ToLower();
+                return lvlPath;
+            }
+            else                 
+            {
+                return name.ToLower();
+            }
+        }
+        public static bool LevelExists(string name)
+        {
+            return File.Exists("levels/" + MapNameNoExt(name) + ".cw") 
+                || File.Exists("levels/" + MapNameNoExt(name) + ".dat")
+                || File.Exists("levels/" + MapNameNoExt(name) + ".mcf") 
+                || File.Exists("levels/" + MapNameNoExt(name) + ".fcm")
+                || File.Exists("levels/" + MapNameNoExt(name) + ".lvl") 
+                || File.Exists("levels/" + MapNameNoExt(name) + ".flvl")
+                || File.Exists("levels/" + MapNameNoExt(name) + ".mclevel") 
+                || File.Exists("levels/" + MapNameNoExt(name) + ".map");
+        }
+        public static string MapNameExt(string name)
+        {
+            foreach (string file in AllMapFiles()
+            {
+                if (name.CaselessContains("("))
+                {
+                    return name.ToLower();
+                }
+                else                 
+                {
+                    string ext = Path.GetExtension(file);
+                    string extNoPeriod = ext.Replace(".", "");
+                    string lvlPath = name.ToLower() + "(" + extNoPeriod + ")";
+                    return lvlPath;
+                }
+            }
+            return null;
+        }
+        public static string MapName_Ext(string name)
+        {
+            foreach (string file in AllMapNames()
+            {
+                if (name.CaselessContains("("))
+                {
+                    string[] array = name.Split('(');
+                    string a = array[0].Replace("(", "").Replace(")", "");
+                    string ext = array[1].Replace("(","").Replace(")","");
+                    ext = "." + ext;
+                    string lvlPath = a.ToLower() + ext;
+                    return lvlPath;
+                }
+                else                 
+                {
+                    string ext = Path.GetExtension(file);
+                    string lvlPath = name.ToLower() + ext;
+                    return lvlPath;
+                }
+            }
+            return null;
+        }
         /// <summary> Relative path of a level's map file </summary>
         public static string MapPath(string name)
         {
-            string[] files = AllMapFiles();
-            foreach (string file in files)
-            {
-                string ext = Path.GetExtension(file);
-                string extNoPeriod = ext.Replace(".", "");
-                name = name.Replace("(" + extNoPeriod + ")", "");
-                string lvlPath = "levels/" + name.ToLower() + ext;
-                return lvlPath;
-            }
-            return null;
+            string lvlPath = "levels/" + MapName_Ext(name);
+            return lvlPath;
         }
 
 
@@ -125,8 +178,7 @@ namespace Flames
             string[] files = AllMapFiles();
             foreach (string file in files)
             {
-                string ext = Path.GetExtension(file);
-                return BackupDirPath(name, backup) + "/" + name + ext;
+                return BackupDirPath(name, backup) + "/" + MapName_Ext(name);
             }
             return null;
         }
@@ -164,7 +216,7 @@ namespace Flames
         /// <summary> Relative path of a level's property file </summary>
         public static string PropsPath(string name)
         {
-            return "levels/level properties/" + name + ".properties";
+            return "levels/level properties/" + MapNameExt(name) + ".properties";
         }
 
         public static LevelConfig GetConfig(string map)
