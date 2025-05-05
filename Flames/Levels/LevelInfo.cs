@@ -78,7 +78,7 @@ namespace Flames
             string[] files = AllMapFiles();
             for (int i = 0; i < files.Length; i++)
             {
-                files[i] = MapNameExt(files[i];
+                files[i] = MapNameExt(files[i]);
             }
             return files;
         }
@@ -114,7 +114,7 @@ namespace Flames
         }
         public static string MapNameExt(string name)
         {
-            foreach (string file in AllMapFiles()
+            foreach (string file in AllMapFiles())
             {
                 if (name.CaselessContains("("))
                 {
@@ -132,7 +132,7 @@ namespace Flames
         }
         public static string MapName_Ext(string name)
         {
-            foreach (string file in AllMapNames()
+            foreach (string file in AllMapNames())
             {
                 if (name.CaselessContains("("))
                 {
