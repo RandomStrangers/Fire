@@ -534,6 +534,7 @@
     <Compile Include="Levels\IO\Exporters\LvlExporter.cs" />
     <Compile Include="Levels\IO\Exporters\FLvlExporter.cs" />
     <Compile Include="Levels\IO\Exporters\MapExporter.cs" />
+    <Compile Include="Levels\IO\Exporters\McfExporter.cs" />
     <Compile Include="Levels\IO\fNbt.cs" />
     <Compile Include="Levels\IO\Importers\CwImporter.cs" />
     <Compile Include="Levels\IO\Importers\DatImporter.cs" />
