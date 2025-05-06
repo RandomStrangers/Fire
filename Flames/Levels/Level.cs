@@ -413,11 +413,11 @@ namespace Flames
                 File.Copy(path, prevPath, true);
                 File.Delete(path);
             }
-            if (path.CaselessEnds(".mcf"))
+            /*if (path.CaselessEnds(".mcf"))
             {
                 SaveMCF(true);
                 return;
-            }
+            }*/
             IMapExporter.Encode(path + ".backup", this);
             File.Copy(path + ".backup", path);
             SaveSettings();
