@@ -79,9 +79,9 @@ namespace Flames.Levels.IO
         public static List<IMapImporter> Formats = new List<IMapImporter>() 
         {
             new LvlImporter(), new CwImporter(), new FcmImporter(), new McfImporter(),
-            new DatImporter(), new McLevelImporter(),
+            new DatImporter(), new McLevelImporter(), new FLvlImporter(), new MapImporter(),
         };
-
+        public static IMapImporter defaultImporter = new FLvlImporter();
         /// <summary> Returns an IMapImporter capable of decoding the given level file </summary>
         /// <remarks> Determines importer suitability by comparing file extensions </remarks>
         /// <remarks> A suitable IMapImporter, or null if no suitable importer is found </remarks>
@@ -97,7 +97,7 @@ namespace Flames.Levels.IO
         /// <summary> Decodes the given level file into a Level instance </summary>
         public static Level Decode(string path, string name, bool metadata)
         {
-            IMapImporter imp = GetFor(path) ?? Formats[0];
+            IMapImporter imp = GetFor(path) ?? defaultImporter;
             return imp.Read(path, name, metadata);
         }
     }
@@ -119,7 +119,26 @@ namespace Flames.Levels.IO
 
         public static List<IMapExporter> Formats = new List<IMapExporter>() 
         {
-            new LvlExporter()
+            new LvlExporter(), new FLvlExporter(), new MapExporter(), new McfExporter()
         };
+        public static IMapExporter defaultExporter = new FLvlExporter();
+         /// <summary> Returns an IMapExporter capable of encoding the given level file </summary>
+        /// <remarks> Determines exporter suitability by comparing file extensions </remarks>
+        /// <remarks> A suitable IMapExporter, or null if no suitable exporter is found </remarks>
+        public static IMapExporter GetFor(string path)
+        {
+            foreach (IMapExporter exp in Formats)
+            {
+                if (path.CaselessEnds(exp.Extension)) return exp;
+            }
+            return null;
+        }
+
+        /// <summary> Decodes the given level file into a Level instance </summary>
+        public static void Encode(string path, Level lvl)
+        {
+            IMapExporter exp = GetFor(path) ?? defaultExporter;
+            exp.Write(path, lvl);
+        }
     }
 }

@@ -89,10 +89,9 @@ namespace Flames
         public static bool IsCompressed(string path)
         {
             if (path.CaselessContains(".lvl")) return true;
-            if (path.CaselessContains(".lvl")) return true;
+            if (path.CaselessContains(".flvl")) return true;
             if (path.CaselessContains(".zip")) return true;
             if (path.CaselessContains(".tar")) return true;
-            if (path.CaselessContains(".lvl")) return true;
             if (path.CaselessContains(".gz"))  return true;
             else return false;
         }

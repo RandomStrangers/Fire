@@ -26,7 +26,8 @@ using Flames.DB;
 using Flames.Events.LevelEvents;
 using Flames.Levels.IO;
 using Flames.Util;
-
+using System.IO.Compression;
+using System.Text;
 namespace Flames
 {
     public enum LevelPermission
@@ -292,7 +293,116 @@ namespace Flames
             Server.DoGC();
             return true;
         }
+        public void SaveMCF(bool Override = false)
+        {
+            if (blocks == null || IsMuseum) return;
+            string path = "levels/" + LevelInfo.MapNameNoExt(name) + ".mcf";
+            bool cancel = false;
+            OnLevelSaveEvent.Call(this, ref cancel);
+            if (cancel) return;
+            try
+            {
+                if (!Directory.Exists("levels")) Directory.CreateDirectory("levels");
+                if (!Directory.Exists("levels/level properties")) Directory.CreateDirectory("levels/level properties");
 
+                if (Changed || !File.Exists(path) || Override)
+                {
+                    
+                    string backFile = string.Format("{0}.backup", path);
+                    
+                    using (FileStream fs = File.OpenWrite(backFile))
+                    {
+                        using (GZipStream gs = new GZipStream(fs, CompressionMode.Compress))
+                        {
+                            var header = new byte[16];
+                            BitConverter.GetBytes(1874).CopyTo(header, 0);
+                            gs.Write(header, 0, 2);
+
+                            BitConverter.GetBytes(Width).CopyTo(header, 0);
+                            BitConverter.GetBytes(Length).CopyTo(header, 2);
+                            BitConverter.GetBytes(Height).CopyTo(header, 4);
+                    	    Changed = false;
+                            BitConverter.GetBytes(spawnx).CopyTo(header, 6);
+                            BitConverter.GetBytes(spawnz).CopyTo(header, 8);
+                            BitConverter.GetBytes(spawny).CopyTo(header, 10);
+                            header[12] = rotx;
+                            header[13] = roty;
+                            header[14] = (byte)VisitAccess.Min;
+                            header[15] = (byte)BuildAccess.Min;
+                            gs.Write(header, 0, header.Length);
+                            var bl = new byte[blocks.Length * 2];
+                            for (int i = 0; i < blocks.Length; ++i)
+                            {
+                            	ushort blockVal = 0;
+                                if (blocks[i] < 57)
+                                //CHANGED THIS TO INCOPARATE SOME MORE SPACE THAT I NEEDED FOR THE door_orange_air ETC.
+                                {
+                                    if(blocks[i] != Block.Air)
+                                        blockVal = (ushort)blocks[i];
+                                }
+                                else
+                                {
+                                    if (Block.Convert(blocks[i]) != Block.Air)
+                                        blockVal = (ushort)Block.Convert(blocks[i]);
+                                }
+                                bl[i*2] = (byte)blockVal;
+                                bl[i*2 + 1] = (byte)(blockVal >> 8);
+                            }
+                            gs.Write(bl, 0, bl.Length);
+                        }
+                    }
+
+                    SaveSettings();
+
+
+                    Logger.Log(LogType.SystemActivity, "SAVED: Level \"{0}\". ({1}/{2}/{3})",
+                       name, players.Count, PlayerInfo.Online.Count, Server.Config.MaxPlayers);
+                    // UNCOMPRESSED LEVEL SAVING! DO NOT USE!
+                    /*using (FileStream fs = File.Create(path + ".wtf"))
+                    {
+                        byte[] header = new byte[16];
+                        BitConverter.GetBytes(1874).CopyTo(header, 0);
+                        fs.Write(header, 0, 2);
+
+                        BitConverter.GetBytes(width).CopyTo(header, 0);
+                        BitConverter.GetBytes(height).CopyTo(header, 2);
+                        BitConverter.GetBytes(depth).CopyTo(header, 4);
+                        BitConverter.GetBytes(spawnx).CopyTo(header, 6);
+                        BitConverter.GetBytes(spawnz).CopyTo(header, 8);
+                        BitConverter.GetBytes(spawny).CopyTo(header, 10);
+                        header[12] = rotx; header[13] = roty;
+                        header[14] = (byte)VisitAccess.Min;
+                        header[15] = (byte)BuildAccess.Min;
+                        fs.Write(header, 0, header.Length);
+                        byte[] level = new byte[blocks.Length];
+                        for (int i = 0; i < blocks.Length; ++i)
+                        {
+                            if (blocks[i] < 80)
+                            {
+                                level[i] = blocks[i];
+                            }
+                            else
+                            {
+                                level[i] = Block.Convert(blocks[i]);
+                            }
+                        } fs.Write(level, 0, level.Length); fs.Close();
+                    }*/
+                    File.Copy(backFile, path);
+                }
+                else
+                {
+                    Logger.Log(LogType.SystemActivity, "Skipping level save for " + name + ".");
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Log(LogType.Warning, "FAILED TO SAVE AS MCF :" + LevelInfo.MapNameNoExt(name));
+                Chat.MessageGlobal("FAILED TO SAVE {0}", name);
+                Logger.LogError(e);
+                return;
+            }
+            Server.DoGC();
+        }
         public void SaveCore(string path)
         {
             if (blocks == null) return;
@@ -303,8 +413,12 @@ namespace Flames
                 File.Copy(path, prevPath, true);
                 File.Delete(path);
             }
-
-            IMapExporter.Formats[0].Write(path + ".backup", this);
+            /*if (path.CaselessEnds(".mcf"))
+            {
+                SaveMCF(true);
+                return;
+            }*/
+            IMapExporter.Encode(path + ".backup", this);
             File.Copy(path + ".backup", path);
             SaveSettings();
 
@@ -341,6 +455,9 @@ namespace Flames
 
         public static Level Load(string name, string path)
         {
+            string ext = Path.GetExtension(path);
+            string extNoPeriod = ext.Replace(".", "");
+            name = name.Replace("(" + extNoPeriod + ")", "");
             bool cancel = false;
             OnLevelLoadEvent.Call(name, path, ref cancel);
             if (cancel) return null;

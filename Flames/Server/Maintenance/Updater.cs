@@ -20,17 +20,15 @@ using System.IO;
 using System.Net;
 using Flames.Network;
 using Flames.Tasks;
-
 namespace Flames
 {
     /// <summary> Checks for and applies software updates. </summary>
     public static class Updater
     {
-
-        public static string SourceURL = "https://github.com/RandomStrangers/Fire/";
-        public const string BaseURL = "https://github.com/RandomStrangers/Fire/blob/Flame/";
-        public const string UploadsURL = "https://github.com/RandomStrangers/Fire/tree/Flame/Uploads";
-        public const string UpdatesURL = "https://github.com/RandomStrangers/Fire/raw/Flame/Uploads/";
+        public static string SourceURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/Rework";
+        public const string BaseURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/blob/Rework/";
+        public const string UploadsURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/tree/Rework/Uploads";
+        public const string UpdatesURL = "https://github.com/SuperNova-DeadNova/Fire-Debug/raw/Rework/Uploads/";
         public static string WikiURL = "https://github.com/ClassiCube/MCGalaxy/wiki/";
 #if CORE && F_DOTNET_DEV && F_STANDALONE
         public const string CurrentVersionURL = UpdatesURL + "dev.txt";
@@ -53,9 +51,7 @@ namespace Flames
 #endif
         public const string guiURL = UpdatesURL + "Flames.exe";
         public const string cliURL = UpdatesURL + "FlamesCLI.exe";
-
         public static event EventHandler NewerVersionDetected;
-
         public static void UpdaterTask(SchedulerTask task)
         {
             UpdateCheck();
@@ -63,14 +59,13 @@ namespace Flames
         }
         public static void UpdateCheck()
         {
-            if (!Server.Config.CheckForUpdates) return;
-            WebClient client = HttpUtil.CreateWebClient();
-
+            if (!Server.Config.CheckForUpdates) 
+            {
+                return;
+            }
             try
             {
-                string latest = client.DownloadString(CurrentVersionURL);
-
-                if (new Version(Server.Version) >= new Version(latest))
+                if (!NeedsUpdating())
                 {
                     Logger.Log(LogType.SystemActivity, "No update found!");
                 }
@@ -83,15 +78,16 @@ namespace Flames
             {
                 Logger.LogError("Error checking for updates", ex);
             }
-
-            client.Dispose();
         }
+        //Typically don't update the current version in branches of forks, so always return true.
         public static bool NeedsUpdating()
         {
             using (WebClient client = HttpUtil.CreateWebClient())
             {
+                //Still need to check if device is connected to the internet.
                 string latest = client.DownloadString(CurrentVersionURL);
-                return new Version(latest) > new Version(Server.Version);
+                return true;
+                //return new Version(latest) > new Version(Server.Version);
             }
         }
         public static void PerformUpdate()
@@ -111,7 +107,6 @@ namespace Flames
                 {
                     Logger.LogError("Error deleting files", ex);
                 }
-
                 WebClient client = HttpUtil.CreateWebClient();
                 client.DownloadFile(dllURL, "Flames_.update");
                 if (GUI)
@@ -119,18 +114,21 @@ namespace Flames
                     client.DownloadFile(guiURL, "Flames.update");
                 }
                 client.DownloadFile(cliURL, "FlamesCLI.update");
-
                 Level[] levels = LevelInfo.Loaded.Items;
                 foreach (Level lvl in levels)
                 {
-                    if (!lvl.SaveChanges) continue;
+                    if (!lvl.SaveChanges) 
+                    {
+                        continue;
+                    }
                     lvl.Save();
                     lvl.SaveBlockDBChanges();
                 }
-
                 Player[] players = PlayerInfo.Online.Items;
-                foreach (Player pl in players) pl.SaveStats();
-
+                foreach (Player pl in players) 
+                {
+                    pl.SaveStats();
+                }
                 // Move current files to previous files (by moving instead of copying, 
                 //  can overwrite original the files without breaking the server)
                 AtomicIO.TryMove("Flames_.dll", "prev_Flames_.dll");
@@ -149,10 +147,12 @@ namespace Flames
                 Logger.LogError("Error performing update", ex);
             }
         }
-
         public static void DeleteFiles(params string[] paths)
         {
-            foreach (string path in paths) { AtomicIO.TryDelete(path); }
+            foreach (string path in paths) 
+            { 
+                AtomicIO.TryDelete(path); 
+            }
         }
     }
 }
