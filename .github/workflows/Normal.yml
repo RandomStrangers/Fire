@@ -2,6 +2,9 @@ name: Build Normal
 on:
   push:
   workflow_dispatch:
+  schedule:
+    # Every day at 1am
+    - cron: '0 1 * * *'
 
 concurrency:
   group: ${{ github.ref }}-Normal
@@ -34,3 +37,4 @@ jobs:
           DEST_NAME: 'Flames'
           NOTIFY_MESSAGE: 'Successfully compiled Flames .NET build.'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'

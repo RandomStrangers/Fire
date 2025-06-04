@@ -1,0 +1,38 @@
+name: Build dotnet standalone TLI
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    # Every day at 1am
+    - cron: '0 1 * * *'
+concurrency:
+  group: ${{ github.ref }}-dotnet_standalone_TLI
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Compile Flames dotnet standalone TLI build using mono
+        shell: bash
+        id: compile
+        run: |
+          msbuild FlamesTLI.sln /p:Configuration=Release
+          cp -R bin/Release bin/Release_dotnet_standalone_TLI
+          msbuild FlamesTLI/Flames_TLI.csproj /p:Configuration=Release /p:DefineConstants="F_STANDALONE%3BF_DOTNET%3BF_DOTNET_DEV"
+
+      - uses: ./.github/actions/notify_failure
+        if: ${{ always() && steps.compile.outcome == 'failure' }}
+        with:
+          NOTIFY_MESSAGE: 'Failed to compile Flames dotnet standalone TLI build! <@999409543001931788>'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          
+      - uses: ./.github/actions/notify_success
+        if: ${{ always() && steps.compile.outcome == 'success' }}
+        with:
+          SOURCE_FILE: 'bin/Release_dotnet_standalone_TLI'
+          DEST_NAME: 'Flames'
+          NOTIFY_MESSAGE: 'Successfully compiled Flames dotnet standalone TLI build.'
+          WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
+          DELETE_AFTER: '1'
