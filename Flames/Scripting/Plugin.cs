@@ -28,11 +28,11 @@ namespace Flames
     {
         /// <summary> Hooks into events and initalises states/resources etc </summary>
         /// <param name="auto"> True if plugin is being automatically loaded (e.g. on server startup), false if manually. </param>
-        public override void Load(bool auto) { }
+        public abstract override void Load(bool auto);
 
         /// <summary> Unhooks from events and disposes of state/resources etc </summary>
         /// <param name="auto"> True if plugin is being auto unloaded (e.g. on server shutdown), false if manually. </param>
-        public override void Unload(bool auto) { }
+        public abstract override void Unload(bool auto);
 
         /// <summary> Called when a player does /Help on the plugin. Typically tells the player what this plugin is about. </summary>
         /// <param name="p"> Player who is doing /Help. </param>
@@ -42,9 +42,9 @@ namespace Flames
         }
 
         /// <summary> Name of the plugin. </summary>
-        public override string name { get; }
+        public abstract override string name { get; }
         /// <summary> The oldest version of Flames this plugin is compatible with. </summary>
-        public override string Flames_Version { get { return Server.Version; } }
+        public override string Flames_Version { get { return Server.FlamesVersion; } }
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
         public override string GoldenSparks_Version { get { return null; } }
@@ -91,12 +91,12 @@ namespace Flames
 
             if (!string.IsNullOrEmpty(pl.MCGalaxy_Version) && new Version(pl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("Plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("Plugin '{0}' cannot be loaded on this version of {1}!", pl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion))
             {
-                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Server.SoftwareName);
+                string msg = string.Format("Plugin '{0}' requires a more recent version of {1}!", pl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
 

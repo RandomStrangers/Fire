@@ -87,9 +87,13 @@ namespace Flames.Levels.IO
         /// <remarks> A suitable IMapImporter, or null if no suitable importer is found </remarks>
         public static IMapImporter GetFor(string path)
         {
+            string typePath = path.Replace(".backup", "").Replace(".prev", "");
             foreach (IMapImporter imp in Formats)
             {
-                if (path.CaselessEnds(imp.Extension)) return imp;
+                if (typePath.CaselessEnds(imp.Extension))
+                {
+                    return imp;
+                }
             }
             return null;
         }
@@ -97,8 +101,16 @@ namespace Flames.Levels.IO
         /// <summary> Decodes the given level file into a Level instance </summary>
         public static Level Decode(string path, string name, bool metadata)
         {
-            IMapImporter imp = GetFor(path) ?? Formats[0];
-            return imp.Read(path, name, metadata);
+            IMapImporter imp = GetFor(path);
+            if (imp == null)
+            {
+                Logger.Log(LogType.Warning, "No importer found for {0}, cannot load level!", path);
+                return null;
+            }
+            else
+            {
+                return imp.Read(path, name, metadata);
+            }
         }
     }
 
@@ -119,7 +131,36 @@ namespace Flames.Levels.IO
 
         public static List<IMapExporter> Formats = new List<IMapExporter>() 
         {
-            new LvlExporter()
+            new LvlExporter(),
         };
+
+        /// <summary> Returns an IMapExporter capable of encoding the given level file </summary>
+        /// <remarks> Determines exporter suitability by comparing file extensions </remarks>
+        /// <remarks> A suitable IMapExporter, or null if no suitable exporter is found </remarks>
+        public static IMapExporter GetFor(string path)
+        {
+            string typePath = path.Replace(".backup", "").Replace(".prev", "");
+            foreach (IMapExporter exp in Formats)
+            {
+                if (typePath.CaselessEnds(exp.Extension))
+                {
+                    return exp;
+                }
+            }
+            return null;
+        }
+        public static void Encode(string path, Level lvl)
+        {
+            IMapExporter exp = GetFor(path);
+            if (exp == null)
+            {
+                Logger.Log(LogType.Error, "No exporter found for {0}, cannot save level!", path);
+                return;
+            }
+            else
+            {
+                exp.Write(path, lvl);
+            }
+        }
     }
 }

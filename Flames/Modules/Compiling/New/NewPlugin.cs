@@ -17,7 +17,6 @@
 */
 using System;
 using System.Collections.Generic;
-using Flames.NewScripting;
 using Flames.Modules.NewCompiling;
 using Flames.Tasks;
 using Flames.Events.ServerEvents;
@@ -119,7 +118,11 @@ namespace Flames
             {
                 if (npl.name.CaselessEq(name)) return npl;
             }
+#if F_DOTNET
             return null;
+#else
+            return Plugin.FindCustom(name);
+#endif
         }
 
         public static void Load(NewPlugin npl, bool auto)
@@ -165,10 +168,11 @@ namespace Flames
         public static bool Unload(NewPlugin npl)
         {
             bool success = UnloadNewPlugin(npl, false);
-
-            // TODO only remove if successful?
-            CustomNewPlugins.Remove(npl);
-            CoreNewPlugins.Remove(npl);
+            if (success)
+            {
+                CustomNewPlugins.Remove(npl);
+                CoreNewPlugins.Remove(npl);
+            }
             return success;
         }
 
@@ -218,7 +222,7 @@ namespace Flames
             LoadCoreNewPlugin(new DeadNovaPluginLoader());
             LoadCoreNewPlugin(new RandomStrangersPluginLoader());
 #endif
-            IScripting.AutoloadNewPlugins();
+            NewScripting.IScripting.AutoloadNewPlugins();
         }
         public static void LoadCoreNewPlugin(NewPlugin newplugin)
         {
@@ -226,13 +230,6 @@ namespace Flames
             if (disabled.CaselessContains(newplugin.name)) return;
             newplugin.Load(true);
             CoreNewPlugins.Add(newplugin);
-        }
-        public static void LoadNewPlugin(NewPlugin newplugin)
-        {
-            List<string> disabled = Server.Config.DisabledModules;
-            if (disabled.CaselessContains(newplugin.name)) return;
-            newplugin.Load(true);
-            CustomNewPlugins.Add(newplugin);
         }
     }
 }

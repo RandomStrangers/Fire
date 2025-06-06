@@ -114,7 +114,7 @@ namespace Flames.Network
         {
             text = Truncate(text);
             Server.UpdateUrl(text);
-            File.WriteAllText("text/externalurl.txt", text);
+            File.WriteAllText(Paths.ExternalURLFile, text);
             Logger.Log(LogType.SystemActivity, "Server URL found: " + text);
         }
 

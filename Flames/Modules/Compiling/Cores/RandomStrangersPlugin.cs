@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Flames.Commands;
+using Flames.Network;
+using System.Net;
 namespace Flames.Modules.RandomStrangersCompiling
 {
     public class CmdRandomStrangersPluginCompile : Command
@@ -181,7 +183,7 @@ namespace Flames.Modules.RandomStrangersCompiling
         public override void Help(Player p)
         {
             p.Message("&T/RandomStrangersPluginCreate [name]");
-            p.Message("&HCreate an example C# RandomStrangers plugin named [name]");
+            p.Message("&HCreates an example C# RandomStrangers plugin named [name]");
         }
     }
     /// <summary> Compiles source code files for a particular programming language into a .dll </summary>
@@ -624,7 +626,7 @@ namespace Flames.Modules.RandomStrangersCompiling
         {
             get
             {
-                return @"//\tAuto-generated plugin skeleton class
+                return @"//\tAuto-generated RandomStrangers plugin skeleton class
 //\tUse this as a basis for custom Flames RandomStrangers plugins
 
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
@@ -691,7 +693,7 @@ namespace Flames
         public static bool CreateRandomStrangersPlugin(Player p, string name, ICompiler compiler)
         {
             string path = compiler.RandomStrangersPluginPath(name);
-            string creator = p.IsSuper ? Colors.Strip(Server.Config.Name) : p.truename;
+            string creator = p.IsSuper ? Colors.StripUsed(Server.Config.Name) : p.truename;
             string source = compiler.GenExampleRandomStrangersPlugin(name, creator);
 
             return CreateFile(p, name, path, "randomstrangersplugin &f", source);
@@ -1056,25 +1058,34 @@ namespace Flames
             }
             return null;
         }
+        public const string CurrentRSVersionURL = "https://raw.githubusercontent.com/RandomStrangers/RandomStrangers/master/Uploads/current_version.txt";
 
         public static void Load(RandomStrangersPlugin rspl, bool auto)
         {
-            string ver = rspl.Flames_Version;
+            WebClient client = HttpUtil.CreateWebClient();
+            string CurrentRSVersion = client.DownloadString(CurrentRSVersionURL);
+            string flamesVersion = rspl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
+            string rsVersion = rspl.RandomStrangers_Version;
+            string mcgVersion = rspl.MCGalaxy_Version;
             // Version different in Dev build, use normal for RandomStrangers plugins
-            string CurrentVersion = Server.FlamesVersion;
+            string CurrentFlamesVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(rspl.MCGalaxy_Version) && new Version(rspl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(mcgVersion) && new Version(mcgVersion) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("RandomStrangers plugin '{0}' cannot be loaded on this version of {1}!", rspl.name, Server.SoftwareName);
+                string msg = string.Format("RandomStrangers plugin '{0}' cannot be loaded on this version of {1}!", rspl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            if (!string.IsNullOrEmpty(flamesVersion) && new Version(flamesVersion) > new Version(CurrentFlamesVersion))
             {
-                string msg = string.Format("RandomStrangers plugin '{0}' requires a more recent version of {1}!", rspl.name, Server.SoftwareName);
+                string msg = string.Format("RandomStrangers plugin '{0}' requires a more recent version of {1}!", rspl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-
+            if (!string.IsNullOrEmpty(rsVersion) && new Version(rsVersion) > new Version(CurrentRSVersion))
+            {
+                string msg = string.Format("RandomStrangers plugin '{0}' requires v{1} of RandomStrangers, which does not exist!", rspl.name, rsVersion);
+                throw new InvalidOperationException(msg);
+            }
             try
             {
                 CustomRandomStrangersPlugins.Add(rspl);
@@ -1100,10 +1111,11 @@ namespace Flames
         public static bool Unload(RandomStrangersPlugin rspl)
         {
             bool success = UnloadRandomStrangersPlugin(rspl, false);
-
-            // TODO only remove if successful?
-            CustomRandomStrangersPlugins.Remove(rspl);
-            CoreRandomStrangersPlugins.Remove(rspl);
+            if (success)
+            {
+                CustomRandomStrangersPlugins.Remove(rspl);
+                CoreRandomStrangersPlugins.Remove(rspl);
+            }
             return success;
         }
 

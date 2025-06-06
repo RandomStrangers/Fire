@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Flames.Commands;
+using Flames.Network;
+using System.Net;
 namespace Flames.Modules.GoldenSparksCompiling
 {
     public class CmdGoldenSparksPluginCompile : Command
@@ -181,7 +183,7 @@ namespace Flames.Modules.GoldenSparksCompiling
         public override void Help(Player p)
         {
             p.Message("&T/GoldenSparksPluginCreate [name]");
-            p.Message("&HCreate an example C# GoldenSparks plugin named [name]");
+            p.Message("&HCreates an example C# GoldenSparks plugin named [name]");
         }
     }
     /// <summary> Compiles source code files for a particular programming language into a .dll </summary>
@@ -624,7 +626,7 @@ namespace Flames.Modules.GoldenSparksCompiling
         {
             get
             {
-                return @"//\tAuto-generated plugin skeleton class
+                return @"//\tAuto-generated GoldenSparks plugin skeleton class
 //\tUse this as a basis for custom Flames GoldenSparks plugins
 
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
@@ -1057,25 +1059,34 @@ namespace Flames
             }
             return null;
         }
-
+        public const string GSVersion2URL = "https://raw.githubusercontent.com/GoldenSparks/Sparks/Sparkie/Uploads/current_version.txt";
+        // 2nd version has higher version numbering than 1st.
         public static void Load(GoldenSparksPlugin gspl, bool auto)
         {
-            string ver = gspl.Flames_Version;
+            WebClient client = HttpUtil.CreateWebClient();
+            string GSVersion2 = client.DownloadString(GSVersion2URL);
+            string flamesVersion = gspl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
+            string gsVersion = gspl.GoldenSparks_Version;
+            string mcgVersion = gspl.MCGalaxy_Version; 
             // Version different in Dev build, use normal for GoldenSparks plugins
-            string CurrentVersion = Server.FlamesVersion;
+            string CurrentFlamesVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(gspl.MCGalaxy_Version) && new Version(gspl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(mcgVersion) && new Version(mcgVersion) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("GoldenSparks plugin '{0}' cannot be loaded on this version of {1}!", gspl.name, Server.SoftwareName);
+                string msg = string.Format("GoldenSparks plugin '{0}' cannot be loaded on this version of {1}!", gspl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            if (!string.IsNullOrEmpty(flamesVersion) && new Version(flamesVersion) > new Version(CurrentFlamesVersion))
             {
-                string msg = string.Format("GoldenSparks plugin '{0}' requires a more recent version of {1}!", gspl.name, Server.SoftwareName);
+                string msg = string.Format("GoldenSparks plugin '{0}' requires a more recent version of {1}!", gspl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-
+            if (!string.IsNullOrEmpty(gsVersion) && new Version(gsVersion) > new Version(GSVersion2))
+            {
+                string msg = string.Format("GoldenSparks plugin '{0}' requires v{1} of GoldenSparks, which does not exist!", gspl.name, gsVersion);
+                throw new InvalidOperationException(msg);
+            }
             try
             {
                 CustomGoldenSparksPlugins.Add(gspl);
@@ -1102,9 +1113,11 @@ namespace Flames
         {
             bool success = UnloadGoldenSparksPlugin(gspl, false);
 
-            // TODO only remove if successful?
-            CustomGoldenSparksPlugins.Remove(gspl);
-            CoreGoldenSparksPlugins.Remove(gspl);
+            if (success)
+            {
+                CustomGoldenSparksPlugins.Remove(gspl);
+                CoreGoldenSparksPlugins.Remove(gspl);
+            }
             return success;
         }
 

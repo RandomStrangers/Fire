@@ -24,6 +24,17 @@ namespace Flames
 {
     public static class SrvProperties
     {
+        public static void ApplyBackwardsCompatibility()
+        {
+            Server.Config.ConsoleName = Server.Config.FlameState;
+            Server.Config.ConsoleLogging = Server.Config.FlameLogging;
+#if CORE
+            Server.Config.CoreState = Server.Config.FlameState;
+            Server.Config.GoldenSparksLogging = Server.Config.FlameLogging;
+            Server.Config.RandomLogging = Server.Config.FlameLogging;
+            Server.Config.NovaLogging = Server.Config.FlameLogging;
+#endif
+        }
         public static void Load()
         {
             old = new OldPerms();

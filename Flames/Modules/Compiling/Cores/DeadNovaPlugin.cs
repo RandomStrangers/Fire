@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Flames.Commands;
+using Flames.Network;
+using System.Net;
 namespace Flames.Modules.DeadNovaCompiling
 {
     public class CmdDeadNovaPluginCompile : Command
@@ -1059,25 +1061,33 @@ namespace Flames
             }
             return null;
         }
-
+        public const string CurrentDNVersionURL = "https://raw.githubusercontent.com/RandomStrangers/DeadNova/master/Uploads/current_version.txt";
         public static void Load(DeadNovaPlugin dnpl, bool auto)
         {
-            string ver = dnpl.Flames_Version;
+            WebClient client = HttpUtil.CreateWebClient();
+            string CurrentDNVersion = client.DownloadString(CurrentDNVersionURL);
+            string flamesVersion = dnpl.Flames_Version;
             string MCGalaxy_Ver = "1.9.4.9";
+            string dnVersion = dnpl.DeadNova_Version;
+            string mcgVersion = dnpl.MCGalaxy_Version;
             // Version different in Dev build, use normal for DeadNova plugins
-            string CurrentVersion = Server.FlamesVersion;
+            string CurrentFlamesVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(dnpl.MCGalaxy_Version) && new Version(dnpl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(mcgVersion) && new Version(mcgVersion) > new Version(MCGalaxy_Ver))
             {
-                string msg = string.Format("DeadNova plugin '{0}' cannot be loaded on this version of {1}!", dnpl.name, Server.SoftwareName);
+                string msg = string.Format("DeadNova plugin '{0}' cannot be loaded on this version of {1}!", dnpl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            if (!string.IsNullOrEmpty(flamesVersion) && new Version(flamesVersion) > new Version(CurrentFlamesVersion))
             {
-                string msg = string.Format("DeadNova plugin '{0}' requires a more recent version of {1}!", dnpl.name, Server.SoftwareName);
+                string msg = string.Format("DeadNova plugin '{0}' requires a more recent version of {1}!", dnpl.name, Colors.StripUsed(Server.SoftwareName));
                 throw new InvalidOperationException(msg);
             }
-
+            if (!string.IsNullOrEmpty(dnVersion) && new Version(dnVersion) > new Version(CurrentDNVersion))
+            {
+                string msg = string.Format("DeadNova plugin '{0}' requires v{1} of DeadNova, which does not exist!", dnpl.name, dnVersion);
+                throw new InvalidOperationException(msg);
+            }
             try
             {
                 CustomDeadNovaPlugins.Add(dnpl);
@@ -1103,10 +1113,11 @@ namespace Flames
         public static bool Unload(DeadNovaPlugin dnpl)
         {
             bool success = UnloadDeadNovaPlugin(dnpl, false);
-
-            // TODO only remove if successful?
-            CustomDeadNovaPlugins.Remove(dnpl);
-            CoreDeadNovaPlugins.Remove(dnpl);
+            if (success)
+            {
+                CustomDeadNovaPlugins.Remove(dnpl);
+                CoreDeadNovaPlugins.Remove(dnpl);
+            }
             return success;
         }
 

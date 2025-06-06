@@ -209,6 +209,7 @@ namespace Flames
             Team.LoadList();
             ChatTokens.LoadCustom();
             SrvProperties.FixupOldPerms();
+            SrvProperties.ApplyBackwardsCompatibility();
             CpeExtension.LoadDisabledList();
 
             TextFile announcementsFile = TextFile.Files["Announcements"];

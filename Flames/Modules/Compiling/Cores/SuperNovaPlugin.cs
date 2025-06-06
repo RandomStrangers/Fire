@@ -11,6 +11,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using Flames.Commands;
+using Flames.Network;
+using System.Net;
 namespace Flames.Modules.SuperNovaCompiling
 {
     public class CmdSuperNovaPluginCompile : Command
@@ -624,7 +626,7 @@ namespace Flames.Modules.SuperNovaCompiling
         {
             get
             {
-                return @"//\tAuto-generated plugin skeleton class
+                return @"//\tAuto-generated SuperNova plugin skeleton class
 //\tUse this as a basis for custom Flames SuperNova plugins
 
 // To reference other assemblies, put a ""//reference [assembly filename]"" at the top of the file
@@ -1056,25 +1058,33 @@ namespace Flames
             }
             return null;
         }
-
+        public const string CurrentSNVersionURL = "https://raw.githubusercontent.com/RandomStrangers/SuperNova/master/Uploads/current_version.txt";
         public static void Load(SuperNovaPlugin snpl, bool auto)
         {
-            string ver = snpl.Flames_Version;
-            string MCGalaxy_Ver = "1.9.4.9";
+            WebClient client = HttpUtil.CreateWebClient();
+            string CurrentSNVersion = client.DownloadString(CurrentSNVersionURL);
+            string flamesVersion = snpl.Flames_Version;
+            string snVersion = snpl.SuperNova_Version;
+            string mcgVersion = snpl.MCGalaxy_Version;
+            string MCGalaxy_Version = "1.9.4.9";
             // Version different in Dev build, use normal for SuperNova plugins
-            string CurrentVersion = Server.FlamesVersion;
+            string CurrentFlamesVersion = Server.FlamesVersion;
 
-            if (!string.IsNullOrEmpty(snpl.MCGalaxy_Version) && new Version(snpl.MCGalaxy_Version) > new Version(MCGalaxy_Ver))
+            if (!string.IsNullOrEmpty(mcgVersion) && new Version(mcgVersion) > new Version(MCGalaxy_Version))
             {
                 string msg = string.Format("SuperNova plugin '{0}' cannot be loaded on this version of {1}!", snpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
-            if (!string.IsNullOrEmpty(ver) && new Version(ver) > new Version(CurrentVersion) && new Version(ver) > new Version(Server.Version))
+            if (!string.IsNullOrEmpty(flamesVersion) && new Version(flamesVersion) > new Version(CurrentFlamesVersion))
             {
                 string msg = string.Format("SuperNova plugin '{0}' requires a more recent version of {1}!", snpl.name, Server.SoftwareName);
                 throw new InvalidOperationException(msg);
             }
-
+            if (!string.IsNullOrEmpty(snVersion) && new Version(snVersion) > new Version(CurrentSNVersion))
+            {
+                string msg = string.Format("SuperNova plugin '{0}' requires v{1} of SuperNova, which does not exist!", snpl.name, snVersion);
+                throw new InvalidOperationException(msg);
+            }
             try
             {
                 CustomSuperNovaPlugins.Add(snpl);
@@ -1100,10 +1110,11 @@ namespace Flames
         public static bool Unload(SuperNovaPlugin snpl)
         {
             bool success = UnloadSuperNovaPlugin(snpl, false);
-
-            // TODO only remove if successful?
-            CustomSuperNovaPlugins.Remove(snpl);
-            CoreSuperNovaPlugins.Remove(snpl);
+            if (success)
+            {
+                CustomSuperNovaPlugins.Remove(snpl);
+                CoreSuperNovaPlugins.Remove(snpl);
+            }
             return success;
         }
 

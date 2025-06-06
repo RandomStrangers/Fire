@@ -524,7 +524,7 @@ namespace Flames
                 res.Zones = lvl.Zones;
                 lvl.Zones = new VolatileArray<Zone>(false);
 
-                IMapExporter.Formats[0].Write(LevelInfo.MapPath(lvl.name), res);
+                IMapExporter.Encode(LevelInfo.MapPath(lvl.name), res);
                 lvl.SaveChanges = false;
             }
 

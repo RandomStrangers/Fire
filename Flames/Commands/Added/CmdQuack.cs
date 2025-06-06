@@ -13,7 +13,8 @@
             {
                 return;
             }
-            Chat.MessageChat(ChatScope.Global, p, $"{p.color}{p.DisplayName}" + " &6QUACKED &elike a duck!", null, null);
+            string Display = p.color + p.DisplayName;
+            Chat.MessageChat(ChatScope.Global, p, Display + " &6QUACKED &elike a duck!", null, null);
         }
         public override void Help(Player p)
         {

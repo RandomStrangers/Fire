@@ -128,9 +128,13 @@ namespace Flames.Platform
         }
         public override CPUTime MeasureAllCPUTime()
         {
-            CPUTime all = default;
-            GetSystemTimes(out all.IdleTime, out all.KernelTime, out all.UserTime);
-
+            GetSystemTimes(out uint idletime, out uint kerneltime, out uint usertime);
+            CPUTime all = new CPUTime()
+            {
+                IdleTime = idletime,
+                KernelTime = kerneltime,
+                UserTime = usertime
+            };
             // https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/nf-processthreadsapi-getsystemtimes
             // lpKernelTime - "... This time value also includes the amount of time the system has been idle."
             all.KernelTime -= all.IdleTime;
@@ -138,7 +142,7 @@ namespace Flames.Platform
         }
 
         [DllImport("kernel32.dll")]
-        public static extern int GetSystemTimes(out ulong idleTime, out ulong kernelTime, out ulong userTime);
+        public static extern int GetSystemTimes(out uint idleTime, out uint kernelTime, out uint userTime);
     }
 
     public class UnixOS : IOperatingSystem

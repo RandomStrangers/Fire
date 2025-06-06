@@ -36,6 +36,7 @@ namespace Flames
         public const string WelcomeFile = "text/welcome.txt";
         public const string JokerFile = "text/joker.txt";
         public const string EightBallFile = "text/8ball.txt";
+        public const string ExternalURLFile = "text/externalurl.txt";
 
         public const string BlockPermsFile = "properties/block.properties";
         public const string CmdPermsFile = "properties/command.properties";
@@ -63,14 +64,14 @@ namespace Flames
 
         /// <summary> Relative path of a deleted level's map file. </summary>
         public static string DeletedMapFile(string map) 
-        { 
-            return "levels/deleted/" + map + ".lvl"; 
+        {
+            return "levels/deleted/" + map + ".lvl";
         }
 
         /// <summary> Relative path of a level's previous save map file. </summary>
         public static string PrevMapFile(string map) 
-        { 
-            return "levels/prev/" + map.ToLower() + ".lvl.prev"; 
+        {
+            return "levels/prev/" + map.ToLower() + ".lvl.prev";
         }
 
         /// <summary> Relative path of a block properties file. </summary>     

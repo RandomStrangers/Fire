@@ -16,6 +16,7 @@
     permissions and limitations under the Licenses.
  */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Flames.DB;
 using Flames.Events.LevelEvents;
@@ -57,7 +58,9 @@ namespace Flames
         // TODO: support loading other map files eventually
         public static string[] AllMapFiles()
         {
-            return Directory.GetFiles("levels", "*.lvl");
+            List<string> Files = new List<string>();
+            Files.AddRange(Directory.GetFiles("levels", "*.lvl"));
+            return Files.ToArray();
         }
 
         public static string[] AllMapNames()

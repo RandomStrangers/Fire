@@ -109,7 +109,6 @@ namespace Flames
                 case 'f':
                     return new ColorDesc('f', "White");
             }
-
             ColorDesc col = default(ColorDesc);
             col.Code = code;
             return col;
@@ -178,7 +177,9 @@ namespace Flames
 
         public static bool IsSystem(char col)
         {
-            return col == 'S' || col == 'H' || col == 'T' || col == 'I' || col == 'W';
+            return col == 'S' || col == 'H'
+                || col == 'T' || col == 'I'
+                || col == 'W';
         }
 
 

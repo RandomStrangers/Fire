@@ -160,6 +160,7 @@ namespace Flames
             name = playername;
             truename = playername;
             DisplayName = playername;
+            SuperName = playername;
             SetIP(IPAddress.Loopback);
             IsSuper = true;
         }

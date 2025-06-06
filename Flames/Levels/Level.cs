@@ -304,7 +304,7 @@ namespace Flames
                 File.Delete(path);
             }
 
-            IMapExporter.Formats[0].Write(path + ".backup", this);
+            IMapExporter.Encode(path + ".backup", this);
             File.Copy(path + ".backup", path);
             SaveSettings();
 

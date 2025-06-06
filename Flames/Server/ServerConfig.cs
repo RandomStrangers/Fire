@@ -50,12 +50,12 @@ namespace Flames
         public string DefaultRankName = "guest";
         [ConfigString("server-owner", "Server", "the owner")]
         public string OwnerName = "the owner";
-        [ConfigBool("send-url", "Server", true)]
-        public bool SendURL = true;
-        [ConfigBool("say-hello", "Server", true)]
-        public bool SayHello = true;
-        [ConfigBool("say-bye", "Server", true)]
-        public bool SayBye = true;
+        [ConfigBool("send-url", "Server", false)]
+        public bool SendURL = false;
+        [ConfigBool("say-hello", "Server", false)]
+        public bool SayHello = false;
+        [ConfigBool("say-bye", "Server", false)]
+        public bool SayBye = false;
 #if CORE
         [ConfigString("server-logo", "Server", "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png")]
         public string ServerLogo = "https://github.com/RandomStrangers/Fire/blob/Flame/GUI/Harmony_full.png";
@@ -234,8 +234,13 @@ namespace Flames
         public bool IRCShowWorldChanges = false;
         [ConfigBool("irc-show-afk", "IRC bot", false)]
         public bool IRCShowAFK = false;
-        [ConfigString("irc-command-prefix", "IRC bot", ".x", true)]
-        public string IRCCommandPrefix = ".x";
+#if CORE
+        [ConfigString("irc-command-prefix", "IRC bot", ".h", true)]
+        public string IRCCommandPrefix = ".h";
+#else
+        [ConfigString("irc-command-prefix", "IRC bot", ".f", true)]
+        public string IRCCommandPrefix = ".f";
+#endif
         [ConfigEnum("irc-controller-verify", "IRC bot", IRCControllerVerify.HalfOp, typeof(IRCControllerVerify))]
         public IRCControllerVerify IRCVerify = IRCControllerVerify.HalfOp;
         [ConfigPerm("irc-controller-rank", "IRC bot", LevelPermission.Admin)]
@@ -349,23 +354,17 @@ namespace Flames
         [ConfigTimespan("ip-spam-interval", "Spam control", 60, false)]
         public TimeSpan IPSpamInterval = TimeSpan.FromSeconds(60);
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        [ConfigString("host-state", "Chat", "Burning")]
         public string ConsoleName = "Burning";
         /// <summary> Backwards compatibility with MCGalaxy plugins </summary>
-        [ConfigBoolArray("console-logging", "Logging", true, 17)]
         public bool[] ConsoleLogging = defLogLevels;
 #if CORE
         /// <summary> Work on backwards compatibility with other cores </summary>
-        [ConfigString("Core-State", "Chat", "Burning")]
         public string CoreState = "Burning";
         /// <summary> Work on backwards compatibility with other cores </summary>
-        [ConfigBoolArray("GoldenSparks-logging", "Logging", true, 17)]
         public bool[] GoldenSparksLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
-        [ConfigBoolArray("Random-logging", "Logging", true, 17)]
         public bool[] RandomLogging = defLogLevels;
         /// <summary> Work on backwards compatibility with other cores </summary>
-        [ConfigBoolArray("Nova-logging", "Logging", true, 17)]
         public bool[] NovaLogging = defLogLevels;
 #endif
     }
