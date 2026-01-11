@@ -45,7 +45,6 @@ jobs:
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           DELETE_AFTER: '1'
 
-      # publish standalone windows binaries
       - name: Publish-win64
         id: publishWin64
         run: dotnet publish CLI/FlamesCLI_standalone8.csproj -r win-x64 --self-contained
@@ -65,7 +64,6 @@ jobs:
           NOTIFY_MESSAGE: 'Failed to compile Flames Windows 64-bit standalone build! <@999409543001931788>'
           WEBHOOK_URL: '${{ secrets.WEBHOOK_URL }}'
           
-      # publish standalone linux binaries
       - name: Publish-linux64
         id: publishLinux64
         run: dotnet publish CLI/FlamesCLI_standalone8.csproj -r linux-x64 --self-contained
